@@ -598,7 +598,7 @@ pub(crate) fn draw_bounds_get(cx: &mut Cx, p: BoundsParams) -> Result<BoundsResu
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ViewMappingParams {
-    /// The view (`drawing`; views arrive with M4 C4.2).
+    /// The view: `drawing` (the Drawing view window) or a view id.
     #[serde(default = "drawing_view")]
     view: String,
 }
@@ -634,11 +634,6 @@ pub(crate) struct ViewSize {
     height: u32,
 }
 
-/// The headless Drawing view (SI-069): 1920 × 1080 pixels, 100 % zoom (1 view pixel = 1 du, SI-063), no rotation,
-/// the drawing origin at the view centre, y up in drawing space and down in pixels.
-const VIEW_W: u32 = 1920;
-const VIEW_H: u32 = 1080;
-
 #[command(
     id = "draw.viewMapping.get",
     kind = query,
@@ -648,30 +643,32 @@ const VIEW_H: u32 = 1080;
     agent_only = "agents convert between view pixels and drawing units",
 )]
 pub(crate) fn draw_view_mapping_get(cx: &mut Cx, p: ViewMappingParams) -> Result<ViewMappingResult, CommandError> {
-    if p.view != "drawing" {
-        return Err(err(
-            "view.notFound",
-            format!(
-                "view `{}` does not exist (views arrive with M4 C4.2; `drawing` is the headless Drawing view)",
-                p.view
-            ),
-            json!({ "pointer": "/view" }),
-        ));
-    }
+    // The one mapping of the Drawing view window (design note 6; M4 C4.2): `drawing` names the Drawing view, a view id
+    // names that window. Headless, the Drawing view is 1920 x 1080 pixels at 100 % (SI-063, SI-069) until navigated.
+    let w = super::view::drawing_view(cx, Some(p.view.as_str())).map_err(|e| {
+        if e.code == "view.notFound" {
+            err("view.notFound", format!("view `{}` does not exist", p.view), json!({ "pointer": "/view" }))
+        } else {
+            e
+        }
+    })?;
+    let t = w.transform();
+    let size = w.size;
+    let (to_view, to_drawing) = (super::view::drawing_to_view(w), super::view::view_to_drawing(w));
     let drawing_id = if cx.has_project() {
         let mut none = Vec::new();
         target(cx, None, None, None, false, &mut none).ok().map(|t| t.id.as_str().to_owned())
     } else {
         None
     };
-    let (cx0, cy0) = (f64::from(VIEW_W) / 2.0, f64::from(VIEW_H) / 2.0);
+    let px = |v: f64| if v.is_finite() && v >= 0.0 && v <= f64::from(u32::MAX) { v.round() as u32 } else { 0 };
     Ok(ViewMappingResult {
         drawing_id,
-        drawing_to_view: [1.0, 0.0, 0.0, -1.0, cx0, cy0],
-        view_to_drawing: [1.0, 0.0, 0.0, -1.0, -cx0, cy0],
-        zoom: 1.0,
-        rotation: 0.0,
-        view_size: ViewSize { width: VIEW_W, height: VIEW_H },
+        drawing_to_view: to_view,
+        view_to_drawing: to_drawing,
+        zoom: t.zoom,
+        rotation: t.rotation_degrees,
+        view_size: ViewSize { width: px(size.width), height: px(size.height) },
     })
 }
 

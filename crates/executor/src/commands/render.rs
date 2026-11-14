@@ -418,9 +418,11 @@ fn files_write(cx: &Cx, command: &str) -> Result<(), CommandError> {
 }
 
 fn unavailable(c: Composition) -> CommandError {
+    // `activeView` renders the Drawing view since M4 C4.2 (SI-107); the other view types and ranges of the active view
+    // arrive with the Camera view (M4 C4.3).
     let (name, owner) = match c {
         Composition::Xsheet => ("xsheet", "M5 C5.1"),
-        _ => ("activeView", "M4 C4.2"),
+        _ => ("activeView", "M4 C4.3"),
     };
     err(
         "render.compositionUnavailable",
@@ -497,12 +499,17 @@ pub(crate) fn inline_side(cx: &Cx, width: u32, height: u32) -> Result<(), Comman
 )]
 pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResult, CommandError> {
     let started = std::time::Instant::now();
-    if matches!(p.composition, Composition::Xsheet | Composition::ActiveView) {
+    if p.composition == Composition::Xsheet
+        || (p.composition == Composition::ActiveView && cx.ui().active_view_type() != crate::shell::ViewType::Drawing)
+    {
         return Err(unavailable(p.composition));
     }
     let scene = scene_param(cx, p.scene_id.as_deref())?;
     let frame = frame_param(cx, p.frame)?;
     let doc = cx.document()?.clone();
+    if p.composition == Composition::ActiveView {
+        return active_view(cx, &p, &doc, frame);
+    }
     if p.output == Output::File && p.path.is_none() {
         return Err(invalid("/path", "file output needs an absolute path"));
     }
@@ -538,7 +545,7 @@ pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResu
         warnings.push(json!({ "code": "render.cameraFrameNotApplicable", "message": "the composition is the camera frame itself" }));
     }
     if p.quality == Quality::Draft {
-        warnings.push(json!({ "code": "render.draftAsFinal", "message": "draft renders as final until the interactive renderer (M4 C4.2)" }));
+        warnings.push(json!({ "code": "render.draftAsFinal", "message": "headless renders use the final software rasteriser; draft quality is the interactive canvas's" }));
     }
     let (bytes, mime) = encode(p.format, &rendered.pixels, width, height, p.jpeg_quality)?;
     let image = Image {
@@ -649,6 +656,68 @@ fn deliver(cx: &mut Cx, p: &FrameParams, image: Image) -> Result<RenderResult, C
         image_to_camera,
         warnings,
     })
+}
+
+/// `composition: "activeView"` with the Drawing view active (SI-107; M4 C4.2): the current drawing through the view
+/// window's mapping (design note 6), at the view's size times `scale` (or `width` / `height`), colours through the
+/// scene's active palette styles; display aids are drawn by the interactive renderer only (06 §6.10).
+fn active_view(cx: &mut Cx, p: &FrameParams, doc: &Document, frame: u32) -> Result<RenderResult, CommandError> {
+    if !(p.scale.is_finite() && (0.05..=8.0).contains(&p.scale)) {
+        return Err(invalid("/scale", "the scale must be 0.05-8"));
+    }
+    let view = super::view::drawing_view(cx, None)?.clone();
+    let (vw, vh) = (view.size.width.max(1.0), view.size.height.max(1.0));
+    let w = p.width.map_or_else(|| (vw * p.scale).round(), f64::from);
+    let h = p.height.map_or_else(|| (vh * w / vw).round(), f64::from);
+    if !(1.0..=f64::from(MAX_SIDE)).contains(&w) || !(1.0..=f64::from(MAX_SIDE)).contains(&h) {
+        return Err(err(
+            "limit.exceeded",
+            format!("a render of {w} x {h} pixels is outside 1-{MAX_SIDE} on a side"),
+            json!({ "width": w, "height": h, "maxWidth": MAX_SIDE, "maxHeight": MAX_SIDE }),
+        ));
+    }
+    let (wu, hu) = (w as u32, h as u32);
+    if p.output == Output::Inline {
+        inline_side(cx, wu, hu)?;
+    }
+    let id = cx.app().current_drawing(doc).ok_or_else(|| {
+        err("drawing.noTarget", "the Drawing view has no current drawing", json!({}))
+            .hint("make a drawing current (app.context.set)")
+    })?;
+    let d = doc.drawing(&id).ok_or_else(|| err("drawing.noTarget", "the current drawing is gone", json!({})))?;
+    let m = super::view::drawing_to_view(&view);
+    let (sx, sy) = (w / vw, h / vh);
+    let d2p = [m[0] * sx, m[1] * sy, m[2] * sx, m[3] * sy, m[4] * sx, m[5] * sy];
+    let scene = scene_param(cx, p.scene_id.as_deref())?;
+    let bg = background(doc, &scene, &p.background)?;
+    let styles: Option<std::collections::BTreeMap<Id, Id>> =
+        doc.scene(&scene).map(|sc| sc.palette_styles().iter().map(|(a, b)| (a.clone(), b.clone())).collect());
+    let blobs = cx.project().ok().map(|pr| &pr.store.blobs);
+    let cache = cx.planar_cache();
+    let zones: std::collections::BTreeMap<String, crate::planar::LayerZones> =
+        crate::planar::drawing_zones(&cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
+    let mut builder =
+        super::draw_render::Builder::in_drawing_units(doc, blobs, styles, u64::from(wu) * u64::from(hu) / 1024);
+    builder.nodes(d.nodes(), &zones)?;
+    let items = vec![tt_render::Item::Layer { transform: d2p, items: builder.take_items() }];
+    let mut warnings = std::mem::take(&mut builder.warnings);
+    if p.quality == Quality::Draft {
+        warnings.push(json!({ "code": "render.draftAsFinal", "message": "headless renders use the final software rasteriser; draft quality is the interactive canvas's" }));
+    }
+    let pixels = rasterise(&Scene { width: wu, height: hu, background: bg, items }, &|| false)?;
+    let (bytes, mime) = encode(p.format, &pixels, wu, hu, p.jpeg_quality)?;
+    let image = Image {
+        bytes,
+        mime,
+        width: wu,
+        height: hu,
+        rev: doc.document_rev(),
+        frame,
+        image_to_camera: invert(d2p),
+        warnings,
+        started: std::time::Instant::now(),
+    };
+    deliver(cx, p, image)
 }
 
 /// `composition: "element"` with `drawingId`: the drawing in drawing space (09 §11.1 item 11: origin at the top-left of

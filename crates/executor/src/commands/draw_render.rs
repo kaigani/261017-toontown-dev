@@ -536,72 +536,22 @@ pub(crate) fn draw_drawing_render(cx: &mut Cx, p: RenderParams) -> Result<Render
     let s = (f64::from(width) / rw).min(f64::from(height) / rh);
     let (cxm, cym) = ((r.min_x + r.max_x) / 2.0, (r.min_y + r.max_y) / 2.0);
     let d2p = Affine([s, 0.0, 0.0, -s, f64::from(width) / 2.0 - s * cxm, f64::from(height) / 2.0 + s * cym]);
-    let zones: BTreeMap<String, crate::planar::LayerZones> =
-        crate::planar::drawing_zones(&cx.planar_cache(), &d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
-    let project = cx.project().ok();
-    let mut b = Builder {
-        doc: &doc,
-        blobs: project.map(|p| &p.store.blobs),
+    let (pixels, warnings) = rasterise(
+        cx,
+        &doc,
+        &d,
         style,
-        scene_styles: None,
-        d2p,
-        scale: s,
-        items: Vec::new(),
-        warnings: Vec::new(),
-        textures: BTreeMap::new(),
-        work: u64::from(width) * u64::from(height) / 1024,
-    };
-    b.nodes(d.nodes(), &zones)?;
-    if p.show_strokes {
-        let magenta = Paint::Solid([255, 0, 255, 255]);
-        for o in vd::objects(&d).iter().filter(|o| o.kind == vd::ObjectKind::Stroke) {
-            let Some(st) = vd::stroke_at(&d, &o.pointer) else { continue };
-            let closed = *st.closed() || *st.kind() == StrokeKind::Brush;
-            let path = Path::from_points(st.points(), closed);
-            b.spend(path.anchors.len())?;
-            b.items.push(Item::Stroke { path: els(&path, &d2p), width: 1.0, paint: magenta.clone() });
-            if !closed {
-                for a in [path.anchors.first(), path.anchors.last()].into_iter().flatten() {
-                    let q = d2p.apply(a.p);
-                    let sq = vec![
-                        El::MoveTo(q.x - 2.0, q.y - 2.0),
-                        El::LineTo(q.x + 2.0, q.y - 2.0),
-                        El::LineTo(q.x + 2.0, q.y + 2.0),
-                        El::LineTo(q.x - 2.0, q.y + 2.0),
-                        El::Close,
-                    ];
-                    b.items.push(Item::Fill { path: sq, rule: Rule::NonZero, paint: magenta.clone() });
-                }
-            }
-        }
-    }
-    if p.show_selection {
-        let ids = super::draw::selection_ids(cx, &d);
-        if let Some(sb) = super::draw_select::selection_bounds(cx, &d, &ids)? {
-            let (a, c) = (d2p.apply(P::new(sb.min_x, sb.min_y)), d2p.apply(P::new(sb.max_x, sb.max_y)));
-            let rect =
-                vec![El::MoveTo(a.x, a.y), El::LineTo(c.x, a.y), El::LineTo(c.x, c.y), El::LineTo(a.x, c.y), El::Close];
-            b.items.push(Item::Stroke { path: rect, width: 1.0, paint: Paint::Solid([32, 128, 255, 255]) });
-        }
-    }
-    let scene = Scene { width, height, background, items: std::mem::take(&mut b.items) };
-    let warnings = std::mem::take(&mut b.warnings);
-    drop(b);
-    let mut keep_going = |_: usize| {
-        if tt_vector::work::cancel_requested() {
-            Err("the call overran its watchdog budget and was cancelled".to_owned())
-        } else if started.elapsed() > RENDER_TIME_LIMIT {
-            Err(format!("the render took longer than {} s", RENDER_TIME_LIMIT.as_secs()))
-        } else {
-            Ok(())
-        }
-    };
-    let pixels = tt_render::render(&scene, &mut keep_going).map_err(|e| match e {
-        tt_render::RenderError::Stopped(m) => {
-            err("limit.exceeded", m, json!({ "limitSeconds": RENDER_TIME_LIMIT.as_secs() }))
-        }
-        other => err("render.failed", other.to_string(), json!({})),
-    })?;
+        Raster {
+            d2p,
+            scale: s,
+            width,
+            height,
+            background,
+            show_strokes: p.show_strokes,
+            show_selection: p.show_selection,
+        },
+        started,
+    )?;
     let png =
         tt_render::encode_png(&pixels, width, height).map_err(|e| err("render.failed", e.to_string(), json!({})))?;
     let pixels_sha256 = {
@@ -634,4 +584,107 @@ pub(crate) fn draw_drawing_render(cx: &mut Cx, p: RenderParams) -> Result<Render
         pixels_sha256,
         warnings,
     })
+}
+
+/// What [`rasterise`] draws besides the drawing.
+#[derive(Debug, Clone, Copy)]
+pub(crate) struct Raster {
+    /// Drawing space to pixels.
+    pub d2p: Affine,
+    /// Its linear scale (line widths).
+    pub scale: f64,
+    /// Image width (px).
+    pub width: u32,
+    /// Image height (px).
+    pub height: u32,
+    /// Background RGBA.
+    pub background: [u8; 4],
+    /// Every stroke's centre path and open ends.
+    pub show_strokes: bool,
+    /// The selection's bounds.
+    pub show_selection: bool,
+}
+
+/// Rasterises a drawing through `d2p` (drawing space to pixels, `scale` its linear factor) with the final software
+/// rasteriser: the one path `draw.drawing.render` and the headless `inspect.screenshot` share (design note 5, S4).
+/// Returns the RGBA pixels and the render warnings.
+///
+/// # Errors
+/// `limit.exceeded` past the time limit, `render.failed`, planar-map errors.
+pub(crate) fn rasterise(
+    cx: &Cx,
+    doc: &Document,
+    d: &Drawing,
+    style: Option<(Id, Id)>,
+    o: Raster,
+    started: std::time::Instant,
+) -> Result<(Vec<u8>, Vec<Value>), CommandError> {
+    let Raster { d2p, scale: s, width, height, background, .. } = o;
+    let zones: BTreeMap<String, crate::planar::LayerZones> =
+        crate::planar::drawing_zones(&cx.planar_cache(), d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
+    let project = cx.project().ok();
+    let mut b = Builder {
+        doc,
+        blobs: project.map(|p| &p.store.blobs),
+        style,
+        scene_styles: None,
+        d2p,
+        scale: s,
+        items: Vec::new(),
+        warnings: Vec::new(),
+        textures: BTreeMap::new(),
+        work: u64::from(width) * u64::from(height) / 1024,
+    };
+    b.nodes(d.nodes(), &zones)?;
+    if o.show_strokes {
+        let magenta = Paint::Solid([255, 0, 255, 255]);
+        for o in vd::objects(d).iter().filter(|o| o.kind == vd::ObjectKind::Stroke) {
+            let Some(st) = vd::stroke_at(d, &o.pointer) else { continue };
+            let closed = *st.closed() || *st.kind() == StrokeKind::Brush;
+            let path = Path::from_points(st.points(), closed);
+            b.spend(path.anchors.len())?;
+            b.items.push(Item::Stroke { path: els(&path, &d2p), width: 1.0, paint: magenta.clone() });
+            if !closed {
+                for a in [path.anchors.first(), path.anchors.last()].into_iter().flatten() {
+                    let q = d2p.apply(a.p);
+                    let sq = vec![
+                        El::MoveTo(q.x - 2.0, q.y - 2.0),
+                        El::LineTo(q.x + 2.0, q.y - 2.0),
+                        El::LineTo(q.x + 2.0, q.y + 2.0),
+                        El::LineTo(q.x - 2.0, q.y + 2.0),
+                        El::Close,
+                    ];
+                    b.items.push(Item::Fill { path: sq, rule: Rule::NonZero, paint: magenta.clone() });
+                }
+            }
+        }
+    }
+    if o.show_selection {
+        let ids = super::draw::selection_ids(cx, d);
+        if let Some(sb) = super::draw_select::selection_bounds(cx, d, &ids)? {
+            let (a, c) = (d2p.apply(P::new(sb.min_x, sb.min_y)), d2p.apply(P::new(sb.max_x, sb.max_y)));
+            let rect =
+                vec![El::MoveTo(a.x, a.y), El::LineTo(c.x, a.y), El::LineTo(c.x, c.y), El::LineTo(a.x, c.y), El::Close];
+            b.items.push(Item::Stroke { path: rect, width: 1.0, paint: Paint::Solid([32, 128, 255, 255]) });
+        }
+    }
+    let scene = Scene { width, height, background, items: std::mem::take(&mut b.items) };
+    let warnings = std::mem::take(&mut b.warnings);
+    drop(b);
+    let mut keep_going = |_: usize| {
+        if tt_vector::work::cancel_requested() {
+            Err("the call overran its watchdog budget and was cancelled".to_owned())
+        } else if started.elapsed() > RENDER_TIME_LIMIT {
+            Err(format!("the render took longer than {} s", RENDER_TIME_LIMIT.as_secs()))
+        } else {
+            Ok(())
+        }
+    };
+    let pixels = tt_render::render(&scene, &mut keep_going).map_err(|e| match e {
+        tt_render::RenderError::Stopped(m) => {
+            err("limit.exceeded", m, json!({ "limitSeconds": RENDER_TIME_LIMIT.as_secs() }))
+        }
+        other => err("render.failed", other.to_string(), json!({})),
+    })?;
+    Ok((pixels, warnings))
 }

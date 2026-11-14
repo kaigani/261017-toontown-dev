@@ -160,7 +160,9 @@ fn compositions_and_formats() {
     let c = solids(&h, 2)[1].clone();
     let other = square(&h, "Other", 50.0, &c.0);
     ok(&h, "anim.transform.set", json!({ "nodeIds": [other], "target": "static", "position": { "x": 4 } }));
-    for (comp, owner) in [("xsheet", "M5 C5.1"), ("activeView", "M4 C4.2")] {
+    // `activeView` renders the Drawing view since M4 C4.2 (SI-107); with the Camera view active it waits for M4 C4.3.
+    ok(&h, "view.type.set", json!({ "type": "camera" }));
+    for (comp, owner) in [("xsheet", "M5 C5.1"), ("activeView", "M4 C4.3")] {
         let e = err(&h, "render.frame.run", json!({ "composition": comp }));
         assert_eq!((e.code.as_str(), e.details["owner"].as_str()), ("render.compositionUnavailable", Some(owner)));
     }

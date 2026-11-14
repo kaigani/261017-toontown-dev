@@ -398,8 +398,11 @@ fn bitmap_opaque(cx: &Cx, d: &tt_model::entities::drawing::Drawing, node_id: &st
     agent_only = "agents locate objects by position (11 §7.5 hit_test)",
 )]
 pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, CommandError> {
-    if p.space == Space::View || p.view.is_some() {
-        return Err(space_unavailable("view", "needs views, which arrive with M4 C4.2"));
+    if p.space == Space::View {
+        return view_hits(cx, &p);
+    }
+    if p.view.is_some() {
+        return Err(super::common::invalid("/view", "`view` applies to view-space points"));
     }
     if p.space == Space::Drawing {
         return Err(space_unavailable("drawing", "names no element; convert the point to `scene` first"));
@@ -441,6 +444,36 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
                 colour_id: hit.colour.clone(),
             });
         }
+    }
+    Ok(Hits { hits })
+}
+
+/// Hits under a view point of the Drawing view (SI-109): the current drawing's objects, top-most first.
+fn view_hits(cx: &Cx, p: &HitParams) -> Result<Hits, CommandError> {
+    if !(p.point.x.is_finite() && p.point.y.is_finite()) {
+        return Err(super::common::invalid("/point", "the point must be finite"));
+    }
+    let w = super::view::drawing_view(cx, p.view.as_deref())?;
+    let q = super::view::to_drawing(w, crate::shell::Point { x: p.point.x, y: p.point.y });
+    let doc = cx.document()?;
+    let Some(did) = cx.app().current_drawing(doc) else { return Ok(Hits { hits: Vec::new() }) };
+    let Some(d) = doc.drawing(&did) else { return Ok(Hits { hits: Vec::new() }) };
+    let element = cx.app().element.as_ref().map(|e| e.as_str().to_owned()).unwrap_or_default();
+    let zones = crate::planar::drawing_zones(&cx.planar_cache(), d)?;
+    let mut hits = Vec::new();
+    for hit in super::colour::hits(d, &zones, P::new(q.x, q.y), 0.0, false)? {
+        let kind = hit.kind.as_str();
+        if kind == "bitmap" && !bitmap_opaque(cx, d, &hit.id, P::new(q.x, q.y)) {
+            continue;
+        }
+        hits.push(HitOut {
+            element_id: element.clone(),
+            drawing_id: did.as_str().to_owned(),
+            layer_id: hit.layer.clone(),
+            object_id: hit.id.clone(),
+            kind: kind.to_owned(),
+            colour_id: hit.colour.clone(),
+        });
     }
     Ok(Hits { hits })
 }
@@ -512,11 +545,12 @@ fn cspace(s: &str, pointer: &str) -> Result<CSpace, CommandError> {
         "camera" => CSpace::Camera,
         "cameraNormalized" => CSpace::CameraNormalized,
         "image" => CSpace::Image,
-        "view" => return Err(space_unavailable("view", "needs views, which arrive with M4 C4.2")),
         other => {
             return Err(super::common::invalid(
                 pointer,
-                format!("unknown space `{other}` (drawing, local, parent, scene, camera, cameraNormalized, image)"),
+                format!(
+                    "unknown space `{other}` (view, drawing, local, parent, scene, camera, cameraNormalized, image)"
+                ),
             ));
         }
     })
@@ -549,8 +583,50 @@ fn singular(what: &str) -> CommandError {
     agent_only = "agents convert between coordinate spaces (11 §7.5 convert_coordinates)",
 )]
 pub(crate) fn inspect_coordinates_convert(cx: &mut Cx, p: ConvertParams) -> Result<Points, CommandError> {
+    // View space is the Drawing view's pixels (SI-109; M4 C4.2): view points pass through drawing space with the one
+    // mapping (design note 6), so `view` converts to and from every other space.
+    let (vf, vt) = (p.from == "view", p.to == "view");
+    if vf || vt {
+        let w = super::view::drawing_view(cx, p.view.as_deref())?.clone();
+        let pts: Vec<Point3> = if vf {
+            p.points
+                .iter()
+                .map(|q| {
+                    let d = super::view::to_drawing(&w, crate::shell::Point { x: q.x, y: q.y });
+                    Point3 { x: d.x, y: d.y, z: None }
+                })
+                .collect()
+        } else {
+            p.points.clone()
+        };
+        let (from, to) = (
+            if vf { "drawing".to_owned() } else { p.from.clone() },
+            if vt { "drawing".to_owned() } else { p.to.clone() },
+        );
+        let inner = if from == to {
+            if pts.iter().any(|q| !(q.x.is_finite() && q.y.is_finite())) {
+                return Err(super::common::invalid("/points", "points must be finite"));
+            }
+            pts
+        } else {
+            let q = ConvertParams { from, to, points: pts, view: None, ..p };
+            inspect_coordinates_convert(cx, q)?.points
+        };
+        let out = if vt {
+            inner
+                .iter()
+                .map(|q| {
+                    let v = super::view::to_view(&w, crate::shell::Point { x: q.x, y: q.y });
+                    Point3 { x: v.x, y: v.y, z: None }
+                })
+                .collect()
+        } else {
+            inner
+        };
+        return Ok(Points { points: out });
+    }
     if p.view.is_some() {
-        return Err(space_unavailable("view", "needs views, which arrive with M4 C4.2"));
+        return Err(super::common::invalid("/view", "`view` applies when `from` or `to` is the view space"));
     }
     let from = cspace(&p.from, "/from")?;
     let to = cspace(&p.to, "/to")?;
@@ -1070,15 +1146,133 @@ pub(crate) struct ScreenshotParams {
     region: Option<Rect>,
 }
 
+/// The inline side limit of a screenshot (11 §6.5: 2048 px).
+pub(crate) const SCREENSHOT_MAX_SIDE: u32 = 2048;
+
+fn inline_too_large(w: u32, h: u32, bytes: Option<usize>, max_bytes: u64) -> CommandError {
+    CommandError::with_details(
+        "render.inlineTooLarge",
+        format!("a {w} x {h} screenshot is over the inline limits ({SCREENSHOT_MAX_SIDE} px, {max_bytes} bytes)"),
+        json!({ "maxInlinePixels": SCREENSHOT_MAX_SIDE, "maxInlineBytes": max_bytes, "width": w, "height": h,
+                "bytes": bytes }),
+    )
+    .hint("pass a region of at most 2048 x 2048 view pixels")
+}
+
+/// The headless screenshot (design note 5 §1): the target view window rendered at its virtual size through the final
+/// software rasteriser, the current drawing through the view's mapping on the Drawing-view background. The display
+/// aids are drawn by the interactive renderer only (06 §6.10).
+fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<Map<String, Value>, CommandError> {
+    let shell = cx.ui().shell();
+    let target = p.target.clone().unwrap_or_else(|| "window".to_owned());
+    let id = match target.as_str() {
+        "window" => {
+            let active = cx.ui().active_view();
+            if shell.view(active).is_ok_and(|w| w.ty == crate::shell::ViewType::Drawing) {
+                active.to_owned()
+            } else {
+                "drawingView".to_owned()
+            }
+        }
+        "drawing" => "drawingView".to_owned(),
+        other => other.to_owned(),
+    };
+    let w = shell.view(&id).map_err(|_| {
+        CommandError::with_details(
+            "view.notFound",
+            format!("headless, `{target}` has nothing to capture (only view windows are rendered)"),
+            json!({ "target": target, "pointer": "/target" }),
+        )
+        .hint("target window, drawing or a view id (inspect.ui.tree lists them)")
+    })?;
+    if w.ty != crate::shell::ViewType::Drawing {
+        return Err(CommandError::with_details(
+            tt_registry::codes::COMMAND_NOT_IMPLEMENTED,
+            format!("headless screenshots of the {} view arrive with that view (M4 C4.3)", w.ty.as_str()),
+            json!({ "target": target, "viewType": w.ty, "milestone": "M4 C4.3" }),
+        ));
+    }
+    let (vw, vh) = (w.size.width.round(), w.size.height.round());
+    let region = match &p.region {
+        Some(r) => {
+            if ![r.x, r.y, r.w, r.h].iter().all(|v| v.is_finite()) || r.w < 1.0 || r.h < 1.0 {
+                return Err(super::common::invalid(
+                    "/region",
+                    "the region needs a finite position and a size of at least 1 px",
+                ));
+            }
+            (r.x.round(), r.y.round(), r.w.round(), r.h.round())
+        }
+        None => (0.0, 0.0, vw, vh),
+    };
+    let (_, max_bytes) = render::inline_limits(cx);
+    let side = |v: f64| if v.is_finite() && v >= 1.0 && v <= f64::from(u32::MAX) { v as u32 } else { u32::MAX };
+    let (width, height) = (side(region.2), side(region.3));
+    // The caps are checked before anything is rendered (S2).
+    if width.max(height) > SCREENSHOT_MAX_SIDE {
+        return Err(inline_too_large(width, height, None, max_bytes));
+    }
+    let bg = &cx.ui().drawing().aids.background;
+    let colour = if bg.use_scene_colour {
+        cx.document()
+            .ok()
+            .and_then(|doc| {
+                cx.app().scene.as_ref().and_then(|s| doc.scene(s)).map(|s| s.background_colour().to_string())
+            })
+            .unwrap_or_else(|| bg.colour.clone())
+    } else {
+        bg.colour.clone()
+    };
+    let background = tt_model::value::Colour::parse(&colour).map(|c| c.channels()).unwrap_or([240, 240, 240, 255]);
+    let m = super::view::drawing_to_view(w);
+    let d2p = Affine([m[0], m[1], m[2], m[3], m[4] - region.0, m[5] - region.1]);
+    let scale = (m[0] * m[3] - m[1] * m[2]).abs().sqrt();
+    let doc = cx.document().ok();
+    let drawing = doc.and_then(|doc| cx.app().current_drawing(doc)).and_then(|id| doc.and_then(|d| d.drawing(&id)));
+    let pixels = match (doc, drawing) {
+        (Some(doc), Some(d)) => {
+            let raster = super::draw_render::Raster {
+                d2p,
+                scale,
+                width,
+                height,
+                background,
+                show_strokes: false,
+                show_selection: false,
+            };
+            super::draw_render::rasterise(cx, doc, d, None, raster, std::time::Instant::now())?.0
+        }
+        _ => background.repeat(width as usize * height as usize),
+    };
+    render::observe_cancel()?;
+    let png = tt_render::encode_png(&pixels, width, height)
+        .map_err(|e| CommandError::with_details("render.failed", e.to_string(), json!({})))?;
+    if png.len() as u64 > max_bytes {
+        return Err(inline_too_large(width, height, Some(png.len()), max_bytes));
+    }
+    let out = json!({
+        "png": tt_persist::b64::encode(&png),
+        "width": width,
+        "height": height,
+        "sha256": render::sha256_hex(&png),
+        "target": target,
+        "viewId": id,
+        "source": "virtual",
+        "drawingId": drawing.map(|d| d.id().as_str().to_owned()),
+        "note": "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by the interactive renderer only (06 §6.10)",
+    });
+    Ok(out.as_object().cloned().unwrap_or_default())
+}
+
 #[command(
     id = "inspect.screenshot",
     kind = query,
     label = "Screenshot",
     scopes = [read],
-    not_implemented = "M4 C4.2",
-    example(title = "The main window", params = "{}"),
+    example(title = "The active view", params = "{}"),
+    example(title = "A 400 x 300 region of the Drawing view", params = r#"{"target": "drawingView", "region": {"x": 760, "y": 390, "w": 400, "h": 300}}"#),
     agent_only = "agents look at the GUI (11 §7.8 screenshot)",
 )]
-pub(crate) fn inspect_screenshot(_cx: &mut Cx, _p: ScreenshotParams) -> Result<Map<String, Value>, CommandError> {
-    Err(CommandError::not_implemented("inspect.screenshot", "M4 C4.2"))
+pub(crate) fn inspect_screenshot(cx: &mut Cx, p: ScreenshotParams) -> Result<Map<String, Value>, CommandError> {
+    virtual_screenshot(cx, &p)
 }

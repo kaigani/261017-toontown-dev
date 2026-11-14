@@ -37,7 +37,10 @@ Before the code (plan reviews/M4-C4.2-plan.md §4, ruling D-3: C4.2a). Requireme
 within 6.25 %–6400 %, or by table steps; the 02 §4.3 ladder for wheel and zoom-tool steps, SI-122; `anchor` keeps that
 view point fixed), `view.rotation.set` (absolute or 30° steps), `view.pan.set` (`centre`, `by`, `atPointer`),
 `view.transform.reset` (parts), `view.coordinates.convert`. Rotation is only through `view.rotation.set` (SI-123).
-Every change announces `view.changed` with the view's new state (the canvas follows it).
+Every change announces the host-only event `shell.view` with the view's new state (`viewId`, type, size, transform and
+both matrices; the canvas follows it). Spec A has no view event and the registry cannot grow (796 entries), so the
+announcement is a `shell.*` event like the other host notifications: agents do not receive it and read views with
+`view.list` and `view.transform.get` (corrected with the code; the first version of this note said `view.changed`).
 
 ## 4. Agents
 

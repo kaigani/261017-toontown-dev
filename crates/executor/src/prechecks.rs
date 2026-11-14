@@ -115,7 +115,31 @@ pub(crate) fn render_range_run(cx: &Cx, v: &Value) -> Result<(), CommandError> {
 /// `frame_param` and the render list).
 pub(crate) fn render_frame_run(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     let composition = v.get("composition").and_then(Value::as_str).unwrap_or("camera");
-    if matches!(composition, "xsheet" | "activeView") {
+    if composition == "xsheet" {
+        return Err(CommandError::with_details(
+            "render.compositionUnavailable",
+            "the `xsheet` composition arrives with M5 C5.1",
+            json!({ "composition": "xsheet", "owner": "M5 C5.1" }),
+        ));
+    }
+    if composition == "activeView" {
+        if cx.ui().active_view_type() != crate::shell::ViewType::Drawing {
+            return Err(CommandError::with_details(
+                "render.compositionUnavailable",
+                "the `activeView` composition of this view type arrives with M4 C4.3",
+                json!({ "composition": "activeView", "owner": "M4 C4.3" }),
+            ));
+        }
+        // The Drawing view renders its current drawing (SI-107; M4 C4.2).
+        if cx.ui().active_view_type() == crate::shell::ViewType::Drawing
+            && cx.document().ok().and_then(|d| cx.app().current_drawing(d)).is_none()
+        {
+            return Err(CommandError::with_details(
+                "drawing.noTarget",
+                "the Drawing view has no current drawing",
+                json!({ "composition": "activeView" }),
+            ));
+        }
         return Ok(());
     }
     let scene = crate::commands::render::scene_param(cx, v.get("sceneId").and_then(Value::as_str))?;

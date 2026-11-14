@@ -198,9 +198,9 @@ fn describe_reports_declarations() {
     assert_eq!(d["needsProject"], true);
     assert!(d["enablement"].as_str().unwrap().contains("undo"));
     assert_eq!(d["paramsSchema"]["properties"]["steps"]["maximum"], 1000);
-    // `render.frame.run` was the stub sample until M3 C3.3 implemented it, `inspect.ui.tree` until M4 C4.1;
-    // `inspect.screenshot` waits for M4 C4.2.
-    let stub = registry().get("inspect.screenshot").unwrap().describe();
+    // `render.frame.run` was the stub sample until M3 C3.3 implemented it, `inspect.ui.tree` until M4 C4.1,
+    // `inspect.screenshot` until M4 C4.2; `draw.feather.apply` waits for its owner.
+    let stub = registry().get("draw.feather.apply").unwrap().describe();
     assert_eq!(stub["status"], "notImplemented");
-    assert_eq!(stub["milestone"], "M4 C4.2");
+    assert_eq!(stub["milestone"], tt_registry::owner_of("draw.feather.apply"));
 }

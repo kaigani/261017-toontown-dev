@@ -24,6 +24,8 @@ pub const ZOOM_MAX: f64 = 64.0;
 pub const ROTATION_STEP: f64 = 30.0;
 /// The view-window size before the host reports one (and in headless mode), in logical pixels.
 pub const VIRTUAL_VIEW_SIZE: (f64, f64) = (960.0, 540.0);
+/// The headless Drawing view's size (SI-069: 1920 x 1080 px, the drawing origin at its centre).
+pub const VIRTUAL_DRAWING_VIEW_SIZE: (f64, f64) = (1920.0, 1080.0);
 
 /// A view window's type (01 §4, §5.3).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
@@ -133,7 +135,11 @@ impl ViewWindow {
             ty,
             previous: None,
             transforms: BTreeMap::new(),
-            size: Size { width: VIRTUAL_VIEW_SIZE.0, height: VIRTUAL_VIEW_SIZE.1 },
+            size: if panel == "drawingView" {
+                Size { width: VIRTUAL_DRAWING_VIEW_SIZE.0, height: VIRTUAL_DRAWING_VIEW_SIZE.1 }
+            } else {
+                Size { width: VIRTUAL_VIEW_SIZE.0, height: VIRTUAL_VIEW_SIZE.1 }
+            },
             pointer: None,
         }
     }
@@ -334,14 +340,14 @@ pub fn normalise_degrees(d: f64) -> f64 {
     if r > 180.0 { r - 360.0 } else { r }
 }
 
-/// View pixels per document unit at zoom 1 for a view type and a camera width in pixels: at 100 % one camera pixel is
-/// one view pixel on the table plane. The camera frame is 12 fields wide; drawing units are 1/100 field
-/// (ADR-0020 decision 4).
+/// View pixels per document unit at zoom 1 for a view type and a camera width in pixels. The Drawing view shows one
+/// drawing unit per view pixel at 100 % (SI-063, SI-069). The staging views show one camera pixel per view pixel on the
+/// table plane at 100 %: the camera frame is 12 fields wide (ADR-0020 decision 4).
 #[must_use]
 pub fn pixels_per_unit(ty: ViewType, camera_width: f64) -> f64 {
     let w = if camera_width.is_finite() && camera_width > 0.0 { camera_width } else { 1920.0 };
     match ty {
-        ViewType::Drawing => w / 1200.0,
+        ViewType::Drawing => 1.0,
         _ => w / 12.0,
     }
 }

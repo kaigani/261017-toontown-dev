@@ -89,7 +89,7 @@ impl GapMode {
         }
     }
 
-    fn of(v: Option<&Value>) -> Self {
+    pub(crate) fn of(v: Option<&Value>) -> Self {
         match v.and_then(Value::as_str) {
             Some("small") => GapMode::Small,
             Some("medium") => GapMode::Medium,
@@ -109,21 +109,52 @@ fn gap_tolerance(cx: &Cx, choice: GapChoice) -> Option<f64> {
     }
 }
 
-fn check_space(space: Space) -> Result<(), CommandError> {
+/// How a call's points reach drawing space and how its view-pixel tolerances scale (SI-065; M4 C4.2): `drawing`
+/// points are used as given; `view` points go through the Drawing view's mapping (design note 6). A named `view`
+/// (or view-space points) sets the zoom tolerances are divided by (02 §13.3 "the view's zoom for tolerances").
+pub(crate) struct Frame {
+    view: Option<crate::shell::ViewWindow>,
+    /// View pixels per drawing unit (1 without a view).
+    scale: f64,
+}
+
+fn frame(cx: &Cx, space: Space, view: Option<&str>) -> Result<Frame, CommandError> {
     match space {
-        Space::Drawing => Ok(()),
+        Space::Drawing => match view {
+            Some(v) => {
+                Ok(Frame { view: None, scale: super::view::pixels_per_du(super::view::drawing_view(cx, Some(v))?) })
+            }
+            None => Ok(Frame { view: None, scale: 1.0 }),
+        },
         Space::Scene => Err(err(
             codes::ARG_INVALID,
             "scene-space point targets need the scene transforms (M3 C3.2)",
             json!({ "pointer": "/space", "space": "scene" }),
         )
-        .hint("give points in drawing space (space: \"drawing\")")),
-        Space::View => Err(err(
-            codes::ARG_INVALID,
-            "view-space point targets need the desktop views (M4 C4.2)",
-            json!({ "pointer": "/space", "space": "view" }),
-        )
-        .hint("give points in drawing space (space: \"drawing\")")),
+        .hint("give points in drawing or view space")),
+        Space::View => {
+            let w = super::view::drawing_view(cx, view)?.clone();
+            Ok(Frame { scale: super::view::pixels_per_du(&w), view: Some(w) })
+        }
+    }
+}
+
+impl Frame {
+    /// A point of the call in drawing space.
+    fn point(&self, p: Point, pointer: &str) -> Result<P, CommandError> {
+        let q = point(p, pointer)?;
+        Ok(match &self.view {
+            Some(w) => {
+                let d = super::view::to_drawing(w, crate::shell::Point { x: q.x, y: q.y });
+                P::new(d.x, d.y)
+            }
+            None => q,
+        })
+    }
+
+    /// A tolerance in view pixels, in drawing units.
+    fn du(&self, px: f64) -> f64 {
+        px / self.scale
     }
 }
 
@@ -1045,7 +1076,7 @@ pub(crate) fn resolve_colour(cx: &Cx, given: Option<&str>) -> Result<(Option<Str
 struct Call<'a> {
     drawing_id: Option<&'a str>,
     element_id: Option<&'a str>,
-    space: Space,
+    frame: Frame,
     targets: Targets<'a>,
     mode: Mode,
     colour: (Option<String>, SwatchKind),
@@ -1053,8 +1084,7 @@ struct Call<'a> {
 }
 
 fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError> {
-    let Call { drawing_id, element_id, space, targets, mode, colour, gap_choice } = call;
-    check_space(space)?;
+    let Call { drawing_id, element_id, frame, targets, mode, colour, gap_choice } = call;
     let mut none = Vec::new();
     let t = target(cx, drawing_id, element_id, None, false, &mut none)?;
     let before = cx.document()?.clone();
@@ -1070,26 +1100,29 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
     }
     let pts: Vec<P> = targets
         .points
-        .map(|v| v.iter().enumerate().map(|(i, p)| point(*p, &format!("/points/{i}"))).collect::<Result<Vec<_>, _>>())
+        .map(|v| {
+            v.iter().enumerate().map(|(i, p)| frame.point(*p, &format!("/points/{i}"))).collect::<Result<Vec<_>, _>>()
+        })
         .transpose()?
         .unwrap_or_default();
     resolve_points(&d, &zones, &pts, targets.zones_only, &mut work, &mut loc)?;
     if let Some(path) = targets.path {
         let path: Vec<P> =
-            path.iter().enumerate().map(|(i, p)| point(*p, &format!("/path/{i}"))).collect::<Result<_, _>>()?;
+            path.iter().enumerate().map(|(i, p)| frame.point(*p, &format!("/path/{i}"))).collect::<Result<_, _>>()?;
         resolve_path(&d, &zones, &path, &mut work, &mut loc)?;
     }
     if let Some(lasso) = targets.lasso {
         let poly: Vec<P> =
-            lasso.iter().enumerate().map(|(i, p)| point(*p, &format!("/lasso/{i}"))).collect::<Result<_, _>>()?;
+            lasso.iter().enumerate().map(|(i, p)| frame.point(*p, &format!("/lasso/{i}"))).collect::<Result<_, _>>()?;
         resolve_region(&zones, &poly, "lasso", &mut loc);
     }
     if let Some(r) = targets.rect {
+        let corner = |x: f64, y: f64| frame.point(Point { x, y }, "/rect");
         let poly = [
-            P::new(r.x, r.y),
-            P::new(r.x + r.width, r.y),
-            P::new(r.x + r.width, r.y + r.height),
-            P::new(r.x, r.y + r.height),
+            corner(r.x, r.y)?,
+            corner(r.x + r.width, r.y)?,
+            corner(r.x + r.width, r.y + r.height)?,
+            corner(r.x, r.y + r.height)?,
         ];
         resolve_region(&zones, &poly, "rect", &mut loc);
     }
@@ -1105,7 +1138,7 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
     let open = std::mem::take(&mut loc.open);
     let (mut d, mut zones) = (d, zones);
     if !open.is_empty() {
-        match gap_tolerance(cx, gap_choice) {
+        match gap_tolerance(cx, gap_choice).map(|t| frame.du(t)) {
             Some(tol) => {
                 let mut closing =
                     Located { targets: Vec::new(), skipped: Vec::new(), open: Vec::new(), closed: Vec::new() };
@@ -1239,8 +1272,9 @@ struct Targets<'a> {
 )]
 pub(crate) fn colour_paint_apply(cx: &mut Cx, p: PaintParams) -> Result<PaintResult, CommandError> {
     let colour = resolve_colour(cx, p.colour_id.as_deref())?;
+    let drag = frame(cx, p.space, p.view.as_deref())?;
     let mapping = match p.mapping {
-        Some(m) => Some((point(m.from, "/mapping/from")?, point(m.to, "/mapping/to")?)),
+        Some(m) => Some((drag.point(m.from, "/mapping/from")?, drag.point(m.to, "/mapping/to")?)),
         None => None,
     };
     let targets = Targets {
@@ -1255,14 +1289,15 @@ pub(crate) fn colour_paint_apply(cx: &mut Cx, p: PaintParams) -> Result<PaintRes
         respect_protected: p.respect_protected,
         expect_rev: p.expect_rev,
     };
-    let _ = (&p.scene_id, p.frame, &p.view);
+    let _ = (&p.scene_id, p.frame);
     cx.set_label("Paint");
+    let frame = frame(cx, p.space, p.view.as_deref())?;
     paint_common(
         cx,
         Call {
             drawing_id: p.drawing_id.as_deref(),
             element_id: p.element_id.as_deref(),
-            space: p.space,
+            frame,
             targets,
             mode: Mode::Paint { only_unpainted: p.only_unpainted, only_painted: p.only_painted },
             colour,
@@ -1356,7 +1391,7 @@ pub(crate) fn colour_paint_unpainted_apply(
     p: PaintUnpaintedParams,
 ) -> Result<PaintUnpaintedResult, CommandError> {
     let colour = resolve_colour(cx, p.colour_id.as_deref())?;
-    let _ = (&p.scene_id, p.frame, &p.view);
+    let _ = (&p.scene_id, p.frame);
     let targets = Targets {
         object_ids: p.object_ids.as_ref(),
         points: p.points.as_ref(),
@@ -1370,12 +1405,13 @@ pub(crate) fn colour_paint_unpainted_apply(
         expect_rev: p.expect_rev,
     };
     cx.set_label("Paint Unpainted");
+    let frame = frame(cx, p.space, p.view.as_deref())?;
     let r = paint_common(
         cx,
         Call {
             drawing_id: p.drawing_id.as_deref(),
             element_id: None,
-            space: p.space,
+            frame,
             targets,
             mode: Mode::Paint { only_unpainted: true, only_painted: false },
             colour,
@@ -1493,7 +1529,7 @@ pub(crate) struct UnpaintResult {
     gui = "Drawing and Camera views: Unpaint tool (M4 C4.2)",
 )]
 pub(crate) fn colour_paint_remove(cx: &mut Cx, p: UnpaintParams) -> Result<UnpaintResult, CommandError> {
-    let _ = (&p.scene_id, p.frame, &p.view);
+    let _ = (&p.scene_id, p.frame);
     let targets = Targets {
         object_ids: p.object_ids.as_ref(),
         points: p.points.as_ref(),
@@ -1507,12 +1543,13 @@ pub(crate) fn colour_paint_remove(cx: &mut Cx, p: UnpaintParams) -> Result<Unpai
         expect_rev: p.expect_rev,
     };
     cx.set_label("Unpaint");
+    let frame = frame(cx, p.space, p.view.as_deref())?;
     let r = paint_common(
         cx,
         Call {
             drawing_id: p.drawing_id.as_deref(),
             element_id: None,
-            space: p.space,
+            frame,
             targets,
             mode: Mode::Remove,
             colour: (None, SwatchKind::Solid),
@@ -1622,9 +1659,9 @@ pub(crate) struct PickResult {
     gui = "Drawing and Camera views: Dropper tool (M4 C4.2)",
 )]
 pub(crate) fn colour_pick(cx: &mut Cx, p: PickParams) -> Result<PickResult, CommandError> {
-    check_space(p.space)?;
-    let _ = (&p.scene_id, p.frame, &p.view);
-    let at = point(p.point, "/point")?;
+    let f = frame(cx, p.space, p.view.as_deref())?;
+    let _ = (&p.scene_id, p.frame);
+    let at = f.point(p.point, "/point")?;
     let mut none = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), None, false, &mut none)?;
     let doc = cx.document()?.clone();
@@ -1826,16 +1863,16 @@ pub(crate) struct GapCloseResult {
     gui = "Drawing and Camera views: Close Gap tool (M4 C4.2)",
 )]
 pub(crate) fn colour_gap_close(cx: &mut Cx, p: GapCloseParams) -> Result<GapCloseResult, CommandError> {
-    check_space(p.space)?;
-    let _ = (&p.scene_id, p.frame, &p.view);
-    let (from, to) = (point(p.from, "/from")?, point(p.to, "/to")?);
+    let f = frame(cx, p.space, p.view.as_deref())?;
+    let _ = (&p.scene_id, p.frame);
+    let (from, to) = (f.point(p.from, "/from")?, f.point(p.to, "/to")?);
     let mut none = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
     let before = cx.document()?.clone();
     let d = t.drawing(&before)?.into_owned();
     check_editable(&d, None)?;
     // A tolerance proportional to the drag, at least the large gap tolerance (03 §8.6).
-    let tol = (from.dist(to) * 0.5).max(gap::TOLERANCE_PX[2]);
+    let tol = (from.dist(to) * 0.5).max(f.du(gap::TOLERANCE_PX[2]));
     let mut work = Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "closing a gap");
     let mut found = None;
     for l in crate::planar::layers(&d).into_iter().rev() {
