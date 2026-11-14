@@ -722,3 +722,187 @@ mod part_b_equivalence {
         }
     }
 }
+
+mod part_c_equivalence {
+    use super::*;
+    use tt_executor::ExecutorHandle;
+    fn events(ps: &[(f64, f64)], mods: &[&str]) -> Value {
+        json!(ps.iter().enumerate().map(|(i,(x,y))|json!({"type":if i==0 {"down"} else if i+1==ps.len(){"up"}else{"move"},"x":x,"y":y,"modifiers":mods})).collect::<Vec<_>>())
+    }
+    fn canonical(h: &ExecutorHandle) -> Vec<String> {
+        let d = h.snapshot().unwrap().unwrap();
+        d.entry_keys()
+            .iter()
+            .map(|k| tt_model::canonical::to_canonical_string(&d.entry_raw_json(k).unwrap()).unwrap())
+            .collect()
+    }
+    fn hist(h: &ExecutorHandle) -> Vec<Value> {
+        ok(h, "edit.history.get", json!({}))["entries"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|e| json!({"label":e["label"],"rev":e["rev"]}))
+            .collect()
+    }
+    fn colour(h: &ExecutorHandle) -> Value {
+        json!(
+            h.snapshot()
+                .unwrap()
+                .unwrap()
+                .palettes()
+                .find_map(|p| p.swatches().first().map(|s| s.colour_id().as_str().to_owned()))
+                .unwrap()
+        )
+    }
+    fn style(h: &ExecutorHandle, mut p: Value) -> Value {
+        let pens = ok(h, "tool.pen.list", json!({}));
+        let pen = &pens["pens"].as_array().unwrap().iter().find(|p| p["type"] == "brush").unwrap();
+        p["penId"] = pen["penId"].clone();
+        p["thickness"] = pen["maxSize"].clone();
+        p["colourId"] = colour(h);
+        p["layer"] = json!("auto");
+        p["symmetry"] = json!(true);
+        p
+    }
+    fn check(a: &ExecutorHandle, b: &ExecutorHandle, tool: &str, ev: Value, id: &str, p: Value) {
+        let ha = hist(a);
+        let hb = hist(b);
+        assert_eq!(ha, hb);
+        let e = a.pointer(tt_executor::Origin::User, json!({"view":"drawing","tool":tool,"events":ev}));
+        let direct = run(b, id, p.clone());
+        assert_eq!(e.status, direct.status, "{tool}: pointer {e:?}, direct {direct:?}");
+        if e.is_ok() {
+            let c = e.result.as_ref().unwrap()["commands"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .find(|c| c["commandId"] == id)
+                .unwrap();
+            assert_eq!(c["commandId"], id);
+            assert_eq!(c["params"], p, "{tool}");
+        } else {
+            assert_eq!(e.error.as_ref().unwrap().code, direct.error.as_ref().unwrap().code);
+        }
+        assert_eq!(canonical(a), canonical(b), "bytes and ids {tool}");
+        assert_eq!(hist(a), hist(b), "history {tool}");
+        assert_eq!(ok(a, "draw.selection.get", json!({})), ok(b, "draw.selection.get", json!({})), "selection {tool}");
+    }
+
+    fn view(h: &ExecutorHandle, z: f64) {
+        ok(h, "view.zoom.set", json!({"viewId":"drawingView","zoom":z}));
+        ok(h, "view.rotation.set", json!({"viewId":"drawingView","degrees":37.5}));
+        ok(h, "view.pan.set", json!({"viewId":"drawingView","centre":{"x":10000,"y":-10000}}));
+    }
+    fn mapped(h: &ExecutorHandle, x: f64, y: f64) -> Value {
+        ok(
+            h,
+            "view.coordinates.convert",
+            json!({"viewId":"drawingView","from":"view","to":"drawing","point":{"x":x,"y":y}}),
+        )["point"]
+            .clone()
+    }
+
+    fn rect(h: &ExecutorHandle, f: Value, t: Value) {
+        ok(h, "draw.rectangle.add", json!({"from":f,"to":t}));
+    }
+    #[test]
+    fn c1_move() {
+        let (a, b, m) = (ready(), ready(), ready());
+        for h in [&a, &b, &m] {
+            view(h, 4.0);
+        }
+        let p = mapped(&m, 1000.0, 500.0);
+        for h in [&a, &b] {
+            rect(
+                h,
+                json!({"x":p["x"].as_f64().unwrap()-10.0,"y":p["y"].as_f64().unwrap()-10.0}),
+                json!({"x":p["x"].as_f64().unwrap()+10.0,"y":p["y"].as_f64().unwrap()+10.0}),
+            );
+        }
+        check(
+            &a,
+            &b,
+            "select",
+            events(&[(1000.0, 500.0), (1000.0, 500.0)], &[]),
+            "draw.selection.set",
+            json!({"by":"point","point":p,"mode":"replace"}),
+        );
+        let q = mapped(&m, 1080.0, 460.0);
+        let n = hist(&a).len();
+        check(
+            &a,
+            &b,
+            "select",
+            events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]),
+            "draw.transform.apply",
+            json!({"translate":{"x":q["x"].as_f64().unwrap()-p["x"].as_f64().unwrap(),"y":q["y"].as_f64().unwrap()-p["y"].as_f64().unwrap()},"copy":false}),
+        );
+        assert_eq!(hist(&a).len(), n + 1);
+    }
+    #[test]
+    fn c1_paint() {
+        let (a, b, m) = (ready(), ready(), ready());
+        for h in [&a, &b, &m] {
+            view(h, 4.0);
+        }
+        let p = mapped(&m, 1000.0, 500.0);
+        for h in [&a, &b] {
+            rect(
+                h,
+                json!({"x":p["x"].as_f64().unwrap()-10.0,"y":p["y"].as_f64().unwrap()-10.0}),
+                json!({"x":p["x"].as_f64().unwrap()+10.0,"y":p["y"].as_f64().unwrap()+10.0}),
+            );
+        }
+        check(
+            &a,
+            &b,
+            "paint",
+            events(&[(1000.0, 500.0), (1000.0, 500.0)], &[]),
+            "colour.paint.apply",
+            json!({"points":[p],"colourId":colour(&b),"space":"drawing","view":"drawingView","gapClosing":"off"}),
+        );
+    }
+    #[test]
+    fn c1_press_mapping() {
+        let (a, b, m) = (ready(), ready(), ready());
+        for h in [&a, &b, &m] {
+            view(h, 4.0);
+        }
+        for z in [4.0, 0.25] {
+            for h in [&a, &b, &m] {
+                ok(h, "view.zoom.set", json!({"viewId":"drawingView","zoom":z}));
+            }
+            let mut ps = vec![mapped(&m, 1000.0, 500.0), mapped(&m, 1080.0, 460.0)];
+            for p in &mut ps {
+                p["pressure"] = json!(1.0);
+            }
+            let mut p = style(&b, json!({"kind":"brush","points":ps,"fit":true}));
+            p.as_object_mut().unwrap().remove("thickness");
+            check(&a, &b, "brush", events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]), "draw.stroke.add", p);
+        }
+    }
+    #[test]
+    fn c1_click_view_tolerance() {
+        for z in [4.0, 0.25] {
+            let (a, b, m) = (ready(), ready(), ready());
+            for h in [&a, &b, &m] {
+                view(h, z);
+            }
+            let f = mapped(&m, 1000.0, 500.0);
+            let t = mapped(&m, 1100.0, 500.0);
+            for h in [&a, &b] {
+                ok(h, "draw.line.add", json!({"from":f,"to":t,"thickness":0.1}));
+            }
+            // Fixed two view pixels outside the line; du distance is 2 / zoom.
+            let p = mapped(&m, 1050.0, 502.0);
+            check(
+                &a,
+                &b,
+                "select",
+                events(&[(1050.0, 502.0), (1050.0, 502.0)], &[]),
+                "draw.selection.set",
+                json!({"by":"point","point":p,"mode":"replace","view":"drawingView"}),
+            );
+        }
+    }
+}
