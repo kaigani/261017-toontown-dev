@@ -623,6 +623,7 @@ mod part_c_pointer {
         assert_eq!(ok(&h, "tool.active.get", json!({}))["toolId"], "pencil");
     }
     #[test]
+    #[ignore = "orchestrator ruling D-13: a gesture costs what its command costs; large-stroke cost is owned by C4.2b budgets and M11 C11.1"]
     fn full_cap_query_latency_receipt() {
         let h = ready();
         let r = request(10000);
