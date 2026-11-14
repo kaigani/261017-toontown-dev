@@ -62,3 +62,22 @@ for geometry and pressure); it is cited here and not used: the tests assert exac
 - **G5** Samples are applied as given: the command's points are the mapped samples, in order, none added or dropped.
 - **G6** A cancelled gesture leaves the document, the history and the selection byte-identical.
 - **G7** Tool selection and options are not undoable; pens are, as document content.
+
+## 6. Amendments after review round 1
+
+- **One gesture, its commands.** Every tool's gesture produces one command, except two that 02 §13.3 itself gives as
+  several: the Dropper (`colour.pick`, then `colour.current.set` with the picked colour; ruling D-11) and a Zoom-tool
+  marquee (`view.zoom.set` to fit, then `view.pan.set` to centre the rectangle; 02 §7.5 line 658). G1 reads "exactly the
+  gesture's equivalent commands, or none when cancelled or refused before invoking".
+- **Zoom.** A Zoom-tool click sends table `steps` about the click (the review's permanent test); the wheel steps along
+  the 02 §4.3 ladder (SI-122, D-10); a marquee fits its rectangle exactly: zoom = current zoom × min(view width /
+  rectangle width, view height / rectangle height), clamped to 6.25 %-6400 %. The fitted value is not snapped to the
+  ladder: the ladder applies to steps, not to fits.
+- **Paint.** A drag with a gradient or texture colour sends `points` and `mapping {from, to}`; a click fits the default
+  mapping; a solid colour's drag sends `path` (02 §7.3.1 lines 557-561).
+- **Polyline.** A constrained handle drag turns the handle in 15° steps, its length kept; a constrained click on an
+  anchor of the path being drawn removes it (02 §7.2.5).
+- **Stroke** (the invisible-line tool) is built: the Brush gesture with `kind: "invisible"`.
+- **`pointer` answers** every command's complete envelope (C42A-R1-22) and needs the `input` scope (C42A-R1-06).
+- **Busy** (ruling D-12): while the user is mid-gesture, agent commands that write document or session state wait, then
+  answer `ui.busy`.

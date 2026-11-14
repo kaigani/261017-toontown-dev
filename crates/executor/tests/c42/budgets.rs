@@ -151,3 +151,48 @@ fn a_capture_never_holds_the_document_thread_beyond_the_hold_budget() {
         "a user query during draw.drawing.render 1920 x 1080 waited {render:?}; during render.frame.run 1920 x 1080 {frame:?}"
     );
 }
+
+/// Ruling D-13 (b): where the time of a 10,000-sample Brush gesture goes. A measurement receipt, not a bound
+/// (`cargo test -p tt-executor --test c42 -- --ignored --nocapture long_stroke_split`).
+#[test]
+#[ignore = "measurement receipt for ruling D-13; prints the split, asserts nothing about time"]
+fn long_stroke_split() {
+    let n = 10_000u32;
+    let pts: Vec<(f64, f64)> =
+        (0..n).map(|i| (400.0 + f64::from(i % 1000) * 1.1, 200.0 + f64::from(i / 1000) * 60.0)).collect();
+    let best = |f: &dyn Fn() -> Duration| (0..3).map(|_| f()).min().unwrap();
+    let pointer_total = best(&|| {
+        let h = ready();
+        let t = Instant::now();
+        assert!(pointer(&h, "brush", drag(&pts)).is_ok());
+        t.elapsed()
+    });
+    let conversion = best(&|| {
+        let h = ready();
+        let t = Instant::now();
+        assert!(pointer(&h, "grabber", drag(&pts)).is_ok());
+        t.elapsed()
+    });
+    let params = {
+        let h = ready();
+        pointer(&h, "brush", drag(&pts)).result.unwrap()["commands"][1]["params"].clone()
+    };
+    let direct = |p: serde_json::Value, dry: bool| {
+        best(&|| {
+            let h = ready();
+            let mut inv = tt_executor::Invocation::user("draw.stroke.add", p.clone());
+            inv.options.dry_run = dry;
+            let t = Instant::now();
+            assert!(h.invoke(inv).is_ok());
+            t.elapsed()
+        })
+    };
+    let direct_fit = direct(params.clone(), false);
+    let mut unfit = params.clone();
+    unfit["fit"] = json!(false);
+    let direct_unfit = direct(unfit, false);
+    let dry_fit = direct(params, true);
+    eprintln!(
+        "10,000 samples: pointer Brush {pointer_total:?}; direct draw.stroke.add {direct_fit:?} (fit) / {direct_unfit:?} (no fit); dry run (handler, no commit) {dry_fit:?}; pointer Grabber (grouping and conversion, trivial command) {conversion:?}"
+    );
+}

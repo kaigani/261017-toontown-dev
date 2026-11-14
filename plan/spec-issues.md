@@ -1498,30 +1498,52 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   "pointerEvents"`. Coordinates must be finite and within ±10,000,000 view pixels (`arg.invalid`).
 - **Question:** confirm the cap or define it in 11 §6.5.
 
-## SI-131 — Drawing-tool conventions the spec does not state (found in M4 C4.2a; interim)
+## SI-131 — Drawing-tool details the spec leaves open (found in M4 C4.2a; interim; narrowed after review round 1)
 
-- **Sections:** 02 §5.2, §6.1, §7.1, §7.3.5, §7.6.1, §10.4, §13.2, §13.3; 01 §8.2; 11 §7.6.
-- **Problem:** building the tools, the gesture mapping and the aids needs values the spec leaves open.
+- **Sections:** 02 §5.2, §6.1, §7.1.1 lines 428-432, §7.2.5, §7.3.4, §7.6.1, §7.7, §10.4, §12.3 lines 1111-1118,
+  §13.2, §13.3; 01 §8.2; 11 §7.6; ruling D-10 (SI-122).
+- **Problem:** building the tools, the gesture mapping and the aids needs a few values the spec leaves open. Where the
+  spec answers, it is followed and cited; only the remainder is listed.
 - **Interim decisions (the conservative choice in each case, ruling D-10):**
   1. A press and release whose samples stay within 3 view pixels of the press is a click (Select, Paint, Paint
-     Unpainted, Polyline anchors); a longer drag is a drag.
+     Unpainted, Zoom, Polyline anchors); a longer drag is a drag. (The spec names clicks and drags, not the threshold.)
   2. The Select tool's drawing-pivot handle is a 6-view-pixel radius around the pivot; a drag that starts on it moves
      the pivot (`draw.pivot.set`), checked before a drag on the selection (`draw.transform.apply`) and the marquee.
-  3. Modifiers of the gesture are the ones held at the press: Shift is the constrain modifier, Alt the alternate one,
-     Ctrl or Meta the temporary-select modifier of 02 §5.2; a selection click with Shift adds (`mode: "add"`).
+  3. The modifier roles are 02 §7.1.1's and §5.2's (constrain, alternate, temporary select); open are only (a) their
+     keys, taken as Shift, Alt and Ctrl or Meta, held at the press, and (b) whether a constrain click adds or toggles
+     (§7.1.1 line 431 allows either): it adds (`mode: "add"`).
   4. When Draw on Top Layer and Draw Behind are both on, the gesture's command gets `layer: "top"`.
-  5. The text options' margins, indent and line spacing accept ±10,000 du (02 §13.2 gives no range).
-  6. The default current pens are 02 §7.7's (`Pen 3`, `Eraser 2`), else the family's first pen; the current pens are
-     project scope (`session.json`), the other drawing settings user scope (the `drawing` settings file).
+  5. *Withdrawn* (C42A-R1-03): the Text panel's ranges are 02 §7.6.1's (margins 0-1000, indent and line spacing
+     -99-1000) and are enforced.
+  6. The scopes and default pens are 02 §12.3 (lines 1111-1118) and §7.7; open is only the fallback when a project
+     lacks `Pen 3` or `Eraser 2`: the family's first pen.
   7. Tool keys: one single key per tool group in the drawing context (`S`, `B`, `F`, `E`, `Z`, `T`; 01 §8.2 leaves the
      letters to design work); a key on the active group advances within it (02 §5.1).
-  8. The Dropper's gesture is `colour.pick` alone: `colour.current.set` arrives with M7 C7.1 (03 §2.4).
-  9. A static light-table entry id is `lt<n>`, unique within its scene; a scene holds at most 256 entries
-     (`limit.exceeded`, `details.limit: "staticLightTableEntries"`). Entries live in the session's per-scene light
-     table (SI-085); writing them into the project's session state stays with M5 C5.2. An image element's cell is a
-     source like a drawing (`sourceKind: "image"`).
-  10. A `pointer` call whose last gesture is still pressed at the end of its events discards it (D-7c); a Polyline's
-      clicks within one call are one gesture and are committed at the call's end if no double click or closing click
-      ended them.
-  11. The wheel follows the pointer-event convention: a negative `wheelDelta` zooms in one table step about the pointer.
+  8. *Withdrawn* (C42A-R1-23, ruling D-11): the Dropper sends `colour.pick` then `colour.current.set` (02 §13.3 line
+     1217); `colour.current.set` is implemented.
+  9. Static light-table entries are scene scope in 02 §12.3; open are only (a) the entry id `lt<n>`, unique within its
+     scene, and the cap of 256 entries per scene (`limit.exceeded`, `details.limit: "staticLightTableEntries"`), and
+     (b) where they are kept until the Exposure Sheet: the session's per-scene light table (SI-085; the project's
+     session state with M5 C5.2).
+  10. Ending a Polyline is 02 §7.2.5's (double click, a click on the first point); open is only `pointer`'s call
+      boundary: a call's last gesture still pressed at its end is discarded (D-7c), and a Polyline's clicks within one
+      call are one gesture, committed at the call's end if nothing ended them earlier.
+  11. The wheel and the Zoom tool follow D-10 (SI-122): the wheel steps along the 02 §4.3 ladder; open is only the
+      wheel's sign, taken from the pointer-event convention (a negative `wheelDelta` zooms in). The Zoom-tool click
+      sends table `steps` (the review's permanent test `part_d_equivalence::zoom_click`); a Zoom marquee fits its
+      rectangle exactly (02 §7.5 line 658). See SI-122 for the open ladder question.
 - **Question:** confirm each, or state the values in 02 and 11.
+
+## SI-132 — host-only view announcements and the headless screenshot's targets (found in M4 C4.2a; interim)
+
+- **Sections:** 01 §12.2 (`view.*`), spec A (no view event; 796 entries), 11 tool `screenshot` (line 335), 11 §15.2
+  `inspect.screenshot` (`target?: string = "window"`), ADR-0021 (host notifications as `shell.*` events).
+- **Problem:** (a) the canvas must follow every view change, but spec A has no view event and the registry cannot grow;
+  (b) headless there is no rendered chrome, so a screenshot of a panel, a dialog or the window chrome has nothing to
+  capture.
+- **Interim decisions:** (a) every view change announces the host-only event `shell.view` (`viewId`, type, size,
+  transform and both matrices), not delivered to agents, who read `view.list`, `view.transform.get` and
+  `draw.viewMapping.get`; (b) headless, `inspect.screenshot` captures view windows only (`window` = the active Drawing
+  view, else `drawingView`; `drawing`; a view id); another panel or `dialogs` refuses `view.notFound`; the Camera view
+  type answers `command.notImplemented` (M4 C4.3). Attached captures (C4.2b, D-6) take every target.
+- **Question:** add a view event to spec A, or confirm `shell.view`; state the headless targets in 11 §15.2.
