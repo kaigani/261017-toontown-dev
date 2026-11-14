@@ -1569,3 +1569,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   internally, convert its four corners.
 - **Question:** convert a view-space rectangle to a polygon (where the command takes one), or refuse it?
 
+
+## SI-134 — the hit tolerance of a point selection (found in M4 C4.2a round 4; interim, ruling D-10)
+
+- **Sections:** 02 §7.1 (a click selects "the front-most object under the pointer"), 02 §13.1 item 5 (hit tolerance is a
+  view-dependent tolerance, through the given view's zoom or 100 %), 02 §13.2 line 1313 (`draw.hitTest.get`:
+  `tolerance: number = 3 (view px)`; the only numeric hit tolerance in the spec).
+- **Problem:** the spec does not say whether `draw.selection.set {by: point}` has a hit tolerance, nor which.
+- **Interim decision:** a point selection takes the front-most object within 3 view pixels of the point (the
+  `draw.hitTest.get` default), through the given view's zoom or 100 % without a view; the Select gesture states the view
+  when the zoom is not 100 % (ruling D-16).
+- **Alternative:** an exact hit (no tolerance), as before C4.2a round 2.
+- **Question:** does a point selection have a hit tolerance, and which?

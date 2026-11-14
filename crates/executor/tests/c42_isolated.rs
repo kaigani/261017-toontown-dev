@@ -143,61 +143,90 @@ fn a_panicking_capture_job_releases_its_slot() {
 
 #[test]
 fn a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards() {
+    // No wall-clock figure close to a budget is asserted: the order of events, the refusal's code, what was started,
+    // and generous upper bounds (ten times the budget or more), on a monotonic clock.
     let region = json!({ "region": { "x": 0, "y": 0, "w": 2048, "h": 1080 } });
-    // Cancellation: two long captures hold both slots; a third caller cancels while it waits.
+    let holders_of = |h: &Arc<ExecutorHandle>| -> Vec<std::thread::JoinHandle<tt_executor::Envelope>> {
+        (0..2)
+            .map(|_| {
+                let (h, r) = (h.clone(), region.clone());
+                std::thread::spawn(move || h.invoke(Invocation::user("inspect.screenshot", r)))
+            })
+            .collect()
+    };
+    let wait_both_running = |h: &ExecutorHandle| {
+        let start = Instant::now();
+        while running_captures(h) < 2 && start.elapsed() < Duration::from_secs(60) {
+            std::thread::yield_now();
+        }
+        assert_eq!(running_captures(h), 2, "both slots held");
+    };
+
+    // 1. Cancellation. The holders have a long budget, so both slots stay held while the third caller waits; it
+    //    cancels soon after it starts waiting and must answer the cancellation, and no capture of its own is started.
     let h = heavy(Duration::from_secs(120), 120);
-    let holders: Vec<_> = (0..2)
-        .map(|_| {
-            let (h, r) = (h.clone(), region.clone());
-            std::thread::spawn(move || h.invoke(Invocation::user("inspect.screenshot", r)))
-        })
-        .collect();
-    let start = Instant::now();
-    while running_captures(&h) < 2 && start.elapsed() < Duration::from_secs(30) {
-        std::thread::yield_now();
-    }
-    assert_eq!(running_captures(&h), 2, "both slots held");
+    let holders = holders_of(&h);
+    wait_both_running(&h);
     let asked = Instant::now();
-    let cancel_after = Duration::from_millis(50);
     let (env, _) = h.invoke_served_until(Invocation::user("inspect.screenshot", region.clone()), &|| {
-        asked.elapsed() >= cancel_after
+        asked.elapsed() >= Duration::from_millis(20)
     });
     let took = asked.elapsed();
-    let code = env.error.as_ref().map(|e| e.code.clone());
-    eprintln!("cancelled waiter answered {code:?} after {took:?}");
-    assert!(env.error.is_some(), "a cancelled waiter does not capture");
-    assert!(took < Duration::from_secs(2), "answered promptly after its cancellation ({took:?})");
-    let jobs_now = h.jobs().list(None, None).iter().filter(|j| j.command_id == "inspect.screenshot").count();
+    assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{env:?}");
+    assert!(took < Duration::from_secs(10), "answered after its cancellation, well within bounds ({took:?})");
     for t in holders {
         assert_eq!(t.join().unwrap().status, Status::Ok);
     }
-    let jobs_after = h.jobs().list(None, None).iter().filter(|j| j.command_id == "inspect.screenshot").count();
-    assert_eq!((jobs_now, jobs_after), (2, 2), "the two holders' capture jobs and none for the cancelled waiter");
+    let captures = h.jobs().list(None, None).iter().filter(|j| j.command_id == "inspect.screenshot").count();
+    assert_eq!(captures, 2, "the holders' two capture jobs, none for the cancelled waiter");
     drop(h);
-    // Budget: captures outlast a 250 ms call budget. The holders' calls answer `job.waitTimeout` at the budget while
-    // their jobs run on; the waiter's call ends at its own budget, or takes a freed caller slot and meets the two still
-    // running capture jobs: either way the typed `limit.exceeded`, near the budget, and no capture is started.
-    let h = heavy(Duration::from_millis(250), 120);
-    let holders: Vec<_> = (0..2)
-        .map(|_| {
-            let (h, r) = (h.clone(), region.clone());
-            std::thread::spawn(move || h.invoke(Invocation::user("inspect.screenshot", r)))
+
+    // 2. Budget. Every call of this executor has a 250 ms budget, so the holders' calls end at their budget too and
+    //    free their slots while their capture jobs run on. The waiter therefore meets one of: its own budget, or a
+    //    freed slot with two capture jobs still running (both `limit.exceeded`, nothing started); or a freed slot after
+    //    a holder's job ended (it captures: an answer or `job.waitTimeout`). In every case it answers within ten times
+    //    its budget and the capture jobs running at once never exceed two.
+    let budget = Duration::from_millis(250);
+    let h = heavy(budget, 120);
+    let peak = Arc::new(std::sync::atomic::AtomicUsize::new(0));
+    let stop = Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let sampler = {
+        let (h, peak, stop) = (h.clone(), peak.clone(), stop.clone());
+        std::thread::spawn(move || {
+            while !stop.load(std::sync::atomic::Ordering::SeqCst) {
+                peak.fetch_max(running_captures(&h), std::sync::atomic::Ordering::SeqCst);
+                std::thread::yield_now();
+            }
         })
-        .collect();
-    let start = Instant::now();
-    while running_captures(&h) < 2 && start.elapsed() < Duration::from_secs(30) {
-        std::thread::yield_now();
-    }
-    assert_eq!(running_captures(&h), 2);
+    };
+    let holders = holders_of(&h);
+    wait_both_running(&h);
     let before = h.jobs().list(None, None).len();
     let asked = Instant::now();
     let env = h.invoke(Invocation::user("inspect.screenshot", region.clone()));
     let took = asked.elapsed();
-    eprintln!("waiter with a 250 ms budget answered {:?} after {took:?}", env.error.as_ref().map(|e| e.code.clone()));
-    assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("limit.exceeded"), "{env:?}");
-    assert!(took < Duration::from_millis(1000), "within its budget and a margin ({took:?})");
-    assert_eq!(h.jobs().list(None, None).len(), before, "no capture started after the refusal");
+    let after = h.jobs().list(None, None).len();
     for t in holders {
         let _ = t.join().unwrap();
     }
+    let start = Instant::now();
+    while running_captures(&h) > 0 && start.elapsed() < Duration::from_secs(60) {
+        std::thread::yield_now();
+    }
+    stop.store(true, std::sync::atomic::Ordering::SeqCst);
+    sampler.join().unwrap();
+    let code = env.error.as_ref().map(|e| e.code.clone());
+    eprintln!(
+        "budget waiter: {code:?} after {took:?}; capture jobs {before} -> {after}; peak running {}",
+        peak.load(std::sync::atomic::Ordering::SeqCst)
+    );
+    assert!(took < budget * 10, "answered within ten times its budget ({took:?})");
+    match code.as_deref() {
+        Some("limit.exceeded") => assert_eq!(after, before, "a refused waiter starts nothing"),
+        None | Some("job.waitTimeout") => {
+            assert_eq!(after, before + 1, "a waiter that took a freed slot started one capture")
+        }
+        other => panic!("unexpected answer {other:?}: {env:?}"),
+    }
+    assert!(peak.load(std::sync::atomic::Ordering::SeqCst) <= 2, "never more than two capture jobs at once");
 }

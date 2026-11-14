@@ -90,6 +90,24 @@ pub fn varying(a: &Value, b: &Value) -> Vec<String> {
     out
 }
 
+/// The pointers of `v` at a timestamp or duration key (the TIME_KEYS): values a run's clock decides.
+pub fn time_pointers(v: &Value, at: &str, out: &mut Vec<String>) {
+    match v {
+        Value::Object(m) => {
+            for (k, x) in m {
+                let p = format!("{at}/{}", escape(k));
+                if TIME_KEYS.contains(&k.as_str()) && !x.is_object() && !x.is_array() {
+                    out.push(p);
+                } else {
+                    time_pointers(x, &p, out);
+                }
+            }
+        }
+        Value::Array(a) => a.iter().enumerate().for_each(|(i, x)| time_pointers(x, &format!("{at}/{i}"), out)),
+        _ => {}
+    }
+}
+
 /// Keys whose values are facts about the machine (operating system, locale), not the document.
 const MACHINE_KEYS: [&str; 2] = ["platform", "locale"];
 

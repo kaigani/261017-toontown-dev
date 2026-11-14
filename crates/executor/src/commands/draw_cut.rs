@@ -273,6 +273,9 @@ pub(crate) struct CutParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{insideIds, removedIds, rev}`.
@@ -353,7 +356,7 @@ pub(crate) fn draw_cut_apply(cx: &mut Cx, p: CutParams) -> Result<CutResult, Com
         return Err(err("arg.invalid", "a segment cut has no inside to delete", json!({ "pointer": "/then" })));
     }
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -455,6 +458,9 @@ pub(crate) struct EraseParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{removedIds, createdIds, rev}`.
@@ -561,7 +567,7 @@ pub(crate) fn draw_erase_apply(cx: &mut Cx, p: EraseParams) -> Result<EraseResul
         _ => return Err(err("arg.invalid", "give exactly one of `path` and `region`", json!({ "pointer": "/path" }))),
     };
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;

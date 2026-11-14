@@ -1355,6 +1355,9 @@ pub(crate) struct PaintUnpaintedParams {
     /// The drawing revision the caller read.
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `colour.paintUnpainted.apply` result (03 §16.3 plus the common edit members, SI-058).
@@ -1413,7 +1416,7 @@ pub(crate) fn colour_paint_unpainted_apply(
         cx,
         Call {
             drawing_id: p.drawing_id.as_deref(),
-            element_id: None,
+            element_id: p.element_id.as_deref(),
             frame_ref: frame,
             frame: p.frame,
             targets,
@@ -1428,7 +1431,7 @@ pub(crate) fn colour_paint_unpainted_apply(
         Err(e) if e.code == "colour.alreadyPainted" || (p.all && e.code == "colour.noTarget") => {
             let count = e.details.get("skipped").and_then(Value::as_array).map_or(0, Vec::len);
             let mut none = Vec::new();
-            let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
+            let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
             return Ok(PaintUnpaintedResult {
                 drawing_id: t.id.as_str().to_owned(),
                 painted: Vec::new(),
@@ -1490,6 +1493,9 @@ pub(crate) struct UnpaintParams {
     /// The drawing revision the caller read.
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// One unpainted object.
@@ -1552,7 +1558,7 @@ pub(crate) fn colour_paint_remove(cx: &mut Cx, p: UnpaintParams) -> Result<Unpai
         cx,
         Call {
             drawing_id: p.drawing_id.as_deref(),
-            element_id: None,
+            element_id: p.element_id.as_deref(),
             frame_ref: frame,
             frame: p.frame,
             targets,
@@ -1844,6 +1850,9 @@ pub(crate) struct GapCloseParams {
     /// View of `view` points.
     #[serde(default)]
     view: Option<String>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `colour.gap.close` result (03 §16.3 plus the common edit members, SI-058).
@@ -1881,7 +1890,7 @@ pub(crate) fn colour_gap_close(cx: &mut Cx, p: GapCloseParams) -> Result<GapClos
     let _ = (&p.scene_id, p.frame);
     let (from, to) = (f.point(p.from, "/from")?, f.point(p.to, "/to")?);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let before = cx.document()?.clone();
     let d = t.drawing(&before)?.into_owned();
     check_editable(&d, None)?;

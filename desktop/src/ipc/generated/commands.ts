@@ -26019,6 +26019,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         default: null,
       },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
     required: [
@@ -26887,6 +26895,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
         default: null,
       },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
   },
@@ -27168,6 +27184,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 18446744073709551615n,
         minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -34844,6 +34868,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
         default: null,
       },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
   },
@@ -36492,6 +36524,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
         default: null,
       },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
     required: [
@@ -36745,6 +36785,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 2147483647,
         minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -38354,6 +38402,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
         default: null,
       },
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified\nwith its drawing (`<drawingId>/<strokeId>`) names the drawing itself.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
     required: [
@@ -38620,6 +38684,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
         default: null,
       },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
     required: [
@@ -38812,6 +38884,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 2147483647,
         minimum: 0,
+        default: null,
+      },
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified\nwith its drawing (`<drawingId>/<strokeId>`) names the drawing itself.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -39022,6 +39110,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 2147483647,
         minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -39896,6 +39992,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
         default: null,
       },
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified\nwith its drawing (`<drawingId>/<strokeId>`) names the drawing itself.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
     required: [
@@ -40342,6 +40454,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 2147483647,
         minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -42429,6 +42549,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 2147483647,
         minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -90580,6 +90708,8 @@ export interface colour_gap_close_params {
   frame?: number | null;
   /** View of `view` points. */
   view?: string | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `colour.gap.close` result (03 §16.3 plus the common edit members, SI-058). */
@@ -90822,6 +90952,8 @@ export interface colour_paint_remove_params {
   gapClosing?: colour_paint_remove_GapChoice;
   /** The drawing revision the caller read. */
   expectRev?: number | bigint | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** One unpainted object. */
@@ -90900,6 +91032,8 @@ export interface colour_paintUnpainted_apply_params {
   gapClosing?: colour_paintUnpainted_apply_GapChoice;
   /** The drawing revision the caller read. */
   expectRev?: number | bigint | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** One painted object. */
@@ -93092,6 +93226,8 @@ export interface draw_cut_apply_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** A node a cut leaves whole. */
@@ -93509,6 +93645,8 @@ export interface draw_envelope_apply_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{ids, removedIds, rev}` and the changed IDs. */
@@ -93582,6 +93720,8 @@ export interface draw_erase_apply_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{removedIds, createdIds, rev}`. */
@@ -94050,6 +94190,10 @@ export interface draw_point_add_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified with its drawing (`<drawingId>/<strokeId>`) names the drawing itself. */
+  drawingId?: string | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{strokeId, anchor, rev}`. */
@@ -94133,6 +94277,8 @@ export interface draw_point_move_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{modifiedIds, removedIds, rev}`. */
@@ -94183,6 +94329,10 @@ export interface draw_point_set_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified with its drawing (`<drawingId>/<strokeId>`) names the drawing itself. */
+  drawingId?: string | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{strokeId, rev}`. */
@@ -94241,6 +94391,8 @@ export interface draw_pointSelection_set_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{selectedPoints}`. */
@@ -94496,6 +94648,10 @@ export interface draw_segment_move_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified with its drawing (`<drawingId>/<strokeId>`) names the drawing itself. */
+  drawingId?: string | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{strokeId, rev}`. */
@@ -94625,6 +94781,8 @@ export interface draw_selection_set_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{x, y, width, height}`. */
@@ -95196,6 +95354,8 @@ export interface draw_transform_apply_params {
   view?: string | null;
   /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
   frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{ids, removedIds, rev}` and the changed IDs. */

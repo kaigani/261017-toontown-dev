@@ -323,6 +323,9 @@ pub(crate) struct TransformParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
@@ -379,7 +382,7 @@ pub(crate) fn draw_transform_apply(cx: &mut Cx, p: TransformParams) -> Result<Tr
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, &p.view, p.frame);
     let mut changes = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut changes)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut changes)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, p.expect_rev)?;
@@ -638,6 +641,9 @@ pub(crate) struct EnvelopeParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, CommandError> {
@@ -687,7 +693,7 @@ pub(crate) fn draw_envelope_apply(cx: &mut Cx, p: EnvelopeParams) -> Result<Tran
         return Err(err("arg.invalid", "four corners are required", json!({ "pointer": "/corners" })));
     }
     let mut changes = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut changes)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut changes)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -782,6 +788,7 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
         space: super::colour::Space::default(),
         view: None,
         frame: None,
+        element_id: None,
     };
     let mut changes = Vec::new();
     let mut changed_ids = Vec::new();
@@ -856,13 +863,27 @@ fn set_path(v: &mut Value, p: &Path) {
 }
 
 /// Resolves a stroke for a contour edit: drawing, locked check, stroke JSON.
-fn contour_target(cx: &mut Cx, stroke: &str) -> Result<(Id, Drawing, Located, Value), CommandError> {
+/// How a stroke-addressed command names its drawing (02 §13.1 item 4).
+struct Addressed<'a> {
+    drawing_id: Option<&'a str>,
+    element_id: Option<&'a str>,
+    frame: Option<u32>,
+}
+
+fn contour_target(
+    cx: &mut Cx,
+    stroke: &str,
+    at: &Addressed<'_>,
+) -> Result<(Id, Drawing, Located, Value), CommandError> {
     let mut none = Vec::new();
+    // A stroke id qualified with its drawing names it; else `drawingId`, else `elementId` + `frame`, else the current
+    // drawing.
     let (drawing_ref, local) = match stroke.split_once('/') {
         Some((d, s)) if d.starts_with("dr_") => (Some(d.to_owned()), s.to_owned()),
-        _ => (None, stroke.to_owned()),
+        _ => (at.drawing_id.map(str::to_owned), stroke.to_owned()),
     };
-    let t = target(cx, drawing_ref.as_deref(), None, None, false, &mut none)?;
+    let (element, frame) = if drawing_ref.is_some() { (None, None) } else { (at.element_id, at.frame) };
+    let t = target(cx, drawing_ref.as_deref(), element, frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -903,6 +924,13 @@ pub(crate) struct PointAddParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified
+    /// with its drawing (`<drawingId>/<strokeId>`) names the drawing itself.
+    #[serde(default)]
+    drawing_id: Option<String>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{strokeId, anchor, rev}`.
@@ -958,7 +986,11 @@ fn nearest_location(path: &Path, q: P) -> Option<(usize, f64)> {
 pub(crate) fn draw_point_add(cx: &mut Cx, p: PointAddParams) -> Result<PointAddResult, CommandError> {
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, &p.view, p.frame);
-    let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
+    let (did, _d, l, mut v) = contour_target(
+        cx,
+        &p.stroke_id,
+        &Addressed { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame },
+    )?;
     let path = path_of(&v);
     let segs = path.segments();
     let (seg, t) = match (p.at, p.segment, p.t) {
@@ -1016,6 +1048,9 @@ pub(crate) struct PointMoveParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{modifiedIds, removedIds, rev}`.
@@ -1098,7 +1133,7 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, p.frame);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -1231,6 +1266,13 @@ pub(crate) struct PointSetParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified
+    /// with its drawing (`<drawingId>/<strokeId>`) names the drawing itself.
+    #[serde(default)]
+    drawing_id: Option<String>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{strokeId, rev}`.
@@ -1260,7 +1302,11 @@ pub(crate) struct PointSetResult {
 pub(crate) fn draw_point_set(cx: &mut Cx, p: PointSetParams) -> Result<PointSetResult, CommandError> {
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, &p.view, p.frame);
-    let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
+    let (did, _d, l, mut v) = contour_target(
+        cx,
+        &p.stroke_id,
+        &Addressed { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame },
+    )?;
     let mut path = path_of(&v);
     let k = p.anchor as usize;
     let Some(a) = path.anchors.get_mut(k) else {
@@ -1399,6 +1445,13 @@ pub(crate) struct SegmentMoveParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified
+    /// with its drawing (`<drawingId>/<strokeId>`) names the drawing itself.
+    #[serde(default)]
+    drawing_id: Option<String>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 fn half() -> f64 {
@@ -1422,7 +1475,11 @@ pub(crate) fn draw_segment_move(cx: &mut Cx, p: SegmentMoveParams) -> Result<Poi
     if p.t <= 0.0 || p.t >= 1.0 {
         return Err(err("arg.invalid", "`t` must be strictly between 0 and 1", json!({ "pointer": "/t" })));
     }
-    let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
+    let (did, _d, l, mut v) = contour_target(
+        cx,
+        &p.stroke_id,
+        &Addressed { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame },
+    )?;
     let mut path = path_of(&v);
     let segs = path.segments();
     let s = p.segment as usize;

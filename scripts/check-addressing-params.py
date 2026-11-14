@@ -6,7 +6,9 @@ and -02): spec 02 §13.1 item 5 ("every point-taking `draw.*` command also accep
 Mechanical: the generated parameter schemas (`desktop/src/ipc/generated/commands.ts`) are read; a command is
 point-taking when a top-level parameter is a point (an object with numeric `x` and `y`), an array of points, or an
 object holding points one level down (a rectangle `{x, y, width, height}`, a segment `{from, to}`, a mapping drag). Each
-such command must declare `space` (with `drawing`, `scene` and `view`), `view` and `frame`. The few commands whose
+such command must declare `space` (with `drawing`, `scene` and `view`), `view` and `frame`, and, as 02 §13.1 item 4
+requires of every command that edits or reads a drawing, `drawingId` and `elementId` (NOT_DRAWING_ADDRESSED lists the
+exception). The few commands whose
 coordinates are not point targets are listed in EXEMPT with the reason. Exit 0 when every command complies, 1 with the
 list otherwise. Standard library only; run from the repository root.
 """
@@ -16,6 +18,11 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+
+# Point-taking commands that do not address one drawing (02 §13.1 item 4 does not apply), and why.
+NOT_DRAWING_ADDRESSED = {
+    "draw.repositionAll.apply": "edits every drawing of an element (02 §13.2 line 1336: `elementId?: id = current`)",
+}
 
 # Coordinates that are not point targets of the drawing (and why).
 EXEMPT = {
@@ -96,6 +103,9 @@ def main():
             continue
         checked += 1
         lack = [k for k in ("space", "view", "frame") if k not in props]
+        # 02 §13.1 item 4: the target is `drawingId`, else `elementId` + `frame`, else the current drawing.
+        if cid not in NOT_DRAWING_ADDRESSED:
+            lack += [k for k in ("drawingId", "elementId") if k not in props]
         if "space" in props:
             text = json.dumps(props["space"])
             lack += [f"space:{v}" for v in ("drawing", "scene", "view") if f'"{v}"' not in text]

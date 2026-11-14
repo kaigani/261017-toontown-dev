@@ -41,6 +41,31 @@ fn world() -> (ExecutorHandle, World) {
     let stroke = format!("{d2}/{}", line["strokeIds"][0].as_str().unwrap());
     let t = ok(&h, "draw.text.add", json!({ "drawingId": d2, "position": { "x": 10, "y": 10 }, "text": "Hi" }));
     let text = t["textId"].as_str().unwrap().to_owned();
+    // For the colour commands (view zoom 2 about (40, 30): view (x, y) is drawing ((x - 960) / 2 + 40, (540 - y) / 2 +
+    // 30)): an unpainted square around drawing (160, 40) = view (1200, 520), a painted one around (210, 40) = view
+    // (1300, 520), and two line ends 5 du apart at (10, 50) and (15, 47.5) = view (900, 500) and (910, 505).
+    for (a, b) in [((150, 30), (170, 50)), ((200, 30), (220, 50))] {
+        ok(
+            &h,
+            "draw.rectangle.add",
+            json!({ "drawingId": d2, "from": { "x": a.0, "y": a.1 }, "to": { "x": b.0, "y": b.1 }, "layer": "top" }),
+        );
+    }
+    let second = {
+        let doc = h.snapshot().unwrap().unwrap();
+        doc.palettes().flat_map(|p| p.swatches().iter()).nth(1).unwrap().colour_id().as_str().to_owned()
+    };
+    ok(&h, "colour.paint.apply", json!({ "drawingId": d2, "points": [{ "x": 210, "y": 40 }], "colourId": second }));
+    ok(
+        &h,
+        "draw.line.add",
+        json!({ "drawingId": d2, "from": { "x": -30, "y": 50 }, "to": { "x": 10, "y": 50 }, "layer": "top" }),
+    );
+    ok(
+        &h,
+        "draw.line.add",
+        json!({ "drawingId": d2, "from": { "x": 15, "y": 47.5 }, "to": { "x": 50, "y": 47.5 }, "layer": "top" }),
+    );
     let m: Vec<f64> = ok(&h, "draw.viewMapping.get", json!({ "view": "drawing" }))["viewToDrawing"]
         .as_array()
         .unwrap()
@@ -154,9 +179,9 @@ fn cases() -> Vec<Case> {
             false,
             |c, w| json!({ "strokeId": w.stroke, "segment": 0, "t": 0.5, "delta": c.v(5.0, 5.0) }),
         ),
-        ("colour.paint.apply", true, |c, _| json!({ "points": [c.p(1000.0, 520.0)] })),
-        ("colour.paintUnpainted.apply", true, |c, _| json!({ "points": [c.p(1000.0, 520.0)] })),
-        ("colour.paint.remove", true, |c, _| json!({ "points": [c.p(1000.0, 520.0)] })),
+        ("colour.paint.apply", true, |c, _| json!({ "points": [c.p(1200.0, 520.0)] })),
+        ("colour.paintUnpainted.apply", true, |c, _| json!({ "points": [c.p(1200.0, 520.0)] })),
+        ("colour.paint.remove", true, |c, _| json!({ "points": [c.p(1300.0, 520.0)] })),
         ("colour.pick", true, |c, _| json!({ "point": c.p(1000.0, 520.0) })),
         ("colour.gap.close", true, |c, _| json!({ "from": c.p(900.0, 500.0), "to": c.p(910.0, 505.0) })),
     ]
@@ -203,4 +228,118 @@ fn c42a_r3_01_frame_and_view_space_are_honoured_by_every_point_taking_command() 
     }
     assert!(failures.is_empty(), "{}", failures.join("\n"));
     assert!(succeeded >= 20, "most cases run (not only equal refusals): {succeeded} of 27");
+}
+
+/// How a cell names its target (02 §13.1 item 4).
+#[derive(Clone, Copy, Debug)]
+enum Naming {
+    /// `drawingId`.
+    DrawingId,
+    /// `elementId` + `frame`.
+    ElementFrame,
+    /// `frame` alone: the current element's cell.
+    FrameAlone,
+    /// Nothing: the current drawing (the context moved to that cell first).
+    Current,
+    /// `drawingId` with an `elementId` + `frame` naming another drawing: `drawingId` takes precedence ("if omitted, it
+    /// uses `elementId?` + `frame?`", 02 §13.1 item 4).
+    DrawingIdWins,
+}
+
+const NAMINGS: [Naming; 5] =
+    [Naming::DrawingId, Naming::ElementFrame, Naming::FrameAlone, Naming::Current, Naming::DrawingIdWins];
+
+/// Stroke ids as the drawing's local ids, so the naming decides the drawing (a qualified id names it itself).
+fn localise(v: &mut Value) {
+    match v {
+        Value::Object(m) => {
+            for (k, x) in m.iter_mut() {
+                if k == "strokeId"
+                    && let Some(local) = x.as_str().and_then(|s| s.split_once('/')).map(|(_, l)| l.to_owned())
+                {
+                    *x = json!(local);
+                } else {
+                    localise(x);
+                }
+            }
+        }
+        Value::Array(a) => a.iter_mut().for_each(localise),
+        _ => {}
+    }
+}
+
+#[test]
+fn c42a_r4_01_every_point_taking_command_by_every_naming_in_both_spaces() {
+    let mut failures = Vec::new();
+    let mut cells = 0;
+    for (id, addresses, build) in cases() {
+        // The reference: `drawingId` (the element for the element-wide command) and drawing-space points.
+        let (b, wb) = world();
+        let mut pb = build(&Coords { mode: Mode::Drawing, m: &wb.m }, &wb);
+        localise(&mut pb);
+        if id == "draw.repositionAll.apply" {
+            pb["elementId"] = json!(BOB);
+        } else {
+            pb["drawingId"] = json!(wb.d2);
+        }
+        let eb = run(&b, id, pb.clone());
+        let reference = canonical(&b);
+        // `draw.repositionAll.apply` edits every drawing of an element (02 §13.2 line 1336: `elementId?: id = current`):
+        // only the element namings apply to it.
+        let namings: Vec<Naming> = if addresses || id != "draw.repositionAll.apply" {
+            NAMINGS.to_vec()
+        } else {
+            vec![Naming::ElementFrame, Naming::Current]
+        };
+        for space in [Mode::Drawing, Mode::View] {
+            for naming in &namings {
+                cells += 1;
+                let (a, w) = world();
+                let mut pa = build(&Coords { mode: space, m: &w.m }, &w);
+                localise(&mut pa);
+                if matches!(space, Mode::View) {
+                    pa["space"] = json!("view");
+                    pa["view"] = json!("drawingView");
+                }
+                if id == "draw.repositionAll.apply" {
+                    if matches!(naming, Naming::Current) {
+                        pa.as_object_mut().unwrap().remove("elementId");
+                        ok(&a, "app.context.set", json!({ "elementId": BOB, "frame": 1 }));
+                    }
+                } else {
+                    match naming {
+                        Naming::DrawingId => pa["drawingId"] = json!(w.d2),
+                        Naming::ElementFrame => {
+                            pa["elementId"] = json!(BOB);
+                            pa["frame"] = json!(w.frame);
+                        }
+                        Naming::FrameAlone => pa["frame"] = json!(w.frame),
+                        Naming::Current => {
+                            ok(&a, "app.context.set", json!({ "elementId": BOB, "frame": w.frame }));
+                        }
+                        Naming::DrawingIdWins => {
+                            pa["drawingId"] = json!(w.d2);
+                            pa["elementId"] = json!(BOB);
+                            pa["frame"] = json!(1);
+                        }
+                    }
+                }
+                let ea = run(&a, id, pa.clone());
+                let space_name = if matches!(space, Mode::View) { "view" } else { "drawing" };
+                if !ea.is_ok() {
+                    failures.push(format!(
+                        "{id} {naming:?} {space_name}: refused {:?}",
+                        ea.error.as_ref().map(|e| (&e.code, &e.message))
+                    ));
+                } else if ea.result != eb.result || canonical(&a) != reference {
+                    failures.push(format!(
+                        "{id} {naming:?} {space_name}: differs from the drawingId reference\n  {pa}\n  {:?}\n  {:?}",
+                        ea.result, eb.result
+                    ));
+                }
+            }
+        }
+    }
+    eprintln!("{cells} cells");
+    assert!(failures.is_empty(), "{} of {cells} cells:\n{}", failures.len(), failures.join("\n"));
 }

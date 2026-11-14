@@ -156,6 +156,9 @@ pub(crate) struct SelectionSetParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{selectedIds, bounds}`.
@@ -283,7 +286,7 @@ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, &p.view, p.frame);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let need = |what: &str| {
@@ -459,6 +462,9 @@ pub(crate) struct PointSelectionParams {
     /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
     #[serde(default)]
     frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{selectedPoints}`.
@@ -486,7 +492,7 @@ pub(crate) fn draw_point_selection_set(
     // The pipeline converted view-space coordinates (crate::addressing).
     let _ = (&p.space, &p.view, p.frame);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let mut keys: Vec<AnchorRef> = Vec::new();
