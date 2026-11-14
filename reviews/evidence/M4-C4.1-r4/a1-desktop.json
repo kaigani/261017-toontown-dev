@@ -1,0 +1,21 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "test",
+    "-p",
+    "tt-desktop",
+    "--test",
+    "c41_r2_review",
+    "--test",
+    "c41_r3_review",
+    "--locked"
+  ],
+  "exit": 0,
+  "seconds": 41.26148050001939,
+  "results": [
+    "     Running tests\\c41_r2_review.rs (target\\debug\\deps\\c41_r2_review-3b90c1acf764d12a.exe)",
+    "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s",
+    "     Running tests\\c41_r3_review.rs (target\\debug\\deps\\c41_r3_review-75af3d2ab106fbb9.exe)",
+    "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python",
+    "tests\\adversarial\\c41-r3s-generated-sequence.py"
+  ],
+  "exit": 0,
+  "seconds": 0.043247299996437505,
+  "results": []
+}

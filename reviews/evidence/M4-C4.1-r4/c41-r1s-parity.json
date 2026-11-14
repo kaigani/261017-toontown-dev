@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python",
+    "tests\\adversarial\\c41-r1s-parity.py"
+  ],
+  "exit": 0,
+  "seconds": 3.633506300015142,
+  "results": [
+    "    \"capture.session.error\": \"an event delivered to subscribers\""
+  ]
+}
