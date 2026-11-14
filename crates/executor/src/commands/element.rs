@@ -529,7 +529,7 @@ pub(crate) fn targets(cx: &Cx, given: Option<&[String]>) -> Result<Vec<Id>, Comm
             let doc = cx.document()?;
             let mut rows: Vec<Id> = cx
                 .app()
-                .selection_of("timeline")
+                .selection_list("timeline")
                 .iter()
                 .filter_map(|k| Id::parse(k).ok())
                 .filter(|id| doc.element(id).is_some())

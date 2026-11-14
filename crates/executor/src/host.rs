@@ -364,7 +364,7 @@ fn unavailable(
 const AVAILABILITY_CHUNK: usize = 32;
 /// The time after which an availability request ends its chunk (ruling O-24): it holds the document thread at most
 /// this plus one precheck.
-const AVAILABILITY_SLICE: Duration = Duration::from_millis(5);
+const AVAILABILITY_SLICE: Duration = Duration::from_millis(2);
 
 /// The check mark of a toggle reference: the toggled state now.
 fn checked_of(s: &crate::session::Session, command_id: &str, params: &Map<String, Value>) -> Option<bool> {

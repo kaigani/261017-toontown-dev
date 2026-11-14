@@ -130,11 +130,12 @@ selection list or clipboard, holding a weak reference so the key cannot be reuse
 `Arc<Value>`), during availability only: the pipeline runs prechecks inside transactions, whose working document
 changes between the steps of a batch before its revision does, and computes directly. The last-camera rule scans the
 scene's elements up to the first camera that stays instead of placing the tree (the handler gains the same). A chunk
-ends after 32 references or once it has held the document thread 5 ms, so the first pass after a change holds the
-thread at most 5 ms plus one precheck.
+ends after 32 references or once it has held the document thread 2 ms, so the first pass after a change holds the
+thread at most 2 ms plus one precheck; what a selection picks is computed once for cut, copy and delete, so each of
+them adds one walk to its own request.
 
 **Measured (debug build, Windows workstation; `passes_stay_constant_on_a_large_project`):** best full pass 5.5 ms on
-the empty project and on 10,101 elements; with 10,101 elements selected the first pass after the change takes 65 ms in
-all, its longest request 18 ms, then 5.6 ms; with them on the clipboard 6.9 ms (1.2 ms), then 5.6 ms; with a current
+the empty project and on 10,101 elements; with 10,101 elements selected the first pass after the change takes 53 ms in
+all, its longest request 9.5 ms, then 5.6 ms; with them on the clipboard 6.9 ms (1.2 ms), then 5.6 ms; with a current
 column of 10,000 runs 9.0 ms (2.9 ms), then 5.5 ms; with 991 cameras and one current 7.0 ms (1.1 ms), then 5.4 ms. The
 slowest of 20 user commands during continuous passes: 7 to 10 ms, as without passes.

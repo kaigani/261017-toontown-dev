@@ -2182,8 +2182,19 @@ fn precheck_use(cx: &Cx, v: &Value, how: Use) -> Result<(), CommandError> {
     let Some(list) = cx.app().selection_shared(context.as_str()).filter(|l| !l.is_empty()) else {
         return Err(nothing_selected(context));
     };
+    // What the selection picks is computed once for cut, copy and delete; each adds its own deletion refusals (one
+    // walk per request of an availability pass).
     let (project, rev) = crate::memo::document_version(cx);
-    crate::memo::memo(&format!("pick:{}:{how:?}:{project}", context.as_str()), list, rev, || check(None))
+    let ctx = context.as_str();
+    let picked = crate::memo::memo(&format!("picked:{ctx}:{project}"), list, rev, || {
+        pick(cx, context, None).map(std::sync::Arc::new)
+    })?;
+    match how {
+        Use::Copy => Ok(()),
+        Use::Cut | Use::Delete => crate::memo::memo(&format!("pick:{ctx}:{how:?}:{project}"), list, rev, || {
+            deletion_refusal(cx.document()?, &picked, how == Use::Cut, false)
+        }),
+    }
 }
 
 pub(crate) fn precheck_copy(cx: &Cx, v: &Value) -> Result<(), CommandError> {

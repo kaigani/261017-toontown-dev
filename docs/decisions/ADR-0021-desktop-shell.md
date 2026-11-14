@@ -92,7 +92,7 @@ the agent indicator, messages, persisted settings, and the user-priority rule of
    so availability and execution are one predicate by construction (the pipeline runs it immediately before the
    handler, after `expectRev`, where the handler gave the same refusal before). A precheck makes no copy and runs no
    pipeline or integrity gate; availability lends the session to one read-only context per chunk (each chunk its own
-   request on the document thread, ending after 32 references or once it has held the thread 5 ms) and takes it back;
+   request on the document thread, ending after 32 references or once it has held the thread 2 ms) and takes it back;
    a panicking precheck is contained (the reference reports unavailable with an internal reason; an invocation answers
    `internal`). Two refusals ask the user and keep the reference enabled: `project.pathRequired` (Save asks for a
    location) and `project.unsavedChanges` (01 §3.5). References with required parameters missing are completed by a
