@@ -292,7 +292,7 @@ fn availability_is_the_pipelines_own_answer_for_every_surface() {
             ("project.create", json!({})),
             ("ui.statusBar.set", json!({})),
             ("window.panel.set", json!({ "panelId": "timeline" })),
-            ("drawAid.grid.set", json!({})),
+            ("draw.feather.apply", json!({})),
         ]))
         .unwrap();
     assert!(!a[0].enabled && a[0].reason.is_some(), "no project: nothing to undo {:?}", a[0]);
@@ -303,7 +303,7 @@ fn availability_is_the_pipelines_own_answer_for_every_surface() {
     // After an edit, Undo is enabled and labelled with the step; the key dispatch reads the same answer.
     let h = fixture();
     ok(&h, "doc.object.patch", json!({ "targets": ["@current"], "props": { "name": "Renamed" } }));
-    let later = &h.availability(refs(&[("drawAid.grid.set", json!({}))])).unwrap()[0];
+    let later = &h.availability(refs(&[("draw.feather.apply", json!({}))])).unwrap()[0];
     assert!(!later.enabled && later.reason.as_deref().is_some_and(|r| r.contains("arrives with")), "{later:?}");
     let undo = &h.availability(refs(&[("edit.undo", json!({}))])).unwrap()[0];
     assert!(undo.enabled && undo.label.as_deref().is_some_and(|l| l.starts_with("Undo ")), "{undo:?}");

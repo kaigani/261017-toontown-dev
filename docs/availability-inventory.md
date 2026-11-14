@@ -42,7 +42,9 @@ selected in the Timeline); `peg-selected` (a peg selected in the Timeline); `loc
 selected); `camera-selected` (the scene's only camera selected); `sound-current` (a sound element current, which has no
 transformation); `no-camera` (a new project with a drawing element and no camera); `clipboard-empty` (nothing
 copied); `clipboard-cells` (Bob's frame-1 cell copied, Bob current); `clipboard-cells-no-element` (cells copied, then
-the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no project open). A JSON object after a state name gives the reference's parameters in that state.
+the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no project open); `drawing-view` (the
+Drawing view window made active, M4 C4.2); `painted-zone-selected` (a closed rectangle on a new layer, its zone
+painted and selected, no brush stroke; M4 C4.2). A JSON object after a state name gives the reference's parameters in that state.
 
 ## Every command
 
@@ -295,6 +297,7 @@ the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no p
 | `colour.fillMapping.set` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
 | `colour.gap.close` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `colour.gap.close` | `colour.noGapFound` | parameter | no stroke ends near both ends of the drag the caller gives |  |
+| `colour.gap.close` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
 | `colour.gap.close` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `colour.gap.close` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `colour.gap.close` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
@@ -305,6 +308,7 @@ the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no p
 | `colour.paint.apply` | `colour.noTarget` | parameter | the given targets cover nothing to paint |  |
 | `colour.paint.apply` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
 | `colour.paint.apply` | `colour.staleZoneId` | parameter | a zone ID the caller names no longer exists |  |
+| `colour.paint.apply` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
 | `colour.paint.apply` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `colour.paint.apply` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `colour.paint.apply` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
@@ -313,6 +317,7 @@ the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no p
 | `colour.paint.remove` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `colour.paint.remove` | `colour.noTarget` | parameter | the given targets cover nothing to paint |  |
 | `colour.paint.remove` | `colour.staleZoneId` | parameter | a zone ID the caller names no longer exists |  |
+| `colour.paint.remove` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
 | `colour.paint.remove` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `colour.paint.remove` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `colour.paint.remove` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
@@ -323,12 +328,14 @@ the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no p
 | `colour.paintUnpainted.apply` | `colour.noTarget` | parameter | the given targets cover nothing to paint |  |
 | `colour.paintUnpainted.apply` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
 | `colour.paintUnpainted.apply` | `colour.staleZoneId` | parameter | a zone ID the caller names no longer exists |  |
+| `colour.paintUnpainted.apply` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
 | `colour.paintUnpainted.apply` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `colour.paintUnpainted.apply` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `colour.paintUnpainted.apply` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
 | `colour.paintUnpainted.apply` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `colour.paintUnpainted.apply` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
 | `colour.pick` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
+| `colour.pick` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
 | `colour.pick` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing {"point": {"x": 0, "y": 0}, "space": "drawing"} · pass: drawing {"point": {"x": 0, "y": 0}, "space": "drawing"} |
 | `colour.pick` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `colour.recolour.apply` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
@@ -373,7 +380,7 @@ the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no p
 | `draw.breakApart.apply` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
 | `draw.breakApart.apply` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
 | `draw.centreLine.apply` | `colour.staleZoneId` | parameter | a zone ID the caller names no longer exists |  |
-| `draw.centreLine.apply` | `drawing.centreLineOnFill` | precheck | the selection holds painted zones but no brush strokes | untestable: a selection of painted zones needs closed strokes and a paint, which the sweep's states do not build |
+| `draw.centreLine.apply` | `drawing.centreLineOnFill` | precheck | the selection holds painted zones but no brush strokes | refuse: drawing+painted-zone-selected · pass: drawing-selected |
 | `draw.centreLine.apply` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `draw.centreLine.apply` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `draw.centreLine.apply` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
@@ -640,6 +647,17 @@ the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no p
 | `draw.vectorize.run` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
 | `draw.vectorize.run` | `vectorize.thresholdOutOfRange` | parameter | the threshold is out of range |  |
 | `draw.vectorize.run` | `vectorize.unsupportedFile` | parameter | the file the caller names is not a supported bitmap |  |
+| `drawAid.background.set` | `arg.invalid` | parameter | the colour the caller gives is not `#RRGGBB` or `#RRGGBBAA` |  |
+| `drawAid.onionSkin.set` | `tool.valueOutOfRange` | parameter | an onion-skin count the caller gives is outside 0-3 |  |
+| `drawAid.onionSkinStyle.set` | `arg.invalid` | parameter | a colour the caller gives is not `#RRGGBB` or `#RRGGBBAA` |  |
+| `drawAid.staticLightTable.add` | `drawing.noTarget` | precheck | no current drawing (the current element's cell at the frame is empty) | refuse: no-drawing · pass: drawing |
+| `drawAid.staticLightTable.add` | `drawing.notFound` | parameter | the drawing the caller names is not used by any element |  |
+| `drawAid.staticLightTable.add` | `element.notFound` | parameter | the element the caller names does not exist or has no scene |  |
+| `drawAid.staticLightTable.list` | `command.disabled` | precheck | no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |
+| `drawAid.staticLightTable.remove` | `arg.invalid` | parameter | neither `entryIds` nor `all` is given |  |
+| `drawAid.staticLightTable.remove` | `command.disabled` | precheck | no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |
+| `drawAid.staticLightTable.set` | `arg.invalid` | parameter | neither `entryIds`, `all` nor `onlyVisibleEntryId` is given |  |
+| `drawAid.staticLightTable.set` | `command.disabled` | precheck | no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |
 | `edit.copy` | `command.disabled` | precheck | nothing selected, or no current scene | refuse: element · pass: element-selected |
 | `edit.copy` | `edit.clipboardInvalid` | execution | a consistency check of content copied from a valid document |  |
 | `edit.copy` | `edit.wrongElementType` | parameter | a cell the caller names in `objectIds` belongs to an element without exposure; the selection setter refuses such cells (`ref.wrongType`) and an element's type never changes, so the selection cannot hold one |  |
@@ -808,8 +826,10 @@ the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no p
 | `project.saveAs` | `project.pathInsideProject` | parameter | the path the caller gives is inside the project |  |
 | `render.frame.run` | `anim.notFound` | parameter | the camera the caller names does not exist |  |
 | `render.frame.run` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
+| `render.frame.run` | `command.notImplemented` | unreachable | `active_view` runs only while the active view window shows the Drawing view, the window `drawing_view(None)` then returns |  |
+| `render.frame.run` | `drawing.noTarget` | precheck | `composition: "activeView"` with the Drawing view active and no current drawing | refuse: no-drawing+drawing-view {"composition": "activeView"} · pass: drawing+drawing-view {"composition": "activeView"} |
 | `render.frame.run` | `export.fileExists` | parameter | the output file the caller names exists |  |
-| `render.frame.run` | `render.compositionUnavailable` | parameter | the composition the caller names arrives later |  |
+| `render.frame.run` | `render.compositionUnavailable` | precheck | `xsheet` (M5 C5.1), or `activeView` while the active view window is not the Drawing view (M4 C4.3) | refuse: drawing {"composition": "activeView"} · pass: drawing+drawing-view {"composition": "activeView"} |
 | `render.frame.run` | `render.emptyDrawing` | parameter | the drawing the caller names is empty |  |
 | `render.frame.run` | `render.frameInvalid` | parameter | a frame value is outside 1-100000 |  |
 | `render.frame.run` | `render.inlineTooLarge` | parameter | the inline image the caller asks for is too large |  |
@@ -818,12 +838,40 @@ the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no p
 | `render.range.run` | `export.fileExists` | parameter | the output file the caller names exists |  |
 | `render.range.run` | `render.compositionUnavailable` | parameter | the composition the caller names arrives later |  |
 | `render.range.run` | `render.noScene` | precheck | the project has no scene | untestable: no implemented command deletes a scene, and a project is created with one |
+| `tool.active.set` | `arg.invalid` | parameter | the tool id the caller gives is not a tool |  |
+| `tool.brush.options.set` | `pen.notFound` | parameter | the pen the caller names does not exist |  |
+| `tool.brush.options.set` | `tool.notApplicable` | parameter | the pen the caller names is an eraser pen |  |
+| `tool.eraser.options.set` | `pen.notFound` | parameter | the pen the caller names does not exist |  |
+| `tool.eraser.options.set` | `tool.notApplicable` | parameter | the pen the caller names is a brush pen |  |
+| `tool.options.get` | `arg.invalid` | parameter | the tool id the caller gives is not a tool |  |
+| `tool.pen.create` | `arg.invalid` | parameter | the name the caller gives is empty or longer than 128 characters, or a setting is unknown |  |
+| `tool.pen.create` | `pen.nameExists` | parameter | the name the caller gives is taken |  |
+| `tool.pen.create` | `pen.notFound` | parameter | the `fromPenId` the caller names does not exist |  |
+| `tool.pen.create` | `tool.notApplicable` | parameter | the `fromPenId` the caller names is of the other family |  |
+| `tool.pen.delete` | `pen.lastPen` | parameter | the pen the caller names is the last of its family (02 §6.1) |  |
+| `tool.pen.delete` | `pen.notFound` | parameter | the pen the caller names does not exist |  |
+| `tool.pen.rename` | `arg.invalid` | parameter | the name the caller gives is empty or longer than 128 characters |  |
+| `tool.pen.rename` | `pen.nameExists` | parameter | the name the caller gives is taken by another pen |  |
+| `tool.pen.rename` | `pen.notFound` | parameter | the pen the caller names does not exist |  |
+| `tool.pen.select` | `pen.notFound` | parameter | the pen the caller names does not exist |  |
+| `tool.pen.select` | `tool.notApplicable` | unreachable | `tool.pen.select` passes no family, so `select_pen` never compares one |  |
+| `tool.pen.set` | `pen.notFound` | parameter | the pen the caller names does not exist |  |
 | `tool.symmetry.set` | `tool.valueOutOfRange` | parameter | a tool value is out of range |  |
+| `tool.tablet.set` | `arg.invalid` | parameter | the input interface name the caller gives is empty or longer than 64 characters |  |
 | `ui.help.get` | `command.unknown` | parameter | the command the caller names does not exist |  |
 | `ui.help.get` | `ui.unknownMessage` | parameter | the message the caller names does not exist |  |
 | `ui.help.get` | `window.panelNotFound` | parameter | the panel the caller names does not exist |  |
 | `ui.preferences.open` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `ui.tips.set` | `ui.unknownMessage` | parameter | the message the caller names does not exist |  |
+| `view.coordinates.convert` | `anim.notFound` | parameter | scene space (the caller's `from` or `to`) evaluates the current element, which the evaluator does not know |  |
+| `view.coordinates.convert` | `anim.valueOutOfRange` | parameter | scene space (the caller's `from` or `to`) evaluates a transform out of range |  |
+| `view.coordinates.convert` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
+| `view.pan.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
+| `view.pan.set` | `arg.missing` | parameter | none of `centre`, `by` and `atPointer` is given |  |
+| `view.rotation.set` | `arg.invalid` | parameter | both `degrees` and `steps` are given, or a value is not finite |  |
+| `view.rotation.set` | `arg.missing` | parameter | neither `degrees` nor `steps` is given |  |
+| `view.zoom.set` | `arg.invalid` | parameter | both `zoom` and `steps` are given, or a value is not finite |  |
+| `view.zoom.set` | `arg.missing` | parameter | neither `zoom` nor `steps` is given |  |
 | `window.toolbar.items.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `workspace.export` | `fs.exists` | parameter | the file the caller names exists |  |
 | `workspace.import` | `fs.notFound` | parameter | the file the caller names does not exist |  |

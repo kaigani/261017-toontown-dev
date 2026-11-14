@@ -25,6 +25,7 @@ pub(crate) mod doc;
 pub(crate) mod doc_io;
 pub(crate) mod doc_lint;
 pub(crate) mod draw;
+pub(crate) mod draw_aid;
 pub(crate) mod draw_cut;
 pub(crate) mod draw_layers;
 pub(crate) mod draw_render;
@@ -48,9 +49,11 @@ pub(crate) mod project;
 pub(crate) mod render;
 pub(crate) mod render_list;
 pub(crate) mod timing;
+pub(crate) mod tool;
 pub(crate) mod tool_symmetry;
 pub(crate) mod transfer;
 pub(crate) mod ui_shell;
+pub(crate) mod view;
 pub(crate) mod window;
 pub(crate) mod workspace;
 pub(crate) mod xsheet;
@@ -59,6 +62,16 @@ use tt_registry::Command;
 
 /// Every typed declaration.
 pub(crate) static ALL: &[&Command] = &[
+    // views (M4 C4.2)
+    &view::VIEW_LIST,
+    &view::VIEW_ACTIVE_SET,
+    &view::VIEW_TYPE_SET,
+    &view::VIEW_TRANSFORM_GET,
+    &view::VIEW_ZOOM_SET,
+    &view::VIEW_ROTATION_SET,
+    &view::VIEW_PAN_SET,
+    &view::VIEW_TRANSFORM_RESET,
+    &view::VIEW_COORDINATES_CONVERT,
     // prefs, keymap, ui (M4 C4.1)
     &prefs::PREFS_LIST,
     &prefs::PREFS_GET,
@@ -166,6 +179,51 @@ pub(crate) static ALL: &[&Command] = &[
     &doc::DOC_CHANGED,
     &doc_io::DOC_ASSET_STATUS_CHANGED,
     &doc_io::DOC_PACKAGE_CHANGED_ON_DISK,
+    // tools and pens (M4 C4.2)
+    &tool::TOOL_LIST,
+    &tool::TOOL_ACTIVE_SET,
+    &tool::TOOL_ACTIVE_GET,
+    &tool::TOOL_GROUP_SELECT,
+    &tool::TOOL_OPTIONS_GET,
+    &tool::TOOL_OPTIONS_SET,
+    &tool::TOOL_SELECT_OPTIONS_SET,
+    &tool::TOOL_BRUSH_OPTIONS_SET,
+    &tool::TOOL_PENCIL_OPTIONS_SET,
+    &tool::TOOL_POLYLINE_OPTIONS_SET,
+    &tool::TOOL_ERASER_OPTIONS_SET,
+    &tool::TOOL_TEXT_OPTIONS_SET,
+    &tool::TOOL_PEN_LIST,
+    &tool::TOOL_PEN_CREATE,
+    &tool::TOOL_PEN_DELETE,
+    &tool::TOOL_PEN_RENAME,
+    &tool::TOOL_PEN_SET,
+    &tool::TOOL_PEN_SELECT,
+    &tool::TOOL_PLACE_BEHIND_SET,
+    &tool::TOOL_DRAW_TOP_LAYER_SET,
+    &tool::TOOL_SNAP_TO_CONTOUR_SET,
+    &tool::TOOL_TABLET_SET,
+    &tool::TOOL_SETTINGS_GET,
+    &tool::TOOL_ACTIVE_CHANGED,
+    &tool::TOOL_OPTIONS_CHANGED,
+    &tool::TOOL_PEN_CHANGED,
+    // drawing aids (M4 C4.2)
+    &draw_aid::DRAW_AID_STATE_GET,
+    &draw_aid::DRAW_AID_GRID_SET,
+    &draw_aid::DRAW_AID_ONION_SKIN_SET,
+    &draw_aid::DRAW_AID_ONION_SKIN_STYLE_SET,
+    &draw_aid::DRAW_AID_ONION_SKIN_CYCLE_RUN,
+    &draw_aid::DRAW_AID_AUTO_LIGHT_TABLE_SET,
+    &draw_aid::DRAW_AID_LIGHT_TABLE_SHADE_SET,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_ADD,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_REMOVE,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_SET,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_LIST,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_PANEL_SET,
+    &draw_aid::DRAW_AID_STROKES_SET,
+    &draw_aid::DRAW_AID_CURRENT_ON_TOP_SET,
+    &draw_aid::DRAW_AID_SELECTION_DISPLAY_SET,
+    &draw_aid::DRAW_AID_BACKGROUND_SET,
+    &draw_aid::DRAW_AID_CHANGED,
     // draw (M2 C2.1)
     &draw::DRAW_DRAWING_GET,
     &draw::DRAW_CURRENT_GET,

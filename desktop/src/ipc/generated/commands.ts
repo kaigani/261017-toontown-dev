@@ -4737,7 +4737,6 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.background.set": {
     kind: "ui",
@@ -4746,9 +4745,10 @@ export const COMMAND_INDEX = {
     params: "drawAid.background.set.params",
     result: "drawAid.background.set.result",
     examples: [
-      {},
+      {
+        colour: "#FFFFFF",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.changed": {
     kind: "event",
@@ -4759,12 +4759,11 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
     event: true,
   },
   "drawAid.currentOnTop.set": {
     kind: "ui",
-    label: "Show current drawing on top in the Camera View",
+    label: "Current drawing on top",
     summary: "Show current drawing on top in the Camera View",
     params: "drawAid.currentOnTop.set.params",
     result: "drawAid.currentOnTop.set.result",
@@ -4773,44 +4772,48 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.grid.set": {
     kind: "ui",
-    label: "Grid visibility, type and overlay",
+    label: "Grid",
     summary: "Grid visibility, type and overlay",
     params: "drawAid.grid.set.params",
     result: "drawAid.grid.set.result",
     examples: [
-      {},
+      {
+        visible: true,
+        type: "field12",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.lightTableShade.set": {
     kind: "ui",
-    label: "Shading of auto and static light tables",
+    label: "Light-table shading",
     summary: "Shading of auto and static light tables",
     params: "drawAid.lightTableShade.set.params",
     result: "drawAid.lightTableShade.set.result",
     examples: [
-      {},
+      {
+        static: false,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.onionSkin.set": {
     kind: "ui",
-    label: "Onion skin on/off and counts",
+    label: "Onion skin",
     summary: "Onion skin on/off and counts",
     params: "drawAid.onionSkin.set.params",
     result: "drawAid.onionSkin.set.result",
     examples: [
-      {},
+      {
+        enabled: true,
+        previous: 2,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.onionSkinCycle.run": {
     kind: "ui",
-    label: "Cycle previous or next onion-skin count 0→1→2→3→0",
+    label: "Cycle onion skin",
     summary: "Cycle previous or next onion-skin count 0→1→2→3→0",
     params: "drawAid.onionSkinCycle.run.params",
     result: "drawAid.onionSkinCycle.run.result",
@@ -4819,7 +4822,6 @@ export const COMMAND_INDEX = {
         direction: "previous",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.onionSkinStyle.set": {
     kind: "ui",
@@ -4828,79 +4830,94 @@ export const COMMAND_INDEX = {
     params: "drawAid.onionSkinStyle.set.params",
     result: "drawAid.onionSkinStyle.set.result",
     examples: [
-      {},
+      {
+        outline: true,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.selectionDisplay.set": {
     kind: "ui",
-    label: "Camera View selection display options",
+    label: "Selection display",
     summary: "Camera View selection display options",
     params: "drawAid.selectionDisplay.set.params",
     result: "drawAid.selectionDisplay.set.result",
     examples: [
-      {},
+      {
+        outlineOnSelection: true,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.state.get": {
     kind: "query",
-    label: "State of all drawing aids",
+    label: "Get drawing aids",
     summary: "State of all drawing aids",
     params: "drawAid.state.get.params",
     result: "drawAid.state.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.staticLightTable.add": {
     kind: "action",
-    label: "Send a drawing or image to the static light table",
+    label: "Send to static light table",
     summary: "Send a drawing or image to the static light table",
     params: "drawAid.staticLightTable.add.params",
     result: "drawAid.staticLightTable.add.result",
     examples: [
-      {},
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 1,
+      },
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 3,
+        placement: "overlay",
+        visible: false,
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.staticLightTable.list": {
     kind: "query",
-    label: "Static light-table entries",
+    label: "List static light table",
     summary: "Static light-table entries",
     params: "drawAid.staticLightTable.list.params",
     result: "drawAid.staticLightTable.list.result",
     examples: [
       {},
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.staticLightTable.remove": {
     kind: "action",
-    label: "Delete entries",
+    label: "Delete static light-table entries",
     summary: "Delete entries (sources untouched)",
     params: "drawAid.staticLightTable.remove.params",
     result: "drawAid.staticLightTable.remove.result",
     examples: [
-      {},
+      {
+        all: true,
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.staticLightTable.set": {
     kind: "action",
-    label: "Show/hide, hide all others, overlay/underlay entries",
+    label: "Change static light-table entries",
     summary: "Show/hide, hide all others, overlay/underlay entries",
     params: "drawAid.staticLightTable.set.params",
     result: "drawAid.staticLightTable.set.result",
     examples: [
-      {},
+      {
+        all: true,
+        placement: "overlay",
+      },
+      {
+        all: true,
+        visible: false,
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.staticLightTablePanel.set": {
     kind: "ui",
-    label: "Show/hide the static light-table panel",
+    label: "Static light-table panel",
     summary: "Show/hide the static light-table panel",
     params: "drawAid.staticLightTablePanel.set.params",
     result: "drawAid.staticLightTablePanel.set.result",
@@ -4909,7 +4926,6 @@ export const COMMAND_INDEX = {
         visible: true,
       },
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.strokes.set": {
     kind: "ui",
@@ -4922,7 +4938,6 @@ export const COMMAND_INDEX = {
         visible: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "edit.clipboard.changed": {
     kind: "event",
@@ -7062,8 +7077,16 @@ export const COMMAND_INDEX = {
     result: "inspect.screenshot.result",
     examples: [
       {},
+      {
+        target: "drawingView",
+        region: {
+          x: 760,
+          y: 390,
+          w: 400,
+          h: 300,
+        },
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "inspect.ui.tree": {
     kind: "query",
@@ -9983,19 +10006,17 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
     event: true,
   },
   "tool.active.get": {
     kind: "query",
-    label: "Active tool",
+    label: "Get the active tool",
     summary: "Active tool (and temporary override, if any)",
     params: "tool.active.get.params",
     result: "tool.active.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "tool.active.set": {
     kind: "ui",
@@ -10005,10 +10026,9 @@ export const COMMAND_INDEX = {
     result: "tool.active.set.result",
     examples: [
       {
-        toolId: "select",
+        toolId: "brush",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.brush.options.set": {
     kind: "ui",
@@ -10018,10 +10038,9 @@ export const COMMAND_INDEX = {
     result: "tool.brush.options.set.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Pen 1\"",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.drawTopLayer.set": {
     kind: "toggle",
@@ -10034,7 +10053,6 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.eraser.options.set": {
     kind: "ui",
@@ -10044,10 +10062,9 @@ export const COMMAND_INDEX = {
     result: "tool.eraser.options.set.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Eraser 1\"",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.group.select": {
     kind: "ui",
@@ -10057,21 +10074,19 @@ export const COMMAND_INDEX = {
     result: "tool.group.select.result",
     examples: [
       {
-        group: "select",
+        group: "brush",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.list": {
     kind: "query",
-    label: "All drawing tools with group, option schema and current options",
+    label: "List tools",
     summary: "All drawing tools with group, option schema and current options",
     params: "tool.list.params",
     result: "tool.list.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "tool.options.changed": {
     kind: "event",
@@ -10082,35 +10097,34 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
     event: true,
   },
   "tool.options.get": {
     kind: "query",
-    label: "Options of a tool",
+    label: "Get tool options",
     summary: "Options of a tool",
     params: "tool.options.get.params",
     result: "tool.options.get.result",
     examples: [
       {
-        toolId: "example",
+        toolId: "select",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.options.set": {
     kind: "ui",
-    label: "Set any option",
+    label: "Set tool options",
     summary: "Set any option(s) of any tool (generic form of the rows below)",
     params: "tool.options.set.params",
     result: "tool.options.set.result",
     examples: [
       {
-        toolId: "example",
-        options: {},
+        toolId: "polyline",
+        options: {
+          snapRadius: 12,
+        },
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.changed": {
     kind: "event",
@@ -10121,94 +10135,101 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
     event: true,
   },
   "tool.pen.create": {
     kind: "action",
-    label: "New Pen",
+    label: "New pen",
     summary: "New pen from current or given pen (\"New Pen\")",
     params: "tool.pen.create.params",
     result: "tool.pen.create.result",
     examples: [
       {},
+      {
+        type: "eraser",
+        name: "Wide",
+        settings: {
+          maxSize: 80,
+          minSize: 80,
+        },
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.delete": {
     kind: "action",
-    label: "Delete Pen",
+    label: "Delete pen",
     summary: "Delete a pen (\"Delete Pen\")",
     params: "tool.pen.delete.params",
     result: "tool.pen.delete.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Pen 2\"",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.list": {
     kind: "query",
-    label: "Pens of the project with all settings",
+    label: "List pens",
     summary: "Pens of the project with all settings",
     params: "tool.pen.list.params",
     result: "tool.pen.list.result",
     examples: [
       {},
+      {
+        type: "eraser",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.rename": {
     kind: "action",
-    label: "Rename Pen",
+    label: "Rename pen",
     summary: "Rename a pen (\"Rename Pen\")",
     params: "tool.pen.rename.params",
     result: "tool.pen.rename.result",
     examples: [
       {
-        penId: "scene:#1",
-        name: "example",
+        penId: "pen:\"Pen 1\"",
+        name: "Fine",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.select": {
     kind: "ui",
-    label: "Make a pen current for its tool family",
+    label: "Select pen",
     summary: "Make a pen current for its tool family",
     params: "tool.pen.select.params",
     result: "tool.pen.select.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Pen 2\"",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.set": {
     kind: "action",
-    label: "Set Pen Style",
+    label: "Set pen style",
     summary: "Change pen settings (\"Set Pen Style\")",
     params: "tool.pen.set.params",
     result: "tool.pen.set.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Pen 2\"",
+        maxSize: 6,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pencil.options.set": {
     kind: "ui",
-    label: "Pencil and shape-tool line thickness source",
+    label: "Pencil options",
     summary: "Pencil and shape-tool line thickness source",
     params: "tool.pencil.options.set.params",
     result: "tool.pencil.options.set.result",
     examples: [
-      {},
+      {
+        thicknessSource: "fixed",
+        thickness: 3,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.placeBehind.set": {
     kind: "toggle",
@@ -10221,18 +10242,19 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.polyline.options.set": {
     kind: "ui",
-    label: "Polyline snapping",
+    label: "Polyline options",
     summary: "Polyline snapping",
     params: "tool.polyline.options.set.params",
     result: "tool.polyline.options.set.result",
     examples: [
-      {},
+      {
+        snap: true,
+        snapRadius: 12,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.select.options.set": {
     kind: "ui",
@@ -10241,20 +10263,20 @@ export const COMMAND_INDEX = {
     params: "tool.select.options.set.params",
     result: "tool.select.options.set.result",
     examples: [
-      {},
+      {
+        rectRule: "intersect",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.settings.get": {
     kind: "query",
-    label: "All global drawing-tool settings",
+    label: "Get drawing-tool settings",
     summary: "All global drawing-tool settings",
     params: "tool.settings.get.params",
     result: "tool.settings.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "tool.snapToContour.set": {
     kind: "toggle",
@@ -10267,7 +10289,6 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.symmetry.set": {
     kind: "ui",
@@ -10293,20 +10314,23 @@ export const COMMAND_INDEX = {
     params: "tool.tablet.set.params",
     result: "tool.tablet.set.result",
     examples: [
-      {},
+      {
+        ignoreTablet: true,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.text.options.set": {
     kind: "ui",
-    label: "Text panel defaults for new text",
+    label: "Text options",
     summary: "Text panel defaults for new text",
     params: "tool.text.options.set.params",
     result: "tool.text.options.set.result",
     examples: [
-      {},
+      {
+        size: 48,
+        bold: true,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "ui.contextHelpMode.set": {
     kind: "toggle",
@@ -10451,94 +10475,110 @@ export const COMMAND_INDEX = {
   },
   "view.active.set": {
     kind: "ui",
-    label: "Make a view window active",
+    label: "Activate view",
     summary: "Make a view window active (focus it)",
     params: "view.active.set.params",
     result: "view.active.set.result",
     examples: [
       {
-        viewId: "scene:#1",
+        viewId: "drawingView",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "view.coordinates.convert": {
     kind: "query",
-    label: "Convert a point between view pixels, drawing space and scene space for a view",
+    label: "Convert view coordinates",
     summary: "Convert a point between view pixels, drawing space and scene space for a view",
     params: "view.coordinates.convert.params",
     result: "view.coordinates.convert.result",
     examples: [
       {
-        viewId: "scene:#1",
+        viewId: "drawingView",
         point: {
-          x: 1,
-          y: 1,
+          x: 960,
+          y: 540,
         },
         from: "view",
-        to: "view",
+        to: "drawing",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "view.list": {
     kind: "query",
-    label: "View windows with type, focus, size and transform",
+    label: "List views",
     summary: "View windows with type, focus, size and transform",
     params: "view.list.params",
     result: "view.list.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "view.pan.set": {
     kind: "ui",
-    label: "Pan: centre on a document point, by a pixel offset, or on the pointer",
+    label: "Pan view",
     summary: "Pan: centre on a document point, by a pixel offset, or on the pointer (centre on pointer)",
     params: "view.pan.set.params",
     result: "view.pan.set.result",
     examples: [
-      {},
+      {
+        viewId: "drawingView",
+        centre: {
+          x: 100,
+          y: 50,
+        },
+      },
+      {
+        by: {
+          x: 40,
+          y: 0,
+        },
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "view.rotation.set": {
     kind: "ui",
-    label: "Set view rotation absolutely or in 30° steps",
+    label: "Rotate view",
     summary: "Set view rotation absolutely or in 30° steps",
     params: "view.rotation.set.params",
     result: "view.rotation.set.result",
     examples: [
-      {},
+      {
+        steps: 1,
+      },
+      {
+        viewId: "drawingView",
+        degrees: 45,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "view.transform.get": {
     kind: "query",
-    label: "Zoom, rotation and centre of a view",
+    label: "Get view transform",
     summary: "Zoom, rotation and centre of a view",
     params: "view.transform.get.params",
     result: "view.transform.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "view.transform.reset": {
     kind: "ui",
-    label: "Reset view / reset zoom / reset rotation / recentre",
+    label: "Reset view",
     summary: "Reset view / reset zoom / reset rotation / recentre",
     params: "view.transform.reset.params",
     result: "view.transform.reset.result",
     examples: [
       {},
+      {
+        parts: [
+          "rotation",
+        ],
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "view.type.set": {
     kind: "ui",
-    label: "Switch a view window's type",
+    label: "Set view type",
     summary: "Switch a view window's type; `\"previous\"` = switch active view",
     params: "view.type.set.params",
     result: "view.type.set.result",
@@ -10546,19 +10586,26 @@ export const COMMAND_INDEX = {
       {
         type: "drawing",
       },
+      {
+        type: "previous",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "view.zoom.set": {
     kind: "ui",
-    label: "Set zoom absolutely or by table steps",
+    label: "Zoom",
     summary: "Set zoom absolutely or by table steps (zoom in = +1, zoom out = −1)",
     params: "view.zoom.set.params",
     result: "view.zoom.set.result",
     examples: [
-      {},
+      {
+        steps: 1,
+      },
+      {
+        viewId: "drawingView",
+        zoom: 2,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "window.floatingPanels.set": {
     kind: "toggle",
@@ -42093,7 +42140,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       view: {
-        description: "The view (`drawing`; views arrive with M4 C4.2).",
+        description: "The view: `drawing` (the Drawing view window) or a view id.",
         type: "string",
         default: "drawing",
       },
@@ -42174,411 +42221,631 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "drawAid.autoLightTable.set.params": {
-    title: "drawAid.autoLightTable.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "drawAid.autoLightTable.set.result": {
-    title: "drawAid.autoLightTable.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "drawAid.background.set.params": {
-    title: "drawAid.background.set parameters",
+    title: "BackgroundParams",
+    description: "`drawAid.background.set` parameters.",
     type: "object",
     properties: {
       colour: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        description: "Colour (`#RRGGBB` or `#RRGGBBAA`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       useSceneColour: {
-        type: "boolean",
+        description: "Use the scene's background colour.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`colour?: colour; useSceneColour?: bool`",
   },
   "drawAid.background.set.result": {
-    title: "drawAid.background.set result",
-    type: "object",
-    properties: {
-      colour: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
-      },
-      useSceneColour: {
-        type: "boolean",
-      },
-    },
-    required: [
-      "colour",
-      "useSceneColour",
-    ],
-    "x-spec": "`{colour, useSceneColour}`",
-    additionalProperties: false,
+    title: "AnyValue",
   },
   "drawAid.changed.params": {
-    title: "drawAid.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "drawAid.changed.result": {
-    title: "drawAid.changed result",
+    title: "AidChanged",
+    description: "`drawAid.changed` payload.",
     type: "object",
     properties: {
       aid: {
+        description: "The aid (`grid`, `onionSkin`, `onionSkinStyle`, `autoLightTable`, `staticLightTable`, `lightTableShade`,\n`staticLightTablePanel`, `strokes`, `currentOnTop`, `selectionDisplay`, `background`).",
         type: "string",
-        maxLength: 65536,
       },
       state: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-027",
+        description: "Its state now.",
       },
     },
     required: [
       "aid",
       "state",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{aid, state: object}`",
-    additionalProperties: false,
   },
   "drawAid.currentOnTop.set.params": {
-    title: "drawAid.currentOnTop.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "drawAid.currentOnTop.set.result": {
-    title: "drawAid.currentOnTop.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
+  },
+  "drawAid.grid.set.GridType": {
+    description: "Grid type (02 §10.1).",
+    oneOf: [
+      {
+        description: "Square grid.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "12-field.",
+        type: "string",
+        const: "field12",
+      },
+      {
+        description: "16-field.",
+        type: "string",
+        const: "field16",
+      },
+    ],
   },
   "drawAid.grid.set.params": {
-    title: "drawAid.grid.set parameters",
+    title: "GridParams",
+    description: "`drawAid.grid.set` parameters.",
     type: "object",
     properties: {
       visible: {
-        type: "boolean",
+        description: "Shown.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       type: {
-        type: "string",
-        enum: [
-          "normal",
-          "field12",
-          "field16",
+        description: "The grid type.",
+        anyOf: [
+          {
+            $ref: "#/$defs/drawAid.grid.set.GridType",
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
       overlay: {
-        type: "boolean",
+        description: "Drawn over the drawings.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`visible?: bool; type?: enum \"normal\"|\"field12\"|\"field16\"; overlay?: bool`",
   },
   "drawAid.grid.set.result": {
-    title: "drawAid.grid.set result",
-    type: "object",
-    properties: {
-      visible: {
-        type: "boolean",
-      },
-      type: {
-        type: "string",
-      },
-      overlay: {
-        type: "boolean",
-      },
-    },
-    required: [
-      "visible",
-      "type",
-      "overlay",
-    ],
-    "x-spec": "`{visible, type, overlay}`",
-    additionalProperties: false,
+    title: "AnyValue",
   },
   "drawAid.lightTableShade.set.params": {
-    title: "drawAid.lightTableShade.set parameters",
+    title: "ShadeParams",
+    description: "`drawAid.lightTableShade.set` parameters.",
     type: "object",
     properties: {
       auto: {
-        type: "boolean",
+        description: "Shade the auto light table.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       static: {
-        type: "boolean",
+        description: "Shade static light-table entries.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`auto?: bool; static?: bool`",
   },
   "drawAid.lightTableShade.set.result": {
-    title: "drawAid.lightTableShade.set result",
-    type: "object",
-    properties: {
-      auto: {
-        type: "boolean",
-      },
-      static: {
-        type: "boolean",
-      },
-    },
-    required: [
-      "auto",
-      "static",
-    ],
-    "x-spec": "`{auto, static}`",
-    additionalProperties: false,
+    title: "AnyValue",
   },
   "drawAid.onionSkin.set.params": {
-    title: "drawAid.onionSkin.set parameters",
+    title: "OnionParams",
+    description: "`drawAid.onionSkin.set` parameters.",
     type: "object",
     properties: {
       enabled: {
-        type: "boolean",
+        description: "Master switch.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       previous: {
-        type: "integer",
+        description: "Previous drawings shown (0-3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 3,
       },
       next: {
-        type: "integer",
+        description: "Next drawings shown (0-3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 3,
       },
     },
     additionalProperties: false,
-    "x-spec": "`enabled?: bool; previous?: int (0–3); next?: int (0–3)`",
   },
   "drawAid.onionSkin.set.result": {
-    title: "drawAid.onionSkin.set result",
-    type: "object",
-    properties: {
-      enabled: {
-        type: "boolean",
+    title: "AnyValue",
+  },
+  "drawAid.onionSkinCycle.run.Direction": {
+    description: "Onion-skin direction.",
+    oneOf: [
+      {
+        description: "Previous drawings.",
+        type: "string",
+        const: "previous",
       },
-      previous: {
-        type: "integer",
-        minimum: 0,
-        maximum: 3,
+      {
+        description: "Next drawings.",
+        type: "string",
+        const: "next",
       },
-      next: {
-        type: "integer",
-        minimum: 0,
-        maximum: 3,
-      },
-    },
-    required: [
-      "enabled",
-      "previous",
-      "next",
     ],
-    "x-spec": "`{enabled, previous, next}`",
-    additionalProperties: false,
   },
   "drawAid.onionSkinCycle.run.params": {
-    title: "drawAid.onionSkinCycle.run parameters",
+    title: "CycleParams",
+    description: "`drawAid.onionSkinCycle.run` parameters.",
     type: "object",
     properties: {
       direction: {
-        type: "string",
-        enum: [
-          "previous",
-          "next",
-        ],
+        description: "Which count to cycle.",
+        $ref: "#/$defs/drawAid.onionSkinCycle.run.Direction",
       },
     },
+    additionalProperties: false,
     required: [
       "direction",
     ],
-    additionalProperties: false,
-    "x-spec": "`direction: enum \"previous\"|\"next\"`",
   },
   "drawAid.onionSkinCycle.run.result": {
-    title: "drawAid.onionSkinCycle.run result",
+    title: "Counts",
+    description: "`{previous, next}`.",
     type: "object",
     properties: {
       previous: {
-        type: "string",
-        maxLength: 65536,
+        description: "Previous drawings shown.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       next: {
-        type: "string",
-        maxLength: 65536,
+        description: "Next drawings shown.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
     },
     required: [
       "previous",
       "next",
     ],
-    "x-spec": "`{previous, next}`",
-    additionalProperties: false,
   },
   "drawAid.onionSkinStyle.set.params": {
-    title: "drawAid.onionSkinStyle.set parameters",
+    title: "StyleParams",
+    description: "`drawAid.onionSkinStyle.set` parameters.",
     type: "object",
     properties: {
       outline: {
-        type: "boolean",
+        description: "Outlines only.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       transparency: {
-        type: "boolean",
+        description: "Semi-transparent.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       colourShading: {
-        type: "boolean",
+        description: "Tinted.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       previousColour: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        description: "Tint of previous drawings (`#RRGGBB` or `#RRGGBBAA`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       nextColour: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        description: "Tint of next drawings.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`outline?: bool; transparency?: bool; colourShading?: bool; previousColour?: colour; nextColour?: colour`",
   },
   "drawAid.onionSkinStyle.set.result": {
-    title: "drawAid.onionSkinStyle.set result",
+    title: "StyleResult",
+    description: "`{style}`.",
     type: "object",
     properties: {
       style: {
-        type: "string",
-        maxLength: 65536,
+        description: "The appearance now.",
       },
     },
     required: [
       "style",
     ],
-    "x-spec": "`{style}`",
-    additionalProperties: false,
   },
   "drawAid.selectionDisplay.set.params": {
-    title: "drawAid.selectionDisplay.set parameters",
+    title: "SelectionDisplayParams",
+    description: "`drawAid.selectionDisplay.set` parameters.",
     type: "object",
     properties: {
       outlineOnSelection: {
-        type: "boolean",
+        description: "Outline on selection.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       boxHighlighting: {
-        type: "boolean",
+        description: "Box highlighting.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       keepSelectionVisible: {
-        type: "boolean",
+        description: "Keep the selection visible.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`outlineOnSelection?: bool; boxHighlighting?: bool; keepSelectionVisible?: bool`",
   },
   "drawAid.selectionDisplay.set.result": {
-    title: "drawAid.selectionDisplay.set result",
+    title: "SettingsResult",
+    description: "`{settings}`.",
     type: "object",
     properties: {
       settings: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        description: "The selection display now.",
       },
     },
     required: [
       "settings",
     ],
-    "x-spec": "`{settings}`",
-    additionalProperties: false,
   },
   "drawAid.state.get.params": {
-    title: "drawAid.state.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
+  },
+  "drawAid.state.get.Grid": {
+    description: "The grid (02 §10.1).",
+    type: "object",
+    properties: {
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+        default: false,
+      },
+      type: {
+        description: "`normal`, `field12` or `field16`.",
+        type: "string",
+        default: "normal",
+      },
+      overlay: {
+        description: "Drawn over the drawings.",
+        type: "boolean",
+        default: false,
+      },
+    },
+  },
+  "drawAid.state.get.OnionSkin": {
+    description: "Onion skin (02 §10.2).",
+    type: "object",
+    properties: {
+      enabled: {
+        description: "Master switch.",
+        type: "boolean",
+        default: false,
+      },
+      previous: {
+        description: "Previous drawings, 0-3.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        default: 1,
+        minimum: -9223372036854775808n,
+      },
+      next: {
+        description: "Next drawings, 0-3.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        default: 0,
+        minimum: -9223372036854775808n,
+      },
+    },
+  },
+  "drawAid.state.get.OnionSkinStyle": {
+    description: "Onion-skin appearance (02 §10.2).",
+    type: "object",
+    properties: {
+      outline: {
+        description: "Outlines only.",
+        type: "boolean",
+        default: false,
+      },
+      transparency: {
+        description: "Semi-transparent.",
+        type: "boolean",
+        default: true,
+      },
+      colourShading: {
+        description: "Tinted.",
+        type: "boolean",
+        default: true,
+      },
+      previousColour: {
+        description: "Tint of previous drawings.",
+        type: "string",
+        default: "#FF0000FF",
+      },
+      nextColour: {
+        description: "Tint of next drawings.",
+        type: "string",
+        default: "#00C000FF",
+      },
+    },
+  },
+  "drawAid.state.get.Entry": {
+    description: "One static light-table entry.",
+    type: "object",
+    properties: {
+      entryId: {
+        description: "Entry id.",
+        type: "string",
+      },
+      sourceId: {
+        description: "The source drawing.",
+        type: "string",
+      },
+      sourceKind: {
+        description: "`drawing` or `image` (by the source element's type).",
+        type: "string",
+      },
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+      },
+      placement: {
+        description: "Overlay or underlay.",
+        $ref: "#/$defs/drawAid.state.get.Placement",
+      },
+    },
+    required: [
+      "entryId",
+      "sourceId",
+      "sourceKind",
+      "visible",
+      "placement",
+    ],
+  },
+  "drawAid.state.get.Placement": {
+    description: "Overlay or underlay.",
+    oneOf: [
+      {
+        description: "Over the current drawing.",
+        type: "string",
+        const: "overlay",
+      },
+      {
+        description: "Under it.",
+        type: "string",
+        const: "underlay",
+      },
+    ],
+  },
+  "drawAid.state.get.Shade": {
+    description: "Light-table shading (02 §10.3-10.4).",
+    type: "object",
+    properties: {
+      auto: {
+        description: "The auto light table is washed out.",
+        type: "boolean",
+        default: true,
+      },
+      static: {
+        description: "Static light-table entries are washed out.",
+        type: "boolean",
+        default: true,
+      },
+    },
+  },
+  "drawAid.state.get.SelectionDisplay": {
+    description: "Camera-view selection display (02 §10.7).",
+    type: "object",
+    properties: {
+      outlineOnSelection: {
+        description: "Outline on selection.",
+        type: "boolean",
+        default: false,
+      },
+      boxHighlighting: {
+        description: "Box highlighting.",
+        type: "boolean",
+        default: true,
+      },
+      keepSelectionVisible: {
+        description: "Selection always visible (SI-117: 02 §10.7's default off is kept).",
+        type: "boolean",
+        default: false,
+      },
+    },
+  },
+  "drawAid.state.get.Background": {
+    description: "Drawing View background (02 §10.7).",
+    type: "object",
+    properties: {
+      colour: {
+        description: "Colour.",
+        type: "string",
+        default: "#F0F0F0FF",
+      },
+      useSceneColour: {
+        description: "Use the scene's background colour instead.",
+        type: "boolean",
+        default: false,
+      },
+    },
   },
   "drawAid.state.get.result": {
-    title: "drawAid.state.get result",
+    title: "AidState",
+    description: "`drawAid.state.get` result.",
     type: "object",
     properties: {
       grid: {
-        type: "boolean",
+        description: "Grid.",
+        $ref: "#/$defs/drawAid.state.get.Grid",
       },
       onionSkin: {
-        type: "boolean",
+        description: "Onion skin.",
+        $ref: "#/$defs/drawAid.state.get.OnionSkin",
       },
       onionSkinStyle: {
-        type: "string",
-        maxLength: 65536,
+        description: "Onion-skin appearance.",
+        $ref: "#/$defs/drawAid.state.get.OnionSkinStyle",
       },
       autoLightTable: {
+        description: "Auto light table.",
         type: "boolean",
       },
       staticLightTable: {
-        type: "boolean",
+        description: "The current scene's static light table.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/drawAid.state.get.Entry",
+        },
       },
       lightTableShade: {
-        type: "number",
+        description: "Light-table shading.",
+        $ref: "#/$defs/drawAid.state.get.Shade",
       },
       strokes: {
+        description: "Show Strokes.",
         type: "boolean",
       },
       currentOnTop: {
+        description: "Current drawing on top.",
         type: "boolean",
       },
       selectionDisplay: {
-        type: "boolean",
+        description: "Selection display.",
+        $ref: "#/$defs/drawAid.state.get.SelectionDisplay",
       },
       background: {
-        type: "string",
-        maxLength: 65536,
+        description: "Background.",
+        $ref: "#/$defs/drawAid.state.get.Background",
       },
     },
     required: [
@@ -42593,313 +42860,380 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "selectionDisplay",
       "background",
     ],
-    "x-spec": "`{grid, onionSkin, onionSkinStyle, autoLightTable, staticLightTable, lightTableShade, strokes, currentOnTop, selectionDisplay, background}`",
-    additionalProperties: false,
+  },
+  "drawAid.staticLightTable.add.Placement": {
+    description: "Overlay or underlay.",
+    oneOf: [
+      {
+        description: "Over the current drawing.",
+        type: "string",
+        const: "overlay",
+      },
+      {
+        description: "Under it.",
+        type: "string",
+        const: "underlay",
+      },
+    ],
   },
   "drawAid.staticLightTable.add.params": {
-    title: "drawAid.staticLightTable.add parameters",
+    title: "AddParams",
+    description: "`drawAid.staticLightTable.add` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: the drawing at `elementId` and `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The element whose cell is sent (default: the current element).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "The frame of that cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
       placement: {
-        type: "string",
-        enum: [
-          "overlay",
-          "underlay",
-        ],
+        description: "Overlay or underlay.",
+        $ref: "#/$defs/drawAid.staticLightTable.add.Placement",
         default: "underlay",
       },
       visible: {
+        description: "Shown.",
         type: "boolean",
         default: true,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; elementId?: id; frame?: int; placement: enum \"overlay\"|\"underlay\" = \"underlay\"; visible: bool = true`",
   },
   "drawAid.staticLightTable.add.result": {
-    title: "drawAid.staticLightTable.add result",
+    title: "EntryIdResult",
+    description: "`{entryId}`.",
     type: "object",
     properties: {
       entryId: {
+        description: "The new entry.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "entryId",
     ],
-    "x-spec": "`{entryId}`",
-    additionalProperties: false,
   },
   "drawAid.staticLightTable.list.params": {
-    title: "drawAid.staticLightTable.list parameters",
+    title: "ListParams",
+    description: "`drawAid.staticLightTable.list` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene (default: the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id`",
+  },
+  "drawAid.staticLightTable.list.Entry": {
+    description: "One static light-table entry.",
+    type: "object",
+    properties: {
+      entryId: {
+        description: "Entry id.",
+        type: "string",
+      },
+      sourceId: {
+        description: "The source drawing.",
+        type: "string",
+      },
+      sourceKind: {
+        description: "`drawing` or `image` (by the source element's type).",
+        type: "string",
+      },
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+      },
+      placement: {
+        description: "Overlay or underlay.",
+        $ref: "#/$defs/drawAid.staticLightTable.list.Placement",
+      },
+    },
+    required: [
+      "entryId",
+      "sourceId",
+      "sourceKind",
+      "visible",
+      "placement",
+    ],
+  },
+  "drawAid.staticLightTable.list.Placement": {
+    description: "Overlay or underlay.",
+    oneOf: [
+      {
+        description: "Over the current drawing.",
+        type: "string",
+        const: "overlay",
+      },
+      {
+        description: "Under it.",
+        type: "string",
+        const: "underlay",
+      },
+    ],
   },
   "drawAid.staticLightTable.list.result": {
-    title: "drawAid.staticLightTable.list result",
+    title: "EntriesResult",
+    description: "`{entries}`.",
     type: "object",
     properties: {
       entries: {
+        description: "The scene's entries now.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            entryId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            sourceId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            sourceKind: {
-              type: "string",
-              maxLength: 65536,
-            },
-            visible: {
-              type: "boolean",
-              default: true,
-            },
-            placement: {
-              type: "string",
-              default: "underlay",
-            },
-          },
-          required: [
-            "entryId",
-            "sourceId",
-            "sourceKind",
-            "visible",
-            "placement",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/drawAid.staticLightTable.list.Entry",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "entries",
     ],
-    "x-spec": "`{entries: [{entryId, sourceId, sourceKind, visible, placement}]}`",
-    additionalProperties: false,
   },
   "drawAid.staticLightTable.remove.params": {
-    title: "drawAid.staticLightTable.remove parameters",
+    title: "RemoveParams",
+    description: "`drawAid.staticLightTable.remove` parameters.",
     type: "object",
     properties: {
       entryIds: {
-        type: "array",
+        description: "Entries to delete.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        maxItems: 256,
+        default: null,
       },
       all: {
+        description: "Delete every entry.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`entryIds?: [id]; all: bool = false`",
   },
   "drawAid.staticLightTable.remove.result": {
-    title: "drawAid.staticLightTable.remove result",
+    title: "Removed",
+    description: "`{removedEntryIds}`.",
     type: "object",
     properties: {
       removedEntryIds: {
+        description: "The entries removed (sources untouched).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "removedEntryIds",
     ],
-    "x-spec": "`{removedEntryIds: [id]}`",
-    additionalProperties: false,
+  },
+  "drawAid.staticLightTable.set.Placement": {
+    description: "Overlay or underlay.",
+    oneOf: [
+      {
+        description: "Over the current drawing.",
+        type: "string",
+        const: "overlay",
+      },
+      {
+        description: "Under it.",
+        type: "string",
+        const: "underlay",
+      },
+    ],
   },
   "drawAid.staticLightTable.set.params": {
-    title: "drawAid.staticLightTable.set parameters",
+    title: "SetParams",
+    description: "`drawAid.staticLightTable.set` parameters.",
     type: "object",
     properties: {
       entryIds: {
-        type: "array",
+        description: "Entries to change.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        maxItems: 256,
+        default: null,
       },
       all: {
+        description: "Change every entry.",
         type: "boolean",
         default: false,
       },
       visible: {
-        type: "boolean",
+        description: "Show or hide them.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       placement: {
-        type: "string",
-        enum: [
-          "overlay",
-          "underlay",
+        description: "Overlay or underlay them.",
+        anyOf: [
+          {
+            $ref: "#/$defs/drawAid.staticLightTable.set.Placement",
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
       onlyVisibleEntryId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Show only this entry (hide all others).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`entryIds?: [id]; all: bool = false; visible?: bool; placement?: enum \"overlay\"|\"underlay\"; onlyVisibleEntryId?: id`",
+  },
+  "drawAid.staticLightTable.set.Entry": {
+    description: "One static light-table entry.",
+    type: "object",
+    properties: {
+      entryId: {
+        description: "Entry id.",
+        type: "string",
+      },
+      sourceId: {
+        description: "The source drawing.",
+        type: "string",
+      },
+      sourceKind: {
+        description: "`drawing` or `image` (by the source element's type).",
+        type: "string",
+      },
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+      },
+      placement: {
+        description: "Overlay or underlay.",
+        $ref: "#/$defs/drawAid.staticLightTable.set.Placement",
+      },
+    },
+    required: [
+      "entryId",
+      "sourceId",
+      "sourceKind",
+      "visible",
+      "placement",
+    ],
   },
   "drawAid.staticLightTable.set.result": {
-    title: "drawAid.staticLightTable.set result",
+    title: "EntriesResult",
+    description: "`{entries}`.",
     type: "object",
     properties: {
       entries: {
+        description: "The scene's entries now.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            entryId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            sourceId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            sourceKind: {
-              type: "string",
-              maxLength: 65536,
-            },
-            visible: {
-              type: "boolean",
-            },
-            placement: {
-              type: "string",
-            },
-          },
-          required: [
-            "entryId",
-            "sourceId",
-            "sourceKind",
-            "visible",
-            "placement",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/drawAid.staticLightTable.set.Entry",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "entries",
     ],
-    "x-spec": "`{entries: [object]}`",
-    additionalProperties: false,
   },
   "drawAid.staticLightTablePanel.set.params": {
-    title: "drawAid.staticLightTablePanel.set parameters",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    additionalProperties: false,
-    "x-spec": "`visible: bool`",
   },
   "drawAid.staticLightTablePanel.set.result": {
-    title: "drawAid.staticLightTablePanel.set result",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    "x-spec": "`{visible}`",
-    additionalProperties: false,
   },
   "drawAid.strokes.set.params": {
-    title: "drawAid.strokes.set parameters",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    additionalProperties: false,
-    "x-spec": "`visible: bool`",
   },
   "drawAid.strokes.set.result": {
-    title: "drawAid.strokes.set result",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    "x-spec": "`{visible}`",
-    additionalProperties: false,
   },
   "edit.clipboard.changed.params": {
     title: "NoParams",
@@ -78358,21 +78692,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "tool.active.changed.params": {
-    title: "tool.active.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "tool.active.changed.result": {
-    title: "tool.active.changed result",
+    title: "ActiveChanged",
+    description: "`tool.active.changed` payload.",
     type: "object",
     properties: {
       toolId: {
+        description: "The active tool.",
         type: "string",
       },
       temporary: {
+        description: "A temporary override.",
         type: "boolean",
       },
     },
@@ -78380,1261 +78715,1026 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "toolId",
       "temporary",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{toolId, temporary: bool}`",
-    additionalProperties: false,
   },
   "tool.active.get.params": {
-    title: "tool.active.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "tool.active.get.result": {
-    title: "tool.active.get result",
+    title: "ActiveResult",
+    description: "`tool.active.get` result.",
     type: "object",
     properties: {
       toolId: {
+        description: "The active tool.",
         type: "string",
       },
       temporaryToolId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+        description: "A temporary override in force (`null`: none; overrides are held by the GUI while a key is held).",
+        type: [
+          "string",
+          "null",
         ],
       },
       group: {
+        description: "Its group.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "toolId",
-      "temporaryToolId",
       "group",
     ],
-    "x-spec": "`{toolId, temporaryToolId|null, group}`",
-    additionalProperties: false,
   },
   "tool.active.set.params": {
-    title: "tool.active.set parameters",
+    title: "ActiveParams",
+    description: "`tool.active.set` parameters.",
     type: "object",
     properties: {
       toolId: {
+        description: "The tool.",
         type: "string",
-        enum: [
-          "select",
-          "contourEditor",
-          "perspective",
-          "repositionAll",
-          "brush",
-          "pencil",
-          "rectangle",
-          "ellipse",
-          "polyline",
-          "line",
-          "paint",
-          "unpaint",
-          "paintUnpainted",
-          "dropper",
-          "closeGap",
-          "stroke",
-          "editTexture",
-          "eraser",
-          "cutter",
-          "scissor",
-          "zoom",
-          "grabber",
-          "text",
-        ],
       },
     },
+    additionalProperties: false,
     required: [
       "toolId",
     ],
-    additionalProperties: false,
-    "x-spec": "`toolId: enum \"select\"|\"contourEditor\"|\"perspective\"|\"repositionAll\"|\"brush\"|\"pencil\"|\"rectangle\"|\"ellipse\"|\"polyline\"|\"line\"|\"paint\"|\"unpaint\"|\"paintUnpainted\"|\"dropper\"|\"closeGap\"|\"stroke\"|\"editTexture\"|\"eraser\"|\"cutter\"|\"scissor\"|\"zoom\"|\"grabber\"|\"text\"`",
   },
   "tool.active.set.result": {
-    title: "tool.active.set result",
+    title: "ToolIdResult",
+    description: "`{toolId}`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The active tool.",
         type: "string",
       },
     },
     required: [
       "toolId",
     ],
-    "x-spec": "`{toolId}`",
-    additionalProperties: false,
   },
   "tool.brush.options.set.params": {
-    title: "tool.brush.options.set parameters",
+    title: "PenParams",
+    description: "`penId`.",
     type: "object",
     properties: {
       penId: {
+        description: "The pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "penId",
     ],
-    additionalProperties: false,
-    "x-spec": "`penId: id`",
   },
   "tool.brush.options.set.result": {
-    title: "tool.brush.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          penId: {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-        },
-        required: [
-          "penId",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
   "tool.drawTopLayer.set.params": {
-    title: "tool.drawTopLayer.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "tool.drawTopLayer.set.result": {
-    title: "tool.drawTopLayer.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "tool.eraser.options.set.params": {
-    title: "tool.eraser.options.set parameters",
+    title: "PenParams",
+    description: "`penId`.",
     type: "object",
     properties: {
       penId: {
+        description: "The pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "penId",
     ],
-    additionalProperties: false,
-    "x-spec": "`penId: id`",
   },
   "tool.eraser.options.set.result": {
-    title: "tool.eraser.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          penId: {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-        },
-        required: [
-          "penId",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
+  },
+  "tool.group.select.Group": {
+    description: "A tool group (02 §5.1).",
+    oneOf: [
+      {
+        description: "Select group.",
+        type: "string",
+        const: "select",
+      },
+      {
+        description: "Brush group.",
+        type: "string",
+        const: "brush",
+      },
+      {
+        description: "Paint group.",
+        type: "string",
+        const: "paint",
+      },
+      {
+        description: "Eraser group.",
+        type: "string",
+        const: "eraser",
+      },
+      {
+        description: "Navigate group.",
+        type: "string",
+        const: "navigate",
+      },
+      {
+        description: "Text group.",
+        type: "string",
+        const: "text",
+      },
+    ],
   },
   "tool.group.select.params": {
-    title: "tool.group.select parameters",
+    title: "GroupParams",
+    description: "`tool.group.select` parameters.",
     type: "object",
     properties: {
       group: {
-        type: "string",
-        enum: [
-          "select",
-          "brush",
-          "paint",
-          "eraser",
-          "navigate",
-          "text",
-        ],
+        description: "The group.",
+        $ref: "#/$defs/tool.group.select.Group",
       },
       advance: {
+        description: "Advance within the group if it is already active (group cycling).",
         type: "boolean",
         default: true,
       },
     },
+    additionalProperties: false,
     required: [
       "group",
     ],
-    additionalProperties: false,
-    "x-spec": "`group: enum \"select\"|\"brush\"|\"paint\"|\"eraser\"|\"navigate\"|\"text\"; advance: bool = true`",
   },
   "tool.group.select.result": {
-    title: "tool.group.select result",
+    title: "ToolIdResult",
+    description: "`{toolId}`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The active tool.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "toolId",
     ],
-    "x-spec": "`{toolId}`",
-    additionalProperties: false,
   },
   "tool.list.params": {
-    title: "tool.list parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
+  },
+  "tool.list.ToolEntry": {
+    description: "One tool.",
+    type: "object",
+    properties: {
+      toolId: {
+        description: "Tool id.",
+        type: "string",
+      },
+      group: {
+        description: "Its group.",
+        type: "string",
+      },
+      options: {
+        description: "Current options (empty: the tool has none).",
+        type: "object",
+        additionalProperties: true,
+      },
+      optionSchema: {
+        description: "The options' schema.",
+      },
+    },
+    required: [
+      "toolId",
+      "group",
+      "options",
+      "optionSchema",
+    ],
   },
   "tool.list.result": {
-    title: "tool.list result",
+    title: "ToolList",
+    description: "`tool.list` result.",
     type: "object",
     properties: {
       tools: {
+        description: "Every tool in palette order.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            toolId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            group: {
-              type: "string",
-              maxLength: 65536,
-            },
-            options: {
-              type: "object",
-              properties: {},
-              additionalProperties: false,
-              "x-placeholder": true,
-              description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-              "x-specIssue": "SI-040",
-            },
-            optionSchema: {
-              type: "object",
-              properties: {},
-              additionalProperties: false,
-              "x-placeholder": true,
-              description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-              "x-specIssue": "SI-040",
-            },
-          },
-          required: [
-            "toolId",
-            "group",
-            "options",
-            "optionSchema",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/tool.list.ToolEntry",
         },
-        maxItems: 100000,
       },
       activeToolId: {
+        description: "The active tool.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "tools",
       "activeToolId",
     ],
-    "x-spec": "`{tools: [{toolId, group, options: object, optionSchema: object}], activeToolId}`",
-    additionalProperties: false,
   },
   "tool.options.changed.params": {
-    title: "tool.options.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "tool.options.changed.result": {
-    title: "tool.options.changed result",
+    title: "OptionsChanged",
+    description: "`tool.options.changed` payload.",
     type: "object",
     properties: {
       toolId: {
-        type: "string",
-        maxLength: 65536,
+        description: "The tool (`null` for a global drawing setting).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       options: {
+        description: "The options or settings now.",
         type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        additionalProperties: true,
       },
     },
     required: [
-      "toolId",
       "options",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{toolId|null, options}`",
-    additionalProperties: false,
   },
   "tool.options.get.params": {
-    title: "tool.options.get parameters",
+    title: "ToolParams",
+    description: "`toolId`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The tool.",
         type: "string",
-        maxLength: 65536,
       },
     },
+    additionalProperties: false,
     required: [
       "toolId",
     ],
-    additionalProperties: false,
-    "x-spec": "`toolId: string`",
   },
   "tool.options.get.result": {
-    title: "tool.options.get result",
+    title: "ToolOptions",
+    description: "`{toolId, options}`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The tool.",
         type: "string",
-        maxLength: 65536,
       },
       options: {
+        description: "Its options.",
         type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        additionalProperties: true,
       },
     },
     required: [
       "toolId",
       "options",
     ],
-    "x-spec": "`{toolId, options: object}`",
-    additionalProperties: false,
   },
   "tool.options.set.params": {
-    title: "tool.options.set parameters",
+    title: "OptionsParams",
+    description: "`tool.options.set` parameters.",
     type: "object",
     properties: {
       toolId: {
+        description: "The tool.",
         type: "string",
-        maxLength: 65536,
       },
       options: {
+        description: "Options to set.",
         type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        additionalProperties: true,
       },
     },
+    additionalProperties: false,
     required: [
       "toolId",
       "options",
     ],
-    additionalProperties: false,
-    "x-spec": "`toolId: string; options: object`",
   },
   "tool.options.set.result": {
-    title: "tool.options.set result",
+    title: "ToolOptions",
+    description: "`{toolId, options}`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The tool.",
         type: "string",
-        maxLength: 65536,
       },
       options: {
+        description: "Its options.",
         type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        additionalProperties: true,
       },
     },
     required: [
       "toolId",
       "options",
     ],
-    "x-spec": "`{toolId, options}`",
-    additionalProperties: false,
   },
   "tool.pen.changed.params": {
-    title: "tool.pen.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
+  },
+  "tool.pen.changed.PenChange": {
+    description: "A pen change.",
+    oneOf: [
+      {
+        description: "Created.",
+        type: "string",
+        const: "created",
+      },
+      {
+        description: "Settings changed or renamed.",
+        type: "string",
+        const: "modified",
+      },
+      {
+        description: "Deleted.",
+        type: "string",
+        const: "deleted",
+      },
+      {
+        description: "Made current.",
+        type: "string",
+        const: "selected",
+      },
+    ],
   },
   "tool.pen.changed.result": {
-    title: "tool.pen.changed result",
+    title: "PenChanged",
+    description: "`tool.pen.changed` payload.",
     type: "object",
     properties: {
       penId: {
+        description: "The pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       change: {
-        type: "string",
-        enum: [
-          "created",
-          "modified",
-          "deleted",
-          "selected",
-        ],
+        description: "What changed.",
+        $ref: "#/$defs/tool.pen.changed.PenChange",
       },
     },
     required: [
       "penId",
       "change",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{penId, change: enum \"created\"|\"modified\"|\"deleted\"|\"selected\"}`",
-    additionalProperties: false,
+  },
+  "tool.pen.create.Family": {
+    description: "A pen family.",
+    oneOf: [
+      {
+        description: "Brush pens.",
+        type: "string",
+        const: "brush",
+      },
+      {
+        description: "Eraser pens.",
+        type: "string",
+        const: "eraser",
+      },
+    ],
   },
   "tool.pen.create.params": {
-    title: "tool.pen.create parameters",
+    title: "PenCreateParams",
+    description: "`tool.pen.create` parameters.",
     type: "object",
     properties: {
       type: {
-        type: "string",
-        enum: [
-          "brush",
-          "eraser",
-        ],
+        description: "Family.",
+        $ref: "#/$defs/tool.pen.create.Family",
         default: "brush",
       },
       fromPenId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current.",
+        description: "The pen to copy (default: the family's current pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       name: {
-        type: "string",
-        maxLength: 65536,
+        description: "Name (default: the next free \"Pen n\" or \"Eraser n\").",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       settings: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        description: "Settings over the copied ones (`tipShape`, `minSize`, `maxSize`, `smoothness`, `tipAngle`).",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`type: enum \"brush\"|\"eraser\" = \"brush\"; fromPenId?: id = current; name?: string; settings?: object`",
   },
   "tool.pen.create.result": {
-    title: "tool.pen.create result",
+    title: "PenIdName",
+    description: "`{penId, name}`.",
     type: "object",
     properties: {
       penId: {
+        description: "Pen id.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Name.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "penId",
       "name",
     ],
-    "x-spec": "`{penId, name}`",
-    additionalProperties: false,
   },
   "tool.pen.delete.params": {
-    title: "tool.pen.delete parameters",
+    title: "PenParams",
+    description: "`penId`.",
     type: "object",
     properties: {
       penId: {
+        description: "The pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "penId",
     ],
-    additionalProperties: false,
-    "x-spec": "`penId: id`",
   },
   "tool.pen.delete.result": {
-    title: "tool.pen.delete result",
+    title: "PenDeleted",
+    description: "`tool.pen.delete` result.",
     type: "object",
     properties: {
       removedPenId: {
+        description: "The removed pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       currentPenId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The family's current pen now.",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
     required: [
       "removedPenId",
-      "currentPenId",
     ],
-    "x-spec": "`{removedPenId, currentPenId}`",
-    additionalProperties: false,
+  },
+  "tool.pen.list.Family": {
+    description: "A pen family.",
+    oneOf: [
+      {
+        description: "Brush pens.",
+        type: "string",
+        const: "brush",
+      },
+      {
+        description: "Eraser pens.",
+        type: "string",
+        const: "eraser",
+      },
+    ],
   },
   "tool.pen.list.params": {
-    title: "tool.pen.list parameters",
+    title: "PenListParams",
+    description: "`tool.pen.list` parameters.",
     type: "object",
     properties: {
       type: {
-        type: "string",
-        enum: [
-          "brush",
-          "eraser",
-        ],
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`type?: enum \"brush\"|\"eraser\"`",
-  },
-  "tool.pen.list.result": {
-    title: "tool.pen.list result",
-    type: "object",
-    properties: {
-      pens: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            penId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            name: {
-              type: "string",
-              maxLength: 65536,
-            },
-            type: {
-              type: "string",
-            },
-            tipShape: {
-              type: "string",
-            },
-            minSize: {
-              type: "number",
-              minimum: 0,
-              maximum: 100,
-            },
-            maxSize: {
-              type: "number",
-              minimum: 0,
-              maximum: 100,
-            },
-            smoothness: {
-              type: "number",
-              minimum: 0,
-              maximum: 10,
-            },
-            tipAngle: {
-              type: "number",
-              minimum: 0,
-              maximum: 360,
-            },
-          },
-          required: [
-            "penId",
-            "name",
-            "type",
-            "tipShape",
-            "minSize",
-            "maxSize",
-            "smoothness",
-            "tipAngle",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      currentBrushPenId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      currentEraserPenId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-    },
-    required: [
-      "pens",
-      "currentBrushPenId",
-      "currentEraserPenId",
-    ],
-    "x-spec": "`{pens: [{penId, name, type, tipShape, minSize, maxSize, smoothness, tipAngle}], currentBrushPenId, currentEraserPenId}`",
-    additionalProperties: false,
-  },
-  "tool.pen.rename.params": {
-    title: "tool.pen.rename parameters",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      name: {
-        type: "string",
-        maxLength: 65536,
-      },
-    },
-    required: [
-      "penId",
-      "name",
-    ],
-    additionalProperties: false,
-    "x-spec": "`penId: id; name: string`",
-  },
-  "tool.pen.rename.result": {
-    title: "tool.pen.rename result",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      name: {
-        type: "string",
-        maxLength: 65536,
-      },
-    },
-    required: [
-      "penId",
-      "name",
-    ],
-    "x-spec": "`{penId, name}`",
-    additionalProperties: false,
-  },
-  "tool.pen.select.params": {
-    title: "tool.pen.select parameters",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-    },
-    required: [
-      "penId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`penId: id`",
-  },
-  "tool.pen.select.result": {
-    title: "tool.pen.select result",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      type: {
-        type: "string",
-        default: "brush",
-      },
-    },
-    required: [
-      "penId",
-      "type",
-    ],
-    "x-spec": "`{penId, type}`",
-    additionalProperties: false,
-  },
-  "tool.pen.set.params": {
-    title: "tool.pen.set parameters",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      tipShape: {
-        type: "string",
-        enum: [
-          "round",
-          "oval",
-          "square",
-          "flat",
-        ],
-      },
-      minSize: {
-        type: "number",
-        minimum: 0,
-        maximum: 100,
-      },
-      maxSize: {
-        type: "number",
-        minimum: 0,
-        maximum: 100,
-      },
-      smoothness: {
-        type: "number",
-        minimum: 0,
-        maximum: 10,
-      },
-      tipAngle: {
-        type: "number",
-        minimum: 0,
-        maximum: 360,
-      },
-    },
-    required: [
-      "penId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`penId: id; tipShape?: enum \"round\"|\"oval\"|\"square\"|\"flat\"; minSize?: number (0–100); maxSize?: number (0–100); smoothness?: number (0–10); tipAngle?: number (0–360)`",
-  },
-  "tool.pen.set.Ext": {
-    type: "object",
-    propertyNames: {
-      pattern: "^[A-Za-z0-9][A-Za-z0-9-]*(\\.[A-Za-z0-9][A-Za-z0-9-]*)+$",
-    },
-    description: "Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim.",
-  },
-  "tool.pen.set.Id": {
-    type: "string",
-    pattern: "^[A-Za-z0-9_-]{1,64}$",
-  },
-  "tool.pen.set.Pen": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/tool.pen.set.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "pen",
-        readOnly: true,
-        description: "Always `pen`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change (10 REV-02).",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      name: {
-        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
-        description: "Unique in the project; default `Pen <n>`.",
-        "x-command": "tool.pen.rename",
-        minLength: 1,
-        maxLength: 64,
-        type: "string",
-        "x-since": "1.0",
-      },
-      kind: {
-        $ref: "#/$defs/tool.pen.set.PenKind",
-        description: "Brush or eraser pen (02 §6.1; SI-004).",
-        "x-since": "1.0",
-      },
-      minSize: {
-        type: "number",
-        "x-unit": "du",
-        description: "Width at lowest pressure, 0–100 du; `minSize ≤ maxSize`.",
-        minimum: 0,
-        maximum: 100,
-        "x-since": "1.0",
-      },
-      maxSize: {
-        type: "number",
-        "x-unit": "du",
-        description: "Width at full pressure, 0–100 du.",
-        minimum: 0,
-        maximum: 100,
-        "x-since": "1.0",
-      },
-      smoothness: {
-        type: "integer",
-        description: "Curve-fitting tolerance and pressure smoothing, 0–10 (10 §4.2: int).",
-        minimum: 0,
-        maximum: 10,
-        "x-since": "1.0",
-      },
-      tip: {
-        $ref: "#/$defs/tool.pen.set.Tip",
-        description: "Tip shape.",
-        "x-since": "1.0",
-      },
-      tipAngle: {
-        type: "number",
-        "x-unit": "degree",
-        description: "Orientation of non-round tips, 0–360 degrees (02 §6.1; SI-004).",
-        minimum: 0,
-        maximum: 360,
-        "x-since": "1.0",
-      },
-      colourId: {
+        description: "Only pens of this family.",
         anyOf: [
           {
-            $ref: "#/$defs/tool.pen.set.Id",
+            $ref: "#/$defs/tool.pen.list.Family",
           },
           {
             type: "null",
           },
         ],
-        description: "Colour bound to the pen; `null` = use the current colour.",
-        "x-ref": "swatch",
-        "x-since": "1.0",
+        default: null,
       },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/tool.pen.set.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
+    },
+    additionalProperties: false,
+  },
+  "tool.pen.list.PenEntry": {
+    description: "One pen.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "Pen id.",
         type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
+      },
+      name: {
+        description: "Name.",
+        type: "string",
+      },
+      type: {
+        description: "Family.",
+        $ref: "#/$defs/tool.pen.list.Family",
+      },
+      tipShape: {
+        description: "Tip shape.",
+        type: "string",
+      },
+      minSize: {
+        description: "Minimum size (du).",
+        type: "number",
+      },
+      maxSize: {
+        description: "Maximum size (du).",
+        type: "number",
+      },
+      smoothness: {
+        description: "Smoothness 0-10.",
+        type: "integer",
+        maximum: 255,
+        minimum: 0,
+      },
+      tipAngle: {
+        description: "Tip angle (degrees).",
+        type: "number",
       },
     },
-    "x-since": "1.0",
-    description: "A pen preset (10 §4.2). Unique name in the project.",
-    "x-objectType": "pen",
     required: [
-      "id",
+      "penId",
+      "name",
       "type",
+      "tipShape",
+      "minSize",
+      "maxSize",
+      "smoothness",
+      "tipAngle",
     ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "name",
-        "kind",
-        "minSize",
-        "maxSize",
-        "smoothness",
-        "tip",
-        "tipAngle",
-        "colourId",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
+  },
+  "tool.pen.list.result": {
+    title: "PenList",
+    description: "`tool.pen.list` result.",
+    type: "object",
+    properties: {
+      pens: {
+        description: "Pens in project order.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/tool.pen.list.PenEntry",
+        },
+      },
+      currentBrushPenId: {
+        description: "The current brush pen.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      currentEraserPenId: {
+        description: "The current eraser pen.",
+        type: [
+          "string",
+          "null",
         ],
       },
     },
+    required: [
+      "pens",
+    ],
   },
-  "tool.pen.set.PenKind": {
+  "tool.pen.rename.params": {
+    title: "PenRenameParams",
+    description: "`tool.pen.rename` parameters.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "The pen.",
+        type: "string",
+      },
+      name: {
+        description: "The new name.",
+        type: "string",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "penId",
+      "name",
+    ],
+  },
+  "tool.pen.rename.result": {
+    title: "PenIdName",
+    description: "`{penId, name}`.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "Pen id.",
+        type: "string",
+      },
+      name: {
+        description: "Name.",
+        type: "string",
+      },
+    },
+    required: [
+      "penId",
+      "name",
+    ],
+  },
+  "tool.pen.select.params": {
+    title: "PenParams",
+    description: "`penId`.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "The pen.",
+        type: "string",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "penId",
+    ],
+  },
+  "tool.pen.select.Family": {
+    description: "A pen family.",
     oneOf: [
       {
+        description: "Brush pens.",
         type: "string",
         const: "brush",
-        description: "Used by the Brush (and Pencil/shape thickness).",
       },
       {
+        description: "Eraser pens.",
         type: "string",
         const: "eraser",
-        description: "Used by the Eraser.",
       },
     ],
-    description: "Tool family of a pen (02 §6.1 \"Type\"). Persisted as `kind` because `type` is the envelope field (SI-004).",
   },
-  "tool.pen.set.Tip": {
-    oneOf: [
-      {
+  "tool.pen.select.result": {
+    title: "PenSelected",
+    description: "`{penId, type}`.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "The pen.",
         type: "string",
-        const: "round",
-        description: "Round nib (default).",
       },
-      {
-        type: "string",
-        const: "oval",
-        description: "Oval nib.",
+      type: {
+        description: "Its family.",
+        $ref: "#/$defs/tool.pen.select.Family",
       },
-      {
-        type: "string",
-        const: "square",
-        description: "Square nib.",
-      },
-      {
-        type: "string",
-        const: "flat",
-        description: "Flat nib.",
-      },
+    },
+    required: [
+      "penId",
+      "type",
     ],
-    description: "Tip shape (02 §6.1).",
+  },
+  "tool.pen.set.params": {
+    title: "PenSetParams",
+    description: "`tool.pen.set` parameters.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "The pen.",
+        type: "string",
+      },
+      tipShape: {
+        description: "Tip shape.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      minSize: {
+        description: "Minimum size (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
+      },
+      maxSize: {
+        description: "Maximum size (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
+      },
+      smoothness: {
+        description: "Smoothness.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 10,
+      },
+      tipAngle: {
+        description: "Tip angle (degrees).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 360,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "penId",
+    ],
   },
   "tool.pen.set.result": {
-    title: "tool.pen.set result",
+    title: "PenResult",
+    description: "`{pen}`.",
     type: "object",
     properties: {
       pen: {
-        $ref: "#/$defs/tool.pen.set.Pen",
+        description: "The pen now.",
       },
     },
     required: [
       "pen",
     ],
-    "x-spec": "`{pen}`",
-    additionalProperties: false,
+  },
+  "tool.pencil.options.set.ThicknessSource": {
+    description: "Where the line thickness comes from.",
+    oneOf: [
+      {
+        description: "The current brush pen's maximum size.",
+        type: "string",
+        const: "penMax",
+      },
+      {
+        description: "A fixed thickness.",
+        type: "string",
+        const: "fixed",
+      },
+    ],
   },
   "tool.pencil.options.set.params": {
-    title: "tool.pencil.options.set parameters",
+    title: "PencilOptions",
+    description: "Pencil and shape-tool line thickness.",
     type: "object",
     properties: {
       thicknessSource: {
-        type: "string",
-        enum: [
-          "penMax",
-          "fixed",
-        ],
+        description: "`penMax` (the current brush pen's maximum size) or `fixed`.",
+        $ref: "#/$defs/tool.pencil.options.set.ThicknessSource",
         default: "penMax",
       },
       thickness: {
-        type: "number",
+        description: "The fixed thickness (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 100,
       },
     },
     additionalProperties: false,
-    "x-spec": "`thicknessSource: enum \"penMax\"|\"fixed\" = \"penMax\"; thickness?: number (0–100)`",
   },
   "tool.pencil.options.set.result": {
-    title: "tool.pencil.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          thicknessSource: {
-            type: "string",
-            enum: [
-              "penMax",
-              "fixed",
-            ],
-            default: "penMax",
-          },
-          thickness: {
-            type: "number",
-            minimum: 0,
-            maximum: 100,
-          },
-        },
-        required: [
-          "thicknessSource",
-          "thickness",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
   "tool.placeBehind.set.params": {
-    title: "tool.placeBehind.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "tool.placeBehind.set.result": {
-    title: "tool.placeBehind.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "tool.polyline.options.set.params": {
-    title: "tool.polyline.options.set parameters",
+    title: "PolylineOptions",
+    description: "Polyline snapping.",
     type: "object",
     properties: {
       snap: {
+        description: "Snap to existing anchors.",
         type: "boolean",
         default: true,
       },
       snapRadius: {
+        description: "Snap radius in view pixels.",
         type: "number",
+        default: 8,
         minimum: 1,
         maximum: 50,
-        default: 8,
       },
     },
     additionalProperties: false,
-    "x-spec": "`snap: bool = true; snapRadius: number = 8 (1–50 view px)`",
   },
   "tool.polyline.options.set.result": {
-    title: "tool.polyline.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          snap: {
-            type: "boolean",
-            default: true,
-          },
-          snapRadius: {
-            type: "number",
-            minimum: 1,
-            maximum: 50,
-            default: 8,
-          },
-        },
-        required: [
-          "snap",
-          "snapRadius",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
+  },
+  "tool.select.options.set.RectRule": {
+    description: "Marquee and lasso rule.",
+    oneOf: [
+      {
+        description: "Wholly inside.",
+        type: "string",
+        const: "inside",
+      },
+      {
+        description: "Intersecting.",
+        type: "string",
+        const: "intersect",
+      },
+    ],
   },
   "tool.select.options.set.params": {
-    title: "tool.select.options.set parameters",
+    title: "SelectOptions",
+    description: "Select tool options.",
     type: "object",
     properties: {
       rectRule: {
-        type: "string",
-        enum: [
-          "inside",
-          "intersect",
-        ],
+        description: "`inside` (objects wholly inside) or `intersect`.",
+        $ref: "#/$defs/tool.select.options.set.RectRule",
         default: "inside",
       },
     },
     additionalProperties: false,
-    "x-spec": "`rectRule: enum \"inside\"|\"intersect\" = \"inside\"`",
   },
   "tool.select.options.set.result": {
-    title: "tool.select.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          rectRule: {
-            type: "string",
-            enum: [
-              "inside",
-              "intersect",
-            ],
-            default: "inside",
-          },
-        },
-        required: [
-          "rectRule",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
   "tool.settings.get.params": {
-    title: "tool.settings.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "tool.settings.get.result": {
-    title: "tool.settings.get result",
+    title: "Map_of_AnyValue",
     type: "object",
-    properties: {
-      placeBehind: {
-        type: "boolean",
-      },
-      drawTopLayer: {
-        type: "boolean",
-      },
-      snapToContour: {
-        type: "boolean",
-      },
-      symmetry: {
-        type: "boolean",
-      },
-      tablet: {
-        type: "boolean",
-      },
-      gapClosing: {
-        type: "string",
-        maxLength: 65536,
-      },
-    },
-    required: [
-      "placeBehind",
-      "drawTopLayer",
-      "snapToContour",
-      "symmetry",
-      "tablet",
-      "gapClosing",
-    ],
-    "x-spec": "`{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}`",
-    additionalProperties: false,
+    additionalProperties: true,
   },
   "tool.snapToContour.set.params": {
-    title: "tool.snapToContour.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "tool.snapToContour.set.result": {
-    title: "tool.snapToContour.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "tool.symmetry.set.Mode": {
     description: "Symmetry mode.",
@@ -79708,42 +79808,85 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "tool.tablet.set.params": {
-    title: "tool.tablet.set parameters",
+    title: "TabletParams",
+    description: "`tool.tablet.set` parameters.",
     type: "object",
     properties: {
       ignoreTablet: {
+        description: "The tablet acts as a mouse.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      portraitCorrection: {
+        description: "Portrait-mode correction.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      compatibilityMode: {
+        description: "Compatibility handling.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      inputInterface: {
+        description: "The input interface.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "tool.tablet.set.TabletSetting": {
+    description: "Tablet input settings (02 §6.3).",
+    type: "object",
+    properties: {
+      ignoreTablet: {
+        description: "The tablet acts as a mouse.",
         type: "boolean",
         default: false,
       },
       portraitCorrection: {
+        description: "Portrait-mode correction.",
         type: "boolean",
         default: false,
       },
       compatibilityMode: {
+        description: "Compatibility handling.",
         type: "boolean",
         default: false,
       },
       inputInterface: {
-        type: "string",
-        maxLength: 65536,
+        description: "The input interface (`null`: the platform default).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
-    additionalProperties: false,
-    "x-spec": "`ignoreTablet?: bool = false; portraitCorrection?: bool = false; compatibilityMode?: bool = false; inputInterface?: string`",
   },
   "tool.tablet.set.result": {
-    title: "tool.tablet.set result",
+    title: "TabletResult",
+    description: "`{settings, restartRequired}`.",
     type: "object",
     properties: {
       settings: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        description: "The tablet settings now.",
+        $ref: "#/$defs/tool.tablet.set.TabletSetting",
       },
       restartRequired: {
+        description: "A change applies after a restart (the input interface).",
         type: "boolean",
       },
     },
@@ -79751,200 +79894,177 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "settings",
       "restartRequired",
     ],
-    "x-spec": "`{settings, restartRequired: bool}`",
-    additionalProperties: false,
+  },
+  "tool.text.options.set.Baseline": {
+    description: "Baseline.",
+    oneOf: [
+      {
+        description: "Normal.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "Subscript.",
+        type: "string",
+        const: "subscript",
+      },
+      {
+        description: "Superscript.",
+        type: "string",
+        const: "superscript",
+      },
+    ],
+  },
+  "tool.text.options.set.Align": {
+    description: "Alignment.",
+    oneOf: [
+      {
+        description: "Left.",
+        type: "string",
+        const: "left",
+      },
+      {
+        description: "Centre.",
+        type: "string",
+        const: "centre",
+      },
+      {
+        description: "Right.",
+        type: "string",
+        const: "right",
+      },
+      {
+        description: "Justified.",
+        type: "string",
+        const: "justify",
+      },
+    ],
   },
   "tool.text.options.set.params": {
-    title: "tool.text.options.set parameters",
+    title: "TextOptions",
+    description: "Text defaults for new text (02 §7.6.1).",
     type: "object",
     properties: {
       font: {
-        type: "string",
-        maxLength: 65536,
+        description: "Font family.",
+        type: [
+          "string",
+          "null",
+        ],
       },
       size: {
-        type: "number",
-        minimum: 1,
+        description: "Size.",
+        type: [
+          "number",
+          "null",
+        ],
         maximum: 512,
-        default: 36,
+        minimum: 1,
       },
       bold: {
-        type: "boolean",
-        default: false,
+        description: "Bold.",
+        type: [
+          "boolean",
+          "null",
+        ],
       },
       italic: {
-        type: "boolean",
-        default: false,
+        description: "Italic.",
+        type: [
+          "boolean",
+          "null",
+        ],
       },
       baseline: {
-        type: "string",
-        enum: [
-          "normal",
-          "subscript",
-          "superscript",
-        ],
-        default: "normal",
-      },
-      kerning: {
-        type: "integer",
-        minimum: -60,
-        maximum: 60,
-        default: 0,
-      },
-      autoKern: {
-        type: "boolean",
-        default: true,
-      },
-      align: {
-        type: "string",
-        enum: [
-          "left",
-          "centre",
-          "right",
-          "justify",
-        ],
-        default: "left",
-      },
-      leftMargin: {
-        type: "number",
-        default: 0,
-      },
-      rightMargin: {
-        type: "number",
-        default: 0,
-      },
-      indent: {
-        type: "number",
-        default: 0,
-      },
-      lineSpacing: {
-        type: "number",
-        default: 0,
-      },
-      outlineColourId: {
+        description: "Baseline.",
         anyOf: [
           {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
+            $ref: "#/$defs/tool.text.options.set.Baseline",
           },
           {
             type: "null",
           },
         ],
       },
+      kerning: {
+        description: "Kerning.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 60,
+        minimum: -60,
+      },
+      autoKern: {
+        description: "Automatic kerning.",
+        type: [
+          "boolean",
+          "null",
+        ],
+      },
+      align: {
+        description: "Alignment.",
+        anyOf: [
+          {
+            $ref: "#/$defs/tool.text.options.set.Align",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      leftMargin: {
+        description: "Left margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      rightMargin: {
+        description: "Right margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      indent: {
+        description: "First-line indent (du).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      lineSpacing: {
+        description: "Extra line spacing (du).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      outlineColourId: {
+        description: "Outline colour of new text (`null`: none). Absent leaves it; `null` clears it (ruling D-7e).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
     },
     additionalProperties: false,
-    "x-spec": "`font?: string; size?: number (1–512) = 36; bold?: bool = false; italic?: bool = false; baseline?: enum \"normal\"|\"subscript\"|\"superscript\" = \"normal\"; kerning?: int (−60–60) = 0; autoKern?: bool = true; align?: enum \"left\"|\"centre\"|\"right\"|\"justify\" = \"left\"; leftMargin?: number = 0; rightMargin?: number = 0; indent?: number = 0; lineSpacing?: number = 0; outlineColourId?: id|null`",
   },
   "tool.text.options.set.result": {
-    title: "tool.text.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          font: {
-            type: "string",
-            maxLength: 65536,
-          },
-          size: {
-            type: "number",
-            minimum: 1,
-            maximum: 512,
-            default: 36,
-          },
-          bold: {
-            type: "boolean",
-            default: false,
-          },
-          italic: {
-            type: "boolean",
-            default: false,
-          },
-          baseline: {
-            type: "string",
-            enum: [
-              "normal",
-              "subscript",
-              "superscript",
-            ],
-            default: "normal",
-          },
-          kerning: {
-            type: "integer",
-            minimum: -60,
-            maximum: 60,
-            default: 0,
-          },
-          autoKern: {
-            type: "boolean",
-            default: true,
-          },
-          align: {
-            type: "string",
-            enum: [
-              "left",
-              "centre",
-              "right",
-              "justify",
-            ],
-            default: "left",
-          },
-          leftMargin: {
-            type: "number",
-            default: 0,
-          },
-          rightMargin: {
-            type: "number",
-            default: 0,
-          },
-          indent: {
-            type: "number",
-            default: 0,
-          },
-          lineSpacing: {
-            type: "number",
-            default: 0,
-          },
-          outlineColourId: {
-            anyOf: [
-              {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              {
-                type: "null",
-              },
-            ],
-          },
-        },
-        required: [
-          "font",
-          "size",
-          "bold",
-          "italic",
-          "baseline",
-          "kerning",
-          "autoKern",
-          "align",
-          "leftMargin",
-          "rightMargin",
-          "indent",
-          "lineSpacing",
-          "outlineColourId",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
   "ui.contextHelpMode.set.params": {
     title: "Enabled",
@@ -80379,571 +80499,759 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "view.active.set.params": {
-    title: "view.active.set parameters",
+    title: "ActiveParams",
+    description: "`view.active.set` parameters.",
     type: "object",
     properties: {
       viewId: {
+        description: "The view window to activate.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "viewId",
     ],
-    additionalProperties: false,
-    "x-spec": "`viewId: id`",
   },
   "view.active.set.result": {
-    title: "view.active.set result",
+    title: "ViewIdResult",
+    description: "`{viewId}`.",
     type: "object",
     properties: {
       viewId: {
+        description: "View id.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "viewId",
     ],
-    "x-spec": "`{viewId}`",
+  },
+  "view.coordinates.convert.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "view.coordinates.convert.Space": {
+    description: "A space a view converts between.",
+    oneOf: [
+      {
+        description: "View pixels (y down).",
+        type: "string",
+        const: "view",
+      },
+      {
+        description: "Drawing space of the view's drawing (du, y up).",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space (fields) under the current element's transform at the current frame.",
+        type: "string",
+        const: "scene",
+      },
+    ],
   },
   "view.coordinates.convert.params": {
-    title: "view.coordinates.convert parameters",
+    title: "ConvertParams",
+    description: "`view.coordinates.convert` parameters.",
     type: "object",
     properties: {
       viewId: {
+        description: "View window.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "The point.",
+        $ref: "#/$defs/view.coordinates.convert.Point",
       },
       from: {
-        type: "string",
-        enum: [
-          "view",
-          "drawing",
-          "scene",
-        ],
+        description: "Its space.",
+        $ref: "#/$defs/view.coordinates.convert.Space",
       },
       to: {
-        type: "string",
-        enum: [
-          "view",
-          "drawing",
-          "scene",
-        ],
+        description: "The space wanted.",
+        $ref: "#/$defs/view.coordinates.convert.Space",
       },
     },
+    additionalProperties: false,
     required: [
       "viewId",
       "point",
       "from",
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`viewId: id; point: point; from: enum \"view\"|\"drawing\"|\"scene\"; to: enum \"view\"|\"drawing\"|\"scene\"`",
   },
   "view.coordinates.convert.result": {
-    title: "view.coordinates.convert result",
+    title: "PointResult",
+    description: "`{point}`.",
     type: "object",
     properties: {
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "The converted point.",
+        $ref: "#/$defs/view.coordinates.convert.Point",
       },
     },
     required: [
       "point",
     ],
-    "x-spec": "`{point}`",
-    additionalProperties: false,
   },
   "view.list.params": {
-    title: "view.list parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
-  "view.list.result": {
-    title: "view.list result",
-    type: "array",
-    items: {
-      type: "object",
-      properties: {
-        viewId: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        panelId: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        type: {
-          type: "string",
-          maxLength: 65536,
-        },
-        focused: {
-          type: "boolean",
-        },
-        size: {
-          type: "object",
-          properties: {
-            width: {
-              type: "number",
-            },
-            height: {
-              type: "number",
-            },
-          },
-          required: [
-            "width",
-            "height",
-          ],
-          additionalProperties: false,
-        },
-        transform: {
-          type: [
-            "string",
-            "number",
-            "boolean",
-            "null",
-          ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
-          "x-specIssue": "SI-042",
-        },
-      },
-      required: [
-        "viewId",
-        "panelId",
-        "type",
-        "focused",
-        "size",
-        "transform",
-      ],
-      additionalProperties: false,
-    },
-    "x-spec": "`[{viewId, panelId, type, focused, size: {width, height}, transform}]`",
-  },
-  "view.pan.set.params": {
-    title: "view.pan.set parameters",
+  "view.list.ViewEntry": {
+    description: "A view window entry.",
     type: "object",
     properties: {
       viewId: {
+        description: "View id (= its panel id, SI-112).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      panelId: {
+        description: "Panel id.",
+        type: "string",
+      },
+      type: {
+        description: "Current type.",
+        $ref: "#/$defs/view.list.ViewType",
+      },
+      focused: {
+        description: "The active view window.",
+        type: "boolean",
+      },
+      size: {
+        description: "Canvas size in logical pixels.",
+        $ref: "#/$defs/view.list.Size",
+      },
+      transform: {
+        description: "The current type's transform.",
+        $ref: "#/$defs/view.list.ViewTransform",
+      },
+    },
+    required: [
+      "viewId",
+      "panelId",
+      "type",
+      "focused",
+      "size",
+      "transform",
+    ],
+  },
+  "view.list.ViewType": {
+    description: "A view window's type (01 §4, §5.3).",
+    oneOf: [
+      {
+        description: "Drawing view.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Camera view.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "Top view.",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "Side view.",
+        type: "string",
+        const: "side",
+      },
+    ],
+  },
+  "view.list.Size": {
+    description: "A size in logical pixels.",
+    type: "object",
+    properties: {
+      width: {
+        description: "Width.",
+        type: "number",
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "width",
+      "height",
+    ],
+  },
+  "view.list.ViewTransform": {
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
+    type: "object",
+    properties: {
+      zoom: {
+        description: "Zoom factor (1 = 100 %).",
+        type: "number",
+      },
+      rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
+        type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.list.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "zoom",
+      "rotationDegrees",
+      "centre",
+    ],
+  },
+  "view.list.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "view.list.result": {
+    title: "Array_of_ViewEntry",
+    type: "array",
+    items: {
+      $ref: "#/$defs/view.list.ViewEntry",
+    },
+  },
+  "view.pan.set.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "view.pan.set.params": {
+    title: "PanParams",
+    description: "`view.pan.set` parameters.",
+    type: "object",
+    properties: {
+      viewId: {
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
         ],
-        additionalProperties: false,
+        default: null,
+      },
+      centre: {
+        description: "The document point to centre on.",
+        anyOf: [
+          {
+            $ref: "#/$defs/view.pan.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
       },
       by: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "A pan by view pixels (the content moves by this offset).",
+        anyOf: [
+          {
+            $ref: "#/$defs/view.pan.set.Point",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
-        description: "(view pixels)",
+        default: null,
       },
       atPointer: {
+        description: "Centre on the pointer.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id; centre?: point; by?: point (view pixels); atPointer: bool = false`",
   },
   "view.pan.set.result": {
-    title: "view.pan.set result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.pan.set.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre}`",
-    additionalProperties: false,
   },
   "view.rotation.set.params": {
-    title: "view.rotation.set parameters",
+    title: "RotationParams",
+    description: "`view.rotation.set` parameters.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       degrees: {
-        type: "number",
+        description: "Absolute rotation in degrees (clockwise positive in the view).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: -360,
         maximum: 360,
       },
       steps: {
-        type: "integer",
+        description: "30° steps (clockwise = +1).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: -12,
+        maximum: 12,
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id; degrees?: number (−360–360); steps?: int`",
+  },
+  "view.rotation.set.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "view.rotation.set.result": {
-    title: "view.rotation.set result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.rotation.set.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre}`",
-    additionalProperties: false,
   },
   "view.transform.get.params": {
-    title: "view.transform.get parameters",
+    title: "ViewParams",
+    description: "`viewId?`.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id`",
+  },
+  "view.transform.get.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "view.transform.get.result": {
-    title: "view.transform.get result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.transform.get.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre: point}`",
-    additionalProperties: false,
+  },
+  "view.transform.reset.Part": {
+    description: "A part of a view transform.",
+    oneOf: [
+      {
+        description: "Zoom back to 100 %.",
+        type: "string",
+        const: "zoom",
+      },
+      {
+        description: "Rotation back to 0°.",
+        type: "string",
+        const: "rotation",
+      },
+      {
+        description: "Recentre on the drawing centre.",
+        type: "string",
+        const: "pan",
+      },
+    ],
   },
   "view.transform.reset.params": {
-    title: "view.transform.reset parameters",
+    title: "ResetParams",
+    description: "`view.transform.reset` parameters.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       parts: {
+        description: "Parts to reset.",
         type: "array",
         items: {
-          type: "string",
-          enum: [
-            "zoom",
-            "rotation",
-            "pan",
-          ],
+          $ref: "#/$defs/view.transform.reset.Part",
         },
-        maxItems: 100000,
-        default: [
-          "zoom",
-          "rotation",
-          "pan",
-        ],
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id; parts: [enum \"zoom\"|\"rotation\"|\"pan\"] = [\"zoom\",\"rotation\",\"pan\"]`",
+  },
+  "view.transform.reset.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "view.transform.reset.result": {
-    title: "view.transform.reset result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.transform.reset.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre}`",
-    additionalProperties: false,
+  },
+  "view.type.set.TypeParam": {
+    description: "A view type, or `previous` (switch active view, 01 §4).",
+    oneOf: [
+      {
+        description: "Drawing view.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Camera view.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "Top view.",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "Side view.",
+        type: "string",
+        const: "side",
+      },
+      {
+        description: "The type before the last switch.",
+        type: "string",
+        const: "previous",
+      },
+    ],
   },
   "view.type.set.params": {
-    title: "view.type.set parameters",
+    title: "TypeParams",
+    description: "`view.type.set` parameters.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       type: {
-        type: "string",
-        enum: [
-          "drawing",
-          "camera",
-          "top",
-          "side",
-          "previous",
-        ],
+        description: "The type.",
+        $ref: "#/$defs/view.type.set.TypeParam",
       },
     },
+    additionalProperties: false,
     required: [
       "type",
     ],
-    additionalProperties: false,
-    "x-spec": "`viewId?: id; type: enum \"drawing\"|\"camera\"|\"top\"|\"side\"|\"previous\"`",
+  },
+  "view.type.set.ViewType": {
+    description: "A view window's type (01 §4, §5.3).",
+    oneOf: [
+      {
+        description: "Drawing view.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Camera view.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "Top view.",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "Side view.",
+        type: "string",
+        const: "side",
+      },
+    ],
   },
   "view.type.set.result": {
-    title: "view.type.set result",
+    title: "TypeResult",
+    description: "`{viewId, type}`.",
     type: "object",
     properties: {
       viewId: {
+        description: "View id.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       type: {
-        type: "string",
+        description: "Its type now.",
+        $ref: "#/$defs/view.type.set.ViewType",
       },
     },
     required: [
       "viewId",
       "type",
     ],
-    "x-spec": "`{viewId, type}`",
+  },
+  "view.zoom.set.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "view.zoom.set.params": {
-    title: "view.zoom.set parameters",
+    title: "ZoomParams",
+    description: "`view.zoom.set` parameters.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       zoom: {
-        type: "number",
+        description: "Absolute zoom factor.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0.0625,
         maximum: 64,
       },
       steps: {
-        type: "integer",
+        description: "Table steps (zoom in = +1, zoom out = −1).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: -64,
+        maximum: 64,
       },
       anchor: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "The view point that stays fixed (view pixels; default the view centre).",
+        anyOf: [
+          {
+            $ref: "#/$defs/view.zoom.set.Point",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
-        description: "(view pixels)",
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id; zoom?: number (0.0625–64); steps?: int; anchor?: point (view pixels)`",
   },
   "view.zoom.set.result": {
-    title: "view.zoom.set result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
-        minimum: 0.0625,
-        maximum: 64,
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.zoom.set.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre}`",
-    additionalProperties: false,
   },
   "window.floatingPanels.set.params": {
     title: "Visible",
@@ -93640,7 +93948,7 @@ export interface draw_vectorize_run_result {
 
 /** `draw.viewMapping.get` parameters. */
 export interface draw_viewMapping_get_params {
-  /** The view (`drawing`; views arrive with M4 C4.2). */
+  /** The view: `drawing` (the Drawing view window) or a view id. */
   view?: string;
 }
 
@@ -93668,201 +93976,369 @@ export interface draw_viewMapping_get_result {
   viewSize: draw_viewMapping_get_ViewSize;
 }
 
+/** `{enabled}`. */
 export interface drawAid_autoLightTable_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface drawAid_autoLightTable_set_result {
+  /** On. */
   enabled: boolean;
 }
 
+/** `drawAid.background.set` parameters. */
 export interface drawAid_background_set_params {
-  /** #RRGGBB or #RRGGBBAA */
-  colour?: string;
-  useSceneColour?: boolean;
+  /** Colour (`#RRGGBB` or `#RRGGBBAA`). */
+  colour?: string | null;
+  /** Use the scene's background colour. */
+  useSceneColour?: boolean | null;
 }
 
-export interface drawAid_background_set_result {
-  /** #RRGGBB or #RRGGBBAA */
-  colour: string;
-  useSceneColour: boolean;
-}
+export type drawAid_background_set_result = unknown;
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type drawAid_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `drawAid.changed` payload. */
 export interface drawAid_changed_result {
+  /** The aid (`grid`, `onionSkin`, `onionSkinStyle`, `autoLightTable`, `staticLightTable`, `lightTableShade`, `staticLightTablePanel`, `strokes`, `currentOnTop`, `selectionDisplay`, `background`). */
   aid: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  state: Record<string, unknown>;
+  /** Its state now. */
+  state: unknown;
 }
 
+/** `{enabled}`. */
 export interface drawAid_currentOnTop_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface drawAid_currentOnTop_set_result {
+  /** On. */
   enabled: boolean;
 }
 
+/** Grid type (02 §10.1). */
+export type drawAid_grid_set_GridType = 'normal' | 'field12' | 'field16';
+
+/** `drawAid.grid.set` parameters. */
 export interface drawAid_grid_set_params {
+  /** Shown. */
+  visible?: boolean | null;
+  /** The grid type. */
+  type?: drawAid_grid_set_GridType | null;
+  /** Drawn over the drawings. */
+  overlay?: boolean | null;
+}
+
+export type drawAid_grid_set_result = unknown;
+
+/** `drawAid.lightTableShade.set` parameters. */
+export interface drawAid_lightTableShade_set_params {
+  /** Shade the auto light table. */
+  auto?: boolean | null;
+  /** Shade static light-table entries. */
+  static?: boolean | null;
+}
+
+export type drawAid_lightTableShade_set_result = unknown;
+
+/** `drawAid.onionSkin.set` parameters. */
+export interface drawAid_onionSkin_set_params {
+  /** Master switch. */
+  enabled?: boolean | null;
+  /** Previous drawings shown (0-3). */
+  previous?: number | null;
+  /** Next drawings shown (0-3). */
+  next?: number | null;
+}
+
+export type drawAid_onionSkin_set_result = unknown;
+
+/** Onion-skin direction. */
+export type drawAid_onionSkinCycle_run_Direction = 'previous' | 'next';
+
+/** `drawAid.onionSkinCycle.run` parameters. */
+export interface drawAid_onionSkinCycle_run_params {
+  /** Which count to cycle. */
+  direction: drawAid_onionSkinCycle_run_Direction;
+}
+
+/** `{previous, next}`. */
+export interface drawAid_onionSkinCycle_run_result {
+  /** Previous drawings shown. */
+  previous: number | bigint;
+  /** Next drawings shown. */
+  next: number | bigint;
+}
+
+/** `drawAid.onionSkinStyle.set` parameters. */
+export interface drawAid_onionSkinStyle_set_params {
+  /** Outlines only. */
+  outline?: boolean | null;
+  /** Semi-transparent. */
+  transparency?: boolean | null;
+  /** Tinted. */
+  colourShading?: boolean | null;
+  /** Tint of previous drawings (`#RRGGBB` or `#RRGGBBAA`). */
+  previousColour?: string | null;
+  /** Tint of next drawings. */
+  nextColour?: string | null;
+}
+
+/** `{style}`. */
+export interface drawAid_onionSkinStyle_set_result {
+  /** The appearance now. */
+  style: unknown;
+}
+
+/** `drawAid.selectionDisplay.set` parameters. */
+export interface drawAid_selectionDisplay_set_params {
+  /** Outline on selection. */
+  outlineOnSelection?: boolean | null;
+  /** Box highlighting. */
+  boxHighlighting?: boolean | null;
+  /** Keep the selection visible. */
+  keepSelectionVisible?: boolean | null;
+}
+
+/** `{settings}`. */
+export interface drawAid_selectionDisplay_set_result {
+  /** The selection display now. */
+  settings: unknown;
+}
+
+/** No parameters. */
+export type drawAid_state_get_params = Record<string, unknown>;
+
+/** The grid (02 §10.1). */
+export interface drawAid_state_get_Grid {
+  /** Shown. */
   visible?: boolean;
-  type?: 'normal' | 'field12' | 'field16';
+  /** `normal`, `field12` or `field16`. */
+  type?: string;
+  /** Drawn over the drawings. */
   overlay?: boolean;
 }
 
-export interface drawAid_grid_set_result {
-  visible: boolean;
-  type: string;
-  overlay: boolean;
-}
-
-export interface drawAid_lightTableShade_set_params {
-  auto?: boolean;
-  static?: boolean;
-}
-
-export interface drawAid_lightTableShade_set_result {
-  auto: boolean;
-  static: boolean;
-}
-
-export interface drawAid_onionSkin_set_params {
+/** Onion skin (02 §10.2). */
+export interface drawAid_state_get_OnionSkin {
+  /** Master switch. */
   enabled?: boolean;
-  previous?: number;
-  next?: number;
+  /** Previous drawings, 0-3. */
+  previous?: number | bigint;
+  /** Next drawings, 0-3. */
+  next?: number | bigint;
 }
 
-export interface drawAid_onionSkin_set_result {
-  enabled: boolean;
-  previous: number;
-  next: number;
-}
-
-export interface drawAid_onionSkinCycle_run_params {
-  direction: 'previous' | 'next';
-}
-
-export interface drawAid_onionSkinCycle_run_result {
-  previous: string;
-  next: string;
-}
-
-export interface drawAid_onionSkinStyle_set_params {
+/** Onion-skin appearance (02 §10.2). */
+export interface drawAid_state_get_OnionSkinStyle {
+  /** Outlines only. */
   outline?: boolean;
+  /** Semi-transparent. */
   transparency?: boolean;
+  /** Tinted. */
   colourShading?: boolean;
-  /** #RRGGBB or #RRGGBBAA */
+  /** Tint of previous drawings. */
   previousColour?: string;
-  /** #RRGGBB or #RRGGBBAA */
+  /** Tint of next drawings. */
   nextColour?: string;
 }
 
-export interface drawAid_onionSkinStyle_set_result {
-  style: string;
+/** One static light-table entry. */
+export interface drawAid_state_get_Entry {
+  /** Entry id. */
+  entryId: string;
+  /** The source drawing. */
+  sourceId: string;
+  /** `drawing` or `image` (by the source element's type). */
+  sourceKind: string;
+  /** Shown. */
+  visible: boolean;
+  /** Overlay or underlay. */
+  placement: drawAid_state_get_Placement;
 }
 
-export interface drawAid_selectionDisplay_set_params {
+/** Overlay or underlay. */
+export type drawAid_state_get_Placement = 'overlay' | 'underlay';
+
+/** Light-table shading (02 §10.3-10.4). */
+export interface drawAid_state_get_Shade {
+  /** The auto light table is washed out. */
+  auto?: boolean;
+  /** Static light-table entries are washed out. */
+  static?: boolean;
+}
+
+/** Camera-view selection display (02 §10.7). */
+export interface drawAid_state_get_SelectionDisplay {
+  /** Outline on selection. */
   outlineOnSelection?: boolean;
+  /** Box highlighting. */
   boxHighlighting?: boolean;
+  /** Selection always visible (SI-117: 02 §10.7's default off is kept). */
   keepSelectionVisible?: boolean;
 }
 
-export interface drawAid_selectionDisplay_set_result {
-  settings: string[];
+/** Drawing View background (02 §10.7). */
+export interface drawAid_state_get_Background {
+  /** Colour. */
+  colour?: string;
+  /** Use the scene's background colour instead. */
+  useSceneColour?: boolean;
 }
 
-export type drawAid_state_get_params = Record<string, unknown>;
-
+/** `drawAid.state.get` result. */
 export interface drawAid_state_get_result {
-  grid: boolean;
-  onionSkin: boolean;
-  onionSkinStyle: string;
+  /** Grid. */
+  grid: drawAid_state_get_Grid;
+  /** Onion skin. */
+  onionSkin: drawAid_state_get_OnionSkin;
+  /** Onion-skin appearance. */
+  onionSkinStyle: drawAid_state_get_OnionSkinStyle;
+  /** Auto light table. */
   autoLightTable: boolean;
-  staticLightTable: boolean;
-  lightTableShade: number;
+  /** The current scene's static light table. */
+  staticLightTable: drawAid_state_get_Entry[];
+  /** Light-table shading. */
+  lightTableShade: drawAid_state_get_Shade;
+  /** Show Strokes. */
   strokes: boolean;
+  /** Current drawing on top. */
   currentOnTop: boolean;
-  selectionDisplay: boolean;
-  background: string;
+  /** Selection display. */
+  selectionDisplay: drawAid_state_get_SelectionDisplay;
+  /** Background. */
+  background: drawAid_state_get_Background;
 }
 
+/** Overlay or underlay. */
+export type drawAid_staticLightTable_add_Placement = 'overlay' | 'underlay';
+
+/** `drawAid.staticLightTable.add` parameters. */
 export interface drawAid_staticLightTable_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  frame?: number | bigint;
-  placement?: 'overlay' | 'underlay';
+  /** The drawing (default: the drawing at `elementId` and `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell is sent (default: the current element). */
+  elementId?: string | null;
+  /** The frame of that cell (default: the current frame). */
+  frame?: number | null;
+  /** Overlay or underlay. */
+  placement?: drawAid_staticLightTable_add_Placement;
+  /** Shown. */
   visible?: boolean;
 }
 
+/** `{entryId}`. */
 export interface drawAid_staticLightTable_add_result {
-  /** object ID or path reference (10 §3) */
+  /** The new entry. */
   entryId: string;
 }
 
+/** `drawAid.staticLightTable.list` parameters. */
 export interface drawAid_staticLightTable_list_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
+  /** The scene (default: the current scene). */
+  sceneId?: string | null;
 }
 
+/** One static light-table entry. */
+export interface drawAid_staticLightTable_list_Entry {
+  /** Entry id. */
+  entryId: string;
+  /** The source drawing. */
+  sourceId: string;
+  /** `drawing` or `image` (by the source element's type). */
+  sourceKind: string;
+  /** Shown. */
+  visible: boolean;
+  /** Overlay or underlay. */
+  placement: drawAid_staticLightTable_list_Placement;
+}
+
+/** Overlay or underlay. */
+export type drawAid_staticLightTable_list_Placement = 'overlay' | 'underlay';
+
+/** `{entries}`. */
 export interface drawAid_staticLightTable_list_result {
-  entries: ({
-    /** object ID or path reference (10 §3) */
-    entryId: string;
-    /** object ID or path reference (10 §3) */
-    sourceId: string;
-    sourceKind: string;
-    visible: boolean;
-    placement: string;
-  })[];
+  /** The scene's entries now. */
+  entries: drawAid_staticLightTable_list_Entry[];
 }
 
+/** `drawAid.staticLightTable.remove` parameters. */
 export interface drawAid_staticLightTable_remove_params {
-  entryIds?: string[];
+  /** Entries to delete. */
+  entryIds?: string[] | null;
+  /** Delete every entry. */
   all?: boolean;
 }
 
+/** `{removedEntryIds}`. */
 export interface drawAid_staticLightTable_remove_result {
+  /** The entries removed (sources untouched). */
   removedEntryIds: string[];
 }
 
+/** Overlay or underlay. */
+export type drawAid_staticLightTable_set_Placement = 'overlay' | 'underlay';
+
+/** `drawAid.staticLightTable.set` parameters. */
 export interface drawAid_staticLightTable_set_params {
-  entryIds?: string[];
+  /** Entries to change. */
+  entryIds?: string[] | null;
+  /** Change every entry. */
   all?: boolean;
-  visible?: boolean;
-  placement?: 'overlay' | 'underlay';
-  /** object ID or path reference (10 §3) */
-  onlyVisibleEntryId?: string;
+  /** Show or hide them. */
+  visible?: boolean | null;
+  /** Overlay or underlay them. */
+  placement?: drawAid_staticLightTable_set_Placement | null;
+  /** Show only this entry (hide all others). */
+  onlyVisibleEntryId?: string | null;
 }
 
+/** One static light-table entry. */
+export interface drawAid_staticLightTable_set_Entry {
+  /** Entry id. */
+  entryId: string;
+  /** The source drawing. */
+  sourceId: string;
+  /** `drawing` or `image` (by the source element's type). */
+  sourceKind: string;
+  /** Shown. */
+  visible: boolean;
+  /** Overlay or underlay. */
+  placement: drawAid_staticLightTable_set_Placement;
+}
+
+/** `{entries}`. */
 export interface drawAid_staticLightTable_set_result {
-  entries: ({
-    /** object ID or path reference (10 §3) */
-    entryId: string;
-    /** object ID or path reference (10 §3) */
-    sourceId: string;
-    sourceKind: string;
-    visible: boolean;
-    placement: string;
-  })[];
+  /** The scene's entries now. */
+  entries: drawAid_staticLightTable_set_Entry[];
 }
 
+/** `{visible}`. */
 export interface drawAid_staticLightTablePanel_set_params {
+  /** Shown. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface drawAid_staticLightTablePanel_set_result {
+  /** Shown. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface drawAid_strokes_set_params {
+  /** Shown. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface drawAid_strokes_set_result {
+  /** Shown. */
   visible: boolean;
 }
 
@@ -102781,325 +103257,376 @@ export interface timeline_view_set_result {
   lastFrame: number;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type tool_active_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `tool.active.changed` payload. */
 export interface tool_active_changed_result {
+  /** The active tool. */
   toolId: string;
+  /** A temporary override. */
   temporary: boolean;
 }
 
+/** No parameters. */
 export type tool_active_get_params = Record<string, unknown>;
 
+/** `tool.active.get` result. */
 export interface tool_active_get_result {
+  /** The active tool. */
   toolId: string;
-  temporaryToolId: string | null;
+  /** A temporary override in force (`null`: none; overrides are held by the GUI while a key is held). */
+  temporaryToolId?: string | null;
+  /** Its group. */
   group: string;
 }
 
+/** `tool.active.set` parameters. */
 export interface tool_active_set_params {
-  toolId: 'select' | 'contourEditor' | 'perspective' | 'repositionAll' | 'brush' | 'pencil' | 'rectangle' | 'ellipse' | 'polyline' | 'line' | 'paint' | 'unpaint' | 'paintUnpainted' | 'dropper' | 'closeGap' | 'stroke' | 'editTexture' | 'eraser' | 'cutter' | 'scissor' | 'zoom' | 'grabber' | 'text';
-}
-
-export interface tool_active_set_result {
+  /** The tool. */
   toolId: string;
 }
 
+/** `{toolId}`. */
+export interface tool_active_set_result {
+  /** The active tool. */
+  toolId: string;
+}
+
+/** `penId`. */
 export interface tool_brush_options_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The pen. */
   penId: string;
 }
 
+/** `{options}`. */
 export interface tool_brush_options_set_result {
-  options: {
-    /** object ID or path reference (10 §3) */
-    penId: string;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** `{enabled}`. */
 export interface tool_drawTopLayer_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface tool_drawTopLayer_set_result {
+  /** On. */
   enabled: boolean;
 }
 
+/** `penId`. */
 export interface tool_eraser_options_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The pen. */
   penId: string;
 }
 
+/** `{options}`. */
 export interface tool_eraser_options_set_result {
-  options: {
-    /** object ID or path reference (10 §3) */
-    penId: string;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** A tool group (02 §5.1). */
+export type tool_group_select_Group = 'select' | 'brush' | 'paint' | 'eraser' | 'navigate' | 'text';
+
+/** `tool.group.select` parameters. */
 export interface tool_group_select_params {
-  group: 'select' | 'brush' | 'paint' | 'eraser' | 'navigate' | 'text';
+  /** The group. */
+  group: tool_group_select_Group;
+  /** Advance within the group if it is already active (group cycling). */
   advance?: boolean;
 }
 
+/** `{toolId}`. */
 export interface tool_group_select_result {
-  /** object ID or path reference (10 §3) */
+  /** The active tool. */
   toolId: string;
 }
 
+/** No parameters. */
 export type tool_list_params = Record<string, unknown>;
 
+/** One tool. */
+export interface tool_list_ToolEntry {
+  /** Tool id. */
+  toolId: string;
+  /** Its group. */
+  group: string;
+  /** Current options (empty: the tool has none). */
+  options: Record<string, unknown>;
+  /** The options' schema. */
+  optionSchema: unknown;
+}
+
+/** `tool.list` result. */
 export interface tool_list_result {
-  tools: ({
-    /** object ID or path reference (10 §3) */
-    toolId: string;
-    group: string;
-    /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-    options: Record<string, unknown>;
-    /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-    optionSchema: Record<string, unknown>;
-  })[];
-  /** object ID or path reference (10 §3) */
+  /** Every tool in palette order. */
+  tools: tool_list_ToolEntry[];
+  /** The active tool. */
   activeToolId: string;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type tool_options_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `tool.options.changed` payload. */
 export interface tool_options_changed_result {
-  toolId: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  /** The tool (`null` for a global drawing setting). */
+  toolId?: string | null;
+  /** The options or settings now. */
   options: Record<string, unknown>;
 }
 
+/** `toolId`. */
 export interface tool_options_get_params {
+  /** The tool. */
   toolId: string;
 }
 
+/** `{toolId, options}`. */
 export interface tool_options_get_result {
+  /** The tool. */
   toolId: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  /** Its options. */
   options: Record<string, unknown>;
 }
 
+/** `tool.options.set` parameters. */
 export interface tool_options_set_params {
+  /** The tool. */
   toolId: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  /** Options to set. */
   options: Record<string, unknown>;
 }
 
+/** `{toolId, options}`. */
 export interface tool_options_set_result {
+  /** The tool. */
   toolId: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  /** Its options. */
   options: Record<string, unknown>;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type tool_pen_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** A pen change. */
+export type tool_pen_changed_PenChange = 'created' | 'modified' | 'deleted' | 'selected';
+
+/** `tool.pen.changed` payload. */
 export interface tool_pen_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The pen. */
   penId: string;
-  change: 'created' | 'modified' | 'deleted' | 'selected';
+  /** What changed. */
+  change: tool_pen_changed_PenChange;
 }
 
+/** A pen family. */
+export type tool_pen_create_Family = 'brush' | 'eraser';
+
+/** `tool.pen.create` parameters. */
 export interface tool_pen_create_params {
-  type?: 'brush' | 'eraser';
-  /** object ID or path reference (10 §3) Default: current. */
-  fromPenId?: string;
-  name?: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  settings?: Record<string, unknown>;
+  /** Family. */
+  type?: tool_pen_create_Family;
+  /** The pen to copy (default: the family's current pen). */
+  fromPenId?: string | null;
+  /** Name (default: the next free "Pen n" or "Eraser n"). */
+  name?: string | null;
+  /** Settings over the copied ones (`tipShape`, `minSize`, `maxSize`, `smoothness`, `tipAngle`). */
+  settings?: Record<string, unknown> | null;
 }
 
+/** `{penId, name}`. */
 export interface tool_pen_create_result {
-  /** object ID or path reference (10 §3) */
+  /** Pen id. */
   penId: string;
+  /** Name. */
   name: string;
 }
 
+/** `penId`. */
 export interface tool_pen_delete_params {
-  /** object ID or path reference (10 §3) */
+  /** The pen. */
   penId: string;
 }
 
+/** `tool.pen.delete` result. */
 export interface tool_pen_delete_result {
-  /** object ID or path reference (10 §3) */
+  /** The removed pen. */
   removedPenId: string;
-  /** object ID or path reference (10 §3) */
-  currentPenId: string;
+  /** The family's current pen now. */
+  currentPenId?: string | null;
 }
 
+/** A pen family. */
+export type tool_pen_list_Family = 'brush' | 'eraser';
+
+/** `tool.pen.list` parameters. */
 export interface tool_pen_list_params {
-  type?: 'brush' | 'eraser';
+  /** Only pens of this family. */
+  type?: tool_pen_list_Family | null;
 }
 
-export interface tool_pen_list_result {
-  pens: ({
-    /** object ID or path reference (10 §3) */
-    penId: string;
-    name: string;
-    type: string;
-    tipShape: string;
-    minSize: number;
-    maxSize: number;
-    smoothness: number;
-    tipAngle: number;
-  })[];
-  /** object ID or path reference (10 §3) */
-  currentBrushPenId: string;
-  /** object ID or path reference (10 §3) */
-  currentEraserPenId: string;
-}
-
-export interface tool_pen_rename_params {
-  /** object ID or path reference (10 §3) */
+/** One pen. */
+export interface tool_pen_list_PenEntry {
+  /** Pen id. */
   penId: string;
+  /** Name. */
   name: string;
-}
-
-export interface tool_pen_rename_result {
-  /** object ID or path reference (10 §3) */
-  penId: string;
-  name: string;
-}
-
-export interface tool_pen_select_params {
-  /** object ID or path reference (10 §3) */
-  penId: string;
-}
-
-export interface tool_pen_select_result {
-  /** object ID or path reference (10 §3) */
-  penId: string;
-  type: string;
-}
-
-export interface tool_pen_set_params {
-  /** object ID or path reference (10 §3) */
-  penId: string;
-  tipShape?: 'round' | 'oval' | 'square' | 'flat';
-  minSize?: number;
-  maxSize?: number;
-  smoothness?: number;
-  tipAngle?: number;
-}
-
-/** Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim. */
-export type tool_pen_set_Ext = Record<string, unknown>;
-
-export type tool_pen_set_Id = string;
-
-/** A pen preset (10 §4.2). Unique name in the project. */
-export interface tool_pen_set_Pen {
-  /** Immutable ID. */
-  id: tool_pen_set_Id;
-  /** Always `pen`. */
-  type: 'pen';
-  /** Revision of the last change (10 REV-02). */
-  rev: number | bigint;
-  /** Unique in the project; default `Pen <n>`. */
-  name: string;
-  /** Brush or eraser pen (02 §6.1; SI-004). */
-  kind: tool_pen_set_PenKind;
-  /** Width at lowest pressure, 0–100 du; `minSize ≤ maxSize`. */
-  minSize: number;
-  /** Width at full pressure, 0–100 du. */
-  maxSize: number;
-  /** Curve-fitting tolerance and pressure smoothing, 0–10 (10 §4.2: int). */
-  smoothness: number;
+  /** Family. */
+  type: tool_pen_list_Family;
   /** Tip shape. */
-  tip: tool_pen_set_Tip;
-  /** Orientation of non-round tips, 0–360 degrees (02 §6.1; SI-004). */
+  tipShape: string;
+  /** Minimum size (du). */
+  minSize: number;
+  /** Maximum size (du). */
+  maxSize: number;
+  /** Smoothness 0-10. */
+  smoothness: number;
+  /** Tip angle (degrees). */
   tipAngle: number;
-  /** Colour bound to the pen; `null` = use the current colour. */
-  colourId: tool_pen_set_Id | null;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: tool_pen_set_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
 }
 
-/** A `tool_pen_set_Pen` reduced to its stub (10 §2.2). */
-export interface tool_pen_set_PenStub {
-  id: tool_pen_set_Id;
-  type: 'pen';
-  name?: string;
+/** `tool.pen.list` result. */
+export interface tool_pen_list_result {
+  /** Pens in project order. */
+  pens: tool_pen_list_PenEntry[];
+  /** The current brush pen. */
+  currentBrushPenId?: string | null;
+  /** The current eraser pen. */
+  currentEraserPenId?: string | null;
 }
 
-/** Tool family of a pen (02 §6.1 "Type"). Persisted as `kind` because `type` is the envelope field (SI-004). */
-export type tool_pen_set_PenKind = 'brush' | 'eraser';
+/** `tool.pen.rename` parameters. */
+export interface tool_pen_rename_params {
+  /** The pen. */
+  penId: string;
+  /** The new name. */
+  name: string;
+}
 
-/** Tip shape (02 §6.1). */
-export type tool_pen_set_Tip = 'round' | 'oval' | 'square' | 'flat';
+/** `{penId, name}`. */
+export interface tool_pen_rename_result {
+  /** Pen id. */
+  penId: string;
+  /** Name. */
+  name: string;
+}
 
+/** `penId`. */
+export interface tool_pen_select_params {
+  /** The pen. */
+  penId: string;
+}
+
+/** A pen family. */
+export type tool_pen_select_Family = 'brush' | 'eraser';
+
+/** `{penId, type}`. */
+export interface tool_pen_select_result {
+  /** The pen. */
+  penId: string;
+  /** Its family. */
+  type: tool_pen_select_Family;
+}
+
+/** `tool.pen.set` parameters. */
+export interface tool_pen_set_params {
+  /** The pen. */
+  penId: string;
+  /** Tip shape. */
+  tipShape?: string | null;
+  /** Minimum size (du). */
+  minSize?: number | null;
+  /** Maximum size (du). */
+  maxSize?: number | null;
+  /** Smoothness. */
+  smoothness?: number | null;
+  /** Tip angle (degrees). */
+  tipAngle?: number | null;
+}
+
+/** `{pen}`. */
 export interface tool_pen_set_result {
-  pen: tool_pen_set_Pen | tool_pen_set_PenStub;
+  /** The pen now. */
+  pen: unknown;
 }
 
+/** Where the line thickness comes from. */
+export type tool_pencil_options_set_ThicknessSource = 'penMax' | 'fixed';
+
+/** Pencil and shape-tool line thickness. */
 export interface tool_pencil_options_set_params {
-  thicknessSource?: 'penMax' | 'fixed';
-  thickness?: number;
+  /** `penMax` (the current brush pen's maximum size) or `fixed`. */
+  thicknessSource?: tool_pencil_options_set_ThicknessSource;
+  /** The fixed thickness (du). */
+  thickness?: number | null;
 }
 
+/** `{options}`. */
 export interface tool_pencil_options_set_result {
-  options: {
-    thicknessSource: 'penMax' | 'fixed';
-    thickness: number;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** `{enabled}`. */
 export interface tool_placeBehind_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface tool_placeBehind_set_result {
+  /** On. */
   enabled: boolean;
 }
 
+/** Polyline snapping. */
 export interface tool_polyline_options_set_params {
+  /** Snap to existing anchors. */
   snap?: boolean;
+  /** Snap radius in view pixels. */
   snapRadius?: number;
 }
 
+/** `{options}`. */
 export interface tool_polyline_options_set_result {
-  options: {
-    snap: boolean;
-    snapRadius: number;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** Marquee and lasso rule. */
+export type tool_select_options_set_RectRule = 'inside' | 'intersect';
+
+/** Select tool options. */
 export interface tool_select_options_set_params {
-  rectRule?: 'inside' | 'intersect';
+  /** `inside` (objects wholly inside) or `intersect`. */
+  rectRule?: tool_select_options_set_RectRule;
 }
 
+/** `{options}`. */
 export interface tool_select_options_set_result {
-  options: {
-    rectRule: 'inside' | 'intersect';
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** No parameters. */
 export type tool_settings_get_params = Record<string, unknown>;
 
-export interface tool_settings_get_result {
-  placeBehind: boolean;
-  drawTopLayer: boolean;
-  snapToContour: boolean;
-  symmetry: boolean;
-  tablet: boolean;
-  gapClosing: string;
-}
+export type tool_settings_get_result = Record<string, unknown>;
 
+/** `{enabled}`. */
 export interface tool_snapToContour_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface tool_snapToContour_set_result {
+  /** On. */
   enabled: boolean;
 }
 
@@ -103126,50 +103653,78 @@ export interface tool_symmetry_set_result {
   mirrors: number | bigint;
 }
 
+/** `tool.tablet.set` parameters. */
 export interface tool_tablet_set_params {
-  ignoreTablet?: boolean;
-  portraitCorrection?: boolean;
-  compatibilityMode?: boolean;
-  inputInterface?: string;
+  /** The tablet acts as a mouse. */
+  ignoreTablet?: boolean | null;
+  /** Portrait-mode correction. */
+  portraitCorrection?: boolean | null;
+  /** Compatibility handling. */
+  compatibilityMode?: boolean | null;
+  /** The input interface. */
+  inputInterface?: string | null;
 }
 
+/** Tablet input settings (02 §6.3). */
+export interface tool_tablet_set_TabletSetting {
+  /** The tablet acts as a mouse. */
+  ignoreTablet?: boolean;
+  /** Portrait-mode correction. */
+  portraitCorrection?: boolean;
+  /** Compatibility handling. */
+  compatibilityMode?: boolean;
+  /** The input interface (`null`: the platform default). */
+  inputInterface?: string | null;
+}
+
+/** `{settings, restartRequired}`. */
 export interface tool_tablet_set_result {
-  settings: string[];
+  /** The tablet settings now. */
+  settings: tool_tablet_set_TabletSetting;
+  /** A change applies after a restart (the input interface). */
   restartRequired: boolean;
 }
 
+/** Baseline. */
+export type tool_text_options_set_Baseline = 'normal' | 'subscript' | 'superscript';
+
+/** Alignment. */
+export type tool_text_options_set_Align = 'left' | 'centre' | 'right' | 'justify';
+
+/** Text defaults for new text (02 §7.6.1). */
 export interface tool_text_options_set_params {
-  font?: string;
-  size?: number;
-  bold?: boolean;
-  italic?: boolean;
-  baseline?: 'normal' | 'subscript' | 'superscript';
-  kerning?: number;
-  autoKern?: boolean;
-  align?: 'left' | 'centre' | 'right' | 'justify';
-  leftMargin?: number;
-  rightMargin?: number;
-  indent?: number;
-  lineSpacing?: number;
+  /** Font family. */
+  font?: string | null;
+  /** Size. */
+  size?: number | null;
+  /** Bold. */
+  bold?: boolean | null;
+  /** Italic. */
+  italic?: boolean | null;
+  /** Baseline. */
+  baseline?: tool_text_options_set_Baseline | null;
+  /** Kerning. */
+  kerning?: number | null;
+  /** Automatic kerning. */
+  autoKern?: boolean | null;
+  /** Alignment. */
+  align?: tool_text_options_set_Align | null;
+  /** Left margin (du). */
+  leftMargin?: number | null;
+  /** Right margin (du). */
+  rightMargin?: number | null;
+  /** First-line indent (du). */
+  indent?: number | null;
+  /** Extra line spacing (du). */
+  lineSpacing?: number | null;
+  /** Outline colour of new text (`null`: none). Absent leaves it; `null` clears it (ruling D-7e). */
   outlineColourId?: string | null;
 }
 
+/** `{options}`. */
 export interface tool_text_options_set_result {
-  options: {
-    font: string;
-    size: number;
-    bold: boolean;
-    italic: boolean;
-    baseline: 'normal' | 'subscript' | 'superscript';
-    kerning: number;
-    autoKern: boolean;
-    align: 'left' | 'centre' | 'right' | 'justify';
-    leftMargin: number;
-    rightMargin: number;
-    indent: number;
-    lineSpacing: number;
-    outlineColourId: string | null;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
 /** `{enabled}`. */
@@ -103343,151 +103898,258 @@ export interface ui_tips_set_result {
   suppressed: boolean;
 }
 
+/** `view.active.set` parameters. */
 export interface view_active_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The view window to activate. */
   viewId: string;
 }
 
+/** `{viewId}`. */
 export interface view_active_set_result {
-  /** object ID or path reference (10 §3) */
+  /** View id. */
   viewId: string;
 }
 
+/** A point in document or view coordinates. */
+export interface view_coordinates_convert_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** A space a view converts between. */
+export type view_coordinates_convert_Space = 'view' | 'drawing' | 'scene';
+
+/** `view.coordinates.convert` parameters. */
 export interface view_coordinates_convert_params {
-  /** object ID or path reference (10 §3) */
+  /** View window. */
   viewId: string;
-  point: {
-    x: number;
-    y: number;
-  };
-  from: 'view' | 'drawing' | 'scene';
-  to: 'view' | 'drawing' | 'scene';
+  /** The point. */
+  point: view_coordinates_convert_Point;
+  /** Its space. */
+  from: view_coordinates_convert_Space;
+  /** The space wanted. */
+  to: view_coordinates_convert_Space;
 }
 
+/** `{point}`. */
 export interface view_coordinates_convert_result {
-  point: {
-    x: number;
-    y: number;
-  };
+  /** The converted point. */
+  point: view_coordinates_convert_Point;
 }
 
+/** No parameters. */
 export type view_list_params = Record<string, unknown>;
 
-export type view_list_result = ({
-  /** object ID or path reference (10 §3) */
+/** A view window entry. */
+export interface view_list_ViewEntry {
+  /** View id (= its panel id, SI-112). */
   viewId: string;
-  /** object ID or path reference (10 §3) */
+  /** Panel id. */
   panelId: string;
-  type: string;
+  /** Current type. */
+  type: view_list_ViewType;
+  /** The active view window. */
   focused: boolean;
-  size: {
-    width: number;
-    height: number;
-  };
-  /** type not stated by the owning section (spec issue); a scalar */
-  transform: string | number | boolean | null;
-})[];
+  /** Canvas size in logical pixels. */
+  size: view_list_Size;
+  /** The current type's transform. */
+  transform: view_list_ViewTransform;
+}
 
+/** A view window's type (01 §4, §5.3). */
+export type view_list_ViewType = 'drawing' | 'camera' | 'top' | 'side';
+
+/** A size in logical pixels. */
+export interface view_list_Size {
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
+export interface view_list_ViewTransform {
+  /** Zoom factor (1 = 100 %). */
+  zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
+  rotationDegrees: number;
+  /** Document point at the view centre. */
+  centre: view_list_Point;
+}
+
+/** A point in document or view coordinates. */
+export interface view_list_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+export type view_list_result = view_list_ViewEntry[];
+
+/** A point in document or view coordinates. */
+export interface view_pan_set_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** `view.pan.set` parameters. */
 export interface view_pan_set_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  centre?: {
-    x: number;
-    y: number;
-  };
-  /** (view pixels) */
-  by?: {
-    x: number;
-    y: number;
-  };
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** The document point to centre on. */
+  centre?: view_pan_set_Point | null;
+  /** A pan by view pixels (the content moves by this offset). */
+  by?: view_pan_set_Point | null;
+  /** Centre on the pointer. */
   atPointer?: boolean;
 }
 
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_pan_set_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_pan_set_Point;
 }
 
+/** `view.rotation.set` parameters. */
 export interface view_rotation_set_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  degrees?: number;
-  steps?: number | bigint;
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** Absolute rotation in degrees (clockwise positive in the view). */
+  degrees?: number | null;
+  /** 30° steps (clockwise = +1). */
+  steps?: number | null;
 }
 
+/** A point in document or view coordinates. */
+export interface view_rotation_set_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_rotation_set_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_rotation_set_Point;
 }
 
+/** `viewId?`. */
 export interface view_transform_get_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
+  /** View window (default: the active one). */
+  viewId?: string | null;
 }
 
+/** A point in document or view coordinates. */
+export interface view_transform_get_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_transform_get_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_transform_get_Point;
 }
 
+/** A part of a view transform. */
+export type view_transform_reset_Part = 'zoom' | 'rotation' | 'pan';
+
+/** `view.transform.reset` parameters. */
 export interface view_transform_reset_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  parts?: ('zoom' | 'rotation' | 'pan')[];
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** Parts to reset. */
+  parts?: view_transform_reset_Part[];
 }
 
+/** A point in document or view coordinates. */
+export interface view_transform_reset_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_transform_reset_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_transform_reset_Point;
 }
 
+/** A view type, or `previous` (switch active view, 01 §4). */
+export type view_type_set_TypeParam = 'drawing' | 'camera' | 'top' | 'side' | 'previous';
+
+/** `view.type.set` parameters. */
 export interface view_type_set_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  type: 'drawing' | 'camera' | 'top' | 'side' | 'previous';
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** The type. */
+  type: view_type_set_TypeParam;
 }
 
+/** A view window's type (01 §4, §5.3). */
+export type view_type_set_ViewType = 'drawing' | 'camera' | 'top' | 'side';
+
+/** `{viewId, type}`. */
 export interface view_type_set_result {
-  /** object ID or path reference (10 §3) */
+  /** View id. */
   viewId: string;
-  type: string;
+  /** Its type now. */
+  type: view_type_set_ViewType;
 }
 
+/** A point in document or view coordinates. */
+export interface view_zoom_set_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** `view.zoom.set` parameters. */
 export interface view_zoom_set_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  zoom?: number;
-  steps?: number | bigint;
-  /** (view pixels) */
-  anchor?: {
-    x: number;
-    y: number;
-  };
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** Absolute zoom factor. */
+  zoom?: number | null;
+  /** Table steps (zoom in = +1, zoom out = −1). */
+  steps?: number | null;
+  /** The view point that stays fixed (view pixels; default the view centre). */
+  anchor?: view_zoom_set_Point | null;
 }
 
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_zoom_set_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_zoom_set_Point;
 }
 
 /** `{visible}` parameters and result. */

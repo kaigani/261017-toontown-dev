@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_2c67c3f311ef4ee253378a7e",
+        "confirmationId": "cf_587fef261068720ad9684f71",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-1f4ff2",
+            "sessionId": "s1-b5991a",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-13T03:16:11.270Z",
+            "connectedAt": "2026-11-14T11:50:49.730Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_18b10509289136c626127369",
-            "sessionId": "s1-1f4ff2",
+            "confirmationId": "cf_92f49066963e965428c2e099",
+            "sessionId": "s1-b5991a",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-a30bf5",
+        "sessionId": "s1-96f843",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-0c3def"
+          "s1-da3760"
         ]
       },
       "varies": [
@@ -1902,7 +1902,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-13T03:16:12.638Z",
+          "createdAt": "2026-11-14T11:50:52.887Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -2315,7 +2315,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-13T03:16:13.211Z",
+          "exportedAt": "2026-11-14T11:50:53.667Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -7102,6 +7102,214 @@
       "varies": []
     }
   ],
+  "drawAid.autoLightTable.set": [
+    {
+      "title": "Show the other elements' drawings",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.background.set": [
+    {
+      "title": "A white background",
+      "result": {
+        "colour": "#FFFFFFFF",
+        "useSceneColour": false
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.currentOnTop.set": [
+    {
+      "title": "Edit with the current drawing on top",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.grid.set": [
+    {
+      "title": "Show the 12-field grid",
+      "result": {
+        "visible": true,
+        "type": "field12",
+        "overlay": false
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.lightTableShade.set": [
+    {
+      "title": "Unshaded static entries",
+      "result": {
+        "auto": true,
+        "static": false
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.onionSkin.set": [
+    {
+      "title": "Onion skin with two previous drawings",
+      "result": {
+        "enabled": true,
+        "previous": 2,
+        "next": 0
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.onionSkinCycle.run": [
+    {
+      "title": "One more previous drawing (3 wraps to 0)",
+      "result": {
+        "previous": 2,
+        "next": 0
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.onionSkinStyle.set": [
+    {
+      "title": "Outlined onion skins",
+      "result": {
+        "style": {
+          "outline": true,
+          "transparency": true,
+          "colourShading": true,
+          "previousColour": "#FF0000FF",
+          "nextColour": "#00C000FF"
+        }
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.selectionDisplay.set": [
+    {
+      "title": "Outline selected elements",
+      "result": {
+        "settings": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        }
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.state.get": [
+    {
+      "title": "The state of every drawing aid",
+      "result": {
+        "grid": {
+          "visible": false,
+          "type": "normal",
+          "overlay": false
+        },
+        "onionSkin": {
+          "enabled": false,
+          "previous": 1,
+          "next": 0
+        },
+        "onionSkinStyle": {
+          "outline": false,
+          "transparency": true,
+          "colourShading": true,
+          "previousColour": "#FF0000FF",
+          "nextColour": "#00C000FF"
+        },
+        "autoLightTable": false,
+        "staticLightTable": [],
+        "lightTableShade": {
+          "auto": true,
+          "static": true
+        },
+        "strokes": false,
+        "currentOnTop": false,
+        "selectionDisplay": {
+          "outlineOnSelection": false,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "background": {
+          "colour": "#F0F0F0FF",
+          "useSceneColour": false
+        }
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.staticLightTable.add": [
+    {
+      "title": "Bob's frame 1 under the work",
+      "result": {
+        "entryId": "lt1"
+      },
+      "varies": []
+    },
+    {
+      "title": "Bob's frame 3 over the work, hidden",
+      "result": {
+        "entryId": "lt1"
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.staticLightTable.list": [
+    {
+      "title": "The current scene's entries",
+      "result": {
+        "entries": []
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.staticLightTable.remove": [
+    {
+      "title": "Delete every entry",
+      "result": {
+        "removedEntryIds": []
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.staticLightTable.set": [
+    {
+      "title": "Overlay all",
+      "result": {
+        "entries": []
+      },
+      "varies": []
+    },
+    {
+      "title": "Hide all",
+      "result": {
+        "entries": []
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.staticLightTablePanel.set": [
+    {
+      "title": "Show the panel",
+      "result": {
+        "visible": true
+      },
+      "varies": []
+    }
+  ],
+  "drawAid.strokes.set": [
+    {
+      "title": "Show invisible strokes and open ends",
+      "result": {
+        "visible": true
+      },
+      "varies": []
+    }
+  ],
   "edit.clipboard.get": [
     {
       "title": "Kind and item count",
@@ -7185,7 +7393,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-13T03:16:14.591Z",
+            "time": "2026-11-14T11:50:55.429Z",
             "objectCount": 1
           },
           {
@@ -7193,7 +7401,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-13T03:16:14.591Z",
+            "time": "2026-11-14T11:50:55.430Z",
             "objectCount": 1
           }
         ],
@@ -8571,6 +8779,38 @@
       "varies": []
     }
   ],
+  "inspect.screenshot": [
+    {
+      "title": "The active view",
+      "result": {
+        "png": "iVBORw0KGgoAAAANSUhEUgAAB4AAAAQ4CAYAAADo08FDAAAoxklEQVR4nOzZAQ0AIBAAIefsn/UbaA5vUIMzM3cBAAAAAAAA8L29AAAAAAAAAEgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAAARAhgAAAAAAAAgQgADAAAAAAAARAhgAAAAAAAAgAgBDAAAAAAAABAhgAEAAAAAAAAiBDAAAAAAAABAhAAGAAAAAAAAiBDAAAAAAAAAABECGAAAAAAAACBCAAMAAAAAAABECGAAAAAAAACACAEMAAAAAAAAECGAAQAAAAAAACIEMAAAAAAAAECEAAYAAAAAAACIEMAAAAAAAAAAEQIYAAAAAAAAIEIAAwAAAAAAAEQIYAAAAAAAAIAIAQwAAAAAAAAQIYABAAAAAAAAIgQwAAAAAAAAQIQABgAAAAAAAIgQwAAAAAAAAPDaswMZAAAAgEH+1vf4SiOYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMCGAAQAAAAAAACYEMAAAAAAAAMCEAAYAAAAAAACYEMAAAAAAAAAAEwIYAAAAAAAAYEIAAwAAAAAAAEwIYAAAAAAAAIAJAQwAAAAAAAAwIYABAAAAAAAAJgQwAAAAAAAAwIQABgAAAAAAAJgQwAAAAAAAAAATAhgAAAAAAABgQgADAAAAAAAATAhgAAAAAAAAgAkBDAAAAAAAADAhgAEAAAAAAAAmBDAAAAAAAADAhAAGAAAAAAAAmBDAAAAAAAAAABMCGAAAAAAAAGBCAAMAAAAAAABMCGAAAAAAAACACQEMAAAAAAAAMBG/TwxCNPuWZQAAAABJRU5ErkJggg==",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "43bc8e94a1210eaea9dab86b6912388d56a1928be91d550730ae90660066b0ab",
+        "target": "window",
+        "viewId": "drawingView",
+        "source": "virtual",
+        "drawingId": null,
+        "note": "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by the interactive renderer only (06 §6.10)"
+      },
+      "varies": []
+    },
+    {
+      "title": "A 400 x 300 region of the Drawing view",
+      "result": {
+        "png": "iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAYAAADtt+XCAAAEEklEQVR4nO3VMQ0AIBAAMULwr/UdgAZubk30zMxdAPBpLwAIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAEoEAkAgEgEQgACQCASARCACJQABIBAJAIhAAkgejiQYqYv+ajQAAAABJRU5ErkJggg==",
+        "width": 400,
+        "height": 300,
+        "sha256": "156ff50f77ceb7498ec9602bf122118163db5a9cee60430de125ff8fc9e09e64",
+        "target": "drawingView",
+        "viewId": "drawingView",
+        "source": "virtual",
+        "drawingId": null,
+        "note": "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by the interactive renderer only (06 §6.10)"
+      },
+      "varies": []
+    }
+  ],
   "inspect.ui.tree": [
     {
       "title": "The window's UI tree, 3 levels",
@@ -8772,8 +9012,8 @@
                 "viewId": "drawingView",
                 "type": "drawing",
                 "size": {
-                  "width": 960.0,
-                  "height": 540.0
+                  "width": 1920.0,
+                  "height": 1080.0
                 },
                 "transform": {
                   "zoom": 1.0,
@@ -9041,7 +9281,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-13T03:16:15.502Z",
+        "startedAt": "2026-11-14T11:50:56.551Z",
         "result": {},
         "session": "user"
       },
@@ -9060,7 +9300,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-13T03:16:15.514Z",
+          "startedAt": "2026-11-14T11:50:56.563Z",
           "result": {},
           "session": "user"
         }
@@ -9079,7 +9319,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-13T03:16:15.525Z",
+        "startedAt": "2026-11-14T11:50:56.575Z",
         "result": {},
         "session": "user"
       },
@@ -9346,10 +9586,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M79EFT2SKNDQA0S3Z655JEZV",
-        "sceneId": "sc_01M79EFT2SKNDQA0S3Z655JF3Z",
-        "cameraId": "el_01M79EFT2SKNDQA0S3Z655JF41",
-        "elementId": "el_01M79EFT2SKNDQA0S3Z655JF42"
+        "projectId": "pr_01M7CYAYCHZ1GWTBFGJGCP4GT5",
+        "sceneId": "sc_01M7CYAYCHZ1GWTBFGJGCP4GY9",
+        "cameraId": "el_01M7CYAYCHZ1GWTBFGJGCP4GYB",
+        "elementId": "el_01M7CYAYCHZ1GWTBFGJGCP4GYC"
       },
       "varies": [
         "/cameraId",
@@ -9605,7 +9845,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-13T03:16:16.411Z",
+          "lastOpened": "2026-11-14T11:50:57.517Z",
           "exists": true
         }
       ],
@@ -9763,6 +10003,733 @@
       "varies": []
     }
   ],
+  "tool.active.get": [
+    {
+      "title": "The active tool",
+      "result": {
+        "toolId": "select",
+        "temporaryToolId": null,
+        "group": "select"
+      },
+      "varies": []
+    }
+  ],
+  "tool.active.set": [
+    {
+      "title": "The Brush tool",
+      "result": {
+        "toolId": "brush"
+      },
+      "varies": []
+    }
+  ],
+  "tool.brush.options.set": [
+    {
+      "title": "Make Pen 1 the current brush pen",
+      "result": {
+        "options": {
+          "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB"
+        }
+      },
+      "varies": []
+    }
+  ],
+  "tool.drawTopLayer.set": [
+    {
+      "title": "Draw on the top layer",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
+  "tool.eraser.options.set": [
+    {
+      "title": "Make Eraser 1 the current eraser pen",
+      "result": {
+        "options": {
+          "penId": "pen_01K742SG0FT229CARSCZ4GF2DT"
+        }
+      },
+      "varies": []
+    }
+  ],
+  "tool.group.select": [
+    {
+      "title": "The Brush group (cycling when it is active)",
+      "result": {
+        "toolId": "brush"
+      },
+      "varies": []
+    }
+  ],
+  "tool.list": [
+    {
+      "title": "Every drawing tool with its options",
+      "result": {
+        "tools": [
+          {
+            "toolId": "select",
+            "group": "select",
+            "options": {
+              "rectRule": "inside"
+            },
+            "optionSchema": {
+              "type": "object",
+              "properties": {
+                "rectRule": {
+                  "enum": [
+                    "inside",
+                    "intersect"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "contourEditor",
+            "group": "select",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "perspective",
+            "group": "select",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "repositionAll",
+            "group": "select",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "brush",
+            "group": "brush",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "pencil",
+            "group": "brush",
+            "options": {
+              "thicknessSource": "penMax",
+              "thickness": null
+            },
+            "optionSchema": {
+              "type": "object",
+              "properties": {
+                "thicknessSource": {
+                  "enum": [
+                    "penMax",
+                    "fixed"
+                  ]
+                },
+                "thickness": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "rectangle",
+            "group": "brush",
+            "options": {
+              "thicknessSource": "penMax",
+              "thickness": null
+            },
+            "optionSchema": {
+              "type": "object",
+              "properties": {
+                "thicknessSource": {
+                  "enum": [
+                    "penMax",
+                    "fixed"
+                  ]
+                },
+                "thickness": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "ellipse",
+            "group": "brush",
+            "options": {
+              "thicknessSource": "penMax",
+              "thickness": null
+            },
+            "optionSchema": {
+              "type": "object",
+              "properties": {
+                "thicknessSource": {
+                  "enum": [
+                    "penMax",
+                    "fixed"
+                  ]
+                },
+                "thickness": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "polyline",
+            "group": "brush",
+            "options": {
+              "snap": true,
+              "snapRadius": 8,
+              "thicknessSource": "penMax",
+              "thickness": null
+            },
+            "optionSchema": {
+              "type": "object",
+              "properties": {
+                "snap": {
+                  "type": "boolean"
+                },
+                "snapRadius": {
+                  "type": "number",
+                  "minimum": 1,
+                  "maximum": 50
+                },
+                "thicknessSource": {
+                  "enum": [
+                    "penMax",
+                    "fixed"
+                  ]
+                },
+                "thickness": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "line",
+            "group": "brush",
+            "options": {
+              "thicknessSource": "penMax",
+              "thickness": null
+            },
+            "optionSchema": {
+              "type": "object",
+              "properties": {
+                "thicknessSource": {
+                  "enum": [
+                    "penMax",
+                    "fixed"
+                  ]
+                },
+                "thickness": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "paint",
+            "group": "paint",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "unpaint",
+            "group": "paint",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "paintUnpainted",
+            "group": "paint",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "dropper",
+            "group": "paint",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "closeGap",
+            "group": "paint",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "stroke",
+            "group": "paint",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "editTexture",
+            "group": "paint",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "eraser",
+            "group": "eraser",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "cutter",
+            "group": "eraser",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "scissor",
+            "group": "eraser",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "zoom",
+            "group": "navigate",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "grabber",
+            "group": "navigate",
+            "options": {},
+            "optionSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "toolId": "text",
+            "group": "text",
+            "options": {
+              "font": null,
+              "size": 36,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0,
+              "autoKern": true,
+              "align": "left",
+              "leftMargin": 0,
+              "rightMargin": 0,
+              "indent": 0,
+              "lineSpacing": 0,
+              "outlineColourId": null
+            },
+            "optionSchema": {
+              "type": "object",
+              "properties": {
+                "font": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "size": {
+                  "type": "number",
+                  "minimum": 1,
+                  "maximum": 512
+                },
+                "bold": {
+                  "type": "boolean"
+                },
+                "italic": {
+                  "type": "boolean"
+                },
+                "baseline": {
+                  "enum": [
+                    "normal",
+                    "subscript",
+                    "superscript"
+                  ]
+                },
+                "kerning": {
+                  "type": "integer",
+                  "minimum": -60,
+                  "maximum": 60
+                },
+                "autoKern": {
+                  "type": "boolean"
+                },
+                "align": {
+                  "enum": [
+                    "left",
+                    "centre",
+                    "right",
+                    "justify"
+                  ]
+                },
+                "leftMargin": {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                },
+                "rightMargin": {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                },
+                "indent": {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                },
+                "lineSpacing": {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                },
+                "outlineColourId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        ],
+        "activeToolId": "select"
+      },
+      "varies": []
+    }
+  ],
+  "tool.options.get": [
+    {
+      "title": "The Select tool's options",
+      "result": {
+        "toolId": "select",
+        "options": {
+          "rectRule": "inside"
+        }
+      },
+      "varies": []
+    }
+  ],
+  "tool.options.set": [
+    {
+      "title": "Polyline snapping radius",
+      "result": {
+        "toolId": "polyline",
+        "options": {
+          "snap": true,
+          "snapRadius": 12,
+          "thicknessSource": "penMax",
+          "thickness": null
+        }
+      },
+      "varies": []
+    }
+  ],
+  "tool.pen.create": [
+    {
+      "title": "A new brush pen from the current one",
+      "result": {
+        "penId": "pen_01K7JJN800RXHD55052GG3NDRM",
+        "name": "Pen 3"
+      },
+      "varies": []
+    },
+    {
+      "title": "A wide eraser",
+      "result": {
+        "penId": "pen_01K7JJN800RXHD55052GG3NDRM",
+        "name": "Wide"
+      },
+      "varies": []
+    }
+  ],
+  "tool.pen.delete": [
+    {
+      "title": "Delete Pen 2",
+      "result": {
+        "removedPenId": "pen_01K742SG0ESMKZYV37X0CGJXWA",
+        "currentPenId": "pen_01K742SG0DE4TVDEDEXW6JVXXB"
+      },
+      "varies": []
+    }
+  ],
+  "tool.pen.list": [
+    {
+      "title": "Every pen of the project",
+      "result": {
+        "pens": [
+          {
+            "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01K742SG0ESMKZYV37X0CGJXWA",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "flat",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 30.0
+          },
+          {
+            "penId": "pen_01K742SG0FT229CARSCZ4GF2DT",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+        "currentEraserPenId": "pen_01K742SG0FT229CARSCZ4GF2DT"
+      },
+      "varies": []
+    },
+    {
+      "title": "The eraser pens",
+      "result": {
+        "pens": [
+          {
+            "penId": "pen_01K742SG0FT229CARSCZ4GF2DT",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+        "currentEraserPenId": "pen_01K742SG0FT229CARSCZ4GF2DT"
+      },
+      "varies": []
+    }
+  ],
+  "tool.pen.rename": [
+    {
+      "title": "Rename Pen 1",
+      "result": {
+        "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+        "name": "Fine"
+      },
+      "varies": []
+    }
+  ],
+  "tool.pen.select": [
+    {
+      "title": "Make Pen 2 current",
+      "result": {
+        "penId": "pen_01K742SG0ESMKZYV37X0CGJXWA",
+        "type": "brush"
+      },
+      "varies": []
+    }
+  ],
+  "tool.pen.set": [
+    {
+      "title": "A wider Pen 2",
+      "result": {
+        "pen": {
+          "id": "pen_01K742SG0ESMKZYV37X0CGJXWA",
+          "type": "pen",
+          "rev": 1,
+          "name": "Pen 2",
+          "kind": "brush",
+          "minSize": 1.0,
+          "maxSize": 6.0,
+          "smoothness": 3,
+          "tip": "flat",
+          "tipAngle": 30.0,
+          "colourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+        }
+      },
+      "varies": []
+    }
+  ],
+  "tool.pencil.options.set": [
+    {
+      "title": "A fixed line thickness of 3 du",
+      "result": {
+        "options": {
+          "thicknessSource": "fixed",
+          "thickness": 3.0
+        }
+      },
+      "varies": []
+    }
+  ],
+  "tool.placeBehind.set": [
+    {
+      "title": "Draw behind the existing art",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
+  "tool.polyline.options.set": [
+    {
+      "title": "Snap within 12 view pixels",
+      "result": {
+        "options": {
+          "snap": true,
+          "snapRadius": 12.0,
+          "thicknessSource": "penMax",
+          "thickness": null
+        }
+      },
+      "varies": []
+    }
+  ],
+  "tool.select.options.set": [
+    {
+      "title": "Select objects the marquee touches",
+      "result": {
+        "options": {
+          "rectRule": "intersect"
+        }
+      },
+      "varies": []
+    }
+  ],
+  "tool.settings.get": [
+    {
+      "title": "Every global drawing-tool setting",
+      "result": {
+        "placeBehind": false,
+        "drawTopLayer": false,
+        "snapToContour": false,
+        "symmetry": {
+          "mode": "none",
+          "angle": 0.0,
+          "mirrors": 6
+        },
+        "tablet": {
+          "ignoreTablet": false,
+          "portraitCorrection": false,
+          "compatibilityMode": false,
+          "inputInterface": null
+        },
+        "gapClosing": "off"
+      },
+      "varies": []
+    }
+  ],
+  "tool.snapToContour.set": [
+    {
+      "title": "Snap the Contour Editor to contours",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
   "tool.symmetry.set": [
     {
       "title": "A kaleidoscope of 8 mirrors at 15°",
@@ -9779,6 +10746,44 @@
         "mode": "mirror",
         "angle": 0.0,
         "mirrors": 6
+      },
+      "varies": []
+    }
+  ],
+  "tool.tablet.set": [
+    {
+      "title": "Ignore tablet input",
+      "result": {
+        "settings": {
+          "ignoreTablet": true,
+          "portraitCorrection": false,
+          "compatibilityMode": false,
+          "inputInterface": null
+        },
+        "restartRequired": false
+      },
+      "varies": []
+    }
+  ],
+  "tool.text.options.set": [
+    {
+      "title": "New text 48 du bold",
+      "result": {
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": true,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 0,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
       },
       "varies": []
     }
@@ -9940,6 +10945,243 @@
       "result": {
         "messageId": "timing.elementsHiddenInDrawingMode",
         "suppressed": true
+      },
+      "varies": []
+    }
+  ],
+  "view.active.set": [
+    {
+      "title": "Activate the Drawing view",
+      "result": {
+        "viewId": "drawingView"
+      },
+      "varies": []
+    }
+  ],
+  "view.coordinates.convert": [
+    {
+      "title": "A Drawing-view pixel in drawing space",
+      "result": {
+        "point": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "varies": []
+    }
+  ],
+  "view.list": [
+    {
+      "title": "The four view windows",
+      "result": [
+        {
+          "viewId": "cameraView",
+          "panelId": "cameraView",
+          "type": "camera",
+          "focused": true,
+          "size": {
+            "width": 960.0,
+            "height": 540.0
+          },
+          "transform": {
+            "zoom": 1.0,
+            "rotationDegrees": 0.0,
+            "centre": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        },
+        {
+          "viewId": "drawingView",
+          "panelId": "drawingView",
+          "type": "drawing",
+          "focused": false,
+          "size": {
+            "width": 1920.0,
+            "height": 1080.0
+          },
+          "transform": {
+            "zoom": 1.0,
+            "rotationDegrees": 0.0,
+            "centre": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        },
+        {
+          "viewId": "topView",
+          "panelId": "topView",
+          "type": "top",
+          "focused": false,
+          "size": {
+            "width": 960.0,
+            "height": 540.0
+          },
+          "transform": {
+            "zoom": 1.0,
+            "rotationDegrees": 0.0,
+            "centre": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        },
+        {
+          "viewId": "sideView",
+          "panelId": "sideView",
+          "type": "side",
+          "focused": false,
+          "size": {
+            "width": 960.0,
+            "height": 540.0
+          },
+          "transform": {
+            "zoom": 1.0,
+            "rotationDegrees": 0.0,
+            "centre": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        }
+      ],
+      "varies": []
+    }
+  ],
+  "view.pan.set": [
+    {
+      "title": "Centre the view on a drawing point",
+      "result": {
+        "zoom": 1.0,
+        "rotationDegrees": 0.0,
+        "centre": {
+          "x": 100.0,
+          "y": 50.0
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "Pan by 40 pixels to the right",
+      "result": {
+        "zoom": 1.0,
+        "rotationDegrees": 0.0,
+        "centre": {
+          "x": -0.25,
+          "y": 0.0
+        }
+      },
+      "varies": []
+    }
+  ],
+  "view.rotation.set": [
+    {
+      "title": "Rotate the view 30° clockwise",
+      "result": {
+        "zoom": 1.0,
+        "rotationDegrees": 30.0,
+        "centre": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "Rotate the Drawing view by 45°",
+      "result": {
+        "zoom": 1.0,
+        "rotationDegrees": 45.0,
+        "centre": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "varies": []
+    }
+  ],
+  "view.transform.get": [
+    {
+      "title": "The active view's zoom, rotation and centre",
+      "result": {
+        "zoom": 1.0,
+        "rotationDegrees": 0.0,
+        "centre": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "varies": []
+    }
+  ],
+  "view.transform.reset": [
+    {
+      "title": "Reset zoom, rotation and pan",
+      "result": {
+        "zoom": 1.0,
+        "rotationDegrees": 0.0,
+        "centre": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "Reset the rotation only",
+      "result": {
+        "zoom": 1.0,
+        "rotationDegrees": 0.0,
+        "centre": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "varies": []
+    }
+  ],
+  "view.type.set": [
+    {
+      "title": "Show the Drawing view in the active window",
+      "result": {
+        "viewId": "cameraView",
+        "type": "drawing"
+      },
+      "varies": []
+    },
+    {
+      "title": "Switch active view",
+      "result": {
+        "viewId": "cameraView",
+        "type": "camera"
+      },
+      "varies": []
+    }
+  ],
+  "view.zoom.set": [
+    {
+      "title": "Zoom in one step",
+      "result": {
+        "zoom": 1.5,
+        "rotationDegrees": 0.0,
+        "centre": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "200 % in the Drawing view",
+      "result": {
+        "zoom": 2.0,
+        "rotationDegrees": 0.0,
+        "centre": {
+          "x": 0.0,
+          "y": 0.0
+        }
       },
       "varies": []
     }

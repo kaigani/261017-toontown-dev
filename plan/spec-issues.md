@@ -233,13 +233,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Resolved:** no placeholder remains in `draw.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
-## SI-027 — `drawAid.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-027 — `drawAid.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 02 and spec A (`drawAid.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `drawAid.changed` `/result/state`: an object whose fields are not listed
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved:** no placeholder remains in `drawAid.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-028 — `element.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
@@ -359,31 +355,17 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-040 — `tool.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-040 — `tool.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 02 and spec A (`tool.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `tool.list` `/result/tools/*/options`: an object whose fields are not listed
-  - `tool.list` `/result/tools/*/optionSchema`: an object whose fields are not listed
-  - `tool.options.changed` `/result/options`: an object whose fields are not listed
-  - `tool.options.get` `/result/options`: an object whose fields are not listed
-  - `tool.options.set` `/params/options`: an object whose fields are not listed
-  - `tool.options.set` `/result/options`: an object whose fields are not listed
-  - `tool.pen.create` `/params/settings`: an object whose fields are not listed
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved:** no placeholder remains in `tool.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-041 — `ui.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
 - **Resolved:** no placeholder remains in `ui.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
-## SI-042 — `view.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-042 — `view.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 01 and spec A (`view.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `view.list` `/result/*/transform`: a member whose type is not stated (`transform`)
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved:** no placeholder remains in `view.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-043 — `xsheet.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -1239,7 +1221,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Sections:** 09 §11.1–§11.4, 11 §7.5, §7.8, 06 §6.10.
 - **Decision (builder, C3.3):** compositions `camera` and `element` (`elementIds` through the camera; `drawingId` in
   drawing space at the camera's table-plane scale, colours through the scene's styles); `xsheet` (owner M5 C5.1) and
-  `activeView` (owner M4 C4.2) are refused `render.compositionUnavailable` with the owner. `quality: "draft"` renders as
+  `activeView` (owner M4 C4.2) are refused `render.compositionUnavailable` with the owner. **M4 C4.2a:** `activeView`
+  with the Drawing view active renders the current drawing through the view's mapping at the view's size times
+  `scale`; with another view type active, and for `render.range.run`, it is refused with owner M4 C4.3. Headless renders
+  always use the final software rasteriser, so `quality: "draft"` keeps the `render.draftAsFinal` warning. `quality: "draft"` renders as
   final with a `render.draftAsFinal` warning until the interactive renderer (M4 C4.2). `cameraFrame` has no effect on
   compositions that are the camera frame (warning `render.cameraFrameNotApplicable`). `cameraId` is accepted so the
   generic `render_frame` tool's `camera` keeps its meaning; the tool's `output` path writes a file and `sceneColour` is
@@ -1501,7 +1486,8 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Problem:** these tools can be made active (`tool.active.set`), but their gestures are not in C4.2's scope and no
   checkpoint names them.
 - **Interim decision:** their gestures answer `command.notImplemented` with owner M4 C4.3; their structured commands
-  already work.
+  already work. Built in C4.2a after all: the invisible Stroke tool, whose gesture is the Brush's with
+  `kind: "invisible"` (02 §13.3's table), so it needs nothing beyond the Brush gesture.
 - **Question:** the owner checkpoint of these gestures.
 
 ## SI-130 — the `pointer` tool's event cap (found in M4 C4.2; interim)
@@ -1511,3 +1497,31 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Interim decision:** at most 10,000 events per call; more refuse with `limit.exceeded`, `details.limit:
   "pointerEvents"`. Coordinates must be finite and within ±10,000,000 view pixels (`arg.invalid`).
 - **Question:** confirm the cap or define it in 11 §6.5.
+
+## SI-131 — Drawing-tool conventions the spec does not state (found in M4 C4.2a; interim)
+
+- **Sections:** 02 §5.2, §6.1, §7.1, §7.3.5, §7.6.1, §10.4, §13.2, §13.3; 01 §8.2; 11 §7.6.
+- **Problem:** building the tools, the gesture mapping and the aids needs values the spec leaves open.
+- **Interim decisions (the conservative choice in each case, ruling D-10):**
+  1. A press and release whose samples stay within 3 view pixels of the press is a click (Select, Paint, Paint
+     Unpainted, Polyline anchors); a longer drag is a drag.
+  2. The Select tool's drawing-pivot handle is a 6-view-pixel radius around the pivot; a drag that starts on it moves
+     the pivot (`draw.pivot.set`), checked before a drag on the selection (`draw.transform.apply`) and the marquee.
+  3. Modifiers of the gesture are the ones held at the press: Shift is the constrain modifier, Alt the alternate one,
+     Ctrl or Meta the temporary-select modifier of 02 §5.2; a selection click with Shift adds (`mode: "add"`).
+  4. When Draw on Top Layer and Draw Behind are both on, the gesture's command gets `layer: "top"`.
+  5. The text options' margins, indent and line spacing accept ±10,000 du (02 §13.2 gives no range).
+  6. The default current pens are 02 §7.7's (`Pen 3`, `Eraser 2`), else the family's first pen; the current pens are
+     project scope (`session.json`), the other drawing settings user scope (the `drawing` settings file).
+  7. Tool keys: one single key per tool group in the drawing context (`S`, `B`, `F`, `E`, `Z`, `T`; 01 §8.2 leaves the
+     letters to design work); a key on the active group advances within it (02 §5.1).
+  8. The Dropper's gesture is `colour.pick` alone: `colour.current.set` arrives with M7 C7.1 (03 §2.4).
+  9. A static light-table entry id is `lt<n>`, unique within its scene; a scene holds at most 256 entries
+     (`limit.exceeded`, `details.limit: "staticLightTableEntries"`). Entries live in the session's per-scene light
+     table (SI-085); writing them into the project's session state stays with M5 C5.2. An image element's cell is a
+     source like a drawing (`sourceKind: "image"`).
+  10. A `pointer` call whose last gesture is still pressed at the end of its events discards it (D-7c); a Polyline's
+      clicks within one call are one gesture and are committed at the call's end if no double click or closing click
+      ended them.
+  11. The wheel follows the pointer-event convention: a negative `wheelDelta` zooms in one table step about the pointer.
+- **Question:** confirm each, or state the values in 02 and 11.

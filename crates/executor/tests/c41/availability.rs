@@ -367,6 +367,9 @@ fn build(name: &str) -> (ExecutorHandle, BTreeMap<&'static str, String>) {
         "no-project" => return (h, vars),
         "no-drawing" => {
             ok(&h, "project.create", json!({ "name": "Empty" }));
+            for part in &parts[1..] {
+                apply_state(&h, part, &mut vars);
+            }
             return (h, vars);
         }
         _ => {}
@@ -404,6 +407,16 @@ fn apply_state(h: &ExecutorHandle, part: &str, vars: &mut BTreeMap<&'static str,
         "drawing-selected" => {
             let s = stroke(h, json!({}));
             ok(h, "draw.selection.set", json!({ "ids": [s] }));
+        }
+        // M4 C4.2 (plan §8): a painted zone selected, no brush stroke (closed strokes and a paint, through commands).
+        "painted-zone-selected" => {
+            ok(
+                h,
+                "draw.rectangle.add",
+                json!({ "from": {"x": 300, "y": 300}, "to": {"x": 400, "y": 360}, "layer": "new" }),
+            );
+            ok(h, "colour.paint.apply", json!({ "points": [{"x": 350, "y": 330}] }));
+            ok(h, "draw.selection.set", json!({ "by": "point", "point": {"x": 350, "y": 330} }));
         }
         "locked-drawing-selected" => {
             apply_state(h, "drawing-selected", vars);
@@ -453,6 +466,8 @@ fn apply_state(h: &ExecutorHandle, part: &str, vars: &mut BTreeMap<&'static str,
             ok(h, "app.context.set", json!({ "elementId": BOB, "frame": 1 }));
         }
         "element-selected" => select_rows(h, &[BOB]),
+        // M4 C4.2: the Drawing view window active (the `activeView` composition renders it, SI-107).
+        "drawing-view" => ok(h, "view.active.set", json!({ "viewId": "drawingView" })),
         "peg-selected" => {
             let peg = created_id(h, "peg");
             select_rows(h, &[&peg]);
