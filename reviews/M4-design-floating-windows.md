@@ -53,6 +53,31 @@ Replaces the in-window floats of the C4.1 handoff (a divergence from 01 §5.4).
   closed by reconciliation, the engine restart), the host drops that window's facts and forwards the recomputed
   combination. A report naming another engine generation is ignored (O-14).
 
+## 3a. The freshness quorum (invariant; round 3, C41-R3-04, -06)
+
+A combined UI tree vouches for an engine event number only when every window that should show it has caught up.
+After three gaps (a float not yet reported, C41-R2-06; a reloading main window, C41-R3-04; a float the kernel shows
+before the host has opened its window, C41-R3-06) the rule is stated as one invariant, each clause tested as a pure
+function:
+
+- **The expected set** is the main window plus every panel the **kernel's current arrangement** shows as a floating
+  window, from the moment the command that floated it was accepted (the document thread publishes the kernel's
+  visible floats before it answers; a tree is judged against them: `tt_executor::host::vouched`), plus every float
+  window the host has opened and every window that reported anything (the host's combination, `Windows::combined`).
+- **A window missing** from the tree (a kernel float with no `float-<panelId>` node), **without a tree**, or **with a
+  tree but no number** makes the result unvouched (`renderedSeq` absent in the combination; `inspect.ui.tree` answers
+  `renderedSeq: null`; an `inspect_ui` waits its bound and answers `stale: true`).
+- **Older than the last event**: the combination's number is the smallest of the windows'; a wait compares it with the
+  events broadcast before the call (`await_rendered`), and an older tree never replaces a newer one (`accept_tree`).
+- **Another generation**: a report naming another engine generation is ignored (`Host::report_from`).
+- **An empty set of trees is unvouched, explicitly**: when no window has a tree (the main window reloads, every window
+  went away), the host sends `uiTreeCleared: true` and the kernel clears its stored tree and number; an absent
+  `uiTree` is never read as "the old tree still stands".
+
+Tests: `a_tree_without_a_kernel_float_vouches_for_nothing` (executor), `the_quorum_rule_clause_by_clause` (host),
+`a_float_the_kernel_shows_is_expected_from_the_moment_it_is_accepted` (executor, through the handle), the reviewer's
+`opening_closing_restart_and_reload`.
+
 ## 4. Focus and the active view
 
 - A float that gains OS focus runs `window.panel.set {panelId, focus: true}` (the kernel's focused panel; a floating

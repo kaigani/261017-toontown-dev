@@ -333,10 +333,13 @@ impl ExecutorHandle {
         let worker_cancel = cancel.clone();
         let (done_tx, done_rx) = mpsc::channel::<()>();
         let tick = persist.maintenance.tick;
+        let shell = Arc::new(host::ShellShared::default());
+        let published = shell.clone();
         std::thread::Builder::new()
             .name("tt-document".to_owned())
             .spawn(move || {
-                document_thread(run::Core::new(registry, session, budget), &rx, &subs, &worker_cancel, budget);
+                let core = run::Core::new(registry, session, budget);
+                document_thread(core, &rx, &subs, &published, &worker_cancel, budget);
                 let _ = done_tx.send(());
             })
             .map_err(|e| CommandError::internal(format!("cannot start the document thread: {e}")))?;
@@ -355,7 +358,6 @@ impl ExecutorHandle {
                 .map_err(|e| CommandError::internal(format!("cannot start the maintenance thread: {e}")))?;
         }
         let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
-        let shell = Arc::new(host::ShellShared::default());
         Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, recovery, _guard: guard })
     }
 
@@ -865,12 +867,19 @@ fn document_thread(
     mut core: run::Core,
     rx: &Receiver<Request>,
     subscribers: &host::Bus,
+    shell: &host::ShellShared,
     cancel: &Arc<tt_vector::work::CancelState>,
     budget: Duration,
 ) {
     let bound = ask_bound(budget);
-    // A call's events are broadcast before its reply is sent, so a subscriber has them when the caller has the result.
-    let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());
+    // A call's events are broadcast before its reply is sent, so a subscriber has them when the caller has the result;
+    // the kernel's visible floats are published at the same point (the freshness quorum, C41-R3-06).
+    let flush = |core: &mut run::Core| {
+        if let Some(s) = core.session() {
+            shell.publish_floats(s);
+        }
+        broadcast(subscribers, &core.take_events());
+    };
     tt_vector::work::set_cancel_state(Some(cancel.clone()));
     while let Ok(req) = rx.recv() {
         let (token, link, queued, req) = match req {

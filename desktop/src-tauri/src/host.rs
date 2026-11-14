@@ -117,6 +117,10 @@ impl Windows {
             if let Some(min) = seqs.and_then(|v| v.into_iter().min()) {
                 m.insert("renderedSeq".into(), json!(min));
             }
+        } else {
+            // No window has a tree (the main window reloads, every window went away): the kernel's stored tree is
+            // cleared explicitly; an absent `uiTree` would leave the old tree vouched for (C41-R3-04).
+            m.insert("uiTreeCleared".into(), Value::Bool(true));
         }
         m
     }
@@ -368,6 +372,11 @@ impl Host {
             }
             w.combined()
         };
+        let mut combined = combined;
+        // The status-bar texts a window reported (hover description, pointer position) end with it too: cleared
+        // explicitly, not left as they were (C41-R3-04 audit).
+        combined.insert("description".into(), json!(""));
+        combined.insert("pointer".into(), json!(""));
         let report: tt_executor::host::ShellReport =
             serde_json::from_value(Value::Object(combined)).unwrap_or_default();
         self.exec().report_shell(report);
@@ -735,6 +744,28 @@ mod tests {
         let _ = h.report_from("main", main);
         assert!(!h.exec().await_rendered(Duration::ZERO), "the float has not reported to the new engine");
         let _ = std::fs::remove_dir_all(dir);
+    }
+
+    /// The quorum invariant's host clauses (reviews/M4-design-floating-windows.md §3a), on the pure combination: the
+    /// main window always counts; an expected window without a tree, a tree without a number, or no tree at all leave
+    /// the combination unvouched (and no tree at all clears the kernel's tree explicitly); the smallest number counts.
+    #[test]
+    fn the_quorum_rule_clause_by_clause() {
+        let tree =
+            |seq: Option<u64>| WindowFacts { tree: Some((json!({ "role": "window" }), seq)), ..Default::default() };
+        let mut w = Windows::default();
+        assert_eq!(w.combined().get("uiTreeCleared"), Some(&json!(true)), "an empty set is unvouched and clears");
+        w.facts.insert("float-history".into(), tree(Some(9)));
+        assert!(w.combined().get("renderedSeq").is_none(), "the main window is always expected");
+        w.facts.insert("main".into(), tree(Some(7)));
+        assert_eq!(w.combined().get("renderedSeq"), Some(&json!(7)), "the smallest number of the quorum");
+        w.expected.insert("float-colour".into());
+        assert!(w.combined().get("renderedSeq").is_none(), "an expected window without a tree");
+        w.facts.insert("float-colour".into(), tree(None));
+        assert!(w.combined().get("renderedSeq").is_none(), "a tree without a number");
+        w.facts.insert("float-colour".into(), tree(Some(8)));
+        assert_eq!(w.combined().get("renderedSeq"), Some(&json!(7)));
+        assert!(w.combined().get("uiTreeCleared").is_none());
     }
 
     #[test]

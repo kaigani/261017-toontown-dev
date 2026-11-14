@@ -351,3 +351,29 @@ fn selection_commands_are_available_exactly_when_they_run() {
     ok(&h, "edit.selection.set", json!({ "context": "staging", "ids": [] }));
     check(false);
 }
+
+/// C41-R3-06: from the moment `window.panel.set {floating: true}` is accepted, a tree without that float's node is
+/// unvouched (the expected windows come from the kernel's arrangement), so a wait answers stale and `renderedSeq` is
+/// null; once the float's node is there, the tree is fresh again.
+#[test]
+fn a_float_the_kernel_shows_is_expected_from_the_moment_it_is_accepted() {
+    let h = tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();
+    let report = |tree: Value| {
+        let seq = h.events_broadcast();
+        h.report_shell(
+            serde_json::from_value(json!({ "attached": true, "uiTree": tree, "renderedSeq": seq })).unwrap(),
+        );
+    };
+    report(json!({ "id": "main" }));
+    assert!(h.await_rendered(Duration::ZERO));
+    ok(&h, "window.panel.set", json!({ "panelId": "history", "floating": true, "visible": true }));
+    report(json!({ "id": "main", "children": [] }));
+    assert!(!h.await_rendered(Duration::ZERO), "the float the kernel shows has not reported");
+    assert_eq!(ok(&h, "inspect.ui.tree", json!({}))["renderedSeq"], Value::Null);
+    report(json!({ "id": "main", "children": [{ "id": "float-history" }] }));
+    assert!(h.await_rendered(Duration::ZERO));
+    // Docked again: the float is no longer expected.
+    ok(&h, "window.panel.set", json!({ "panelId": "history", "floating": false }));
+    report(json!({ "id": "main" }));
+    assert!(h.await_rendered(Duration::ZERO));
+}

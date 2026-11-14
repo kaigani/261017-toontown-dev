@@ -37,6 +37,21 @@ pub(crate) struct ShellShared {
     wait_for_user_ms: AtomicU64,
     /// A host window renders the UI (attached mode).
     attached: std::sync::atomic::AtomicBool,
+    /// The panels the kernel shows as floating windows, published by the document thread after every request and
+    /// before its reply (round 3, C41-R3-06): a tree reported after a command was answered is judged against the
+    /// arrangement that command left.
+    floats: Mutex<Vec<String>>,
+}
+
+impl ShellShared {
+    /// Publishes the kernel's visible floats (the document thread, after each request).
+    pub(crate) fn publish_floats(&self, s: &crate::session::Session) {
+        let now = visible_floats(&s.ui.panels());
+        let mut f = self.floats.lock().unwrap_or_else(PoisonError::into_inner);
+        if *f != now {
+            *f = now;
+        }
+    }
 }
 
 impl Default for ShellShared {
@@ -46,6 +61,7 @@ impl Default for ShellShared {
             rendered: Mutex::new(None),
             wait_for_user_ms: AtomicU64::new(10_000),
             attached: std::sync::atomic::AtomicBool::new(false),
+            floats: Mutex::new(Vec::new()),
         }
     }
 }
@@ -126,6 +142,11 @@ pub struct ShellReport {
     /// A message the GUI showed (emitted as `ui.message.shown` with `source: "user"`).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message_shown: Option<Value>,
+    /// `true`: no window has a tree any more (the main window reloads, every window went away): the stored tree and
+    /// its sequence are cleared, explicitly, so an absent `uiTree` is never read as "the old tree still stands"
+    /// (round 3, C41-R3-04).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ui_tree_cleared: Option<bool>,
 }
 
 /// What a key sequence runs (01 §8.4).
@@ -444,6 +465,25 @@ pub(crate) struct Rendered {
     pub seq: Option<u64>,
 }
 
+/// The panels the kernel shows as floating windows now (their window labels are `float-<panelId>`).
+pub(crate) fn visible_floats(panels: &[crate::ui::PanelEntry]) -> Vec<String> {
+    panels.iter().filter(|p| p.floating && p.visible).map(|p| p.panel_id.clone()).collect()
+}
+
+/// The sequence a combined tree vouches for (round 3, C41-R3-06; reviews/M4-design-floating-windows.md §3a): `seq`
+/// when every float the kernel shows has its window node (`float-<panelId>`) among the tree's children, else `None`
+/// (unvouched). Pure.
+#[must_use]
+pub fn vouched(seq: Option<u64>, tree: &Value, kernel_floats: &[String]) -> Option<u64> {
+    let ids: Vec<&str> = tree
+        .get("children")
+        .and_then(Value::as_array)
+        .map(|c| c.iter().filter_map(|n| n.get("id").and_then(Value::as_str)).collect())
+        .unwrap_or_default();
+    let all = kernel_floats.iter().all(|p| ids.contains(&format!("float-{p}").as_str()));
+    seq.filter(|_| all)
+}
+
 /// Whether a reported tree replaces the stored one (C41-R1-14): a sequence from the future (beyond the last broadcast
 /// event) is refused; an older one than the stored tree's does not replace it; a tree without a sequence is kept but
 /// never fresh.
@@ -464,10 +504,18 @@ impl ExecutorHandle {
         }
         // The tree and its sequence are judged together, once, here; a refused tree is not posted.
         let mut report = report;
+        let cleared = report.ui_tree_cleared == Some(true);
+        if cleared {
+            *self.shell.rendered.lock().unwrap_or_else(PoisonError::into_inner) = None;
+            report.ui_tree = None;
+        }
         if report.ui_tree.is_some() {
             let mut stored = self.shell.rendered.lock().unwrap_or_else(PoisonError::into_inner);
             if accept_tree(stored.as_ref(), report.rendered_seq, self.events_broadcast()) {
-                *stored = Some(Rendered { seq: report.rendered_seq });
+                // Vouched only when every float the kernel shows has its node (C41-R3-06).
+                let floats = self.shell.floats.lock().unwrap_or_else(PoisonError::into_inner).clone();
+                let tree = report.ui_tree.as_ref().unwrap_or(&Value::Null);
+                *stored = Some(Rendered { seq: vouched(report.rendered_seq, tree, &floats) });
             } else {
                 report.ui_tree = None;
             }
@@ -477,6 +525,7 @@ impl ExecutorHandle {
         if let Some(a) = report.attached {
             self.shell.attached.store(a, Ordering::Release);
         }
+        let shared = self.shell.clone();
         let _ = self.tx.send(crate::Request::Run(Box::new(move |core| {
             let Some(s) = core.session_mut() else { return };
             // `app.state.changed` follows a reported change of an `AppState` field (`modal`; 01 §12.3).
@@ -516,11 +565,27 @@ impl ExecutorHandle {
             }
             // The same order rule on the document thread, where reports posted from several threads may arrive out of
             // order: a newer tree is never replaced by an older one.
+            if cleared {
+                sh.sensors.ui_tree = None;
+                sh.sensors.ui_tree_seq = None;
+            }
             if let Some(tree) = report.ui_tree
                 && accept_tree(Some(&Rendered { seq: sh.sensors.ui_tree_seq }), tree_seq, u64::MAX)
             {
+                // A float the kernel shows that has no window node in the tree makes it unvouched, whatever the
+                // windows that did report vouch for (round 3, C41-R3-06): the expected windows come from the
+                // kernel's arrangement, not from how far the host has got in opening windows.
+                let floats = visible_floats(&s.ui.panels());
+                let seq = vouched(tree_seq, &tree, &floats);
+                if seq != tree_seq {
+                    let mut stored = shared.rendered.lock().unwrap_or_else(PoisonError::into_inner);
+                    if stored.as_ref().is_some_and(|r| r.seq == tree_seq) {
+                        *stored = Some(Rendered { seq: None });
+                    }
+                }
+                let sh = s.ui.shell_mut();
                 sh.sensors.ui_tree = Some(tree);
-                sh.sensors.ui_tree_seq = tree_seq;
+                sh.sensors.ui_tree_seq = seq;
             }
             if let Some(msg) = report.message_shown {
                 let mut m = msg.as_object().cloned().unwrap_or_default();
@@ -714,5 +779,28 @@ impl ExecutorHandle {
             }
             _ => Ok(()),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// The quorum invariant's kernel clause (reviews/M4-design-floating-windows.md §3a; C41-R3-06): a tree vouches for
+    /// its sequence only when every float the kernel shows has its window node; no sequence vouches for nothing.
+    #[test]
+    fn a_tree_without_a_kernel_float_vouches_for_nothing() {
+        let floats = vec!["history".to_owned(), "colour".to_owned()];
+        let both = json!({ "id": "main", "children": [{ "id": "float-history" }, { "id": "float-colour" }] });
+        let one = json!({ "id": "main", "children": [{ "id": "float-history" }] });
+        assert_eq!(vouched(Some(7), &both, &floats), Some(7));
+        assert_eq!(vouched(Some(7), &one, &floats), None, "a float the kernel shows is missing");
+        assert_eq!(vouched(Some(7), &json!({ "id": "main" }), &[]), Some(7), "no float: the main window vouches");
+        assert_eq!(vouched(None, &both, &floats), None, "a tree without a number vouches for nothing");
+        // An older tree is refused by the order rule; a newer one replaces it; one from the future is refused.
+        let stored = Rendered { seq: Some(5) };
+        assert!(!accept_tree(Some(&stored), Some(4), 9));
+        assert!(accept_tree(Some(&stored), Some(6), 9));
+        assert!(!accept_tree(Some(&stored), Some(10), 9));
     }
 }
