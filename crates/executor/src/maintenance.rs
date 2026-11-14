@@ -21,6 +21,9 @@ pub(crate) fn start(s: &mut Session) {
     if let Some(w) = s.env.stored_workspaces() {
         s.ui.restore(&w);
     }
+    if let Some(d) = s.env.stored_drawing() {
+        *s.ui.drawing_mut() = crate::drawing::DrawingSettings::from_stored(&d);
+    }
     for n in s.env.take_notices() {
         s.emit("ui.message.shown", n);
     }

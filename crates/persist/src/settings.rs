@@ -18,7 +18,7 @@ use crate::{fsx, time};
 pub const VERSION: &str = "1.0";
 
 /// The settings kinds (one file each).
-pub const KINDS: [&str; 5] = ["preferences", "recent", "state", "workspaces", "keymap"];
+pub const KINDS: [&str; 6] = ["preferences", "recent", "state", "workspaces", "keymap", "drawing"];
 
 /// The per-user folders.
 #[derive(Debug, Clone, PartialEq, Eq)]

@@ -82,6 +82,8 @@ pub(crate) struct Settings {
     pub save_failed: std::collections::BTreeSet<String>,
     /// The stored workspaces read at load (`None`: missing or set aside).
     pub workspaces: Option<Value>,
+    /// The stored drawing settings (M4 C4.2), read at start.
+    pub drawing: Option<Value>,
     /// Keymap overrides relative to the bundled defaults (01 §8.1; `keymap.json`, M4 C4.1).
     pub keymap: crate::keymap::Overrides,
     /// Suppressed message ids (01 §9.4) and first-run flags (01 §11), kept in `state.json`.
@@ -202,6 +204,7 @@ fn shape(kind: &str, d: &Value) -> Result<(), String> {
                 Err("a workspace without a name".into())
             }
         }
+        "drawing" => crate::drawing::shape(d),
         _ => Ok(()),
     }
 }
@@ -287,6 +290,7 @@ impl Env {
                     }
                     "keymap" => self.settings.keymap = crate::keymap::Overrides::from_stored(&d),
                     "workspaces" => self.settings.workspaces = Some(d),
+                    "drawing" => self.settings.drawing = Some(d),
                     _ => {}
                 },
             }
@@ -326,6 +330,18 @@ impl Env {
     }
 
     /// Writes the stored workspaces (`data`), reporting a failure as [`Env::save`] does.
+    /// The stored drawing settings (read when the executor starts).
+    pub(crate) fn stored_drawing(&self) -> Option<Value> {
+        self.settings.drawing.clone()
+    }
+
+    /// Writes the drawing settings file (a failure is told once, ruling O-12).
+    pub(crate) fn save_drawing(&mut self, data: &Value) {
+        if let Err(e) = settings::write(&self.dirs.settings, "drawing", data) {
+            self.save_failed("drawing", &e);
+        }
+    }
+
     pub(crate) fn save_workspaces(&mut self, data: &Value) {
         if let Err(e) = settings::write(&self.dirs.settings, "workspaces", data) {
             self.save_failed("workspaces", &e);

@@ -56,6 +56,17 @@ pub(crate) struct AppContext {
     pub point_drawings: std::collections::BTreeSet<String>,
     /// Tool memory of the session that is not document content (the Line tool's last end per drawing: `x,y`).
     pub tool_memory: std::collections::BTreeMap<String, String>,
+    /// The current brush pen and eraser pen (02 §6.1; project scope, 02 §12.3: saved in the project's `session.json`).
+    pub pens: CurrentPens,
+}
+
+/// The current pen of each tool family (02 §6.1: Brush and Eraser each remember their own).
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct CurrentPens {
+    /// Current brush pen.
+    pub brush: Option<Id>,
+    /// Current eraser pen.
+    pub eraser: Option<Id>,
 }
 
 /// Every prefix of the keys that ends before a `/` (`<drawingId>` of `<drawingId>/<localId>`, whatever the IDs
@@ -82,6 +93,7 @@ impl Default for AppContext {
             points: Vec::new(),
             point_drawings: std::collections::BTreeSet::new(),
             tool_memory: std::collections::BTreeMap::new(),
+            pens: CurrentPens::default(),
         }
     }
 }
@@ -330,6 +342,7 @@ impl AppContext {
             points: self.points.clone(),
             point_drawings: self.point_drawings.clone(),
             tool_memory: self.tool_memory.clone(),
+            pens: self.pens.clone(),
         }
     }
 

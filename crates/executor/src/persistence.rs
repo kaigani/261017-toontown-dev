@@ -77,6 +77,8 @@ pub(crate) fn session_json(doc: &Document, app: &AppContext) -> Value {
         "frame": app.frame,
         "currentElementId": app.element.as_ref().map(|e| e.as_str()),
         "openDrawingId": app.current_drawing(doc).map(|d| d.as_str().to_owned()),
+        "currentBrushPenId": app.pens.brush.as_ref().map(|p| p.as_str()),
+        "currentEraserPenId": app.pens.eraser.as_ref().map(|p| p.as_str()),
     })
 }
 
@@ -92,6 +94,9 @@ pub(crate) fn restore_session(app: &mut AppContext, doc: &Document, v: &Value) {
         }
         app.repair(doc);
     }
+    let pen = |k: &str| id(k).filter(|p| doc.project().pens().iter().any(|x| x.id() == p));
+    app.pens.brush = pen("currentBrushPenId");
+    app.pens.eraser = pen("currentEraserPenId");
 }
 
 /// A save snapshot (SAVE-04).

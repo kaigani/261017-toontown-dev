@@ -230,10 +230,7 @@ pub(crate) fn pen_choice(cx: &Cx, pen_id: Option<&str>, explicit: Option<PenIn>)
             }
             Some(p)
         }
-        None => pens
-            .iter()
-            .find(|p| *p.kind() == PenKind::Brush && p.name() == "Pen 3")
-            .or_else(|| pens.iter().find(|p| *p.kind() == PenKind::Brush)),
+        None => super::tool::current_pen(cx, PenKind::Brush).and_then(|id| pens.iter().find(|p| *p.id() == id)),
     };
     let mut c = match chosen {
         Some(p) => PenChoice {

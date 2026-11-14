@@ -450,6 +450,8 @@ pub struct UiState {
     remembered: BTreeMap<String, Place>,
     /// View windows, the main window, start screen, context help and sensor facts (M4 C4.1; [`crate::shell`]).
     shell: crate::shell::ShellState,
+    /// The user's drawing settings: tools, options, global drawing toggles, aids (M4 C4.2; [`crate::drawing`]).
+    drawing: crate::drawing::DrawingSettings,
 }
 
 impl Default for UiState {
@@ -468,6 +470,7 @@ impl Default for UiState {
             focused: Some("cameraView".to_owned()),
             remembered: BTreeMap::new(),
             shell: crate::shell::ShellState::default(),
+            drawing: crate::drawing::DrawingSettings::default(),
         }
     }
 }
@@ -540,6 +543,17 @@ impl UiState {
     /// The shell state, mutable.
     pub fn shell_mut(&mut self) -> &mut crate::shell::ShellState {
         &mut self.shell
+    }
+
+    /// The user's drawing settings (M4 C4.2).
+    #[must_use]
+    pub fn drawing(&self) -> &crate::drawing::DrawingSettings {
+        &self.drawing
+    }
+
+    /// The user's drawing settings, mutable.
+    pub fn drawing_mut(&mut self) -> &mut crate::drawing::DrawingSettings {
+        &mut self.drawing
     }
 
     /// Whether a panel is shown in the arrangement in use (central, docked as any tab, or a visible floating panel).

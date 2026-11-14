@@ -265,6 +265,8 @@ pub(crate) struct Observed {
     dirty: Option<bool>,
     /// The persisted form of the workspaces (written to the settings when it changes; 01 §11).
     workspaces: Value,
+    /// The persisted form of the drawing settings (written when it changes; M4 C4.2).
+    drawing: Value,
     /// The current arrangement (docks, floats and their geometry, toolbars, and whether floats are shown at all):
     /// `workspace.changed` announces any change of it, so every window and the host follow a panel moved, a float
     /// placed or all floats hidden by any caller (ruling O-2; C41-R2-10).
@@ -284,6 +286,7 @@ pub(crate) fn observe(s: &Session) -> Observed {
         history: s.project.as_ref().map(|p| (p.history.position(), p.history.len())),
         dirty: s.project.as_ref().map(OpenProject::dirty),
         workspaces: s.ui.persisted(),
+        drawing: s.ui.drawing().to_stored(),
         // With the global float visibility (`window.floatingPanels.set`): which floats the user sees is part of the
         // arrangement the windows and the host follow (C41-R2-10).
         arrangement: json!([serde_json::to_value(s.ui.layout()).unwrap_or(Value::Null), s.ui.floating_visible()]),
@@ -1170,6 +1173,12 @@ impl Core {
             && let Some(d) = after.dirty
         {
             s.emit("project.dirty.changed", json!({ "projectDirty": d, "globalLibraryDirty": false }));
+        }
+        if after.drawing != before.drawing {
+            s.env.save_drawing(&after.drawing);
+            for n in s.env.take_notices() {
+                s.emit("ui.message.shown", n);
+            }
         }
         if after.workspaces != before.workspaces {
             s.env.save_workspaces(&after.workspaces);

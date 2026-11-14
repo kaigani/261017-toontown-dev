@@ -71,7 +71,7 @@ pub fn owner_of(id: &str) -> &'static str {
         ("inspect.hitTest", "M3 C3.3"),
         ("inspect.coordinates.convert", "M3 C3.3"),
         ("inspect.contactSheet.render", "M3 C3.3"),
-        ("inspect.ui.tree", "M4 C4.2"),
+        ("inspect.ui.tree", "M4 C4.1"),
         ("inspect.screenshot", "M4 C4.2"),
     ];
     if let Some((_, owner)) = exact.iter().find(|(x, _)| *x == id) {
@@ -91,13 +91,16 @@ pub fn owner_of(id: &str) -> &'static str {
     }
     let namespace = id.split('.').next().unwrap_or_default();
     match namespace {
-        // Section 01 shell commands not delivered at kernel level in C1.2 belong to the desktop shell (C4.1).
-        "app" | "edit" | "view" | "window" | "workspace" | "prefs" | "keymap" | "ui" => "M4 C4.1",
+        // Section 01 shell commands not delivered at kernel level in C1.2 belong to the desktop shell (C4.1); the
+        // view windows' navigation comes with the interactive Drawing view (C4.2; ADR-0021 lines 191-192).
+        "view" => "M4 C4.2",
+        "app" | "edit" | "window" | "workspace" | "prefs" | "keymap" | "ui" => "M4 C4.1",
         "project" => "M1 C1.3",
         "doc" => "M1 C1.3",
         "agent" => "M1 C1.4",
         "checkpoint" | "job" => "M1 C1.2",
-        "draw" | "drawAid" => "M2 C2.3",
+        "draw" => "M2 C2.3",
+        "drawAid" => "M4 C4.2",
         "tool" => "M4 C4.2",
         "colour" => "M7 C7.1",
         "element" | "cell" | "xsheet" => "M3 C3.1",

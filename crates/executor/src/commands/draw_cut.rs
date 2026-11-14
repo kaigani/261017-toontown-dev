@@ -423,7 +423,7 @@ pub(crate) struct EraseParams {
     /// The eraser's path (swept with the eraser pen).
     #[serde(default)]
     path: Option<Vec<ErasePoint>>,
-    /// The eraser pen (default: the project's first eraser pen, "Eraser 1").
+    /// The eraser pen (default: the current eraser pen, 02 §6.1; "Eraser 2", else the first eraser pen, 02 §7.7).
     #[serde(default)]
     pen_id: Option<String>,
     /// An explicit eraser (SI-072).
@@ -479,7 +479,7 @@ fn eraser(cx: &Cx, pen_id: Option<&str>, pen: Option<EraserPen>) -> Result<Brush
             }
             Some(p)
         }
-        None => pens.iter().find(|p| *p.kind() == PenKind::Eraser),
+        None => super::tool::current_pen(cx, PenKind::Eraser).and_then(|id| pens.iter().find(|p| *p.id() == id)),
     };
     Ok(match chosen {
         Some(p) => {
