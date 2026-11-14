@@ -352,7 +352,7 @@ fn settings(cx: &Cx) -> Settings {
         brush_pen: brush.map(|i| i.as_str().to_owned()),
         brush_max,
         eraser_pen: crate::commands::tool::current_pen(cx, PenKind::Eraser).map(|i| i.as_str().to_owned()),
-        colour: doc.and_then(crate::commands::draw_stroke::current_colour),
+        colour: doc.and_then(|d| crate::commands::draw_stroke::current_colour(cx.app(), d)),
         layer,
         gap,
     }
@@ -981,9 +981,29 @@ fn finish(core: &mut crate::run::Core, origin: &Origin, g: &Gesture, out: &mut P
                     origin: origin.clone(),
                 });
                 let ok = env.is_ok();
+                let picked = (command == "colour.pick")
+                    .then(|| {
+                        env.result.as_ref().and_then(|r| r.get("colourId")).and_then(Value::as_str).map(str::to_owned)
+                    })
+                    .flatten();
                 out.commands.push(Answered { command_id: command, params, envelope: env });
                 if !ok {
                     return false;
+                }
+                // The Dropper's second command (02 §13.3 line 1217): the picked colour becomes current (D-11).
+                if let Some(c) = picked {
+                    let params = json!({ "colourId": c });
+                    let env = core.invoke(&Invocation {
+                        command: "colour.current.set".into(),
+                        params: params.clone(),
+                        options: InvokeOptions::default(),
+                        origin: origin.clone(),
+                    });
+                    let ok = env.is_ok();
+                    out.commands.push(Answered { command_id: "colour.current.set".into(), params, envelope: env });
+                    if !ok {
+                        return false;
+                    }
                 }
             }
             true

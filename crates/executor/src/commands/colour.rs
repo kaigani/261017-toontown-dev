@@ -1053,7 +1053,7 @@ pub(crate) fn resolve_colour(cx: &Cx, given: Option<&str>) -> Result<(Option<Str
     let doc = cx.document()?;
     let colour = match given {
         Some(c) => Some(super::draw_stroke::swatch_colour(cx, c)),
-        None => super::draw_stroke::current_colour(doc),
+        None => super::draw_stroke::current_colour(cx.app(), doc),
     };
     let Some(c) = colour else {
         return Err(err(
@@ -1992,4 +1992,79 @@ pub(crate) fn colour_gap_closing_get(
             large: gap::TOLERANCE_PX[2],
         },
     })
+}
+
+// ----- colour.current.set (ruling D-11, pulled forward from M7 C7.1 for the Dropper) -------------------------------
+
+/// `colour.current.set` parameters.
+#[derive(Debug, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub(crate) struct CurrentSetParams {
+    /// The colour (a swatch's colour id or a swatch reference).
+    colour_id: String,
+}
+
+/// `{paletteId, colourId}`.
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct CurrentColour {
+    /// The current palette (switched when the colour is in another one, 03 §2.4).
+    palette_id: String,
+    /// The current colour.
+    colour_id: String,
+}
+
+#[command(
+    id = "colour.current.set",
+    kind = ui,
+    label = "Set the current colour",
+    scopes = [ui],
+    needs_project,
+    example(title = "Make the first palette's second swatch current", params = r#"{"colourId": "palette:#1/swatch:#2"}"#),
+    gui = "the Colour panel's swatches and the Dropper tool (03 §2.4, 02 §7.3.4); wired in M4 C4.2",
+)]
+pub(crate) fn colour_current_set(cx: &mut Cx, p: CurrentSetParams) -> Result<CurrentColour, CommandError> {
+    let c = super::draw_stroke::swatch_colour(cx, &p.colour_id);
+    let doc = cx.document()?;
+    let Some(pal) = doc.palettes().find(|pal| pal.swatches().iter().any(|s| s.colour_id().as_str() == c)) else {
+        return Err(err(
+            "colour.notFound",
+            format!("colour `{}` is not in any palette", p.colour_id),
+            json!({ "pointer": "/colourId", "colourId": p.colour_id }),
+        ));
+    };
+    let palette = pal.id().clone();
+    let colour = Id::parse(&c)?;
+    let next = Some((colour.clone(), palette.clone()));
+    // An event only for an effective change (the C4.1 change-event rule).
+    if cx.app().colour != next {
+        cx.app_mut().colour = next;
+        cx.emit("colour.current.changed", json!({ "paletteId": palette.as_str(), "colourId": colour.as_str() }));
+    }
+    Ok(CurrentColour { palette_id: palette.as_str().to_owned(), colour_id: colour.as_str().to_owned() })
+}
+
+/// `colour.current.changed` payload.
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct CurrentChanged {
+    /// The current palette.
+    palette_id: String,
+    /// The current colour.
+    colour_id: String,
+}
+
+#[command(
+    id = "colour.current.changed",
+    kind = event,
+    label = "Current palette or colour changed",
+    scopes = [read],
+    example(title = "Subscribe (events take no parameters)", params = "{}"),
+    agent_only = "an event delivered to subscribers",
+)]
+pub(crate) fn colour_current_changed(
+    _cx: &mut Cx,
+    _p: super::common::NoParams,
+) -> Result<CurrentChanged, CommandError> {
+    Err(super::common::event_not_invocable("colour.current.changed"))
 }

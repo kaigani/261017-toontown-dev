@@ -280,6 +280,7 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `cell.select` | `cell.noTarget` | parameter | the elements and frames the caller names select no cell |  |
 | `cell.select` | `cell.notApplicable` | parameter | an element the caller names has no cells |  |
 | `cell.select` | `element.notFound` | parameter | an element the caller names does not exist (selected and current elements always exist: the context is repaired) |  |
+| `colour.current.set` | `colour.notFound` | parameter | the colour the caller names is in no palette |  |
 | `colour.fillMapping.get` | `colour.notMappable` | parameter | the object the caller names has no texture mapping |  |
 | `colour.fillMapping.get` | `colour.staleZoneId` | parameter | a zone ID the caller names no longer exists |  |
 | `colour.fillMapping.get` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |

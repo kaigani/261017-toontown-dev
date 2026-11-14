@@ -123,7 +123,7 @@ fn limits_and_agent_scopes_are_kept() {
     let e = h.pointer(Origin::User, json!({ "view": "nowhere", "events": [] })).error.unwrap();
     assert_eq!(e.code, "view.notFound");
     // An agent without the edit scope cannot draw through `pointer` either.
-    let a = agent(&[Scope::Ui, Scope::Read]);
+    let a = agent(&[Scope::Ui, Scope::Read, Scope::Input]);
     let before = canonical(&h);
     let e = h
         .pointer(a, json!({ "view": "drawing", "tool": "brush", "events": drag(&[(1000.0, 500.0), (1010.0, 490.0)]) }))
@@ -166,7 +166,7 @@ fn p4_kernel_rule_agent_writes_wait_for_a_user_gesture_then_answer_busy() {
     let h = ready();
     h.set_wait_for_user(std::time::Duration::from_millis(30));
     h.report_shell(serde_json::from_value(json!({ "modal": { "kind": "gesture", "title": "Brush" } })).unwrap());
-    let a = agent(&[Scope::Ui, Scope::Read, Scope::Edit]);
+    let a = agent(&[Scope::Ui, Scope::Read, Scope::Edit, Scope::Input]);
     for (id, p) in [
         ("tool.active.set", json!({ "toolId": "brush" })),
         ("drawAid.grid.set", json!({ "visible": true })),
@@ -214,4 +214,17 @@ fn hover_names_the_objects_under_it_and_tilt_is_carried_but_changes_no_stroke() 
     let mut e = drag(&[(1000.0, 500.0), (1010.0, 490.0)]);
     e[0]["tiltX"] = json!(91);
     assert_eq!(pointer(&h, "brush", e).error.unwrap().code, "arg.invalid");
+}
+
+#[test]
+fn c42a_r1_06_pointer_needs_the_input_scope_before_anything_is_produced() {
+    let h = ready();
+    let before = canonical(&h);
+    let a = agent(&[Scope::Ui, Scope::Read, Scope::Edit]);
+    let e = h
+        .pointer(a, json!({ "view": "drawing", "tool": "brush", "events": drag(&[(1000.0, 500.0), (1010.0, 490.0)]) }));
+    let e = e.error.unwrap();
+    assert_eq!((e.code.as_str(), &e.details["missingScopes"]), ("permission.denied", &json!(["input"])));
+    assert_eq!(canonical(&h), before);
+    assert_eq!(ok(&h, "tool.active.get", json!({}))["toolId"], "select", "not even the tool changed");
 }

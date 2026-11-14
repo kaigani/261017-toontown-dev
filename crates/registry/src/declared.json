@@ -303,53 +303,6 @@
   "specExamples": []
  },
  {
-  "id": "colour.current.changed",
-  "params": {
-   "$schema": "https://json-schema.org/draft/2020-12/schema",
-   "title": "colour.current.changed parameters",
-   "type": "object",
-   "properties": {},
-   "additionalProperties": false,
-   "description": "Events take no parameters; subscribe to them (11 §9).",
-   "x-spec": "—"
-  },
-  "result": {
-   "$schema": "https://json-schema.org/draft/2020-12/schema",
-   "title": "colour.current.changed result",
-   "type": "object",
-   "properties": {
-    "paletteId": {
-     "type": "string",
-     "minLength": 1,
-     "maxLength": 4096,
-     "description": "object ID or path reference (10 §3)"
-    },
-    "colourId": {
-     "type": "string",
-     "minLength": 1,
-     "maxLength": 4096,
-     "description": "object ID or path reference (10 §3)"
-    }
-   },
-   "required": [
-    "paletteId",
-    "colourId"
-   ],
-   "description": "Event payload (delivered to subscribers).",
-   "x-spec": "`{paletteId, colourId}`",
-   "additionalProperties": false
-  },
-  "samples": {
-   "params": {},
-   "result": {
-    "paletteId": "scene:#1",
-    "colourId": "scene:#1"
-   }
-  },
-  "placeholders": [],
-  "specExamples": []
- },
- {
   "id": "colour.current.get",
   "params": {
    "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -403,63 +356,6 @@
     "colourId": "scene:#1",
     "styleId": "scene:#1",
     "swatch": "example"
-   }
-  },
-  "placeholders": [],
-  "specExamples": []
- },
- {
-  "id": "colour.current.set",
-  "params": {
-   "$schema": "https://json-schema.org/draft/2020-12/schema",
-   "title": "colour.current.set parameters",
-   "type": "object",
-   "properties": {
-    "colourId": {
-     "type": "string",
-     "minLength": 1,
-     "maxLength": 4096,
-     "description": "object ID or path reference (10 §3)"
-    }
-   },
-   "required": [
-    "colourId"
-   ],
-   "additionalProperties": false,
-   "x-spec": "`colourId: id`"
-  },
-  "result": {
-   "$schema": "https://json-schema.org/draft/2020-12/schema",
-   "title": "colour.current.set result",
-   "type": "object",
-   "properties": {
-    "paletteId": {
-     "type": "string",
-     "minLength": 1,
-     "maxLength": 4096,
-     "description": "object ID or path reference (10 §3)"
-    },
-    "colourId": {
-     "type": "string",
-     "minLength": 1,
-     "maxLength": 4096,
-     "description": "object ID or path reference (10 §3)"
-    }
-   },
-   "required": [
-    "paletteId",
-    "colourId"
-   ],
-   "x-spec": "`{paletteId, colourId}`",
-   "additionalProperties": false
-  },
-  "samples": {
-   "params": {
-    "colourId": "scene:#1"
-   },
-   "result": {
-    "paletteId": "scene:#1",
-    "colourId": "scene:#1"
    }
   },
   "placeholders": [],

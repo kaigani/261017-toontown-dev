@@ -287,9 +287,14 @@ pub(crate) fn swatch_colour(cx: &Cx, given: &str) -> String {
     cx.resolve_as(given, ObjectType::Swatch).unwrap_or_else(|_| given.to_owned())
 }
 
-/// The current colour (03 §2.4): the session has no `colour.current.set` before M7 C7.1, so it is the first swatch
-/// of the first visible palette.
-pub(crate) fn current_colour(doc: &Document) -> Option<String> {
+/// The current colour (03 §2.4): the one `colour.current.set` chose (ruling D-11) while a swatch still has it, else
+/// the first swatch of the first visible palette.
+pub(crate) fn current_colour(app: &crate::app::AppContext, doc: &Document) -> Option<String> {
+    if let Some((c, _)) = &app.colour
+        && doc.palettes().any(|p| p.swatches().iter().any(|s| s.colour_id() == c))
+    {
+        return Some(c.as_str().to_owned());
+    }
     doc.palettes()
         .filter(|p| !*p.hidden())
         .find_map(|p| p.swatches().first().map(|s| s.colour_id().as_str().to_owned()))
@@ -320,7 +325,7 @@ pub(crate) fn colour_of(
             if let Some(p) = pen.filter(|p| colour_exists(&doc, p)) {
                 return Ok(Some(p.to_owned()));
             }
-            let c = current_colour(&doc);
+            let c = current_colour(cx.app(), &doc);
             if c.is_none() {
                 cx.warn("colour.noCurrentColour", "there is no current colour; the stroke is unpainted", Vec::new());
             }
@@ -697,7 +702,7 @@ pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeS
     })?;
     // An invisible stroke made visible takes the current colour (03 §2.4).
     let colour = if p.kind == Some(LineKind::Pencil) && *s.kind() == StrokeKind::Invisible {
-        Some(current_colour(cx.document()?))
+        Some(current_colour(cx.app(), cx.document()?))
     } else {
         None
     };

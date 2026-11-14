@@ -380,13 +380,6 @@ fn paint_tools_click_and_drag_with_the_view_and_gap_mode_explicit() {
         json!({ "lasso": lasso.iter().map(|(x, y)| d(*x, *y)).collect::<Vec<_>>(), "space": "drawing",
                 "view": "drawingView", "colourId": c, "gapClosing": "off" }),
     );
-    equivalent(
-        &painted_rect,
-        "dropper",
-        drag(&[(1310.0, 210.0), (1310.0, 210.0)]),
-        "colour.pick",
-        json!({ "point": d(1310.0, 210.0), "space": "drawing", "view": "drawingView" }),
-    );
     // The fixture drawing's two stroke ends of the `colour.gap.close` example: drawing (-48, -50) and (2, 2).
     equivalent(
         &none,
@@ -444,4 +437,32 @@ fn select_clicks_marquees_lassos_moves_and_the_pivot() {
         "draw.pivot.set",
         json!({ "point": d(1000.0, 500.0) }),
     );
+}
+
+#[test]
+fn dropper_picks_then_makes_the_picked_colour_current() {
+    // 02 §7.3.4, §13.3 line 1217: `colour.pick {point}` then `colour.current.set {colourId}` (ruling D-11).
+    let a = ready();
+    painted_rect(&a);
+    let env = pointer(&a, "dropper", drag(&[(1310.0, 210.0), (1310.0, 210.0)]));
+    let commands = env.result.unwrap()["commands"].as_array().unwrap().clone();
+    let ids: Vec<&str> = commands.iter().map(|c| c["commandId"].as_str().unwrap()).collect();
+    assert_eq!(ids, vec!["tool.active.set", "colour.pick", "colour.current.set"]);
+    assert_eq!(commands[1]["params"], json!({ "point": d(1310.0, 210.0), "space": "drawing", "view": "drawingView" }));
+    let picked = commands[1]["envelope"]["result"]["colourId"].clone();
+    assert!(picked.is_string(), "{picked}");
+    assert_eq!(commands[2]["params"], json!({ "colourId": picked }));
+    // The direct commands from the same state give the same session: the next stroke takes the picked colour.
+    let b = ready();
+    painted_rect(&b);
+    ok(&b, "tool.active.set", json!({ "toolId": "dropper" }));
+    let r = ok(&b, "colour.pick", json!({ "point": d(1310.0, 210.0), "space": "drawing", "view": "drawingView" }));
+    ok(&b, "colour.current.set", json!({ "colourId": r["colourId"] }));
+    assert_eq!(canonical(&a), canonical(&b));
+    let next = |h: &ExecutorHandle| {
+        pointer(h, "brush", drag(&[(900.0, 600.0), (950.0, 620.0)])).result.unwrap()["commands"][1]["params"]["colourId"]
+            .clone()
+    };
+    assert_eq!(next(&a), picked);
+    assert_eq!(next(&b), picked);
 }

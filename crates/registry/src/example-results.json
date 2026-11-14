@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_4bcd7c5b44f2a057ad11e30e",
+        "confirmationId": "cf_09b3a93603f13d5338214dd7",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-9f8a7b",
+            "sessionId": "s1-667741",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-14T13:38:34.149Z",
+            "connectedAt": "2026-11-14T14:11:02.377Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_78696444903f2f491261e637",
-            "sessionId": "s1-9f8a7b",
+            "confirmationId": "cf_2825ca0630fec7a6c40f5786",
+            "sessionId": "s1-667741",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-95b68e",
+        "sessionId": "s1-478101",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-5d86b3"
+          "s1-6dc113"
         ]
       },
       "varies": [
@@ -1902,7 +1902,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-14T13:38:36.513Z",
+          "createdAt": "2026-11-14T14:11:04.768Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -1918,6 +1918,16 @@
       "result": {
         "name": "before-walk",
         "documentRev": 5
+      },
+      "varies": []
+    }
+  ],
+  "colour.current.set": [
+    {
+      "title": "Make the first palette's second swatch current",
+      "result": {
+        "paletteId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+        "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA"
       },
       "varies": []
     }
@@ -2315,7 +2325,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-14T13:38:37.509Z",
+          "exportedAt": "2026-11-14T14:11:05.922Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -7393,7 +7403,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-14T13:38:39.892Z",
+            "time": "2026-11-14T14:11:08.991Z",
             "objectCount": 1
           },
           {
@@ -7401,7 +7411,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-14T13:38:39.893Z",
+            "time": "2026-11-14T14:11:08.992Z",
             "objectCount": 1
           }
         ],
@@ -9283,7 +9293,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-14T13:38:41.596Z",
+        "startedAt": "2026-11-14T14:11:11.079Z",
         "result": {},
         "session": "user"
       },
@@ -9302,7 +9312,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-14T13:38:41.615Z",
+          "startedAt": "2026-11-14T14:11:11.100Z",
           "result": {},
           "session": "user"
         }
@@ -9321,7 +9331,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-14T13:38:41.634Z",
+        "startedAt": "2026-11-14T14:11:11.124Z",
         "result": {},
         "session": "user"
       },
@@ -9588,10 +9598,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M7D4G8D3DNMXDKF5HPFS0TV3",
-        "sceneId": "sc_01M7D4G8D3DNMXDKF5HPFS0TZ7",
-        "cameraId": "el_01M7D4G8D3DNMXDKF5HPFS0TZ9",
-        "elementId": "el_01M7D4G8D3DNMXDKF5HPFS0TZA"
+        "projectId": "pr_01M7D6BR2E9KGPTJFBK0MYJ4B9",
+        "sceneId": "sc_01M7D6BR2F5N71J3D4AT7KHB8E",
+        "cameraId": "el_01M7D6BR2F5N71J3D4AT7KHB8G",
+        "elementId": "el_01M7D6BR2F5N71J3D4AT7KHB8H"
       },
       "varies": [
         "/cameraId",
@@ -9847,7 +9857,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-14T13:38:43.955Z",
+          "lastOpened": "2026-11-14T14:11:12.647Z",
           "exists": true
         }
       ],
@@ -9930,7 +9940,7 @@
         "data": "iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAYAAABRmsRnAAAHWUlEQVR4nO3au2uVeR7H8W+isnGn0EYRxUq0sNPOYgubdRtBLBREUQsVKy/LqrAgIm6hy4KNrf+ATRB2dxgslCm9oiCC9zsGBBETR0PMzHkYgxnmYmJyPonn9YLDc34Pz3PaN7/v+c0c/kkBAG3VXQBA2wkwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAjwNDU4OFh3794dde/Jkyf15s2bkXVfX1+9ePFiZH379u1RVwByBHiaunTpUh09enTUvZ07d9bz58+b7/39/bV79+768OFDs378+HEdOnSoCffWrVsLgCwBnqauXLlSK1asGFkPDQ3V/fv3a8mSJU10r127Vjt27KgFCxaMev7mzZu1fPny5t7w8HBduHChHj58WAC0lwBPU62gvn79us6ePdt8Tp8+XcuWLavu7u7av39/nTt3rp49e1a7du1qnr969WqtXLmyea91ffr0aW3atKlevnxZR44cqd7e3gKgfQR4mmrtcOfMmVOPHj1qPufPn2/C2hpN37hxo9asWdPsdO/cuVMDAwN1+fLlUQE+c+ZMHThwoNavX1+HDx9u1gC0z8xi2mntWmfMmFF79uwZuXfv3r0mrBcvXqylS5c2o+aWzZs3N8+2DmS1xtHXr1+vEydONNHdu3fvyO/NmzevAGgfO+Bp6OM4+VMfd7aLFy9u/g/esmVLcxCrNaZ+8OBBM55u7YS7urpq9uzZNWvWrGZX/O7duzp58mRt3LixAGgfO+Bp6O3bt7V27dqRdevQVWvcvGjRolq4cGHdunWrOem8evXq2r59ezOWXrduXXNCesOGDc07p06dqmPHjlVPT09t27atVq1aVQC0T9dw6ygsANBWRtAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQMLP4Iv/5579rKvv7v/5RAEw9dsAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMBTyA/vfqjBwcEC4OsnwFNE/0B//ff8/2vow1AB8PWbWcS14vvt99/V3/7y1+r5U08B8PUT4LBP4/vNn78pADqDAAeJL0DnEuAQ8QXobAIcIL4ACHCbiS8ALQLcRuILwEcC3CbiC8CnBLgNxBeAXxLgSSa+APwaAZ5E4gvAbxHgSSK+APweAZ4E4gvAHxHgCSa+AHwOAZ5A4gvA5xLgCSK+AIyFAE8A8QVgrAT4C4kvAOMhwF+gr69PfAEYFwEep1Z8Dx48WL3/66358+cXAIyFAI/Dx/geP35cfAEYFwEeI/EFYCII8BiILwATRYA/k/gCMJEE+DOILwATTYD/gPgCMBkE+HeILwCTRYB/g/gCMJkE+FeILwCTTYB/QXwBaAcB/oT4AtAuAvwz8QWgnQS4xBeA9uv4AIsvAAkdHWDxBSClYwMsvgAkdWSAxReAtI4LsPgCMBV0Df+kOsSrV69q37594gtAXEcFeGBgoN6/f19z584tAEjqqAADwFTRXQBA2wkwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAT8CA0T/A4wPYnoAAAAAElFTkSuQmCC",
         "documentRevision": 4,
         "frame": 1,
-        "renderMs": 10,
+        "renderMs": 12,
         "imageToCamera": [
           0.024999999999999998,
           0.0,
@@ -9956,7 +9966,7 @@
         "data": "iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAYAAABRmsRnAAAEDUlEQVR4nO3VMREAAAgAIc/+oW3hL1CCHQDg3Q4A8E7AABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQOAALQcCHShRVuMAAAAASUVORK5CYII=",
         "documentRevision": 4,
         "frame": 12,
-        "renderMs": 5,
+        "renderMs": 6,
         "imageToCamera": [
           0.024999999999999998,
           0.0,
@@ -10462,23 +10472,23 @@
                 },
                 "leftMargin": {
                   "type": "number",
-                  "minimum": -10000,
-                  "maximum": 10000
+                  "minimum": 0,
+                  "maximum": 1000
                 },
                 "rightMargin": {
                   "type": "number",
-                  "minimum": -10000,
-                  "maximum": 10000
+                  "minimum": 0,
+                  "maximum": 1000
                 },
                 "indent": {
                   "type": "number",
-                  "minimum": -10000,
-                  "maximum": 10000
+                  "minimum": -99,
+                  "maximum": 1000
                 },
                 "lineSpacing": {
                   "type": "number",
-                  "minimum": -10000,
-                  "maximum": 10000
+                  "minimum": -99,
+                  "maximum": 1000
                 },
                 "outlineColourId": {
                   "type": [

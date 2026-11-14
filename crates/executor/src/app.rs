@@ -58,6 +58,8 @@ pub(crate) struct AppContext {
     pub tool_memory: std::collections::BTreeMap<String, String>,
     /// The current brush pen and eraser pen (02 §6.1; project scope, 02 §12.3: saved in the project's `session.json`).
     pub pens: CurrentPens,
+    /// The current colour and its palette (03 §2.4; `colour.current.set`, ruling D-11; saved in `session.json`).
+    pub colour: Option<(Id, Id)>,
 }
 
 /// The current pen of each tool family (02 §6.1: Brush and Eraser each remember their own).
@@ -94,6 +96,7 @@ impl Default for AppContext {
             point_drawings: std::collections::BTreeSet::new(),
             tool_memory: std::collections::BTreeMap::new(),
             pens: CurrentPens::default(),
+            colour: None,
         }
     }
 }
@@ -343,6 +346,7 @@ impl AppContext {
             point_drawings: self.point_drawings.clone(),
             tool_memory: self.tool_memory.clone(),
             pens: self.pens.clone(),
+            colour: self.colour.clone(),
         }
     }
 

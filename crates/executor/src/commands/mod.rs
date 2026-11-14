@@ -179,6 +179,9 @@ pub(crate) static ALL: &[&Command] = &[
     &doc::DOC_CHANGED,
     &doc_io::DOC_ASSET_STATUS_CHANGED,
     &doc_io::DOC_PACKAGE_CHANGED_ON_DISK,
+    // the current colour (M4 C4.2, ruling D-11)
+    &colour::COLOUR_CURRENT_SET,
+    &colour::COLOUR_CURRENT_CHANGED,
     // tools and pens (M4 C4.2)
     &tool::TOOL_LIST,
     &tool::TOOL_ACTIVE_SET,

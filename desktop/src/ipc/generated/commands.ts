@@ -2524,7 +2524,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M7 C7.1",
     event: true,
   },
   "colour.current.get": {
@@ -2546,10 +2545,9 @@ export const COMMAND_INDEX = {
     result: "colour.current.set.result",
     examples: [
       {
-        colourId: "scene:#1",
+        colourId: "palette:#1/swatch:#2",
       },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.editor.close": {
     kind: "ui",
@@ -25480,37 +25478,29 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "colour.current.changed.params": {
-    title: "colour.current.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "colour.current.changed.result": {
-    title: "colour.current.changed result",
+    title: "CurrentChanged",
+    description: "`colour.current.changed` payload.",
     type: "object",
     properties: {
       paletteId: {
+        description: "The current palette.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       colourId: {
+        description: "The current colour.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "paletteId",
       "colourId",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{paletteId, colourId}`",
-    additionalProperties: false,
   },
   "colour.current.get.params": {
     title: "colour.current.get parameters",
@@ -25556,45 +25546,38 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "colour.current.set.params": {
-    title: "colour.current.set parameters",
+    title: "CurrentSetParams",
+    description: "`colour.current.set` parameters.",
     type: "object",
     properties: {
       colourId: {
+        description: "The colour (a swatch's colour id or a swatch reference).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "colourId",
     ],
-    additionalProperties: false,
-    "x-spec": "`colourId: id`",
   },
   "colour.current.set.result": {
-    title: "colour.current.set result",
+    title: "CurrentColour",
+    description: "`{paletteId, colourId}`.",
     type: "object",
     properties: {
       paletteId: {
+        description: "The current palette (switched when the colour is in another one, 03 §2.4).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       colourId: {
+        description: "The current colour.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "paletteId",
       "colourId",
     ],
-    "x-spec": "`{paletteId, colourId}`",
-    additionalProperties: false,
   },
   "colour.editor.close.params": {
     title: "colour.editor.close parameters",
@@ -89264,14 +89247,14 @@ export interface colour_autoColourUpdate_set_result {
   enabled: boolean;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type colour_current_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `colour.current.changed` payload. */
 export interface colour_current_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The current palette. */
   paletteId: string;
-  /** object ID or path reference (10 §3) */
+  /** The current colour. */
   colourId: string;
 }
 
@@ -89287,15 +89270,17 @@ export interface colour_current_get_result {
   swatch: string;
 }
 
+/** `colour.current.set` parameters. */
 export interface colour_current_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The colour (a swatch's colour id or a swatch reference). */
   colourId: string;
 }
 
+/** `{paletteId, colourId}`. */
 export interface colour_current_set_result {
-  /** object ID or path reference (10 §3) */
+  /** The current palette (switched when the colour is in another one, 03 §2.4). */
   paletteId: string;
-  /** object ID or path reference (10 §3) */
+  /** The current colour. */
   colourId: string;
 }
 
