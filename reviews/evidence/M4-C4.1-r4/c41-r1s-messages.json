@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python",
+    "tests\\adversarial\\c41-r1s-messages.py"
+  ],
+  "exit": 0,
+  "seconds": 0.05832909999298863,
+  "results": []
+}
