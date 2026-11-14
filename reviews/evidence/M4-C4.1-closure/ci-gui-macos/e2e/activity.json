@@ -1,0 +1,717 @@
+[
+  {
+    "seq": 1,
+    "time": "2026-11-14T09:37:30.142Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 1
+  },
+  {
+    "seq": 2,
+    "time": "2026-11-14T09:37:30.563Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 0
+  },
+  {
+    "seq": 3,
+    "time": "2026-11-14T09:37:30.819Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 0
+  },
+  {
+    "seq": 4,
+    "time": "2026-11-14T09:37:31.077Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 0
+  },
+  {
+    "seq": 5,
+    "time": "2026-11-14T09:37:31.337Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 1
+  },
+  {
+    "seq": 6,
+    "time": "2026-11-14T09:37:31.593Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 0
+  },
+  {
+    "seq": 7,
+    "time": "2026-11-14T09:37:34.001Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 2052
+  },
+  {
+    "seq": 8,
+    "time": "2026-11-14T09:37:34.638Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "window.panel.list",
+    "params": {},
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 1
+  },
+  {
+    "seq": 9,
+    "time": "2026-11-14T09:37:34.684Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "window.panel.set",
+    "params": {
+      "panelId": "history",
+      "visible": true
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 32
+  },
+  {
+    "seq": 10,
+    "time": "2026-11-14T09:37:34.974Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 279
+  },
+  {
+    "seq": 11,
+    "time": "2026-11-14T09:37:35.028Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "ui.statusBar.set",
+    "params": {
+      "visible": false
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 37
+  },
+  {
+    "seq": 12,
+    "time": "2026-11-14T09:37:35.162Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 96
+  },
+  {
+    "seq": 13,
+    "time": "2026-11-14T09:37:35.185Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "ui.statusBar.set",
+    "params": {
+      "visible": true
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 8
+  },
+  {
+    "seq": 14,
+    "time": "2026-11-14T09:37:35.364Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 169
+  },
+  {
+    "seq": 15,
+    "time": "2026-11-14T09:37:35.548Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "project.create",
+    "params": {
+      "name": "Bounce",
+      "onUnsaved": "fail"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 155
+  },
+  {
+    "seq": 16,
+    "time": "2026-11-14T09:37:35.677Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 119
+  },
+  {
+    "seq": 17,
+    "time": "2026-11-14T09:37:35.980Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "workspace.select",
+    "params": {
+      "name": "Drawing"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 12
+  },
+  {
+    "seq": 18,
+    "time": "2026-11-14T09:37:36.092Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 96
+  },
+  {
+    "seq": 19,
+    "time": "2026-11-14T09:37:36.106Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "get_state",
+    "commandId": "app.state.get",
+    "params": {},
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 1
+  },
+  {
+    "seq": 20,
+    "time": "2026-11-14T09:37:36.135Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "prefs.set",
+    "params": {
+      "values": {
+        "interface.theme": "dark",
+        "files.backups.count": 7
+      }
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 8
+  },
+  {
+    "seq": 21,
+    "time": "2026-11-14T09:37:36.253Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 97
+  },
+  {
+    "seq": 22,
+    "time": "2026-11-14T09:37:36.264Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "keymap.set",
+    "params": {
+      "commandId": "project.save",
+      "keys": "F2"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 6
+  },
+  {
+    "seq": 23,
+    "time": "2026-11-14T09:37:36.274Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "key",
+    "commandId": "project.save",
+    "params": {},
+    "status": "error",
+    "errorCode": "project.pathRequired",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 3
+  },
+  {
+    "seq": 24,
+    "time": "2026-11-14T09:37:36.288Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "agent.activity.list",
+    "params": {
+      "limit": 50
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 5
+  },
+  {
+    "seq": 25,
+    "time": "2026-11-14T09:37:36.302Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "keymap.set",
+    "params": {
+      "commandId": "ui.statusBar.set",
+      "params": {
+        "visible": false
+      },
+      "keys": "F3"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 5
+  },
+  {
+    "seq": 26,
+    "time": "2026-11-14T09:37:36.318Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "workspace.create",
+    "params": {
+      "name": "E2E"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 6
+  },
+  {
+    "seq": 27,
+    "time": "2026-11-14T09:37:36.337Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "window.geometry.set",
+    "params": {
+      "x": 40,
+      "y": 30,
+      "width": 860,
+      "height": 600
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 8
+  },
+  {
+    "seq": 28,
+    "time": "2026-11-14T09:37:36.349Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "prefs.set",
+    "params": {
+      "values": {
+        "files.backups.count": 99
+      }
+    },
+    "status": "error",
+    "errorCode": "prefs.outOfRange",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 2
+  },
+  {
+    "seq": 29,
+    "time": "2026-11-14T09:37:36.361Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "keymap.set",
+    "params": {
+      "commandId": "project.save",
+      "keys": "Escape"
+    },
+    "status": "error",
+    "errorCode": "keymap.reservedKey",
+    "errorReason": "Escape alone cancels gestures, captures and dialogs",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 2
+  },
+  {
+    "seq": 30,
+    "time": "2026-11-14T09:37:36.373Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "ui.preferences.open",
+    "params": {
+      "category": "interface"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 2
+  },
+  {
+    "seq": 31,
+    "time": "2026-11-14T09:37:36.850Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 464
+  },
+  {
+    "seq": 32,
+    "time": "2026-11-14T09:37:37.036Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "get_state",
+    "commandId": "app.state.get",
+    "params": {},
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 2
+  },
+  {
+    "seq": 33,
+    "time": "2026-11-14T09:37:47.126Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "doc.object.patch",
+    "params": {
+      "targets": [
+        "@current"
+      ],
+      "props": {
+        "meta": {
+          "e2e": true
+        }
+      }
+    },
+    "status": "error",
+    "errorCode": "ui.busy",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 10074
+  },
+  {
+    "seq": 34,
+    "time": "2026-11-14T09:37:47.151Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "window.panel.set",
+    "params": {
+      "panelId": "colour",
+      "visible": true
+    },
+    "status": "error",
+    "errorCode": "ui.modalOpen",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": null,
+    "durationMs": 0
+  },
+  {
+    "seq": 35,
+    "time": "2026-11-14T09:37:48.210Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 1
+  },
+  {
+    "seq": 36,
+    "time": "2026-11-14T09:37:48.481Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 0
+  },
+  {
+    "seq": 37,
+    "time": "2026-11-14T09:37:48.490Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "get_state",
+    "commandId": "app.state.get",
+    "params": {},
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 0
+  },
+  {
+    "seq": 38,
+    "time": "2026-11-14T09:37:48.516Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "key",
+    "commandId": "ui.statusBar.set",
+    "params": {
+      "visible": false
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 18
+  },
+  {
+    "seq": 39,
+    "time": "2026-11-14T09:37:48.529Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "agent.activity.list",
+    "params": {
+      "limit": 50
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 1
+  },
+  {
+    "seq": 40,
+    "time": "2026-11-14T09:37:48.650Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 115
+  },
+  {
+    "seq": 41,
+    "time": "2026-11-14T09:37:48.664Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "ui.statusBar.set",
+    "params": {
+      "visible": true
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 6
+  },
+  {
+    "seq": 42,
+    "time": "2026-11-14T09:37:48.758Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "inspect_ui",
+    "commandId": "inspect.ui.tree",
+    "params": {
+      "target": "window"
+    },
+    "status": "ok",
+    "undoStepId": null,
+    "changedCount": 0,
+    "documentRev": 1,
+    "durationMs": 89
+  },
+  {
+    "seq": 43,
+    "time": "2026-11-14T09:37:48.782Z",
+    "sessionId": "s1-78aede",
+    "client": "mcp",
+    "tool": "run_command",
+    "commandId": "doc.object.patch",
+    "params": {
+      "targets": [
+        "@current"
+      ],
+      "props": {
+        "meta": {
+          "e2e": true
+        }
+      }
+    },
+    "status": "ok",
+    "undoStepId": "u-1",
+    "changedCount": 1,
+    "documentRev": 2,
+    "durationMs": 17
+  }
+]
