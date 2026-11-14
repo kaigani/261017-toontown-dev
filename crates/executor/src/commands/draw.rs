@@ -1488,11 +1488,19 @@ pub(crate) fn precheck_text_set(cx: &Cx, v: &Value) -> Result<(), CommandError> 
 /// (`dr_.../<strokeId>`, else the current drawing) and its lock.
 pub(crate) fn precheck_contour(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     let Some(stroke) = v.get("strokeId").and_then(Value::as_str) else { return Ok(()) };
-    let drawing = match stroke.split_once('/') {
-        Some((d, _)) if d.starts_with("dr_") => Some(d),
-        _ => None,
+    // As the handler resolves it (02 §13.1 item 4): a stroke id qualified with its drawing names it; else `drawingId`,
+    // else `elementId` + `frame`, else the current drawing.
+    let text = |k: &str| v.get(k).and_then(Value::as_str);
+    let (drawing, element, frame) = match stroke.split_once('/') {
+        Some((d, _)) if d.starts_with("dr_") => (Some(d), None, None),
+        _ => match text("drawingId") {
+            Some(d) => (Some(d), None, None),
+            None => {
+                (None, text("elementId"), v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok()))
+            }
+        },
     };
-    let Some(id) = target_existing(cx, drawing, None, None, false)? else { return Ok(()) };
+    let Some(id) = target_existing(cx, drawing, element, frame, false)? else { return Ok(()) };
     let doc = cx.document()?;
     let d = doc.drawing(&id).ok_or_else(|| not_found(id.as_str()))?;
     check_editable(d, None)

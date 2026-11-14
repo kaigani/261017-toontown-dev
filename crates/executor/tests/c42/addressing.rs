@@ -14,6 +14,9 @@ struct World {
     d2: String,
     stroke: String,
     text: String,
+    /// A second drawing element, made the current one in the `elementId` + `frame` cells, so a command that ignored
+    /// `elementId` (and used the current element with `frame`) would fail its cell.
+    other: String,
     m: Vec<f64>,
 }
 
@@ -66,6 +69,12 @@ fn world() -> (ExecutorHandle, World) {
         "draw.line.add",
         json!({ "drawingId": d2, "from": { "x": 15, "y": 47.5 }, "to": { "x": 50, "y": 47.5 }, "layer": "top" }),
     );
+    let other =
+        ok(&h, "element.create", json!({ "type": "drawing", "name": "Other", "sceneId": "scene:#1" }))["elementIds"][0]
+            .as_str()
+            .unwrap()
+            .to_owned();
+    ok(&h, "app.context.set", json!({ "elementId": BOB, "frame": 1 }));
     let m: Vec<f64> = ok(&h, "draw.viewMapping.get", json!({ "view": "drawing" }))["viewToDrawing"]
         .as_array()
         .unwrap()
@@ -73,7 +82,7 @@ fn world() -> (ExecutorHandle, World) {
         .map(|x| x.as_f64().unwrap())
         .collect();
     assert_eq!(ok(&h, "app.state.get", json!({}))["frame"], 1, "the context stays at frame 1");
-    (h, World { frame, d2, stroke, text, m })
+    (h, World { frame, d2, stroke, text, other, m })
 }
 
 /// How a case writes its coordinates: view space (the call under test) or drawing space (the reference).
@@ -219,7 +228,7 @@ fn c42a_r3_01_frame_and_view_space_are_honoured_by_every_point_taking_command() 
         let same_answer = ea.status == eb.status
             && ea.error.as_ref().map(|e| e.code.clone()) == eb.error.as_ref().map(|e| e.code.clone())
             && ea.result == eb.result;
-        if !same_answer || canonical(&a) != canonical(&b) {
+        if !same_answer || content(&a) != content(&b) {
             failures.push(format!(
                 "{id}: frame/view {pa} -> {:?} {:?}\n  drawingId/drawing {pb} -> {:?} {:?}",
                 ea.result, ea.error, eb.result, eb.error
@@ -230,12 +239,29 @@ fn c42a_r3_01_frame_and_view_space_are_honoured_by_every_point_taking_command() 
     assert!(succeeded >= 20, "most cases run (not only equal refusals): {succeeded} of 27");
 }
 
+/// The canonical saved content without the creation time of the second element (`World::other`), which the clock
+/// stamps when each world is built; every other byte, that element's included, is compared.
+fn content(h: &ExecutorHandle) -> Vec<(String, String)> {
+    canonical(h)
+        .into_iter()
+        .map(|(k, v)| {
+            let mut j: Value = serde_json::from_str(&v).unwrap();
+            if j.get("name").and_then(Value::as_str) == Some("Other")
+                && let Some(m) = j.as_object_mut()
+            {
+                m.remove("createdAt");
+            }
+            (k, j.to_string())
+        })
+        .collect()
+}
+
 /// How a cell names its target (02 §13.1 item 4).
 #[derive(Clone, Copy, Debug)]
 enum Naming {
     /// `drawingId`.
     DrawingId,
-    /// `elementId` + `frame`.
+    /// `elementId` + `frame`, with the context moved to another element first (Bob is not the current element).
     ElementFrame,
     /// `frame` alone: the current element's cell.
     FrameAlone,
@@ -283,7 +309,7 @@ fn c42a_r4_01_every_point_taking_command_by_every_naming_in_both_spaces() {
             pb["drawingId"] = json!(wb.d2);
         }
         let eb = run(&b, id, pb.clone());
-        let reference = canonical(&b);
+        let reference = content(&b);
         // `draw.repositionAll.apply` edits every drawing of an element (02 §13.2 line 1336: `elementId?: id = current`):
         // only the element namings apply to it.
         let namings: Vec<Naming> = if addresses || id != "draw.repositionAll.apply" {
@@ -300,6 +326,14 @@ fn c42a_r4_01_every_point_taking_command_by_every_naming_in_both_spaces() {
                 if matches!(space, Mode::View) {
                     pa["space"] = json!("view");
                     pa["view"] = json!("drawingView");
+                }
+                if matches!(naming, Naming::ElementFrame) {
+                    ok(&a, "app.context.set", json!({ "elementId": w.other, "frame": 1 }));
+                    assert_eq!(
+                        ok(&a, "app.state.get", json!({}))["element"]["id"],
+                        json!(w.other),
+                        "Bob is not current"
+                    );
                 }
                 if id == "draw.repositionAll.apply" {
                     if matches!(naming, Naming::Current) {
@@ -331,7 +365,7 @@ fn c42a_r4_01_every_point_taking_command_by_every_naming_in_both_spaces() {
                         "{id} {naming:?} {space_name}: refused {:?}",
                         ea.error.as_ref().map(|e| (&e.code, &e.message))
                     ));
-                } else if ea.result != eb.result || canonical(&a) != reference {
+                } else if ea.result != eb.result || content(&a) != reference {
                     failures.push(format!(
                         "{id} {naming:?} {space_name}: differs from the drawingId reference\n  {pa}\n  {:?}\n  {:?}",
                         ea.result, eb.result
