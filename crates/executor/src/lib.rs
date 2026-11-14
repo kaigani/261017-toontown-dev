@@ -1133,6 +1133,11 @@ pub(crate) fn wait_sliced(
 ) -> Option<Result<(JobRecord, bool), CommandError>> {
     let deadline = std::time::Instant::now() + wait;
     loop {
+        // A caller that has cancelled is answered the cancellation (the job continues), also when the job would end
+        // within the next slice: the order of the two events, not the job's speed, decides the answer.
+        if cancelled() {
+            return None;
+        }
         let left = deadline.saturating_duration_since(std::time::Instant::now());
         let slice = left.min(CANCEL_POLL);
         match jobs.wait(job, slice) {

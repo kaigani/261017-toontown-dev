@@ -56,3 +56,33 @@ fn s2_the_caps_are_checked_before_rendering() {
     let e = err(&h, "inspect.screenshot", json!({ "target": "cameraView" }));
     assert_eq!((e.code.as_str(), &e.details["milestone"]), ("command.notImplemented", &json!("M4 C4.3")));
 }
+
+#[test]
+fn a_cancelled_capture_answers_the_cancellation_even_when_its_job_ended_first() {
+    // The caller cancels only once its capture job has ended: the order of the events (cancelled, then waited), not the
+    // job's speed, decides the answer. The answer is the cancellation with the job id; the job stays addressable.
+    // A 1 x 1 capture ends well within one wait slice (20 ms), the case in which the wait used to answer the result.
+    let h = ready();
+    for _ in 0..5 {
+        let count = h.jobs().list(None, None).len();
+        let probe = || {
+            let jobs = h.jobs().list(None, None);
+            let Some(j) = jobs.get(count) else { return false };
+            let (done, timed) = h.jobs().wait(&j.job_id, std::time::Duration::from_secs(60)).unwrap();
+            assert!(!timed && done.state.is_final(), "the job ended before the probe answers");
+            true
+        };
+        let (env, _) = h.invoke_served_until(
+            tt_executor::Invocation::user(
+                "inspect.screenshot",
+                json!({ "region": { "x": 0, "y": 0, "w": 1, "h": 1 } }),
+            ),
+            &probe,
+        );
+        let e = env.error.as_ref().unwrap_or_else(|| panic!("the cancellation, not the result: {env:?}"));
+        assert_eq!((e.code.as_str(), &e.details["reason"]), ("command.timeout", &json!("cancelled")), "{e:?}");
+        let id = e.details["jobId"].as_str().unwrap();
+        let (done, _) = h.jobs().wait(id, std::time::Duration::from_secs(5)).unwrap();
+        assert_eq!(serde_json::to_value(done.state).unwrap(), "succeeded", "the job continued and succeeded");
+    }
+}
