@@ -400,15 +400,6 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
         if let Some(check) = c.decl.enablement.check {
             check(&*cx).map_err(|d| d.to_error(id))?;
         }
-        // The declared precheck: the state refusal availability reads too, so the two are one predicate (ruling
-        // O-23). A panicking precheck is contained.
-        if let Some(pre) = c.decl.precheck {
-            let any: &dyn std::any::Any = &*cx;
-            match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| pre(any, &params))) {
-                Ok(r) => r?,
-                Err(_) => return Err(CommandError::internal(format!("the precheck of `{id}` failed unexpectedly"))),
-            }
-        }
     }
     if let Status::NotImplemented { owner } = entry.status() {
         return Err(CommandError::not_implemented(id, owner));
@@ -418,6 +409,16 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
         check_expect_rev(cx, &pairs)?;
     }
     let Some(command) = entry.command else { return Err(CommandError::internal("implemented entry without handler")) };
+    // The declared precheck, immediately before the handler (where the handler gave the same refusal before, so the
+    // order of refusals is unchanged: `expectRev` is checked first): the state refusal availability reads too, so the
+    // two are one predicate (ruling O-23). A panicking precheck is contained.
+    if let Some(pre) = command.decl.precheck {
+        let any: &dyn std::any::Any = &*cx;
+        match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| pre(any, &params))) {
+            Ok(r) => r?,
+            Err(_) => return Err(CommandError::internal(format!("the precheck of `{id}` failed unexpectedly"))),
+        }
+    }
     let result = (command.handler)(cx, params)?;
     // 02 §3.12 item 1: the layers the call changed are settled (re-noded, zones and fills updated) before the next
     // step of a batch reads them; handlers that report stroke or zone IDs settle earlier themselves.

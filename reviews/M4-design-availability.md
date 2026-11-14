@@ -21,9 +21,12 @@ thread, during which a user command waited 3.03 s. That breaks the never-block r
   clipboard, layout, history flags) and the parameters; it makes no scratch copy, runs no pipeline, no integrity gate,
   no rendering, and allocates nothing proportional to the document (lookups by id; no walk over the document's
   objects).
-- **One predicate by construction.** The transaction pipeline runs the declared precheck before every handler, after
-  the project and enablement checks (11 §8 order: existence, kind, permission, parameters, project, enablement,
-  **precheck**, implementation status, `expectRev`, handler). The refusal an invocation gets is therefore the
+- **One predicate by construction.** The transaction pipeline runs the declared precheck immediately before every
+  handler (11 §8 order: existence, kind, permission, parameters, project, enablement, implementation status,
+  `expectRev`, **precheck**, handler), where the handler gave the same refusal before, so the order of refusals is
+  unchanged. (Correction during implementation: this note first placed the precheck after enablement, ahead of
+  `expectRev`; that changed the refusal a stale `expectRev` gets, which the reviewer's M3 test `c31_r1_mutations`
+  caught on CI. Availability passes no `expectRev`, so the predicate it evaluates is the same either way.) The refusal an invocation gets is therefore the
   precheck's whenever the precheck refuses, and availability evaluates the same function.
 - **Availability evaluates the static checks and the precheck only**: registered, not an event, a project when the
   declaration needs one, the declared enablement rule, implemented, then the precheck. Nothing else of the pipeline
@@ -74,7 +77,8 @@ handler's refusal is the command's typed error when it runs.
 **Measured (debug build, Windows workstation; `passes_stay_constant_on_a_large_project`):** the fixture of 10,101
 elements is built through 102 `element.create` commands in about 27 s (debug) or 20 s (release); a full pass over the
 269 references takes 5.4 ms on the empty project and 5.7 ms on the large one; the longest chunk holds the document
-thread 1.1 ms; the slowest user command during continuous passes took 16 ms.
+thread 1.1 ms; the slowest of 20 user commands (`app.frame.set`, session state only) took 6 to 10 ms during
+continuous passes, the same as without them.
 
 ## 5. Isolation
 
