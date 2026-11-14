@@ -167,6 +167,12 @@ pub(crate) struct StrokeAddParams {
     /// The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn yes() -> bool {
@@ -414,6 +420,8 @@ fn transform_geometry(g: &Geometry, m: &tt_vector::geom::Affine) -> Geometry {
     gui = "Drawing view: Brush, Pencil and Stroke tools (M4 C4.2)",
 )]
 pub(crate) fn draw_stroke_add(cx: &mut Cx, p: StrokeAddParams) -> Result<StrokeAddResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let kind = kind_of(p.kind);
     let geom = geometry(p.points.as_deref(), p.bezier.as_deref(), p.fit, p.closed)?;
     let mut changes = Vec::new();
@@ -569,6 +577,12 @@ pub(crate) struct StrokeSetParams {
     /// The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 /// `{strokeIds, removedIds, rev}`.
@@ -662,6 +676,8 @@ pub(crate) fn drawing_in<'a>(doc: &'a Document, id: &tt_model::Id) -> Result<&'a
     gui = "Drawing view: Contour Editor and line properties (M4 C4.2)",
 )]
 pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeSetResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     if p.bezier.is_none() && p.pressure.is_none() && p.thickness.is_none() && p.kind.is_none() && p.closed.is_none() {
         return Err(err(
             codes::ARG_MISSING,
@@ -770,6 +786,12 @@ pub(crate) struct ContentAddParams {
     /// Make the inserted objects the drawing selection.
     #[serde(default = "yes")]
     select: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 /// `{idMap, rev}`.
@@ -801,6 +823,8 @@ pub(crate) struct ContentAddResult {
     gui = "Drawing view: Edit › Paste (M4 C4.2)",
 )]
 pub(crate) fn draw_content_add(cx: &mut Cx, p: ContentAddParams) -> Result<ContentAddResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, p.create_drawing, &mut changes)?;
     let doc = cx.document()?.clone();

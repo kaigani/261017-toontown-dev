@@ -147,6 +147,15 @@ pub(crate) struct SelectionSetParams {
     /// How to combine with the current selection.
     #[serde(default)]
     mode: Mode,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 /// `{selectedIds, bounds}`.
@@ -271,6 +280,8 @@ fn point_json(cx: &Cx, d: &Drawing) -> Vec<Value> {
     gui = "Drawing view: Select tool click, drag and lasso (M4 C4.2)",
 )]
 pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<SelectionSetResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let mut none = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
     let doc = cx.document()?.clone();

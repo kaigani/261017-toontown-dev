@@ -264,6 +264,15 @@ pub(crate) struct CutParams {
     /// What happens to the inside.
     #[serde(default)]
     then: Then,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 /// `{insideIds, removedIds, rev}`.
@@ -311,6 +320,8 @@ fn check_finite(v: &[P], pointer: &str) -> Result<(), CommandError> {
     gui = "Drawing view: Cutter tool (M4 C4.2)",
 )]
 pub(crate) fn draw_cut_apply(cx: &mut Cx, p: CutParams) -> Result<CutResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let given = [p.polygon.is_some(), p.rect.is_some(), p.segment.is_some()].iter().filter(|b| **b).count();
     if given != 1 {
         return Err(err(
@@ -435,6 +446,15 @@ pub(crate) struct EraseParams {
     /// Layers to erase.
     #[serde(default)]
     layers: LayersIn,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 /// `{removedIds, createdIds, rev}`.
@@ -527,6 +547,8 @@ fn swept(path: &[ErasePoint], pen: &BrushPen) -> Result<Vec<P>, CommandError> {
     gui = "Drawing and Camera views: Eraser tool (M4 C4.2)",
 )]
 pub(crate) fn draw_erase_apply(cx: &mut Cx, p: EraseParams) -> Result<EraseResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let area = match (&p.path, &p.region) {
         (Some(path), None) if !path.is_empty() => swept(path, &eraser(cx, p.pen_id.as_deref(), p.pen)?)?,
         (None, Some(r)) => {

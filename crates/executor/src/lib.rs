@@ -25,6 +25,7 @@
 //! kernel state), §6.1 (undo/redo), §11 (settings), §12.4. Milestone: M1 (C1.2, C1.3). Decisions: ADR-0013, ADR-0014.
 
 pub mod agents;
+mod addressing;
 mod align;
 mod app;
 pub mod commands;

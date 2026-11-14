@@ -162,6 +162,12 @@ pub(crate) struct BoxShapeParams {
     /// Symmetry copies (02 §6.2).
     #[serde(default = "yes")]
     symmetry: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 impl BoxShapeParams {
@@ -192,6 +198,8 @@ impl BoxShapeParams {
     gui = "Drawing view: Rectangle tool (M4 C4.2)",
 )]
 pub(crate) fn draw_rectangle_add(cx: &mut Cx, p: BoxShapeParams) -> Result<ShapeResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let (a, b) = drag_box(p.from, p.to, p.square, p.from_centre);
     if let Some(e) = degenerate(a, b, "rectangle") {
         return Err(e);
@@ -247,6 +255,12 @@ pub(crate) struct EllipseParams {
     /// Symmetry copies (02 §6.2).
     #[serde(default = "yes")]
     symmetry: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 #[command(
@@ -275,6 +289,8 @@ pub(crate) fn draw_ellipse_add(cx: &mut Cx, p: EllipseParams) -> Result<ShapeRes
         pen_id: p.pen_id,
         layer: p.layer,
         symmetry: p.symmetry,
+        space: p.space,
+        view: p.view,
     };
     let (a, b) = drag_box(p.from, p.to, p.square, p.from_centre);
     if let Some(e) = degenerate(a, b, "ellipse") {
@@ -345,6 +361,12 @@ pub(crate) struct LineParams {
     /// Symmetry copies.
     #[serde(default = "yes")]
     symmetry: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 #[command(
@@ -359,6 +381,8 @@ pub(crate) struct LineParams {
     gui = "Drawing view: Line tool (M4 C4.2)",
 )]
 pub(crate) fn draw_line_add(cx: &mut Cx, p: LineParams) -> Result<ShapeResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let from = match (p.from, p.continue_previous) {
         (Some(f), false) => P::new(f.x, f.y),
         (_, true) => {
@@ -492,6 +516,12 @@ pub(crate) struct PolylineParams {
     /// Symmetry copies.
     #[serde(default = "yes")]
     symmetry: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn eight() -> f64 {
@@ -510,6 +540,8 @@ fn eight() -> f64 {
     gui = "Drawing view: Polyline tool (M4 C4.2)",
 )]
 pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = &p.space;
     let mut anchors: Vec<(P, P, P)> = p
         .points
         .iter()
@@ -518,7 +550,9 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
             (P::new(q.x, q.y), h(q.in_handle), h(q.out_handle))
         })
         .collect();
-    if p.snap && p.snap_radius > 0.0 {
+    // The snap radius is in view pixels: through the given view's zoom, or 100 % without one (02 §13.1 item 5).
+    let snap_radius = crate::addressing::tolerance_du(cx, p.view.as_deref(), p.snap_radius)?;
+    if p.snap && snap_radius > 0.0 {
         let mut none = Vec::new();
         let t = super::draw::target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none);
         // A cell without a drawing yet (createDrawing) has nothing to snap to.
@@ -534,7 +568,7 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
             for a in &mut anchors {
                 if let Some(best) = existing
                     .iter()
-                    .filter(|e| e.dist(a.0) <= p.snap_radius)
+                    .filter(|e| e.dist(a.0) <= snap_radius)
                     .min_by(|x, y| x.dist(a.0).total_cmp(&y.dist(a.0)))
                 {
                     a.0 = *best;

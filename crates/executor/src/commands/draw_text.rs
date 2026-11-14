@@ -222,6 +222,12 @@ pub(crate) struct TextAddParams {
     /// Text colour (default: the current colour).
     #[serde(default)]
     colour_id: Option<String>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn yes() -> bool {
@@ -258,6 +264,8 @@ pub(crate) struct TextResult {
     gui = "Drawing view: Text tool (M4 C4.2)",
 )]
 pub(crate) fn draw_text_add(cx: &mut Cx, p: TextAddParams) -> Result<TextResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     check_position(p.position, "/position")?;
     check_len(&p.text, "/text")?;
     if let Some(w) = p.width {
@@ -378,6 +386,12 @@ pub(crate) struct TextSetParams {
     /// The drawing revision the caller read (02 §3.12).
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn text_node(
@@ -418,6 +432,8 @@ fn text_node(
     gui = "Drawing view: Text tool typing, box width and move (M4 C4.2)",
 )]
 pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let content_edit = p.text.is_some() || p.insert.is_some() || p.delete.is_some();
     let width_edit = p.width_mode.is_some() || p.width.is_some();
     if !content_edit && !width_edit && p.position.is_none() {

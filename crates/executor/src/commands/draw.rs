@@ -561,6 +561,12 @@ pub(crate) struct PivotParams {
     /// The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 /// `{drawingId, pivot, rev}` and the changed IDs.
@@ -590,6 +596,8 @@ pub(crate) struct PivotResult {
     gui = "Drawing view: Select tool pivot handle (M4 C4.2)",
 )]
 pub(crate) fn draw_pivot_set(cx: &mut Cx, p: PivotParams) -> Result<PivotResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     for (v, k) in [(p.point.x, "x"), (p.point.y, "y")] {
         tt_vector::path::check_coord(v, &format!("/point/{k}")).map_err(|e| invalid_geometry(&e))?;
     }

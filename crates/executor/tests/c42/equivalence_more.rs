@@ -310,3 +310,55 @@ fn zero_size_and_outside_view_shapes_answer_as_their_direct_command() {
         }
     }
 }
+
+#[test]
+fn c42a_r2_01_view_space_points_and_view_tolerances_in_every_point_taking_draw_command() {
+    // Drawing space and view space give the same rectangle; a rotated view refuses a view-space rectangle.
+    let a = ready();
+    let b = ready();
+    turned(&a);
+    turned(&b);
+    let (p0, p1) = (conv(&a, 1000.0, 500.0), conv(&a, 1100.0, 400.0));
+    ok(&a, "draw.rectangle.add", json!({ "from": p0, "to": p1 }));
+    ok(
+        &b,
+        "draw.rectangle.add",
+        json!({ "from": { "x": 1000, "y": 500 }, "to": { "x": 1100, "y": 400 }, "space": "view", "view": "drawingView" }),
+    );
+    assert_eq!(canonical(&a), canonical(&b));
+    let e = run(
+        &b,
+        "draw.selection.set",
+        json!({ "by": "rect", "rect": { "x": 0, "y": 0, "width": 10, "height": 10 }, "space": "view" }),
+    );
+    assert_eq!(e.error.unwrap().code, "arg.invalid");
+    assert_eq!(
+        run(&b, "draw.pivot.set", json!({ "point": { "x": 0, "y": 0 }, "space": "scene" })).error.unwrap().code,
+        "arg.invalid"
+    );
+    // The polyline snap radius is in view pixels: at zoom 2 a radius of 8 px is 4 du. An existing anchor 6 du away
+    // snaps at 100 % (no view) but not through the zoomed view.
+    let snaps = |view: Option<&str>| {
+        let h = ready();
+        ok(&h, "view.zoom.set", json!({ "viewId": "drawingView", "zoom": 2 }));
+        ok(&h, "draw.line.add", json!({ "from": { "x": 0, "y": 0 }, "to": { "x": 100, "y": 0 } }));
+        let mut p = json!({ "points": [{ "x": 106, "y": 0 }, { "x": 200, "y": 50 }], "snap": true, "snapRadius": 8 });
+        if let Some(v) = view {
+            p["view"] = json!(v);
+        }
+        let id = ok(&h, "draw.polyline.add", p)["strokeIds"][0].as_str().unwrap().to_owned();
+        let d = ok(&h, "draw.drawing.get", json!({ "drawingId": D1 })).to_string();
+        let at = d.find(&id).unwrap();
+        d[at..].contains(r#""bezier":[{"x":100.0,"y":0.0}"#)
+    };
+    assert!(snaps(None), "100 % without a view: 6 du is within 8");
+    assert!(!snaps(Some("drawingView")), "zoom 2: 8 px is 4 du");
+    // The gesture states the view in a zoomed view (and omits it at 100 %, where it means the same).
+    let h = ready();
+    ok(&h, "view.zoom.set", json!({ "viewId": "drawingView", "zoom": 2 }));
+    let mut events = drag(&[(900.0, 500.0), (900.0, 500.0)]);
+    events.extend(drag(&[(1000.0, 500.0), (1000.0, 500.0)]));
+    events.push(json!({ "type": "doubleClick", "x": 1000.0, "y": 500.0 }));
+    let params = pointer(&h, "polyline", events).result.unwrap()["commands"][1]["params"].clone();
+    assert_eq!(params["view"], "drawingView", "{params}");
+}

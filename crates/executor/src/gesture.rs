@@ -662,6 +662,11 @@ fn polyline(cx: &Cx, g: &Gesture) -> Option<(String, Value)> {
         return None;
     }
     let mut m = obj(json!({ "points": points, "closed": closed, "snap": snap, "snapRadius": radius }));
+    // The snap radius is in view pixels: the view is stated whenever its zoom is not 100 % (02 §13.1 item 5, §13.3
+    // line 1203; C42A-R2-01). At 100 % an absent `view` means the same tolerance, so the command is the same.
+    if cx.ui().shell().view(&g.view_id).is_ok_and(|w| (crate::commands::view::pixels_per_du(w) - 1.0).abs() > 1e-12) {
+        m.insert("view".into(), json!(g.view_id));
+    }
     styled(&mut m, cx, "polyline", &s);
     Some(("draw.polyline.add".into(), Value::Object(m)))
 }

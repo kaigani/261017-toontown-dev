@@ -314,6 +314,15 @@ pub(crate) struct TransformParams {
     /// The drawing revision the caller read.
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
@@ -367,6 +376,8 @@ fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
     gui = "Drawing view: Select tool handles and nudges (M4 C4.2)",
 )]
 pub(crate) fn draw_transform_apply(cx: &mut Cx, p: TransformParams) -> Result<TransformResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut changes)?;
     let doc = cx.document()?.clone();
@@ -618,6 +629,15 @@ pub(crate) struct EnvelopeParams {
     /// Mapping.
     #[serde(default)]
     mapping: Mapping,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, CommandError> {
@@ -661,6 +681,8 @@ fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, Com
     gui = "Drawing view: Perspective tool (M4 C4.2)",
 )]
 pub(crate) fn draw_envelope_apply(cx: &mut Cx, p: EnvelopeParams) -> Result<TransformResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     if p.corners.len() != 4 {
         return Err(err("arg.invalid", "four corners are required", json!({ "pointer": "/corners" })));
     }
@@ -701,6 +723,15 @@ pub(crate) struct RepositionParams {
     /// Envelope corners (of each drawing's bounds).
     #[serde(default)]
     corners: Option<Vec<Point>>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 /// `{drawingIds}`.
@@ -723,6 +754,8 @@ pub(crate) struct RepositionResult {
     gui = "Drawing view: Reposition All Drawings tool (M4 C4.2)",
 )]
 pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Result<RepositionResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let element = match p.element_id.as_deref() {
         Some(r) => Id::parse(&cx.resolve_as(r, ObjectType::Element)?)?,
         None => cx.app().element.clone().ok_or_else(|| {
@@ -746,6 +779,9 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
         matrix: p.matrix,
         copy: false,
         expect_rev: None,
+        space: super::colour::Space::default(),
+        view: None,
+        frame: None,
     };
     let mut changes = Vec::new();
     let mut changed_ids = Vec::new();
@@ -858,6 +894,15 @@ pub(crate) struct PointAddParams {
     #[serde(default)]
     #[schemars(range(min = 0.0, max = 1.0))]
     t: Option<f64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 /// `{strokeId, anchor, rev}`.
@@ -911,6 +956,8 @@ fn nearest_location(path: &Path, q: P) -> Option<(usize, f64)> {
     gui = "Drawing view: Contour Editor, click on a segment (M4 C4.2)",
 )]
 pub(crate) fn draw_point_add(cx: &mut Cx, p: PointAddParams) -> Result<PointAddResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
     let path = path_of(&v);
     let segs = path.segments();
@@ -960,6 +1007,15 @@ pub(crate) struct PointMoveParams {
     /// Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off).
     #[serde(default)]
     snap: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 /// `{modifiedIds, removedIds, rev}`.
@@ -1037,6 +1093,10 @@ fn nearest_on(path: &tt_vector::path::Path, q: P) -> Option<(f64, usize, f64, P)
     gui = "Drawing view: Contour Editor drag (M4 C4.2)",
 )]
 pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<ContourResult, CommandError> {
+    // The Snap to Contour radius is in view pixels: through the given view's zoom, or 100 % (02 §13.1 item 5).
+    let snap_radius = crate::addressing::tolerance_du(cx, p.view.as_deref(), SNAP_RADIUS)?;
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, p.frame);
     let mut none = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
     let doc = cx.document()?.clone();
@@ -1108,7 +1168,7 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
                     .iter()
                     .filter(|(list, _, _)| *list == l.list)
                     .filter_map(|(_, id, path)| nearest_on(path, q).map(|(dist, seg, t, at)| (dist, id, seg, t, at)))
-                    .filter(|c| c.0 <= SNAP_RADIUS)
+                    .filter(|c| c.0 <= snap_radius)
                     .min_by(|a, b| {
                         a.0.total_cmp(&b.0).then_with(|| a.1.cmp(b.1)).then(a.2.cmp(&b.2)).then(a.3.total_cmp(&b.3))
                     });
@@ -1162,6 +1222,15 @@ pub(crate) struct PointSetParams {
     /// Handle mode.
     #[serde(default)]
     handle_mode: Option<HandleMode>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 /// `{strokeId, rev}`.
@@ -1189,6 +1258,8 @@ pub(crate) struct PointSetResult {
     gui = "Drawing view: Contour Editor handle drag (M4 C4.2)",
 )]
 pub(crate) fn draw_point_set(cx: &mut Cx, p: PointSetParams) -> Result<PointSetResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
     let mut path = path_of(&v);
     let k = p.anchor as usize;
@@ -1319,6 +1390,15 @@ pub(crate) struct SegmentMoveParams {
     t: f64,
     /// Offset of that point (du).
     delta: Point,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 fn half() -> f64 {
@@ -1337,6 +1417,8 @@ fn half() -> f64 {
     gui = "Drawing view: Contour Editor segment drag (M4 C4.2)",
 )]
 pub(crate) fn draw_segment_move(cx: &mut Cx, p: SegmentMoveParams) -> Result<PointSetResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     if p.t <= 0.0 || p.t >= 1.0 {
         return Err(err("arg.invalid", "`t` must be strictly between 0 and 1", json!({ "pointer": "/t" })));
     }
