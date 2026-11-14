@@ -39,7 +39,9 @@ fn pointer_answers_the_commands_its_gestures_produced() {
     let pressures: Vec<Value> = pts.iter().map(|p| p["pressure"].clone()).collect();
     assert_eq!(pressures, vec![json!(0.5), json!(1.0), json!(1.0)], "absent and null pressure are the default 1");
     assert_eq!(pts[0], json!({ "x": 40.0, "y": 40.0, "pressure": 0.5 }));
-    assert!(commands[1]["result"]["strokeIds"].as_array().is_some_and(|s| !s.is_empty()), "{r}");
+    let env = &commands[1]["envelope"];
+    assert!(env["result"]["strokeIds"].as_array().is_some_and(|s| !s.is_empty()), "{r}");
+    assert!(env["undo"].is_object() && env["changes"].is_array(), "the complete envelope: {env}");
     assert_eq!(sc["result"]["hover"]["drawing"], json!({ "x": 60.0, "y": 60.0 }));
     // The activity log names the command the call produced.
     let undo = c.call("history", json!({}));
@@ -71,5 +73,19 @@ fn key_with_a_view_aims_view_commands_at_it_without_moving_the_active_view() {
     assert_eq!(c.run("app.state.get", json!({}))["result"]["activeView"]["viewId"], active);
     let r = c.call("key", json!({ "keys": "primary+=", "view": "nowhere" }));
     assert_eq!(r["structuredContent"]["error"]["code"], "view.notFound", "{r}");
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn the_pointer_tool_publishes_its_request_schema() {
+    let (dir, _h, mut c) = ready();
+    let tools = c.request("tools/list", json!({}));
+    let t = tools["tools"].as_array().unwrap().iter().find(|t| t["name"] == "pointer").unwrap().clone();
+    let text = t["inputSchema"].to_string();
+    for needle in
+        ["\"down\"", "\"doubleClick\"", "\"penEraser\"", "\"drawing\"", "\"tiltX\"", "\"modifiers\"", "\"dt\""]
+    {
+        assert!(text.contains(needle), "{needle} in {text}");
+    }
     let _ = std::fs::remove_dir_all(&dir);
 }

@@ -333,11 +333,9 @@ pub fn generic() -> Vec<ToolDef> {
             "pointer",
             "Pointer input",
             "Simulated pointer gesture in a view; returns the envelope of the command it produced (gesture equivalence, 11 §7.6).",
-            obj(
-                json!({ "view": { "type": "string" }, "events": { "type": "array", "items": { "type": "object" } }, "space": { "type": "string" },
-            "pointerType": { "type": "string" }, "tool": { "type": "string" } }),
-                &["view", "events"],
-            ),
+            // The deserialiser's own schema (C42A-R1-21): event kinds, coordinates, pressure 0-1 (default 1), tilt,
+            // buttons, modifiers, simulated `dt`, spaces and pointer kinds.
+            tt_registry::schema_of::<tt_executor::gesture::PointerRequest>(),
             false,
             false,
             false,

@@ -453,11 +453,18 @@ fn view_hits(cx: &Cx, p: &HitParams) -> Result<Hits, CommandError> {
     if !(p.point.x.is_finite() && p.point.y.is_finite()) {
         return Err(super::common::invalid("/point", "the point must be finite"));
     }
-    let w = super::view::drawing_view(cx, p.view.as_deref())?;
-    let q = super::view::to_drawing(w, crate::shell::Point { x: p.point.x, y: p.point.y });
+    let hits = view_hit_list(cx, p.view.as_deref(), crate::shell::Point { x: p.point.x, y: p.point.y })?;
+    Ok(Hits { hits })
+}
+
+/// The objects of the Drawing view's current drawing under a view point, top-most first (`inspect.hitTest` in view
+/// space; the `pointer` tool's final hover).
+pub(crate) fn view_hit_list(cx: &Cx, view: Option<&str>, at: crate::shell::Point) -> Result<Vec<HitOut>, CommandError> {
+    let w = super::view::drawing_view(cx, view)?;
+    let q = super::view::to_drawing(w, at);
     let doc = cx.document()?;
-    let Some(did) = cx.app().current_drawing(doc) else { return Ok(Hits { hits: Vec::new() }) };
-    let Some(d) = doc.drawing(&did) else { return Ok(Hits { hits: Vec::new() }) };
+    let Some(did) = cx.app().current_drawing(doc) else { return Ok(Vec::new()) };
+    let Some(d) = doc.drawing(&did) else { return Ok(Vec::new()) };
     let element = cx.app().element.as_ref().map(|e| e.as_str().to_owned()).unwrap_or_default();
     let zones = crate::planar::drawing_zones(&cx.planar_cache(), d)?;
     let mut hits = Vec::new();
@@ -475,7 +482,7 @@ fn view_hits(cx: &Cx, p: &HitParams) -> Result<Hits, CommandError> {
             colour_id: hit.colour.clone(),
         });
     }
-    Ok(Hits { hits })
+    Ok(hits)
 }
 
 /// A point with an optional depth.

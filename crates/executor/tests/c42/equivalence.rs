@@ -107,7 +107,10 @@ pub fn equivalent(setup: &dyn Fn(&ExecutorHandle), tool: &str, events: Vec<Value
     if !id.starts_with("view.") && id != "draw.selection.set" && id != "colour.pick" {
         assert_eq!(ha.len(), steps + 1, "one undo step (G4): {tool} {id}");
     }
-    commands[1]["result"].clone()
+    // The complete envelope of the command (11 line 354; C42A-R1-22): result, changes and undo metadata.
+    let env = &commands[1]["envelope"];
+    assert_eq!(env["status"], "ok", "{env}");
+    env["result"].clone()
 }
 
 fn none(_: &ExecutorHandle) {}

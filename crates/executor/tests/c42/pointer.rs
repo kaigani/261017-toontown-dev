@@ -63,7 +63,7 @@ fn g3_navigation_inside_a_gesture_is_refused_and_nothing_is_committed() {
     w["wheelDelta"] = json!(-120);
     let env = h.pointer(Origin::User, json!({ "view": "drawing", "events": [w] }));
     assert_eq!(env.result.unwrap()["commands"][0]["commandId"], "view.zoom.set");
-    assert_eq!(ok(&h, "view.transform.get", json!({ "viewId": "drawingView" }))["zoom"], 1.5);
+    assert_eq!(ok(&h, "view.transform.get", json!({ "viewId": "drawingView" }))["zoom"], 2.0, "the 02 §4.3 ladder");
 }
 
 #[test]
@@ -78,6 +78,13 @@ fn p5_a_refused_gesture_answers_its_command_s_refusal_and_ends_the_call() {
     assert_eq!(
         (e.details["gesture"].as_u64(), e.details["gestureCommandId"].as_str()),
         (Some(1), Some("draw.rectangle.add"))
+    );
+    // The receipts of the commands that succeeded before the refusal (C42A-R1-22): here `tool.active.set`.
+    let done = e.details["completed"].as_array().unwrap();
+    assert_eq!(done.len(), 1, "{done:?}");
+    assert_eq!(
+        (done[0]["commandId"].as_str(), done[0]["envelope"]["status"].as_str()),
+        (Some("tool.active.set"), Some("ok"))
     );
     assert_eq!(canonical(&h), before);
 }
@@ -102,7 +109,7 @@ fn tools_without_built_gestures_say_so_and_drawing_space_events_map_back() {
     assert_eq!(view.result.unwrap()["commands"][1]["params"], drawing.result.clone().unwrap()["commands"][1]["params"]);
     assert_eq!(drawing.result.unwrap()["hover"]["drawing"], d(1100.0, 400.0));
     let e = b.pointer(Origin::User, json!({ "view": "drawing", "space": "camera", "events": [] })).error.unwrap();
-    assert_eq!(e.code, "inspect.spaceUnavailable");
+    assert_eq!(e.code, "arg.invalid", "SI-125");
 }
 
 #[test]
@@ -185,4 +192,26 @@ fn p4_kernel_rule_agent_writes_wait_for_a_user_gesture_then_answer_busy() {
         origin: a,
     });
     assert!(q.is_ok(), "queries still run");
+}
+
+#[test]
+fn hover_names_the_objects_under_it_and_tilt_is_carried_but_changes_no_stroke() {
+    let h = ready();
+    crate::equivalence::painted_rect(&h);
+    let env = h.pointer(Origin::User, json!({ "view": "drawing", "events": [ev("hover", 1310.0, 210.0)] }));
+    let objects = env.result.unwrap()["hover"]["objects"].clone();
+    assert!(objects.as_array().is_some_and(|o| !o.is_empty()), "{objects}");
+    // Tilt changes no stroke (SI-125): the same command with and without it.
+    let tilted = |t: f64| {
+        let mut e = drag(&[(1000.0, 500.0), (1010.0, 490.0)]);
+        for x in &mut e {
+            x["tiltX"] = json!(t);
+            x["tiltY"] = json!(-t);
+        }
+        pointer(&ready(), "brush", e).result.unwrap()["commands"][1]["params"].clone()
+    };
+    assert_eq!(tilted(0.0), tilted(40.0));
+    let mut e = drag(&[(1000.0, 500.0), (1010.0, 490.0)]);
+    e[0]["tiltX"] = json!(91);
+    assert_eq!(pointer(&h, "brush", e).error.unwrap().code, "arg.invalid");
 }

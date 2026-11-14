@@ -5,6 +5,7 @@
 //! tool here and the webview (C4.2b, through IPC). The view mapping is captured at the press and used for every
 //! sample of the gesture.
 
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value, json};
 use tt_model::entities::pen::PenKind;
@@ -21,13 +22,27 @@ pub const MAX_EVENTS: usize = 10_000;
 pub const MAX_COORD: f64 = 10_000_000.0;
 /// A press and release no farther apart than this (view pixels) is a click (SI-131).
 pub const CLICK_SLOP_PX: f64 = 3.0;
+/// The 02 §4.3 navigation ladder (SI-122, ruling D-10): powers of two from 1/16 to 16. The wheel and the Zoom tool step
+/// along it; `view.zoom.set` itself accepts the wider declared range and its table steps.
+pub const LADDER: (f64, f64) = (0.0625, 16.0);
+
+/// The next ladder zoom from `z` in direction `dir` (+1 in, -1 out): the nearest power of two strictly beyond `z`,
+/// clamped to the ladder; a zoom off the ladder snaps to the next ladder value in that direction.
+#[must_use]
+pub fn ladder_step(z: f64, dir: i32) -> f64 {
+    let z = if z.is_finite() && z > 0.0 { z } else { 1.0 };
+    let e = z.log2();
+    let next = if dir >= 0 { (e + 1e-9).floor() + 1.0 } else { (e - 1e-9).ceil() - 1.0 };
+    next.exp2().clamp(LADDER.0, LADDER.1)
+}
+
 /// The Select tool's drawing-pivot handle radius in view pixels (SI-131).
 pub const PIVOT_HANDLE_PX: f64 = 6.0;
 
 // ----- the request ----------------------------------------------------------------------------------------------------
 
 /// The space of `pointer` coordinates (11 §7.6; SI-125).
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum InputSpace {
     /// View pixels.
@@ -42,7 +57,7 @@ pub enum InputSpace {
 }
 
 /// The pointer kind (02 §13.3).
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum PointerKind {
     /// Mouse.
@@ -55,7 +70,7 @@ pub enum PointerKind {
 }
 
 /// An event type.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum EventType {
     /// Press.
@@ -73,7 +88,7 @@ pub enum EventType {
 }
 
 /// A mouse button.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum Button {
     /// Left.
@@ -86,7 +101,7 @@ pub enum Button {
 }
 
 /// A modifier.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum Modifier {
     /// Shift (the constrain modifier).
@@ -100,7 +115,7 @@ pub enum Modifier {
 }
 
 /// One event.
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct PointerEvent {
     /// Event type.
@@ -110,14 +125,17 @@ pub struct PointerEvent {
     pub x: f64,
     /// Y.
     pub y: f64,
-    /// Pressure 0..1 (default 1).
+    /// Pressure 0..1 (absent or `null`: 1).
     #[serde(default)]
+    #[schemars(range(min = 0.0, max = 1.0))]
     pub pressure: Option<f64>,
-    /// Tilt X (recorded; no tool reads it, SI-125).
+    /// Tilt X in degrees (carried by the sample; no tool reads it, SI-125).
     #[serde(default)]
+    #[schemars(range(min = -90.0, max = 90.0))]
     pub tilt_x: Option<f64>,
-    /// Tilt Y.
+    /// Tilt Y in degrees.
     #[serde(default)]
+    #[schemars(range(min = -90.0, max = 90.0))]
     pub tilt_y: Option<f64>,
     /// Button.
     #[serde(default)]
@@ -125,16 +143,17 @@ pub struct PointerEvent {
     /// Modifiers held.
     #[serde(default)]
     pub modifiers: Vec<Modifier>,
-    /// Simulated milliseconds since the previous event.
+    /// Simulated milliseconds since the previous event (never the wall clock; absent: 0).
     #[serde(default)]
+    #[schemars(range(min = 0.0))]
     pub dt: Option<f64>,
     /// Wheel delta (DOM convention: negative zooms in).
     #[serde(default)]
     pub wheel_delta: Option<f64>,
 }
 
-/// The `pointer` request (11 §7.6).
-#[derive(Debug, Clone, Deserialize, Serialize)]
+/// The `pointer` request (11 §7.6, line 354).
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct PointerRequest {
     /// View id (or `drawing` for the Drawing view).
@@ -145,7 +164,8 @@ pub struct PointerRequest {
     /// Pointer kind.
     #[serde(default)]
     pub pointer_type: PointerKind,
-    /// Events.
+    /// Events, at most 10,000 (SI-130).
+    #[schemars(length(max = 10_000))]
     pub events: Vec<PointerEvent>,
     /// Tool to activate first.
     #[serde(default)]
@@ -163,6 +183,8 @@ pub struct Sample {
     pub d: Point,
     /// Pressure 0..1.
     pub pressure: f64,
+    /// Tilt X and Y in degrees (0 without a pen; carried, read by no tool: SI-125, ruling D-9).
+    pub tilt: (f64, f64),
     /// Simulated time (ms).
     pub t_ms: f64,
 }
@@ -480,8 +502,10 @@ pub fn to_command(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, Comma
             ("colour.gap.close", m)
         }
         "zoom" => {
-            let steps = if st.mods.alternate { -1 } else { 1 };
-            ("view.zoom.set", obj(json!({ "viewId": g.view_id, "steps": steps, "anchor": pt(p0.v) })))
+            // The ladder of 02 §4.3 (SI-122): one power of two in, or out with the alternate modifier.
+            let z = cx.ui().shell().view(&g.view_id).map(|w| w.transform().zoom).unwrap_or(1.0);
+            let next = ladder_step(z, if st.mods.alternate { -1 } else { 1 });
+            ("view.zoom.set", obj(json!({ "viewId": g.view_id, "zoom": next, "anchor": pt(p0.v) })))
         }
         "grabber" => {
             let by = Point { x: pn.v.x - p0.v.x, y: pn.v.y - p0.v.y };
@@ -610,6 +634,11 @@ fn check(req: &PointerRequest) -> Result<(), CommandError> {
                 return Err(invalid(&format!("/events/{i}/{k}"), format!("`{k}` must be a finite number")));
             }
         }
+        for (k, t) in [("tiltX", e.tilt_x), ("tiltY", e.tilt_y)] {
+            if t.is_some_and(|t| !(-90.0..=90.0).contains(&t)) {
+                return Err(invalid(&format!("/events/{i}/{k}"), "tilt is -90 to 90 degrees"));
+            }
+        }
         if e.pressure.is_some_and(|p| !(0.0..=1.0).contains(&p)) {
             return Err(invalid(&format!("/events/{i}/pressure"), "pressure is 0-1"));
         }
@@ -618,8 +647,9 @@ fn check(req: &PointerRequest) -> Result<(), CommandError> {
         }
     }
     if matches!(req.space, InputSpace::Scene | InputSpace::Camera) {
+        // SI-125: scene and camera coordinates belong to the Camera view (M4 C4.3).
         return Err(CommandError::with_details(
-            "inspect.spaceUnavailable",
+            codes::ARG_INVALID,
             "`pointer` in the Drawing view takes view or drawing coordinates",
             json!({ "pointer": "/space", "space": req.space }),
         ));
@@ -671,17 +701,30 @@ pub struct PointerOutcome {
 }
 
 impl PointerOutcome {
-    /// The envelope the `pointer` tool answers: the first refusal's envelope (its details name the gesture), else
-    /// `{commands: [{commandId, params, result, documentRev}], hover}`.
+    /// One command's receipt: its id, its parameters and its complete envelope (status, result, changes, undo,
+    /// warnings, document revision), as the command would answer alone (11 line 354; P5; C42A-R1-22).
+    fn receipt(a: &Answered) -> Value {
+        json!({ "commandId": a.command_id, "params": a.params, "envelope": a.envelope })
+    }
+
+    /// The envelope the `pointer` tool answers. Success: `{commands: [{commandId, params, envelope}], hover}` with every
+    /// command's complete envelope in order. A refusal: the refused command's envelope, whose details name the gesture
+    /// and carry the receipts of the commands that succeeded before it (`completed`) and the hover.
     #[must_use]
     pub fn envelope(&self, rev: Option<u64>) -> Envelope {
         if let Some((i, a)) = self.commands.iter().enumerate().find(|(_, a)| !a.envelope.is_ok()) {
             let mut env = a.envelope.clone();
+            let completed: Vec<Value> = self.commands[..i].iter().map(Self::receipt).collect();
             if let Some(e) = env.error.as_mut() {
                 let mut details = (*e.details).clone();
+                if !details.is_object() {
+                    details = json!({});
+                }
                 if let Value::Object(m) = &mut details {
                     m.insert("gesture".into(), json!(i));
                     m.insert("gestureCommandId".into(), json!(a.command_id));
+                    m.insert("completed".into(), Value::Array(completed));
+                    m.insert("hover".into(), self.hover.clone().unwrap_or(Value::Null));
                 }
                 e.details = details.into();
             }
@@ -690,10 +733,7 @@ impl PointerOutcome {
         let commands: Vec<Value> = self
             .commands
             .iter()
-            .map(|a| {
-                json!({ "commandId": a.command_id, "params": a.params, "result": a.envelope.result,
-                        "documentRev": a.envelope.document_rev })
-            })
+            .map(|a| json!({ "commandId": a.command_id, "params": a.params, "envelope": a.envelope }))
             .collect();
         Envelope::ok(json!({ "commands": commands, "hover": self.hover }), rev)
     }
@@ -762,8 +802,8 @@ pub(crate) fn run(
                 }
                 let delta = e.wheel_delta.unwrap_or(0.0);
                 if delta != 0.0 {
-                    let steps = if delta < 0.0 { 1 } else { -1 };
-                    let params = json!({ "viewId": view_id, "steps": steps, "anchor": pt(vp) });
+                    let next = ladder_step(w.transform().zoom, if delta < 0.0 { 1 } else { -1 });
+                    let params = json!({ "viewId": view_id, "zoom": next, "anchor": pt(vp) });
                     let env = invoke(core, "view.zoom.set", params.clone());
                     let ok = env.is_ok();
                     out.commands.push(Answered { command_id: "view.zoom.set".into(), params, envelope: env });
@@ -779,7 +819,13 @@ pub(crate) fn run(
                 let mods = Mods::of(&e.modifiers);
                 // The mapping is taken at the press (02 §13.3) and kept for the gesture.
                 let matrix = crate::commands::view::view_to_drawing(&w);
-                let sample = Sample { v: vp, d: to_drawing(&w, vp), pressure: e.pressure.unwrap_or(1.0), t_ms: clock };
+                let sample = Sample {
+                    v: vp,
+                    d: to_drawing(&w, vp),
+                    pressure: e.pressure.unwrap_or(1.0),
+                    tilt: (e.tilt_x.unwrap_or(0.0), e.tilt_y.unwrap_or(0.0)),
+                    t_ms: clock,
+                };
                 let stroke = Stroke { samples: vec![sample], mods };
                 match pending.as_mut() {
                     // A further click of a Polyline in progress.
@@ -815,7 +861,13 @@ pub(crate) fn run(
                 };
                 let m = p.2.unwrap_or([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]);
                 let d = Point { x: m[0] * vp.x + m[2] * vp.y + m[4], y: m[1] * vp.x + m[3] * vp.y + m[5] };
-                stroke.samples.push(Sample { v: vp, d, pressure: e.pressure.unwrap_or(1.0), t_ms: clock });
+                stroke.samples.push(Sample {
+                    v: vp,
+                    d,
+                    pressure: e.pressure.unwrap_or(1.0),
+                    tilt: (e.tilt_x.unwrap_or(0.0), e.tilt_y.unwrap_or(0.0)),
+                    t_ms: clock,
+                });
                 if e.ty == EventType::Up {
                     if let Some(s) = p.1.take() {
                         p.0.strokes.push(s);
@@ -853,6 +905,16 @@ pub(crate) fn run(
             return Ok(out);
         }
         out.hover = Some(json!({ "viewId": view_id, "view": pt(vp), "drawing": pt(to_drawing(&w, vp)) }));
+    }
+    // The final hover names the objects under the pointer as `inspect.hitTest` reports them (pointer note §1.3).
+    if let Some(Value::Object(m)) = out.hover.as_mut()
+        && let Some(v) = m.get("view").and_then(|v| serde_json::from_value::<Point>(v.clone()).ok())
+    {
+        let objects = core
+            .with_lent_session(|cx| crate::commands::inspect::view_hit_list(cx, Some(&view_id), v))
+            .and_then(Result::ok)
+            .unwrap_or_default();
+        m.insert("objects".into(), serde_json::to_value(objects).unwrap_or(Value::Null));
     }
     // A gesture still pressed at the end of the events is cancelled: nothing is committed (D-7c). An open Polyline
     // stays open across calls only in the GUI; headless, the call's clicks are its gesture and are committed.
