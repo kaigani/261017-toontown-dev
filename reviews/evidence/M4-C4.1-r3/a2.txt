@@ -1,0 +1,5 @@
+Candidate 64970ec; reviewer c41_r3_review run serially, --nocapture.
+Saturated pools: baseline=9; measured=179; permitted=52; authenticated service after 64 unread sockets=8.2147ms.
+Stats workers=7 pending=1 lingering=6 sessions=32. Stop returned counts to zero and OS thread count to baseline before formula assertion failed.
+trickling_oldest_is_evicted_without_answer: pass.
+Full initial new suite: 3 pass, 2 fail (formula, stop body).
