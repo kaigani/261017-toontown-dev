@@ -673,3 +673,132 @@ mod part_c_availability {
         assert!(mismatches.is_empty(), "{}", mismatches.join("\n"));
     }
 }
+
+mod part_d_equivalence {
+    use super::*;
+    use serde_json::Value;
+    use tt_executor::ExecutorHandle;
+    fn point(x: f64, y: f64) -> Value {
+        json!({"x":x-960.0,"y":540.0-y})
+    }
+    fn events(ps: &[(f64, f64)], mods: &[&str]) -> Value {
+        json!(ps.iter().enumerate().map(|(i,(x,y))|json!({"type":if i==0 {"down"} else if i+1==ps.len(){"up"}else{"move"},"x":x,"y":y,"modifiers":mods})).collect::<Vec<_>>())
+    }
+    fn canonical(h: &ExecutorHandle) -> Vec<String> {
+        let d = h.snapshot().unwrap().unwrap();
+        d.entry_keys()
+            .iter()
+            .map(|k| tt_model::canonical::to_canonical_string(&d.entry_raw_json(k).unwrap()).unwrap())
+            .collect()
+    }
+    fn hist(h: &ExecutorHandle) -> Vec<Value> {
+        ok(h, "edit.history.get", json!({}))["entries"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|e| json!({"label":e["label"],"rev":e["rev"]}))
+            .collect()
+    }
+    fn colour(h: &ExecutorHandle) -> Value {
+        json!(
+            h.snapshot()
+                .unwrap()
+                .unwrap()
+                .palettes()
+                .find_map(|p| p.swatches().first().map(|s| s.colour_id().as_str().to_owned()))
+                .unwrap()
+        )
+    }
+    fn style(h: &ExecutorHandle, mut p: Value) -> Value {
+        let pens = ok(h, "tool.pen.list", json!({}));
+        let pen = &pens["pens"].as_array().unwrap().iter().find(|p| p["type"] == "brush").unwrap();
+        p["penId"] = pen["penId"].clone();
+        p["thickness"] = pen["maxSize"].clone();
+        p["colourId"] = colour(h);
+        p["layer"] = json!("auto");
+        p["symmetry"] = json!(true);
+        p
+    }
+    fn check(a: &ExecutorHandle, b: &ExecutorHandle, tool: &str, ev: Value, id: &str, p: Value) {
+        let ha = hist(a);
+        let hb = hist(b);
+        assert_eq!(ha, hb);
+        let e = a.pointer(tt_executor::Origin::User, json!({"view":"drawing","tool":tool,"events":ev}));
+        let direct = run(b, id, p.clone());
+        assert_eq!(e.status, direct.status, "{tool}: pointer {e:?}, direct {direct:?}");
+        if e.is_ok() {
+            let c = &e.result.as_ref().unwrap()["commands"][1];
+            assert_eq!(c["commandId"], id);
+            assert_eq!(c["params"], p, "{tool}");
+        } else {
+            assert_eq!(e.error.as_ref().unwrap().code, direct.error.as_ref().unwrap().code);
+        }
+        assert_eq!(canonical(a), canonical(b), "bytes and ids {tool}");
+        assert_eq!(hist(a), hist(b), "history {tool}");
+        assert_eq!(ok(a, "draw.selection.get", json!({})), ok(b, "draw.selection.get", json!({})), "selection {tool}");
+    }
+    fn shape(tool: &str) {
+        for mods in [vec![], vec!["shift"], vec!["alt"], vec!["shift", "alt"]] {
+            for end in [(1080.0, 460.0), (1000.0, 500.0)] {
+                let (a, b) = (ready(), ready());
+                let mut p = json!({"from":point(1000.0,500.0),"to":point(end.0,end.1)});
+                if tool == "line" {
+                    p["constrainAngle"] = json!(mods.contains(&"shift"));
+                    p["continuePrevious"] = json!(mods.contains(&"alt"));
+                    if mods.contains(&"alt") {
+                        p.as_object_mut().unwrap().remove("from");
+                    }
+                } else {
+                    p[if tool == "rectangle" { "square" } else { "circle" }] = json!(mods.contains(&"shift"));
+                    p["fromCentre"] = json!(mods.contains(&"alt"));
+                }
+                let p = style(&b, p);
+                check(&a, &b, tool, events(&[(1000.0, 500.0), end], &mods), &format!("draw.{tool}.add"), p);
+            }
+        }
+    }
+    #[test]
+    fn rectangle() {
+        shape("rectangle");
+    }
+    #[test]
+    fn ellipse() {
+        shape("ellipse");
+    }
+    #[test]
+    fn line() {
+        shape("line");
+    }
+    #[test]
+    fn stroke() {
+        let (a, b) = (ready(), ready());
+        let mut p = style(
+            &b,
+            json!({"kind":"invisible","points":[{"x":40.0,"y":40.0,"pressure":1.0},{"x":120.0,"y":80.0,"pressure":1.0}],"fit":true}),
+        );
+        p.as_object_mut().unwrap().remove("thickness");
+        check(&a, &b, "stroke", events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]), "draw.stroke.add", p);
+    }
+    #[test]
+    fn polyline() {
+        for closed in [false, true] {
+            let (a, b) = (ready(), ready());
+            let mut ev = Vec::new();
+            for (x, y) in [(1000.0, 500.0), (1080.0, 500.0), (1080.0, 460.0)] {
+                ev.push(json!({"type":"down","x":x,"y":y}));
+                ev.push(json!({"type":"up","x":x,"y":y}));
+            }
+            if closed {
+                ev.push(json!({"type":"down","x":1000.0,"y":500.0}));
+                ev.push(json!({"type":"up","x":1000.0,"y":500.0}));
+            } else {
+                ev.push(json!({"type":"doubleClick","x":1080.0,"y":460.0}));
+            }
+            let p = style(
+                &b,
+                json!({"points":[point(1000.0,500.0),point(1080.0,500.0),point(1080.0,460.0)],"closed":closed,"snap":true,"snapRadius":8.0}),
+            );
+            check(&a, &b, "polyline", json!(ev), "draw.polyline.add", p);
+        }
+    }
+}
