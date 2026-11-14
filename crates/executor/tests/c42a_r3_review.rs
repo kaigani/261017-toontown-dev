@@ -5,6 +5,35 @@ use common::*;
 use serde_json::json;
 
 #[test]
+fn twenty_captures_then_two_more_for_user_and_agent() {
+    let h = std::sync::Arc::new(fixture());
+    ok(&h, "app.context.set", json!({"elementId":"scene:#1/element:\"Bob\"", "frame":1}));
+    for i in 0..20 {
+        let origin = if i % 2 == 0 { tt_executor::Origin::User } else { agent(&[tt_registry::Scope::Read]) };
+        let e = h.invoke(tt_executor::Invocation {
+            command: "inspect.screenshot".into(),
+            params: json!({"region":{"x":0,"y":0,"w":64,"h":64}}),
+            options: Default::default(),
+            origin,
+        });
+        assert!(e.is_ok(), "capture {i}: {e:?}");
+    }
+    let barrier = std::sync::Arc::new(std::sync::Barrier::new(3));
+    let workers: Vec<_> = (0..2)
+        .map(|_| {
+            let (h, b) = (h.clone(), barrier.clone());
+            std::thread::spawn(move || {
+                b.wait();
+                run(&h, "inspect.screenshot", json!({"region":{"x":0,"y":0,"w":64,"h":64}}))
+            })
+        })
+        .collect();
+    barrier.wait();
+    let answers: Vec<_> = workers.into_iter().map(|w| w.join().unwrap()).collect();
+    assert!(answers.iter().all(tt_executor::Envelope::is_ok), "{answers:?}");
+}
+
+#[test]
 fn selection_frame_addresses_exposed_drawing() {
     let h = fixture();
     ok(&h, "app.context.set", json!({"elementId":"scene:#1/element:\"Bob\"", "frame":1}));

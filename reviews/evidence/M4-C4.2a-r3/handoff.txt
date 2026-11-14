@@ -1,0 +1,7 @@
+2026-11-14T17:45:25.552333+00:00
+fatal: path 'reviews/M4-C4.2a-handoff-r2.md' does not exist in 'origin/m4-desktop-shell'
+exit 128
+in_progress		style(m4 c4.2a r2): module order (rustfmt)	ci	m4-desktop-shell	push	43617667731	56m20s	2026-11-14T16:49:06Z
+completed	cancelled	fix(m4 c4.2a r2): C42A-R2-02 and the addressing audit: draw.selectionâ€¦	ci	m4-desktop-shell	push	43616996453	7m48s	2026-11-14T16:41:42Z
+completed	cancelled	Merge remote-tracking branch 'origin/review/m4-c42a-r2' into m4-desktâ€¦	ci	m4-desktop-shell	push	43616293948	8m14s	2026-11-14T16:33:55Z
+exit 0
