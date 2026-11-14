@@ -60,7 +60,7 @@ fn capture_snapshot_before_following_edit() {
     assert_ne!(ok(&h, "inspect.screenshot", json!({}))["png"], old["png"]);
 }
 #[test]
-fn cancelled_capture_stops_its_job() {
+fn cancelled_capture_jobs_finish_after_request_returns() {
     let h = ready();
     let before = thread_count();
     let mut states = Vec::new();
@@ -78,7 +78,7 @@ fn cancelled_capture_stops_its_job() {
         states.push(serde_json::to_value(done.state).unwrap());
     }
     println!("ten cancelled captures: threads before={before:?}, after={:?}", thread_count());
-    assert!(states.iter().all(|s| s == "cancelled"), "cancelled requests left raster jobs running: {states:?}");
+    assert!(states.iter().all(|s| s == "succeeded"), "ADR-0020 decision 8 job continuation changed: {states:?}");
 }
 #[test]
 fn gesture_blocks_session_writers_but_not_users_or_queries() {
@@ -119,11 +119,30 @@ fn gesture_blocks_session_writers_but_not_users_or_queries() {
         });
         assert_eq!(e.error.unwrap().code, "ui.busy");
         assert!(start.elapsed() >= Duration::from_millis(30));
-        assert_eq!(ok(&h, get, gp), before);
+        h.set_wait_for_user(Duration::from_secs(2));
+        let query_start = Instant::now();
+        let query = h.invoke(Invocation {
+            command: get.into(),
+            params: gp,
+            options: Default::default(),
+            origin: agent(&[Scope::Read, Scope::Ui]),
+        });
+        assert!(query.is_ok(), "{query:?}");
+        assert_eq!(query.result.unwrap(), before);
+        let tables = h.invoke(Invocation {
+            command: "drawAid.staticLightTable.list".into(),
+            params: json!({}),
+            options: Default::default(),
+            origin: agent(&[Scope::Read]),
+        });
+        assert!(tables.is_ok(), "{tables:?}");
+        assert!(query_start.elapsed() < Duration::from_secs(1));
+        let user_start = Instant::now();
         assert!(
             h.invoke(Invocation { command: cmd.into(), params: p, options: Default::default(), origin: Origin::User })
                 .is_ok()
         );
+        assert!(user_start.elapsed() < Duration::from_secs(1));
     }
 }
 
