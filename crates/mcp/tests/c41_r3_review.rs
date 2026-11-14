@@ -160,9 +160,9 @@ fn saturated_pools_obey_thread_formula_and_unread_refusals_do_not_stall() -> Res
         ids.push(initialize(&s)?);
     }
     let mut streams = Vec::new();
-    for i in 0..6 {
+    for sid in ids.iter().take(6) {
         let mut c = socket(&s)?;
-        c.write_all(head("GET", &ids[i], 0).as_bytes())?;
+        c.write_all(head("GET", sid, 0).as_bytes())?;
         let mut r = BufReader::new(c);
         let mut line = String::new();
         r.read_line(&mut line)?;
@@ -212,5 +212,75 @@ fn saturated_pools_obey_thread_formula_and_unread_refusals_do_not_stall() -> Res
     }
     drop(h);
     assert!(measured <= baseline + 3 + 8 + 32, "baseline={baseline} measured={measured}");
+    Ok(())
+}
+
+#[test]
+fn in_flight_sessions_still_count_against_session_cap() -> Result {
+    let s = server(Default::default())?;
+    let mut bodies = Vec::new();
+    for _ in 0..32 {
+        let sid = initialize(&s)?;
+        bodies.push(partial(&s, &sid)?);
+    }
+    until(&s, |st| st.workers == 32 && st.pending == 0)?;
+    let reply = exchange(&s, "POST", "", r#"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}"#)?;
+    assert!(reply.starts_with("HTTP/1.1 503"), "{reply}");
+    assert_eq!(s.session_count(), 32);
+    drop(bodies);
+    Ok(())
+}
+
+static HANDLER_ENTERED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+static HANDLER_RELEASE: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+#[tt_registry::command(id = "app.state.get", kind = query, label = "Held query", scopes = [read], example(title = "Held query", params = "{}"))]
+fn held_query(
+    _cx: &mut tt_executor::Cx,
+    _p: serde_json::Value,
+) -> std::result::Result<serde_json::Value, tt_registry::CommandError> {
+    HANDLER_ENTERED.store(true, std::sync::atomic::Ordering::SeqCst);
+    while !HANDLER_RELEASE.load(std::sync::atomic::Ordering::SeqCst) {
+        std::thread::yield_now();
+    }
+    Ok(serde_json::json!({"done":true}))
+}
+#[test]
+fn executing_command_holds_session_past_idle_bound() -> Result {
+    use std::sync::atomic::Ordering::SeqCst;
+    let registry = Box::leak(Box::new(tt_registry::Registry::assemble(&[&HELD_QUERY]).map_err(|e| format!("{e:?}"))?));
+    let h = tt_executor::ExecutorHandle::spawn_with_registry(
+        tt_executor::ExecutorConfig { budget: Duration::from_secs(4) },
+        registry,
+    )?;
+    let s = std::sync::Arc::new(tt_mcp::http::start_with(
+        h,
+        HttpOptions { bind: "127.0.0.1:0".parse()?, token: "review".into(), server: Default::default() },
+        Limits { session_idle: Duration::from_millis(250), sweep: Duration::from_millis(10), ..Default::default() },
+    )?);
+    let sid = initialize(&s)?;
+    let other = s.clone();
+    // A String error keeps the thread result Send.
+    let call = std::thread::spawn(move || {
+        exchange(&other, "POST", &sid, r#"{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"run_command","arguments":{"id":"app.state.get","params":{}}}}"#).map_err(|e| e.to_string())
+    });
+    let began = Instant::now();
+    while !HANDLER_ENTERED.load(SeqCst) && !call.is_finished() && began.elapsed() < Duration::from_secs(2) {
+        std::thread::yield_now();
+    }
+    let entered = HANDLER_ENTERED.load(SeqCst);
+    let began = Instant::now();
+    let mut retained = true;
+    if entered {
+        while began.elapsed() < Duration::from_millis(600) {
+            retained &= s.session_count() == 1;
+            std::thread::yield_now();
+        }
+    }
+    HANDLER_RELEASE.store(true, SeqCst);
+    let reply = call.join().map_err(|_| "caller panicked")?.map_err(|e| -> Box<dyn Error> { e.into() })?;
+    assert!(entered, "handler was not reached: {reply}");
+    assert!(retained, "session expired during command execution");
+    assert!(reply.contains("done"), "{reply}");
+    until(&s, |st| st.sessions == 0)?;
     Ok(())
 }
