@@ -332,3 +332,219 @@ mod part_b_persistence {
         assert_eq!(record["state"], "succeeded", "{result}");
     }
 }
+
+mod part_b_aids {
+    use super::part_b_persistence::{job, over};
+    use super::*;
+    use serde_json::Value;
+    fn root() -> std::path::PathBuf {
+        std::env::temp_dir().join(format!("tt-review-aids-{}", tt_executor::random_token(8)))
+    }
+    fn file(root: &std::path::Path, version: &str, data: Value) {
+        let dirs = tt_executor::UserDirs::under(root);
+        std::fs::create_dir_all(&dirs.settings).unwrap();
+        std::fs::write(
+            dirs.settings.join("drawing.json"),
+            json!({"format":"toontown-settings","kind":"drawing","formatVersion":version,"data":data}).to_string(),
+        )
+        .unwrap();
+    }
+    #[test]
+    fn stale_aid_values_fall_back_individually() {
+        let root = root();
+        file(
+            &root,
+            "1.0",
+            json!({"activeTool":"ellipse","aids":{"strokes":true,"grid":{"visible":true,"type":"obsolete","overlay":true},"onionSkin":{"previous":99,"next":2},"background":{"colour":"bad","useSceneColour":true}}}),
+        );
+        let h = over(&root);
+        assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+        let state = ok(&h, "drawAid.state.get", json!({}));
+        drop(h);
+        std::fs::remove_dir_all(root).unwrap();
+        assert_eq!(
+            state["grid"],
+            json!({"visible":true,"type":"normal","overlay":true}),
+            "stale grid type alone falls back"
+        );
+        assert_eq!(state["onionSkin"]["previous"], 1);
+        assert_eq!(state["onionSkin"]["next"], 2);
+        assert_eq!(state["background"]["colour"], "#F0F0F0FF");
+        assert_eq!(state["background"]["useSceneColour"], true);
+        assert_eq!(state["strokes"], true);
+    }
+    #[test]
+    fn unsupported_version_and_whole_shape_are_told_once_and_kept() {
+        let root = root();
+        let mut copies = Vec::new();
+        for (version, data, reason) in [
+            ("2.0", json!({}), "unsupportedVersion"),
+            ("1.0", json!([]), "wrongShape"),
+            ("1.0", json!({"aids":false}), "wrongShape"),
+        ] {
+            file(&root, version, data);
+            let h = over(&root);
+            let rx = h.subscribe();
+            ok(&h, "app.state.get", json!({}));
+            ok(&h, "app.state.get", json!({}));
+            let messages: Vec<_> = rx
+                .try_iter()
+                .filter(|e| e.name == "ui.message.shown" && e.payload["messageId"] == "prefs.corrupt")
+                .collect();
+            assert_eq!(messages.len(), 1);
+            assert_eq!(messages[0].payload["details"]["reason"], reason);
+            let path = messages[0].payload["details"]["keptAt"].as_str().unwrap().to_owned();
+            assert!(!copies.contains(&path));
+            copies.push(path);
+            drop(h);
+        }
+        assert!(copies.iter().all(|p| std::path::Path::new(p).exists()));
+        std::fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn user_aids_and_options_survive_restart_without_document_content() {
+        let root = root();
+        let h = over(&root);
+        ok(&h, "project.create", json!({"name":"Aids"}));
+        let before = h.snapshot().unwrap().unwrap();
+        let revision = rev(&h);
+        for (id, p) in [
+            ("drawAid.grid.set", json!({"visible":true,"type":"field16","overlay":true})),
+            ("drawAid.onionSkin.set", json!({"enabled":true,"previous":3,"next":2})),
+            (
+                "drawAid.onionSkinStyle.set",
+                json!({"outline":true,"transparency":false,"colourShading":false,"previousColour":"#123456","nextColour":"#654321"}),
+            ),
+            ("drawAid.autoLightTable.set", json!({"enabled":true})),
+            ("drawAid.lightTableShade.set", json!({"auto":false,"static":false})),
+            ("drawAid.staticLightTablePanel.set", json!({"visible":true})),
+            ("drawAid.strokes.set", json!({"visible":true})),
+            ("drawAid.currentOnTop.set", json!({"enabled":true})),
+            (
+                "drawAid.selectionDisplay.set",
+                json!({"outlineOnSelection":true,"boxHighlighting":false,"keepSelectionVisible":true}),
+            ),
+            ("drawAid.background.set", json!({"colour":"#123456","useSceneColour":true})),
+            ("tool.active.set", json!({"toolId":"polyline"})),
+            ("tool.polyline.options.set", json!({"snap":false,"snapRadius":22})),
+            ("tool.symmetry.set", json!({"mode":"mirror","angle":30})),
+            ("tool.placeBehind.set", json!({"enabled":true})),
+            ("tool.drawTopLayer.set", json!({"enabled":true})),
+            ("tool.snapToContour.set", json!({"enabled":true})),
+            ("tool.tablet.set", json!({"ignoreTablet":true,"portraitCorrection":true,"compatibilityMode":true})),
+        ] {
+            ok(&h, id, p.clone());
+            let rx = h.subscribe();
+            ok(&h, id, p);
+            assert!(
+                !rx.try_iter()
+                    .any(|e| ["drawAid.changed", "tool.active.changed", "tool.options.changed"]
+                        .contains(&e.name.as_str())),
+                "{id}"
+            );
+        }
+        assert_eq!(rev(&h), revision);
+        let after = h.snapshot().unwrap().unwrap();
+        for key in before.entry_keys() {
+            assert_eq!(before.entry_canonical(&key).unwrap(), after.entry_canonical(&key).unwrap());
+        }
+        let quality = json!({"display.antiAliasing":false,"display.smoothBitmaps":false,"display.smoothToolOverlays":false,"display.fastPencilRendering":true,"display.bitmapPreviewMaxSize":512,"display.cacheMemoryPercent":40});
+        ok(&h, "prefs.set", json!({"values":quality}));
+        let aids = ok(&h, "drawAid.state.get", json!({}));
+        let tools = ok(&h, "tool.list", json!({}));
+        let settings = ok(&h, "tool.settings.get", json!({}));
+        let path = root.join("Aids.animpkg");
+        job(&h, "project.saveAs", json!({"path":path}));
+        ok(&h, "project.close", json!({}));
+        drop(h);
+        let h = over(&root);
+        job(&h, "project.open", json!({"path":path}));
+        assert_eq!(ok(&h, "drawAid.state.get", json!({})), aids);
+        let restored = ok(&h, "tool.list", json!({}));
+        assert_eq!(restored["activeToolId"], tools["activeToolId"]);
+        for (a, b) in restored["tools"].as_array().unwrap().iter().zip(tools["tools"].as_array().unwrap()) {
+            let mut x = a["options"].clone();
+            let mut y = b["options"].clone();
+            if a["toolId"] == "polyline" {
+                assert_eq!(x["snapRadius"].as_f64(), y["snapRadius"].as_f64());
+                x.as_object_mut().unwrap().remove("snapRadius");
+                y.as_object_mut().unwrap().remove("snapRadius");
+            }
+            assert_eq!(x, y, "{}", a["toolId"]);
+        }
+        assert_eq!(ok(&h, "tool.settings.get", json!({})), settings);
+        let keys: Vec<_> = quality.as_object().unwrap().keys().collect();
+        assert_eq!(ok(&h, "prefs.get", json!({"keys":keys}))["values"], quality);
+        ok(&h, "project.close", json!({}));
+        drop(h);
+        std::fs::remove_dir_all(root).unwrap();
+    }
+}
+
+mod part_b_settings_write {
+    use super::*;
+    #[test]
+    fn drawing_write_failure_is_reported_once() {
+        let root = std::env::temp_dir().join(format!("tt-review-write-{}", tt_executor::random_token(8)));
+        let dirs = tt_executor::UserDirs::under(&root);
+        std::fs::create_dir_all(&root).unwrap();
+        std::fs::write(&dirs.settings, b"file blocks directory").unwrap();
+        let h = super::part_b_persistence::over(&root);
+        assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+        let rx = h.subscribe();
+        ok(&h, "drawAid.strokes.set", json!({"visible":true}));
+        ok(&h, "drawAid.strokes.set", json!({"visible":false}));
+        let messages: Vec<_> = rx
+            .try_iter()
+            .filter(|e| {
+                e.name == "ui.message.shown"
+                    && e.payload["messageId"] == "prefs.saveFailed"
+                    && e.payload["details"]["kind"] == "drawing"
+            })
+            .collect();
+        assert_eq!(messages.len(), 1);
+        drop(h);
+        std::fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn static_table_cap_and_unknown_ids_are_typed_and_atomic() {
+        let h = ready();
+        for _ in 0..256 {
+            ok(&h, "drawAid.staticLightTable.add", json!({}));
+        }
+        let before = ok(&h, "drawAid.staticLightTable.list", json!({}));
+        assert_eq!(err(&h, "drawAid.staticLightTable.add", json!({})).code, "limit.exceeded");
+        assert_eq!(
+            err(&h, "drawAid.staticLightTable.set", json!({"entryIds":["lt1","absent"],"visible":false})).code,
+            "ref.notFound"
+        );
+        assert_eq!(ok(&h, "drawAid.staticLightTable.list", json!({})), before);
+    }
+}
+
+mod part_b_busy {
+    use super::*;
+    #[test]
+    fn agent_tool_changes_respect_user_gesture_and_dialog() {
+        let mut accepted = Vec::new();
+        for kind in ["gesture", "dialog"] {
+            let h = ready();
+            h.set_wait_for_user(std::time::Duration::ZERO);
+            h.report_shell(serde_json::from_value(json!({"modal":{"kind":kind,"title":"User activity"}})).unwrap());
+            let before = ok(&h, "tool.active.get", json!({}));
+            let result = h.invoke(tt_executor::Invocation {
+                command: "tool.active.set".into(),
+                params: json!({"toolId":"brush"}),
+                options: Default::default(),
+                origin: agent(&[tt_registry::Scope::Read, tt_registry::Scope::Ui]),
+            });
+            if result.is_ok() {
+                accepted.push(kind);
+            } else {
+                assert!(["ui.busy", "ui.modalOpen"].contains(&result.error.unwrap().code.as_str()));
+                assert_eq!(ok(&h, "tool.active.get", json!({})), before);
+            }
+        }
+        assert!(accepted.is_empty(), "agent changed tool during user activity: {accepted:?}");
+    }
+}
