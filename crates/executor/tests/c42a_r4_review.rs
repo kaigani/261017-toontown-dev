@@ -4,16 +4,21 @@ mod common;
 const D1: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
 const BOB: &str = "scene:#1/element:\"Bob\"";
 fn ready() -> tt_executor::ExecutorHandle {
- let h = common::fixture(); common::ok(&h,"app.context.set",serde_json::json!({"elementId":BOB,"frame":1})); h
+    let h = common::fixture();
+    common::ok(&h, "app.context.set", serde_json::json!({"elementId":BOB,"frame":1}));
+    h
 }
 fn canonical(h: &tt_executor::ExecutorHandle) -> Vec<String> {
- let d=h.snapshot().unwrap().unwrap(); d.entry_keys().iter().map(|k|tt_model::canonical::to_canonical_string(&d.entry_raw_json(k).unwrap()).unwrap()).collect()
+    let d = h.snapshot().unwrap().unwrap();
+    d.entry_keys()
+        .iter()
+        .map(|k| tt_model::canonical::to_canonical_string(&d.entry_raw_json(k).unwrap()).unwrap())
+        .collect()
 }
 use serde_json::{Value, json};
 use tt_executor::ExecutorHandle;
 
 use crate::common::*;
-
 
 struct World {
     frame: u64,
@@ -214,55 +219,145 @@ fn c42a_r3_01_frame_and_view_space_are_honoured_by_every_point_taking_command() 
 
 #[test]
 fn point_selection_tolerance_has_a_spec_issue() {
- let issues=std::fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"),"/../../plan/spec-issues.md")).unwrap();
- assert!(issues.lines().any(|l| l.contains("selection") && (l.contains("3 view pixels") || l.contains("hit tolerance") || l.contains("hit-test tolerance"))), "D-10 requires an interim issue for point-selection hit tolerance; 02 section 13.2 only gives hitTest.get a numeric default");
+    let issues = std::fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/../../plan/spec-issues.md")).unwrap();
+    assert!(
+        issues.lines().any(|l| l.contains("selection")
+            && (l.contains("3 view pixels") || l.contains("hit tolerance") || l.contains("hit-test tolerance"))),
+        "D-10 requires an interim issue for point-selection hit tolerance; 02 section 13.2 only gives hitTest.get a numeric default"
+    );
 }
 #[test]
 fn another_job_panic_is_typed() {
- let h=ready();
- let id=h.jobs().submit("draw.drawing.render","user", |_| panic!("review injection")).unwrap();
- let (r,t)=h.jobs().wait(&id,std::time::Duration::from_secs(10)).unwrap();
- assert!(!t); assert_eq!(r.state,tt_executor::JobState::Failed); assert_eq!(r.error.unwrap().code,"internal");
+    let h = ready();
+    let id = h.jobs().submit("draw.drawing.render", "user", |_| panic!("review injection")).unwrap();
+    let (r, t) = h.jobs().wait(&id, std::time::Duration::from_secs(10)).unwrap();
+    assert!(!t);
+    assert_eq!(r.state, tt_executor::JobState::Failed);
+    assert_eq!(r.error.unwrap().code, "internal");
 }
 #[test]
 fn gestures_state_zoom_and_replay() {
- for zoom in [1.0,2.0,0.5] {
-  for tool in ["select","polyline"] {
-   let (a,b)=(ready(),ready());
-   for h in [&a,&b] {
-    ok(h,"view.zoom.set",json!({"viewId":"drawingView","zoom":zoom}));
-    ok(h,"draw.line.add",json!({"from":{"x":30,"y":20},"to":{"x":80,"y":20},"thickness":1}));
-   }
-   let events=if tool=="select" { json!([{"type":"down","x":1000,"y":500},{"type":"up","x":1000,"y":500}]) } else {json!([{"type":"down","x":1000,"y":500},{"type":"up","x":1000,"y":500},{"type":"down","x":1100,"y":450},{"type":"up","x":1100,"y":450}])};
-   let e=a.pointer(tt_executor::Origin::User,json!({"view":"drawing","tool":tool,"events":events})); assert!(e.is_ok(),"{e:?}");
-   let r=e.result.unwrap(); println!("GESTURE {tool} zoom {zoom}: {}",r["commands"]);
-   for c in r["commands"].as_array().unwrap() {
-    if c["commandId"] != "tool.active.set" { assert_eq!(c["params"].get("view").is_some(),zoom!=1.0); }
-    ok(&b,c["commandId"].as_str().unwrap(),c["params"].clone());
-   }
-   assert_eq!(canonical(&a),canonical(&b));
-   assert_eq!(ok(&a,"draw.selection.get",json!({})),ok(&b,"draw.selection.get",json!({})));
-  }
- }
+    for zoom in [1.0, 2.0, 0.5] {
+        for tool in ["select", "polyline"] {
+            let (a, b) = (ready(), ready());
+            for h in [&a, &b] {
+                ok(h, "view.zoom.set", json!({"viewId":"drawingView","zoom":zoom}));
+                ok(h, "draw.line.add", json!({"from":{"x":30,"y":20},"to":{"x":80,"y":20},"thickness":1}));
+            }
+            let events = if tool == "select" {
+                json!([{"type":"down","x":1000,"y":500},{"type":"up","x":1000,"y":500}])
+            } else {
+                json!([{"type":"down","x":1000,"y":500},{"type":"up","x":1000,"y":500},{"type":"down","x":1100,"y":450},{"type":"up","x":1100,"y":450}])
+            };
+            let e = a.pointer(tt_executor::Origin::User, json!({"view":"drawing","tool":tool,"events":events}));
+            assert!(e.is_ok(), "{e:?}");
+            let r = e.result.unwrap();
+            println!("GESTURE {tool} zoom {zoom}: {}", r["commands"]);
+            for c in r["commands"].as_array().unwrap() {
+                if c["commandId"] != "tool.active.set" {
+                    assert_eq!(c["params"].get("view").is_some(), zoom != 1.0);
+                }
+                ok(&b, c["commandId"].as_str().unwrap(), c["params"].clone());
+            }
+            assert_eq!(canonical(&a), canonical(&b));
+            assert_eq!(ok(&a, "draw.selection.get", json!({})), ok(&b, "draw.selection.get", json!({})));
+        }
+    }
 }
 
 #[test]
 fn five_commands_frame_and_precedence() {
- let mut failures=Vec::new();
- for id in ["draw.selection.set","draw.erase.apply","draw.transform.apply","colour.paint.apply","colour.pick"] {
-  for named in [false,true] {
-   let (a,w)=world(); let (b,wb)=world();
-   let build=cases().into_iter().find(|c|c.0==id).unwrap().2;
-   let mut pa=build(&Coords{mode:Mode::Drawing,m:&w.m},&w);
-   let mut pb=build(&Coords{mode:Mode::Drawing,m:&wb.m},&wb);
-   pa["frame"]=json!(w.frame); if named {pa["elementId"]=json!(BOB);}
-   pb["drawingId"]=json!(wb.d2);
-   let ea=run(&a,id,pa.clone()); let eb=run(&b,id,pb);
-   if ea.result != eb.result || ea.error.as_ref().map(|e|&e.code) != eb.error.as_ref().map(|e|&e.code) || canonical(&a)!=canonical(&b) { failures.push(format!("{id} named={named}: {:?}",ea.error)); }
-   pa["drawingId"]=json!(w.d2); pa["elementId"]=json!("missing-element"); pa["frame"]=json!(999999);
-   let e=run(&a,id,pa); println!("PRECEDENCE {id}: {:?}",e.error);
-   assert_ne!(e.error.as_ref().map(|e|e.code.as_str()),Some("drawing.noTarget"));
-  }
- }
- assert!(failures.is_empty(),"{}",failures.join("\n"));
+    let mut failures = Vec::new();
+    for id in ["draw.selection.set", "draw.erase.apply", "draw.transform.apply", "colour.paint.apply", "colour.pick"] {
+        for named in [false, true] {
+            let (a, w) = world();
+            let (b, wb) = world();
+            let build = cases().into_iter().find(|c| c.0 == id).unwrap().2;
+            let mut pa = build(&Coords { mode: Mode::Drawing, m: &w.m }, &w);
+            let mut pb = build(&Coords { mode: Mode::Drawing, m: &wb.m }, &wb);
+            pa["frame"] = json!(w.frame);
+            if named {
+                pa["elementId"] = json!(BOB);
+            }
+            pb["drawingId"] = json!(wb.d2);
+            let ea = run(&a, id, pa.clone());
+            let eb = run(&b, id, pb);
+            if ea.result != eb.result
+                || ea.error.as_ref().map(|e| &e.code) != eb.error.as_ref().map(|e| &e.code)
+                || canonical(&a) != canonical(&b)
+            {
+                failures.push(format!("{id} named={named}: {:?}", ea.error));
+            }
+            pa["drawingId"] = json!(w.d2);
+            pa["elementId"] = json!("missing-element");
+            pa["frame"] = json!(999999);
+            let e = run(&a, id, pa);
+            println!("PRECEDENCE {id}: {:?}", e.error);
+            assert_ne!(e.error.as_ref().map(|e| e.code.as_str()), Some("drawing.noTarget"));
+        }
+    }
+    assert!(failures.is_empty(), "{}", failures.join("\n"));
+}
+
+#[test]
+fn zoom_round_trip_and_rotated_near_line() {
+    let (a, b) = (ready(), ready());
+    for h in [&a, &b] {
+        let up = ok(h, "view.zoom.set", json!({"viewId":"drawingView","steps":1}));
+        let back = ok(h, "view.zoom.set", json!({"viewId":"drawingView","steps":-1}));
+        println!("ROUNDTRIP {up} -> {back}");
+        assert_eq!(back["zoom"], 1.0);
+        ok(h, "view.rotation.set", json!({"viewId":"drawingView","degrees":37.5}));
+        ok(h, "view.pan.set", json!({"viewId":"drawingView","centre":{"x":10000,"y":10000}}));
+        ok(h, "draw.line.add", json!({"from":{"x":10000,"y":10000},"to":{"x":10100,"y":10000},"thickness":0.1}));
+    }
+    let p = ok(
+        &a,
+        "view.coordinates.convert",
+        json!({"viewId":"drawingView","from":"drawing","to":"view","point":{"x":10050,"y":10002}}),
+    )["point"]
+        .clone();
+    let e=a.pointer(tt_executor::Origin::User,json!({"view":"drawing","tool":"select","events":[{"type":"down","x":p["x"],"y":p["y"]},{"type":"up","x":p["x"],"y":p["y"]}]}));
+    assert!(e.is_ok(), "{e:?}");
+    for c in e.result.unwrap()["commands"].as_array().unwrap() {
+        assert!(c["params"].get("view").is_none());
+        ok(&b, c["commandId"].as_str().unwrap(), c["params"].clone());
+    }
+    let selected = ok(&a, "draw.selection.get", json!({}));
+    assert!(!selected["selectedIds"].as_array().unwrap().is_empty());
+    assert_eq!(selected, ok(&b, "draw.selection.get", json!({})));
+    assert_eq!(canonical(&a), canonical(&b));
+}
+
+#[test]
+fn empty_and_locked_cell_probes() {
+    for id in ["draw.selection.set", "draw.erase.apply", "draw.transform.apply", "colour.paint.apply", "colour.pick"] {
+        let (h, w) = world();
+        let build = cases().into_iter().find(|c| c.0 == id).unwrap().2;
+        let mut p = build(&Coords { mode: Mode::Drawing, m: &w.m }, &w);
+        p["frame"] = json!(999999);
+        let e = run(&h, id, p.clone());
+        println!("EMPTY {id}: {:?}", e.error);
+        p["frame"] = json!(w.frame);
+        ok(&h, "element.drawingLock.set", json!({"drawingIds":[w.d2],"locked":true}));
+        let avail = h.availability(vec![(id.into(), p.as_object().unwrap().clone())]).unwrap();
+        let e = run(&h, id, p);
+        println!("LOCKED {id}: availability {:?}, execution {:?}", avail[0], e.error);
+        assert_eq!(avail[0].enabled, e.is_ok(), "{id}");
+    }
+}
+#[test]
+fn point_selection_is_frontmost_within_tolerance() {
+    let h = ready();
+    let mut ids = Vec::new();
+    for y in [10000, 10002] {
+        let r = ok(
+            &h,
+            "draw.line.add",
+            json!({"from":{"x":10000,"y":y},"to":{"x":10100,"y":y},"thickness":0.1,"layer":"new"}),
+        );
+        ids.push(r["strokeIds"][0].clone());
+    }
+    let r = ok(&h, "draw.selection.set", json!({"by":"point","point":{"x":10050,"y":10000}}));
+    assert_eq!(r["selectedIds"], json!([ids[1]]));
 }
