@@ -28,7 +28,10 @@ Origin validation, bearer token, discovery file, off by default); ADR-0015 §10 
      `503` with `Retry-After: 0` and the pending connection that has waited longest is evicted, so idle sockets cannot
      shut out a token holder; with the workers full of authenticated streams a newcomer is refused without eviction.
      Refusals are written without a thread; every answered socket is closed gracefully (256 KiB, 1 s) by one closer
-     thread holding at most 128 sockets. The server holds at most `3 + 64 + 32` threads. An SSE subscriber that stops
+     thread holding at most 128 sockets. The server holds at most `3 + C + K·S` threads (round 3, ruling O-20): the
+     accept, closer and sweeper threads, C = 64 connection workers and K = 20 threads for each of at most 32 sessions
+     (5 for the session's life, up to 4 `job_wait` waits, 2 server-side work threads, 1 roots refresh and 8 job threads,
+     each cap refused with `limit.exceeded`), 707 with the defaults; a stop ends body readers within 50 ms. An SSE subscriber that stops
      reading is dropped (1024 queued messages, 10 s write timeout); a quiet stream notices a departed client within 1 s.
    - **Credentials fail closed (ruling O-6).** The token and session ids come from the operating system's random source
      only; when it fails, no token is made, the server does not start and the window says why (`agent.serverFailed`).

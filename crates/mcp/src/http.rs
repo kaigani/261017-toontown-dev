@@ -31,9 +31,10 @@
 //! (the pending pool). A connection that meets a full pending pool is answered `503` with `Retry-After: 0`, and the
 //! pending connection that has waited longest for its head is evicted, so idle sockets cannot keep a slot past the
 //! next newcomer. Refusals are written without a thread, and every answered socket is closed gracefully by one closer
-//! thread holding at most [`Limits::max_lingering`] sockets. The server holds at most `3 + max_connections + 32`
-//! threads. An SSE subscriber that does not read is dropped: its queue holds [`Limits::sse_backlog`] messages and a
-//! blocked write gives up after [`Limits::write_timeout`].
+//! thread holding at most [`Limits::max_lingering`] sockets. The server holds at most
+//! `3 + max_connections + K·32` threads, K = [`crate::server::SESSION_THREADS`] (ruling O-20). An SSE subscriber
+//! that does not read is dropped: its queue holds [`Limits::sse_backlog`] messages and a blocked write gives up after
+//! [`Limits::write_timeout`].
 //!
 //! **Sessions (O-7).** Each session runs the same protocol loop as stdio ([`crate::serve`]) over in-memory reader and
 //! writer ends, so permissions, confirmations, the audit log and cancellation behave exactly as on stdio. A request

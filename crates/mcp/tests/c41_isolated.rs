@@ -44,8 +44,12 @@ fn initialize(addr: std::net::SocketAddr) -> String {
     let body = r#"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"c41","version":"1"}}}"#;
     let mut c = TcpStream::connect(addr).unwrap();
     c.set_read_timeout(Some(Duration::from_secs(30))).unwrap();
-    write!(c, "POST /mcp HTTP/1.1\r\nHost: localhost\r\nAuthorization: Bearer t\r\nContent-Length: {}\r\n\r\n{body}", body.len())
-        .unwrap();
+    write!(
+        c,
+        "POST /mcp HTTP/1.1\r\nHost: localhost\r\nAuthorization: Bearer t\r\nContent-Length: {}\r\n\r\n{body}",
+        body.len()
+    )
+    .unwrap();
     let mut text = String::new();
     c.read_to_string(&mut text).unwrap();
     text.lines().find_map(|l| l.strip_prefix("Mcp-Session-Id: ")).expect("a session").to_owned()
@@ -55,6 +59,18 @@ fn initialize(addr: std::net::SocketAddr) -> String {
 fn saturated_server_threads_obey_the_formula_and_all_go_at_stop() {
     let (c, u, l) = (8usize, 2usize, 8usize);
     let h = tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();
+    // Warm-up: the first server of a process leaves one lazily created OS thread behind (the platform's networking,
+    // on Windows), and later servers return to the same count; it is counted in the baseline, not against the server.
+    let warm = tt_mcp::http::start_with(
+        h.clone(),
+        HttpOptions { bind: "127.0.0.1:0".parse().unwrap(), token: "t".into(), server: Default::default() },
+        Limits::default(),
+    )
+    .unwrap();
+    let _ = initialize(warm.addr);
+    warm.stop();
+    drop(warm);
+    std::thread::sleep(Duration::from_secs(3));
     let baseline = threads();
     let s = tt_mcp::http::start_with(
         h.clone(),
@@ -68,7 +84,8 @@ fn saturated_server_threads_obey_the_formula_and_all_go_at_stop() {
     for sid in sids.iter().take(c - u) {
         let mut st = TcpStream::connect(s.addr).unwrap();
         st.set_read_timeout(Some(Duration::from_secs(30))).unwrap();
-        write!(st, "GET /mcp HTTP/1.1\r\nHost: localhost\r\nAuthorization: Bearer t\r\nMcp-Session-Id: {sid}\r\n\r\n").unwrap();
+        write!(st, "GET /mcp HTTP/1.1\r\nHost: localhost\r\nAuthorization: Bearer t\r\nMcp-Session-Id: {sid}\r\n\r\n")
+            .unwrap();
         let mut r = BufReader::new(st);
         let mut line = String::new();
         r.read_line(&mut line).unwrap();
@@ -96,7 +113,7 @@ fn saturated_server_threads_obey_the_formula_and_all_go_at_stop() {
         if after <= baseline {
             break;
         }
-        eprintln!("t={:?} after={after}", start.elapsed()); assert!(start.elapsed() < Duration::from_secs(40), "threads remain after stop: {after} > {baseline}");
+        assert!(start.elapsed() < Duration::from_secs(10), "threads remain after stop: {after} > {baseline}");
         std::thread::sleep(Duration::from_millis(50));
     }
     drop(h);

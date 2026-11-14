@@ -1683,3 +1683,21 @@ fn flush_updates(shared: &Shared) {
         shared.send(&jsonrpc::notification("notifications/resources/updated", json!({ "uri": uri })));
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Ruling O-20: the per-session thread caps take a slot below the cap and refuse at it; K is their sum.
+    #[test]
+    fn session_thread_caps_refuse_at_the_cap() {
+        let n = AtomicUsize::new(0);
+        for _ in 0..MAX_JOB_WAITS {
+            assert!(take_slot(&n, MAX_JOB_WAITS));
+        }
+        assert!(!take_slot(&n, MAX_JOB_WAITS), "one more wait is refused");
+        n.fetch_sub(1, Ordering::AcqRel);
+        assert!(take_slot(&n, MAX_JOB_WAITS), "a released slot is taken again");
+        assert_eq!(SESSION_THREADS, 20);
+    }
+}

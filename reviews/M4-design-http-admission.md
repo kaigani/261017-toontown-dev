@@ -1,7 +1,8 @@
 # M4 design note — HTTP admission, refusal and session lifetime (ruling O-15)
 
 Status: decided before implementation (M4 C4.1 round 2, ruling O-15), committed before `crates/mcp/src/http.rs`
-changes (commit `5b9ccf8`). Two mechanisms were corrected while implementing it, without changing an invariant: the
+changes (commit `5b9ccf8`). Round 3 (ruling O-20, C41-R3-01, -02) corrected the thread bound (§3) and the stop of
+body readers (§6), and named the fourth lock (§7). Two mechanisms were corrected while implementing it, without changing an invariant: the
 eviction signal (§4: a flag, not a second socket handle) and the client check of a quiet stream (§6). Owner: builder. Findings answered: C41-R2-01 (idle unauthenticated sockets shut out authenticated callers),
 C41-R2-02 (refusals escape the connection cap), C41-R2-03 (a session expires while its own request body arrives).
 Spec and decisions: 11 §4 (Streamable HTTP), ADR-0022 decision 2 (resource bounds, O-6, O-7).
@@ -17,7 +18,8 @@ outside one; each numbered invariant (I-1 to I-8) has a builder test of its own 
 | `max_connections` (C) | 64 | connection workers: one thread and one socket each, from admission to hand-off |
 | `max_unauthenticated` (U) | 16 | the pending pool: workers whose request head is not complete yet (U is used as `min(U, C)`) |
 | `max_lingering` (L) | 128 | sockets being closed gracefully by the closer thread after their answer |
-| `MAX_SESSIONS` (S) | 32 | sessions, each with one protocol-loop thread |
+| `MAX_SESSIONS` (S) | 32 | sessions |
+| K (per session; round 3, ruling O-20) | 20 | the threads one session can own at once (§3) |
 | `head_deadline` | 10 s | a pending worker's whole life, from the moment its socket was accepted |
 | `request_deadline` | 60 s | the head and the body, from the moment the socket was accepted |
 | linger | 256 KiB, 1 s | one lingering socket |
@@ -47,12 +49,34 @@ read an answer and close is the closer's job only.
 
 At any moment the server holds at most:
 
-- **threads:** `3 + C + S` (the accept thread, the session sweeper, the closer; at most C connection workers; at most
-  S session threads). No other thread is ever created by the server. A worker is created only after its slot in C (and
-  in U) was taken, by the accept thread, so the count of workers never exceeds C even for an instant; a worker whose
-  slot was taken but whose thread could not be created gives the slot back and its socket is refused.
+- **threads:** `3 + C + K·S` (round 3, ruling O-20; the first version said `3 + C + S`, which was false, C41-R3-01):
+  the accept thread, the session sweeper and the closer; at most C connection workers; at most K threads for each of
+  at most S sessions. A worker is created only after its slot in C (and in U) was taken, by the accept thread, so the
+  count of workers never exceeds C even for an instant; a worker whose slot was taken but whose thread could not be
+  created gives the slot back and its socket is refused. **K = 20**, each named, every transient one capped
+  (`tt_mcp::server`'s constants):
+  - 5 for the session's whole life: the protocol loop itself (`mcp-http-session`), `mcp-writer`, `mcp-reader`,
+    `mcp-events`, `mcp-calls` (`PERSISTENT_THREADS`);
+  - at most 4 `mcp-wait` threads, one per `job_wait` call waiting (it blocks on the caller's side, 11 P5); a fifth is
+    answered `limit.exceeded` with `limit: "concurrentJobWaits"` (`MAX_JOB_WAITS`);
+  - at most 2 `mcp-server-work` threads (`list_commands`, `describe_command`, `get_docs`; such a thread can outlive its
+    call when the work passes its 5 s budget); a third request is answered `limit.exceeded`, `limit: "serverWork"`
+    (`MAX_SERVER_WORK`);
+  - at most 1 `mcp-roots` thread: a roots refresh asked while one runs makes the running one read the roots again
+    (`ROOTS_THREADS`);
+  - at most 8 executor job threads (`tt-job_*`), the session's `maxJobs` limit whose domain is 1..8; the executor
+    refuses one more with `limit.exceeded`, `limit: "maxJobs"` (`JOB_THREADS`).
+  Calls themselves create no thread: they run one at a time on `mcp-calls`. With the defaults: `3 + 64 + 20·32 = 707`
+  threads at most. Measured at saturation (32 idle sessions, every worker busy, the pending pool full, 64 refusals
+  held open): exactly `3 + C + 5·S` above the baseline, the persistent threads only.
+- **memory:** each worker owns one socket and at most one request head (16 KiB) and one body (at most the session's
+  `maxInlineBytes`, 50 MiB by default, read incrementally); each session's queues are bounded in messages (output
+  4096, input frames 256, each SSE stream `sse_backlog` = 1024), and a message is at most `maxInlineBytes`. So the
+  memory bound is these counts times the message limit; it is finite, not small: a client that fills every queue with
+  maximum-size messages can hold a large amount of memory, and its own output queue stalling for 10 s closes its
+  session.
 - **sockets:** `1 + 1 + C + L` (the listener, the one socket the accept thread is deciding about, the workers'
-  sockets, the lingering sockets). An evicted pending worker still owns its slot in C until its thread has ended, so a
+  sockets, the lingering sockets); sessions own no socket of their own (their streams are workers). An evicted pending worker still owns its slot in C until its thread has ended, so a
   socket is never outside C while a thread still touches it.
 
 There is no state outside these: a refusal by the accept thread creates no thread (§5), a refusal by a worker hands
@@ -131,19 +155,39 @@ that is the token holder's own load.
 - **Session cap:** a session counts against S from insertion until it leaves the map (`DELETE`, expiry, the end of its
   protocol loop, server stop); in-flight requests do not change that.
 - **Server stop:** the accept loop ends; every session leaves the map (their loops end and their streams end as for
-  `DELETE`); every pending connection is evicted; the closer closes every lingering socket. Workers still writing an
-  answer end within their write timeout; no new worker is created.
+  `DELETE`); every pending connection is evicted; the closer closes every lingering socket. A worker reading a body
+  reads in slices of 50 ms and sees the stop within one slice: it ends at once, without an answer, and drops its
+  session's input sender, so the session's protocol loop sees the end of its input and ends (round 3, C41-R3-02; the
+  first version waited out the request deadline). Workers still writing an answer end within their write timeout; no
+  new worker is created.
+- **A request admitted before `DELETE` (intended).** A request whose head was authenticated before the `DELETE` holds
+  its own handle on the session's input and routes: it completes, and its caller receives the full answer (the
+  session's protocol loop runs until the last such request has sent its message), then its stream ends. A request
+  whose head arrives after the `DELETE` answers `404`. Nothing can bring the deleted session back: it is not in the
+  map, and its id is never reissued.
 
 ## 7. Lock order (I-8)
 
-There are three locks: the **pending pool** (`pending`), the **session map** (`sessions`) and each session's
-**routes** (`routes`).
+There are four locks: the **pending pool** (`pending`), the **session map** (`sessions`), each session's **routes**
+(`routes`) and the **closer's set** (`lingering`, also the mutex of the condition variable that wakes the closer and
+the sweeper).
 
 - `sessions` may be held while taking a session's `routes` (expiry reads a session's open routes; `GET` installs its
   stream). Never the reverse: code that holds `routes` takes no other lock.
 - `pending` is never held together with `sessions` or `routes`; it is a leaf lock taken only by the accept thread (to
   admit and evict) and by a worker leaving the pending state.
-- The closer's channel and the slot counters are lock-free.
+- `lingering` is a leaf lock too: a hand-off takes it to push one socket; the closer holds it during one pass of
+  non-blocking reads over at most L sockets (it never writes and never blocks inside the pass), and the sweeper only
+  waits on its condition variable. So the accept thread, which hands refusals over, can wait at most one closer pass
+  and never behind a blocked write: refusals are written (non-blocking) before the hand-off, outside the lock.
+- The slot counters are lock-free.
+- **Why construction is the test (I-8).** A lock-order inversion needs a path that holds one lock while taking
+  another in the opposite order. The code has exactly one nested acquisition: `sessions` then `routes` (expiry
+  drops sessions under `sessions`, `Session::drop` takes `routes`; `GET` installs its stream). `routes` holders
+  (`route`, the request bookkeeping, `Session::drop`) call nothing that locks; `pending` holders (`admit`,
+  `leave_pending`, `stop`) call nothing that locks (the eviction is a flag store); `lingering` holders likewise; the
+  in-flight guard's `Drop` takes only `sessions`. A run cannot show the absence of a schedule; the rule is kept by
+  this list, which a change of any of these functions must keep true.
 
 ## 8. What changes in the code
 
@@ -165,7 +209,7 @@ per invariant, in `crates/mcp/tests/c41/transport.rs`:
 
 | Invariant | Builder test |
 |---|---|
-| I-1 threads and sockets within `3 + C + S` and `2 + C + L` | `admission_bounds_hold_under_idle_and_refused_bursts` |
+| I-1 threads within `3 + C + K·S`, measured in OS threads at saturation, and all gone at stop; sockets within `2 + C + L` | `crates/mcp/tests/c41_isolated.rs` `saturated_server_threads_obey_the_formula_and_all_go_at_stop` (round 3; it replaces the counter test, which counted map entries, not threads) |
 | I-2 a full pending pool evicts its oldest connection, not a younger one | `a_full_pending_pool_evicts_the_connection_waiting_longest` |
 | I-3 a token holder that meets a full pool is served on its retry, idle sockets replenished or not | `a_token_holder_is_served_on_retry_while_idle_sockets_are_replenished` |
 | I-4 refusals create no worker; lingering sockets are capped at L, oldest closed first | `refusals_create_no_worker_and_lingering_is_capped` |
