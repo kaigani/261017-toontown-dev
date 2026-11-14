@@ -81,7 +81,7 @@ fn heartbeat(s: &mut Session) {
         p.store.lock = None;
     }
     if p.store.autosaved_rev.is_some() {
-        recovery::heartbeat(&root, &p.store.recovery_id);
+        recovery::heartbeat_owned(&root, &p.store.recovery_id, &s.env.fence);
     }
 }
 
@@ -175,10 +175,6 @@ fn autosave(s: &mut Session, force: bool) -> bool {
     let session = crate::persistence::session_json(&doc, &s.app);
     let (engine, fence) = (s.env.engine.clone(), s.env.fence.clone());
     let spawned = std::thread::Builder::new().name("tt-autosave".to_owned()).spawn(move || {
-        // An engine abandoned while the snapshot waited writes nothing (C41-R1-15).
-        if fence.load(std::sync::atomic::Ordering::Acquire) {
-            return;
-        }
         let input = tt_persist::SaveInput {
             doc: &doc,
             preserved: &preserved,
@@ -186,9 +182,14 @@ fn autosave(s: &mut Session, force: bool) -> bool {
             session: Some(&session),
             saved_at: saved_at.clone(),
         };
-        // The owner is named before `recovery.json` exists, so whoever sees the entry also sees its owner (C41-R1-15).
-        let outcome = recovery::set_engine(&root, &info.recovery_id, &engine)
-            .and_then(|()| recovery::write(&root, &info, &input));
+        // The fence check, the owner record and the write are one step with respect to a release of this engine's
+        // entries (ruling O-18): an engine abandoned while the snapshot waited, or before the write began, writes
+        // nothing; a write already past its check finishes before the release (C41-R1-15).
+        let outcome = match recovery::write_owned(&root, &info, &input, &engine, &fence) {
+            Ok(None) => return,
+            Ok(Some(saved)) => Ok(saved),
+            Err(e) => Err(e),
+        };
         let id = info.recovery_id.clone();
         let _ = poster.run(std::time::Duration::from_secs(600), move |core| {
             let Some(s) = core.session_mut() else { return };

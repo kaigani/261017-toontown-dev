@@ -247,6 +247,8 @@ impl Env {
         env.maintenance = opts.maintenance;
         env.migrations = opts.migrations;
         env.load_settings();
+        // Owner records a dead process left without a completed recovery (ruling O-18).
+        let _ = tt_persist::recovery::scavenge(&env.dirs.recovery);
         env
     }
 

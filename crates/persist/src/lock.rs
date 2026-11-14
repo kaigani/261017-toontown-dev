@@ -132,6 +132,9 @@ pub enum Boundary {
     /// An invocation or batch step committed on the document thread, before the next boundary (the path is empty; M3
     /// C3.4 round 2: request cancellation between steps).
     Committed,
+    /// An engine's recovery write checked its fence under the ownership lock, before it writes (the path is the
+    /// recovery entry's folder; M4 C4.1 round 2, ruling O-18).
+    RecoveryWriteChecked,
 }
 
 #[cfg(feature = "test-hooks")]

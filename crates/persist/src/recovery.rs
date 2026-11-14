@@ -8,6 +8,8 @@
 
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Mutex, PoisonError};
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -87,6 +89,48 @@ pub fn write(root: &Path, info: &RecoveryInfo, input: &SaveInput<'_>) -> Result<
     Ok(saved)
 }
 
+/// Recovery ownership in this process (ruling O-18): an engine's fenced write or heartbeat and the release of an
+/// abandoned engine's entries each hold it from their check to their last write, so a release never interleaves with a
+/// write: a write that passed its fence check finishes before the release, and a write after the release sees the
+/// fence set (the fence is set before the release is asked). It is held only by these file writes, never across a
+/// call into another engine.
+static OWNERSHIP: Mutex<()> = Mutex::new(());
+
+fn ownership() -> std::sync::MutexGuard<'static, ()> {
+    OWNERSHIP.lock().unwrap_or_else(PoisonError::into_inner)
+}
+
+/// Writes a recovery copy as engine `engine` (ruling O-18): under the ownership lock, nothing is written once `fence`
+/// is set (the engine was abandoned); otherwise the owner is named first ([`set_engine`], so whoever sees the entry
+/// also sees its owner) and the copy written, as one step with respect to [`release_engine`]. `Ok(None)`: fenced,
+/// nothing written.
+///
+/// # Errors
+/// As [`write`] and [`set_engine`].
+pub fn write_owned(
+    root: &Path,
+    info: &RecoveryInfo,
+    input: &SaveInput<'_>,
+    engine: &str,
+    fence: &AtomicBool,
+) -> Result<Option<Saved>, ModelError> {
+    let _owner = ownership();
+    if fence.load(Ordering::Acquire) {
+        return Ok(None);
+    }
+    lock::boundary(lock::Boundary::RecoveryWriteChecked, &root.join(&info.recovery_id));
+    set_engine(root, &info.recovery_id, engine)?;
+    write(root, info, input).map(Some)
+}
+
+/// [`heartbeat`] of an engine, under the ownership lock and its `fence` (ruling O-18).
+pub fn heartbeat_owned(root: &Path, recovery_id: &str, fence: &AtomicBool) {
+    let _owner = ownership();
+    if !fence.load(Ordering::Acquire) {
+        heartbeat(root, recovery_id);
+    }
+}
+
 /// Refreshes a recovery copy's heartbeat.
 pub fn heartbeat(root: &Path, recovery_id: &str) {
     if !valid_id(recovery_id) {
@@ -127,8 +171,9 @@ pub fn release_process(root: &Path, process_id: u32, keep: Option<&str>) -> usiz
     released
 }
 
-/// Records which engine owns a recovery entry: the sidecar `<root>/<id>/engine` holds the engine's ownership token
-/// (M4 C4.1 round 1, C41-R1-15). `recovery.json` keeps its format.
+/// Records which engine owns a recovery entry: the sidecar `<root>/<id>/engine` holds the engine's ownership token,
+/// then its process id and host, one per line (M4 C4.1 round 1, C41-R1-15; the process and host since round 2, for
+/// [`scavenge`]). `recovery.json` keeps its format.
 ///
 /// # Errors
 /// An invalid id, or the write error.
@@ -136,7 +181,53 @@ pub fn set_engine(root: &Path, recovery_id: &str, engine: &str) -> Result<(), Mo
     if !valid_id(recovery_id) {
         return Err(ModelError::new(codes::INTERNAL, "invalid recovery id"));
     }
-    fsx::write_atomic(&root.join(recovery_id).join("engine"), engine.as_bytes(), fsx::fs_error)
+    let text = format!(
+        "{engine}
+{}
+{}",
+        host::pid(),
+        host::host()
+    );
+    fsx::write_atomic(&root.join(recovery_id).join("engine"), text.as_bytes(), fsx::fs_error)
+}
+
+/// The owner sidecar of an entry: engine token, process id, host (`None` when absent or unreadable).
+fn owner_of(folder: &Path) -> Option<(String, Option<u32>, String)> {
+    let b = fsx::read_limited(&folder.join("engine"), 512).ok()?;
+    let text = String::from_utf8(b).ok()?;
+    let mut lines = text.lines();
+    let engine = lines.next()?.to_owned();
+    let pid = lines.next().and_then(|l| l.parse().ok());
+    Some((engine, pid, lines.next().unwrap_or_default().to_owned()))
+}
+
+/// Removes owner records left without a completed recovery (ruling O-18): an entry whose owner sidecar exists, whose
+/// `recovery.json` does not (the process died between naming itself the owner and completing its first copy), and
+/// whose owner is gone by the lock liveness rule (its process known dead on this host, or the record older than the
+/// stale time). A completed recovery (`recovery.json` present) is never removed here: it is offered. Returns the number
+/// of entries removed.
+pub fn scavenge(root: &Path) -> usize {
+    let Ok(rd) = fs::read_dir(root) else { return 0 };
+    let mut removed = 0;
+    for e in rd.flatten() {
+        let name = e.file_name().to_string_lossy().into_owned();
+        let folder = e.path();
+        if !valid_id(&name) || folder.join("recovery.json").exists() {
+            continue;
+        }
+        let Some((_, pid, owner_host)) = owner_of(&folder) else { continue };
+        let same_host = owner_host.is_empty() || owner_host == host::host();
+        let dead = same_host && pid.is_some_and(|p| p != host::pid() && host::process_alive(p) == Some(false));
+        let age =
+            fs::metadata(folder.join("engine")).ok().and_then(|m| m.modified().ok()).and_then(|t| t.elapsed().ok());
+        let alive = same_host && pid.is_some_and(|p| p == host::pid() || host::process_alive(p) == Some(true));
+        let stale = !alive && age.is_some_and(|a| a.as_secs() > lock::STALE_SECS);
+        // Checked again right before removing: a completed copy that appeared meanwhile is kept.
+        if (dead || stale) && !folder.join("recovery.json").exists() && fs::remove_dir_all(&folder).is_ok() {
+            removed += 1;
+        }
+    }
+    removed
 }
 
 /// Releases the recovery data of one abandoned engine, named by its ownership token: only entries of this process on
@@ -146,6 +237,8 @@ pub fn release_engine(root: &Path, engine: &str, keep: Option<&str>) -> usize {
     if engine.is_empty() {
         return 0;
     }
+    // One step with respect to the engine's own writes (ruling O-18).
+    let _owner = ownership();
     let Ok(rd) = fs::read_dir(root) else { return 0 };
     let mut released = 0;
     for e in rd.flatten() {
@@ -153,8 +246,7 @@ pub fn release_engine(root: &Path, engine: &str, keep: Option<&str>) -> usize {
         if !valid_id(&name) || keep == Some(name.as_str()) {
             continue;
         }
-        let owner = fsx::read_limited(&e.path().join("engine"), 256).ok();
-        if owner.as_deref() != Some(engine.as_bytes()) {
+        if owner_of(&e.path()).is_none_or(|(owner, _, _)| owner != engine) {
             continue;
         }
         let p = e.path().join("recovery.json");

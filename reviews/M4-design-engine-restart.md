@@ -44,6 +44,17 @@ in the last autosave.
   (`project.recovery.open`) or **Discard**. The confirmation before the restart states the time of the last autosave
   the window saw (or that there is none), because what was not autosaved is lost. Agent sessions of the old executor
   end (their HTTP sessions are closed; clients reconnect). The front end resyncs from the new executor.
+- **Fence and write are one step (round 2, ruling O-18).** An engine's recovery write (its fence check, the owner
+  record and the copy) and its heartbeat hold the process's recovery ownership lock from the check to the last write;
+  the release of an abandoned engine's entries holds the same lock. So a write already past its check when the engine
+  is abandoned finishes before the release (which then leaves the entry released and offered), and a write after the
+  release sees the fence and writes nothing. Tested with a writer paused at the `RecoveryWriteChecked` boundary of
+  the persist crate's test hooks (`crates/executor/tests/c41_isolated.rs`).
+- **Owner records without a completed recovery are scavenged (round 2, ruling O-18).** The owner record (`engine`
+  beside each entry) now holds the owner's process id and host too. At start, an entry with an owner record and no
+  `recovery.json` (the process died between naming itself the owner and completing its first copy) whose owner is
+  gone by the lock rule (process known dead on this host, or the record older than the stale time and the process not
+  known alive) is removed. A completed recovery of a dead process is offered, never removed.
 - **Never automatic.** Restarting discards in-memory work, so it is the user's choice; agents cannot trigger it.
 - **No product hook.** The product has no way to make a handler hang; the behaviour is tested in an embedding test.
 

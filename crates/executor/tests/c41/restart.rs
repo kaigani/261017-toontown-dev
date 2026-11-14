@@ -89,3 +89,38 @@ fn a_restarted_executor_offers_the_abandoned_autosave() {
     drop(first);
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+/// Ruling O-18: at start, an owner record a dead process left without a completed recovery is removed (the lock
+/// liveness rule); a completed recovery of a dead process is offered, never removed; a live process's record is kept.
+#[test]
+fn owner_records_without_a_completed_recovery_are_scavenged_at_start() {
+    let dir = std::env::temp_dir().join(format!("tt-c41-scavenge-{}", tt_executor::random_token(6)));
+    let recovery = dir.join("Recovery");
+    let mut exited = if cfg!(windows) {
+        std::process::Command::new("cmd").args(["/C", "exit"]).spawn().unwrap()
+    } else {
+        std::process::Command::new("true").spawn().unwrap()
+    };
+    let dead = exited.id();
+    exited.wait().unwrap();
+    let host = tt_persist::host::host();
+    let owner = |id: &str, pid: u32| {
+        std::fs::create_dir_all(recovery.join(id).join("project")).unwrap();
+        std::fs::write(recovery.join(id).join("engine"), format!("en_test\n{pid}\n{host}")).unwrap();
+    };
+    owner("rc_dead0001", dead);
+    owner("rc_dead0002", dead);
+    let info = json!({ "recoveryId": "rc_dead0002", "projectId": "pr_x", "projectName": "Completed", "originalPath": null,
+        "savedAt": "2026-01-01T00:00:00Z", "documentRev": 1, "appVersion": "0", "processId": dead, "host": host,
+        "heartbeatAt": "2026-01-01T00:00:00Z" });
+    std::fs::write(recovery.join("rc_dead0002").join("recovery.json"), info.to_string()).unwrap();
+    owner("rc_live0003", std::process::id());
+    let h = over(&dir);
+    assert!(!recovery.join("rc_dead0001").exists(), "the dead owner's incomplete record is removed");
+    assert!(recovery.join("rc_dead0002").join("recovery.json").exists(), "a completed recovery is never removed");
+    assert!(recovery.join("rc_live0003").exists(), "a live process's record is kept");
+    let list = ok(&h, "project.recovery.list", json!({}));
+    assert!(list.as_array().unwrap().iter().any(|e| e["recoveryId"] == "rc_dead0002"), "{list}");
+    drop(h);
+    let _ = std::fs::remove_dir_all(&dir);
+}
