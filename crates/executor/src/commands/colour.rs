@@ -1733,6 +1733,12 @@ pub(crate) struct HitTestParams {
     /// Report invisible strokes.
     #[serde(default)]
     include_invisible: bool,
+    /// Coordinate space of the point (02 §13.1 item 5): a `view` point goes through the view's one mapping.
+    #[serde(default)]
+    space: Space,
+    /// The view of a `view` point and of the view-pixel tolerance (default: the Drawing view; the tolerance at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn three() -> f64 {
@@ -1785,7 +1791,10 @@ pub(crate) fn draw_hit_test_get(cx: &mut Cx, p: HitTestParams) -> Result<HitTest
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let zones = drawing_zones(&cx.planar_cache(), &d)?;
-    let hs = hits(&d, &zones, at, p.tolerance, p.include_invisible)?;
+    // `tolerance` is in view pixels: through the given view's zoom, or 100 % without a view (02 §13.1 item 5).
+    let _ = &p.space;
+    let tol = crate::addressing::tolerance_du(cx, p.view.as_deref(), p.tolerance)?;
+    let hs = hits(&d, &zones, at, tol, p.include_invisible)?;
     let zone_id = hs.iter().find(|h| matches!(h.kind, HitKind::Zone(..))).map(|h| h.id.clone());
     Ok(HitTestResult {
         point: p.point,

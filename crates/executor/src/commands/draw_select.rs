@@ -315,7 +315,10 @@ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
         SelectBy::Point => {
             let pt = p.point.ok_or_else(|| need("point"))?;
             let zones = drawing_zones(&cx.planar_cache(), &d)?;
-            let hs = super::colour::hits(&d, &zones, P::new(pt.x, pt.y), 0.0, false)?;
+            // The hit tolerance: 3 view pixels (02 §13.2 `draw.hitTest.get`) through the given view's zoom, or 100 %
+            // without a view (02 §13.1 item 5; C42A-R2-02).
+            let tol = crate::addressing::tolerance_du(cx, p.view.as_deref(), HIT_TOLERANCE_PX)?;
+            let hs = super::colour::hits(&d, &zones, P::new(pt.x, pt.y), tol, false)?;
             hs.first().map(|h| vec![h.id.clone()]).unwrap_or_default()
         }
         SelectBy::Rect | SelectBy::Lasso => {
@@ -447,6 +450,15 @@ pub(crate) struct PointSelectionParams {
     /// How to combine.
     #[serde(default)]
     mode: Mode,
+    /// Coordinate space of the rectangle (02 §13.1 item 5): `view` coordinates go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` coordinates (default: the Drawing view).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
 /// `{selectedPoints}`.
@@ -471,6 +483,8 @@ pub(crate) fn draw_point_selection_set(
     cx: &mut Cx,
     p: PointSelectionParams,
 ) -> Result<PointSelectionResult, CommandError> {
+    // The pipeline converted view-space coordinates (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let mut none = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
     let doc = cx.document()?.clone();
@@ -543,6 +557,9 @@ pub(crate) fn draw_selection_changed(
 ) -> Result<SelectionChanged, CommandError> {
     Err(super::common::event_not_invocable("draw.selection.changed"))
 }
+
+/// The hit tolerance of a point selection, in view pixels (02 §13.2: `draw.hitTest.get`'s default).
+pub(crate) const HIT_TOLERANCE_PX: f64 = 3.0;
 
 // ----- draw.bounds.get -----------------------------------------------------------------------------------------------
 

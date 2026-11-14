@@ -22,6 +22,7 @@ enum Kind {
 /// The point fields of each point-taking `draw.*` command; `*` stands for every element of an array.
 const FIELDS: &[(&str, &[(&str, Kind)])] = &[
     ("draw.pivot.set", &[("/point", Kind::Point)]),
+    ("draw.hitTest.get", &[("/point", Kind::Point)]),
     (
         "draw.cut.apply",
         &[
@@ -33,6 +34,7 @@ const FIELDS: &[(&str, &[(&str, Kind)])] = &[
     ),
     ("draw.erase.apply", &[("/path/*", Kind::Point), ("/region/*", Kind::Point)]),
     ("draw.selection.set", &[("/point", Kind::Point), ("/rect", Kind::Rect), ("/polygon/*", Kind::Point)]),
+    ("draw.pointSelection.set", &[("/rect", Kind::Rect)]),
     ("draw.rectangle.add", &[("/from", Kind::Point), ("/to", Kind::Point)]),
     ("draw.ellipse.add", &[("/from", Kind::Point), ("/to", Kind::Point)]),
     ("draw.line.add", &[("/from", Kind::Point), ("/to", Kind::Point)]),

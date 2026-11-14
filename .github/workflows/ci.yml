@@ -257,6 +257,14 @@ jobs:
           if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
           $PY -I scripts/check-availability-inventory.py
 
+      # M4 C4.2a round 2 (C42A-R2-01, -02): every point-taking draw.*/colour.* command declares `space`, `view` and
+      # `frame` (02 §13.1 item 5; 03 §16.2), checked against the generated schemas.
+      - name: Common addressing parameters
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          $PY -I scripts/check-addressing-params.py
+
       # Product code (libraries, binaries, examples) is linted with every warning denied. All targets, tests included,
       # likewise except one style lint: the reviewer-owned `c24_r4_closure.rs` has blank lines after doc comments, and
       # reviewer-owned files are not edited (M2 merge candidate, declared CI edit; drop the `-A` once that file is fixed).

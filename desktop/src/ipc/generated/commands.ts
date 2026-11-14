@@ -34420,6 +34420,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.content.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.content.add.params": {
     title: "ContentAddParams",
     description: "`draw.content.add` parameters (02 §13.5).",
@@ -34480,6 +34500,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Make the inserted objects the drawing selection.",
         type: "boolean",
         default: true,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.content.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -34720,6 +34752,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.cut.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.cut.apply.params": {
     title: "CutParams",
     description: "`draw.cut.apply` parameters (`segment`: SI-071).",
@@ -34769,6 +34821,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       then: {
         description: "What happens to the inside.",
         $ref: "#/$defs/draw.cut.apply.Then",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.cut.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -36105,6 +36179,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.ellipse.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.ellipse.add.params": {
     title: "EllipseParams",
     description: "`draw.ellipse.add` parameters.",
@@ -36194,6 +36288,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Symmetry copies (02 §6.2).",
         type: "boolean",
         default: true,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.ellipse.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -36307,6 +36413,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.envelope.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.envelope.apply.params": {
     title: "EnvelopeParams",
     description: "`draw.envelope.apply` parameters.",
@@ -36343,6 +36469,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       mapping: {
         description: "Mapping.",
         $ref: "#/$defs/draw.envelope.apply.Mapping",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.envelope.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -36500,6 +36648,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.erase.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.erase.apply.params": {
     title: "EraseParams",
     description: "`draw.erase.apply` parameters.",
@@ -36556,6 +36724,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       layers: {
         description: "Layers to erase.",
         $ref: "#/$defs/draw.erase.apply.LayersIn",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.erase.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -37167,6 +37357,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.hitTest.get.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.hitTest.get.params": {
     title: "HitTestParams",
     description: "`draw.hitTest.get` parameters (02 §13.5).",
@@ -37213,6 +37423,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Report invisible strokes.",
         type: "boolean",
         default: false,
+      },
+      space: {
+        description: "Coordinate space of the point (02 §13.1 item 5): a `view` point goes through the view's one mapping.",
+        $ref: "#/$defs/draw.hitTest.get.Space",
+      },
+      view: {
+        description: "The view of a `view` point and of the view-pixel tolerance (default: the Drawing view; the tolerance at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -37344,6 +37566,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.line.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.line.add.params": {
     title: "LineParams",
     description: "`draw.line.add` parameters.",
@@ -37441,6 +37683,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Symmetry copies.",
         type: "boolean",
         default: true,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.line.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -37865,6 +38119,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.pivot.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.pivot.set.params": {
     title: "PivotParams",
     description: "`draw.pivot.set` parameters.",
@@ -37908,6 +38182,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 18446744073709551615n,
         minimum: 0,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.pivot.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -37985,6 +38271,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.point.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.point.add.params": {
     title: "PointAddParams",
     description: "`draw.point.add` parameters.",
@@ -38025,6 +38331,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
         minimum: 0,
         maximum: 1,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.point.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -38217,6 +38545,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.point.move.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.point.move.params": {
     title: "PointMoveParams",
     description: "`draw.point.move` parameters.",
@@ -38249,6 +38597,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off).",
         type: "boolean",
         default: false,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.point.move.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -38340,6 +38710,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.point.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.point.set.params": {
     title: "PointSetParams",
     description: "`draw.point.set` parameters.",
@@ -38401,6 +38791,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.point.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -38531,6 +38943,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.pointSelection.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.pointSelection.set.params": {
     title: "PointSelectionParams",
     description: "`draw.pointSelection.set` parameters.",
@@ -38569,6 +39001,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       mode: {
         description: "How to combine.",
         $ref: "#/$defs/draw.pointSelection.set.Mode",
+      },
+      space: {
+        description: "Coordinate space of the rectangle (02 §13.1 item 5): `view` coordinates go through the view's one mapping.",
+        $ref: "#/$defs/draw.pointSelection.set.Space",
+      },
+      view: {
+        description: "The view of `view` coordinates (default: the Drawing view).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -38650,6 +39104,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     required: [
       "x",
       "y",
+    ],
+  },
+  "draw.polyline.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
     ],
   },
   "draw.polyline.add.params": {
@@ -38750,6 +39224,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
         default: true,
       },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.polyline.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
     required: [
@@ -38841,6 +39327,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.rectangle.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.rectangle.add.params": {
     title: "BoxShapeParams",
     description: "`draw.rectangle.add` / `draw.ellipse.add` parameters.",
@@ -38930,6 +39436,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Symmetry copies (02 §6.2).",
         type: "boolean",
         default: true,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.rectangle.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -39042,6 +39560,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.repositionAll.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.repositionAll.apply.params": {
     title: "RepositionParams",
     description: "`draw.repositionAll.apply` parameters.",
@@ -39120,6 +39658,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         items: {
           $ref: "#/$defs/draw.repositionAll.apply.Point",
         },
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.repositionAll.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
         default: null,
       },
     },
@@ -39268,6 +39828,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.segment.move.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.segment.move.params": {
     title: "SegmentMoveParams",
     description: "`draw.segment.move` parameters.",
@@ -39293,6 +39873,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       delta: {
         description: "Offset of that point (du).",
         $ref: "#/$defs/draw.segment.move.Point",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.segment.move.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -39630,6 +40232,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.selection.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.selection.set.params": {
     title: "SelectionSetParams",
     description: "`draw.selection.set` parameters.",
@@ -39699,6 +40321,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       mode: {
         description: "How to combine with the current selection.",
         $ref: "#/$defs/draw.selection.set.Mode",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.selection.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -40028,6 +40672,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.stroke.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.stroke.add.params": {
     title: "StrokeAddParams",
     description: "`draw.stroke.add` parameters (02 §13.5).",
@@ -40183,6 +40847,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
         default: null,
       },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.stroke.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
   },
@@ -40322,6 +40998,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.stroke.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.stroke.set.params": {
     title: "StrokeSetParams",
     description: "`draw.stroke.set` parameters (02 §13.5).",
@@ -40420,6 +41116,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 18446744073709551615n,
         minimum: 0,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.stroke.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -40676,6 +41384,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.text.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.text.add.params": {
     title: "TextAddParams",
     description: "`draw.text.add` parameters (02 §13.5).",
@@ -40742,6 +41470,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       colourId: {
         description: "Text colour (default: the current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.text.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
         type: [
           "string",
           "null",
@@ -40917,6 +41657,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.text.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.text.set.params": {
     title: "TextSetParams",
     description: "`draw.text.set` parameters (02 §13.5).",
@@ -41022,6 +41782,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 18446744073709551615n,
         minimum: 0,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.text.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -41500,6 +42272,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.transform.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.transform.apply.params": {
     title: "TransformParams",
     description: "`draw.transform.apply` parameters.",
@@ -41614,6 +42406,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "null",
         ],
         maximum: 18446744073709551615n,
+        minimum: 0,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.transform.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
         minimum: 0,
         default: null,
       },
@@ -92147,6 +92961,9 @@ export interface draw_content_add_Point {
 /** Where inserted content goes. */
 export type draw_content_add_ContentLayer = 'top' | 'behind';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_content_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.content.add` parameters (02 §13.5). */
 export interface draw_content_add_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -92165,6 +92982,10 @@ export interface draw_content_add_params {
   layer?: draw_content_add_ContentLayer;
   /** Make the inserted objects the drawing selection. */
   select?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_content_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{idMap, rev}`. */
@@ -92250,6 +93071,9 @@ export interface draw_cut_apply_SegmentIn {
 /** What happens to the inside of a cut. */
 export type draw_cut_apply_Then = 'select' | 'delete';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_cut_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.cut.apply` parameters (`segment`: SI-071). */
 export interface draw_cut_apply_params {
   /** The drawing (default: current). */
@@ -92262,6 +93086,12 @@ export interface draw_cut_apply_params {
   segment?: draw_cut_apply_SegmentIn | null;
   /** What happens to the inside. */
   then?: draw_cut_apply_Then;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_cut_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** A node a cut leaves whole. */
@@ -92592,6 +93422,9 @@ export interface draw_ellipse_add_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_ellipse_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.ellipse.add` parameters. */
 export interface draw_ellipse_add_params {
   /** The drawing (default: current). */
@@ -92620,6 +93453,10 @@ export interface draw_ellipse_add_params {
   layer?: string;
   /** Symmetry copies (02 §6.2). */
   symmetry?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_ellipse_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** The result of a shape tool. */
@@ -92653,6 +93490,9 @@ export interface draw_envelope_apply_Point {
 /** Envelope mapping. */
 export type draw_envelope_apply_Mapping = 'auto' | 'projective' | 'bilinear';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_envelope_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.envelope.apply` parameters. */
 export interface draw_envelope_apply_params {
   /** The drawing (default: current). */
@@ -92663,6 +93503,12 @@ export interface draw_envelope_apply_params {
   corners: draw_envelope_apply_Point[];
   /** Mapping. */
   mapping?: draw_envelope_apply_Mapping;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_envelope_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{ids, removedIds, rev}` and the changed IDs. */
@@ -92713,6 +93559,9 @@ export type draw_erase_apply_LayersIn = draw_erase_apply_AllLayers | string[];
 /** `"all"`. */
 export type draw_erase_apply_AllLayers = 'all';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_erase_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.erase.apply` parameters. */
 export interface draw_erase_apply_params {
   /** The drawing (default: current). */
@@ -92727,6 +93576,12 @@ export interface draw_erase_apply_params {
   region?: draw_erase_apply_Point[] | null;
   /** Layers to erase. */
   layers?: draw_erase_apply_LayersIn;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_erase_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{removedIds, createdIds, rev}`. */
@@ -92897,6 +93752,9 @@ export interface draw_hitTest_get_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_hitTest_get_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.hitTest.get` parameters (02 §13.5). */
 export interface draw_hitTest_get_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -92911,6 +93769,10 @@ export interface draw_hitTest_get_params {
   tolerance?: number;
   /** Report invisible strokes. */
   includeInvisible?: boolean;
+  /** Coordinate space of the point (02 §13.1 item 5): a `view` point goes through the view's one mapping. */
+  space?: draw_hitTest_get_Space;
+  /** The view of a `view` point and of the view-pixel tolerance (default: the Drawing view; the tolerance at 100 %). */
+  view?: string | null;
 }
 
 /** One hit. */
@@ -92959,6 +93821,9 @@ export interface draw_line_add_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_line_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.line.add` parameters. */
 export interface draw_line_add_params {
   /** The drawing (default: current). */
@@ -92987,6 +93852,10 @@ export interface draw_line_add_params {
   layer?: string;
   /** Symmetry copies. */
   symmetry?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_line_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** The result of a shape tool. */
@@ -93117,6 +93986,9 @@ export interface draw_pivot_set_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_pivot_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.pivot.set` parameters. */
 export interface draw_pivot_set_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -93129,6 +94001,10 @@ export interface draw_pivot_set_params {
   point: draw_pivot_set_Point;
   /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_pivot_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{drawingId, pivot, rev}` and the changed IDs. */
@@ -93155,6 +94031,9 @@ export interface draw_point_add_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_point_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.point.add` parameters. */
 export interface draw_point_add_params {
   /** The stroke (local or `<drawingId>/<strokeId>`). */
@@ -93165,6 +94044,12 @@ export interface draw_point_add_params {
   segment?: number | null;
   /** … and the parameter on it (0–1). */
   t?: number | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_point_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{strokeId, anchor, rev}`. */
@@ -93229,6 +94114,9 @@ export interface draw_point_move_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_point_move_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.point.move` parameters. */
 export interface draw_point_move_params {
   /** The drawing (default: current). */
@@ -93239,6 +94127,12 @@ export interface draw_point_move_params {
   delta: draw_point_move_Point;
   /** Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off). */
   snap?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_point_move_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{modifiedIds, removedIds, rev}`. */
@@ -93266,6 +94160,9 @@ export interface draw_point_set_Point {
 /** Handle behaviour of `draw.point.set`. */
 export type draw_point_set_HandleMode = 'symmetric' | 'broken' | 'reset';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_point_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.point.set` parameters. */
 export interface draw_point_set_params {
   /** The stroke. */
@@ -93280,6 +94177,12 @@ export interface draw_point_set_params {
   outHandle?: draw_point_set_Point | null;
   /** Handle mode. */
   handleMode?: draw_point_set_HandleMode | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_point_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{strokeId, rev}`. */
@@ -93319,6 +94222,9 @@ export interface draw_pointSelection_set_RectIn {
 /** How a selection combines with the current one. */
 export type draw_pointSelection_set_Mode = 'replace' | 'add' | 'toggle' | 'remove';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_pointSelection_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.pointSelection.set` parameters. */
 export interface draw_pointSelection_set_params {
   /** The drawing (default: current). */
@@ -93329,6 +94235,12 @@ export interface draw_pointSelection_set_params {
   rect?: draw_pointSelection_set_RectIn | null;
   /** How to combine. */
   mode?: draw_pointSelection_set_Mode;
+  /** Coordinate space of the rectangle (02 §13.1 item 5): `view` coordinates go through the view's one mapping. */
+  space?: draw_pointSelection_set_Space;
+  /** The view of `view` coordinates (default: the Drawing view). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{selectedPoints}`. */
@@ -93356,6 +94268,9 @@ export interface draw_polyline_add_Point {
   /** Y (du, up). */
   y: number;
 }
+
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_polyline_add_Space = 'drawing' | 'scene' | 'view';
 
 /** `draw.polyline.add` parameters. */
 export interface draw_polyline_add_params {
@@ -93385,6 +94300,10 @@ export interface draw_polyline_add_params {
   layer?: string;
   /** Symmetry copies. */
   symmetry?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_polyline_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** The result of a shape tool. */
@@ -93415,6 +94334,9 @@ export interface draw_rectangle_add_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_rectangle_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.rectangle.add` / `draw.ellipse.add` parameters. */
 export interface draw_rectangle_add_params {
   /** The drawing (default: current). */
@@ -93443,6 +94365,10 @@ export interface draw_rectangle_add_params {
   layer?: string;
   /** Symmetry copies (02 §6.2). */
   symmetry?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_rectangle_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** The result of a shape tool. */
@@ -93481,6 +94407,9 @@ export interface draw_repositionAll_apply_Xy {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_repositionAll_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.repositionAll.apply` parameters. */
 export interface draw_repositionAll_apply_params {
   /** The element (default: current). */
@@ -93497,6 +94426,12 @@ export interface draw_repositionAll_apply_params {
   matrix?: number[] | null;
   /** Envelope corners (of each drawing's bounds). */
   corners?: draw_repositionAll_apply_Point[] | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_repositionAll_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{drawingIds}`. */
@@ -93542,6 +94477,9 @@ export interface draw_segment_move_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_segment_move_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.segment.move` parameters. */
 export interface draw_segment_move_params {
   /** The stroke. */
@@ -93552,6 +94490,12 @@ export interface draw_segment_move_params {
   t?: number;
   /** Offset of that point (du). */
   delta: draw_segment_move_Point;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_segment_move_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{strokeId, rev}`. */
@@ -93654,6 +94598,9 @@ export type draw_selection_set_RectRule = 'inside' | 'intersect';
 /** How a selection combines with the current one. */
 export type draw_selection_set_Mode = 'replace' | 'add' | 'toggle' | 'remove';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_selection_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.selection.set` parameters. */
 export interface draw_selection_set_params {
   /** The drawing (default: current). */
@@ -93672,6 +94619,12 @@ export interface draw_selection_set_params {
   rectRule?: draw_selection_set_RectRule;
   /** How to combine with the current selection. */
   mode?: draw_selection_set_Mode;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_selection_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{x, y, width, height}`. */
@@ -93774,6 +94727,9 @@ export interface draw_stroke_add_PenIn {
 /** Tip shape parameter. */
 export type draw_stroke_add_TipParam = 'round' | 'oval' | 'square' | 'flat';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_stroke_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.stroke.add` parameters (02 §13.5). */
 export interface draw_stroke_add_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -93812,6 +94768,10 @@ export interface draw_stroke_add_params {
   symmetry?: boolean;
   /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_stroke_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `draw.stroke.add` result (02 §13.5). */
@@ -93857,6 +94817,9 @@ export interface draw_stroke_set_PressureIn {
 /** Kind conversion of `draw.stroke.set`. */
 export type draw_stroke_set_LineKind = 'pencil' | 'invisible';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_stroke_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.stroke.set` parameters (02 §13.5). */
 export interface draw_stroke_set_params {
   /** The stroke (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
@@ -93879,6 +94842,10 @@ export interface draw_stroke_set_params {
   kind?: draw_stroke_set_LineKind | null;
   /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_stroke_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{strokeIds, removedIds, rev}`. */
@@ -93941,6 +94908,9 @@ export type draw_text_add_Baseline = 'normal' | 'subscript' | 'superscript';
 /** Paragraph alignment. */
 export type draw_text_add_Align = 'left' | 'centre' | 'right' | 'justify';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_text_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.text.add` parameters (02 §13.5). */
 export interface draw_text_add_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -93961,6 +94931,10 @@ export interface draw_text_add_params {
   format?: draw_text_add_TextFormat | null;
   /** Text colour (default: the current colour). */
   colourId?: string | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_text_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{x, y, width, height}`. */
@@ -94020,6 +94994,9 @@ export interface draw_text_set_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_text_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.text.set` parameters (02 §13.5). */
 export interface draw_text_set_params {
   /** The text object (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
@@ -94044,6 +95021,10 @@ export interface draw_text_set_params {
   position?: draw_text_set_Point | null;
   /** The drawing revision the caller read (02 §3.12). */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_text_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{x, y, width, height}`. */
@@ -94182,6 +95163,9 @@ export interface draw_transform_apply_Xy {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_transform_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.transform.apply` parameters. */
 export interface draw_transform_apply_params {
   /** The drawing (default: current). */
@@ -94206,6 +95190,12 @@ export interface draw_transform_apply_params {
   copy?: boolean;
   /** The drawing revision the caller read. */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_transform_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  frame?: number | null;
 }
 
 /** `{ids, removedIds, rev}` and the changed IDs. */

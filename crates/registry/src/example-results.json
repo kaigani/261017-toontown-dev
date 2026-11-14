@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_a17484d7395272b374b4e02e",
+        "confirmationId": "cf_88845e742bcdfce460b38283",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-080285",
+            "sessionId": "s1-a09bfa",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-14T14:22:34.850Z",
+            "connectedAt": "2026-11-14T16:38:42.388Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_e3772b5efcec6aebb98ac4fa",
-            "sessionId": "s1-080285",
+            "confirmationId": "cf_57f9474bb70db1c2f3f49331",
+            "sessionId": "s1-a09bfa",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-14b9fd",
+        "sessionId": "s1-0eaf3e",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-ced546"
+          "s1-e1daa7"
         ]
       },
       "varies": [
@@ -1902,7 +1902,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-14T14:22:36.270Z",
+          "createdAt": "2026-11-14T16:38:44.025Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -2325,7 +2325,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-14T14:22:36.873Z",
+          "exportedAt": "2026-11-14T16:38:44.737Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -7403,7 +7403,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-14T14:22:38.571Z",
+            "time": "2026-11-14T16:38:47.265Z",
             "objectCount": 1
           },
           {
@@ -7411,7 +7411,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-14T14:22:38.572Z",
+            "time": "2026-11-14T16:38:47.266Z",
             "objectCount": 1
           }
         ],
@@ -9293,7 +9293,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-14T14:22:39.651Z",
+        "startedAt": "2026-11-14T16:38:48.916Z",
         "result": {},
         "session": "user"
       },
@@ -9312,7 +9312,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-14T14:22:39.663Z",
+          "startedAt": "2026-11-14T16:38:48.933Z",
           "result": {},
           "session": "user"
         }
@@ -9331,7 +9331,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-14T14:22:39.676Z",
+        "startedAt": "2026-11-14T16:38:48.948Z",
         "result": {},
         "session": "user"
       },
@@ -9598,10 +9598,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M7D70R3HZ5MXAQB5GQAPD6FB",
-        "sceneId": "sc_01M7D70R3J3TV1HXX730K0FBNQ",
-        "cameraId": "el_01M7D70R3J3TV1HXX730K0FBNS",
-        "elementId": "el_01M7D70R3J3TV1HXX730K0FBNT"
+        "projectId": "pr_01M7DET26DQFH6PMDNZM9G5RW2",
+        "sceneId": "sc_01M7DET26E4BFHCBPB5W918CG6",
+        "cameraId": "el_01M7DET26E4BFHCBPB5W918CG8",
+        "elementId": "el_01M7DET26E4BFHCBPB5W918CG9"
       },
       "varies": [
         "/cameraId",
@@ -9857,7 +9857,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-14T14:22:40.656Z",
+          "lastOpened": "2026-11-14T16:38:50.277Z",
           "exists": true
         }
       ],

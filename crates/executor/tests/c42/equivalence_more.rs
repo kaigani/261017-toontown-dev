@@ -362,3 +362,102 @@ fn c42a_r2_01_view_space_points_and_view_tolerances_in_every_point_taking_draw_c
     let params = pointer(&h, "polyline", events).result.unwrap()["commands"][1]["params"].clone();
     assert_eq!(params["view"], "drawingView", "{params}");
 }
+
+/// The Drawing view at zoom `z` about the drawing origin.
+fn zoomed(h: &ExecutorHandle, z: f64) {
+    ok(h, "view.zoom.set", json!({ "viewId": "drawingView", "zoom": z }));
+}
+
+#[test]
+fn c42a_r2_audit_each_view_tolerance_at_zoom_4_and_a_quarter() {
+    for z in [4.0, 0.25] {
+        let m = ready();
+        zoomed(&m, z);
+        let (p1, c) = (pen(&m, "Pen 1"), colours(&m)[0].0.clone());
+        let max = ok(&m, "tool.pen.list", json!({}))["pens"][0]["maxSize"].as_f64().unwrap();
+        // Hit tolerance (3 view px): a click 2 view pixels beside a thin line.
+        let (f, t) = (conv(&m, 1000.0, 500.0), conv(&m, 1100.0, 500.0));
+        let line = |h: &ExecutorHandle| {
+            zoomed(h, z);
+            ok(h, "draw.line.add", json!({ "from": f, "to": t, "thickness": 0.1 }));
+        };
+        let r = equivalent(
+            &line,
+            "select",
+            drag(&[(1050.0, 502.0), (1050.0, 502.0)]),
+            "draw.selection.set",
+            json!({ "by": "point", "point": conv(&m, 1050.0, 502.0), "mode": "replace", "view": "drawingView" }),
+        );
+        assert_eq!(r["selectedIds"].as_array().map(Vec::len), Some(1), "zoom {z}: 2 px is within 3 px: {r}");
+        // Polyline snap radius (8 view px): the gesture states the view.
+        let mut events = drag(&[(1004.0, 504.0), (1004.0, 504.0)]);
+        events.extend(drag(&[(1200.0, 600.0), (1200.0, 600.0)]));
+        events.push(json!({ "type": "doubleClick", "x": 1200.0, "y": 600.0 }));
+        equivalent(
+            &line,
+            "polyline",
+            events,
+            "draw.polyline.add",
+            json!({ "points": [conv(&m, 1004.0, 504.0), conv(&m, 1200.0, 600.0)], "closed": false, "snap": true,
+                    "snapRadius": 8.0, "view": "drawingView", "colourId": c, "thickness": max, "penId": p1,
+                    "layer": "auto", "symmetry": true }),
+        );
+        // Gap tolerance (Small: 3 view px): a paint click inside an almost closed square.
+        let open_square = |h: &ExecutorHandle| {
+            zoomed(h, z);
+            let q = |x: f64, y: f64| conv(h, x, y);
+            for (a, b) in [
+                ((900.0, 400.0), (1000.0, 400.0)),
+                ((1000.0, 400.0), (1000.0, 500.0)),
+                ((1000.0, 500.0), (900.0, 500.0)),
+                ((900.0, 500.0), (900.0, 401.0)),
+            ] {
+                ok(h, "draw.line.add", json!({ "from": q(a.0, a.1), "to": q(b.0, b.1), "layer": "top" }));
+            }
+            ok(h, "colour.gapClosing.set", json!({ "mode": "small" }));
+        };
+        equivalent(
+            &open_square,
+            "paint",
+            drag(&[(950.0, 450.0), (950.0, 450.0)]),
+            "colour.paint.apply",
+            json!({ "points": [conv(&m, 950.0, 450.0)], "space": "drawing", "view": "drawingView", "colourId": c,
+                    "gapClosing": "small" }),
+        );
+    }
+}
+
+#[test]
+fn c42a_r2_audit_the_contour_snap_radius_follows_the_named_view() {
+    // Snap to Contour (8 view px): a point moved to 6 du from a contour snaps at 100 % and not at zoom 4 (2 du).
+    let run_move = |view: Option<&str>| {
+        let h = ready();
+        zoomed(&h, 4.0);
+        let a = ok(
+            &h,
+            "draw.line.add",
+            json!({ "drawingId": D1, "from": { "x": 1000, "y": 1000 }, "to": { "x": 1100, "y": 1000 }, "layer": "new" }),
+        );
+        let b = ok(
+            &h,
+            "draw.line.add",
+            json!({ "drawingId": D1, "from": { "x": 1050, "y": 1050 }, "to": { "x": 1050, "y": 1100 }, "layer": a["layerId"] }),
+        );
+        let mut p = json!({ "drawingId": D1, "points": [{ "strokeId": b["strokeIds"][0], "anchor": 0 }], "delta": { "x": 0, "y": -44 }, "snap": true });
+        if let Some(v) = view {
+            p["view"] = json!(v);
+        }
+        let env = run(&h, "draw.point.move", p);
+        assert!(env.is_ok(), "{env:?}");
+        let d = ok(&h, "draw.drawing.get", json!({ "drawingId": D1 }));
+        let l = d["nodes"].as_array().unwrap().iter().find(|n| n["id"] == a["layerId"]).unwrap().clone();
+        l["strokes"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .flat_map(|s| s["bezier"].as_array().unwrap().iter().step_by(3))
+            .any(|q| q["x"].as_f64() == Some(1050.0) && q["y"].as_f64() == Some(1000.0))
+    };
+    assert!(run_move(None), "100 %: 6 du is within 8");
+    assert!(!run_move(Some("drawingView")), "zoom 4: 8 px is 2 du");
+}

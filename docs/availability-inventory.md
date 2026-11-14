@@ -525,6 +525,7 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `draw.point.delete` | `drawing.nothingToDo` | precheck | nothing selected in the drawing | refuse: drawing · pass: anchors-selected |
 | `draw.point.delete` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
 | `draw.point.delete` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
+| `draw.point.move` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (M4 C4.3 builds the other types) |  |
 | `draw.point.move` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `draw.point.move` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `draw.point.move` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
@@ -542,6 +543,7 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `draw.polyline.add` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `draw.polyline.add` | `arg.missing` | parameter | a parameter the call needs is missing |  |
 | `draw.polyline.add` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
+| `draw.polyline.add` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (M4 C4.3 builds the other types) |  |
 | `draw.polyline.add` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `draw.polyline.add` | `drawing.noTarget` | precheck | no current drawing | refuse: blank-cell {"createDrawing": false} · pass: blank-cell {} |
 | `draw.polyline.add` | `drawing.notVectorElement` | precheck | the addressed element is not a drawing or annotation element | refuse: peg-current · pass: drawing |
@@ -577,6 +579,7 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `draw.segment.move` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
 | `draw.segment.move` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
 | `draw.selection.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
+| `draw.selection.set` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (M4 C4.3 builds the other types) |  |
 | `draw.selection.set` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing {"by": "all"} · pass: drawing {"by": "all"} |
 | `draw.selection.set` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `draw.selection.set` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
