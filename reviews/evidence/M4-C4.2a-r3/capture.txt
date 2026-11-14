@@ -1,0 +1,9 @@
+
+running 1 test
+test concurrent_captures_are_capped_and_their_threads_counted ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.99s
+
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.81s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)

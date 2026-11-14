@@ -1,0 +1,2 @@
+['git', 'diff', '93ca037', '5d0c5d5', '--', 'crates/*/tests/c42a_r*_review.rs', 'reviews/M4-C4.2a-r1.md', 'reviews/M4-C4.2a-r2.md', 'reviews/evidence/M4-C4.2a-r1', 'reviews/evidence/M4-C4.2a-r2']
+['git', 'diff', '1716057', '5d0c5d5', '--', 'tests/adversarial/c42a-r*', 'reviews/M4-C4.2a-r1-static.md', 'reviews/M4-C4.2a-r2-static.md']

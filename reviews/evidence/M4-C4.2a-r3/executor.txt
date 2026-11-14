@@ -1,0 +1,89 @@
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\registry-macros)
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\registry)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 48.31s
+     Running tests\c42a_r1_review.rs (target\debug\deps\c42a_r1_review-719f17b8e4d74c62.exe)
+
+running 37 tests
+test part_c_pointer::full_cap_query_latency_receipt ... ignored, orchestrator ruling D-13: a gesture costs what its command costs; large-stroke cost is owned by C4.2b budgets and M11 C11.1
+test part_b_aids::unsupported_version_and_whole_shape_are_told_once_and_kept ... ok
+test part_b_aids::stale_aid_values_fall_back_individually ... ok
+test part_b_settings_write::drawing_write_failure_is_reported_once ... ok
+test part_b_tools::text_ranges_match_the_text_panel ... ok
+test part_d_equivalence::zoom_marquee_fits_region ... ok
+test mapping::rotated_colour_pick_and_hit_test_agree_with_independent_point ... ok
+test part_b_busy::agent_tool_changes_respect_user_gesture_and_dialog ... ok
+test views::navigation_rejects_invalid_external_values ... ok
+test part_d_equivalence::grabber ... ok
+test part_c_availability::constructed_view_states_agree_with_availability ... ok
+test part_d_equivalence::close_gap ... ok
+test part_d_equivalence::cutter ... ok
+test part_d_equivalence::stroke ... ok
+test part_c_pointer::limits_sequence_and_incomplete_gesture_are_atomic ... ok
+test views::navigation_is_session_only_and_isolated ... ok
+test part_d_equivalence::eraser ... ok
+test part_d_equivalence::zoom_click ... ok
+test part_d_equivalence::polyline ... ok
+test part_d_equivalence::paint_unpainted ... ok
+test part_d_equivalence::paint ... ok
+test part_d_equivalence::unpaint ... ok
+test part_d_equivalence::scissor ... ok
+test part_d_equivalence::temporary_overrides_restore_tool ... ok
+test mapping::independently_derived_mapping_grid ... ok
+test part_d_equivalence::brush_and_rectangle_edges ... ok
+test part_b_pens::defaults_mutations_history_and_project_round_trip ... ok
+test part_b_tools::all_tools_and_atomic_options_do_not_edit_document ... ok
+test part_b_aids::user_aids_and_options_survive_restart_without_document_content ... ok
+test part_b_settings_write::static_table_cap_and_unknown_ids_are_typed_and_atomic ... ok
+test part_d_equivalence::line ... ok
+test part_d_equivalence::rectangle ... ok
+test part_d_equivalence::ellipse ... ok
+test part_c_equivalence::freehand_samples_and_direct_content ... ok
+test screenshot::screenshot_does_not_block_user_command ... ok
+test part_d_equivalence::select ... ok
+test screenshot::png_determinism_crop_limits_and_known_pixel ... ok
+
+test result: ok. 36 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+     Running tests\c42a_r2_review.rs (target\debug\deps\c42a_r2_review-6570863073b6eae5.exe)
+
+running 29 tests
+test part_c_equivalence::c2_current_pen ... ok
+test part_c_equivalence::c2_pencil_shape_source ... ok
+test part_c_equivalence::c2_eraser_pen ... ok
+test part_c_equivalence::c3_close_gap_then_fill ... ok
+test part_c_equivalence::c3_mixed_unpainted ... ok
+test mapping_extreme_grid ... ok
+test part_b_equivalence::b3_gradient_mapping ... ok
+test part_c_equivalence::c1_paint ... ok
+test part_c_equivalence::c1_press_mapping ... ok
+test part_c_equivalence::c1_move ... ok
+test part_b_equivalence::b3_polyline_handles_derived_trigonometry ... ok
+test part_b_equivalence::b3_dropper_then_brush_and_empty_dropper ... ok
+test clearing_gesture_releases_wait_and_pointer_is_busy ... ok
+test part_c_equivalence::c1_click_view_tolerance ... ok
+test part_c_equivalence::c3_dropper ... ok
+test part_b_equivalence::b3_successful_paint_and_unpaint ... ok
+test part_c_equivalence::c2_temporary_overrides ... ok
+test part_b_equivalence::b3_zoom_marquee_independent_fit ... ok
+test part_c_equivalence::c2_selection_options ... ok
+test part_b_equivalence::b3_zero_size_and_outside_view ... ok
+test part_c_equivalence::c2_gap_modes ... ok
+test gesture_blocks_session_writers_but_not_users_or_queries ... ok
+test capture_snapshot_before_following_edit ... ok
+test part_b_equivalence::b1_transformed_lasso_selection_and_eraser ... ok
+test concurrent_captures_finish_and_budget_is_bounded ... ok
+test part_b_equivalence::b1_transformed_creation_and_navigation ... ok
+test part_c_equivalence::c3_wheel_and_click ... ok
+test part_b_equivalence::b2_individual_drawing_settings ... ok
+test cancelled_capture_jobs_finish_after_request_returns ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.62s

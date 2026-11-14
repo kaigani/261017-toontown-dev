@@ -1,0 +1,1306 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index cd7c0e3..b9fce47 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -257,6 +257,14 @@ jobs:
+           if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+           $PY -I scripts/check-availability-inventory.py
+ 
++      # M4 C4.2a round 2 (C42A-R2-01, -02): every point-taking draw.*/colour.* command declares `space`, `view` and
++      # `frame` (02 §13.1 item 5; 03 §16.2), checked against the generated schemas.
++      - name: Common addressing parameters
++        run: |
++          PY=python3
++          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
++          $PY -I scripts/check-addressing-params.py
++
+       # Product code (libraries, binaries, examples) is linted with every warning denied. All targets, tests included,
+       # likewise except one style lint: the reviewer-owned `c24_r4_closure.rs` has blank lines after doc comments, and
+       # reviewer-owned files are not edited (M2 merge candidate, declared CI edit; drop the `-A` once that file is fixed).
+diff --git a/crates/executor/src/addressing.rs b/crates/executor/src/addressing.rs
+new file mode 100644
+index 0000000..6804af0
+--- /dev/null
++++ b/crates/executor/src/addressing.rs
+@@ -0,0 +1,153 @@
++//! The common addressing parameters of the point-taking `draw.*` commands (02 §13.1 item 5; C42A-R2-01): `space:
++//! "drawing" | "scene" | "view" = "drawing"`, `view?`, `frame?`. Points given in view space are converted to drawing
++//! space with the view's one mapping (design note 6) before the handler runs, so every handler works in drawing space;
++//! `view` stays in the parameters for the view-dependent tolerances (polyline and contour snap radii), which use the
++//! given view's zoom, or 100 % without a view. Scene space waits for the scene transforms of the Camera view, as it
++//! does in section 03's commands.
++
++use serde_json::{Value, json};
++use tt_registry::{CommandError, codes};
++
++use crate::cx::Cx;
++
++/// How a field converts: a point (the whole affine), a vector or relative handle (its linear part), or an axis-aligned
++/// rectangle `{x, y, width, height}` (only without rotation).
++#[derive(Debug, Clone, Copy)]
++enum Kind {
++    Point,
++    Vector,
++    Rect,
++}
++
++/// The point fields of each point-taking `draw.*` command; `*` stands for every element of an array.
++const FIELDS: &[(&str, &[(&str, Kind)])] = &[
++    ("draw.pivot.set", &[("/point", Kind::Point)]),
++    ("draw.hitTest.get", &[("/point", Kind::Point)]),
++    (
++        "draw.cut.apply",
++        &[
++            ("/polygon/*", Kind::Point),
++            ("/rect", Kind::Rect),
++            ("/segment/from", Kind::Point),
++            ("/segment/to", Kind::Point),
++        ],
++    ),
++    ("draw.erase.apply", &[("/path/*", Kind::Point), ("/region/*", Kind::Point)]),
++    ("draw.selection.set", &[("/point", Kind::Point), ("/rect", Kind::Rect), ("/polygon/*", Kind::Point)]),
++    ("draw.pointSelection.set", &[("/rect", Kind::Rect)]),
++    ("draw.rectangle.add", &[("/from", Kind::Point), ("/to", Kind::Point)]),
++    ("draw.ellipse.add", &[("/from", Kind::Point), ("/to", Kind::Point)]),
++    ("draw.line.add", &[("/from", Kind::Point), ("/to", Kind::Point)]),
++    (
++        "draw.polyline.add",
++        &[("/points/*", Kind::Point), ("/points/*/inHandle", Kind::Vector), ("/points/*/outHandle", Kind::Vector)],
++    ),
++    ("draw.stroke.add", &[("/points/*", Kind::Point), ("/bezier/*", Kind::Point)]),
++    ("draw.stroke.set", &[("/bezier/*", Kind::Point)]),
++    ("draw.content.add", &[("/offset", Kind::Vector)]),
++    ("draw.text.add", &[("/position", Kind::Point)]),
++    ("draw.text.set", &[("/position", Kind::Point)]),
++    ("draw.transform.apply", &[("/translate", Kind::Vector), ("/pivot", Kind::Point)]),
++    ("draw.envelope.apply", &[("/corners/*", Kind::Point)]),
++    ("draw.repositionAll.apply", &[("/translate", Kind::Vector), ("/pivot", Kind::Point), ("/corners/*", Kind::Point)]),
++    ("draw.point.add", &[("/at", Kind::Point)]),
++    ("draw.point.move", &[("/delta", Kind::Vector)]),
++    ("draw.point.set", &[("/position", Kind::Point), ("/inHandle", Kind::Vector), ("/outHandle", Kind::Vector)]),
++    ("draw.segment.move", &[("/delta", Kind::Vector)]),
++];
++
++fn invalid(pointer: &str, message: impl Into<String>) -> CommandError {
++    CommandError::with_details(codes::ARG_INVALID, message, json!({ "pointer": pointer }))
++}
++
++/// Converts the view-space points of a point-taking `draw.*` command to drawing space (no change for any other command
++/// or for drawing space).
++///
++/// # Errors
++/// `arg.invalid` for scene space (the Camera view's, M4 C4.3) and for a rectangle in a rotated view;
++/// `view.notFound` / `command.notImplemented` for a view that is not a Drawing view window.
++pub(crate) fn normalise(cx: &Cx, id: &str, mut params: Value) -> Result<Value, CommandError> {
++    let Some((_, fields)) = FIELDS.iter().find(|(c, _)| *c == id) else { return Ok(params) };
++    let space = params.get("space").and_then(Value::as_str).unwrap_or("drawing").to_owned();
++    match space.as_str() {
++        "drawing" => return Ok(params),
++        "view" => {}
++        _ => {
++            return Err(invalid("/space", "scene-space points need the scene transforms of the Camera view (M4 C4.3)")
++                .hint("give points in drawing or view space"));
++        }
++    }
++    let view = params.get("view").and_then(Value::as_str).map(str::to_owned);
++    let w = crate::commands::view::drawing_view(cx, view.as_deref())?;
++    let m = crate::commands::view::view_to_drawing(w);
++    for (path, kind) in *fields {
++        convert(&mut params, &path[1..], *kind, &m, path)?;
++    }
++    if let Some(obj) = params.as_object_mut() {
++        obj.insert("space".into(), json!("drawing"));
++    }
++    Ok(params)
++}
++
++fn convert(v: &mut Value, rest: &str, kind: Kind, m: &[f64; 6], path: &str) -> Result<(), CommandError> {
++    let (head, tail) = rest.split_once('/').map_or((rest, None), |(h, t)| (h, Some(t)));
++    if head == "*" {
++        if let Some(items) = v.as_array_mut() {
++            for item in items {
++                match tail {
++                    Some(t) => convert(item, t, kind, m, path)?,
++                    None => leaf(item, kind, m, path)?,
++                }
++            }
++        }
++        return Ok(());
++    }
++    let Some(next) = v.get_mut(head) else { return Ok(()) };
++    match tail {
++        Some(t) => convert(next, t, kind, m, path),
++        None => leaf(next, kind, m, path),
++    }
++}
++
++fn num(v: &Value, k: &str) -> Option<f64> {
++    v.get(k).and_then(Value::as_f64)
++}
++
++fn leaf(v: &mut Value, kind: Kind, m: &[f64; 6], path: &str) -> Result<(), CommandError> {
++    if v.is_null() {
++        return Ok(());
++    }
++    match kind {
++        Kind::Point | Kind::Vector => {
++            let (Some(x), Some(y)) = (num(v, "x"), num(v, "y")) else { return Ok(()) };
++            let (e, f) = if matches!(kind, Kind::Point) { (m[4], m[5]) } else { (0.0, 0.0) };
++            v["x"] = json!(m[0] * x + m[2] * y + e);
++            v["y"] = json!(m[1] * x + m[3] * y + f);
++        }
++        Kind::Rect => {
++            let (Some(x), Some(y), Some(w), Some(h)) = (num(v, "x"), num(v, "y"), num(v, "width"), num(v, "height"))
++            else {
++                return Ok(());
++            };
++            if m[1].abs() > 1e-12 || m[2].abs() > 1e-12 {
++                return Err(invalid(path, "a rectangle cannot be given in a rotated view; give a polygon"));
++            }
++            let (ax, ay) = (m[0] * x + m[4], m[3] * y + m[5]);
++            let (bx, by) = (m[0] * (x + w) + m[4], m[3] * (y + h) + m[5]);
++            *v = json!({ "x": ax.min(bx), "y": ay.min(by), "width": (ax - bx).abs(), "height": (ay - by).abs() });
++        }
++    }
++    Ok(())
++}
++
++/// A tolerance given in view pixels, in drawing units: through the given view's zoom, or 100 % without a view
++/// (02 §13.1 item 5).
++///
++/// # Errors
++/// As [`crate::commands::view::drawing_view`] for a named view.
++pub(crate) fn tolerance_du(cx: &Cx, view: Option<&str>, px: f64) -> Result<f64, CommandError> {
++    match view {
++        None => Ok(px),
++        Some(v) => Ok(px / crate::commands::view::pixels_per_du(crate::commands::view::drawing_view(cx, Some(v))?)),
++    }
++}
+diff --git a/crates/executor/src/commands/colour.rs b/crates/executor/src/commands/colour.rs
+index b570a05..7c8f042 100644
+--- a/crates/executor/src/commands/colour.rs
++++ b/crates/executor/src/commands/colour.rs
+@@ -1733,6 +1733,12 @@ pub(crate) struct HitTestParams {
+     /// Report invisible strokes.
+     #[serde(default)]
+     include_invisible: bool,
++    /// Coordinate space of the point (02 §13.1 item 5): a `view` point goes through the view's one mapping.
++    #[serde(default)]
++    space: Space,
++    /// The view of a `view` point and of the view-pixel tolerance (default: the Drawing view; the tolerance at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ fn three() -> f64 {
+@@ -1785,7 +1791,10 @@ pub(crate) fn draw_hit_test_get(cx: &mut Cx, p: HitTestParams) -> Result<HitTest
+     let doc = cx.document()?.clone();
+     let d = t.drawing(&doc)?.into_owned();
+     let zones = drawing_zones(&cx.planar_cache(), &d)?;
+-    let hs = hits(&d, &zones, at, p.tolerance, p.include_invisible)?;
++    // `tolerance` is in view pixels: through the given view's zoom, or 100 % without a view (02 §13.1 item 5).
++    let _ = &p.space;
++    let tol = crate::addressing::tolerance_du(cx, p.view.as_deref(), p.tolerance)?;
++    let hs = hits(&d, &zones, at, tol, p.include_invisible)?;
+     let zone_id = hs.iter().find(|h| matches!(h.kind, HitKind::Zone(..))).map(|h| h.id.clone());
+     Ok(HitTestResult {
+         point: p.point,
+diff --git a/crates/executor/src/commands/draw.rs b/crates/executor/src/commands/draw.rs
+index ca2decb..c48effb 100644
+--- a/crates/executor/src/commands/draw.rs
++++ b/crates/executor/src/commands/draw.rs
+@@ -561,6 +561,12 @@ pub(crate) struct PivotParams {
+     /// The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).
+     #[serde(default)]
+     expect_rev: Option<u64>,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ /// `{drawingId, pivot, rev}` and the changed IDs.
+@@ -590,6 +596,8 @@ pub(crate) struct PivotResult {
+     gui = "Drawing view: Select tool pivot handle (M4 C4.2)",
+ )]
+ pub(crate) fn draw_pivot_set(cx: &mut Cx, p: PivotParams) -> Result<PivotResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view);
+     for (v, k) in [(p.point.x, "x"), (p.point.y, "y")] {
+         tt_vector::path::check_coord(v, &format!("/point/{k}")).map_err(|e| invalid_geometry(&e))?;
+     }
+diff --git a/crates/executor/src/commands/draw_aid.rs b/crates/executor/src/commands/draw_aid.rs
+index e7f2a07..40d46b8 100644
+--- a/crates/executor/src/commands/draw_aid.rs
++++ b/crates/executor/src/commands/draw_aid.rs
+@@ -37,9 +37,9 @@ fn change(cx: &mut Cx, aid: &str, f: impl FnOnce(&mut Aids)) -> Value {
+ }
+ 
+ fn colour(v: &str, pointer: &str) -> Result<String, CommandError> {
+-    tt_model::value::Colour::parse(v)
+-        .map(|c| c.to_string())
+-        .map_err(|e| err(codes::ARG_INVALID, e.message().to_owned(), json!({ "pointer": pointer })))
++    crate::drawing::aid_colour(v).ok_or_else(|| {
++        err(codes::ARG_INVALID, format!("`{v}` is not a colour #RRGGBB or #RRGGBBAA"), json!({ "pointer": pointer }))
++    })
+ }
+ 
+ // ----- event ----------------------------------------------------------------------------------------------------------
+@@ -196,7 +196,7 @@ pub(crate) struct OnionParams {
+ 
+ fn count(v: Option<i64>, pointer: &str) -> Result<Option<i64>, CommandError> {
+     match v {
+-        Some(n) if !(0..=3).contains(&n) => {
++        Some(n) if !crate::drawing::onion_count_ok(n) => {
+             Err(err("tool.valueOutOfRange", "onion-skin counts are 0-3", json!({ "pointer": pointer })))
+         }
+         _ => Ok(v),
+diff --git a/crates/executor/src/commands/draw_cut.rs b/crates/executor/src/commands/draw_cut.rs
+index 23330f8..164a66b 100644
+--- a/crates/executor/src/commands/draw_cut.rs
++++ b/crates/executor/src/commands/draw_cut.rs
+@@ -264,6 +264,15 @@ pub(crate) struct CutParams {
+     /// What happens to the inside.
+     #[serde(default)]
+     then: Then,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ /// `{insideIds, removedIds, rev}`.
+@@ -311,6 +320,8 @@ fn check_finite(v: &[P], pointer: &str) -> Result<(), CommandError> {
+     gui = "Drawing view: Cutter tool (M4 C4.2)",
+ )]
+ pub(crate) fn draw_cut_apply(cx: &mut Cx, p: CutParams) -> Result<CutResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     let given = [p.polygon.is_some(), p.rect.is_some(), p.segment.is_some()].iter().filter(|b| **b).count();
+     if given != 1 {
+         return Err(err(
+@@ -435,6 +446,15 @@ pub(crate) struct EraseParams {
+     /// Layers to erase.
+     #[serde(default)]
+     layers: LayersIn,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ /// `{removedIds, createdIds, rev}`.
+@@ -527,6 +547,8 @@ fn swept(path: &[ErasePoint], pen: &BrushPen) -> Result<Vec<P>, CommandError> {
+     gui = "Drawing and Camera views: Eraser tool (M4 C4.2)",
+ )]
+ pub(crate) fn draw_erase_apply(cx: &mut Cx, p: EraseParams) -> Result<EraseResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     let area = match (&p.path, &p.region) {
+         (Some(path), None) if !path.is_empty() => swept(path, &eraser(cx, p.pen_id.as_deref(), p.pen)?)?,
+         (None, Some(r)) => {
+diff --git a/crates/executor/src/commands/draw_select.rs b/crates/executor/src/commands/draw_select.rs
+index 43c26e9..fdf9e6f 100644
+--- a/crates/executor/src/commands/draw_select.rs
++++ b/crates/executor/src/commands/draw_select.rs
+@@ -147,6 +147,15 @@ pub(crate) struct SelectionSetParams {
+     /// How to combine with the current selection.
+     #[serde(default)]
+     mode: Mode,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ /// `{selectedIds, bounds}`.
+@@ -271,6 +280,8 @@ fn point_json(cx: &Cx, d: &Drawing) -> Vec<Value> {
+     gui = "Drawing view: Select tool click, drag and lasso (M4 C4.2)",
+ )]
+ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<SelectionSetResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     let mut none = Vec::new();
+     let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+     let doc = cx.document()?.clone();
+@@ -304,7 +315,10 @@ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
+         SelectBy::Point => {
+             let pt = p.point.ok_or_else(|| need("point"))?;
+             let zones = drawing_zones(&cx.planar_cache(), &d)?;
+-            let hs = super::colour::hits(&d, &zones, P::new(pt.x, pt.y), 0.0, false)?;
++            // The hit tolerance: 3 view pixels (02 §13.2 `draw.hitTest.get`) through the given view's zoom, or 100 %
++            // without a view (02 §13.1 item 5; C42A-R2-02).
++            let tol = crate::addressing::tolerance_du(cx, p.view.as_deref(), HIT_TOLERANCE_PX)?;
++            let hs = super::colour::hits(&d, &zones, P::new(pt.x, pt.y), tol, false)?;
+             hs.first().map(|h| vec![h.id.clone()]).unwrap_or_default()
+         }
+         SelectBy::Rect | SelectBy::Lasso => {
+@@ -436,6 +450,15 @@ pub(crate) struct PointSelectionParams {
+     /// How to combine.
+     #[serde(default)]
+     mode: Mode,
++    /// Coordinate space of the rectangle (02 §13.1 item 5): `view` coordinates go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` coordinates (default: the Drawing view).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ /// `{selectedPoints}`.
+@@ -460,6 +483,8 @@ pub(crate) fn draw_point_selection_set(
+     cx: &mut Cx,
+     p: PointSelectionParams,
+ ) -> Result<PointSelectionResult, CommandError> {
++    // The pipeline converted view-space coordinates (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     let mut none = Vec::new();
+     let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+     let doc = cx.document()?.clone();
+@@ -533,6 +558,9 @@ pub(crate) fn draw_selection_changed(
+     Err(super::common::event_not_invocable("draw.selection.changed"))
+ }
+ 
++/// The hit tolerance of a point selection, in view pixels (02 §13.2: `draw.hitTest.get`'s default).
++pub(crate) const HIT_TOLERANCE_PX: f64 = 3.0;
++
+ // ----- draw.bounds.get -----------------------------------------------------------------------------------------------
+ 
+ /// `draw.bounds.get` parameters.
+diff --git a/crates/executor/src/commands/draw_shapes.rs b/crates/executor/src/commands/draw_shapes.rs
+index 76bcadf..c10a803 100644
+--- a/crates/executor/src/commands/draw_shapes.rs
++++ b/crates/executor/src/commands/draw_shapes.rs
+@@ -162,6 +162,12 @@ pub(crate) struct BoxShapeParams {
+     /// Symmetry copies (02 §6.2).
+     #[serde(default = "yes")]
+     symmetry: bool,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ impl BoxShapeParams {
+@@ -192,6 +198,8 @@ impl BoxShapeParams {
+     gui = "Drawing view: Rectangle tool (M4 C4.2)",
+ )]
+ pub(crate) fn draw_rectangle_add(cx: &mut Cx, p: BoxShapeParams) -> Result<ShapeResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view);
+     let (a, b) = drag_box(p.from, p.to, p.square, p.from_centre);
+     if let Some(e) = degenerate(a, b, "rectangle") {
+         return Err(e);
+@@ -247,6 +255,12 @@ pub(crate) struct EllipseParams {
+     /// Symmetry copies (02 §6.2).
+     #[serde(default = "yes")]
+     symmetry: bool,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ #[command(
+@@ -275,6 +289,8 @@ pub(crate) fn draw_ellipse_add(cx: &mut Cx, p: EllipseParams) -> Result<ShapeRes
+         pen_id: p.pen_id,
+         layer: p.layer,
+         symmetry: p.symmetry,
++        space: p.space,
++        view: p.view,
+     };
+     let (a, b) = drag_box(p.from, p.to, p.square, p.from_centre);
+     if let Some(e) = degenerate(a, b, "ellipse") {
+@@ -345,6 +361,12 @@ pub(crate) struct LineParams {
+     /// Symmetry copies.
+     #[serde(default = "yes")]
+     symmetry: bool,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ #[command(
+@@ -359,6 +381,8 @@ pub(crate) struct LineParams {
+     gui = "Drawing view: Line tool (M4 C4.2)",
+ )]
+ pub(crate) fn draw_line_add(cx: &mut Cx, p: LineParams) -> Result<ShapeResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view);
+     let from = match (p.from, p.continue_previous) {
+         (Some(f), false) => P::new(f.x, f.y),
+         (_, true) => {
+@@ -492,6 +516,12 @@ pub(crate) struct PolylineParams {
+     /// Symmetry copies.
+     #[serde(default = "yes")]
+     symmetry: bool,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ fn eight() -> f64 {
+@@ -510,6 +540,8 @@ fn eight() -> f64 {
+     gui = "Drawing view: Polyline tool (M4 C4.2)",
+ )]
+ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = &p.space;
+     let mut anchors: Vec<(P, P, P)> = p
+         .points
+         .iter()
+@@ -518,7 +550,9 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
+             (P::new(q.x, q.y), h(q.in_handle), h(q.out_handle))
+         })
+         .collect();
+-    if p.snap && p.snap_radius > 0.0 {
++    // The snap radius is in view pixels: through the given view's zoom, or 100 % without one (02 §13.1 item 5).
++    let snap_radius = crate::addressing::tolerance_du(cx, p.view.as_deref(), p.snap_radius)?;
++    if p.snap && snap_radius > 0.0 {
+         let mut none = Vec::new();
+         let t = super::draw::target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none);
+         // A cell without a drawing yet (createDrawing) has nothing to snap to.
+@@ -534,7 +568,7 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
+             for a in &mut anchors {
+                 if let Some(best) = existing
+                     .iter()
+-                    .filter(|e| e.dist(a.0) <= p.snap_radius)
++                    .filter(|e| e.dist(a.0) <= snap_radius)
+                     .min_by(|x, y| x.dist(a.0).total_cmp(&y.dist(a.0)))
+                 {
+                     a.0 = *best;
+diff --git a/crates/executor/src/commands/draw_stroke.rs b/crates/executor/src/commands/draw_stroke.rs
+index d97c420..6e705e1 100644
+--- a/crates/executor/src/commands/draw_stroke.rs
++++ b/crates/executor/src/commands/draw_stroke.rs
+@@ -167,6 +167,12 @@ pub(crate) struct StrokeAddParams {
+     /// The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).
+     #[serde(default)]
+     expect_rev: Option<u64>,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ fn yes() -> bool {
+@@ -414,6 +420,8 @@ fn transform_geometry(g: &Geometry, m: &tt_vector::geom::Affine) -> Geometry {
+     gui = "Drawing view: Brush, Pencil and Stroke tools (M4 C4.2)",
+ )]
+ pub(crate) fn draw_stroke_add(cx: &mut Cx, p: StrokeAddParams) -> Result<StrokeAddResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view);
+     let kind = kind_of(p.kind);
+     let geom = geometry(p.points.as_deref(), p.bezier.as_deref(), p.fit, p.closed)?;
+     let mut changes = Vec::new();
+@@ -569,6 +577,12 @@ pub(crate) struct StrokeSetParams {
+     /// The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).
+     #[serde(default)]
+     expect_rev: Option<u64>,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ /// `{strokeIds, removedIds, rev}`.
+@@ -662,6 +676,8 @@ pub(crate) fn drawing_in<'a>(doc: &'a Document, id: &tt_model::Id) -> Result<&'a
+     gui = "Drawing view: Contour Editor and line properties (M4 C4.2)",
+ )]
+ pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeSetResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view);
+     if p.bezier.is_none() && p.pressure.is_none() && p.thickness.is_none() && p.kind.is_none() && p.closed.is_none() {
+         return Err(err(
+             codes::ARG_MISSING,
+@@ -770,6 +786,12 @@ pub(crate) struct ContentAddParams {
+     /// Make the inserted objects the drawing selection.
+     #[serde(default = "yes")]
+     select: bool,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ /// `{idMap, rev}`.
+@@ -801,6 +823,8 @@ pub(crate) struct ContentAddResult {
+     gui = "Drawing view: Edit › Paste (M4 C4.2)",
+ )]
+ pub(crate) fn draw_content_add(cx: &mut Cx, p: ContentAddParams) -> Result<ContentAddResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view);
+     let mut changes = Vec::new();
+     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, p.create_drawing, &mut changes)?;
+     let doc = cx.document()?.clone();
+diff --git a/crates/executor/src/commands/draw_text.rs b/crates/executor/src/commands/draw_text.rs
+index 9e2f736..f7e4e08 100644
+--- a/crates/executor/src/commands/draw_text.rs
++++ b/crates/executor/src/commands/draw_text.rs
+@@ -222,6 +222,12 @@ pub(crate) struct TextAddParams {
+     /// Text colour (default: the current colour).
+     #[serde(default)]
+     colour_id: Option<String>,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ fn yes() -> bool {
+@@ -258,6 +264,8 @@ pub(crate) struct TextResult {
+     gui = "Drawing view: Text tool (M4 C4.2)",
+ )]
+ pub(crate) fn draw_text_add(cx: &mut Cx, p: TextAddParams) -> Result<TextResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view);
+     check_position(p.position, "/position")?;
+     check_len(&p.text, "/text")?;
+     if let Some(w) = p.width {
+@@ -378,6 +386,12 @@ pub(crate) struct TextSetParams {
+     /// The drawing revision the caller read (02 §3.12).
+     #[serde(default)]
+     expect_rev: Option<u64>,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
+ }
+ 
+ fn text_node(
+@@ -418,6 +432,8 @@ fn text_node(
+     gui = "Drawing view: Text tool typing, box width and move (M4 C4.2)",
+ )]
+ pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view);
+     let content_edit = p.text.is_some() || p.insert.is_some() || p.delete.is_some();
+     let width_edit = p.width_mode.is_some() || p.width.is_some();
+     if !content_edit && !width_edit && p.position.is_none() {
+diff --git a/crates/executor/src/commands/draw_transform.rs b/crates/executor/src/commands/draw_transform.rs
+index 6d98367..e295780 100644
+--- a/crates/executor/src/commands/draw_transform.rs
++++ b/crates/executor/src/commands/draw_transform.rs
+@@ -314,6 +314,15 @@ pub(crate) struct TransformParams {
+     /// The drawing revision the caller read.
+     #[serde(default)]
+     expect_rev: Option<u64>,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
+@@ -367,6 +376,8 @@ fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
+     gui = "Drawing view: Select tool handles and nudges (M4 C4.2)",
+ )]
+ pub(crate) fn draw_transform_apply(cx: &mut Cx, p: TransformParams) -> Result<TransformResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     let mut changes = Vec::new();
+     let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut changes)?;
+     let doc = cx.document()?.clone();
+@@ -618,6 +629,15 @@ pub(crate) struct EnvelopeParams {
+     /// Mapping.
+     #[serde(default)]
+     mapping: Mapping,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, CommandError> {
+@@ -661,6 +681,8 @@ fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, Com
+     gui = "Drawing view: Perspective tool (M4 C4.2)",
+ )]
+ pub(crate) fn draw_envelope_apply(cx: &mut Cx, p: EnvelopeParams) -> Result<TransformResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     if p.corners.len() != 4 {
+         return Err(err("arg.invalid", "four corners are required", json!({ "pointer": "/corners" })));
+     }
+@@ -701,6 +723,15 @@ pub(crate) struct RepositionParams {
+     /// Envelope corners (of each drawing's bounds).
+     #[serde(default)]
+     corners: Option<Vec<Point>>,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ /// `{drawingIds}`.
+@@ -723,6 +754,8 @@ pub(crate) struct RepositionResult {
+     gui = "Drawing view: Reposition All Drawings tool (M4 C4.2)",
+ )]
+ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Result<RepositionResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     let element = match p.element_id.as_deref() {
+         Some(r) => Id::parse(&cx.resolve_as(r, ObjectType::Element)?)?,
+         None => cx.app().element.clone().ok_or_else(|| {
+@@ -746,6 +779,9 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
+         matrix: p.matrix,
+         copy: false,
+         expect_rev: None,
++        space: super::colour::Space::default(),
++        view: None,
++        frame: None,
+     };
+     let mut changes = Vec::new();
+     let mut changed_ids = Vec::new();
+@@ -858,6 +894,15 @@ pub(crate) struct PointAddParams {
+     #[serde(default)]
+     #[schemars(range(min = 0.0, max = 1.0))]
+     t: Option<f64>,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ /// `{strokeId, anchor, rev}`.
+@@ -911,6 +956,8 @@ fn nearest_location(path: &Path, q: P) -> Option<(usize, f64)> {
+     gui = "Drawing view: Contour Editor, click on a segment (M4 C4.2)",
+ )]
+ pub(crate) fn draw_point_add(cx: &mut Cx, p: PointAddParams) -> Result<PointAddResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
+     let path = path_of(&v);
+     let segs = path.segments();
+@@ -960,6 +1007,15 @@ pub(crate) struct PointMoveParams {
+     /// Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off).
+     #[serde(default)]
+     snap: bool,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ /// `{modifiedIds, removedIds, rev}`.
+@@ -1037,6 +1093,10 @@ fn nearest_on(path: &tt_vector::path::Path, q: P) -> Option<(f64, usize, f64, P)
+     gui = "Drawing view: Contour Editor drag (M4 C4.2)",
+ )]
+ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<ContourResult, CommandError> {
++    // The Snap to Contour radius is in view pixels: through the given view's zoom, or 100 % (02 §13.1 item 5).
++    let snap_radius = crate::addressing::tolerance_du(cx, p.view.as_deref(), SNAP_RADIUS)?;
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, p.frame);
+     let mut none = Vec::new();
+     let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+     let doc = cx.document()?.clone();
+@@ -1108,7 +1168,7 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
+                     .iter()
+                     .filter(|(list, _, _)| *list == l.list)
+                     .filter_map(|(_, id, path)| nearest_on(path, q).map(|(dist, seg, t, at)| (dist, id, seg, t, at)))
+-                    .filter(|c| c.0 <= SNAP_RADIUS)
++                    .filter(|c| c.0 <= snap_radius)
+                     .min_by(|a, b| {
+                         a.0.total_cmp(&b.0).then_with(|| a.1.cmp(b.1)).then(a.2.cmp(&b.2)).then(a.3.total_cmp(&b.3))
+                     });
+@@ -1162,6 +1222,15 @@ pub(crate) struct PointSetParams {
+     /// Handle mode.
+     #[serde(default)]
+     handle_mode: Option<HandleMode>,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ /// `{strokeId, rev}`.
+@@ -1189,6 +1258,8 @@ pub(crate) struct PointSetResult {
+     gui = "Drawing view: Contour Editor handle drag (M4 C4.2)",
+ )]
+ pub(crate) fn draw_point_set(cx: &mut Cx, p: PointSetParams) -> Result<PointSetResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
+     let mut path = path_of(&v);
+     let k = p.anchor as usize;
+@@ -1319,6 +1390,15 @@ pub(crate) struct SegmentMoveParams {
+     t: f64,
+     /// Offset of that point (du).
+     delta: Point,
++    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
++    #[serde(default)]
++    space: super::colour::Space,
++    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
++    #[serde(default)]
++    view: Option<String>,
++    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
++    #[serde(default)]
++    frame: Option<u32>,
+ }
+ 
+ fn half() -> f64 {
+@@ -1337,6 +1417,8 @@ fn half() -> f64 {
+     gui = "Drawing view: Contour Editor segment drag (M4 C4.2)",
+ )]
+ pub(crate) fn draw_segment_move(cx: &mut Cx, p: SegmentMoveParams) -> Result<PointSetResult, CommandError> {
++    // The pipeline converted view-space points (crate::addressing).
++    let _ = (&p.space, &p.view, p.frame);
+     if p.t <= 0.0 || p.t >= 1.0 {
+         return Err(err("arg.invalid", "`t` must be strictly between 0 and 1", json!({ "pointer": "/t" })));
+     }
+diff --git a/crates/executor/src/commands/inspect.rs b/crates/executor/src/commands/inspect.rs
+index 6d51790..cc9377e 100644
+--- a/crates/executor/src/commands/inspect.rs
++++ b/crates/executor/src/commands/inspect.rs
+@@ -1157,6 +1157,9 @@ fn window() -> String {
+     "window".into()
+ }
+ 
++/// Captures that may run at once in one executor (each holds one job thread until it is encoded; design note 5 §1c).
++pub(crate) const MAX_CAPTURES: usize = 2;
++
+ /// The inline side limit of a screenshot (11 §6.5: 2048 px).
+ pub(crate) const SCREENSHOT_MAX_SIDE: u32 = 2048;
+ 
+@@ -1277,6 +1280,22 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult,
+         result.job_id = Some("dryRun".into());
+         return Ok(result);
+     }
++    // At most MAX_CAPTURES captures in flight (each is one job thread; design note 5 §1c).
++    let running = cx
++        .session()
++        .jobs
++        .list(None, None)
++        .iter()
++        .filter(|j| j.command_id == "inspect.screenshot" && !j.state.is_final())
++        .count();
++    if running >= MAX_CAPTURES {
++        return Err(CommandError::with_details(
++            tt_registry::codes::LIMIT_EXCEEDED,
++            format!("{running} captures are running; at most {MAX_CAPTURES} run at once"),
++            json!({ "limit": "concurrentCaptures", "max": MAX_CAPTURES, "running": running }),
++        )
++        .hint("retry when a capture has answered"));
++    }
+     let done = result.clone();
+     let origin = cx.origin().clone();
+     let job = cx.session().jobs.submit("inspect.screenshot", &origin.session_key(), move |progress| {
+diff --git a/crates/executor/src/commands/tool_symmetry.rs b/crates/executor/src/commands/tool_symmetry.rs
+index c9d1f37..ef81ef8 100644
+--- a/crates/executor/src/commands/tool_symmetry.rs
++++ b/crates/executor/src/commands/tool_symmetry.rs
+@@ -14,6 +14,7 @@ use crate::cx::Cx;
+ /// Symmetry mode.
+ #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
+ #[serde(rename_all = "camelCase")]
++#[schemars(inline)]
+ pub(crate) enum Mode {
+     /// No copies.
+     #[default]
+@@ -32,8 +33,9 @@ fn six() -> i64 {
+ #[derive(Debug, Deserialize, JsonSchema)]
+ #[serde(deny_unknown_fields, rename_all = "camelCase")]
+ pub(crate) struct SymmetryParams {
+-    /// Mode.
++    /// Mode (spec A: `= "none"`).
+     #[serde(default)]
++    #[schemars(extend("default" = "none"))]
+     mode: Mode,
+     /// Axis angle from +y, counter-clockwise, degrees (0–360).
+     #[serde(default)]
+diff --git a/crates/executor/src/drawing.rs b/crates/executor/src/drawing.rs
+index 2f70c1a..91e86d5 100644
+--- a/crates/executor/src/drawing.rs
++++ b/crates/executor/src/drawing.rs
+@@ -80,6 +80,19 @@ pub fn check_option(tool: &str, key: &str, v: &Value) -> Result<(), (&'static st
+     if ok { Ok(()) } else { Err(("tool.valueOutOfRange", format!("`{key}` of the {tool} tool is out of range"))) }
+ }
+ 
++/// An onion-skin count is 0-3 (02 §10.2): the one rule of `drawAid.onionSkin.set` and of a restored file.
++#[must_use]
++pub fn onion_count_ok(n: i64) -> bool {
++    (0..=3).contains(&n)
++}
++
++/// A colour as the aids store it (`#RRGGBBAA`), or `None` when `c` is not `#RRGGBB` or `#RRGGBBAA`: the one rule of the
++/// colour-taking aid commands and of a restored file.
++#[must_use]
++pub fn aid_colour(c: &str) -> Option<String> {
++    tt_model::value::Colour::parse(c).ok().map(|c| c.to_string())
++}
++
+ /// Symmetry (02 §6.2).
+ #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
+ #[serde(rename_all = "camelCase", default)]
+@@ -350,7 +363,7 @@ impl DrawingSettings {
+     /// apply (C42A-R1-04): a stale value in a file of the right shape falls back alone and its siblings survive.
+     pub fn sanitize(&mut self) {
+         let d = Self::default();
+-        let colour = |c: &str| tt_model::value::Colour::parse(c).is_ok();
++        let colour = |c: &str| aid_colour(c).is_some();
+         let sym = &mut self.symmetry;
+         if !matches!(sym.mode.as_str(), "none" | "mirror" | "kaleidoscope") {
+             sym.mode = d.symmetry.mode.clone();
+@@ -368,10 +381,10 @@ impl DrawingSettings {
+         if !matches!(a.grid.ty.as_str(), "normal" | "field12" | "field16") {
+             a.grid.ty = d.aids.grid.ty.clone();
+         }
+-        if !(0..=3).contains(&a.onion_skin.previous) {
++        if !onion_count_ok(a.onion_skin.previous) {
+             a.onion_skin.previous = d.aids.onion_skin.previous;
+         }
+-        if !(0..=3).contains(&a.onion_skin.next) {
++        if !onion_count_ok(a.onion_skin.next) {
+             a.onion_skin.next = d.aids.onion_skin.next;
+         }
+         let st = &mut a.onion_skin_style;
+diff --git a/crates/executor/src/gesture.rs b/crates/executor/src/gesture.rs
+index 3d8b4a5..65816d0 100644
+--- a/crates/executor/src/gesture.rs
++++ b/crates/executor/src/gesture.rs
+@@ -576,7 +576,14 @@ fn select(cx: &Cx, g: &Gesture, st: &Stroke, p0: Sample, pn: Sample) -> Result<O
+     let mode = if st.mods.constrain { "add" } else { "replace" };
+     let rule = cx.ui().drawing().options_of("select").get("rectRule").cloned().unwrap_or(json!("inside"));
+     let v = if st.is_click() {
+-        json!({ "by": "point", "point": pt(p0.d), "mode": mode })
++        // The click's hit tolerance is in view pixels (C42A-R2-02): the view is stated whenever it decides the outcome,
++        // that is when the zoom is not 100 % and what lies under the exact point differs from what the tolerance
++        // reaches; otherwise the command without `view` selects the same object.
++        let mut v = json!({ "by": "point", "point": pt(p0.d), "mode": mode });
++        if (crate::commands::view::pixels_per_du(w) - 1.0).abs() > 1e-12 && tolerance_decides(cx, w, p0.d) {
++            v["view"] = json!(g.view_id);
++        }
++        v
+     } else if st.mods.alternate {
+         let poly: Vec<Value> = st.samples.iter().map(|x| pt(x.d)).collect();
+         json!({ "by": "lasso", "polygon": poly, "rectRule": rule, "mode": mode })
+@@ -586,6 +593,19 @@ fn select(cx: &Cx, g: &Gesture, st: &Stroke, p0: Sample, pn: Sample) -> Result<O
+     Ok(Some(("draw.selection.set".into(), v)))
+ }
+ 
++/// Whether a point selection at `at` depends on the hit tolerance: the front-most object under the exact point and
++/// the front-most within the view's tolerance differ.
++fn tolerance_decides(cx: &Cx, w: &ViewWindow, at: Point) -> bool {
++    let Some((d, _)) = current_drawing(cx) else { return false };
++    let Ok(zones) = crate::planar::drawing_zones(&cx.planar_cache(), &d) else { return true };
++    let q = tt_vector::geom::P::new(at.x, at.y);
++    let tol = crate::commands::draw_select::HIT_TOLERANCE_PX / crate::commands::view::pixels_per_du(w);
++    let first = |t: f64| {
++        crate::commands::colour::hits(&d, &zones, q, t, false).ok().and_then(|h| h.first().map(|h| h.id.clone()))
++    };
++    first(0.0) != first(tol)
++}
++
+ /// The current drawing and its pivot.
+ fn current_drawing(cx: &Cx) -> Option<(tt_model::entities::drawing::Drawing, Point)> {
+     let doc = cx.document().ok()?;
+@@ -662,6 +682,11 @@ fn polyline(cx: &Cx, g: &Gesture) -> Option<(String, Value)> {
+         return None;
+     }
+     let mut m = obj(json!({ "points": points, "closed": closed, "snap": snap, "snapRadius": radius }));
++    // The snap radius is in view pixels: the view is stated whenever its zoom is not 100 % (02 §13.1 item 5, §13.3
++    // line 1203; C42A-R2-01). At 100 % an absent `view` means the same tolerance, so the command is the same.
++    if cx.ui().shell().view(&g.view_id).is_ok_and(|w| (crate::commands::view::pixels_per_du(w) - 1.0).abs() > 1e-12) {
++        m.insert("view".into(), json!(g.view_id));
++    }
+     styled(&mut m, cx, "polyline", &s);
+     Some(("draw.polyline.add".into(), Value::Object(m)))
+ }
+diff --git a/crates/executor/src/host.rs b/crates/executor/src/host.rs
+index 60275bd..7ce2ead 100644
+--- a/crates/executor/src/host.rs
++++ b/crates/executor/src/host.rs
+@@ -41,9 +41,75 @@ pub(crate) struct ShellShared {
+     /// before its reply (round 3, C41-R3-06): a tree reported after a command was answered is judged against the
+     /// arrangement that command left.
+     floats: Mutex<Vec<String>>,
++    /// Headless captures: (running, waiting) (design note 5 §1c).
++    captures: Mutex<(usize, usize)>,
++    /// Signalled when a capture slot frees.
++    capture_freed: std::sync::Condvar,
++}
++
++/// Callers that may wait for a capture slot at once; one more answers `limit.exceeded` (design note 5 §1c).
++pub(crate) const MAX_WAITING_CAPTURES: usize = 8;
++
++/// A held capture slot, released when the call returns.
++pub(crate) struct CaptureSlot<'a>(&'a ShellShared);
++
++impl Drop for CaptureSlot<'_> {
++    fn drop(&mut self) {
++        let mut c = self.0.captures.lock().unwrap_or_else(PoisonError::into_inner);
++        c.0 = c.0.saturating_sub(1);
++        drop(c);
++        self.0.capture_freed.notify_one();
++    }
+ }
+ 
+ impl ShellShared {
++    /// Takes a capture slot on the caller's thread (never the document thread): at most `MAX_CAPTURES` captures run,
++    /// at most `MAX_WAITING_CAPTURES` callers wait for one (each on its own thread, so no thread is added), bounded by
++    /// `budget` and `cancelled`; beyond either bound the call answers `limit.exceeded` before anything starts.
++    pub(crate) fn capture_slot(
++        &self,
++        budget: Duration,
++        cancelled: &dyn Fn() -> bool,
++    ) -> Result<CaptureSlot<'_>, CommandError> {
++        let max = crate::commands::inspect::MAX_CAPTURES;
++        let limit = |running: usize, waiting: usize, what: &str| {
++            CommandError::with_details(
++                tt_registry::codes::LIMIT_EXCEEDED,
++                format!("{running} captures run and {waiting} wait; {what}"),
++                json!({ "limit": "concurrentCaptures", "max": max, "maxWaiting": MAX_WAITING_CAPTURES,
++                        "running": running, "waiting": waiting }),
++            )
++            .hint("retry when a capture has answered")
++        };
++        let start = Instant::now();
++        let mut c = self.captures.lock().unwrap_or_else(PoisonError::into_inner);
++        if c.0 < max {
++            c.0 += 1;
++            return Ok(CaptureSlot(self));
++        }
++        if c.1 >= MAX_WAITING_CAPTURES {
++            return Err(limit(c.0, c.1, "no more callers may wait"));
++        }
++        c.1 += 1;
++        loop {
++            let (next, _) = self.capture_freed.wait_timeout(c, WAIT_POLL).unwrap_or_else(PoisonError::into_inner);
++            c = next;
++            if c.0 < max {
++                c.1 -= 1;
++                c.0 += 1;
++                return Ok(CaptureSlot(self));
++            }
++            if cancelled() || start.elapsed() >= budget {
++                c.1 -= 1;
++                if cancelled() {
++                    return Err(crate::request_cancelled_error("inspect.screenshot"));
++                }
++                return Err(limit(c.0, c.1 + 1, "the wait for a slot reached the call's budget"));
++            }
++        }
++    }
++
++    /// Publishes the kernel's visible floats (the document thread, after each request).
+     /// Publishes the kernel's visible floats (the document thread, after each request).
+     pub(crate) fn publish_floats(&self, s: &crate::session::Session) {
+         let now = visible_floats(&s.ui.panels());
+@@ -62,6 +128,8 @@ impl Default for ShellShared {
+             wait_for_user_ms: AtomicU64::new(10_000),
+             attached: std::sync::atomic::AtomicBool::new(false),
+             floats: Mutex::new(Vec::new()),
++            captures: Mutex::new((0, 0)),
++            capture_freed: std::sync::Condvar::new(),
+         }
+     }
+ }
+diff --git a/crates/executor/src/lib.rs b/crates/executor/src/lib.rs
+index 4310c16..1964c70 100644
+--- a/crates/executor/src/lib.rs
++++ b/crates/executor/src/lib.rs
+@@ -24,6 +24,7 @@
+ //! sets), AG-01…AG-09, §6–§8 and §10.2–§10.3 through the executor; 01 §3 (projects), §5 (window, panels, workspaces:
+ //! kernel state), §6.1 (undo/redo), §11 (settings), §12.4. Milestone: M1 (C1.2, C1.3). Decisions: ADR-0013, ADR-0014.
+ 
++mod addressing;
+ pub mod agents;
+ mod align;
+ mod app;
+@@ -586,6 +587,15 @@ impl ExecutorHandle {
+         // cancellation marks its token, which stops it at its next work-account check, and a link carries only the
+         // notice that it was discarded (ADR-0020 decision 8).
+         let query = self.registry.get(&what).is_some_and(|e| e.spec.kind == tt_registry::Kind::Query);
++        // Headless captures: a slot on this thread first (design note 5 §1c); released when this call returns.
++        let _slot = if what == "inspect.screenshot" {
++            match self.shell.capture_slot(self.config.budget, cancelled) {
++                Ok(s) => Some(s),
++                Err(e) => return (Envelope::error(e, None), false),
++            }
++        } else {
++            None
++        };
+         let called = match probe {
+             None => self.call(&what, |r| Request::Invoke(inv, r)),
+             Some(_) if query => self.call_with(&what, |r| Request::Invoke(inv, r), cancelled, Link::Notify),
+diff --git a/crates/executor/src/run.rs b/crates/executor/src/run.rs
+index d5b4279..e2dfef0 100644
+--- a/crates/executor/src/run.rs
++++ b/crates/executor/src/run.rs
+@@ -396,6 +396,9 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
+         }
+     };
+     validate_params(id, &entry.params_schema(), &params)?;
++    // The common addressing parameters of the point-taking `draw.*` commands (02 §13.1 item 5): view-space points
++    // become drawing-space points here, before the precheck and the handler.
++    let params = crate::addressing::normalise(&*cx, id, params)?;
+     if let Some(c) = entry.command {
+         if c.decl.needs_project && !cx.has_project() {
+             return Err(no_project());
+diff --git a/crates/registry/src/example-results.json b/crates/registry/src/example-results.json
+index 3d931dc..87bfd57 100644
+--- a/crates/registry/src/example-results.json
++++ b/crates/registry/src/example-results.json
+@@ -30,7 +30,7 @@
+     {
+       "title": "Accept a request",
+       "result": {
+-        "confirmationId": "cf_a17484d7395272b374b4e02e",
++        "confirmationId": "cf_88845e742bcdfce460b38283",
+         "accepted": true
+       },
+       "varies": [
+@@ -71,7 +71,7 @@
+         "endpoint": null,
+         "sessions": [
+           {
+-            "sessionId": "s1-080285",
++            "sessionId": "s1-a09bfa",
+             "client": "Example agent",
+             "policy": "assist",
+             "scopes": [
+@@ -83,7 +83,7 @@
+               "files.write",
+               "library.global"
+             ],
+-            "connectedAt": "2026-11-14T14:22:34.850Z",
++            "connectedAt": "2026-11-14T16:38:42.388Z",
+             "lastActivity": null,
+             "paused": false,
+             "transport": ""
+@@ -91,8 +91,8 @@
+         ],
+         "pendingConfirmations": [
+           {
+-            "confirmationId": "cf_e3772b5efcec6aebb98ac4fa",
+-            "sessionId": "s1-080285",
++            "confirmationId": "cf_57f9474bb70db1c2f3f49331",
++            "sessionId": "s1-a09bfa",
+             "commandId": "project.saveAs",
+             "summary": "Overwrite `/tmp/Short.animpkg`",
+             "consequences": [
+@@ -127,7 +127,7 @@
+     {
+       "title": "Let a session edit",
+       "result": {
+-        "sessionId": "s1-14b9fd",
++        "sessionId": "s1-0eaf3e",
+         "policy": "assist",
+         "scopes": [
+           "read",
+@@ -145,7 +145,7 @@
+       "title": "Pause every session",
+       "result": {
+         "paused": [
+-          "s1-ced546"
++          "s1-e1daa7"
+         ]
+       },
+       "varies": [
+@@ -1902,7 +1902,7 @@
+       "result": [
+         {
+           "name": "before-walk",
+-          "createdAt": "2026-11-14T14:22:36.270Z",
++          "createdAt": "2026-11-14T16:38:44.025Z",
+           "documentRev": 1,
+           "origin": "user"
+         }
+@@ -2325,7 +2325,7 @@
+             "version": "0.0.1",
+             "platform": "windows-x64"
+           },
+-          "exportedAt": "2026-11-14T14:22:36.873Z",
++          "exportedAt": "2026-11-14T16:38:44.737Z",
+           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
+           "scope": {
+             "kind": "scenes",
+@@ -7403,7 +7403,7 @@
+             "stepId": "u-1",
+             "label": "Set meta",
+             "source": "user",
+-            "time": "2026-11-14T14:22:38.571Z",
++            "time": "2026-11-14T16:38:47.265Z",
+             "objectCount": 1
+           },
+           {
+@@ -7411,7 +7411,7 @@
+             "stepId": "u-2",
+             "label": "Set meta",
+             "source": "user",
+-            "time": "2026-11-14T14:22:38.572Z",
++            "time": "2026-11-14T16:38:47.266Z",
+             "objectCount": 1
+           }
+         ],
+@@ -9293,7 +9293,7 @@
+         "state": "succeeded",
+         "progress": 1.0,
+         "message": "",
+-        "startedAt": "2026-11-14T14:22:39.651Z",
++        "startedAt": "2026-11-14T16:38:48.916Z",
+         "result": {},
+         "session": "user"
+       },
+@@ -9312,7 +9312,7 @@
+           "state": "succeeded",
+           "progress": 1.0,
+           "message": "",
+-          "startedAt": "2026-11-14T14:22:39.663Z",
++          "startedAt": "2026-11-14T16:38:48.933Z",
+           "result": {},
+           "session": "user"
+         }
+@@ -9331,7 +9331,7 @@
+         "state": "succeeded",
+         "progress": 1.0,
+         "message": "",
+-        "startedAt": "2026-11-14T14:22:39.676Z",
++        "startedAt": "2026-11-14T16:38:48.948Z",
+         "result": {},
+         "session": "user"
+       },
+@@ -9598,10 +9598,10 @@
+     {
+       "title": "A 1920×1080, 24 fps project",
+       "result": {
+-        "projectId": "pr_01M7D70R3HZ5MXAQB5GQAPD6FB",
+-        "sceneId": "sc_01M7D70R3J3TV1HXX730K0FBNQ",
+-        "cameraId": "el_01M7D70R3J3TV1HXX730K0FBNS",
+-        "elementId": "el_01M7D70R3J3TV1HXX730K0FBNT"
++        "projectId": "pr_01M7DET26DQFH6PMDNZM9G5RW2",
++        "sceneId": "sc_01M7DET26E4BFHCBPB5W918CG6",
++        "cameraId": "el_01M7DET26E4BFHCBPB5W918CG8",
++        "elementId": "el_01M7DET26E4BFHCBPB5W918CG9"
+       },
+       "varies": [
+         "/cameraId",
+@@ -9857,7 +9857,7 @@
+         {
+           "path": "/tmp/Sample.animpkg",
+           "name": "Sample",
+-          "lastOpened": "2026-11-14T14:22:40.656Z",
++          "lastOpened": "2026-11-14T16:38:50.277Z",
+           "exists": true
+         }
+       ],
+diff --git a/docs/availability-inventory.md b/docs/availability-inventory.md
+index c114f6a..2f733a4 100644
+--- a/docs/availability-inventory.md
++++ b/docs/availability-inventory.md
+@@ -525,6 +525,7 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
+ | `draw.point.delete` | `drawing.nothingToDo` | precheck | nothing selected in the drawing | refuse: drawing · pass: anchors-selected |
+ | `draw.point.delete` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
+ | `draw.point.delete` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
++| `draw.point.move` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (M4 C4.3 builds the other types) |  |
+ | `draw.point.move` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
+ | `draw.point.move` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
+ | `draw.point.move` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
+@@ -542,6 +543,7 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
+ | `draw.polyline.add` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
+ | `draw.polyline.add` | `arg.missing` | parameter | a parameter the call needs is missing |  |
+ | `draw.polyline.add` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
++| `draw.polyline.add` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (M4 C4.3 builds the other types) |  |
+ | `draw.polyline.add` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
+ | `draw.polyline.add` | `drawing.noTarget` | precheck | no current drawing | refuse: blank-cell {"createDrawing": false} · pass: blank-cell {} |
+ | `draw.polyline.add` | `drawing.notVectorElement` | precheck | the addressed element is not a drawing or annotation element | refuse: peg-current · pass: drawing |
+@@ -577,6 +579,7 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
+ | `draw.segment.move` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
+ | `draw.segment.move` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
+ | `draw.selection.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
++| `draw.selection.set` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (M4 C4.3 builds the other types) |  |
+ | `draw.selection.set` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing {"by": "all"} · pass: drawing {"by": "all"} |
+ | `draw.selection.set` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
+ | `draw.selection.set` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
+diff --git a/reviews/M4-design-views.md b/reviews/M4-design-views.md
+index 9ffd344..b6978c5 100644
+--- a/reviews/M4-design-views.md
++++ b/reviews/M4-design-views.md
+@@ -34,8 +34,9 @@ Before the code (plan reviews/M4-C4.2-plan.md §4, ruling D-3: C4.2a). Requireme
+ ## 3. Commands (01 §12.2)
+ 
+ `view.list`, `view.active.set`, `view.type.set` (with `"previous"`), `view.transform.get`, `view.zoom.set` (absolute
+-within 6.25 %–6400 %, or by table steps; the 02 §4.3 ladder for wheel and zoom-tool steps, SI-122; `anchor` keeps that
+-view point fixed), `view.rotation.set` (absolute or 30° steps), `view.pan.set` (`centre`, `by`, `atPointer`),
++within 6.25 %–6400 %, or by 01 §6.5's table steps; `anchor` keeps that view point fixed; ruling D-15: the wheel
++steps along 02 §4.3's ladder, a Zoom-tool click and the zoom keys send table steps, a Zoom marquee fits its rectangle,
++SI-122), `view.rotation.set` (absolute or 30° steps), `view.pan.set` (`centre`, `by`, `atPointer`),
+ `view.transform.reset` (parts), `view.coordinates.convert`. Rotation is only through `view.rotation.set` (SI-123).
+ Every change announces the host-only event `shell.view` with the view's new state (`viewId`, type, size, transform and
+ both matrices; the canvas follows it). Spec A has no view event and the registry cannot grow (796 entries), so the
+@@ -59,4 +60,5 @@ and then answer `ui.busy` (C4.1's arbitration).
+ - **V3** With `letAgentMoveView` off, an agent's view change refuses with `permission.denied` and changes nothing; the
+   user's (or with the preference on, the agent's) succeeds.
+ - **V4** The headless Drawing view is SI-069's: 1920 × 1080, zoom 1, `drawingToView [1,0,0,-1,960,540]`.
+-- **V5** Zoom stays within 6.25 %–6400 %; steps follow the table (`steps`) and the ladder (wheel, zoom tool).
++- **V5** Zoom stays within 6.25 %–6400 %; `steps` (the zoom keys and a Zoom-tool click) follow the 01 §6.5 table, the
++  wheel follows the 02 §4.3 ladder (ruling D-15, SI-122).
