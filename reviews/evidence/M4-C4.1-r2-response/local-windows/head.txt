@@ -1,0 +1,2 @@
+Product code: commit ee05297 (the product code is unchanged at 1c43384 and at the handoff head; reviews/M4-C4.1-handoff-r3.md section 7).
+Build: cargo build -p tt-desktop --locked --features tauri/custom-protocol (debug profile, embedded front end), Windows 11 workstation.
