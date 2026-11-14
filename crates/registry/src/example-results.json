@@ -9009,7 +9009,8 @@
               "children": []
             }
           ]
-        }
+        },
+        "renderedSeq": null
       },
       "varies": []
     },
@@ -9025,7 +9026,8 @@
           "visible": false,
           "floating": false,
           "focused": false
-        }
+        },
+        "renderedSeq": null
       },
       "varies": []
     }
