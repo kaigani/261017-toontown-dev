@@ -22,14 +22,23 @@ Origin validation, bearer token, discovery file, off by default); ADR-0015 §10 
      `Host`, `Origin`, token, method, declared length (`413` above the session's inline payload limit, 50 MiB by
      default, the limit of 11 §6.5 that stdio frames with too) and session are checked before a single body byte is
      read or reserved; the body then arrives incrementally within 60 s of the connection being accepted.
-   - **Admission.** 64 connections at once, 16 of them before their token check; over either cap, `503` with
-     `Retry-After: 1`, nothing read. An SSE subscriber that stops reading is dropped (1024 queued messages, 10 s write
-     timeout). Every answer ends with a bounded lingering close (256 KiB, 1 s) so an early refusal reaches the client.
+   - **Admission (round 2, ruling O-15; reviews/M4-design-http-admission.md).** The accept thread decides about each
+     socket without reading or waiting: at most 64 connection workers (one thread and one socket each), of which at
+     most 16 may still be reading their head (the pending pool). A newcomer that meets a full pending pool is answered
+     `503` with `Retry-After: 0` and the pending connection that has waited longest is evicted, so idle sockets cannot
+     shut out a token holder; with the workers full of authenticated streams a newcomer is refused without eviction.
+     Refusals are written without a thread; every answered socket is closed gracefully (256 KiB, 1 s) by one closer
+     thread holding at most 128 sockets. The server holds at most `3 + 64 + 32` threads. An SSE subscriber that stops
+     reading is dropped (1024 queued messages, 10 s write timeout); a quiet stream notices a departed client within 1 s.
    - **Credentials fail closed (ruling O-6).** The token and session ids come from the operating system's random source
      only; when it fails, no token is made, the server does not start and the window says why (`agent.serverFailed`).
+     `agent.token.regenerate` then fails with `internal`, `details.reason: "randomUnavailable"` (round 2, C41-R2-22);
+     a session id that cannot be made answers `503` and no session is created.
      A token read from the discovery file must have the generated form (48 lower-case hex characters) or a new one is
      made: a planted file with another token is not trusted (ruling O-8).
-   - **Sessions (ruling O-7).** A session with no open stream and no request in flight expires after 30 minutes; its
+   - **Sessions (ruling O-7; round 2, C41-R2-03).** A request naming a session holds it in flight from the moment its
+     head is authenticated until its answer or stream is written; `DELETE`, expiry and server stop end a session's
+     open streams. A session with no request in flight expires after 30 minutes; its
      id then answers `404` and the client initialises again. The session cap check and its insertion are one critical
      section. A holder of the installation token can use any session id it learns: the token already grants every
      session's powers to its holder (one user, one installation), so a session id is a routing key, not a credential.

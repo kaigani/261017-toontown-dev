@@ -1407,3 +1407,18 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   caller-cancelled request of SI-111. The window shows it as a status line ("the engine restarted while it ran; check
   the result"), never as applied.
 - **Question:** confirm, or define a dedicated code (for example `engine.restarted`) in 11 §10.
+
+## SI-121 — which events a UI tree reflects (found in M4 C4.1 round 2; interim, awaiting the spec owner)
+
+- **Sections:** 11 §7.5 (`inspect_ui`), 01 §12.4, ADR-0021 decision 5.
+- **Problem:** 11 §7.5 defines `inspect_ui` as returning the rendered UI tree, but not which engine events the tree
+  reflects, nor what happens when the front end has not rendered the latest events yet. An agent that changes state
+  and then inspects the GUI cannot tell whether the tree shows its change.
+- **Interim decision (round 2 brief; C41-R2-07):** two additive result fields. `inspect.ui.tree` answers
+  `renderedSeq`: the engine event number the accepted GUI tree vouches for, `null` when it is not vouched for (a
+  window has not reported, or reported without a number) or is the headless virtual tree. `inspect_ui` waits up to
+  2 s for the front end to render the events before the call; if it has not, it answers the last tree with
+  `stale: true` (never an error). In the desktop host every window counts: the main window, each float the host
+  opened, each window that reported anything.
+- **Question:** confirm both fields (names, `null`, the 2 s wait) for 11 §7.5, or specify another way to tell an agent
+  which events a tree reflects.
