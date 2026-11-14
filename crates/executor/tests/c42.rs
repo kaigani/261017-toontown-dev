@@ -7,6 +7,8 @@ mod common;
 
 #[path = "c42/aids.rs"]
 mod aids;
+#[path = "c42/budgets.rs"]
+mod budgets;
 #[path = "c42/equivalence.rs"]
 mod equivalence;
 #[path = "c42/pointer.rs"]

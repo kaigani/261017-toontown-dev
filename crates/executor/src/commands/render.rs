@@ -685,20 +685,30 @@ fn active_view(cx: &mut Cx, p: &FrameParams, doc: &Document, frame: u32) -> Resu
             .hint("make a drawing current (app.context.set)")
     })?;
     let d = doc.drawing(&id).ok_or_else(|| err("drawing.noTarget", "the current drawing is gone", json!({})))?;
+    // Visibility overrides (M3 merge note §8 item 3): `exclude` naming the current element or an ancestor leaves the
+    // drawing out (exclusion wins, SI-107); the Drawing view shows its current drawing whether or not the element or an
+    // ancestor is hidden, so `include` changes nothing here.
+    let ov = overrides(cx, p.include.as_deref(), p.exclude.as_deref())?;
+    let scene = scene_param(cx, p.scene_id.as_deref())?;
+    let excluded = match (cx.app().element.as_ref(), doc.scene(&scene)) {
+        (Some(e), Some(sc)) => excluded_in(sc.tree(), e, &ov.exclude),
+        _ => false,
+    };
     let m = super::view::drawing_to_view(&view);
     let (sx, sy) = (w / vw, h / vh);
     let d2p = [m[0] * sx, m[1] * sy, m[2] * sx, m[3] * sy, m[4] * sx, m[5] * sy];
-    let scene = scene_param(cx, p.scene_id.as_deref())?;
     let bg = background(doc, &scene, &p.background)?;
     let styles: Option<std::collections::BTreeMap<Id, Id>> =
         doc.scene(&scene).map(|sc| sc.palette_styles().iter().map(|(a, b)| (a.clone(), b.clone())).collect());
     let blobs = cx.project().ok().map(|pr| &pr.store.blobs);
     let cache = cx.planar_cache();
-    let zones: std::collections::BTreeMap<String, crate::planar::LayerZones> =
-        crate::planar::drawing_zones(&cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
     let mut builder =
         super::draw_render::Builder::in_drawing_units(doc, blobs, styles, u64::from(wu) * u64::from(hu) / 1024);
-    builder.nodes(d.nodes(), &zones)?;
+    if !excluded {
+        let zones: std::collections::BTreeMap<String, crate::planar::LayerZones> =
+            crate::planar::drawing_zones(&cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
+        builder.nodes(d.nodes(), &zones)?;
+    }
     let items = vec![tt_render::Item::Layer { transform: d2p, items: builder.take_items() }];
     let mut warnings = std::mem::take(&mut builder.warnings);
     if p.quality == Quality::Draft {
@@ -718,6 +728,28 @@ fn active_view(cx: &mut Cx, p: &FrameParams, doc: &Document, frame: u32) -> Resu
         started: std::time::Instant::now(),
     };
     deliver(cx, p, image)
+}
+
+/// Whether `id` or one of its ancestors in the scene tree is excluded.
+fn excluded_in(nodes: &[tt_model::entities::scene::TreeNode], id: &Id, exclude: &BTreeSet<Id>) -> bool {
+    fn walk(
+        nodes: &[tt_model::entities::scene::TreeNode],
+        id: &Id,
+        exclude: &BTreeSet<Id>,
+        inherited: bool,
+    ) -> Option<bool> {
+        for n in nodes {
+            let x = inherited || exclude.contains(&n.id);
+            if &n.id == id {
+                return Some(x);
+            }
+            if let Some(r) = walk(&n.children, id, exclude, x) {
+                return Some(r);
+            }
+        }
+        None
+    }
+    walk(nodes, id, exclude, false).unwrap_or(false)
 }
 
 /// `composition: "element"` with `drawingId`: the drawing in drawing space (09 §11.1 item 11: origin at the top-left of

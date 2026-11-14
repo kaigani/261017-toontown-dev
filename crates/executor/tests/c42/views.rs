@@ -168,3 +168,41 @@ fn view_changes_are_announced_to_the_host_as_shell_view() {
     assert_eq!(ev[0]["transform"]["rotationDegrees"], 30.0, "{}", ev[0]);
     assert!(ev[0]["drawingToView"].is_array() && ev[0]["viewToDrawing"].is_array());
 }
+
+/// M3 merge note §8 item 3 (the Drawing-view half; the camera's roll and default FOV need the Camera view, M4 C4.3):
+/// the refusals owned by C4.2 become implementations (`activeView`, view space), draft quality renders as final with
+/// its warning, `exclude` wins over the current drawing, and the render's coordinates agree with the view mapping.
+#[test]
+fn m3_item3_refusals_become_implementations_and_agree_with_the_mapping() {
+    let h = ready();
+    crate::equivalence::painted_rect(&h);
+    ok(&h, "view.active.set", json!({ "viewId": "drawingView" }));
+    ok(&h, "view.zoom.set", json!({ "viewId": "drawingView", "zoom": 1.5 }));
+    ok(&h, "view.rotation.set", json!({ "viewId": "drawingView", "degrees": 30 }));
+    let r = ok(
+        &h,
+        "render.frame.run",
+        json!({ "composition": "activeView", "quality": "draft", "background": "#F0F0F0FF" }),
+    );
+    assert_eq!((r["width"].as_u64(), r["height"].as_u64()), (Some(1920), Some(1080)));
+    assert!(r["warnings"].as_array().unwrap().iter().any(|w| w["code"] == "render.draftAsFinal"), "{r}");
+    // Coordinates agree: the render's image-to-drawing matrix is the view's view-to-drawing matrix.
+    let m = ok(&h, "draw.viewMapping.get", json!({ "view": "drawing" }));
+    for i in 0..6 {
+        let (a, b) = (r["imageToCamera"][i].as_f64().unwrap(), m["viewToDrawing"][i].as_f64().unwrap());
+        assert!((a - b).abs() <= 1e-9 * (1.0 + b.abs()), "{i}: {a} vs {b}");
+    }
+    // The same pixels as the headless screenshot of the view (one rasteriser, one mapping).
+    let shot = ok(&h, "inspect.screenshot", json!({}));
+    let px = |b64: &str| tt_render::decode_png(&tt_persist::b64::decode(b64).unwrap(), 4096).unwrap().2;
+    let data = r["data"].as_str().or_else(|| r["png"].as_str()).unwrap();
+    assert!(px(data) == px(shot["png"].as_str().unwrap()), "activeView and screenshot agree");
+    // `exclude` wins: the drawing's element excluded leaves the background only.
+    let ex = ok(
+        &h,
+        "render.frame.run",
+        json!({ "composition": "activeView", "background": "#F0F0F0FF", "exclude": [BOB] }),
+    );
+    let e = px(ex["data"].as_str().or_else(|| ex["png"].as_str()).unwrap());
+    assert!(e.chunks(4).all(|c| c == [0xF0, 0xF0, 0xF0, 0xFF]), "excluded: background only");
+}
