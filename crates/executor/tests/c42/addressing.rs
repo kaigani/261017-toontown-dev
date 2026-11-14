@@ -202,4 +202,5 @@ fn c42a_r3_01_frame_and_view_space_are_honoured_by_every_point_taking_command() 
         }
     }
     assert!(failures.is_empty(), "{}", failures.join("\n"));
+    assert!(succeeded >= 20, "most cases run (not only equal refusals): {succeeded} of 27");
 }

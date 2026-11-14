@@ -100,7 +100,7 @@ fn heavy(budget: Duration, strokes: u32) -> Arc<ExecutorHandle> {
     let h = Arc::new(ExecutorHandle::spawn(ExecutorConfig { budget }).unwrap());
     assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
     ok(&h, "app.context.set", json!({ "elementId": "scene:#1/element:\"Bob\"", "frame": 1 }));
-    for k in 0..120 {
+    for k in 0..strokes {
         let points: Vec<_> = (0..400)
             .map(|i| json!({ "x": -900.0 + f64::from(i) * 4.5, "y": -500.0 + f64::from(k % 30) * 33.0 + f64::from(k / 30) + f64::from(i % 9) * 3.0 }))
             .collect();
@@ -170,7 +170,7 @@ fn a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afte
     // Budget: captures outlast a 250 ms call budget. The holders' calls answer `job.waitTimeout` at the budget while
     // their jobs run on; the waiter's call ends at its own budget, or takes a freed caller slot and meets the two still
     // running capture jobs: either way the typed `limit.exceeded`, near the budget, and no capture is started.
-    let h = heavy(Duration::from_millis(250), 360);
+    let h = heavy(Duration::from_millis(250), 120);
     let holders: Vec<_> = (0..2)
         .map(|_| {
             let (h, r) = (h.clone(), region.clone());
