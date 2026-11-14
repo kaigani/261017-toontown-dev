@@ -70,6 +70,7 @@ describe('M0 diagnostics gating (C0.4)', () => {
       'restart_engine',
       'canvas_scene',
       'canvas_load',
+      'gesture_commit',
     ]);
     expect(DIAGNOSTIC).toContain('bench_plan');
     expect(DIAGNOSTIC).toContain('spike_canvas_scene');

@@ -338,6 +338,24 @@ pub async fn canvas_load(app: AppHandle, json: String) -> Result<Response, Strin
     answer.map(|p| Response::new(p.bytes)).map_err(|e| error_json(&engine_error(&e)))
 }
 
+/// A gesture the user made in a Drawing view window (M4 C4.2b; design note 2 §6): the `pointer` request's events,
+/// run by the same gesture driver as the headless `pointer` tool, with the user's origin, so the window path and the
+/// headless path produce the same command (G2, ruling D-4). Answers the `pointer` envelope.
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a request that is not JSON; every other refusal is the envelope's.
+#[tauri::command]
+pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, String> {
+    let request: Value = parse(&json)?;
+    let env = tauri::async_runtime::spawn_blocking(move || {
+        let host = app.state::<Host>();
+        host.exec().pointer(tt_executor::Origin::User, request)
+    })
+    .await
+    .map_err(|e| internal(e.to_string()))?;
+    respond(&env)
+}
+
 fn engine_error(e: &tt_executor::CommandError) -> tt_engine::ErrorInfo {
     tt_engine::ErrorInfo { code: e.code.clone(), message: e.message.clone(), details: (*e.details).clone() }
 }

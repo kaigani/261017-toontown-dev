@@ -10,6 +10,7 @@ import { useEffect, useRef } from 'react';
 import type { EngineApi } from '../ipc';
 import { bucketOf } from './bucket';
 import { gridGeometry, IDENTITY, scaleOf, ViewTris, type Affine } from './geometry';
+import { ACCENT, GestureCollector, gestureOverlay, type DomSample, type OverlayStyle } from './input';
 import { CanvasModel } from './model';
 import type { Renderer } from './renderer';
 import { createRenderer } from './backend';
@@ -59,6 +60,58 @@ export function CanvasView({
     let summary = '';
     let raf = 0;
     let stopped = false;
+    // Input (design note 2 §2 and §6): one gesture at a time; its overlay stays until the committed revision is drawn.
+    const collector = new GestureCollector(viewId);
+    let style: OverlayStyle = { tool: 'select', ink: ACCENT, width: 1 };
+    let penSizes = { brush: 3, eraser: 10 };
+    let currentColour: string | null = null;
+    let clearOverlayAt: { version: number; deadline: number } | null = null;
+    let lastGesture: { status: string; code?: string } | null = null;
+    const refreshStyle = () => {
+      const zoom = scaleOf(d2v);
+      const tool = style.tool;
+      const width =
+        tool === 'eraser'
+          ? penSizes.eraser * zoom
+          : ['brush', 'pencil', 'polyline'].includes(tool)
+            ? penSizes.brush * zoom
+            : 1;
+      const ink = (currentColour ? model?.scene?.colours[currentColour] : undefined) ?? ACCENT;
+      style = { tool, ink, width };
+    };
+    const refreshTool = () => {
+      void engine.run('tool.active.get', {}).done.then((env) => {
+        const id = (env.result as Record<string, unknown> | undefined)?.['toolId'];
+        if (typeof id === 'string') style = { ...style, tool: id };
+        refreshStyle();
+      });
+      void engine.run('tool.pen.list', {}).done.then((env) => {
+        const r = env.result as
+          | {
+              pens?: { penId: string; maxSize?: number }[];
+              currentBrushPenId?: string;
+              currentEraserPenId?: string;
+            }
+          | undefined;
+        const size = (id?: string) => r?.pens?.find((p) => p.penId === id)?.maxSize;
+        penSizes = {
+          brush: size(r?.currentBrushPenId) ?? penSizes.brush,
+          eraser: size(r?.currentEraserPenId) ?? penSizes.eraser,
+        };
+        refreshStyle();
+      });
+    };
+    const reportGesture = (on: boolean) => {
+      void engine
+        .report({ modal: on ? { kind: 'gesture', title: style.tool } : null })
+        .catch(() => undefined);
+    };
+    const cancelGesture = () => {
+      if (collector.cancel()) {
+        overlay = null;
+        reportGesture(false);
+      }
+    };
 
     const refreshMapping = () => {
       void engine
@@ -69,6 +122,7 @@ export function CanvasView({
             d2v = m;
             viewVersion++;
             model?.setBucket(bucketOf(scaleOf(m)));
+            refreshStyle();
           }
         })
         .catch(() => undefined);
@@ -105,7 +159,14 @@ export function CanvasView({
     let unlisten: (() => void) | null = null;
     void engine
       .onEvent((event) => {
+        if (typeof event.generation === 'number' && event.generation !== engine.generation()) cancelGesture();
         if (typeof event.generation === 'number') model?.setGeneration(event.generation);
+        if (event.name === 'tool.active.changed' || event.name === 'tool.pen.changed') refreshTool();
+        if (event.name === 'colour.current.changed') {
+          const c = (event.payload as Record<string, unknown> | null)?.['colourId'];
+          if (typeof c === 'string') currentColour = c;
+          refreshStyle();
+        }
         if (event.name === 'shell.view') {
           const p = event.payload as Record<string, unknown> | null;
           const m = asAffine(p?.['drawingToView']);
@@ -113,6 +174,7 @@ export function CanvasView({
             d2v = m;
             viewVersion++;
             model?.setBucket(bucketOf(scaleOf(m)));
+            refreshStyle();
           }
           return;
         }
@@ -129,6 +191,13 @@ export function CanvasView({
       if (!model || !renderer) return;
       model.frame();
       const scene = model.scene;
+      if (
+        clearOverlayAt &&
+        (model.version > clearOverlayAt.version || performance.now() > clearOverlayAt.deadline)
+      ) {
+        overlay = null;
+        clearOverlayAt = null;
+      }
       if (scene && scene.colours !== lastColours) {
         renderer.setColours(scene.colours);
         lastColours = scene.colours;
@@ -158,6 +227,7 @@ export function CanvasView({
         generation: engine.generation(),
         drawings: [...model.resident.entries()].map(([id, r]) => ({ id, rev: r.rev, bucket: r.bucket })),
         failures: model.failures.slice(-3),
+        gesture: lastGesture,
         ...(({ drawn, residentDrawings, residentBytes, lastError }) => ({
           drawn,
           residentDrawings,
@@ -172,6 +242,85 @@ export function CanvasView({
     };
     raf = requestAnimationFrame(tick);
 
+    // The input path (design note 2 §2): pointer events in view pixels (the canvas fills its view window).
+    const sample = (e: PointerEvent | WheelEvent): DomSample => {
+      const r = canvas.getBoundingClientRect();
+      const pe = e as Partial<PointerEvent>;
+      return {
+        x: e.clientX - r.left,
+        y: e.clientY - r.top,
+        pressure: pe.pressure ?? 1,
+        tiltX: pe.tiltX ?? 0,
+        tiltY: pe.tiltY ?? 0,
+        pointerType: pe.pointerType ?? 'mouse',
+        button: e.button,
+        buttons: e.buttons,
+        shiftKey: e.shiftKey,
+        altKey: e.altKey,
+        ctrlKey: e.ctrlKey,
+        metaKey: e.metaKey,
+        timeStamp: e.timeStamp,
+      };
+    };
+    const commit = (req: ReturnType<GestureCollector['up']>) => {
+      if (!req) return;
+      const before = model?.version ?? 0;
+      void engine.gestureCommit(req).then((env) => {
+        lastGesture =
+          env.status === 'error'
+            ? { status: 'error', code: env.error?.code ?? 'error' }
+            : { status: env.status };
+        // The overlay stays until the committed drawing is drawn (or briefly, when nothing changed).
+        clearOverlayAt = {
+          version: before,
+          deadline: performance.now() + (env.status === 'error' ? 0 : 400),
+        };
+        if (env.status === 'error') overlay = null;
+      });
+    };
+    const onDown = (e: PointerEvent) => {
+      if (!collector.down(sample(e))) return;
+      e.preventDefault();
+      canvas.setPointerCapture(e.pointerId);
+      clearOverlayAt = null;
+      reportGesture(true);
+      overlay = gestureOverlay(collector.points, style);
+    };
+    const onMove = (e: PointerEvent) => {
+      if (!collector.active) return;
+      const list = typeof e.getCoalescedEvents === 'function' ? e.getCoalescedEvents() : [];
+      collector.move((list.length > 0 ? list : [e]).map(sample));
+      overlay = gestureOverlay(collector.points, style);
+    };
+    const onUp = (e: PointerEvent) => {
+      if (!collector.active) return;
+      const req = collector.up(sample(e));
+      if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+      reportGesture(false);
+      commit(req);
+    };
+    const onCancel = () => {
+      cancelGesture();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && collector.active) {
+        e.preventDefault();
+        cancelGesture();
+      }
+    };
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      commit(collector.wheel(sample(e), e.deltaY));
+    };
+    canvas.addEventListener('pointerdown', onDown);
+    canvas.addEventListener('pointermove', onMove);
+    canvas.addEventListener('pointerup', onUp);
+    canvas.addEventListener('pointercancel', onCancel);
+    canvas.addEventListener('lostpointercapture', onCancel);
+    canvas.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('keydown', onKey, true);
+    refreshTool();
+
     onReady?.({
       setOverlay(t) {
         overlay = t;
@@ -183,6 +332,15 @@ export function CanvasView({
 
     return () => {
       stopped = true;
+      // A window closing mid-gesture commits nothing (D-7a).
+      cancelGesture();
+      canvas.removeEventListener('pointerdown', onDown);
+      canvas.removeEventListener('pointermove', onMove);
+      canvas.removeEventListener('pointerup', onUp);
+      canvas.removeEventListener('pointercancel', onCancel);
+      canvas.removeEventListener('lostpointercapture', onCancel);
+      canvas.removeEventListener('wheel', onWheel);
+      window.removeEventListener('keydown', onKey, true);
       cancelAnimationFrame(raf);
       ro?.disconnect();
       unlisten?.();
