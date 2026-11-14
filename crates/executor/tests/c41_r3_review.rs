@@ -2,6 +2,56 @@
 #![allow(clippy::unwrap_used, reason = "review assertions")]
 use serde_json::{Value, json};
 use tt_executor::{ExecutorHandle, ExecutorOptions, Invocation, PersistOptions, UserDirs};
+mod part_b_availability {
+    use super::*;
+    #[test]
+    fn selection_and_empty_state_parity() {
+        let h = ExecutorHandle::spawn(Default::default()).unwrap();
+        let mut mismatches = Vec::new();
+        for state in 0..3 {
+            if state == 1 {
+                ok(&h, "project.create", json!({"name":"Empty"}));
+            }
+            if state == 2 {
+                assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+                ok(&h, "edit.selection.set", json!({"context":"staging","ids":["scene:\"Intro\"/element:\"Bob\""]}));
+            }
+            for id in [
+                "edit.copy",
+                "edit.cut",
+                "edit.cutSpecial",
+                "edit.delete",
+                "edit.paste",
+                "edit.selectAll",
+                "edit.undo",
+                "edit.redo",
+                "project.save",
+                "project.close",
+            ] {
+                let params = if id.starts_with("project.") || ["edit.undo", "edit.redo"].contains(&id) {
+                    json!({})
+                } else {
+                    json!({"context":"staging"})
+                };
+                let a = h.availability(vec![(id.into(), params.as_object().unwrap().clone())]).unwrap().remove(0);
+                if a.dialog {
+                    continue;
+                }
+                let mut inv = Invocation::user(id, a.params.clone());
+                inv.options.dry_run = true;
+                let e = h.invoke(inv);
+                let form_refusal = e
+                    .error
+                    .as_ref()
+                    .is_some_and(|e| ["project.pathRequired", "project.unsavedChanges"].contains(&e.code.as_str()));
+                if a.enabled != e.is_ok() && !form_refusal {
+                    mismatches.push(format!("state {state} {id}: {a:?} {e:?}"));
+                }
+            }
+        }
+        assert!(mismatches.is_empty(), "{}", mismatches.join("\n"));
+    }
+}
 fn ok(h: &ExecutorHandle, id: &str, p: Value) -> Value {
     let e = h.invoke(Invocation::user(id, p));
     assert!(e.error.is_none(), "{id}: {e:?}");
