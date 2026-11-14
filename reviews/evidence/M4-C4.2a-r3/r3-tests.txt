@@ -1,0 +1,28 @@
+
+running 2 tests
+test selection_frame_addresses_exposed_drawing ... FAILED
+test exact_hit_still_needs_view_when_default_tolerance_reaches_front_object ... FAILED
+
+failures:
+
+failures:
+    exact_hit_still_needs_view_when_default_tolerance_reaches_front_object
+    selection_frame_addresses_exposed_drawing
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.41s
+     Running tests\c42a_r3_review.rs (target\debug\deps\c42a_r3_review-a3e6cbc00996eee8.exe)
+
+thread 'selection_frame_addresses_exposed_drawing' (53516) panicked at crates\executor\tests\c42a_r3_review.rs:15:5:
+assertion `left == right` failed: frame must select in the drawing exposed at that frame (02 section 13.1 item 4)
+  left: Array []
+ right: Array [String("st_01K7JJN801R8A796ZFD2MC9VCK")]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'exact_hit_still_needs_view_when_default_tolerance_reaches_front_object' (28340) panicked at crates\executor\tests\c42a_r3_review.rs:37:5:
+assertion `left == right` failed: 02 section 13.3 requires the view for tolerances even on an exact hit
+  left: Array [String("st_01K7JJN800FJRWFM4KTPMG2Y8P")]
+ right: Array [String("st_01K7JJN800J6GZ68MHS01HNTDM")]
+error: test failed, to rerun pass `-p tt-executor --test c42a_r3_review`
