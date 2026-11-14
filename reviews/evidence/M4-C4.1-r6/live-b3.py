@@ -55,6 +55,7 @@ async def main(app,out):
        assert v.get('status')=='ok',v
       result[cid]=dict(medianMs=statistics.median(times),worstMs=max(times),samples=times)
      check(label+' latency',True,result); return result
+    v=await cmd('element.timing.set',{'duration':2}); assert v.get('status')=='ok',v
     empty=await measure('empty')
     batches=[]
     for i in range(4):
@@ -64,6 +65,10 @@ async def main(app,out):
     large=await measure('large')
     check('ADR-0021 decision 9 responsiveness',large['app.frame.set']['worstMs']<=100+empty['app.frame.set']['worstMs'],dict(empty=empty,large=large))
     for key,enabled in [('F9',False),('F10',True)]: await cmd('keymap.set',dict(keys=key,commandId='agent.server.set',params={'enabled':enabled},onConflict='override'))
+   e.stop(proc); proc=e.launch(app,user,disc); d=e.wait_discovery(disc,proc)
+   async with f.session(d) as ready:
+    async def ready_tree(): return (await e.tree(ready)).get('result') or {}
+    await poll(ready_tree,lambda t:not t.get('stale') and t.get('source')=='gui')
    stop=threading.Event(); errors=[]; reads=[0]; endpoints=[0]
    def reader():
     while not stop.is_set():
