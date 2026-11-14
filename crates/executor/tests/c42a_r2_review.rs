@@ -905,4 +905,148 @@ mod part_c_equivalence {
             );
         }
     }
+    fn stroke(h: &ExecutorHandle) -> Value {
+        let mut p = style(
+            h,
+            json!({"kind":"brush","points":[{"x":40.0,"y":40.0,"pressure":1.0},{"x":120.0,"y":80.0,"pressure":1.0}],"fit":true}),
+        );
+        p.as_object_mut().unwrap().remove("thickness");
+        p
+    }
+    #[test]
+    fn c2_current_pen() {
+        let (a, b) = (ready(), ready());
+        let pens = ok(&b, "tool.pen.list", json!({"type":"brush"}));
+        let pen = pens["pens"][0]["penId"].clone();
+        for h in [&a, &b] {
+            ok(h, "tool.pen.set", json!({"penId":pen,"minSize":1.5,"maxSize":11,"tipShape":"square"}));
+            ok(h, "tool.pen.select", json!({"penId":pen}));
+        }
+        let mut p = stroke(&b);
+        p["penId"] = pen;
+        check(&a, &b, "brush", events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]), "draw.stroke.add", p);
+    }
+    #[test]
+    fn c2_pencil_shape_source() {
+        let (a, b) = (ready(), ready());
+        for h in [&a, &b] {
+            ok(h, "tool.pencil.options.set", json!({"thicknessSource":"fixed","thickness":2.5}));
+        }
+        let mut p =
+            style(&b, json!({"from":{"x":40.0,"y":40.0},"to":{"x":120.0,"y":80.0},"square":false,"fromCentre":false}));
+        p["thickness"] = json!(2.5);
+        check(&a, &b, "rectangle", events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]), "draw.rectangle.add", p);
+    }
+    #[test]
+    fn c2_eraser_pen() {
+        let (a, b) = (ready(), ready());
+        let pens = ok(&b, "tool.pen.list", json!({"type":"eraser"}));
+        let pen = pens["pens"][0]["penId"].clone();
+        for h in [&a, &b] {
+            ok(h, "tool.pen.set", json!({"penId":pen,"maxSize":19,"tipShape":"square"}));
+            ok(h, "tool.pen.select", json!({"penId":pen}));
+            rect(h, json!({"x":30,"y":30}), json!({"x":130,"y":90}));
+        }
+        check(
+            &a,
+            &b,
+            "eraser",
+            events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]),
+            "draw.erase.apply",
+            json!({"path":[{"x":40.0,"y":40.0,"pressure":1.0},{"x":120.0,"y":80.0,"pressure":1.0}],"penId":pen}),
+        );
+    }
+    #[test]
+    fn c2_gap_modes() {
+        for mode in ["off", "small", "medium", "large"] {
+            let (a, b) = (ready(), ready());
+            for h in [&a, &b] {
+                rect(h, json!({"x":300,"y":300}), json!({"x":400,"y":360}));
+                ok(h, "colour.gapClosing.set", json!({"mode":mode}));
+            }
+            check(
+                &a,
+                &b,
+                "paint",
+                events(&[(1310.0, 210.0), (1310.0, 210.0)], &[]),
+                "colour.paint.apply",
+                json!({"points":[{"x":350.0,"y":330.0}],"colourId":colour(&b),"space":"drawing","view":"drawingView","gapClosing":mode}),
+            );
+        }
+    }
+    #[test]
+    fn c2_selection_options() {
+        // Â§7.1.1 supplies alternate-lasso and constrain-add; the option is rectRule.
+        for lasso in [false, true] {
+            for rule in ["inside", "intersect"] {
+                let (a, b) = (ready(), ready());
+                for h in [&a, &b] {
+                    ok(h, "tool.select.options.set", json!({"rectRule":rule}));
+                }
+                let p = if lasso {
+                    json!({"by":"lasso","polygon":[{"x":40.0,"y":40.0},{"x":120.0,"y":80.0}],"rectRule":rule,"mode":"add"})
+                } else {
+                    json!({"by":"rect","rect":{"x":40.0,"y":40.0,"width":80.0,"height":40.0},"rectRule":rule,"mode":"add"})
+                };
+                check(
+                    &a,
+                    &b,
+                    "select",
+                    events(&[(1000.0, 500.0), (1080.0, 460.0)], if lasso { &["shift", "alt"] } else { &["shift"] }),
+                    "draw.selection.set",
+                    p,
+                );
+            }
+        }
+    }
+    #[test]
+    fn c2_temporary_overrides() {
+        for kind in ["eraser", "select", "dropper"] {
+            let (a, b) = (ready(), ready());
+            for h in [&a, &b] {
+                rect(h, json!({"x":300,"y":300}), json!({"x":400,"y":360}));
+                ok(h, "colour.paint.apply", json!({"points":[{"x":350,"y":330}],"colourId":colour(h)}));
+            }
+            let tool = if kind == "dropper" { "paint" } else { "brush" };
+            let ev = events(
+                &[(1310.0, 210.0), (1310.0, 210.0)],
+                match kind {
+                    "select" => &["ctrl"],
+                    "dropper" => &["alt"],
+                    _ => &[],
+                },
+            );
+            let mut req = json!({"view":"drawing","tool":tool,"events":ev});
+            if kind == "eraser" {
+                req["pointerType"] = json!("penEraser");
+            }
+            let (id, p) = match kind {
+                "eraser" => {
+                    let pens = ok(&b, "tool.pen.list", json!({"type":"eraser"}));
+                    (
+                        "draw.erase.apply",
+                        json!({"path":[{"x":350.0,"y":330.0,"pressure":1.0},{"x":350.0,"y":330.0,"pressure":1.0}],"penId":pens["pens"][0]["penId"]}),
+                    )
+                }
+                "select" => {
+                    ("draw.selection.set", json!({"by":"point","point":{"x":350.0,"y":330.0},"mode":"replace"}))
+                }
+                _ => ("colour.pick", json!({"point":{"x":350.0,"y":330.0},"space":"drawing","view":"drawingView"})),
+            };
+            let e = a.pointer(Origin::User, req);
+            assert!(e.is_ok(), "{e:?}");
+            let cs = e.result.unwrap()["commands"].as_array().unwrap().clone();
+            assert_eq!(cs[1]["commandId"], id);
+            assert_eq!(cs[1]["params"], p);
+            let r = ok(&b, id, p);
+            if kind == "dropper" {
+                assert_eq!(cs.len(), 3);
+                assert_eq!(cs[2]["params"], json!({"colourId":r["colourId"]}));
+                ok(&b, "colour.current.set", json!({"colourId":r["colourId"]}));
+            }
+            assert_eq!(canonical(&a), canonical(&b));
+            assert_eq!(hist(&a), hist(&b));
+            assert_eq!(ok(&a, "tool.active.get", json!({}))["toolId"], tool);
+        }
+    }
 }
