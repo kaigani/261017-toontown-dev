@@ -279,7 +279,7 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
   const counters = { drawn: 0, staticRedraws: 0, staticReuses: 0 };
   let lastError: string | null = null;
   device.addEventListener('uncapturederror', (e) => {
-    lastError = (e).error.message;
+    lastError = e.error.message;
   });
 
   const writeSlots = (d: GpuDrawing) => {
