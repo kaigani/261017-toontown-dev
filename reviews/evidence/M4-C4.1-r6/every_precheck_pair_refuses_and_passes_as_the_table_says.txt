@@ -1,0 +1,9 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.22s
+     Running tests\c41.rs (target\debug\deps\c41-ae0912411662ec3e.exe)
+
+running 1 test
+156 precheck pairs, both states each
+test availability::every_precheck_pair_refuses_and_passes_as_the_table_says ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 46 filtered out; finished in 2.36s
+
