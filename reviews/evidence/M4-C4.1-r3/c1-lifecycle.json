@@ -1,0 +1,222 @@
+[
+  {
+    "check": "token length and encoding",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "wrong token rejected",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "right token reaches session lookup",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 0",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 1",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 2",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 3",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 4",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 5",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 6",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 7",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 8",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 9",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 10",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 11",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 12",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 13",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 14",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 15",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 16",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 17",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 18",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 19",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 20",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 21",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 22",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 23",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 24",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 25",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 26",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 27",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 28",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 29",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 30",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session admission 31",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "session ids unique and 128-bit hex",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "33rd session refused",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "post requires session",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "delete succeeds",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "deleted session dead",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "delete releases session capacity",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "token absent from HTTP bodies",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "token absent from process output",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "discovery remains after abrupt exit",
+    "ok": true,
+    "detail": null
+  }
+]
