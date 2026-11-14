@@ -1,0 +1,354 @@
+[
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/ci-gui-macos/01-start-screen.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/ci-gui-macos/02-project.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/ci-gui-macos/03-preferences.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/ci-gui-macos/04-restart.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/ci-gui-windows/01-start-screen.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/ci-gui-windows/02-project.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/ci-gui-windows/03-preferences.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/ci-gui-windows/04-restart.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/local-windows/01-start-screen.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/local-windows/02-project.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/local-windows/03-preferences.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1-response/local-windows/04-restart.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1/gui/01-start-screen.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR",
+      "gAMA",
+      "pHYs",
+      "sRGB"
+    ],
+    "extra": [
+      "gAMA",
+      "pHYs",
+      "sRGB"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1/gui/02-project.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR",
+      "gAMA",
+      "pHYs",
+      "sRGB"
+    ],
+    "extra": [
+      "gAMA",
+      "pHYs",
+      "sRGB"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1/gui/03-preferences.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR",
+      "gAMA",
+      "pHYs",
+      "sRGB"
+    ],
+    "extra": [
+      "gAMA",
+      "pHYs",
+      "sRGB"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r1/gui/04-restart.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR",
+      "gAMA",
+      "pHYs",
+      "sRGB"
+    ],
+    "extra": [
+      "gAMA",
+      "pHYs",
+      "sRGB"
+    ]
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r2-response/local-windows/01-start-screen.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r2-response/local-windows/02-project.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r2-response/local-windows/03-preferences.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r2-response/local-windows/04-restart.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r2/c2a-e2e/01-start-screen.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r2/c2a-e2e/02-project.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r2/c2a-e2e/03-preferences.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1-r2/c2a-e2e/04-restart.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/ci-gui-macos/01-start-screen.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/ci-gui-macos/02-project.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/ci-gui-macos/03-preferences.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/ci-gui-macos/04-restart.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/ci-gui-windows/01-start-screen.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/ci-gui-windows/02-project.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/ci-gui-windows/03-preferences.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/ci-gui-windows/04-restart.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/local-windows/01-start-screen.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/local-windows/02-project.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/local-windows/03-preferences.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  },
+  {
+    "file": "reviews/evidence/M4-C4.1/local-windows/04-restart.png",
+    "chunks": [
+      "IDAT",
+      "IEND",
+      "IHDR"
+    ],
+    "extra": []
+  }
+]
