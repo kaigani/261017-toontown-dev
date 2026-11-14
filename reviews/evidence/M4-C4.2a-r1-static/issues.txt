@@ -1,0 +1,1 @@
+C42A-R1-23: Dropper never selects the picked colour despite explicit spec requirement
