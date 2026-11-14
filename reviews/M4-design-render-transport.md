@@ -86,3 +86,54 @@ the measured costs (E-C2).
   payload is refused before any geometry is built.
 - **T5** An evicted drawing is rebuilt identically (same decoded buffers for the same revision and zoom bucket).
 - **T6** A message of an old generation is discarded and a new generation reloads every resident drawing.
+
+## 8. Amendments after C4.2a (before the code)
+
+C4.2a's corrections and review lessons change the following; where this section and §1 to §7 differ, this section
+holds.
+
+- **The view message.** `canvas.view` is the host-only `shell.view` event C4.2a built (SI-132: `viewId`, `type`,
+  `size`, `transform`, `drawingToView`, `viewToDrawing`), delivered to the window showing that view. At mount and after
+  a generation change the canvas reads `view.transform.get` once. It never derives a mapping (design note 6).
+- **One walk, then tessellation.**
+  - The drawing is walked by the executor's `draw_render` builder, the same walk `draw.drawing.render` and the
+    headless screenshot use (06 §6.1: one render list), in drawing units and with each paint's colour id kept.
+  - `tt-render::canvas` tessellates those items with `lyon_tessellation` (MIT/Apache-2.0, added to the dependency
+    audit), using the final renderer's own rules:
+    - planar fill rings: even-odd;
+    - brush outlines and glyphs: nonzero;
+    - pencil strokes: round caps and round joins (`tt-render` strokes with `Join::Round`, `Cap::Round`).
+  - Curves are flattened at the zoom bucket's tolerance (SI-137).
+  - The encoding is `tt-render::canvas::encode`. The decoder is `desktop/src/canvas/format.ts`.
+- **Record kinds** (every one present in the golden corpus):
+  1. solid mesh: vertices `x, y` (f32), a colour slot (u16), flags (u16), and u32 indices;
+  2. gradient mesh: the same vertices, plus the gradient's kind (linear or radial), its points and its stops (colour
+     slots), evaluated per fragment;
+  3. bitmap reference: the image id and its placement; pixels travel in their own capped message (06 §6.9).
+  Text and glyph outlines are solid or gradient meshes. A texture-filled zone is drawn with its mean colour until
+  bitmap transport exists. That is a declared preview approximation (06 §6.10), recorded in SI-137.
+- **Colour table.** One slot per colour id: the id and its RGBA at the revision. A palette change is a `canvas.delta`
+  with new slot values (06 §6.3).
+- **Validation rules, each with its own corrupt file in the golden corpus**, refused before any geometry is built,
+  in Rust (`decode` exists for the tests) and in TypeScript:
+  - V1 magic;
+  - V2 major version;
+  - V3 header length;
+  - V4 a section length against its count;
+  - V5 the sum of the sections against the payload length (truncated and overlong);
+  - V6 an index out of range;
+  - V7 a colour slot out of range;
+  - V8 an unknown record kind;
+  - V9 a non-finite coordinate;
+  - V10 a drawing id that is not 26 ULID characters.
+- **Matrices, not samples.**
+  - Every header field is varied in the corpus and checked after decoding, in both languages.
+  - Every record kind round-trips.
+  - Every validation rule has a cell that must refuse, plus the unmodified file, which must decode. A decoder that
+    skipped the rule fails its cell.
+- **Absent, null and cleared (D-7e).** Every JSON message (`canvas.delta`, `canvas.ack`, `canvas.resyncRequest`, and
+  `gesture.commit` of note 2) states, field by field, whether it may be absent, null or an empty value, and what each
+  means. One table-driven wire test sends every field in every allowed state through the real serialisation, in both
+  directions.
+- **Invariants added:** T7 (D-7a) — a float window has its own queue, frame loop and resident set, and closing it drops
+  them without affecting the main window.

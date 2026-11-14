@@ -65,3 +65,50 @@ workstation with receipts (the plan's bounds). The kernel-side holds stay in `c4
 - **F4** The back end is the rule set's output for the measured cells (the rule table's own Vitest cases, now run on
   the product selector).
 - **F5** A cancelled gesture sends no command and leaves the overlay empty (D-7c).
+
+## 6. Amendments after C4.2a (before the code)
+
+Where this section and §1 to §5 differ, this section holds.
+
+- **Gesture messages, concretely.** They reuse the paths C4.2a built, so equivalence holds by construction (G2, D-4):
+  - **begin:** the C4.1 shell report with `modal {kind: "gesture", viewId}`. The kernel's mid-gesture user priority
+    (ruling D-12) applies from that moment.
+  - **commit:** the host command `gesture_commit {viewId, events}`. Its `events` are the `pointer` request's events, so
+    `PointerRequest` is the one schema.
+    - `dt` is the difference of consecutive `PointerEvent.timeStamp` values, rounded to whole milliseconds.
+    - The pointer kind comes from `pointerType`, the pen's eraser button and `pointerType: "eraser"`.
+    - A mouse press has pressure 1 (02 §13.3). A pen reports its own pressure; its hover samples are not sent.
+    - Tilt is carried (SI-125).
+    - The host runs the same gesture driver as `ExecutorHandle::pointer`, with the user's origin, and answers the
+      `pointer` envelope.
+  - **cancel:** the report with the modal cleared. No command is sent.
+- **The attached `pointer` (P1, P2, P4).**
+  - In attached mode, an agent's `pointer` call for a view shown in a window is routed to that window's input queue.
+    The routing is a host message carrying the request id and the events.
+  - The events are played through the same sample collection and overlay as the user's, with simulated time.
+  - They are committed through `gesture_commit` with the agent's origin, and the envelope answers the MCP call.
+  - The queue runs one gesture at a time, so P1 holds.
+  - A user press during an agent gesture discards the agent's gesture with nothing committed, and its call answers
+    the SI-135 refusal (P2).
+  - While the user is mid-gesture, the agent's call waits up to `waitForUserMs` and then answers `ui.busy` (P4, the
+    kernel rule of D-12).
+  - A view not shown in any window keeps the headless path.
+- **Back-end measurement in the product (SI-136).**
+  - Each back end is measured on the rule set's three scenes for 2 s per cell, on an offscreen canvas, once after the
+    first launch and after a GPU, driver or webview version change.
+  - Until a result exists the canvas runs WebGL2, the mandatory path.
+  - The selector is `desktop/src/canvas/backend.ts`. It applies step 1 of the rule set, and its table-driven Vitest
+    cases are the rule table's own.
+- **Overlay appearance** (selection outline and handles, marquee, gesture ink, cursor ghosts): SI-138.
+- **Matrices.**
+  - Every covered tool's gesture through the real window equals the headless `pointer` gesture and the direct command,
+    in one table over all 18 tools of design note 3.
+  - Every overlay kind is absent from `draw.drawing.render` and `render.frame.run` of the same state, in one table
+    over the overlay kinds (06 §6.10).
+  - Every view-dependent tolerance used by the window's gestures follows the announced zoom (already C4.2a's kernel
+    rule; the window path joins the table).
+- **Invariants added:**
+  - F6 (D-7a, D-7c): a float closing mid-gesture, Escape, or a lost pointer capture leaves the document, the history and
+    the selection untouched and the overlay empty.
+  - F7 (D-7b): an engine restart mid-gesture discards the gesture, and the new generation reloads every resident
+    drawing.

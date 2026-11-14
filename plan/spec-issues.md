@@ -1581,3 +1581,45 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   when the zoom is not 100 % (ruling D-16).
 - **Alternative:** an exact hit (no tolerance), as before C4.2a round 2.
 - **Question:** does a point selection have a hit tolerance, and which?
+
+## SI-135 — an agent gesture interrupted by the user in attached mode (found in M4 C4.2b; interim)
+
+- **Sections:** 11 §6.4 (coexistence: the user has priority; `waitForUserMs`, `ui.busy`), 11 §7.6 (`pointer` through the
+  real input path).
+- **Problem:** the spec says the user has priority but not what an agent's `pointer` call answers when the user presses
+  while the agent's gesture is being played in the window.
+- **Interim decision:** the agent's gesture is discarded before any command, and its call answers `ui.busy` with
+  `details: {reason: "userInput", viewId}`; nothing is committed.
+- **Question:** confirm the code and details, or name another.
+
+## SI-136 — how long the product measures each canvas back end (found in M4 C4.2b; interim)
+
+- **Sections:** ADR-0007 canvas rule set, step 1 ("both back ends are measured at first launch and after a GPU, driver or
+  webview version change"); step 0 defines a cell by the C0.3 spike's 10 s pan/zoom.
+- **Problem:** the product measurement's duration and scheduling are not stated; 10 s on each of six cells would hold
+  the GPU for a minute at first launch.
+- **Interim decision:** 2 s per cell on an offscreen canvas, after the first launch and after each version change; until
+  a result exists the canvas runs WebGL2; an inconclusive cell is measured again on the next change.
+- **Question:** confirm, or state the duration.
+
+## SI-137 — interactive tessellation tolerance, zoom buckets and the resident geometry budget (found in M4 C4.2b; interim)
+
+- **Sections:** 06 §6.9 (caps for bitmaps: `displayBitmapMaxSize`; overlay buffering), 06 §6.10 (the interactive renderer
+  is a preview, not bound by determinism), 01 §6.5 (the zoom table).
+- **Problem:** the spec gives no flattening tolerance for the interactive canvas, no geometry memory budget, and no rule
+  for fills the canvas cannot yet show exactly.
+- **Interim decision:** curves are flattened to 0.25 view pixels at the top of the zoom bucket (buckets are the powers of
+  two of the zoom table), and crossing a bucket reloads the visible drawings; resident geometry is capped at 256 MB per
+  window, evicting off-screen drawings least recently used; a texture-filled zone is drawn with its texture's mean
+  colour until bitmap transport exists (exported pixels come only from the final renderer).
+- **Question:** confirm or state these values.
+
+## SI-138 — the appearance of the Drawing view's overlay (found in M4 C4.2b; interim)
+
+- **Sections:** 02 §4.2 (layer 9: the overlay), 02 §7.1 to §7.5 (what each tool shows), SI-127 (UI conventions).
+- **Problem:** colours, widths and handle sizes of the selection outline, handles, marquee, lasso, gesture ink and
+  cursor ghosts are not specified.
+- **Interim decision:** the theme's accent colour for selection and marquee (1 view pixel, constant across zoom),
+  8-pixel square handles, gesture ink in the current colour and pen thickness at the current zoom, a dashed outline for
+  the lasso.
+- **Question:** confirm or specify.
