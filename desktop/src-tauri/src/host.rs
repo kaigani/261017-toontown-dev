@@ -68,12 +68,17 @@ struct Windows {
     facts: std::collections::BTreeMap<String, WindowFacts>,
     order: u64,
     focused: Option<String>,
+    /// The float windows the host opened and has not seen destroyed (the main window is always expected): with every
+    /// window that reported anything, the freshness quorum (C41-R2-06).
+    expected: std::collections::BTreeSet<String>,
 }
 
 impl Windows {
     /// The combined facts as report members: `modal` (the most recent open modal of any window, or null), `textFocus`
     /// (the focused window's) and, when any window reported a tree, `uiTree` (the main window's tree with each other
-    /// window's tree as a child) with `renderedSeq` (the smallest window number; absent when one is not vouched for).
+    /// window's tree as a child) with `renderedSeq`: the smallest number over the quorum (the main window, every float
+    /// the host opened, every window that reported anything), absent when any of them has no tree or no number yet, so
+    /// the combination is fresh only when every window has caught up (C41-R2-06).
     fn combined(&self) -> serde_json::Map<String, Value> {
         let mut m = serde_json::Map::new();
         let modal =
@@ -103,7 +108,12 @@ impl Windows {
                 }
             }
             m.insert("uiTree".into(), root);
-            let seqs: Option<Vec<u64>> = trees.iter().map(|(_, (_, s))| *s).collect();
+            let quorum: std::collections::BTreeSet<&str> = std::iter::once("main")
+                .chain(self.expected.iter().map(String::as_str))
+                .chain(self.facts.keys().map(String::as_str))
+                .collect();
+            let seqs: Option<Vec<u64>> =
+                quorum.iter().map(|l| self.facts.get(*l).and_then(|f| f.tree.as_ref()).and_then(|(_, s)| *s)).collect();
             if let Some(min) = seqs.and_then(|v| v.into_iter().min()) {
                 m.insert("renderedSeq".into(), json!(min));
             }
@@ -194,8 +204,13 @@ impl Host {
         // The new generation numbers its events from 1; the old one's cancellation flags are dropped (ruling O-14).
         self.seq.store(0, Ordering::Release);
         self.cancels.lock().unwrap_or_else(PoisonError::into_inner).clear();
-        // The new engine starts without any window's facts; the windows report them again (ruling O-9).
-        *self.windows.lock().unwrap_or_else(PoisonError::into_inner) = Windows::default();
+        // The new engine starts without any window's facts; the windows report them again (ruling O-9). The open float
+        // windows stay expected: the new engine is not fresh until they have reported (C41-R2-06).
+        {
+            let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
+            let expected = std::mem::take(&mut w.expected);
+            *w = Windows { expected, ..Windows::default() };
+        }
         let generation = self.generation.fetch_add(1, Ordering::AcqRel) + 1;
         if was_serving {
             let _ = self.start_http();
@@ -324,13 +339,30 @@ impl Host {
         }
     }
 
+    /// A float window the host is opening: it joins the freshness quorum at once, before it has reported anything, so
+    /// the combined tree is not fresh until it has (C41-R2-06).
+    pub fn expect_window(&self, label: &str) {
+        let combined = {
+            let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
+            if !w.expected.insert(label.to_owned()) {
+                return;
+            }
+            w.combined()
+        };
+        let report: tt_executor::host::ShellReport =
+            serde_json::from_value(Value::Object(combined)).unwrap_or_default();
+        self.exec().report_shell(report);
+    }
+
     /// Clears the sensor facts a window reported (ruling O-9): its modal state and text focus end with it when it is
-    /// destroyed, reloaded or replaced, so a report whose reporter went away cannot block agents or shortcuts.
-    /// The other windows' facts stay; the executor gets the new combination (ruling O-2).
+    /// destroyed, reloaded or replaced, so a report whose reporter went away cannot block agents or shortcuts. It
+    /// leaves the freshness quorum at once (a wait pending on it is released by the recomputed combination). The
+    /// other windows' facts stay; the executor gets the new combination (ruling O-2).
     pub fn forget_window_reports(&self, label: &str) {
         let combined = {
             let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
             w.facts.remove(label);
+            w.expected.remove(label);
             if w.focused.as_deref() == Some(label) {
                 w.focused = None;
             }
@@ -525,6 +557,7 @@ pub const QUIT_GRACE: Duration = Duration::from_secs(5);
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::time::Instant;
 
     fn host() -> (Host, PathBuf) {
         let dir = std::env::temp_dir().join(format!("tt-host-test-{}", tt_executor::random_token(8)));
@@ -660,6 +693,47 @@ mod tests {
         h.forget_window_reports("float-history");
         assert_eq!(state(&h)["modal"], Value::Null);
         assert!(tree(&h)["root"]["children"].as_array().is_some_and(Vec::is_empty));
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    /// C41-R2-06: every window the host expects is in the freshness quorum: a float the host opened that has not
+    /// reported a tree (or reported one without a number) keeps the combination unvouched, however fresh the main
+    /// window is; a wait pending on it ends at once when the float closes, and a restart keeps the open floats
+    /// expected.
+    #[test]
+    fn a_float_that_has_not_reported_keeps_the_combination_unvouched() {
+        let (h, dir) = host();
+        h.exec().report_shell(serde_json::from_value(json!({ "attached": true })).unwrap_or_default());
+        let now = h.exec().events_broadcast();
+        let main = json!({ "uiTree": { "role": "window", "id": "main" }, "renderedSeq": now });
+        h.expect_window("float-history");
+        assert_eq!(h.report_from("main", main.clone()), Ok(json!({})));
+        assert!(!h.exec().await_rendered(Duration::ZERO), "the opened float has not reported");
+        let seq = h.run("inspect.ui.tree", json!({}), false, None).result.unwrap_or_default()["renderedSeq"].clone();
+        assert_eq!(seq, Value::Null, "an unvouched tree says so");
+        // A tree without a number does not vouch either.
+        let _ = h.report_from("float-history", json!({ "uiTree": { "role": "window" } }));
+        assert!(!h.exec().await_rendered(Duration::ZERO));
+        let _ = h.report_from("float-history", json!({ "uiTree": { "role": "window" }, "renderedSeq": now }));
+        assert!(h.exec().await_rendered(Duration::ZERO), "every window caught up");
+        // A waiter on a float that never reports is released when the float closes.
+        h.expect_window("float-colour");
+        let exec = h.exec();
+        let waiter = std::thread::spawn(move || exec.await_rendered(Duration::from_secs(2)));
+        let started = Instant::now();
+        h.forget_window_reports("float-colour");
+        assert!(waiter.join().unwrap_or(false));
+        assert!(started.elapsed() < Duration::from_millis(1500));
+        // A restart keeps the open floats in the quorum.
+        h.expect_window("float-library");
+        assert!(h.restart().is_ok());
+        let now = h.exec().events_broadcast();
+        h.exec().report_shell(serde_json::from_value(json!({ "attached": true })).unwrap_or_default());
+        let mut main = main;
+        main["renderedSeq"] = json!(now);
+        main["generation"] = json!(h.generation());
+        let _ = h.report_from("main", main);
+        assert!(!h.exec().await_rendered(Duration::ZERO), "the float has not reported to the new engine");
         let _ = std::fs::remove_dir_all(dir);
     }
 

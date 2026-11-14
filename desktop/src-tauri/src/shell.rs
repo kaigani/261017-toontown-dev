@@ -64,8 +64,9 @@ fn apply_window(app: &AppHandle, p: &Value) {
     } else if w.is_minimized().unwrap_or(false) {
         let _ = w.unminimize();
     }
-    // The floats are tool windows of the main window: hidden while it is minimised (ruling O-2).
-    crate::floats::show_all(app, !minimized);
+    // The floats are tool windows of the main window: hidden while it is minimised (ruling O-2). The reconciliation
+    // shows or hides them from the current kernel state, global visibility included (C41-R2-10).
+    crate::floats::main_window_state(app, minimized, false);
     if !full {
         let maximized = p.get("maximized").and_then(Value::as_bool).unwrap_or(false);
         if maximized {
@@ -91,11 +92,13 @@ fn apply_window(app: &AppHandle, p: &Value) {
 }
 
 fn raise_all(app: &AppHandle) {
-    for w in app.webview_windows().values() {
+    if let Some(w) = main_window(app) {
         let _ = w.unminimize();
         let _ = w.show();
         let _ = w.set_focus();
     }
+    // The floats the kernel wants shown are raised by the reconciliation (never a float the kernel hides; C41-R2-10).
+    crate::floats::main_window_state(app, false, true);
 }
 
 /// Forwards engine events to the webviews and applies the host's share of them. Runs on its own thread for the life

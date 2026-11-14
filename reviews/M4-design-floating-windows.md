@@ -45,7 +45,10 @@ Replaces the in-window floats of the C4.1 handoff (a divergence from 01 §5.4).
   - **UI tree**: one tree, the main window's with every float's tree appended as a child `window` node
     (`id: float-<panelId>`), so `inspect_ui` reports one tree that includes floats; its event number is the smallest
     of the windows' numbers (the tree is fresh only when every window has caught up; C41-R1-14 rules apply to the
-    combined value).
+    combined value). The windows counted (round 2, C41-R2-06) are the main window, every float the host has opened
+    and not seen destroyed (from the moment it opens it, before it reports), and every window that reported anything;
+    one of them without a tree or without a number makes the combination unvouched (`renderedSeq` absent, and
+    `inspect.ui.tree` answers `renderedSeq: null`); a closing float leaves the count at once.
 - **A stale report never blocks forever (ruling O-9).** When a window is destroyed, reloaded or replaced (a float
   closed by reconciliation, the engine restart), the host drops that window's facts and forwards the recomputed
   combination. A report naming another engine generation is ignored (O-14).
@@ -64,6 +67,20 @@ Replaces the in-window floats of the C4.1 handoff (a divergence from 01 §5.4).
   reconciliation shows it. **Closing the main window** runs the quit flow (unsaved-changes rule); quitting closes the
   floats with the application. **Toggle floating windows** (`window.floatingPanels.set`) hides or shows them all
   through the kernel.
+- **One reconciliation at a time, from the current kernel state (round 2, C41-R2-10).** Every path that changes which
+  float windows exist or are shown goes through the same reconciliation: a kernel state change, a workspace switch,
+  the main window's placement (minimise, restore), Raise all, a restart and the start. Requests are numbered and
+  coalesced: one pass runs at a time on its own thread; it reads `window.panel.list` for the newest request, and on
+  the main thread applies it only if no newer request arrived meanwhile (a superseded snapshot is never applied; the
+  next pass reads the kernel again). A pass shows exactly the floats the kernel wants (global visibility included: a
+  float hidden by Toggle floating windows is not wanted, so its window closes) and hides them while the main window
+  is minimised; nothing else shows a float window. Raise all is a flag the next pass honours for the floats it shows.
+  The pure parts are tested with interleaved requests (`Coalescer`), and the planner with a globally hidden float.
+- **Echo guard and geometry write-back (round 2).** The host's own changes (opening, showing, placing a window) are
+  not reported back as gestures: for 400 ms after the host acts on a window its events are the host's own, and a move
+  or resize that ends within 1 px of where the host placed it is too (`EchoGuard`, a pure value with the clock
+  supplied). A gesture's geometry is sent once it has paused for 250 ms after its last event (a trailing debounce,
+  `Debounce`): a long drag sends one `window.panel.set`.
 
 ## 6. Request cancellation and capabilities
 
@@ -78,7 +95,9 @@ Replaces the in-window floats of the C4.1 handoff (a divergence from 01 §5.4).
   docked transitions; Toggle floating windows.
 - **Host** (`tt-desktop` unit tests): the reconciliation plan (open, close, move) from a kernel arrangement and the
   open windows is a pure function; combining reports from several windows (modal, text focus, tree and its number);
-  dropping a window's facts; per-window cancellation.
+  dropping a window's facts; per-window cancellation. Round 2: the freshness quorum includes every float the host
+  opened before it reports (C41-R2-06); interleaved reconciliation requests (`Coalescer`); the echo guard and the
+  trailing debounce on a supplied clock.
 - **Front end** (`desktop/src`): the float route renders its panel and reports its tree; a float's geometry gesture
   runs `window.panel.set {geometry}`; its close runs `window.panel.set {visible: false}`.
 - **GUI end to end on both OSes** (`scripts/c41-gui-e2e.py`): floating a panel by command opens an OS window of the

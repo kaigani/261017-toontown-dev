@@ -148,6 +148,10 @@ pub fn run() -> Result<(), DesktopError> {
                 use tauri::Manager;
                 if let Some(host) = webview.app_handle().try_state::<host::Host>() {
                     host.forget_window_reports(webview.label());
+                    // A float that reloads is still open: it stays in the freshness quorum (C41-R2-06).
+                    if webview.label().starts_with(floats::PREFIX) {
+                        host.expect_window(webview.label());
+                    }
                 }
             }
         })
