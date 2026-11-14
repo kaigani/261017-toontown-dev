@@ -1,0 +1,673 @@
+[
+  {
+    "check": "the application started and serves attached mode",
+    "ok": true,
+    "detail": {
+      "endpoint": "http://127.0.0.1:53416/mcp",
+      "startS": 1.2
+    }
+  },
+  {
+    "check": "initialize over Streamable HTTP",
+    "ok": true,
+    "detail": {
+      "name": "toontown",
+      "title": "Toontown",
+      "version": "0.0.1",
+      "description": null,
+      "website_url": null,
+      "icons": null
+    }
+  },
+  {
+    "screenshot": "01-start-screen.png"
+  },
+  {
+    "check": "start screen in the rendered tree",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "status bar in the rendered tree",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "main toolbar in the rendered tree",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "every visible panel is rendered",
+    "ok": true,
+    "detail": {
+      "visible": [
+        "cameraView",
+        "timeline",
+        "xsheet",
+        "functionEditor",
+        "properties",
+        "colour",
+        "pen",
+        "text",
+        "cells",
+        "library",
+        "storyline"
+      ],
+      "missing": []
+    }
+  },
+  {
+    "check": "window.panel.set history: the History tab is in the rendered GUI",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "ui.statusBar.set false: the GUI drops the status bar",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "ui.statusBar.set true: the GUI shows the status bar",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "project.create: the GUI closes the start screen and shows the workspace",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the window title names the project",
+    "ok": true,
+    "detail": "Toontown \u2014 Bounce"
+  },
+  {
+    "screenshot": "02-project.png"
+  },
+  {
+    "check": "workspace.select Drawing: the GUI shows the Drawing view as its group's selected tab",
+    "ok": true,
+    "detail": {
+      "role": "tab",
+      "id": "tab.drawingView",
+      "label": "Drawing view",
+      "checked": true,
+      "children": [
+        {
+          "role": "button",
+          "id": "tab.drawingView.hide",
+          "label": "Hide Drawing view",
+          "command": {
+            "commandId": "window.panel.set",
+            "params": {
+              "panelId": "drawingView",
+              "visible": false
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "check": "the kernel's mode follows the view the GUI shows (drawing)",
+    "ok": true,
+    "detail": {
+      "mode": "drawing",
+      "activeView": {
+        "viewId": "drawingView",
+        "panelId": "drawingView",
+        "type": "drawing"
+      }
+    }
+  },
+  {
+    "check": "prefs.set interface.theme dark: the GUI applies the dark theme",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "keymap.set F2",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the key tool runs the command bound to F2 (project.save, refused without a path)",
+    "ok": true,
+    "detail": {
+      "env": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1,
+        "error": {
+          "code": "project.pathRequired",
+          "message": "the project has no location yet",
+          "details": {
+            "projectId": "pr_01M7BWWS5EWJJVC272HV3E1REA"
+          },
+          "hint": "save with project.saveAs {path}"
+        }
+      },
+      "activity": {
+        "seq": 17,
+        "time": "2026-11-14T02:06:31.736Z",
+        "sessionId": "s1-2892c7",
+        "client": "mcp",
+        "tool": "key",
+        "commandId": "project.save",
+        "params": {},
+        "status": "error",
+        "errorCode": "project.pathRequired",
+        "undoStepId": null,
+        "changedCount": 0,
+        "documentRev": 1,
+        "durationMs": 1
+      }
+    }
+  },
+  {
+    "check": "keymap.set F3 (hide the status bar)",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "workspace.create E2E",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "window.geometry.set accepted",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "prefs.outOfRange",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": 1,
+      "error": {
+        "code": "prefs.outOfRange",
+        "message": "`files.backups.count` is out of range (0 to 20)",
+        "details": {
+          "key": "files.backups.count",
+          "value": 99,
+          "min": 0.0,
+          "max": 20.0,
+          "pointer": "/values/files.backups.count"
+        }
+      }
+    }
+  },
+  {
+    "check": "keymap.reservedKey",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": 1,
+      "error": {
+        "code": "keymap.reservedKey",
+        "message": "`Escape` is reserved (Escape alone cancels gestures, captures and dialogs) and cannot be bound",
+        "details": {
+          "keys": "Escape",
+          "reason": "Escape alone cancels gestures, captures and dialogs"
+        }
+      }
+    }
+  },
+  {
+    "screenshot": "03-preferences.png"
+  },
+  {
+    "check": "the GUI shows Preferences and reports it: app.state.get has the modal dialog",
+    "ok": true,
+    "detail": {
+      "kind": "dialog",
+      "title": "Preferences"
+    }
+  },
+  {
+    "check": "an agent change waits for the user and fails with ui.busy",
+    "ok": true,
+    "detail": {
+      "env": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (dialog \u201cPreferences\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "dialog",
+              "title": "Preferences"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      },
+      "waitedS": 10.002988699998241
+    }
+  },
+  {
+    "check": "a focus change under a user dialog is ui.modalOpen",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.modalOpen",
+        "message": "the user has a dialog open (\u201cPreferences\u201d); `window.panel.set` would change focus",
+        "details": {
+          "blockedBy": {
+            "kind": "dialog",
+            "title": "Preferences"
+          }
+        }
+      }
+    }
+  },
+  {
+    "check": "Escape pressed in the application window (OS input)",
+    "ok": true,
+    "detail": {
+      "ok": true,
+      "stderr": ""
+    }
+  },
+  {
+    "check": "the kernel sees the dialog closed (modal: null)",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "after the dialog closed, F3 resolves to ui.statusBar.set and runs",
+    "ok": true,
+    "detail": {
+      "env": {
+        "status": "ok",
+        "result": {
+          "visible": false
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      },
+      "activity": {
+        "seq": 31,
+        "time": "2026-11-14T02:06:43.755Z",
+        "sessionId": "s1-2892c7",
+        "client": "mcp",
+        "tool": "key",
+        "commandId": "ui.statusBar.set",
+        "params": {
+          "visible": false
+        },
+        "status": "ok",
+        "undoStepId": null,
+        "changedCount": 0,
+        "documentRev": 1,
+        "durationMs": 82
+      }
+    }
+  },
+  {
+    "check": "after the dialog closed, an agent action is accepted",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "changes": [
+          {
+            "id": "el_01M7BWWS5FRDP2KF18TBCBS0M6",
+            "type": "element",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/meta",
+                "value": {
+                  "e2e": true
+                }
+              }
+            ]
+          }
+        ],
+        "documentRev": 2
+      },
+      "targets": {
+        "ids": [
+          "el_01M7BWWS5FRDP2KF18TBCBS0M6"
+        ]
+      },
+      "changes": [
+        {
+          "id": "el_01M7BWWS5FRDP2KF18TBCBS0M6",
+          "type": "element",
+          "op": "modified",
+          "rev": 2,
+          "patch": [
+            {
+              "op": "add",
+              "path": "/meta",
+              "value": {
+                "e2e": true
+              }
+            }
+          ]
+        }
+      ],
+      "undo": {
+        "stepId": "u-1",
+        "label": "Set meta"
+      },
+      "warnings": [],
+      "documentRev": 2
+    }
+  },
+  {
+    "check": "the same-place window.panel.move sets the area size only: the kernel, the GUI tabs unchanged, and the GUI renders the area at the new size",
+    "ok": true,
+    "detail": {
+      "area": "right",
+      "panel": "xsheet",
+      "rendered": 300,
+      "error": null
+    }
+  },
+  {
+    "check": "window.panel.set floating: the combined inspect_ui tree has the float window",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the OS lists the History float as a window of the application",
+    "ok": true,
+    "detail": [
+      {
+        "title": "History",
+        "width": 420,
+        "height": 300,
+        "frame": "client"
+      },
+      {
+        "title": "Toontown",
+        "width": 860,
+        "height": 600,
+        "frame": "client"
+      }
+    ]
+  },
+  {
+    "check": "window.panel.set geometry: the OS float window takes the size",
+    "ok": true,
+    "detail": {
+      "os": {
+        "title": "History",
+        "width": 380,
+        "height": 280,
+        "frame": "client"
+      },
+      "error": null
+    }
+  },
+  {
+    "check": "three floats are OS windows of the application",
+    "ok": true,
+    "detail": [
+      "Colour",
+      "History",
+      "Properties",
+      "Toontown"
+    ]
+  },
+  {
+    "check": "minimising the main window hides the floats; restoring shows them",
+    "ok": true,
+    "detail": {
+      "minimised": [
+        "Toontown"
+      ],
+      "restored": [
+        "Colour",
+        "History",
+        "Properties",
+        "Toontown"
+      ]
+    }
+  },
+  {
+    "check": "window.floatingPanels.set visible false after minimise and restore: every float window goes and stays gone",
+    "ok": true,
+    "detail": {
+      "os": [
+        "Toontown"
+      ],
+      "error": null
+    }
+  },
+  {
+    "check": "window.floatingPanels.set visible true: the three floats return",
+    "ok": true,
+    "detail": [
+      "Colour",
+      "History",
+      "Properties",
+      "Toontown"
+    ]
+  },
+  {
+    "check": "hidden floats stay hidden through minimise and restore, and return when shown again",
+    "ok": true,
+    "detail": [
+      "Colour",
+      "History",
+      "Properties",
+      "Toontown"
+    ]
+  },
+  {
+    "check": "workspace.save stores the arrangement with its float",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the OS window has the requested size, which the kernel holds",
+    "ok": true,
+    "detail": {
+      "kernel": {
+        "x": 40,
+        "y": 30,
+        "width": 860,
+        "height": 600,
+        "maximized": false,
+        "fullScreen": false,
+        "screens": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 1032,
+            "scale": 1.0
+          }
+        ]
+      },
+      "os": {
+        "width": 860,
+        "height": 600,
+        "frame": "client"
+      }
+    }
+  },
+  {
+    "check": "preferences persisted across a restart",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "values": {
+          "interface.theme": "dark",
+          "files.backups.count": 7
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "the key binding persisted",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "bindings": [
+          {
+            "commandId": "project.save",
+            "keys": "F2",
+            "context": "global",
+            "isDefault": false
+          }
+        ],
+        "effectiveCommand": {
+          "commandId": "project.save"
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "the user workspace persisted",
+    "ok": true,
+    "detail": [
+      "Default",
+      "Staging",
+      "Drawing",
+      "Focused drawing",
+      "E2E"
+    ]
+  },
+  {
+    "check": "after the restart the float is a window again (tree and OS)",
+    "ok": true,
+    "detail": {
+      "os": [
+        {
+          "title": "History",
+          "width": 380,
+          "height": 280,
+          "frame": "client"
+        },
+        {
+          "title": "Toontown",
+          "width": 860,
+          "height": 600,
+          "frame": "client"
+        }
+      ]
+    }
+  },
+  {
+    "check": "window.panel.set floating false: the float window closes (tree and OS)",
+    "ok": true,
+    "detail": {
+      "os": [
+        {
+          "title": "Toontown",
+          "width": 860,
+          "height": 600,
+          "frame": "client"
+        }
+      ]
+    }
+  },
+  {
+    "check": "the window geometry persisted: the restarted OS window has it",
+    "ok": true,
+    "detail": {
+      "before": {
+        "x": 40,
+        "y": 30,
+        "width": 860,
+        "height": 600
+      },
+      "after": {
+        "x": 40,
+        "y": 30,
+        "width": 860,
+        "height": 600,
+        "maximized": false,
+        "fullScreen": false,
+        "screens": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 1032,
+            "scale": 1.0
+          }
+        ]
+      },
+      "os": {
+        "width": 860,
+        "height": 600,
+        "frame": "client"
+      }
+    }
+  },
+  {
+    "check": "the persisted theme is applied by the restarted GUI",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "after the restart the GUI renders the area at the size the splitter set",
+    "ok": true,
+    "detail": {
+      "area": "right",
+      "kernel": 300,
+      "rendered": 300
+    }
+  },
+  {
+    "screenshot": "04-restart.png"
+  },
+  {
+    "check": "a corrupt keymap file falls back to the defaults",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "bindings": []
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "the corrupt file was kept aside",
+    "ok": true,
+    "detail": [
+      ".settings.lock",
+      "agent-discovery.json",
+      "instance.json",
+      "keymap.corrupt-2026-11-14T02-07-02.195Z.json",
+      "preferences.json",
+      "state.json",
+      "workspaces.json"
+    ]
+  }
+]
