@@ -491,9 +491,20 @@ pub fn to_command(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, Comma
         "paint" | "unpaint" | "paintUnpainted" => {
             let click = st.is_click();
             let mut m = Map::new();
+            // A gradient or texture colour: a drag defines the fill mapping axis, a click fits the default mapping
+            // (02 §7.3.1 lines 557-561; §13.3 line 1214); a solid colour's drag paints what it crosses.
+            let graded = tool == "paint"
+                && s.colour
+                    .as_deref()
+                    .and_then(|c| cx.document().ok().and_then(|d| crate::commands::colour::swatch_info(d, c)))
+                    .is_some_and(|(k, _)| !matches!(k, tt_model::entities::palette::SwatchKind::Solid));
             match (tool, click) {
                 (_, true) => {
                     m.insert("points".into(), json!([pt(p0.d)]));
+                }
+                ("paint", false) if graded => {
+                    m.insert("points".into(), json!([pt(p0.d)]));
+                    m.insert("mapping".into(), json!({ "from": pt(p0.d), "to": pt(pn.d) }));
                 }
                 ("paint", false) => {
                     m.insert("path".into(), json!(mapped));
@@ -604,6 +615,7 @@ fn polyline(cx: &Cx, g: &Gesture) -> Option<(String, Value)> {
     let snap = o.get("snap").and_then(Value::as_bool).unwrap_or(true);
     let radius = o.get("snapRadius").and_then(Value::as_f64).unwrap_or(8.0);
     let mut points: Vec<Value> = Vec::new();
+    let mut anchors_v: Vec<Point> = Vec::new();
     let mut first_v: Option<Point> = None;
     let mut closed = false;
     for (i, st) in g.strokes.iter().enumerate() {
@@ -619,9 +631,26 @@ fn polyline(cx: &Cx, g: &Gesture) -> Option<(String, Value)> {
         if i == 0 {
             first_v = Some(a.v);
         }
+        // Constrain + click on an anchor of the path being drawn removes it (02 §7.2.5).
+        if st.is_click()
+            && st.mods.constrain
+            && let Some(k) = anchors_v.iter().position(|q: &Point| (q.x - a.v.x).hypot(q.y - a.v.y) <= radius)
+        {
+            anchors_v.remove(k);
+            points.remove(k);
+            continue;
+        }
+        anchors_v.push(a.v);
         let mut p = obj(json!({ "x": a.d.x, "y": a.d.y }));
         if !st.is_click() {
-            let out = Point { x: b.d.x - a.d.x, y: b.d.y - a.d.y };
+            let mut out = Point { x: b.d.x - a.d.x, y: b.d.y - a.d.y };
+            // Constrain while dragging handles: the handle angle in 15° increments, its length kept (02 §7.2.5).
+            if st.mods.constrain {
+                let len = out.x.hypot(out.y);
+                let step = 15f64.to_radians();
+                let angle = (out.y.atan2(out.x) / step).round() * step;
+                out = Point { x: len * angle.cos(), y: len * angle.sin() };
+            }
             p.insert("outHandle".into(), pt(out));
             if !st.mods.alternate {
                 p.insert("inHandle".into(), pt(Point { x: -out.x, y: -out.y }));

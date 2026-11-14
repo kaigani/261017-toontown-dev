@@ -11,6 +11,8 @@ mod aids;
 mod budgets;
 #[path = "c42/equivalence.rs"]
 mod equivalence;
+#[path = "c42/equivalence_more.rs"]
+mod equivalence_more;
 #[path = "c42/pointer.rs"]
 mod pointer;
 #[path = "c42/screenshot.rs"]

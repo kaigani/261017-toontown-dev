@@ -31,8 +31,16 @@ fn v4_the_headless_drawing_view_is_1920_by_1080_at_100_percent() {
 #[test]
 fn v1_one_mapping_round_trips_and_every_surface_agrees() {
     let h = ready();
-    for (zoom, degrees, centre) in [(1.0, 0.0, (0.0, 0.0)), (2.0, 30.0, (120.0, -40.0)), (0.333, -60.0, (-500.0, 70.0))]
-    {
+    // A grid of transforms (round-1 reconciliation: V1 over more than three states), large pans included.
+    let mut grid = Vec::new();
+    for zoom in [0.0625, 0.333, 1.0, 2.0, 64.0] {
+        for degrees in [0.0, 30.0, 90.0, -150.0] {
+            for centre in [(0.0, 0.0), (120.0, -40.0), (1e6, -1e6)] {
+                grid.push((zoom, degrees, centre));
+            }
+        }
+    }
+    for (zoom, degrees, centre) in grid {
         ok(&h, "view.zoom.set", json!({ "viewId": "drawingView", "zoom": zoom }));
         ok(&h, "view.rotation.set", json!({ "viewId": "drawingView", "degrees": degrees }));
         ok(&h, "view.pan.set", json!({ "viewId": "drawingView", "centre": { "x": centre.0, "y": centre.1 } }));
@@ -51,7 +59,12 @@ fn v1_one_mapping_round_trips_and_every_surface_agrees() {
                 apply(&m["viewToDrawing"], x, y)
             );
             let back = apply(&m["drawingToView"], dp.0, dp.1);
-            assert!(close(back, (x, y)), "round trip {back:?} vs {x},{y} at zoom {zoom}");
+            // Within the drawing coordinate's own rounding carried back through the zoom (a few ulps of |d| times zoom).
+            let tol = 1e-9 + 8.0 * f64::EPSILON * dp.0.abs().max(dp.1.abs()) * zoom;
+            assert!(
+                (back.0 - x).abs() <= tol && (back.1 - y).abs() <= tol,
+                "round trip {back:?} vs {x},{y} at zoom {zoom}"
+            );
             let i = ok(
                 &h,
                 "inspect.coordinates.convert",
