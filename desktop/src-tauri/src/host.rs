@@ -16,7 +16,8 @@ use tt_executor::{Envelope, ExecutorHandle, Invocation, InvokeOptions};
 pub struct HostOptions {
     /// Per-user folder (`--user-dir`); the platform's when absent.
     pub user_dir: Option<PathBuf>,
-    /// Serve attached mode on this address (`--mcp-http 127.0.0.1:0`), whatever the preference says.
+    /// Serve attached mode on this address (`--mcp-http 127.0.0.1:0`) from start-up, whatever the stored preference
+    /// says; afterwards the user's command decides (ruling O-21), and a restart uses this address.
     pub mcp_http: Option<std::net::SocketAddr>,
     /// Write the discovery file here as well (`--mcp-discovery <file>`; tests read the endpoint and token).
     pub discovery: Option<PathBuf>,
@@ -547,9 +548,32 @@ impl Drop for TokenGuard<'_> {
 }
 
 /// Writes a file atomically, readable by its owner only (POSIX; the per-user folder is private on Windows).
+/// The size every discovery file is written at: the JSON padded with spaces (JSON allows trailing whitespace).
+const DISCOVERY_SIZE: usize = 4096;
+
+/// Writes a discovery file readable only by the user (round 3, ruling O-21 follow-up). A file that exists is rewritten
+/// in place with one write of [`DISCOVERY_SIZE`] bytes, so a client polling it never meets it absent, truncated or
+/// held by a rename (on Windows a rename fails, or refuses a reader's open, while the other side has the file open);
+/// the first file is created privately and renamed into place.
 fn write_private(target: &std::path::Path, bytes: &[u8]) -> std::io::Result<()> {
+    use std::io::{Seek, SeekFrom, Write};
+    let mut padded = bytes.to_vec();
+    if padded.len() < DISCOVERY_SIZE {
+        padded.resize(DISCOVERY_SIZE, b' ');
+        if let Some(last) = padded.last_mut() {
+            *last = b'\n';
+        }
+    }
+    if target.exists()
+        && let Ok(mut f) = std::fs::OpenOptions::new().write(true).open(target)
+    {
+        f.seek(SeekFrom::Start(0))?;
+        f.write_all(&padded)?;
+        f.set_len(u64::try_from(padded.len()).unwrap_or(u64::MAX))?;
+        return f.flush();
+    }
     let tmp = target.with_extension(format!("tmp-{}", std::process::id()));
-    std::fs::write(&tmp, bytes)?;
+    std::fs::write(&tmp, &padded)?;
     #[cfg(unix)]
     {
         use std::os::unix::fs::PermissionsExt;

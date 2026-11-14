@@ -142,9 +142,16 @@ pub fn start_event_pump(app: &AppHandle) {
                         .and_then(Value::as_array)
                         .map(|k| k.iter().filter_map(Value::as_str).map(str::to_owned).collect())
                         .unwrap_or_default();
-                    if keys.iter().any(|k| k.starts_with("agent.server.")) {
-                        sync_agent_server(&app);
+                    // A Preferences change of `agent.server.enabled` applies at once (the port applies at the next start).
+                    if keys.iter().any(|k| k == "agent.server.enabled") {
+                        sync_agent_server(&app, false);
                     }
+                }
+                // `agent.server.set`: the user's command wins in both directions, even when the stored preference
+                // did not change (ruling O-21).
+                "shell.agentServer" => {
+                    let enabled = e.payload.get("enabled").and_then(Value::as_bool).unwrap_or(false);
+                    apply_agent_server(&app, enabled);
                 }
                 _ => {}
             }
@@ -189,15 +196,24 @@ pub fn notice(app: &AppHandle, message_id: &str, severity: &str, text: &str) {
     }
 }
 
-/// Starts or stops attached mode after `agent.server.enabled` (or `--mcp-http`) (11 §4).
-pub fn sync_agent_server(app: &AppHandle) {
+/// Starts or stops attached mode after `agent.server.enabled` (11 §4). At start-up (`at_start`) `--mcp-http` forces
+/// the server on for this run whatever the stored preference says; after start-up the preference and the user's
+/// `agent.server.set` decide, in both directions (ruling O-21; ADR-0022 decision 5).
+pub fn sync_agent_server(app: &AppHandle, at_start: bool) {
     let host = app.state::<Host>();
-    let enabled = host.options.mcp_http.is_some()
+    let enabled = (at_start && host.options.mcp_http.is_some())
         || host
             .run("prefs.get", json!({ "keys": ["agent.server.enabled"] }), false, None)
             .result
             .and_then(|r| r.pointer("/values/agent.server.enabled").and_then(Value::as_bool))
             .unwrap_or(false);
+    apply_agent_server(app, enabled);
+}
+
+/// Starts the server (on the launch address when `--mcp-http` gave one, with the same token) or stops it and clears
+/// the discovery file's endpoint.
+fn apply_agent_server(app: &AppHandle, enabled: bool) {
+    let host = app.state::<Host>();
     if enabled {
         match host.start_http() {
             Ok(url) => log(&format!("agent server on {url}")),

@@ -96,6 +96,10 @@ pub(crate) fn agent_server_set(cx: &mut Cx, p: ServerSetParams) -> Result<Server
         prefs.insert("agent.server.allowRemote".into(), json!(remote));
     }
     cx.defer(Effect::Prefs(prefs));
+    // The desktop host starts or stops the server as the command says, whatever started it (ruling O-21): a
+    // host-only notice, sent even when the stored preference already had this value (a run started with
+    // `--mcp-http` serves while the preference may be off).
+    cx.emit("shell.agentServer", json!({ "enabled": p.enabled }));
     if p.http.unwrap_or(true) && p.enabled {
         // Streamable HTTP is the attached-mode transport of the desktop host (11 §4; ADR-0015 §2): M4.
         cx.warn(

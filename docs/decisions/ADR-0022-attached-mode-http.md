@@ -55,8 +55,14 @@ Origin validation, bearer token, discovery file, off by default); ADR-0015 §10 
    message per line, EOF when the session ends) and a routing writer. Sessions, scopes, confirmations, pause, the audit
    log, request cancellation and typed tools are therefore identical to stdio. Each session is its own agent session
    (`transport: "http"`) over the one executor (11 §3: several clients share the document).
-5. **Lifecycle in the desktop host.** Off by default (11 §4). The host starts the server when `agent.server.enabled`
-   is true or `--mcp-http <address>` is given, and stops it when the preference is cleared. The documented port is
+5. **Lifecycle in the desktop host.** Off by default (11 §4). At start-up the host starts the server when
+   `agent.server.enabled` is true or `--mcp-http <address>` is given. **After start-up the user's command wins in both
+   directions (round 3, ruling O-21):** `agent.server.set {enabled: false}` stops the server and clears the discovery
+   file's endpoint within the stop bound even when the run was started with `--mcp-http`; `{enabled: true}` starts it
+   again, on the launch address when `--mcp-http` gave one, with the same token; the stored preference is written as
+   the command says (the command sends the host a `shell.agentServer` notice, so this holds even when the stored value
+   does not change). A Preferences change of `agent.server.enabled` applies the same way; the port applies at the next
+   start. The documented port is
    47215 (`agent.server.port`); the next free ports are tried. The token is the discovery file's
    (`agent.token.regenerate` creates it); the host writes `<settings>/agent-discovery.json` with the endpoint and token,
    readable only by the user, and also `--mcp-discovery <file>` for tests. On POSIX the file's mode is `0600`; on

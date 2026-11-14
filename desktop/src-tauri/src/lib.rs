@@ -163,7 +163,7 @@ pub fn run() -> Result<(), DesktopError> {
             floats::reconcile(&handle);
             watchdog::start(&handle);
             menu::refresh(&handle);
-            shell::sync_agent_server(&handle);
+            shell::sync_agent_server(&handle, true);
             if let Some((listener, key)) = listener {
                 let h = handle.clone();
                 instance::serve(listener, key, move |paths| shell::open_documents(&h, &paths));

@@ -179,7 +179,9 @@ pub struct LaunchOptions {
     pub spike: Option<SpikeSettings>,
     /// `--user-dir <dir>`: the per-user folder (settings, recovery, backups) instead of the platform's.
     pub user_dir: Option<PathBuf>,
-    /// `--mcp-http <address>`: serve attached mode on this address whatever the preference says.
+    /// `--mcp-http <address>`: serve attached mode on this loopback address from start-up, whatever the stored
+    /// preference says; after start-up the user's `agent.server.set` (or the preference) stops or restarts it, and a
+    /// restart in the same run uses this address and the same token (ruling O-21).
     pub mcp_http: Option<std::net::SocketAddr>,
     /// `--mcp-discovery <file>`: also write the discovery file here.
     pub mcp_discovery: Option<PathBuf>,
