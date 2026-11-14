@@ -44,3 +44,72 @@ mod views {
         }
     }
 }
+mod mapping {
+    use super::*;
+    fn near(a: f64, b: f64) {
+        assert!((a - b).abs() < 1e-5, "{a} != {b}");
+    }
+    fn apply(m: &serde_json::Value, x: f64, y: f64) -> (f64, f64) {
+        let f = |i: usize| m[i].as_f64().unwrap();
+        (f(0) * x + f(2) * y + f(4), f(1) * x + f(3) * y + f(5))
+    }
+    #[test]
+    fn independently_derived_mapping_grid() {
+        let h = ready();
+        for (width, height) in [(1920.0, 1080.0), (811.0, 423.0)] {
+            h.report_shell(tt_executor::host::ShellReport {
+                view_sizes: Some(std::collections::BTreeMap::from([(
+                    "drawingView".into(),
+                    tt_executor::shell::Size { width, height },
+                )])),
+                ..Default::default()
+            });
+            for zoom in [0.0625, 1.0, 64.0] {
+                for degrees in [0.0_f64, 90.0, 37.5] {
+                    for (cx, cy) in [(0.0, 0.0), (1e6, -1e6)] {
+                        ok(&h, "view.zoom.set", json!({"viewId":"drawingView","zoom":zoom}));
+                        ok(&h, "view.rotation.set", json!({"viewId":"drawingView","degrees":degrees}));
+                        ok(&h, "view.pan.set", json!({"viewId":"drawingView","centre":{"x":cx,"y":cy}}));
+                        let m = ok(&h, "draw.viewMapping.get", json!({"view":"drawingView"}));
+                        let (sin, cos) = degrees.to_radians().sin_cos();
+                        for (dx, dy) in [(0.0, 0.0), (17.5, -23.25), (-100.0, 200.0)] {
+                            let (x, y) = (cx + dx, cy + dy);
+                            // y inversion, then clockwise screen rotation, scale, viewport translation.
+                            let expected = (
+                                width / 2.0 + zoom * (cos * dx + sin * dy),
+                                height / 2.0 + zoom * (sin * dx - cos * dy),
+                            );
+                            let p = ok(
+                                &h,
+                                "view.coordinates.convert",
+                                json!({"viewId":"drawingView","from":"drawing","to":"view","point":{"x":x,"y":y}}),
+                            );
+                            near(p["point"]["x"].as_f64().unwrap(), expected.0);
+                            near(p["point"]["y"].as_f64().unwrap(), expected.1);
+                            let a = apply(&m["drawingToView"], x, y);
+                            near(a.0, expected.0);
+                            near(a.1, expected.1);
+                            let b = apply(&m["viewToDrawing"], a.0, a.1);
+                            near(b.0, x);
+                            near(b.1, y);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #[test]
+    fn rotated_colour_pick_and_hit_test_agree_with_independent_point() {
+        let h = ready();
+        ok(&h, "draw.rectangle.add", json!({"from":{"x":300,"y":300},"to":{"x":400,"y":360},"layer":"new"}));
+        ok(&h, "colour.paint.apply", json!({"points":[{"x":350,"y":330}]}));
+        ok(&h, "view.zoom.set", json!({"viewId":"drawingView","zoom":2}));
+        ok(&h, "view.rotation.set", json!({"viewId":"drawingView","degrees":37.5}));
+        ok(&h, "view.pan.set", json!({"viewId":"drawingView","centre":{"x":350,"y":330}}));
+        let drawing = ok(&h, "colour.pick", json!({"point":{"x":350,"y":330},"space":"drawing"}));
+        let view = ok(&h, "colour.pick", json!({"point":{"x":960,"y":540},"space":"view","view":"drawingView"}));
+        assert_eq!(drawing, view);
+        let hits = ok(&h, "inspect.hitTest", json!({"space":"view","point":{"x":960,"y":540},"view":"drawingView"}));
+        assert!(!hits["hits"].as_array().unwrap().is_empty());
+    }
+}
