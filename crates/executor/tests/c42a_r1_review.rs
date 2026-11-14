@@ -757,6 +757,87 @@ mod part_d_equivalence {
             }
         }
     }
+
+    fn selected(h: &ExecutorHandle) {
+        ok(h, "draw.rectangle.add", json!({"from":{"x":300,"y":300},"to":{"x":400,"y":360}}));
+        ok(h, "draw.selection.set", json!({"by":"point","point":{"x":300,"y":330},"mode":"replace"}));
+    }
+    #[test]
+    fn select() {
+        for (ps, mods, p) in [
+            (
+                vec![(1260.0, 210.0), (1260.0, 210.0)],
+                vec![],
+                json!({"by":"point","point":{"x":300.0,"y":330.0},"mode":"replace"}),
+            ),
+            (
+                vec![(1500.0, 500.0), (1500.0, 500.0)],
+                vec![],
+                json!({"by":"point","point":{"x":540.0,"y":40.0},"mode":"replace"}),
+            ),
+            (
+                vec![(1260.0, 210.0), (1260.0, 210.0)],
+                vec!["shift"],
+                json!({"by":"point","point":{"x":300.0,"y":330.0},"mode":"add"}),
+            ),
+            (
+                vec![(1200.0, 270.0), (1400.0, 150.0)],
+                vec![],
+                json!({"by":"rect","rect":{"x":240.0,"y":270.0,"width":200.0,"height":120.0},"rectRule":"inside","mode":"replace"}),
+            ),
+            (
+                vec![(1200.0, 270.0), (1400.0, 270.0), (1400.0, 150.0), (1200.0, 150.0), (1200.0, 270.0)],
+                vec!["alt"],
+                json!({"by":"lasso","polygon":[{"x":240.0,"y":270.0},{"x":440.0,"y":270.0},{"x":440.0,"y":390.0},{"x":240.0,"y":390.0},{"x":240.0,"y":270.0}],"rectRule":"inside","mode":"replace"}),
+            ),
+        ] {
+            let (a, b) = (ready(), ready());
+            selected(&a);
+            selected(&b);
+            check(&a, &b, "select", events(&ps, &mods), "draw.selection.set", p);
+        }
+        for copy in [false, true] {
+            let (a, b) = (ready(), ready());
+            selected(&a);
+            selected(&b);
+            check(
+                &a,
+                &b,
+                "select",
+                events(&[(1310.0, 210.0), (1330.0, 200.0)], if copy { &["alt"] } else { &[] }),
+                "draw.transform.apply",
+                json!({"translate":{"x":20.0,"y":10.0},"copy":copy}),
+            );
+        }
+        for delta in [2.99, 3.0, 3.01] {
+            let (a, b) = (ready(), ready());
+            let click = delta <= 3.0;
+            check(
+                &a,
+                &b,
+                "select",
+                events(&[(1500.0, 500.0), (1500.0 + delta, 500.0)], &[]),
+                "draw.selection.set",
+                if click {
+                    json!({"by":"point","point":point(1500.0,500.0),"mode":"replace"})
+                } else {
+                    json!({"by":"rect","rect":{"x":540.0,"y":40.0,"width":(1500.0+delta-1500.0),"height":0.0},"rectRule":"inside","mode":"replace"})
+                },
+            );
+        }
+        let (a, b) = (ready(), ready());
+        let d = ok(&b, "draw.drawing.get", json!({}));
+        let pivot = &d["pivot"];
+        let (x, y) = (pivot["x"].as_f64().unwrap() + 960.0, 540.0 - pivot["y"].as_f64().unwrap());
+        check(
+            &a,
+            &b,
+            "select",
+            events(&[(x, y), (x + 20.0, y - 10.0)], &[]),
+            "draw.pivot.set",
+            json!({"point":point(x+20.0,y-10.0)}),
+        );
+    }
     #[test]
     fn rectangle() {
         shape("rectangle");
