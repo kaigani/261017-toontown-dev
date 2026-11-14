@@ -1408,14 +1408,23 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Question:** confirm both fields (names, `null`, the 2 s wait) for 11 §7.5, or specify another way to tell an agent
   which events a tree reflects.
 
-## SI-122 — the Drawing view's zoom range (found in M4 C4.2 planning; interim, ruling D-10)
+## SI-122 — one ladder for step-wise zooming (found in M4 C4.2 planning; interim, rulings D-10 and D-15)
 
-- **Sections:** 02 §4.3 (1/16× to 16× in steps of 2), 01 §6.5 and 01 §12.2 `view.zoom.set` (a table from 6.25 % to
-  6400 %).
-- **Problem:** the two ranges and step sets differ.
-- **Interim decision:** `view.zoom.set` accepts the wider declared range (6.25 % to 6400 %); wheel and zoom-tool steps
-  snap to the 02 §4.3 ladder (powers of two between 1/16 and 16).
-- **Question:** which range and steps are normative for the Drawing view.
+- **Sections:** 02 §4.3 (zoom in / out "in steps (recommended ×2 per step, range 1/16× to 16×)"), 01 §6.5 and 01 §12.2
+  `view.zoom.set` (a table from 6.25 % to 6400 %: 6.25, 12.5, 25, 33.3, 50, 66.7, 100, 150, 200, 300, 400, 600, 800,
+  1200, 1600, 3200, 6400 %), 02 §7.5 (Zoom tool), 02 §13.3 (Zoom: "`view.*` commands").
+- **Problem:** the two sections give two step ladders for the same user intention (zoom in or out one step), and the
+  implementation now uses both:
+  - **the mouse wheel** in the Drawing view steps along 02 §4.3's ladder (powers of two between 1/16 and 16; ruling
+    D-10), sending `view.zoom.set {zoom: <next power of two>, anchor}`;
+  - **a Zoom-tool click** (alternate: out) and the **stepping commands and keys** (`view.zoom.set {steps: ±1}`,
+    Primary+= / Primary+-) step along 01 §6.5's table (the review's permanent test `zoom_click` requires the click to
+    send table steps; ruling D-15);
+  - **a Zoom-tool marquee** fits its rectangle exactly (no ladder), and `view.zoom.set {zoom}` accepts any value in
+    6.25 %-6400 %.
+- **Interim decision:** as above (D-10, D-15); no code change until the spec owner answers.
+- **Question:** one ladder for all step-wise zooming (wheel, Zoom-tool click, zoom keys and `view.zoom.set {steps}`):
+  02 §4.3's or 01 §6.5's?
 
 ## SI-123 — a rotate-view navigation tool (found in M4 C4.2 planning; interim, ruling D-10)
 
