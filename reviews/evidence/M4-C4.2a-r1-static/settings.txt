@@ -1,0 +1,1 @@
+C42A-R1-28: drawing whole-file shape omits the three top-level boolean members

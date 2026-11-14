@@ -19,6 +19,9 @@ elif mode=='issues':
 elif mode=='zoom':
  if '"view.zoom.set", obj(json!({ "viewId": g.view_id, "steps": steps' in g and 'let params = json!({ "viewId": view_id, "steps": steps' in g:
   bad.append('C42A-R1-26: wheel and Zoom route to table steps rather than the required powers-of-two ladder')
+elif mode=='settings':
+ shape=read('crates/executor/src/drawing.rs').split('pub fn shape(',1)[1]
+ if all(x not in shape for x in ['placeBehind','drawTopLayer','snapToContour']):bad.append('C42A-R1-28: drawing whole-file shape omits the three top-level boolean members')
 elif mode=='handoff':
  if '(filled in at the push)' in read('reviews/M4-C4.2a-handoff.md'):bad.append('C42A-R1-27: head and CI are still placeholder')
 print('\n'.join(bad) if bad else 'PASS: '+mode)
