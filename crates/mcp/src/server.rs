@@ -1178,6 +1178,17 @@ fn key_tool(
 ) -> (String, Envelope) {
     let keys = args.get("keys").and_then(Value::as_str).unwrap_or_default();
     let params = Value::Object(args.clone());
+    // Simulated key presses are raw input (11 §6.1: the `input` scope; C42A-R1-06), checked before the key is resolved.
+    if !origin.has_scope(tt_registry::Scope::Input) {
+        let env = envelope_error(
+            "permission.denied",
+            "simulated key input needs the scope input".into(),
+            json!({ "tool": "key", "missingScopes": ["input"] }),
+            None,
+        );
+        shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+        return ("key".to_owned(), env);
+    }
     // `view` (M4 C4.2): the view the key is aimed at. It must exist; a bound `view.*` command without its own `viewId`
     // acts on that view instead of the active one. The user's active view is not changed.
     let view = match args.get("view") {

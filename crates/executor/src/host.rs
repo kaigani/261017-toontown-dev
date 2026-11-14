@@ -617,6 +617,18 @@ impl ExecutorHandle {
                 );
             }
         };
+        // Raw input simulation needs the `input` scope (11 §6.1; C42A-R1-06), checked before anything is produced; the
+        // produced commands' own scopes still apply.
+        if !origin.has_scope(tt_registry::Scope::Input) {
+            return crate::types::Envelope::error(
+                CommandError::with_details(
+                    tt_registry::codes::PERMISSION_DENIED,
+                    "simulated pointer input needs the scope input",
+                    json!({ "tool": "pointer", "missingScopes": ["input"] }),
+                ),
+                None,
+            );
+        }
         // User priority (11 §6.4; ruling D-12): an agent's gestures wait for the user's dialog or gesture, then `ui.busy`.
         if let Err(e) = self.user_priority(&origin, "pointer", &|| false) {
             return crate::types::Envelope::error(e, None);
