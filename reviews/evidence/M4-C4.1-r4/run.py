@@ -4,7 +4,7 @@ def run(name,args):
  t=time.monotonic()
  r=subprocess.run(args,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
  lines=r.stdout.splitlines()
- s=dict(command=args,exit=r.returncode,seconds=time.monotonic()-t,results=[x for x in lines if any(k in x for k in ['test result:','Running ','FAILED','error','references in','baseline='])])
+ s=dict(command=args,exit=r.returncode,seconds=time.monotonic()-t,results=[x for x in lines if any(k in x for k in ['test result:','Running ','FAILED','error','references in','baseline=','authenticated body','body deadline','latency'])])
  if r.returncode: s['tail']=lines[-25:]
  (root/(name+'.json')).write_text(json.dumps(s,indent=2)+'\n',encoding='utf-8')
  print(json.dumps(s),flush=True)
