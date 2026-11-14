@@ -588,3 +588,68 @@ mod part_c_equivalence {
         }
     }
 }
+
+mod part_c_pointer {
+    use super::*;
+    use serde_json::Value;
+    use std::time::Instant;
+    fn request(n: usize) -> Value {
+        let events: Vec<Value>=(0..n).map(|i| json!({"type":if i==0 {"down"} else if i==n-1 {"up"} else {"move"},"x":1000.0+i as f64/10.0,"y":500.0+(i%7) as f64,"pressure":0.5,"dt":2})).collect();
+        json!({"view":"drawing","tool":"brush","events":events})
+    }
+    #[test]
+    fn limits_sequence_and_incomplete_gesture_are_atomic() {
+        let h = ready();
+        let before = rev(&h);
+        for events in [
+            json!([{"type":"up","x":1,"y":1}]),
+            json!([{"type":"down","x":1,"y":1},{"type":"down","x":2,"y":2}]),
+            json!([{"type":"down","x":1,"y":1,"pressure":1.01}]),
+            json!([{"type":"down","x":10000001,"y":1}]),
+            json!([{"type":"down","x":null,"y":1}]),
+        ] {
+            let e = h.pointer(tt_executor::Origin::User, json!({"view":"drawing","events":events}));
+            assert_eq!(e.error.unwrap().code, "arg.invalid");
+            assert_eq!(rev(&h), before);
+        }
+        assert_eq!(h.pointer(tt_executor::Origin::User, request(10001)).error.unwrap().code, "limit.exceeded");
+        let history = ok(&h, "edit.history.get", json!({}));
+        let sel = ok(&h, "draw.selection.get", json!({}));
+        let e=h.pointer(tt_executor::Origin::User,json!({"view":"drawing","tool":"pencil","events":[{"type":"move","x":2,"y":2},{"type":"down","x":3,"y":3},{"type":"move","x":4,"y":4}]}));
+        assert!(e.is_ok());
+        assert_eq!(rev(&h), before);
+        assert_eq!(ok(&h, "edit.history.get", json!({})), history);
+        assert_eq!(ok(&h, "draw.selection.get", json!({})), sel);
+        assert_eq!(ok(&h, "tool.active.get", json!({}))["toolId"], "pencil");
+    }
+    #[test]
+    fn full_cap_query_latency_receipt() {
+        let h = ready();
+        let r = request(10000);
+        let worker_h = h.clone();
+        let (tx, rx) = std::sync::mpsc::channel();
+        let worker = std::thread::spawn(move || {
+            tx.send(()).unwrap();
+            let t = Instant::now();
+            let e = worker_h.pointer(tt_executor::Origin::User, r);
+            (e, t.elapsed())
+        });
+        rx.recv().unwrap();
+        let admission = Instant::now();
+        while admission.elapsed() < std::time::Duration::from_millis(10) {
+            std::thread::yield_now();
+        }
+        let t = Instant::now();
+        // Admission is not instrumented: this is an observed competing query, not a precise hold measurement.
+        let q = run(&h, "view.transform.get", json!({"viewId":"drawingView"}));
+        let latency = t.elapsed();
+        let (e, total) = worker.join().unwrap();
+        eprintln!("10000-event pointer total {total:?}, competing query {latency:?}");
+        assert!(e.is_ok(), "{e:?}");
+        assert!(q.is_ok());
+        assert!(
+            latency < std::time::Duration::from_millis(60),
+            "plan section 6: 20 ms hold, generous 60 ms query bound; observed {latency:?}"
+        );
+    }
+}
