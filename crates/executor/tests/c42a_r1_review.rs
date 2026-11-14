@@ -199,3 +199,44 @@ mod screenshot {
         );
     }
 }
+
+mod part_b_tools {
+    use super::*;
+    #[test]
+    fn text_ranges_match_the_text_panel() {
+        let h = ready();
+        let mut accepted = Vec::new();
+        for (key, value) in [("leftMargin", -1), ("rightMargin", 1001), ("indent", -100), ("lineSpacing", 1001)] {
+            let before = ok(&h, "tool.options.get", json!({"toolId":"text"}));
+            let result = run(&h, "tool.options.set", json!({"toolId":"text", "options":{key:value}}));
+            if result.is_ok() {
+                accepted.push(key);
+            } else {
+                assert_eq!(ok(&h, "tool.options.get", json!({"toolId":"text"})), before);
+            }
+        }
+        assert!(accepted.is_empty(), "out-of-spec text values accepted: {accepted:?}");
+    }
+    #[test]
+    fn all_tools_and_atomic_options_do_not_edit_document() {
+        let h = ready();
+        let r = rev(&h);
+        let history = ok(&h, "edit.history.get", json!({}));
+        let tools = ok(&h, "tool.list", json!({}));
+        for tool in tools["tools"].as_array().unwrap() {
+            let id = &tool["toolId"];
+            ok(&h, "tool.active.set", json!({"toolId":id}));
+            let rx = h.subscribe();
+            ok(&h, "tool.active.set", json!({"toolId":id}));
+            assert!(!rx.try_iter().any(|e| e.name == "tool.active.changed"));
+            let before = ok(&h, "tool.options.get", json!({"toolId":id}));
+            assert_eq!(
+                err(&h, "tool.options.set", json!({"toolId":id,"options":{"nonexistent":true}})).code,
+                "tool.notApplicable"
+            );
+            assert_eq!(ok(&h, "tool.options.get", json!({"toolId":id})), before);
+        }
+        assert_eq!(rev(&h), r);
+        assert_eq!(ok(&h, "edit.history.get", json!({})), history);
+    }
+}
