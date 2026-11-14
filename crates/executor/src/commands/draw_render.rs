@@ -181,6 +181,17 @@ pub(crate) struct Builder<'a> {
     pub(crate) warnings: Vec<Value>,
     textures: BTreeMap<String, Option<Texture>>,
     work: u64,
+    /// The interactive canvas's walk (M4 C4.2b, design note 1 §8): what each item's paint came from, beside `items`.
+    pub(crate) tags: Option<Vec<Tag>>,
+}
+
+/// What an item's paint came from, for the interactive canvas's colour slots (06 §6.3).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) enum Tag {
+    /// A colour id.
+    Colour(String),
+    /// A bitmap node's image entry.
+    Bitmap(String),
 }
 
 fn els(path: &Path, m: &Affine) -> Vec<El> {
@@ -233,6 +244,15 @@ impl<'a> Builder<'a> {
             warnings: Vec::new(),
             textures: BTreeMap::new(),
             work,
+            tags: None,
+        }
+    }
+
+    /// Pushes an item and, in the canvas walk, its tag.
+    fn push(&mut self, item: Item, tag: Tag) {
+        self.items.push(item);
+        if let Some(t) = &mut self.tags {
+            t.push(tag);
         }
     }
 
@@ -342,7 +362,10 @@ impl<'a> Builder<'a> {
                 self.spend(rings.iter().map(Vec::len).sum())?;
                 let b = Some(zone.bounds);
                 if let Some(paint) = self.paint(&zone.id, &colour, fill.matrix, b) {
-                    self.items.push(Item::Fill { path: ring_els(&rings, &to_px), rule: Rule::EvenOdd, paint });
+                    self.push(
+                        Item::Fill { path: ring_els(&rings, &to_px), rule: Rule::EvenOdd, paint },
+                        Tag::Colour(colour),
+                    );
                 }
             }
         }
@@ -352,7 +375,7 @@ impl<'a> Builder<'a> {
             let path = Path::from_points(s.points(), true);
             self.spend(path.anchors.len())?;
             if let Some(paint) = self.paint(s.id().as_str(), &colour, *s.fill_matrix(), vd::stroke_bounds(s)) {
-                self.items.push(Item::Fill { path: els(&path, &to_px), rule: Rule::NonZero, paint });
+                self.push(Item::Fill { path: els(&path, &to_px), rule: Rule::NonZero, paint }, Tag::Colour(colour));
             }
         }
         for s in strokes.iter().filter(|s| *s.kind() == StrokeKind::Pencil) {
@@ -364,7 +387,7 @@ impl<'a> Builder<'a> {
             let path = Path::from_points(s.points(), *s.closed());
             self.spend(path.anchors.len())?;
             if let Some(paint) = self.paint(s.id().as_str(), &colour, *s.fill_matrix(), vd::stroke_bounds(s)) {
-                self.items.push(Item::Stroke { path: els(&path, &to_px), width, paint });
+                self.push(Item::Stroke { path: els(&path, &to_px), width, paint }, Tag::Colour(colour));
             }
         }
         Ok(())
@@ -382,7 +405,7 @@ impl<'a> Builder<'a> {
             let Some(colour) = g.colour_id.clone() else { continue };
             let b = vd::node_bounds(n, true);
             if let Some(paint) = self.paint(n.id().as_str(), &colour, None, b) {
-                self.items.push(Item::Fill { path: els(&path, &to_px), rule: Rule::NonZero, paint });
+                self.push(Item::Fill { path: els(&path, &to_px), rule: Rule::NonZero, paint }, Tag::Colour(colour));
             }
         }
         Ok(())
@@ -427,7 +450,7 @@ impl<'a> Builder<'a> {
         path.push(El::Close);
         let unit_to_pixel = to_px.then_after(&Affine([w, 0.0, 0.0, h, 0.0, 0.0])).0;
         let paint = Paint::Image { rgba, width: bw, height: bh, unit_to_pixel, repeat: false };
-        self.items.push(Item::Fill { path, rule: Rule::NonZero, paint });
+        self.push(Item::Fill { path, rule: Rule::NonZero, paint }, Tag::Bitmap(entry));
         Ok(())
     }
 
@@ -671,6 +694,7 @@ pub(crate) fn rasterise_with(
         warnings: Vec::new(),
         textures: BTreeMap::new(),
         work: u64::from(width) * u64::from(height) / 1024,
+        tags: None,
     };
     b.nodes(d.nodes(), &zones)?;
     if o.show_strokes {
@@ -723,4 +747,29 @@ pub(crate) fn rasterise_with(
         other => err("render.failed", other.to_string(), json!({})),
     })?;
     Ok((pixels, warnings))
+}
+
+/// The canvas walk's items, their tags and the render warnings.
+pub(crate) type CanvasWalk = (Vec<Item>, Vec<Tag>, Vec<Value>);
+
+/// The interactive canvas's walk of a drawing (M4 C4.2b; design note 1 §8): the same items, in drawing units, as the
+/// final renderer's walk (06 §6.1: one render list), each with the colour id or image its paint came from. Returns the
+/// items, their tags and the render warnings.
+///
+/// # Errors
+/// `limit.exceeded` past the work limit; planar-map errors.
+pub(crate) fn canvas_items(
+    src: &Sources<'_>,
+    doc: &Document,
+    d: &Drawing,
+    style: Option<(Id, Id)>,
+) -> Result<CanvasWalk, CommandError> {
+    let zones: BTreeMap<String, crate::planar::LayerZones> =
+        crate::planar::drawing_zones(src.cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
+    let mut b = Builder::in_drawing_units(doc, src.blobs, None, 0);
+    b.style = style;
+    b.tags = Some(Vec::new());
+    b.nodes(d.nodes(), &zones)?;
+    let tags = b.tags.take().unwrap_or_default();
+    Ok((std::mem::take(&mut b.items), tags, std::mem::take(&mut b.warnings)))
 }

@@ -9,6 +9,8 @@ mod common;
 mod addressing;
 #[path = "c42/aids.rs"]
 mod aids;
+#[path = "c42/canvas.rs"]
+mod canvas;
 #[path = "c42/budgets.rs"]
 mod budgets;
 #[path = "c42/equivalence.rs"]

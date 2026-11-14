@@ -28,6 +28,7 @@ mod addressing;
 pub mod agents;
 mod align;
 mod app;
+pub mod canvas;
 pub mod commands;
 mod cx;
 mod drawing;
@@ -806,6 +807,27 @@ impl ExecutorHandle {
     /// `command.timeout`, `internal`.
     pub fn snapshot(&self) -> Result<Option<Document>, CommandError> {
         self.call("snapshot", Request::Snapshot)
+    }
+
+    /// The interactive canvas's payload of one drawing (M4 C4.2b; design note 1): `drawing_id`, or the current drawing
+    /// when `None`, at `generation` and zoom `bucket`. The document thread only takes the snapshot; the walk, the
+    /// tessellation and the encoding run on the calling thread.
+    ///
+    /// # Errors
+    /// `drawing.noTarget`, `ref.notFound`, `no.project`, the walk's refusals, `command.timeout`, `internal`.
+    pub fn canvas_drawing(
+        &self,
+        drawing_id: Option<&str>,
+        generation: u64,
+        bucket: i16,
+    ) -> Result<canvas::CanvasPayload, CommandError> {
+        let want = drawing_id.map(str::to_owned);
+        let src = self.call("canvas", |r| {
+            Request::Run(Box::new(move |core| {
+                let _ = r.send(core.canvas_source(want.as_deref()));
+            }))
+        })??;
+        canvas::payload(&src, generation, bucket)
     }
 
     /// Subscribes to events (11 §9). Events are delivered after each call that produced them.

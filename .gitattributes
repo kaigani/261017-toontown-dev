@@ -6,6 +6,7 @@
 *.animpkg binary
 *.onnx binary
 *.ttrl binary
+*.ttrd binary
 *.gz binary
 *.ttf binary
 *.otf binary

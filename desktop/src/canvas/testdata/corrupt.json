@@ -1,0 +1,54 @@
+[
+  {
+    "file": "synthetic.ttrd",
+    "rule": null
+  },
+  {
+    "file": "corrupt/V1-magic.ttrd",
+    "rule": "V1"
+  },
+  {
+    "file": "corrupt/V2-major.ttrd",
+    "rule": "V2"
+  },
+  {
+    "file": "corrupt/V3-header-length.ttrd",
+    "rule": "V3"
+  },
+  {
+    "file": "corrupt/V3-short-header.ttrd",
+    "rule": "V3"
+  },
+  {
+    "file": "corrupt/V4-vertex-count.ttrd",
+    "rule": "V4"
+  },
+  {
+    "file": "corrupt/V5-truncated.ttrd",
+    "rule": "V5"
+  },
+  {
+    "file": "corrupt/V5-overlong.ttrd",
+    "rule": "V5"
+  },
+  {
+    "file": "corrupt/V6-index.ttrd",
+    "rule": "V6"
+  },
+  {
+    "file": "corrupt/V7-slot.ttrd",
+    "rule": "V7"
+  },
+  {
+    "file": "corrupt/V8-record-kind.ttrd",
+    "rule": "V8"
+  },
+  {
+    "file": "corrupt/V9-non-finite.ttrd",
+    "rule": "V9"
+  },
+  {
+    "file": "corrupt/V10-drawing-id.ttrd",
+    "rule": "V10"
+  }
+]

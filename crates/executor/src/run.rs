@@ -1094,6 +1094,25 @@ impl Core {
         self.session.as_ref()
     }
 
+    /// The snapshot an interactive canvas payload is built from (M4 C4.2b; design note 1 §6): the document by
+    /// reference count, the drawing (`drawing` or the current one), the planar cache's handle and the blob store.
+    pub(crate) fn canvas_source(&self, drawing: Option<&str>) -> Result<crate::canvas::CanvasSource, CommandError> {
+        let s = self.session().ok_or_else(crate::cx::no_project)?;
+        let p = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
+        let id = match drawing {
+            Some(d) => tt_model::Id::parse(d)?,
+            None => s.app.current_drawing(&p.doc).ok_or_else(|| {
+                CommandError::with_details("drawing.noTarget", "there is no current drawing", serde_json::json!({}))
+            })?,
+        };
+        Ok(crate::canvas::CanvasSource {
+            doc: p.doc.clone(),
+            drawing: id,
+            cache: s.planar.clone(),
+            blobs: Some(p.store.blobs.clone()),
+        })
+    }
+
     pub(crate) fn session_mut(&mut self) -> Option<&mut Session> {
         self.session.as_mut()
     }
