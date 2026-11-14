@@ -24,8 +24,8 @@
 //! sets), AG-01…AG-09, §6–§8 and §10.2–§10.3 through the executor; 01 §3 (projects), §5 (window, panels, workspaces:
 //! kernel state), §6.1 (undo/redo), §11 (settings), §12.4. Milestone: M1 (C1.2, C1.3). Decisions: ADR-0013, ADR-0014.
 
-pub mod agents;
 mod addressing;
+pub mod agents;
 mod align;
 mod app;
 pub mod commands;
