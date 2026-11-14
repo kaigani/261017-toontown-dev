@@ -216,6 +216,7 @@
     "headSha": "88ac1b5a0238dfb231d7c53cb7c550cc94e1437c",
     "status": "in_progress",
     "conclusion": "",
+    "observedAt": "2026-11-14T04:23:52.212474+00:00",
     "jobs": [
       {
         "name": "check (windows-latest)",
@@ -389,8 +390,8 @@
       },
       {
         "name": "check properties (windows-latest)",
-        "status": "in_progress",
-        "conclusion": "",
+        "status": "completed",
+        "conclusion": "success",
         "failedSteps": []
       },
       {
@@ -401,8 +402,8 @@
       },
       {
         "name": "desktop gui (macos-latest)",
-        "status": "in_progress",
-        "conclusion": "",
+        "status": "completed",
+        "conclusion": "success",
         "failedSteps": []
       },
       {
