@@ -548,3 +548,128 @@ mod part_b_busy {
         assert!(accepted.is_empty(), "agent changed tool during user activity: {accepted:?}");
     }
 }
+
+mod part_c_equivalence {
+    use super::*;
+    use serde_json::Value;
+    fn canonical(h: &tt_executor::ExecutorHandle) -> Vec<String> {
+        let d = h.snapshot().unwrap().unwrap();
+        d.entry_keys()
+            .iter()
+            .map(|k| tt_model::canonical::to_canonical_string(&d.entry_raw_json(k).unwrap()).unwrap())
+            .collect()
+    }
+    #[test]
+    fn freehand_samples_and_direct_content() {
+        // 02 section 13.3: pressure is per sample, including duplicate points and release.
+        for tool in ["brush", "pencil", "stroke"] {
+            for n in [2, 7, 100] {
+                let (a, b) = (ready(), ready());
+                let events: Vec<Value> = (0..n).map(|i| json!({"type":if i==0 {"down"} else if i==n-1 {"up"} else {"move"},"x":1000.0+(if n == 2 { i } else { i/2 }) as f64,"y":500.0,"pressure":(i%5) as f64/4.0,"dt":i%3})).collect();
+                let points: Vec<Value> = events
+                    .iter()
+                    .map(|e| json!({"x":e["x"].as_f64().unwrap()-960.0,"y":40.0,"pressure":e["pressure"]}))
+                    .collect();
+                let env = a.pointer(tt_executor::Origin::User, json!({"view":"drawing","tool":tool,"events":events}));
+                assert!(env.is_ok(), "{env:?}");
+                let c = &env.result.as_ref().unwrap()["commands"][1];
+                assert_eq!(c["commandId"], "draw.stroke.add");
+                assert_eq!(c["params"]["points"], json!(points));
+                assert_eq!(c["params"]["kind"], if tool == "stroke" { "invisible" } else { tool });
+                assert_eq!(c["params"]["fit"], true);
+                // Explicit resolved styling is replayed; this comparison does not independently validate styling.
+                ok(&b, "draw.stroke.add", c["params"].clone());
+                assert_eq!(canonical(&a), canonical(&b));
+                assert_eq!(
+                    ok(&a, "edit.history.get", json!({}))["entries"][0]["label"],
+                    ok(&b, "edit.history.get", json!({}))["entries"][0]["label"]
+                );
+            }
+        }
+    }
+}
+
+mod part_c_pointer {
+    use super::*;
+    use serde_json::Value;
+    use std::time::Instant;
+    fn request(n: usize) -> Value {
+        let events: Vec<Value>=(0..n).map(|i| json!({"type":if i==0 {"down"} else if i==n-1 {"up"} else {"move"},"x":1000.0+i as f64/10.0,"y":500.0+(i%7) as f64,"pressure":0.5,"dt":2})).collect();
+        json!({"view":"drawing","tool":"brush","events":events})
+    }
+    #[test]
+    fn limits_sequence_and_incomplete_gesture_are_atomic() {
+        let h = ready();
+        let before = rev(&h);
+        for events in [
+            json!([{"type":"up","x":1,"y":1}]),
+            json!([{"type":"down","x":1,"y":1},{"type":"down","x":2,"y":2}]),
+            json!([{"type":"down","x":1,"y":1,"pressure":1.01}]),
+            json!([{"type":"down","x":10000001,"y":1}]),
+            json!([{"type":"down","x":null,"y":1}]),
+        ] {
+            let e = h.pointer(tt_executor::Origin::User, json!({"view":"drawing","events":events}));
+            assert_eq!(e.error.unwrap().code, "arg.invalid");
+            assert_eq!(rev(&h), before);
+        }
+        assert_eq!(h.pointer(tt_executor::Origin::User, request(10001)).error.unwrap().code, "limit.exceeded");
+        let history = ok(&h, "edit.history.get", json!({}));
+        let sel = ok(&h, "draw.selection.get", json!({}));
+        let e=h.pointer(tt_executor::Origin::User,json!({"view":"drawing","tool":"pencil","events":[{"type":"move","x":2,"y":2},{"type":"down","x":3,"y":3},{"type":"move","x":4,"y":4}]}));
+        assert!(e.is_ok());
+        assert_eq!(rev(&h), before);
+        assert_eq!(ok(&h, "edit.history.get", json!({})), history);
+        assert_eq!(ok(&h, "draw.selection.get", json!({})), sel);
+        assert_eq!(ok(&h, "tool.active.get", json!({}))["toolId"], "pencil");
+    }
+    #[test]
+    fn full_cap_query_latency_receipt() {
+        let h = ready();
+        let r = request(10000);
+        let worker_h = h.clone();
+        let (tx, rx) = std::sync::mpsc::channel();
+        let worker = std::thread::spawn(move || {
+            tx.send(()).unwrap();
+            let t = Instant::now();
+            let e = worker_h.pointer(tt_executor::Origin::User, r);
+            (e, t.elapsed())
+        });
+        rx.recv().unwrap();
+        let admission = Instant::now();
+        while admission.elapsed() < std::time::Duration::from_millis(10) {
+            std::thread::yield_now();
+        }
+        let t = Instant::now();
+        // Admission is not instrumented: this is an observed competing query, not a precise hold measurement.
+        let q = run(&h, "view.transform.get", json!({"viewId":"drawingView"}));
+        let latency = t.elapsed();
+        let (e, total) = worker.join().unwrap();
+        eprintln!("10000-event pointer total {total:?}, competing query {latency:?}");
+        assert!(e.is_ok(), "{e:?}");
+        assert!(q.is_ok());
+        assert!(
+            latency < std::time::Duration::from_millis(60),
+            "plan section 6: 20 ms hold, generous 60 ms query bound; observed {latency:?}"
+        );
+    }
+}
+
+mod part_c_availability {
+    use super::*;
+    #[test]
+    fn constructed_view_states_agree_with_availability() {
+        // O-24: all parameters present; refusal is caused by the view type.
+        let mut mismatches = Vec::new();
+        for view_type in ["camera", "top", "side"] {
+            let h = ready();
+            ok(&h, "view.type.set", json!({"viewId":"drawingView","type":view_type}));
+            let p = json!({"viewId":"drawingView","from":"view","to":"drawing","point":{"x":960,"y":540}});
+            let a = h.availability(vec![("view.coordinates.convert".into(), p.as_object().unwrap().clone())]).unwrap();
+            let result = run(&h, "view.coordinates.convert", p);
+            if a[0].enabled != result.is_ok() {
+                mismatches.push(format!("{view_type}: availability {:?}, handler {result:?}", a[0]));
+            }
+        }
+        assert!(mismatches.is_empty(), "{}", mismatches.join("\n"));
+    }
+}
