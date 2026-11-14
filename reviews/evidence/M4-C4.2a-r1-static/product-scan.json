@@ -1,0 +1,22 @@
+{
+  "crates/mcp/src/server.rs": [
+    {
+      "line": 374,
+      "text": "#[allow(clippy::too_many_lines, reason = \"the main loop\")]"
+    },
+    {
+      "line": 685,
+      "text": "#[allow(clippy::too_many_lines, reason = \"the method table\")]"
+    },
+    {
+      "line": 941,
+      "text": "#[allow(clippy::too_many_lines, reason = \"the tool dispatch\")]"
+    }
+  ],
+  "crates/mcp/src/tools.rs": [
+    {
+      "line": 87,
+      "text": "#[allow(clippy::too_many_lines, reason = \"one table\")]"
+    }
+  ]
+}
