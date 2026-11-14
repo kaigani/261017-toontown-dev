@@ -1480,3 +1480,34 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   view's holds navigation and the aids); workspace toolbars at the top; tool options in the Properties panel; system
   cursors plus a crosshair for the drawing tools.
 - **Question:** confirm or specify, together with SI-115.
+
+## SI-128 — view state persistence and the agent-view preference (found in M4 C4.2; interim)
+
+- **Sections:** 01 §6.5 ("remembered per view type"), 02 §12.3 (no row for view transforms), 11 §6.4 ("Let the agent
+  move my view": agent `ui` commands affect the user's visible views or only virtual views owned by the agent session),
+  11 §7.6 (`ui.view.create`, not in the registry).
+- **Problem:** whether view transforms persist across sessions is not stated; with the preference off, agent view
+  changes should go to session-owned virtual views, which no registered command creates.
+- **Interim decision:** view transforms are session state (not persisted; the canvas size comes from the host each
+  launch). With `letAgentMoveView` off, an agent's `view.*` change refuses with `permission.denied`,
+  `details.preference: "letAgentMoveView"`.
+- **Question:** persist view transforms (in which scope), and register `ui.view.create` for agent-owned virtual views.
+
+## SI-129 — owner of the gestures of tools outside C4.2's scope (found in M4 C4.2; interim)
+
+- **Sections:** 02 §7.1.2 (Contour Editor), §7.4.x (Perspective, Reposition All Drawings), §7.6 (Text), 03 §8 (Edit
+  Texture), 02 §7.2 (the invisible Stroke tool), plan line 171 (C4.2's tools: brush, pencil, select, eraser, paint,
+  shapes).
+- **Problem:** these tools can be made active (`tool.active.set`), but their gestures are not in C4.2's scope and no
+  checkpoint names them.
+- **Interim decision:** their gestures answer `command.notImplemented` with owner M4 C4.3; their structured commands
+  already work.
+- **Question:** the owner checkpoint of these gestures.
+
+## SI-130 — the `pointer` tool's event cap (found in M4 C4.2; interim)
+
+- **Sections:** 11 §6.5 (session limits: batches of 1,000 steps, inline payloads), 11 §7.6 (`pointer`).
+- **Problem:** no limit is stated for the number of events in one `pointer` call; a stroke can hold thousands of samples.
+- **Interim decision:** at most 10,000 events per call; more refuse with `limit.exceeded`, `details.limit:
+  "pointerEvents"`. Coordinates must be finite and within ±10,000,000 view pixels (`arg.invalid`).
+- **Question:** confirm the cap or define it in 11 §6.5.
