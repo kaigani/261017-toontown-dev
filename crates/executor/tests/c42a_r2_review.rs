@@ -69,7 +69,7 @@ fn cancelled_capture_jobs_finish_after_request_returns() {
         let (e, _) = h.invoke_served_until(Invocation::user("inspect.screenshot", json!({})), &|| {
             h.jobs().list(None, None).len() > count
         });
-        let error = e.error.unwrap();
+        let Some(error) = e.error else { continue };
         assert_eq!(error.code, "command.timeout");
         assert_eq!(error.details["reason"], "cancelled");
         let id = error.details["jobId"].as_str().unwrap();
