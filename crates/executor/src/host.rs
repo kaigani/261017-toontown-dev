@@ -41,9 +41,75 @@ pub(crate) struct ShellShared {
     /// before its reply (round 3, C41-R3-06): a tree reported after a command was answered is judged against the
     /// arrangement that command left.
     floats: Mutex<Vec<String>>,
+    /// Headless captures: (running, waiting) (design note 5 §1c).
+    captures: Mutex<(usize, usize)>,
+    /// Signalled when a capture slot frees.
+    capture_freed: std::sync::Condvar,
+}
+
+/// Callers that may wait for a capture slot at once; one more answers `limit.exceeded` (design note 5 §1c).
+pub(crate) const MAX_WAITING_CAPTURES: usize = 8;
+
+/// A held capture slot, released when the call returns.
+pub(crate) struct CaptureSlot<'a>(&'a ShellShared);
+
+impl Drop for CaptureSlot<'_> {
+    fn drop(&mut self) {
+        let mut c = self.0.captures.lock().unwrap_or_else(PoisonError::into_inner);
+        c.0 = c.0.saturating_sub(1);
+        drop(c);
+        self.0.capture_freed.notify_one();
+    }
 }
 
 impl ShellShared {
+    /// Takes a capture slot on the caller's thread (never the document thread): at most `MAX_CAPTURES` captures run,
+    /// at most `MAX_WAITING_CAPTURES` callers wait for one (each on its own thread, so no thread is added), bounded by
+    /// `budget` and `cancelled`; beyond either bound the call answers `limit.exceeded` before anything starts.
+    pub(crate) fn capture_slot(
+        &self,
+        budget: Duration,
+        cancelled: &dyn Fn() -> bool,
+    ) -> Result<CaptureSlot<'_>, CommandError> {
+        let max = crate::commands::inspect::MAX_CAPTURES;
+        let limit = |running: usize, waiting: usize, what: &str| {
+            CommandError::with_details(
+                tt_registry::codes::LIMIT_EXCEEDED,
+                format!("{running} captures run and {waiting} wait; {what}"),
+                json!({ "limit": "concurrentCaptures", "max": max, "maxWaiting": MAX_WAITING_CAPTURES,
+                        "running": running, "waiting": waiting }),
+            )
+            .hint("retry when a capture has answered")
+        };
+        let start = Instant::now();
+        let mut c = self.captures.lock().unwrap_or_else(PoisonError::into_inner);
+        if c.0 < max {
+            c.0 += 1;
+            return Ok(CaptureSlot(self));
+        }
+        if c.1 >= MAX_WAITING_CAPTURES {
+            return Err(limit(c.0, c.1, "no more callers may wait"));
+        }
+        c.1 += 1;
+        loop {
+            let (next, _) = self.capture_freed.wait_timeout(c, WAIT_POLL).unwrap_or_else(PoisonError::into_inner);
+            c = next;
+            if c.0 < max {
+                c.1 -= 1;
+                c.0 += 1;
+                return Ok(CaptureSlot(self));
+            }
+            if cancelled() || start.elapsed() >= budget {
+                c.1 -= 1;
+                if cancelled() {
+                    return Err(crate::request_cancelled_error("inspect.screenshot"));
+                }
+                return Err(limit(c.0, c.1 + 1, "the wait for a slot reached the call's budget"));
+            }
+        }
+    }
+
+    /// Publishes the kernel's visible floats (the document thread, after each request).
     /// Publishes the kernel's visible floats (the document thread, after each request).
     pub(crate) fn publish_floats(&self, s: &crate::session::Session) {
         let now = visible_floats(&s.ui.panels());
@@ -62,6 +128,8 @@ impl Default for ShellShared {
             wait_for_user_ms: AtomicU64::new(10_000),
             attached: std::sync::atomic::AtomicBool::new(false),
             floats: Mutex::new(Vec::new()),
+            captures: Mutex::new((0, 0)),
+            capture_freed: std::sync::Condvar::new(),
         }
     }
 }

@@ -14,6 +14,7 @@ use crate::cx::Cx;
 /// Symmetry mode.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
+#[schemars(inline)]
 pub(crate) enum Mode {
     /// No copies.
     #[default]
@@ -32,8 +33,9 @@ fn six() -> i64 {
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct SymmetryParams {
-    /// Mode.
+    /// Mode (spec A: `= "none"`).
     #[serde(default)]
+    #[schemars(extend("default" = "none"))]
     mode: Mode,
     /// Axis angle from +y, counter-clockwise, degrees (0–360).
     #[serde(default)]

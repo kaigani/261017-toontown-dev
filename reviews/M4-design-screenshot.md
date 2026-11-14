@@ -26,6 +26,22 @@ drawn by the interactive renderer only (06 §6.10): headless screenshots show th
   call's watchdog budget and its cancellation, and answers the finished result (with the job's id). Inside a batch the
   step answers the pending result and the job id (`job.wait` collects it).
 
+### 1c. Bound and cancellation (round 2)
+
+- **At most two captures run at once in one executor** (`inspect::MAX_CAPTURES`); each holds one job thread from its
+  submission until its PNG is encoded. A further capture **waits for a slot on its caller's own thread** (no thread is
+  added; `ExecutorHandle::serve`, before the request is queued), bounded by the call's budget and its cancellation; at
+  most **eight** callers wait (`host::MAX_WAITING_CAPTURES`). One more caller, or a wait that reaches the budget,
+  answers `limit.exceeded` with `details: {limit: "concurrentCaptures", max: 2, maxWaiting: 8, running, waiting}`
+  before anything is snapshotted or started. The handler also refuses when two capture jobs are still running (a
+  cancelled capture finishing in the background, below), so the job threads never exceed two. The isolated test
+  `c42_isolated::concurrent_captures_are_capped_and_their_threads_counted` races fourteen callers and counts the
+  process's OS threads while they run. The reviewer's `concurrent_captures_finish_and_budget_is_bounded` (six
+  callers, all answered) holds because six is within two running plus eight waiting.
+- **A cancelled request does not stop its capture:** ADR-0020 decision 8 lets a job continue after its request is
+  cancelled, so the capture finishes in the background (its job's cancellation stops the rasteriser between work
+  slices only when the job itself is cancelled); its thread counts against the bound until it ends.
+
 ### 1b. Regions and caps
 
 A `region` is a rectangle of the view's pixel plane: it is not clipped to the window, so a region outside the window

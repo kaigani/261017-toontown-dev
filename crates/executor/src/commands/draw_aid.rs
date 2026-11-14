@@ -37,9 +37,9 @@ fn change(cx: &mut Cx, aid: &str, f: impl FnOnce(&mut Aids)) -> Value {
 }
 
 fn colour(v: &str, pointer: &str) -> Result<String, CommandError> {
-    tt_model::value::Colour::parse(v)
-        .map(|c| c.to_string())
-        .map_err(|e| err(codes::ARG_INVALID, e.message().to_owned(), json!({ "pointer": pointer })))
+    crate::drawing::aid_colour(v).ok_or_else(|| {
+        err(codes::ARG_INVALID, format!("`{v}` is not a colour #RRGGBB or #RRGGBBAA"), json!({ "pointer": pointer }))
+    })
 }
 
 // ----- event ----------------------------------------------------------------------------------------------------------
@@ -196,7 +196,7 @@ pub(crate) struct OnionParams {
 
 fn count(v: Option<i64>, pointer: &str) -> Result<Option<i64>, CommandError> {
     match v {
-        Some(n) if !(0..=3).contains(&n) => {
+        Some(n) if !crate::drawing::onion_count_ok(n) => {
             Err(err("tool.valueOutOfRange", "onion-skin counts are 0-3", json!({ "pointer": pointer })))
         }
         _ => Ok(v),

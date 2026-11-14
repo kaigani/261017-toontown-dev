@@ -1157,6 +1157,9 @@ fn window() -> String {
     "window".into()
 }
 
+/// Captures that may run at once in one executor (each holds one job thread until it is encoded; design note 5 §1c).
+pub(crate) const MAX_CAPTURES: usize = 2;
+
 /// The inline side limit of a screenshot (11 §6.5: 2048 px).
 pub(crate) const SCREENSHOT_MAX_SIDE: u32 = 2048;
 
@@ -1276,6 +1279,22 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult,
     if cx.dry_run() {
         result.job_id = Some("dryRun".into());
         return Ok(result);
+    }
+    // At most MAX_CAPTURES captures in flight (each is one job thread; design note 5 §1c).
+    let running = cx
+        .session()
+        .jobs
+        .list(None, None)
+        .iter()
+        .filter(|j| j.command_id == "inspect.screenshot" && !j.state.is_final())
+        .count();
+    if running >= MAX_CAPTURES {
+        return Err(CommandError::with_details(
+            tt_registry::codes::LIMIT_EXCEEDED,
+            format!("{running} captures are running; at most {MAX_CAPTURES} run at once"),
+            json!({ "limit": "concurrentCaptures", "max": MAX_CAPTURES, "running": running }),
+        )
+        .hint("retry when a capture has answered"));
     }
     let done = result.clone();
     let origin = cx.origin().clone();

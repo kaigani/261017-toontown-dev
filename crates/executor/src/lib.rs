@@ -586,6 +586,15 @@ impl ExecutorHandle {
         // cancellation marks its token, which stops it at its next work-account check, and a link carries only the
         // notice that it was discarded (ADR-0020 decision 8).
         let query = self.registry.get(&what).is_some_and(|e| e.spec.kind == tt_registry::Kind::Query);
+        // Headless captures: a slot on this thread first (design note 5 §1c); released when this call returns.
+        let _slot = if what == "inspect.screenshot" {
+            match self.shell.capture_slot(self.config.budget, cancelled) {
+                Ok(s) => Some(s),
+                Err(e) => return (Envelope::error(e, None), false),
+            }
+        } else {
+            None
+        };
         let called = match probe {
             None => self.call(&what, |r| Request::Invoke(inv, r)),
             Some(_) if query => self.call_with(&what, |r| Request::Invoke(inv, r), cancelled, Link::Notify),

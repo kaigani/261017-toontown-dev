@@ -80,6 +80,19 @@ pub fn check_option(tool: &str, key: &str, v: &Value) -> Result<(), (&'static st
     if ok { Ok(()) } else { Err(("tool.valueOutOfRange", format!("`{key}` of the {tool} tool is out of range"))) }
 }
 
+/// An onion-skin count is 0-3 (02 §10.2): the one rule of `drawAid.onionSkin.set` and of a restored file.
+#[must_use]
+pub fn onion_count_ok(n: i64) -> bool {
+    (0..=3).contains(&n)
+}
+
+/// A colour as the aids store it (`#RRGGBBAA`), or `None` when `c` is not `#RRGGBB` or `#RRGGBBAA`: the one rule of the
+/// colour-taking aid commands and of a restored file.
+#[must_use]
+pub fn aid_colour(c: &str) -> Option<String> {
+    tt_model::value::Colour::parse(c).ok().map(|c| c.to_string())
+}
+
 /// Symmetry (02 §6.2).
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase", default)]
@@ -350,7 +363,7 @@ impl DrawingSettings {
     /// apply (C42A-R1-04): a stale value in a file of the right shape falls back alone and its siblings survive.
     pub fn sanitize(&mut self) {
         let d = Self::default();
-        let colour = |c: &str| tt_model::value::Colour::parse(c).is_ok();
+        let colour = |c: &str| aid_colour(c).is_some();
         let sym = &mut self.symmetry;
         if !matches!(sym.mode.as_str(), "none" | "mirror" | "kaleidoscope") {
             sym.mode = d.symmetry.mode.clone();
@@ -368,10 +381,10 @@ impl DrawingSettings {
         if !matches!(a.grid.ty.as_str(), "normal" | "field12" | "field16") {
             a.grid.ty = d.aids.grid.ty.clone();
         }
-        if !(0..=3).contains(&a.onion_skin.previous) {
+        if !onion_count_ok(a.onion_skin.previous) {
             a.onion_skin.previous = d.aids.onion_skin.previous;
         }
-        if !(0..=3).contains(&a.onion_skin.next) {
+        if !onion_count_ok(a.onion_skin.next) {
             a.onion_skin.next = d.aids.onion_skin.next;
         }
         let st = &mut a.onion_skin_style;

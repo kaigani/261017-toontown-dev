@@ -80093,34 +80093,30 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "enabled",
     ],
   },
-  "tool.symmetry.set.Mode": {
-    description: "Symmetry mode.",
-    oneOf: [
-      {
-        description: "No copies.",
-        type: "string",
-        const: "none",
-      },
-      {
-        description: "One mirror axis.",
-        type: "string",
-        const: "mirror",
-      },
-      {
-        description: "Dihedral symmetry.",
-        type: "string",
-        const: "kaleidoscope",
-      },
-    ],
-  },
   "tool.symmetry.set.params": {
     title: "SymmetryParams",
     description: "`tool.symmetry.set` parameters.",
     type: "object",
     properties: {
       mode: {
-        description: "Mode.",
-        $ref: "#/$defs/tool.symmetry.set.Mode",
+        description: "Mode (spec A: `= \"none\"`).",
+        oneOf: [
+          {
+            description: "No copies.",
+            type: "string",
+            const: "none",
+          },
+          {
+            description: "One mirror axis.",
+            type: "string",
+            const: "mirror",
+          },
+          {
+            description: "Dihedral symmetry.",
+            type: "string",
+            const: "kaleidoscope",
+          },
+        ],
         default: "none",
       },
       angle: {
@@ -80145,7 +80141,23 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         description: "Mode.",
-        $ref: "#/$defs/tool.symmetry.set.Mode",
+        oneOf: [
+          {
+            description: "No copies.",
+            type: "string",
+            const: "none",
+          },
+          {
+            description: "One mirror axis.",
+            type: "string",
+            const: "mirror",
+          },
+          {
+            description: "Dihedral symmetry.",
+            type: "string",
+            const: "kaleidoscope",
+          },
+        ],
       },
       angle: {
         description: "Axis angle (degrees).",
@@ -104064,13 +104076,10 @@ export interface tool_snapToContour_set_result {
   enabled: boolean;
 }
 
-/** Symmetry mode. */
-export type tool_symmetry_set_Mode = 'none' | 'mirror' | 'kaleidoscope';
-
 /** `tool.symmetry.set` parameters. */
 export interface tool_symmetry_set_params {
-  /** Mode. */
-  mode?: tool_symmetry_set_Mode;
+  /** Mode (spec A: `= "none"`). */
+  mode?: 'none' | 'mirror' | 'kaleidoscope';
   /** Axis angle from +y, counter-clockwise, degrees (0–360). */
   angle?: number;
   /** Mirror lines of a kaleidoscope (2–16). */
@@ -104080,7 +104089,7 @@ export interface tool_symmetry_set_params {
 /** `{mode, angle, mirrors}`. */
 export interface tool_symmetry_set_result {
   /** Mode. */
-  mode: tool_symmetry_set_Mode;
+  mode: 'none' | 'mirror' | 'kaleidoscope';
   /** Axis angle (degrees). */
   angle: number;
   /** Mirror lines. */

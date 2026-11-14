@@ -34,8 +34,9 @@ Before the code (plan reviews/M4-C4.2-plan.md §4, ruling D-3: C4.2a). Requireme
 ## 3. Commands (01 §12.2)
 
 `view.list`, `view.active.set`, `view.type.set` (with `"previous"`), `view.transform.get`, `view.zoom.set` (absolute
-within 6.25 %–6400 %, or by table steps; the 02 §4.3 ladder for wheel and zoom-tool steps, SI-122; `anchor` keeps that
-view point fixed), `view.rotation.set` (absolute or 30° steps), `view.pan.set` (`centre`, `by`, `atPointer`),
+within 6.25 %–6400 %, or by 01 §6.5's table steps; `anchor` keeps that view point fixed; ruling D-15: the wheel
+steps along 02 §4.3's ladder, a Zoom-tool click and the zoom keys send table steps, a Zoom marquee fits its rectangle,
+SI-122), `view.rotation.set` (absolute or 30° steps), `view.pan.set` (`centre`, `by`, `atPointer`),
 `view.transform.reset` (parts), `view.coordinates.convert`. Rotation is only through `view.rotation.set` (SI-123).
 Every change announces the host-only event `shell.view` with the view's new state (`viewId`, type, size, transform and
 both matrices; the canvas follows it). Spec A has no view event and the registry cannot grow (796 entries), so the
@@ -59,4 +60,5 @@ and then answer `ui.busy` (C4.1's arbitration).
 - **V3** With `letAgentMoveView` off, an agent's view change refuses with `permission.denied` and changes nothing; the
   user's (or with the preference on, the agent's) succeeds.
 - **V4** The headless Drawing view is SI-069's: 1920 × 1080, zoom 1, `drawingToView [1,0,0,-1,960,540]`.
-- **V5** Zoom stays within 6.25 %–6400 %; steps follow the table (`steps`) and the ladder (wheel, zoom tool).
+- **V5** Zoom stays within 6.25 %–6400 %; `steps` (the zoom keys and a Zoom-tool click) follow the 01 §6.5 table, the
+  wheel follows the 02 §4.3 ladder (ruling D-15, SI-122).
