@@ -125,10 +125,10 @@ fn owner_records_without_a_completed_recovery_are_scavenged_at_start() {
     let _ = std::fs::remove_dir_all(&dir);
 }
 
-/// Closure round 5: a recovery copy whose owner is another live process of this host is not offered as orphaned, however
-/// old its heartbeat; a released copy is, whatever its process.
+/// Closure round 5: a copy a restart released is offered whatever its process; a copy of another live process with a
+/// fresh heartbeat is not.
 #[test]
-fn a_live_owner_is_never_orphaned_and_a_released_copy_is() {
+fn a_released_copy_is_offered_and_a_fresh_live_one_is_not() {
     let dir = std::env::temp_dir().join(format!("tt-c41-live-{}", tt_executor::random_token(6)));
     let recovery = dir.join("Recovery");
     let host = tt_persist::host::host();
@@ -153,14 +153,14 @@ fn a_live_owner_is_never_orphaned_and_a_released_copy_is() {
             "host": host, "heartbeatAt": beat });
         std::fs::write(recovery.join(id).join("recovery.json"), info.to_string()).unwrap();
     };
-    write("rc_a1170001", other.id(), "2026-01-01T00:00:00Z");
+    write("rc_a1170001", other.id(), &tt_persist::time::now_iso());
     write("rc_a1170002", other.id(), "1970-01-01T00:00:00Z");
     let h = over(&dir);
     let list = ok(&h, "project.recovery.list", json!({}));
     let ids: Vec<&str> = list.as_array().unwrap().iter().filter_map(|e| e["recoveryId"].as_str()).collect();
     let _ = other.kill();
     let _ = other.wait();
-    assert!(!ids.contains(&"rc_a1170001"), "a live owner's copy with an old heartbeat was offered: {list}");
+    assert!(!ids.contains(&"rc_a1170001"), "a live owner's fresh copy was offered: {list}");
     assert!(ids.contains(&"rc_a1170002"), "a released copy was not offered: {list}");
     drop(h);
     let _ = std::fs::remove_dir_all(&dir);

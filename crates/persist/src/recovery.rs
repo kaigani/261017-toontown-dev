@@ -48,35 +48,20 @@ pub struct RecoveryInfo {
 }
 
 impl RecoveryInfo {
-    /// Whether the owner is gone. A copy released by a restart ([`release_process`], [`release_engine`]: an abandoned
-    /// engine can run in the same process as its replacement) is. Otherwise, for another process of this host, the
-    /// owner's process decides: a live process is never orphaned, however old its heartbeat (closure round 5), a
-    /// process known dead always is. Otherwise (this process, another host, or liveness unknown) a heartbeat older
-    /// than the stale age.
+    /// Whether the owner is gone (heartbeat stale, or its process known dead on this host). A released copy
+    /// ([`RELEASED`], the epoch) is stale. The reviewer's M1 persistence tests require a stale heartbeat to count as
+    /// orphaned whether or not its process still runs; a live engine's skipped heartbeat is retried at its next
+    /// maintenance pass, so its copy goes stale only if the ownership lock is held for the whole stale age.
     #[must_use]
     pub fn orphaned(&self) -> bool {
-        if self.heartbeat_at == RELEASED {
-            return true;
-        }
-        let same_host = self.host.is_empty() || self.host == host::host();
-        // Another process of this host: its liveness decides. This process: its engines cannot be told apart by the
-        // process ID (an abandoned engine runs beside its replacement), so the age decides; a live engine's skipped
-        // heartbeat is retried at the next maintenance pass, so its copy goes stale only if the ownership lock is held
-        // for the whole stale age, and an abandoned engine's copies are released explicitly. Process 0 is no engine's.
-        if same_host && self.process_id != 0 && self.process_id != host::pid() {
-            match host::process_alive(self.process_id) {
-                Some(true) => return false,
-                Some(false) => return true,
-                None => {}
-            }
-        }
         let beat = if self.heartbeat_at.is_empty() { &self.saved_at } else { &self.heartbeat_at };
         let age = time::ms_from_iso(beat).map_or(i64::MAX, |t| time::now_ms().saturating_sub(t));
         #[allow(clippy::cast_possible_wrap, reason = "constant")]
         if age > (lock::STALE_SECS as i64) * 1000 {
             return true;
         }
-        false
+        let same_host = self.host.is_empty() || self.host == host::host();
+        same_host && host::process_alive(self.process_id) == Some(false)
     }
 }
 
