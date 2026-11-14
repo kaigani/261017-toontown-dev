@@ -89,18 +89,35 @@ the agent indicator, messages, persisted settings, and the user-priority rule of
    the raw parameters returning the state refusal the command gives with no parameter missing (an empty clipboard,
    nothing selected, no current drawing, a peg as the current element, the central view, the last camera, a reference
    that must name one of several parameters). The transaction pipeline runs the same precheck before every handler,
-   so availability and execution are one predicate by construction. A precheck makes no copy, runs no pipeline or
-   integrity gate and allocates nothing proportional to the document; availability lends the session to one read-only
-   context per chunk of at most 32 references (each chunk its own request on the document thread) and takes it back;
+   so availability and execution are one predicate by construction (the pipeline runs it immediately before the
+   handler, after `expectRev`, where the handler gave the same refusal before). A precheck makes no copy and runs no
+   pipeline or integrity gate; availability lends the session to one read-only context per chunk (each chunk its own
+   request on the document thread, ending after 32 references or once it has held the thread 5 ms) and takes it back;
    a panicking precheck is contained (the reference reports unavailable with an internal reason; an invocation answers
    `internal`). Two refusals ask the user and keep the reference enabled: `project.pathRequired` (Save asks for a
    location) and `project.unsavedChanges` (01 §3.5). References with required parameters missing are completed by a
-   dialog and get the static checks only. The dry run is the test oracle: a sweep of the 269 GUI references in eight
-   constructed states asserts that availability equals a dry run of each reference, in both directions. Cost bound,
-   tested: a full pass on a project of 10,000 elements costs no more than on an empty project plus 20 ms and under
-   50 ms; no availability request holds the document thread more than 20 ms; a user command during continuous passes
-   completes within 100 ms. Passes run when the menu refreshes (once per burst of state-changing events), when a
-   toolbar renders, and per key press; there is no cache per state revision. **Form validity is local:** a dialog's
+   dialog and get the static checks only. **Completeness (closure ruling O-24):** `docs/availability-inventory.md`
+   classifies every (command, refusal code) pair that `scripts/check-availability-inventory.py` finds in the handler
+   of every GUI command and the executor functions it calls (`parameter`, `precheck`, `asks-user`, `execution`,
+   `deferred <checkpoint>`, `unreachable`, each with a reason); the `lint` job fails when a pair is missing, a row is
+   stale, or a `precheck` pair cannot be reached from the command's precheck. Every state refusal whose state C4.1
+   builds through commands is `precheck`; `deferred` is only for a state that needs a view or facility of a later
+   checkpoint (its owner; the M4 merge note lists them). A refusal that availability reports as runnable but the
+   handler gives for a state reason is P3 once the pair is in the inventory (the user gets the typed refusal); one
+   that availability reports as unavailable while the command would succeed stays P2. The dry run is the test
+   oracle: a sweep of the 269 GUI references in eight constructed states asserts that availability equals a dry run of
+   each reference, in both directions, and a second sweep builds, for every `precheck` row, the state the row names in
+   which the refusal occurs and one in which it does not (or the row says why the state cannot be built through
+   commands). Selections, the clipboard and exposure columns can be large: what a precheck needs to know of them (the
+   kinds of the selected elements, whether a copied element is still in the project, the cells of a column, the
+   cameras of a scene) is computed once per value and document revision, during availability only (the pipeline runs
+   prechecks inside transactions and computes directly), so a pass after a change reads such a value once and the
+   passes after it read nothing. Cost bound, tested: a full pass on a project of 10,000 elements, with 10,101 elements
+   selected, with them on the clipboard, with a current column of 10,000 runs and with 991 cameras costs no more than
+   on an empty project plus 20 ms and under 50 ms; no availability request holds the document thread more than 20 ms,
+   including the first pass after such a change; a user command during continuous passes completes within 100 ms.
+   Passes run when the menu refreshes (once per burst of state-changing events), when a toolbar renders, and per key
+   press. **Form validity is local:** a dialog's
    OK button is also disabled while its draft is incomplete or invalid (an empty name, a frame rate out of range),
    because it judges parameters that have not been sent and changes with every keystroke; the command validates them
    again when it runs and its typed error is shown if they are refused. On macOS the menu owns its key equivalents; on Windows and Linux the shortcut is shown in the label

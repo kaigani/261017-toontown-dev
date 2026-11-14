@@ -95,3 +95,46 @@ a test registry.
 | 10,000 elements: pass ≤ empty pass + 20 ms and < 50 ms; chunk ≤ 20 ms; a user command within 100 ms | `availability::passes_stay_constant_on_a_large_project` |
 | a panicking precheck is contained | `availability::a_panicking_precheck_is_contained` (test registry) |
 | the reviewer's parity and round-2 availability tests | unchanged |
+
+## 7. Closure round 5: completeness by inventory, large values read once (ruling O-24)
+
+The eight-state oracle found what its states contained; each review found the next state (C41-R5-01, -02). Ruling
+O-24 makes completeness mechanical:
+
+- **The inventory.** `scripts/check-availability-inventory.py` (in the `lint` job) collects every refusal code a GUI
+  command's handler can return, from its body and the executor functions it calls, and `docs/availability-inventory.md`
+  classifies every (command, code) pair: 1,090 pairs of 228 commands, `parameter` 607, `precheck` 214, `execution` 236,
+  `asks-user` 13, `unreachable` 19, `deferred` 1. A missing pair, a stale row or a `precheck` row whose code the
+  precheck cannot reach fails the job. The scanner's limits are in its header; the inventory's header defines the
+  classes and the states the sweep builds.
+- **Every state refusal C4.1 can build is a precheck.** The drawing family shares one precheck built from the
+  handler's own steps (`draw::Steps`: the target drawing, read-only like `target`; the lock; the paint colour; the
+  objects: given, else the selection, else the anchor selection); the cell family wraps the handler's `cell_target`
+  and kind checks; the element and anim families wrap `targets`; cut, copy and delete run `pick` and the deletion's
+  refusals (`deletion_refusal`, now shared with the handler's `delete_with`); paste runs the refusals `paste` gives
+  before it reads the copied items (`paste_refusal`). The two findings: `draw.object.delete` refuses an empty
+  selection, `element.drawingContent.delete` a locked drawing.
+- **The second sweep.** `every_precheck_pair_refuses_and_passes_as_the_table_says` builds, for each of the 156
+  `precheck` rows with states, the state in which the refusal occurs and one in which it does not, on the sample
+  document, and checks availability against a dry run in each. The other 58 rows say why their state cannot be built
+  through commands (a project always has a current element and a current scene; no command deletes a scene or empties
+  a palette; an image clipboard or drawing needs an import).
+- **What stays the handler's (P3 under O-24 item 4).** Where the refusal depends on the content of the selected
+  objects (a group to ungroup, a line to convert, a text to break apart) the precheck tests that the selection holds
+  objects of the drawing, and the row says so; reading every selected object's kind is the walk the budget forbids.
+
+**Large values read once.** The prechecks that need facts about a selection, the clipboard or an exposure column (the
+kinds of the selected elements, a locked selected element, a copied element still in the project, the cells of the
+current column) compute them once per value and document revision (`crate::memo`: keyed by the shared `Arc` of the
+selection list or clipboard, holding a weak reference so the key cannot be reused; the clipboard is now shared
+`Arc<Value>`), during availability only: the pipeline runs prechecks inside transactions, whose working document
+changes between the steps of a batch before its revision does, and computes directly. The last-camera rule scans the
+scene's elements up to the first camera that stays instead of placing the tree (the handler gains the same). A chunk
+ends after 32 references or once it has held the document thread 5 ms, so the first pass after a change holds the
+thread at most 5 ms plus one precheck.
+
+**Measured (debug build, Windows workstation; `passes_stay_constant_on_a_large_project`):** best full pass 5.5 ms on
+the empty project and on 10,101 elements; with 10,101 elements selected the first pass after the change takes 65 ms in
+all, its longest request 18 ms, then 5.6 ms; with them on the clipboard 6.9 ms (1.2 ms), then 5.6 ms; with a current
+column of 10,000 runs 9.0 ms (2.9 ms), then 5.5 ms; with 991 cameras and one current 7.0 ms (1.1 ms), then 5.4 ms. The
+slowest of 20 user commands during continuous passes: 7 to 10 ms, as without passes.
