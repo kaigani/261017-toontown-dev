@@ -30,7 +30,7 @@
     {
       "title": "Accept a request",
       "result": {
-        "confirmationId": "cf_587fef261068720ad9684f71",
+        "confirmationId": "cf_4bcd7c5b44f2a057ad11e30e",
         "accepted": true
       },
       "varies": [
@@ -71,7 +71,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-b5991a",
+            "sessionId": "s1-9f8a7b",
             "client": "Example agent",
             "policy": "assist",
             "scopes": [
@@ -83,7 +83,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-14T11:50:49.730Z",
+            "connectedAt": "2026-11-14T13:38:34.149Z",
             "lastActivity": null,
             "paused": false,
             "transport": ""
@@ -91,8 +91,8 @@
         ],
         "pendingConfirmations": [
           {
-            "confirmationId": "cf_92f49066963e965428c2e099",
-            "sessionId": "s1-b5991a",
+            "confirmationId": "cf_78696444903f2f491261e637",
+            "sessionId": "s1-9f8a7b",
             "commandId": "project.saveAs",
             "summary": "Overwrite `/tmp/Short.animpkg`",
             "consequences": [
@@ -127,7 +127,7 @@
     {
       "title": "Let a session edit",
       "result": {
-        "sessionId": "s1-96f843",
+        "sessionId": "s1-95b68e",
         "policy": "assist",
         "scopes": [
           "read",
@@ -145,7 +145,7 @@
       "title": "Pause every session",
       "result": {
         "paused": [
-          "s1-da3760"
+          "s1-5d86b3"
         ]
       },
       "varies": [
@@ -1902,7 +1902,7 @@
       "result": [
         {
           "name": "before-walk",
-          "createdAt": "2026-11-14T11:50:52.887Z",
+          "createdAt": "2026-11-14T13:38:36.513Z",
           "documentRev": 1,
           "origin": "user"
         }
@@ -2315,7 +2315,7 @@
             "version": "0.0.1",
             "platform": "windows-x64"
           },
-          "exportedAt": "2026-11-14T11:50:53.667Z",
+          "exportedAt": "2026-11-14T13:38:37.509Z",
           "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
           "scope": {
             "kind": "scenes",
@@ -7393,7 +7393,7 @@
             "stepId": "u-1",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-14T11:50:55.429Z",
+            "time": "2026-11-14T13:38:39.892Z",
             "objectCount": 1
           },
           {
@@ -7401,7 +7401,7 @@
             "stepId": "u-2",
             "label": "Set meta",
             "source": "user",
-            "time": "2026-11-14T11:50:55.430Z",
+            "time": "2026-11-14T13:38:39.893Z",
             "objectCount": 1
           }
         ],
@@ -8791,7 +8791,8 @@
         "viewId": "drawingView",
         "source": "virtual",
         "drawingId": null,
-        "note": "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by the interactive renderer only (06 §6.10)"
+        "note": "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by the interactive renderer only (06 §6.10)",
+        "jobId": "job-2"
       },
       "varies": []
     },
@@ -8806,7 +8807,8 @@
         "viewId": "drawingView",
         "source": "virtual",
         "drawingId": null,
-        "note": "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by the interactive renderer only (06 §6.10)"
+        "note": "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by the interactive renderer only (06 §6.10)",
+        "jobId": "job-2"
       },
       "varies": []
     }
@@ -9281,7 +9283,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-14T11:50:56.551Z",
+        "startedAt": "2026-11-14T13:38:41.596Z",
         "result": {},
         "session": "user"
       },
@@ -9300,7 +9302,7 @@
           "state": "succeeded",
           "progress": 1.0,
           "message": "",
-          "startedAt": "2026-11-14T11:50:56.563Z",
+          "startedAt": "2026-11-14T13:38:41.615Z",
           "result": {},
           "session": "user"
         }
@@ -9319,7 +9321,7 @@
         "state": "succeeded",
         "progress": 1.0,
         "message": "",
-        "startedAt": "2026-11-14T11:50:56.575Z",
+        "startedAt": "2026-11-14T13:38:41.634Z",
         "result": {},
         "session": "user"
       },
@@ -9586,10 +9588,10 @@
     {
       "title": "A 1920×1080, 24 fps project",
       "result": {
-        "projectId": "pr_01M7CYAYCHZ1GWTBFGJGCP4GT5",
-        "sceneId": "sc_01M7CYAYCHZ1GWTBFGJGCP4GY9",
-        "cameraId": "el_01M7CYAYCHZ1GWTBFGJGCP4GYB",
-        "elementId": "el_01M7CYAYCHZ1GWTBFGJGCP4GYC"
+        "projectId": "pr_01M7D4G8D3DNMXDKF5HPFS0TV3",
+        "sceneId": "sc_01M7D4G8D3DNMXDKF5HPFS0TZ7",
+        "cameraId": "el_01M7D4G8D3DNMXDKF5HPFS0TZ9",
+        "elementId": "el_01M7D4G8D3DNMXDKF5HPFS0TZA"
       },
       "varies": [
         "/cameraId",
@@ -9845,7 +9847,7 @@
         {
           "path": "/tmp/Sample.animpkg",
           "name": "Sample",
-          "lastOpened": "2026-11-14T11:50:57.517Z",
+          "lastOpened": "2026-11-14T13:38:43.955Z",
           "exists": true
         }
       ],
@@ -9928,7 +9930,7 @@
         "data": "iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAYAAABRmsRnAAAHWUlEQVR4nO3au2uVeR7H8W+isnGn0EYRxUq0sNPOYgubdRtBLBREUQsVKy/LqrAgIm6hy4KNrf+ATRB2dxgslCm9oiCC9zsGBBETR0PMzHkYgxnmYmJyPonn9YLDc34Pz3PaN7/v+c0c/kkBAG3VXQBA2wkwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAjwNDU4OFh3794dde/Jkyf15s2bkXVfX1+9ePFiZH379u1RVwByBHiaunTpUh09enTUvZ07d9bz58+b7/39/bV79+768OFDs378+HEdOnSoCffWrVsLgCwBnqauXLlSK1asGFkPDQ3V/fv3a8mSJU10r127Vjt27KgFCxaMev7mzZu1fPny5t7w8HBduHChHj58WAC0lwBPU62gvn79us6ePdt8Tp8+XcuWLavu7u7av39/nTt3rp49e1a7du1qnr969WqtXLmyea91ffr0aW3atKlevnxZR44cqd7e3gKgfQR4mmrtcOfMmVOPHj1qPufPn2/C2hpN37hxo9asWdPsdO/cuVMDAwN1+fLlUQE+c+ZMHThwoNavX1+HDx9u1gC0z8xi2mntWmfMmFF79uwZuXfv3r0mrBcvXqylS5c2o+aWzZs3N8+2DmS1xtHXr1+vEydONNHdu3fvyO/NmzevAGgfO+Bp6OM4+VMfd7aLFy9u/g/esmVLcxCrNaZ+8OBBM55u7YS7urpq9uzZNWvWrGZX/O7duzp58mRt3LixAGgfO+Bp6O3bt7V27dqRdevQVWvcvGjRolq4cGHdunWrOem8evXq2r59ezOWXrduXXNCesOGDc07p06dqmPHjlVPT09t27atVq1aVQC0T9dw6ygsANBWRtAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQMLP4Iv/5579rKvv7v/5RAEw9dsAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMBTyA/vfqjBwcEC4OsnwFNE/0B//ff8/2vow1AB8PWbWcS14vvt99/V3/7y1+r5U08B8PUT4LBP4/vNn78pADqDAAeJL0DnEuAQ8QXobAIcIL4ACHCbiS8ALQLcRuILwEcC3CbiC8CnBLgNxBeAXxLgSSa+APwaAZ5E4gvAbxHgSSK+APweAZ4E4gvAHxHgCSa+AHwOAZ5A4gvA5xLgCSK+AIyFAE8A8QVgrAT4C4kvAOMhwF+gr69PfAEYFwEep1Z8Dx48WL3/66358+cXAIyFAI/Dx/geP35cfAEYFwEeI/EFYCII8BiILwATRYA/k/gCMJEE+DOILwATTYD/gPgCMBkE+HeILwCTRYB/g/gCMJkE+FeILwCTTYB/QXwBaAcB/oT4AtAuAvwz8QWgnQS4xBeA9uv4AIsvAAkdHWDxBSClYwMsvgAkdWSAxReAtI4LsPgCMBV0Df+kOsSrV69q37594gtAXEcFeGBgoN6/f19z584tAEjqqAADwFTRXQBA2wkwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAQIMAAECDAABAgwAAT8CA0T/A4wPYnoAAAAAElFTkSuQmCC",
         "documentRevision": 4,
         "frame": 1,
-        "renderMs": 7,
+        "renderMs": 10,
         "imageToCamera": [
           0.024999999999999998,
           0.0,
@@ -9954,7 +9956,7 @@
         "data": "iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAYAAABRmsRnAAAEDUlEQVR4nO3VMREAAAgAIc/+oW3hL1CCHQDg3Q4A8E7AABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQEDAABAQMAAEBAwAAQEDQOAALQcCHShRVuMAAAAASUVORK5CYII=",
         "documentRevision": 4,
         "frame": 12,
-        "renderMs": 4,
+        "renderMs": 5,
         "imageToCamera": [
           0.024999999999999998,
           0.0,

@@ -36541,7 +36541,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         },
       },
       penId: {
-        description: "The eraser pen (default: the project's first eraser pen, \"Eraser 1\").",
+        description: "The eraser pen (default: the current eraser pen, 02 §6.1; \"Eraser 2\", else the first eraser pen, 02 §7.7).",
         type: [
           "string",
           "null",
@@ -61626,11 +61626,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       target: {
         description: "Window, view, panel or dialog.",
-        type: [
-          "string",
-          "null",
-        ],
-        default: null,
+        type: "string",
+        default: "window",
       },
       region: {
         description: "Region.",
@@ -61648,9 +61645,75 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "inspect.screenshot.result": {
-    title: "Map_of_AnyValue",
+    title: "ScreenshotResult",
+    description: "`inspect.screenshot` result (spec A row 1062: `{png, width, height, sha256}`; design note 5 §3).",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      png: {
+        description: "The PNG, base64 (`null` only inside a batch, where the capture job's id is answered instead of waiting).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      width: {
+        description: "Width in pixels.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      height: {
+        description: "Height in pixels.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      sha256: {
+        description: "The PNG's sha256 (hex; `null` with `png`).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      target: {
+        description: "The target captured.",
+        type: "string",
+      },
+      viewId: {
+        description: "The view window captured.",
+        type: "string",
+      },
+      source: {
+        description: "`virtual` (headless) or `gui` (attached, C4.2b).",
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing shown.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      note: {
+        description: "What a headless capture contains.",
+        type: "string",
+      },
+      jobId: {
+        description: "The capture job (the handle waits for it; design note 5 §1a).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "width",
+      "height",
+      "target",
+      "viewId",
+      "source",
+      "note",
+    ],
   },
   "inspect.ui.tree.params": {
     title: "UiTreeParams",
@@ -92335,7 +92398,7 @@ export interface draw_erase_apply_params {
   drawingId?: string | null;
   /** The eraser's path (swept with the eraser pen). */
   path?: draw_erase_apply_ErasePoint[] | null;
-  /** The eraser pen (default: the project's first eraser pen, "Eraser 1"). */
+  /** The eraser pen (default: the current eraser pen, 02 §6.1; "Eraser 2", else the first eraser pen, 02 §7.7). */
   penId?: string | null;
   /** An explicit eraser (SI-072). */
   pen?: draw_erase_apply_EraserPen | null;
@@ -98716,12 +98779,34 @@ export interface inspect_screenshot_Rect {
 /** `inspect.screenshot` parameters. */
 export interface inspect_screenshot_params {
   /** Window, view, panel or dialog. */
-  target?: string | null;
+  target?: string;
   /** Region. */
   region?: inspect_screenshot_Rect | null;
 }
 
-export type inspect_screenshot_result = Record<string, unknown>;
+/** `inspect.screenshot` result (spec A row 1062: `{png, width, height, sha256}`; design note 5 §3). */
+export interface inspect_screenshot_result {
+  /** The PNG, base64 (`null` only inside a batch, where the capture job's id is answered instead of waiting). */
+  png?: string | null;
+  /** Width in pixels. */
+  width: number;
+  /** Height in pixels. */
+  height: number;
+  /** The PNG's sha256 (hex; `null` with `png`). */
+  sha256?: string | null;
+  /** The target captured. */
+  target: string;
+  /** The view window captured. */
+  viewId: string;
+  /** `virtual` (headless) or `gui` (attached, C4.2b). */
+  source: string;
+  /** The drawing shown. */
+  drawingId?: string | null;
+  /** What a headless capture contains. */
+  note: string;
+  /** The capture job (the handle waits for it; design note 5 §1a). */
+  jobId?: string | null;
+}
 
 /** `inspect.ui.tree` parameters (11 §7.5 `inspect_ui`). */
 export interface inspect_ui_tree_params {

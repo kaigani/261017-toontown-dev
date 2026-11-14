@@ -533,8 +533,11 @@ impl ExecutorHandle {
     /// watchdog budget, and the envelope carries the job's final result (its manifest, with `jobId`) or its failure. A
     /// job still running at the timeout answers `job.waitTimeout` with the `jobId`, which stays addressable
     /// (`job.wait`, `job.cancel`).
-    fn waited(&self, params: &Value, env: Envelope, cancelled: Cancelled<'_>) -> Envelope {
-        if params.get("wait") != Some(&Value::Bool(true)) || !env.is_ok() {
+    ///
+    /// `always`: the command's job is always waited for (`inspect.screenshot`, a query whose capture runs off the
+    /// document thread; design note 5 §1a, C42A-R1-02).
+    fn waited(&self, params: &Value, env: Envelope, cancelled: Cancelled<'_>, always: bool) -> Envelope {
+        if (!always && params.get("wait") != Some(&Value::Bool(true))) || !env.is_ok() {
             return env;
         }
         let Some(job) = env
@@ -589,7 +592,7 @@ impl ExecutorHandle {
             Some(c) => self.call_until(&what, |r| Request::Invoke(inv, r), c),
         };
         let (env, cached) = called.unwrap_or_else(|e| (Envelope::error(e, None), false));
-        (self.waited(&params, env, cancelled), cached)
+        (self.waited(&params, env, cancelled, what == "inspect.screenshot"), cached)
     }
 
     /// Runs a batch (11 §7.3).

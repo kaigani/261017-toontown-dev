@@ -619,13 +619,50 @@ pub(crate) fn rasterise(
     o: Raster,
     started: std::time::Instant,
 ) -> Result<(Vec<u8>, Vec<Value>), CommandError> {
+    let selection = if o.show_selection {
+        let ids = super::draw::selection_ids(cx, d);
+        super::draw_select::selection_bounds(cx, d, &ids)?
+    } else {
+        None
+    };
+    let cache = cx.planar_cache();
+    let project = cx.project().ok();
+    let never = || false;
+    let src = Sources { cache: &cache, blobs: project.map(|p| &p.store.blobs), selection, stop: &never };
+    rasterise_with(&src, doc, d, style, o, started)
+}
+
+/// What [`rasterise_with`] reads besides the document: owned or shared handles, so the work can run off the document
+/// thread (C42A-R1-02).
+pub(crate) struct Sources<'a> {
+    /// The planar-map cache (shared).
+    pub cache: &'a crate::planar::SharedCache,
+    /// The project's blob store (bitmaps, textures).
+    pub blobs: Option<&'a tt_persist::container::Blobs>,
+    /// The selection's bounds, when drawn.
+    pub selection: Option<Rect>,
+    /// A stop request checked between work slices (a job's cancellation).
+    pub stop: &'a dyn Fn() -> bool,
+}
+
+/// [`rasterise`] from [`Sources`]: needs no session, so it runs on a job thread.
+///
+/// # Errors
+/// As [`rasterise`]; `job.cancelled` when `stop` holds.
+pub(crate) fn rasterise_with(
+    src: &Sources<'_>,
+    doc: &Document,
+    d: &Drawing,
+    style: Option<(Id, Id)>,
+    o: Raster,
+    started: std::time::Instant,
+) -> Result<(Vec<u8>, Vec<Value>), CommandError> {
     let Raster { d2p, scale: s, width, height, background, .. } = o;
     let zones: BTreeMap<String, crate::planar::LayerZones> =
-        crate::planar::drawing_zones(&cx.planar_cache(), d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
-    let project = cx.project().ok();
+        crate::planar::drawing_zones(src.cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
     let mut b = Builder {
         doc,
-        blobs: project.map(|p| &p.store.blobs),
+        blobs: src.blobs,
         style,
         scene_styles: None,
         d2p,
@@ -660,8 +697,7 @@ pub(crate) fn rasterise(
         }
     }
     if o.show_selection {
-        let ids = super::draw::selection_ids(cx, d);
-        if let Some(sb) = super::draw_select::selection_bounds(cx, d, &ids)? {
+        if let Some(sb) = src.selection {
             let (a, c) = (d2p.apply(P::new(sb.min_x, sb.min_y)), d2p.apply(P::new(sb.max_x, sb.max_y)));
             let rect =
                 vec![El::MoveTo(a.x, a.y), El::LineTo(c.x, a.y), El::LineTo(c.x, c.y), El::LineTo(a.x, c.y), El::Close];
@@ -672,7 +708,7 @@ pub(crate) fn rasterise(
     let warnings = std::mem::take(&mut b.warnings);
     drop(b);
     let mut keep_going = |_: usize| {
-        if tt_vector::work::cancel_requested() {
+        if tt_vector::work::cancel_requested() || (src.stop)() {
             Err("the call overran its watchdog budget and was cancelled".to_owned())
         } else if started.elapsed() > RENDER_TIME_LIMIT {
             Err(format!("the render took longer than {} s", RENDER_TIME_LIMIT.as_secs()))

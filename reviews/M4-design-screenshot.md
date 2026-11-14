@@ -13,6 +13,26 @@ view, else the Drawing view), a view id or a panel id of a view; any other panel
 `view.notFound` headless (there is no virtual chrome to capture). The display aids (grid, onion skin, light tables) are
 drawn by the interactive renderer only (06 §6.10): headless screenshots show the drawing, and the receipt says so.
 
+### 1a. Which thread does what (C42A-R1-02)
+
+- **Document thread** (the handler, a few hundred microseconds): resolves the target and the region, checks the side
+  cap, reads the view mapping and the Drawing-view background, and takes the snapshot: the document by reference count,
+  the current drawing's id, the planar cache's handle and the blob store. It submits the capture as a job and answers
+  `{…, jobId}` with `png` and `sha256` still `null`.
+- **Job thread:** rasterises through the final software rasteriser (`draw_render::rasterise_with`, shared with
+  `draw.drawing.render`, S4), encodes the PNG, checks the byte cap and stores the finished result. The job's
+  cancellation stops the rasteriser between work slices.
+- **Caller's thread** (`ExecutorHandle::serve`): waits for the job as `wait: true` does for render jobs, bounded by the
+  call's watchdog budget and its cancellation, and answers the finished result (with the job's id). Inside a batch the
+  step answers the pending result and the job id (`job.wait` collects it).
+
+### 1b. Regions and caps
+
+A `region` is a rectangle of the view's pixel plane: it is not clipped to the window, so a region outside the window
+shows what the canvas would show if it extended there (the drawing through the same mapping). The side cap (2048 px)
+is checked from the requested size before anything is rendered (S2); the 8 MB byte cap can only be known after
+encoding and is checked then (ADR-0020 decision 8 permits this for encoded-byte limits).
+
 ## 2. Attached (C4.2b, D-6)
 
 A capture of what the user sees, through the host: Windows, `ICoreWebView2::CapturePreview` on the window's webview;
@@ -32,3 +52,5 @@ inline caps are checked before encoding: a long side over 2048 px or a PNG over 
 - **S3** Headless and attached take the same parameters and answer the same shape (wire tests through real
   serialisation; attached in C4.2b).
 - **S4** Headless pixels equal `draw.drawing.render` of the same drawing, mapping and size (one rasteriser).
+- **S5** A capture never holds the document thread beyond the hold budget (plan §6: 20 ms); a user query during a
+  capture answers within it (C42A-R1-02).

@@ -91,3 +91,63 @@ fn the_mapping_function_is_cheap_and_round_trips() {
     assert!(worst < 1e-9, "{worst}");
     assert!(took < Duration::from_millis(200), "{took:?}");
 }
+
+/// The latency of a user query submitted while `id` runs from another thread, once the call is on the document thread
+/// (or its job is running): the minimum of three samples, so one scheduler stall cannot decide.
+fn query_latency_during(id: &'static str, params: serde_json::Value, wait_for_job: bool) -> Duration {
+    let mut samples = Vec::new();
+    for _ in 0..3 {
+        let h = std::sync::Arc::new(ready());
+        crate::equivalence::painted_rect(&h);
+        let h2 = h.clone();
+        let started = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false));
+        let s2 = started.clone();
+        let p = params.clone();
+        let worker = std::thread::spawn(move || {
+            s2.store(true, std::sync::atomic::Ordering::SeqCst);
+            h2.invoke(tt_executor::Invocation::user(id, p))
+        });
+        while !started.load(std::sync::atomic::Ordering::SeqCst) {
+            std::thread::yield_now();
+        }
+        if wait_for_job {
+            // The capture's job is running: the document thread has answered the snapshot.
+            let t = Instant::now();
+            while t.elapsed() < Duration::from_secs(5) {
+                let jobs = ok(&h, "job.list", json!({}));
+                if jobs.to_string().contains(id) {
+                    break;
+                }
+                std::thread::yield_now();
+            }
+        } else {
+            // Give the call a moment to reach the document thread (yielding, no sleep inside the measured bound).
+            let t = Instant::now();
+            while t.elapsed() < Duration::from_millis(10) {
+                std::thread::yield_now();
+            }
+        }
+        let t = Instant::now();
+        ok(&h, "view.transform.get", json!({ "viewId": "drawingView" }));
+        samples.push(t.elapsed());
+        assert!(worker.join().unwrap().is_ok());
+    }
+    samples.into_iter().min().unwrap()
+}
+
+#[test]
+fn a_capture_never_holds_the_document_thread_beyond_the_hold_budget() {
+    let shot = query_latency_during("inspect.screenshot", json!({}), true);
+    eprintln!("a user query during a 1920 x 1080 capture waited {shot:?}");
+    assert!(shot <= Duration::from_millis(20), "design note 5 S5: the capture runs off the document thread ({shot:?})");
+    // For the record (M11 C11.1): the renders sharing the rasteriser still hold the document thread while they run.
+    let render = query_latency_during(
+        "draw.drawing.render",
+        json!({ "width": 1920, "height": 1080, "region": { "x": -960, "y": -540, "width": 1920, "height": 1080 } }),
+        false,
+    );
+    let frame = query_latency_during("render.frame.run", json!({ "scale": 1.0 }), false);
+    eprintln!(
+        "a user query during draw.drawing.render 1920 x 1080 waited {render:?}; during render.frame.run 1920 x 1080 {frame:?}"
+    );
+}

@@ -1139,11 +1139,15 @@ pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<UiTreeResu
 #[serde(deny_unknown_fields)]
 pub(crate) struct ScreenshotParams {
     /// Window, view, panel or dialog.
-    #[serde(default)]
-    target: Option<String>,
+    #[serde(default = "window")]
+    target: String,
     /// Region.
     #[serde(default)]
     region: Option<Rect>,
+}
+
+fn window() -> String {
+    "window".into()
 }
 
 /// The inline side limit of a screenshot (11 §6.5: 2048 px).
@@ -1162,9 +1166,9 @@ fn inline_too_large(w: u32, h: u32, bytes: Option<usize>, max_bytes: u64) -> Com
 /// The headless screenshot (design note 5 §1): the target view window rendered at its virtual size through the final
 /// software rasteriser, the current drawing through the view's mapping on the Drawing-view background. The display
 /// aids are drawn by the interactive renderer only (06 §6.10).
-fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<Map<String, Value>, CommandError> {
+fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult, CommandError> {
     let shell = cx.ui().shell();
-    let target = p.target.clone().unwrap_or_else(|| "window".to_owned());
+    let target = p.target.clone();
     let id = match target.as_str() {
         "window" => {
             let active = cx.ui().active_view();
@@ -1227,41 +1231,122 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<Map<String, Value
     let m = super::view::drawing_to_view(w);
     let d2p = Affine([m[0], m[1], m[2], m[3], m[4] - region.0, m[5] - region.1]);
     let scale = (m[0] * m[3] - m[1] * m[2]).abs().sqrt();
-    let doc = cx.document().ok();
-    let drawing = doc.and_then(|doc| cx.app().current_drawing(doc)).and_then(|id| doc.and_then(|d| d.drawing(&id)));
-    let pixels = match (doc, drawing) {
-        (Some(doc), Some(d)) => {
-            let raster = super::draw_render::Raster {
-                d2p,
-                scale,
-                width,
-                height,
-                background,
-                show_strokes: false,
-                show_selection: false,
-            };
-            super::draw_render::rasterise(cx, doc, d, None, raster, std::time::Instant::now())?.0
-        }
-        _ => background.repeat(width as usize * height as usize),
+    // The snapshot (design note 5 §1a; C42A-R1-02): the document by reference count, the drawing's id, the planar
+    // cache's handle and the blob store; the rasterising and the encoding run on a job thread, never on this one.
+    let doc = cx.document().ok().cloned();
+    let drawing_id = doc.as_ref().and_then(|d| cx.app().current_drawing(d));
+    let capture = Capture {
+        doc,
+        drawing_id: drawing_id.clone(),
+        cache: cx.planar_cache(),
+        blobs: cx.project().ok().map(|pr| pr.store.blobs.clone()),
+        raster: super::draw_render::Raster {
+            d2p,
+            scale,
+            width,
+            height,
+            background,
+            show_strokes: false,
+            show_selection: false,
+        },
+        max_bytes,
     };
-    render::observe_cancel()?;
-    let png = tt_render::encode_png(&pixels, width, height)
-        .map_err(|e| CommandError::with_details("render.failed", e.to_string(), json!({})))?;
-    if png.len() as u64 > max_bytes {
-        return Err(inline_too_large(width, height, Some(png.len()), max_bytes));
+    let mut result = ScreenshotResult {
+        png: None,
+        width,
+        height,
+        sha256: None,
+        target,
+        view_id: id,
+        source: "virtual".into(),
+        drawing_id: drawing_id.map(|d| d.as_str().to_owned()),
+        note:
+            "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by \
+               the interactive renderer only (06 §6.10)"
+                .into(),
+        job_id: None,
+    };
+    if cx.dry_run() {
+        result.job_id = Some("dryRun".into());
+        return Ok(result);
     }
-    let out = json!({
-        "png": tt_persist::b64::encode(&png),
-        "width": width,
-        "height": height,
-        "sha256": render::sha256_hex(&png),
-        "target": target,
-        "viewId": id,
-        "source": "virtual",
-        "drawingId": drawing.map(|d| d.id().as_str().to_owned()),
-        "note": "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by the interactive renderer only (06 §6.10)",
-    });
-    Ok(out.as_object().cloned().unwrap_or_default())
+    let done = result.clone();
+    let origin = cx.origin().clone();
+    let job = cx.session().jobs.submit("inspect.screenshot", &origin.session_key(), move |progress| {
+        let (png, sha) = capture.run(&|| progress.cancelled())?;
+        let finished = ScreenshotResult { png: Some(png), sha256: Some(sha), ..done };
+        serde_json::to_value(finished).map_err(|e| CommandError::internal(e.to_string()))
+    })?;
+    result.job_id = Some(job);
+    Ok(result)
+}
+
+/// What a headless capture needs, taken on the document thread (C42A-R1-02).
+struct Capture {
+    doc: Option<tt_model::document::Document>,
+    drawing_id: Option<tt_model::Id>,
+    cache: crate::planar::SharedCache,
+    blobs: Option<tt_persist::container::Blobs>,
+    raster: super::draw_render::Raster,
+    max_bytes: u64,
+}
+
+impl Capture {
+    /// Rasterises and encodes off the document thread: the PNG (base64) and its sha256.
+    fn run(&self, stop: &dyn Fn() -> bool) -> Result<(String, String), CommandError> {
+        let r = self.raster;
+        let drawing =
+            self.doc.as_ref().zip(self.drawing_id.as_ref()).and_then(|(doc, id)| doc.drawing(id).map(|d| (doc, d)));
+        let pixels = match drawing {
+            Some((doc, d)) => {
+                let src = super::draw_render::Sources {
+                    cache: &self.cache,
+                    blobs: self.blobs.as_ref(),
+                    selection: None,
+                    stop,
+                };
+                super::draw_render::rasterise_with(&src, doc, d, None, r, std::time::Instant::now())?.0
+            }
+            None => r.background.repeat(r.width as usize * r.height as usize),
+        };
+        if stop() {
+            return Err(CommandError::new("job.cancelled", "the capture was cancelled"));
+        }
+        let png = tt_render::encode_png(&pixels, r.width, r.height)
+            .map_err(|e| CommandError::with_details("render.failed", e.to_string(), json!({})))?;
+        // The byte cap is known only after encoding (design note 5 §3; ADR-0020 decision 8).
+        if png.len() as u64 > self.max_bytes {
+            return Err(inline_too_large(r.width, r.height, Some(png.len()), self.max_bytes));
+        }
+        Ok((tt_persist::b64::encode(&png), render::sha256_hex(&png)))
+    }
+}
+
+/// `inspect.screenshot` result (spec A row 1062: `{png, width, height, sha256}`; design note 5 §3).
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct ScreenshotResult {
+    /// The PNG, base64 (`null` only inside a batch, where the capture job's id is answered instead of waiting).
+    png: Option<String>,
+    /// Width in pixels.
+    width: u32,
+    /// Height in pixels.
+    height: u32,
+    /// The PNG's sha256 (hex; `null` with `png`).
+    sha256: Option<String>,
+    /// The target captured.
+    target: String,
+    /// The view window captured.
+    view_id: String,
+    /// `virtual` (headless) or `gui` (attached, C4.2b).
+    source: String,
+    /// The drawing shown.
+    drawing_id: Option<String>,
+    /// What a headless capture contains.
+    note: String,
+    /// The capture job (the handle waits for it; design note 5 §1a).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    job_id: Option<String>,
 }
 
 #[command(
@@ -1273,6 +1358,6 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<Map<String, Value
     example(title = "A 400 x 300 region of the Drawing view", params = r#"{"target": "drawingView", "region": {"x": 760, "y": 390, "w": 400, "h": 300}}"#),
     agent_only = "agents look at the GUI (11 §7.8 screenshot)",
 )]
-pub(crate) fn inspect_screenshot(cx: &mut Cx, p: ScreenshotParams) -> Result<Map<String, Value>, CommandError> {
+pub(crate) fn inspect_screenshot(cx: &mut Cx, p: ScreenshotParams) -> Result<ScreenshotResult, CommandError> {
     virtual_screenshot(cx, &p)
 }
