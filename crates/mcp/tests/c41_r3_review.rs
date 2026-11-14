@@ -1,4 +1,30 @@
 //! Independent round-three admission and lifetime probes.
+mod support;
+mod part_b_keys {
+    use super::support::Client;
+    use serde_json::json;
+    #[test]
+    fn unbound_disabled_modal_and_text_focus() -> Result<(), Box<dyn std::error::Error>> {
+        let h = tt_executor::ExecutorHandle::spawn(Default::default())?;
+        let (mut c, _) = Client::connect(&h, Default::default(), json!({}));
+        let r = c.call("key", json!({"keys":"F24"}));
+        assert_eq!(r["structuredContent"]["result"]["handled"], false, "{r}");
+        let r = c.call("key", json!({"keys":"Primary+Z"}));
+        assert_eq!(r["structuredContent"]["error"]["code"], "command.disabled", "{r}");
+        assert!(r["structuredContent"]["error"]["details"]["reason"].is_string());
+        for (report, keys, code) in [
+            (json!({"modal":{"kind":"dialog","title":"Preferences"}}), "Primary+Z", "ui.modalOpen"),
+            (json!({"modal":null,"textFocus":true}), "a", "ui.busy"),
+        ] {
+            h.report_shell(serde_json::from_value(report)?);
+            let r = c.call("key", json!({"keys":keys}));
+            assert_eq!(r["structuredContent"]["error"]["code"], code, "{r}");
+            assert!(matches!(h.resolve_key(keys)?, tt_executor::host::KeyResolution::Suspended { .. }));
+            assert!(h.invoke(tt_executor::Invocation::user("app.state.get", json!({}))).is_ok());
+        }
+        Ok(())
+    }
+}
 use std::error::Error;
 use std::io::{BufRead, BufReader, Read, Write};
 use std::net::TcpStream;
