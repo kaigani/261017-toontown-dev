@@ -25,6 +25,7 @@ async def main(app,out):
      yield n
      for c in n.get('children') or []: yield from walk(c)
     ids=['edit.undo','edit.redo','project.save','edit.copy','edit.cut','edit.paste','edit.delete']
+    await cmd('window.toolbar.items.set',{'items':ids})
     for i,cid in enumerate(ids): await cmd('keymap.set',dict(commandId=cid,keys='F'+str(i+13),onConflict='override'))
     for state in ['none','new','edit','undo']:
      if state=='new': check('create project',(await cmd('project.create',{'name':'R6'})).get('status')=='ok')
@@ -71,7 +72,7 @@ async def main(app,out):
       if len(raw)!=4096: errors.append('size '+str(len(raw)))
       if v.get('endpoint'):
        endpoints[0]+=1
-       if v.get('pid')!=proc.pid or proc.poll() is not None: errors.append('dead or wrong pid '+str(v.get('pid')))
+       if v.get('processId')!=proc.pid or proc.poll() is not None: errors.append('dead or wrong pid '+str(v.get('processId')))
      except Exception as ex:
       if len(errors)<30: errors.append(type(ex).__name__+': '+str(ex))
    th=threading.Thread(target=reader); th.start()
