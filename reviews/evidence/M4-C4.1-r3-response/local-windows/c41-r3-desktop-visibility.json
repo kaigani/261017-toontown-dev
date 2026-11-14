@@ -1,0 +1,4429 @@
+[
+  {
+    "check": "three floats",
+    "ok": true,
+    "durationS": 0.23815960000501946,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": true
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [
+      "Colour",
+      "History",
+      "Properties"
+    ],
+    "windows": [
+      {
+        "handle": 15796306,
+        "title": "History",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 5507348,
+        "title": "Colour",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 19597340,
+        "title": "Properties",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 16778970,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10290492,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 16255276,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "hide all",
+    "ok": true,
+    "durationS": 0.1690054000064265,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": true
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 5507348,
+        "title": "Colour",
+        "visible": false,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 16778970,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10290492,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 16255276,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "show all",
+    "ok": true,
+    "durationS": 0.24319529999047518,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": true
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [
+      "Colour",
+      "History",
+      "Properties"
+    ],
+    "windows": [
+      {
+        "handle": 20252962,
+        "title": "History",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 14157678,
+        "title": "Colour",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 5572884,
+        "title": "Properties",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 16778970,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10290492,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 16255276,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "hidden minimized",
+    "ok": true,
+    "durationS": 0.09488030002103187,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": true
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 5572884,
+        "title": "Properties",
+        "visible": false,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 16778970,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": -32000,
+        "y": -32000,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          160,
+          28
+        ]
+      },
+      {
+        "handle": 10290492,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 16255276,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "hidden restored",
+    "ok": true,
+    "durationS": 0.0031312000064644963,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": true
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 5572884,
+        "title": "Properties",
+        "visible": false,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 16778970,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": -32000,
+        "y": -32000,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          160,
+          28
+        ]
+      },
+      {
+        "handle": 10290492,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 16255276,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "minimize then hide",
+    "ok": true,
+    "durationS": 0.010138399986317381,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": true
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 5572884,
+        "title": "Properties",
+        "visible": false,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 16778970,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": -32000,
+        "y": -32000,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          160,
+          28
+        ]
+      },
+      {
+        "handle": 10290492,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 16255276,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "minimize hide restore",
+    "ok": true,
+    "durationS": 0.006985900021390989,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": true
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 5572884,
+        "title": "Properties",
+        "visible": false,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 16778970,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": -32000,
+        "y": -32000,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          160,
+          28
+        ]
+      },
+      {
+        "handle": 10290492,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 16255276,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "hidden switch workspace",
+    "ok": true,
+    "durationS": 0.003392800019355491,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": true
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 16778970,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10290492,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 16255276,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "hidden switch back",
+    "ok": true,
+    "durationS": 0.003222200000891462,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": true
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 16778970,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10290492,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 16255276,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "restart retains hidden",
+    "ok": true,
+    "durationS": 0.012339499982772395,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": true
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [
+      "Colour",
+      "History",
+      "Properties"
+    ],
+    "windows": [
+      {
+        "handle": 14223454,
+        "title": "History",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 280,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 15534068,
+        "title": "Colour",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 13240082,
+        "title": "Properties",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 17302924,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10422544,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 17172630,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "restart show restores geometry",
+    "ok": true,
+    "durationS": 0.044491599983302876,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": true
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [
+      "Colour",
+      "History",
+      "Properties"
+    ],
+    "windows": [
+      {
+        "handle": 14223454,
+        "title": "History",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 15534068,
+        "title": "Colour",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 13240082,
+        "title": "Properties",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 17302924,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10422544,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 17172630,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "fourth float while globally hidden",
+    "ok": true,
+    "durationS": 0.13944400000036694,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 80,
+          "y": 80,
+          "width": 480,
+          "height": 360
+        },
+        "focused": true
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 15534068,
+        "title": "Colour",
+        "visible": false,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 17302924,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10422544,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 17172630,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "remove fourth while hidden",
+    "ok": true,
+    "durationS": 0.006731199973728508,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": true
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 15534068,
+        "title": "Colour",
+        "visible": false,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 17302924,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10422544,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 17172630,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "twenty alternating ending True",
+    "ok": true,
+    "durationS": 0.1773377000063192,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": true
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [
+      "Colour",
+      "History",
+      "Properties"
+    ],
+    "windows": [
+      {
+        "handle": 16386348,
+        "title": "History",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 19793948,
+        "title": "Colour",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 15599604,
+        "title": "Properties",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 17302924,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10422544,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 17172630,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "twenty alternating ending False",
+    "ok": true,
+    "durationS": 0.08147020000615157,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": true
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": false,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [],
+    "windows": [
+      {
+        "handle": 19793948,
+        "title": "Colour",
+        "visible": false,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 17302924,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10422544,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 17172630,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "check": "dock hidden then show two",
+    "ok": true,
+    "durationS": 0.17715550001594238,
+    "kernel": [
+      {
+        "panelId": "cameraView",
+        "title": "Camera view",
+        "visible": true,
+        "floating": false,
+        "area": "central",
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "drawingView",
+        "title": "Drawing view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "topView",
+        "title": "Top view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sideView",
+        "title": "Side view",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "timeline",
+        "title": "Timeline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "xsheet",
+        "title": "Exposure sheet",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "functionEditor",
+        "title": "Function editor",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "properties",
+        "title": "Properties",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 140,
+          "y": 120,
+          "width": 420,
+          "height": 300
+        },
+        "focused": false
+      },
+      {
+        "panelId": "pen",
+        "title": "Pen",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "text",
+        "title": "Text",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "cells",
+        "title": "Cells",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 1,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "library",
+        "title": "Library",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 0,
+        "current": true,
+        "focused": false
+      },
+      {
+        "panelId": "storyline",
+        "title": "Storyline",
+        "visible": true,
+        "floating": false,
+        "area": "bottom",
+        "tabGroup": 0,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "sceneManager",
+        "title": "Scene manager",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "effectPreview",
+        "title": "Effect preview",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "motionRecording",
+        "title": "Motion recording",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "lipSync",
+        "title": "Lip-sync",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "history",
+        "title": "History",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 2,
+        "current": true,
+        "focused": true
+      },
+      {
+        "panelId": "soundEditor",
+        "title": "Sound element editor",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      },
+      {
+        "panelId": "capture",
+        "title": "Capture window",
+        "visible": false,
+        "floating": false,
+        "current": false,
+        "focused": false
+      }
+    ],
+    "wanted": [
+      "Colour",
+      "Properties"
+    ],
+    "windows": [
+      {
+        "handle": 26478220,
+        "title": "Colour",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 11864038,
+        "title": "Properties",
+        "visible": true,
+        "scale": 1.0,
+        "x": 140,
+        "y": 120,
+        "width": 420,
+        "height": 300,
+        "outer": [
+          436,
+          339
+        ]
+      },
+      {
+        "handle": 17302924,
+        "title": "Toontown",
+        "visible": true,
+        "scale": 1.0,
+        "x": 80,
+        "y": 60,
+        "width": 1280,
+        "height": 800,
+        "outer": [
+          1296,
+          859
+        ]
+      },
+      {
+        "handle": 10422544,
+        "title": "Default IME",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      },
+      {
+        "handle": 17172630,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "scale": 1.0,
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "outer": [
+          0,
+          0
+        ]
+      }
+    ]
+  }
+]
