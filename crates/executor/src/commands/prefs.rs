@@ -267,6 +267,7 @@ pub(crate) struct ResetResult {
 
 #[command(
     id = "prefs.reset",
+    precheck = crate::prechecks::prefs_reset,
     kind = ui,
     label = "Restore default preferences",
     scopes = [prefs],

@@ -1216,6 +1216,7 @@ def main() -> int:
             f"            status: Status::NotImplemented {{ owner: {rust_str(owner)} }},",
             f"            agent_only: {('Some(' + rust_str(agent_only) + ')') if agent_only else 'None'},",
             f"            gui: {('Some(' + rust_str(gui) + ')') if gui else 'None'},",
+            "            precheck: None,",
             "        },",
             "        handler: crate::not_implemented_handler,",
             "    },",

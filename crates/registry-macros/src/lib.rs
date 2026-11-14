@@ -22,7 +22,9 @@
 //! `tt_registry::Enablement`; default: always enabled); `needs_project`; `example(title, params)` (repeatable);
 //! `not_implemented = "M1 C1.3"` (declared now, implemented by the named checkpoint: the handler validates and decodes
 //! the parameters, then fails with `command.notImplemented`); `agent_only = "justification"` (11 §14.1); `gui = "…"`
-//! (the GUI locations that invoke the command besides the menu manifest, for the parity test).
+//! (the GUI locations that invoke the command besides the menu manifest, for the parity test); `precheck = PATH` (a
+//! `fn(&Cx, &serde_json::Value) -> Result<(), CommandError>`: the state refusal with no parameter missing, run by the
+//! pipeline before the handler and by availability; ruling O-23).
 
 use proc_macro::TokenStream;
 use proc_macro2::{Span, TokenStream as TokenStream2};
@@ -54,6 +56,7 @@ struct Args {
     not_implemented: Option<String>,
     agent_only: Option<String>,
     gui: Option<String>,
+    precheck: Option<syn::Path>,
 }
 
 fn lit_str(e: &Expr) -> syn::Result<String> {
@@ -88,6 +91,10 @@ fn parse_args(attr: TokenStream2) -> syn::Result<Args> {
                     "not_implemented" => a.not_implemented = Some(lit_str(&nv.value)?),
                     "agent_only" => a.agent_only = Some(lit_str(&nv.value)?),
                     "gui" => a.gui = Some(lit_str(&nv.value)?),
+                    "precheck" => match &nv.value {
+                        Expr::Path(p) => a.precheck = Some(p.path.clone()),
+                        other => return Err(syn::Error::new_spanned(other, "expected a path to a precheck function")),
+                    },
                     "enablement" => match &nv.value {
                         Expr::Path(p) => a.enablement = Some(p.path.clone()),
                         other => return Err(syn::Error::new_spanned(other, "expected a path to an Enablement")),
@@ -228,6 +235,21 @@ fn expand(attr: TokenStream2, item: TokenStream2) -> syn::Result<TokenStream2> {
         Some(p) => quote!(#p),
         None => quote!(::tt_registry::Enablement { rule: "always enabled", check: ::core::option::Option::None }),
     };
+    let precheck = match &a.precheck {
+        Some(p) => quote! {
+            ::core::option::Option::Some({
+                fn __precheck(
+                    cx: &dyn ::core::any::Any,
+                    v: &::serde_json::Value,
+                ) -> ::core::result::Result<(), ::tt_registry::CommandError> {
+                    let cx = ::tt_registry::context_ref::<#cx_ty>(cx)?;
+                    #p(cx, v)
+                }
+                __precheck
+            })
+        },
+        None => quote!(::core::option::Option::None),
+    };
     let needs_project = a.needs_project;
     let example_titles = a.examples.iter().map(|e| &e.0);
     let example_params = a.examples.iter().map(|e| &e.1);
@@ -273,6 +295,7 @@ fn expand(attr: TokenStream2, item: TokenStream2) -> syn::Result<TokenStream2> {
                 status: #status,
                 agent_only: #agent_only,
                 gui: #gui,
+                precheck: #precheck,
             },
             handler: {
                 fn __handler(

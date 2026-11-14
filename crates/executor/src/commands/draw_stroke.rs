@@ -400,6 +400,7 @@ fn transform_geometry(g: &Geometry, m: &tt_vector::geom::Affine) -> Geometry {
 
 #[command(
     id = "draw.stroke.add",
+    precheck = crate::prechecks::draw_stroke_add,
     kind = action,
     label = "Add stroke",
     scopes = [edit],

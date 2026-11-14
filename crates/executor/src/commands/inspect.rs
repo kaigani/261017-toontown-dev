@@ -995,6 +995,11 @@ fn prune(n: &mut Value, depth: u32) {
     }
 }
 
+/// A required member that is a 64-bit unsigned integer or `null` (`renderedSeq`: always present, `null` when unvouched).
+fn nullable_u64(_: &mut schemars::SchemaGenerator) -> schemars::Schema {
+    schemars::json_schema!({ "type": ["integer", "null"], "minimum": 0, "maximum": u64::MAX })
+}
+
 /// `inspect.ui.tree` result (11 §7.5; additive fields `renderedSeq` and `stale`: ADR-0021 decision 5, SI-121).
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -1006,11 +1011,13 @@ pub(crate) struct UiTreeResult {
     /// The tree: nodes with `role`, `id`, `label`, `value`, `enabled`, `checked`, `visible`, `command`, `children`.
     root: Value,
     /// The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to
-    /// it; `null` when the tree is not vouched for or is the headless virtual tree.
+    /// it; `null` when the tree is not vouched for or is the headless virtual tree. Always present.
+    #[schemars(required, schema_with = "nullable_u64")]
     rendered_seq: Option<u64>,
     /// Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call
-    /// within 2 s (the tree is the last one it has).
+    /// within 2 s (the tree is the last one it has). Absent otherwise; never `null`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(with = "bool")]
     stale: Option<bool>,
 }
 

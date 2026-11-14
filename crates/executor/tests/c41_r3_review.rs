@@ -9,8 +9,15 @@ mod part_b_recovery {
         let root = std::env::temp_dir().join(format!("tt-r3-pid-{}", tt_executor::random_token(8)));
         let folder = root.join("Recovery/rc_abcd0003");
         std::fs::create_dir_all(&folder).unwrap();
+        #[cfg(windows)]
         let mut child = std::process::Command::new("powershell.exe")
             .args(["-NoProfile", "-Command", "$null = [Console]::ReadLine()"])
+            .stdin(std::process::Stdio::piped())
+            .stdout(std::process::Stdio::null())
+            .spawn()
+            .unwrap();
+        #[cfg(not(windows))]
+        let mut child = std::process::Command::new("cat")
             .stdin(std::process::Stdio::piped())
             .stdout(std::process::Stdio::null())
             .spawn()

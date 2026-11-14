@@ -536,6 +536,7 @@ fn recolour_text(v: &mut Value, colour: &str) -> usize {
 
 #[command(
     id = "colour.selection.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Set colour",
     scopes = [edit],
@@ -802,6 +803,7 @@ pub(crate) struct RecolourResult {
 
 #[command(
     id = "colour.recolour.apply",
+    precheck = crate::prechecks::colour_recolour_apply,
     kind = action,
     label = "Replace colour",
     scopes = [edit],

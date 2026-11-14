@@ -44,7 +44,14 @@ the agent indicator, messages, persisted settings, and the user-priority rule of
    answers `stale: true` when the front end has not rendered the events before the call within 2 s (it then returns
    the last tree it has, never an error). In the desktop host the tree is vouched for only when every window counts:
    the main window, every float the host opened (from the moment it opens it) and every window that reported anything
-   (C41-R2-06; reviews/M4-design-floating-windows.md §3).
+   (C41-R2-06; reviews/M4-design-floating-windows.md §3). **The quorum invariant (round 3, C41-R3-04, -06;
+   reviews/M4-design-floating-windows.md §3a):** the expected windows are the main window plus every panel the
+   kernel's current arrangement shows as a floating window, from the moment the command that floated it was accepted
+   (the document thread publishes the kernel's visible floats before it answers, and a tree without a shown float's
+   `float-<panelId>` node vouches for nothing); a window missing, without a tree or number, older than the last event
+   or of another generation leaves the result unvouched; and when no window has a tree (the main window reloads), the
+   host sends `uiTreeCleared: true` and the kernel clears its stored tree and number explicitly, so an absent `uiTree`
+   is never read as "the old tree still stands".
 6. **Shell effects.** Native-window commands (`window.fullScreen.set`, `window.geometry.set`, `window.minimized.set`,
    `window.raiseAll.run`) change kernel state and publish `shell.window` / `shell.raiseAll` notices after acceptance;
    requests only the shell can carry out (`ui.preferences.open`, `ui.help.open`) publish `shell.preferences` /
@@ -73,14 +80,30 @@ the agent indicator, messages, persisted settings, and the user-priority rule of
    test: command references (id plus fixed parameters), check-mark sources, submenus, and the dynamic Open Recent and
    workspace lists. Enablement (registered, implemented, 01 §1.3, undo/redo availability), check marks, undo/redo labels
    naming the step and its agent, and accelerators from the keymap are refreshed from executor state on the events that
-   can change them. **Command availability versus form validity (ruling O-10, round 2 observation).** Availability
-   (`ExecutorHandle::availability`) answers whether a command reference can run now, from the pipeline's own checks
-   and the handler's state rule for that reference (the selection rule of the selection commands, C41-R2-08); every
-   surface that offers a command (native menu, toolbars, tool rail, key dispatch, the MCP `key` tool, context
-   actions) reads it. A dialog's OK button is also disabled while its draft is incomplete or invalid (an empty name, a
-   frame rate out of range); that is form validity, local to the dialog, because it judges parameters that have not
-   been sent and changes with every keystroke; the command validates them again when it runs and its typed error is
-   shown if they are refused. On macOS the menu owns its key equivalents; on Windows and Linux the shortcut is shown in the label
+   can change them. **Availability (ruling O-10; closure ruling O-23; reviews/M4-design-availability.md).**
+   `ExecutorHandle::availability` answers whether a command reference can run now, for every surface that offers a
+   command (native menu, toolbars, tool rail, key dispatch, the MCP `key` tool, context actions). It evaluates, in the
+   pipeline's order (11 §8): registered, not an event, a project when the declaration needs one, the declared
+   enablement rule, implemented (the static checks); then, for a complete reference (no required parameter missing),
+   the command's declared **precheck** (`#[command(precheck = ...)]`): a cheap pure function of the session state and
+   the raw parameters returning the state refusal the command gives with no parameter missing (an empty clipboard,
+   nothing selected, no current drawing, a peg as the current element, the central view, the last camera, a reference
+   that must name one of several parameters). The transaction pipeline runs the same precheck before every handler,
+   so availability and execution are one predicate by construction. A precheck makes no copy, runs no pipeline or
+   integrity gate and allocates nothing proportional to the document; availability lends the session to one read-only
+   context per chunk of at most 32 references (each chunk its own request on the document thread) and takes it back;
+   a panicking precheck is contained (the reference reports unavailable with an internal reason; an invocation answers
+   `internal`). Two refusals ask the user and keep the reference enabled: `project.pathRequired` (Save asks for a
+   location) and `project.unsavedChanges` (01 §3.5). References with required parameters missing are completed by a
+   dialog and get the static checks only. The dry run is the test oracle: a sweep of the 269 GUI references in eight
+   constructed states asserts that availability equals a dry run of each reference, in both directions. Cost bound,
+   tested: a full pass on a project of 10,000 elements costs no more than on an empty project plus 20 ms and under
+   50 ms; no availability request holds the document thread more than 20 ms; a user command during continuous passes
+   completes within 100 ms. Passes run when the menu refreshes (once per burst of state-changing events), when a
+   toolbar renders, and per key press; there is no cache per state revision. **Form validity is local:** a dialog's
+   OK button is also disabled while its draft is incomplete or invalid (an empty name, a frame rate out of range),
+   because it judges parameters that have not been sent and changes with every keystroke; the command validates them
+   again when it runs and its typed error is shown if they are refused. On macOS the menu owns its key equivalents; on Windows and Linux the shortcut is shown in the label
    and the webview's dispatch runs it, so a key never runs twice.
 10. **Preferences** are a data catalogue (`crates/executor/src/prefs.json`: 01 §7.3, the agent keys of 11, keys earlier
     commands use) validated per key; `prefs.set` is atomic; only non-default values are stored; a stored value that no

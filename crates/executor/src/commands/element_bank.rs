@@ -659,6 +659,7 @@ pub(crate) struct DrawingIds {
 
 #[command(
     id = "element.drawingContent.delete",
+    precheck = precheck_drawing_content_delete,
     kind = action,
     label = "Clear drawing",
     scopes = [edit],
@@ -768,4 +769,13 @@ pub(crate) struct DrawingChanged {
 )]
 pub(crate) fn element_drawing_changed(_cx: &mut Cx, _p: NoParams) -> Result<DrawingChanged, CommandError> {
     Err(super::common::event_not_invocable("element.drawing.changed"))
+}
+
+/// `element.drawingContent.delete` (ruling O-23): the drawings given, else the drawing at the current cell.
+pub(crate) fn precheck_drawing_content_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let given: Option<Vec<String>> = v
+        .get("drawingIds")
+        .and_then(Value::as_array)
+        .map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect());
+    drawings_or_current(cx, given.as_deref()).map(|_| ())
 }

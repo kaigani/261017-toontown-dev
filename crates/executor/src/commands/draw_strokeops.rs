@@ -125,6 +125,7 @@ pub(crate) struct SmoothResult {
 
 #[command(
     id = "draw.smooth.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Smooth",
     scopes = [edit],
@@ -265,6 +266,7 @@ pub(crate) struct LinesToBrushResult {
 
 #[command(
     id = "draw.linesToBrush.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Convert Lines to Brush",
     scopes = [edit],
@@ -389,6 +391,7 @@ pub(crate) struct BreakApartResult {
 
 #[command(
     id = "draw.breakApart.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Break Text Apart",
     scopes = [edit],
@@ -529,6 +532,7 @@ pub(crate) struct CentreLineResult {
 
 #[command(
     id = "draw.centreLine.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Extract Centre Line",
     scopes = [edit],

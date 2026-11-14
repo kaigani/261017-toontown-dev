@@ -334,6 +334,7 @@ pub(crate) struct Help {
 
 #[command(
     id = "ui.help.get",
+    precheck = crate::prechecks::ui_help_get,
     kind = query,
     label = "Get help",
     scopes = [read],

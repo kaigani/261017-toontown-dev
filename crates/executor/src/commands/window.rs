@@ -75,6 +75,7 @@ fn yes() -> bool {
 
 #[command(
     id = "window.panel.set",
+    precheck = crate::prechecks::window_panel_set,
     kind = toggle,
     label = "Show/hide panel",
     scopes = [ui],

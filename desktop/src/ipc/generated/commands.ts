@@ -61361,26 +61361,24 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "The tree: nodes with `role`, `id`, `label`, `value`, `enabled`, `checked`, `visible`, `command`, `children`.",
       },
       renderedSeq: {
-        description: "The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to\nit; `null` when the tree is not vouched for or is the headless virtual tree.",
+        description: "The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to\nit; `null` when the tree is not vouched for or is the headless virtual tree. Always present.",
         type: [
           "integer",
           "null",
         ],
-        maximum: 18446744073709551615n,
         minimum: 0,
+        maximum: 18446744073709551615n,
       },
       stale: {
-        description: "Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call\nwithin 2 s (the tree is the last one it has).",
-        type: [
-          "boolean",
-          "null",
-        ],
+        description: "Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call\nwithin 2 s (the tree is the last one it has). Absent otherwise; never `null`.",
+        type: "boolean",
       },
     },
     required: [
       "source",
       "target",
       "root",
+      "renderedSeq",
     ],
   },
   "job.cancel.params": {
@@ -98265,10 +98263,10 @@ export interface inspect_ui_tree_result {
   target: string;
   /** The tree: nodes with `role`, `id`, `label`, `value`, `enabled`, `checked`, `visible`, `command`, `children`. */
   root: unknown;
-  /** The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to it; `null` when the tree is not vouched for or is the headless virtual tree. */
-  renderedSeq?: number | bigint | null;
-  /** Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call within 2 s (the tree is the last one it has). */
-  stale?: boolean | null;
+  /** The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to it; `null` when the tree is not vouched for or is the headless virtual tree. Always present. */
+  renderedSeq: number | bigint | null;
+  /** Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call within 2 s (the tree is the last one it has). Absent otherwise; never `null`. */
+  stale?: boolean;
 }
 
 /** `{jobId}` parameters. */

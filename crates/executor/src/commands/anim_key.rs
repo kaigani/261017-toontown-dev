@@ -249,6 +249,7 @@ pub(crate) struct KeyRemoveResult {
 
 #[command(
     id = "anim.key.remove",
+    precheck = precheck_key_remove,
     kind = action,
     label = "Remove keyframe",
     scopes = [edit],
@@ -811,4 +812,24 @@ pub(crate) fn anim_segment_uniform_apply(cx: &mut Cx, p: UniformParams) -> Resul
     changes.stage(cx)?;
     emit_changed(cx, &data, &edit);
     Ok(UniformResult { node_id: id.as_str().to_owned(), channels: done })
+}
+
+/// `anim.key.remove` (ruling O-23): without `all`, every default channel exists on every target node.
+pub(crate) fn precheck_key_remove(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if v.get("all").and_then(Value::as_bool) == Some(true) || v.get("channels").is_some_and(|x| !x.is_null()) {
+        return Ok(());
+    }
+    let given: Option<Vec<String>> = v
+        .get("nodeIds")
+        .and_then(Value::as_array)
+        .map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect());
+    let ids = nodes(cx, given.as_deref())?;
+    let doc = cx.document()?;
+    for id in &ids {
+        let e = node(doc, id)?;
+        for c in ["position", "rotation", "scale.x", "scale.y", "skew"] {
+            check_channel(e, c)?;
+        }
+    }
+    Ok(())
 }

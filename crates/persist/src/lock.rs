@@ -135,6 +135,9 @@ pub enum Boundary {
     /// An engine's recovery write checked its fence under the ownership lock, before it writes (the path is the
     /// recovery entry's folder; M4 C4.1 round 2, ruling O-18).
     RecoveryWriteChecked,
+    /// An MCP server-side work thread (`list_commands`, `describe_command`, `get_docs`) started, before its work (the
+    /// path is empty; M4 C4.1 closure, ruling O-20: holding such threads at their cap).
+    ServerWork,
 }
 
 #[cfg(feature = "test-hooks")]

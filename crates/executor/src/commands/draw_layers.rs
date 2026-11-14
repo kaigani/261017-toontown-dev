@@ -407,6 +407,7 @@ pub(crate) struct FlattenResult {
 
 #[command(
     id = "draw.flatten.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Flatten",
     scopes = [edit],
@@ -527,6 +528,7 @@ fn siblings_adjacent(d: &Drawing, a: &str, b: &str) -> bool {
 
 #[command(
     id = "draw.optimize.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Optimize",
     scopes = [edit],

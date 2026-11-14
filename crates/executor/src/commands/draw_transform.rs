@@ -356,6 +356,7 @@ fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
 
 #[command(
     id = "draw.transform.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Transform",
     scopes = [edit],
@@ -709,6 +710,7 @@ pub(crate) struct RepositionResult {
 
 #[command(
     id = "draw.repositionAll.apply",
+    precheck = precheck_reposition_all,
     kind = action,
     label = "Reposition all drawings",
     scopes = [edit],
@@ -1232,6 +1234,7 @@ pub(crate) struct PointDeleteParams {
 
 #[command(
     id = "draw.point.delete",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Delete points",
     scopes = [edit],
@@ -1349,4 +1352,20 @@ pub(crate) fn draw_segment_move(cx: &mut Cx, p: SegmentMoveParams) -> Result<Poi
     set_path(&mut v, &path);
     let (changed, rev) = commit_stroke(cx, &did, &l, v)?;
     Ok(PointSetResult { stroke_id: l.id, changed, rev })
+}
+
+/// `draw.repositionAll.apply` (ruling O-23): a current element when none is given, with a drawing bank.
+pub(crate) fn precheck_reposition_all(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if v.get("elementId").is_some_and(|x| !x.is_null()) {
+        return Ok(());
+    }
+    let element =
+        cx.app().element.clone().ok_or_else(|| {
+            err("drawing.noTarget", "there is no current element", json!({ "pointer": "/elementId" }))
+        })?;
+    let doc = cx.document()?;
+    if doc.element(&element).and_then(|e| e.drawing_bank_id().clone()).is_none() {
+        return Err(err("drawing.notVectorElement", "the element has no drawings", json!({ "pointer": "/elementId" })));
+    }
+    Ok(())
 }

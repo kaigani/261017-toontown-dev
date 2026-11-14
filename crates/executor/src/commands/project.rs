@@ -1095,6 +1095,7 @@ pub(crate) struct Remaining {
 
 #[command(
     id = "project.recent.remove",
+    precheck = crate::prechecks::project_recent_remove,
     kind = ui,
     label = "Remove from recent",
     scopes = [ui],
@@ -1331,6 +1332,7 @@ pub(crate) struct Deleted {
 
 #[command(
     id = "project.recovery.delete",
+    precheck = crate::prechecks::project_recovery_delete,
     kind = ui,
     label = "Discard recovery data",
     scopes = [ui],
@@ -1392,6 +1394,7 @@ pub(crate) struct BackupEntry {
 
 #[command(
     id = "project.backup.list",
+    precheck = crate::prechecks::project_open,
     kind = query,
     label = "Backups",
     scopes = [read],

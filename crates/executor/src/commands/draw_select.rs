@@ -261,6 +261,7 @@ fn point_json(cx: &Cx, d: &Drawing) -> Vec<Value> {
 
 #[command(
     id = "draw.selection.set",
+    precheck = super::draw::precheck_target,
     kind = ui,
     label = "Select drawing objects",
     scopes = [ui],
@@ -446,6 +447,7 @@ pub(crate) struct PointSelectionResult {
 
 #[command(
     id = "draw.pointSelection.set",
+    precheck = super::draw::precheck_target,
     kind = ui,
     label = "Select anchor points",
     scopes = [ui],

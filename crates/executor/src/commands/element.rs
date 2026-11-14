@@ -1100,6 +1100,7 @@ pub(crate) struct DeleteResult {
 
 #[command(
     id = "element.delete",
+    precheck = precheck_delete,
     kind = action,
     label = "Delete elements",
     scopes = [edit],
@@ -1501,6 +1502,7 @@ pub(crate) struct ParentResult {
 
 #[command(
     id = "element.parent.set",
+    precheck = crate::prechecks::element_parent_set,
     kind = action,
     label = "Attach to parent",
     scopes = [edit],
@@ -2108,6 +2110,7 @@ fn retimed_channels(
 
 #[command(
     id = "element.timing.set",
+    precheck = precheck_timing_set,
     kind = action,
     label = "Change timing",
     scopes = [edit],
@@ -2732,4 +2735,58 @@ pub(crate) struct StateChanged {
 )]
 pub(crate) fn element_state_changed(_cx: &mut Cx, _p: NoParams) -> Result<StateChanged, CommandError> {
     Err(super::common::event_not_invocable("element.state.changed"))
+}
+
+// ----- prechecks (ruling O-23; reviews/M4-design-availability.md) -------------------------------------------------
+
+fn precheck_ids(v: &Value) -> Option<Vec<String>> {
+    v.get("elementIds")
+        .and_then(Value::as_array)
+        .map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect())
+}
+
+/// `element.timing.set`: every target has a bar (pegs and other bar elements; drawings time by exposure).
+pub(crate) fn precheck_timing_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let ids = targets(cx, precheck_ids(v).as_deref())?;
+    let doc = cx.document()?;
+    for id in &ids {
+        let e = element(doc, id)?;
+        if e.start().is_none() || e.duration().is_none() {
+            let t = *e.element_type();
+            return Err(err(
+                "cell.notApplicable",
+                format!(
+                    "{} element `{}` has no bar: its timing is its exposure (use the cell commands)",
+                    t.as_str(),
+                    e.name()
+                ),
+                json!({ "elementId": id.as_str(), "elementType": t.as_str() }),
+            ));
+        }
+    }
+    Ok(())
+}
+
+/// `element.delete`: no parameter element on its own, and a scene keeps a camera. The scene's cameras are counted only
+/// when a target is a camera (a walk of that scene, never of the document).
+pub(crate) fn precheck_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let ids = targets(cx, precheck_ids(v).as_deref())?;
+    let doc = cx.document()?;
+    for id in &ids {
+        let e = element(doc, id)?;
+        if *e.element_type() == ElementType::EffectParameter {
+            return Err(err(
+                codes::ARG_INVALID,
+                format!("parameter element `{}` is deleted only with its effect", e.name()),
+                json!({ "elementId": id.as_str() }),
+            ));
+        }
+    }
+    let gone: BTreeSet<Id> = ids.iter().cloned().collect();
+    for id in ids.iter().filter(|i| doc.element(i).is_some_and(|e| *e.element_type() == ElementType::Camera)) {
+        if let Some(scene) = doc.scene_of(id) {
+            super::anim_camera::refuse_last_camera(doc, scene, &|c| gone.contains(c))?;
+        }
+    }
+    Ok(())
 }

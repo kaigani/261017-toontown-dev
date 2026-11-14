@@ -1549,6 +1549,7 @@ pub(crate) struct ClipResult {
 
 #[command(
     id = "edit.cut",
+    precheck = precheck_on_selection,
     kind = action,
     label = "Cut",
     scopes = [edit],
@@ -1568,6 +1569,7 @@ pub(crate) fn edit_cut(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, Comm
 
 #[command(
     id = "edit.copy",
+    precheck = precheck_on_selection,
     kind = ui,
     label = "Copy",
     scopes = [ui],
@@ -1593,6 +1595,7 @@ pub(crate) struct DeleteResult {
 
 #[command(
     id = "edit.delete",
+    precheck = precheck_on_selection,
     kind = action,
     label = "Delete",
     scopes = [edit],
@@ -1623,6 +1626,7 @@ pub(crate) struct PasteParams {
 
 #[command(
     id = "edit.paste",
+    precheck = precheck_paste,
     kind = action,
     label = "Paste",
     scopes = [edit],
@@ -1661,6 +1665,7 @@ pub(crate) struct CutSpecialParams {
 
 #[command(
     id = "edit.cutSpecial",
+    precheck = precheck_on_selection,
     kind = action,
     label = "Cut Special",
     scopes = [edit],
@@ -1721,6 +1726,7 @@ pub(crate) struct PasteSpecialParams {
 
 #[command(
     id = "edit.pasteSpecial",
+    precheck = precheck_paste_special,
     kind = action,
     label = "Paste Special",
     scopes = [edit],
@@ -1780,6 +1786,7 @@ pub(crate) struct NewElementResult {
 
 #[command(
     id = "edit.pasteAsNewElement",
+    precheck = precheck_paste_as_new_element,
     kind = action,
     label = "Paste as New Element",
     scopes = [edit],
@@ -2051,4 +2058,98 @@ pub(crate) fn element_reference_fixes(v: &Value, ids: &BTreeSet<String>) -> Vec<
     reference_fixes(v, ids, "", None, &mut fixes);
     fixes.sort_by_key(|o| std::cmp::Reverse(pointer_key(&o.path)));
     fixes
+}
+
+// ----- prechecks (ruling O-23; reviews/M4-design-availability.md) -------------------------------------------------
+
+/// `edit.copy`, `edit.cut`, `edit.cutSpecial`, `edit.delete`: without `objectIds` they act on the selection of their
+/// context, which must not be empty (the refusal `pick` gives).
+pub(crate) fn precheck_on_selection(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if v.get("objectIds").is_some_and(|x| !x.is_null()) {
+        return Ok(());
+    }
+    let context = v.get("context").cloned().map_or(Ok(EditContext::Auto), serde_json::from_value).unwrap_or_default();
+    let context = resolve_context(cx, context);
+    if selection_in(cx, context).is_empty() { Err(nothing_selected(context)) } else { Ok(()) }
+}
+
+/// The clipboard's kind, read without decoding its items.
+fn clipboard_kind(cx: &Cx) -> Option<ClipboardKind> {
+    cx.session().clipboard.as_ref().and_then(|c| c.get("kind")).and_then(|k| serde_json::from_value(k.clone()).ok())
+}
+
+fn clipboard_empty() -> CommandError {
+    CommandError::with_details("edit.clipboardEmpty", "the clipboard is empty", json!({}))
+}
+
+/// `edit.paste`: the clipboard holds something.
+pub(crate) fn precheck_paste(cx: &Cx, _v: &Value) -> Result<(), CommandError> {
+    if cx.session().clipboard.is_none() { Err(clipboard_empty()) } else { Ok(()) }
+}
+
+/// `edit.pasteSpecial`: the clipboard holds something; `useLast` needs an earlier paste special.
+pub(crate) fn precheck_paste_special(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if cx.session().clipboard.is_none() {
+        return Err(clipboard_empty());
+    }
+    if v.get("useLast").and_then(Value::as_bool) == Some(true) {
+        let motion = clipboard_kind(cx) == Some(ClipboardKind::MotionPoint);
+        let operation = if motion { "pasteSpecialMotionPoint" } else { "pasteSpecial" };
+        if !cx.session().edit_options.contains_key(operation) {
+            return Err(CommandError::with_details(
+                "edit.noPreviousPasteSpecial",
+                "paste special again needs a paste special earlier in the session",
+                json!({}),
+            ));
+        }
+    }
+    Ok(())
+}
+
+/// `edit.pasteAsNewElement`: something on the clipboard, a scene, cells or drawing objects, and copied drawings that
+/// are in this project (lookups by id; nothing proportional to the document).
+pub(crate) fn precheck_paste_as_new_element(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let Some(clip) = cx.session().clipboard.as_ref() else { return Err(clipboard_empty()) };
+    current_scene(cx, v.get("sceneId").and_then(Value::as_str))?;
+    match clipboard_kind(cx) {
+        Some(ClipboardKind::Cells) => {
+            let doc = cx.document()?;
+            for it in clip.get("items").and_then(Value::as_array).into_iter().flatten() {
+                let Some(d) = it.get("drawingRef").and_then(Value::as_str) else { continue };
+                let present = Id::parse(d).ok().is_some_and(|id| doc.entry_raw_json(&EntryKey::Drawing(id)).is_ok());
+                if !present {
+                    return Err(not_allowed(
+                        ClipboardKind::Cells,
+                        EditContext::Xsheet,
+                        "a copied drawing is not in this project",
+                    ));
+                }
+            }
+            Ok(())
+        }
+        Some(ClipboardKind::DrawingObjects) => Ok(()),
+        Some(other) => {
+            Err(not_allowed(other, EditContext::Xsheet, "a new element is made from cells or drawing objects"))
+        }
+        None => Ok(()),
+    }
+}
+
+/// `cell.clipboard.apply`: the clipboard holds cells or whole elements (the refusals of `clipboard_cells`).
+pub(crate) fn precheck_cell_clipboard_apply(cx: &Cx, _v: &Value) -> Result<(), CommandError> {
+    let empty = || CommandError::with_details("cell.clipboardEmpty", "the clipboard holds nothing to paste", json!({}));
+    let Some(clip) = cx.session().clipboard.as_ref() else { return Err(empty()) };
+    match clipboard_kind(cx) {
+        Some(ClipboardKind::Elements) => Ok(()),
+        Some(ClipboardKind::Cells) => {
+            let usable = clip.get("items").and_then(Value::as_array).is_some_and(|items| {
+                items.iter().any(|it| {
+                    it.get("elementId").and_then(Value::as_str).is_some_and(|s| Id::parse(s).is_ok())
+                        && it.get("frameOffset").and_then(Value::as_u64).is_some()
+                })
+            });
+            if usable { Ok(()) } else { Err(empty()) }
+        }
+        _ => clipboard_cells(cx).map(|_| ()),
+    }
 }

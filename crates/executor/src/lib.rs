@@ -38,6 +38,7 @@ mod load_repair;
 mod maintenance;
 mod persistence;
 mod planar;
+mod prechecks;
 mod prefs;
 mod rules;
 mod run;

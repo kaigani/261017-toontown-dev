@@ -179,6 +179,7 @@ pub(crate) struct GetResult {
 
 #[command(
     id = "keymap.get",
+    precheck = crate::prechecks::keymap_get,
     kind = query,
     label = "Get key bindings",
     scopes = [read],
@@ -383,6 +384,7 @@ pub(crate) struct ResetResult {
 
 #[command(
     id = "keymap.reset",
+    precheck = crate::prechecks::keymap_reset,
     kind = ui,
     label = "Restore default key bindings",
     scopes = [prefs],

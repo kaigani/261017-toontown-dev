@@ -125,16 +125,6 @@ jobs:
       # step whole, bodies unchanged, skipped here by exact name: `c32_round3` and `c12_kernel_state` run in debug in
       # `check properties`; `cancel_phases` (tt-headless) runs in release in `headless release`, against the binary that
       # job builds. (`c14_measurements` and `c14_lock_races` stay: their C1.4 evidence is analysed and uploaded below.)
-      # M4 C4.1 round 3: the reviewer's `c41_r3_review::part_b_recovery::unrelated_live_pid_is_conservatively_kept`
-      # starts `powershell.exe` as a live foreign process; macOS runners have PowerShell 7 as `pwsh`, so it is put on the
-      # PATH under that name here (the test body stays unchanged; declared in reviews/M4-C4.1-handoff-r3.md).
-      - name: PowerShell under its Windows name for a reviewer test (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          mkdir -p "$RUNNER_TEMP/shim"
-          ln -sf "$(command -v pwsh)" "$RUNNER_TEMP/shim/powershell.exe"
-          echo "$RUNNER_TEMP/shim" >> "$GITHUB_PATH"
-          "$RUNNER_TEMP/shim/powershell.exe" -NoProfile -Command '$PSVersionTable.PSVersion.ToString()'
       - name: Run cargo test --workspace --locked
         run: |
           cargo test --workspace --locked -- --skip ten_thousand_history_operations_match_independent_content_oracle_and_replay \

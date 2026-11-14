@@ -1227,6 +1227,7 @@ struct Targets<'a> {
 
 #[command(
     id = "colour.paint.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Paint",
     scopes = [edit],
@@ -1341,6 +1342,7 @@ pub(crate) struct PaintUnpaintedResult {
 
 #[command(
     id = "colour.paintUnpainted.apply",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Paint Unpainted",
     scopes = [edit],
@@ -1481,6 +1483,7 @@ pub(crate) struct UnpaintResult {
 
 #[command(
     id = "colour.paint.remove",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Unpaint",
     scopes = [edit],

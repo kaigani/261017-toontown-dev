@@ -123,9 +123,15 @@ pub fn write_owned(
     write(root, info, input).map(Some)
 }
 
-/// [`heartbeat`] of an engine, under the ownership lock and its `fence` (ruling O-18).
+/// [`heartbeat`] of an engine, under the ownership lock and its `fence` (ruling O-18). It runs on the document
+/// thread, so it never waits for the lock: while any engine of the process is writing a recovery copy (which writes a
+/// fresh `heartbeatAt` itself) or a release runs, this heartbeat is skipped; the next one comes a minute later.
 pub fn heartbeat_owned(root: &Path, recovery_id: &str, fence: &AtomicBool) {
-    let _owner = ownership();
+    let _owner = match OWNERSHIP.try_lock() {
+        Ok(g) => g,
+        Err(std::sync::TryLockError::Poisoned(p)) => p.into_inner(),
+        Err(std::sync::TryLockError::WouldBlock) => return,
+    };
     if !fence.load(Ordering::Acquire) {
         heartbeat(root, recovery_id);
     }

@@ -579,6 +579,7 @@ fn walk_files(dir: &Path, recursive: bool, out: &mut Vec<PathBuf>, depth: usize)
 
 #[command(
     id = "doc.asset.relink",
+    precheck = crate::prechecks::doc_asset_relink,
     kind = action,
     label = "Relink Media",
     scopes = [edit, files_read],
@@ -683,6 +684,7 @@ pub(crate) struct EmbedResult {
 
 #[command(
     id = "doc.asset.embed",
+    precheck = crate::prechecks::doc_asset_embed,
     kind = action,
     label = "Embed Media",
     scopes = [edit, files_read],
@@ -918,6 +920,7 @@ pub(crate) fn remove_assets(cx: &mut Cx, ids: &[String], force: bool) -> Result<
 
 #[command(
     id = "doc.asset.remove",
+    precheck = crate::prechecks::doc_asset_remove,
     kind = action,
     label = "Remove Media",
     scopes = [edit],

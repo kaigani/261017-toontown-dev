@@ -251,7 +251,18 @@ fn resolve_on(core: &mut crate::run::Core, keys: &str) -> Result<KeyResolution, 
     let seq = crate::keymap::parse(keys, platform)?;
     let canonical = seq.canonical();
     let registry = core.registry();
-    let Some(s) = core.session() else { return Err(CommandError::internal("the session is unavailable")) };
+    core.with_lent_session(|cx| resolve_in(registry, cx, canonical, &seq, platform))
+        .unwrap_or_else(|| Err(CommandError::internal("the session is unavailable")))
+}
+
+fn resolve_in(
+    registry: &tt_registry::Registry,
+    cx: &crate::cx::Cx,
+    canonical: String,
+    seq: &crate::keymap::Sequence,
+    platform: crate::keymap::Platform,
+) -> Result<KeyResolution, CommandError> {
+    let s = cx.session();
     if s.ui.shell().sensors.modal.as_ref().is_some_and(|m| m.kind == "dialog") {
         return Ok(KeyResolution::Suspended { keys: canonical, reason: "modal".into() });
     }
@@ -270,7 +281,7 @@ fn resolve_on(core: &mut crate::run::Core, keys: &str) -> Result<KeyResolution, 
     // The key dispatch reads the same availability as every other surface (ruling O-10). A key bound to a command
     // that cannot run now answers that command's own refusal (11 §7.6: the envelope of the command the key invoked;
     // §10 `command.disabled` with the reason; C41-R2-09): the GUI consumes it with no message box (01 §8.4).
-    let a = availability_in(registry, &probe_cx(s), &b.command_id, b.params.clone().unwrap_or_default());
+    let a = availability_in(registry, cx, &b.command_id, b.params.clone().unwrap_or_default());
     if !a.enabled {
         let reason = a.reason.unwrap_or_default();
         return Err(CommandError::with_details(
@@ -313,9 +324,16 @@ pub struct Availability {
     pub dialog: bool,
 }
 
-/// Why a command cannot run now by the pipeline's static checks in their order (11 §8): registered, not an event, a
-/// project when it needs one, its declared enablement rule, implemented. The fast path of [`availability_in`].
-fn unavailable(registry: &tt_registry::Registry, cx: &crate::cx::Cx, command_id: &str) -> Option<String> {
+/// Why a command reference cannot run now (ruling O-23; reviews/M4-design-availability.md): the pipeline's static
+/// checks in their order (11 §8: registered, not an event, a project when it needs one, the declared enablement rule,
+/// implemented), then, for a complete reference (`precheck`), the command's declared precheck, the same function the
+/// pipeline runs before the handler. Nothing else of the pipeline runs; a panicking precheck is contained.
+fn unavailable(
+    registry: &tt_registry::Registry,
+    cx: &crate::cx::Cx,
+    command_id: &str,
+    params: Option<&Value>,
+) -> Option<String> {
     let Some(entry) = registry.get(command_id) else { return Some(format!("`{command_id}` is not registered")) };
     if entry.spec.kind == Kind::Event {
         return Some("an event cannot be invoked".into());
@@ -330,36 +348,20 @@ fn unavailable(registry: &tt_registry::Registry, cx: &crate::cx::Cx, command_id:
             return Some(d.reason);
         }
     }
-    match entry.status() {
-        tt_registry::Status::Implemented => None,
-        tt_registry::Status::NotImplemented { owner } => Some(format!("arrives with {owner}")),
+    if let tt_registry::Status::NotImplemented { owner } = entry.status() {
+        return Some(format!("arrives with {owner}"));
+    }
+    let (Some(pre), Some(params)) = (entry.command.and_then(|c| c.decl.precheck), params) else { return None };
+    let any: &dyn std::any::Any = cx;
+    match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| pre(any, params))) {
+        Ok(Ok(())) => None,
+        Ok(Err(e)) => Some(e.message),
+        Err(_) => Some(format!("internal: the precheck of `{command_id}` failed unexpectedly")),
     }
 }
 
-/// Refusals a GUI surface answers by asking the user, not by disabling the reference: a save without a location asks
-/// for one (Save As), and an action that would discard unsaved changes asks first (01 §3.5).
-const ASKS_USER: &[&str] = &["project.pathRequired", "project.unsavedChanges"];
-
-/// Why a complete command reference cannot run now, from its handler itself (round 3, C41-R3-03; ruling O-10): the
-/// reference runs through the transaction pipeline as a dry run on a scratch copy of the session, so every state
-/// refusal a handler gives (an empty clipboard, nothing selected, no current drawing, a peg as the current element,
-/// the central view, the last camera, ...) is the reason availability reports, by the same code. Nothing of the dry run
-/// is kept (dry runs stage nothing: ADR-0021 decision 13).
-fn refused_by_handler(
-    registry: &tt_registry::Registry,
-    cx: &crate::cx::Cx,
-    command_id: &str,
-    params: &Value,
-) -> Option<String> {
-    let entry = registry.get(command_id)?;
-    let mut probe = crate::cx::Cx::new(cx.session().clone(), Origin::User, "availability", true);
-    let opts = crate::types::InvokeOptions { dry_run: true, ..Default::default() };
-    match crate::run::run_step(&mut probe, entry, params.clone(), &opts) {
-        Ok(_) => None,
-        Err(e) if ASKS_USER.contains(&e.code.as_str()) => None,
-        Err(e) => Some(e.message),
-    }
-}
+/// References one availability request evaluates at most (ruling O-23).
+const AVAILABILITY_CHUNK: usize = 32;
 
 /// The check mark of a toggle reference: the toggled state now.
 fn checked_of(s: &crate::session::Session, command_id: &str, params: &Map<String, Value>) -> Option<bool> {
@@ -398,8 +400,7 @@ pub(crate) fn availability_in(
     // The static checks first; a complete reference that passes them is then asked of its handler (C41-R3-03). A
     // reference with required parameters missing is completed by a dialog (01 §0): its refusals depend on what the
     // user enters, so only the static checks apply to it.
-    let reason = unavailable(registry, cx, command_id)
-        .or_else(|| if dialog { None } else { refused_by_handler(registry, cx, command_id, &params) });
+    let reason = unavailable(registry, cx, command_id, if dialog { None } else { Some(&params) });
     let label = match command_id {
         "edit.undo" => history_label(s, true),
         "edit.redo" => history_label(s, false),
@@ -414,11 +415,6 @@ pub(crate) fn availability_in(
         label,
         dialog,
     }
-}
-
-/// A dry-run context over the session, for availability checks (nothing it does is committed).
-fn probe_cx(s: &crate::session::Session) -> crate::cx::Cx {
-    crate::cx::Cx::new(s.clone(), Origin::User, "availability", true)
 }
 
 /// Completes a command reference as the GUI invokes it: a toggle the reference leaves open gets its next state;
@@ -622,8 +618,9 @@ impl ExecutorHandle {
         let id = command_id.to_owned();
         crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
             let registry = core.registry();
-            let Some(s) = core.session() else { return Err(CommandError::internal("the session is unavailable")) };
-            let a = availability_in(registry, &probe_cx(s), &id, params);
+            let a = core
+                .with_lent_session(|cx| availability_in(registry, cx, &id, params))
+                .ok_or_else(|| CommandError::internal("the session is unavailable"))?;
             Ok(KeyResolution::Command {
                 keys: String::new(),
                 command_id: id,
@@ -641,12 +638,36 @@ impl ExecutorHandle {
     /// # Errors
     /// `command.timeout` when the document thread does not answer within the budget.
     pub fn availability(&self, refs: Vec<(String, Map<String, Value>)>) -> Result<Vec<Availability>, CommandError> {
+        // In chunks, each its own request on the document thread, so a user command waits at most one chunk (ruling
+        // O-23; reviews/M4-design-availability.md §4).
+        let mut out = Vec::with_capacity(refs.len());
+        let mut rest = refs;
+        while !rest.is_empty() {
+            let tail = rest.split_off(rest.len().min(AVAILABILITY_CHUNK));
+            let chunk = std::mem::replace(&mut rest, tail);
+            let part = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
+                let registry = core.registry();
+                core.with_lent_session(|cx| {
+                    chunk.into_iter().map(|(id, params)| availability_in(registry, cx, &id, params)).collect::<Vec<_>>()
+                })
+                .ok_or_else(|| CommandError::internal("the session is unavailable"))
+            })??;
+            out.extend(part);
+        }
+        Ok(out)
+    }
+
+    /// The time one availability chunk held the document thread, measured on it (tests of ruling O-23's budget).
+    #[doc(hidden)]
+    pub fn availability_chunk_hold(&self, refs: Vec<(String, Map<String, Value>)>) -> Result<Duration, CommandError> {
         crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
             let registry = core.registry();
-            let Some(s) = core.session() else { return Err(CommandError::internal("the session is unavailable")) };
-            let cx = probe_cx(s);
-            Ok(refs.into_iter().map(|(id, params)| availability_in(registry, &cx, &id, params)).collect())
-        })?
+            let started = Instant::now();
+            let _ = core.with_lent_session(|cx| {
+                refs.into_iter().map(|(id, params)| availability_in(registry, cx, &id, params)).collect::<Vec<_>>()
+            });
+            started.elapsed()
+        })
     }
 
     /// Releases the recovery data an earlier executor of this process left when it stopped answering, so this

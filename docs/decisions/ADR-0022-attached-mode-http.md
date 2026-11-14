@@ -29,9 +29,16 @@ Origin validation, bearer token, discovery file, off by default); ADR-0015 §10 
      shut out a token holder; with the workers full of authenticated streams a newcomer is refused without eviction.
      Refusals are written without a thread; every answered socket is closed gracefully (256 KiB, 1 s) by one closer
      thread holding at most 128 sockets. The server holds at most `3 + C + K·S` threads (round 3, ruling O-20): the
-     accept, closer and sweeper threads, C = 64 connection workers and K = 20 threads for each of at most 32 sessions
-     (5 for the session's life, up to 4 `job_wait` waits, 2 server-side work threads, 1 roots refresh and 8 job threads,
-     each cap refused with `limit.exceeded`), 707 with the defaults; a stop ends body readers within 50 ms. An SSE subscriber that stops
+     accept, closer and sweeper threads (`mcp-http-accept`, `mcp-http-close`, `mcp-http-sweep`), C = 64 connection
+     workers (`mcp-http-conn`) and K = 20 threads for each of at most 32 sessions, 707 with the defaults. A session's
+     threads, by kind and cap: 5 for its life (`mcp-http-session`, the protocol loop; `mcp-writer`; `mcp-reader`;
+     `mcp-events`; `mcp-calls`, on which calls run one at a time); `mcp-wait`, one per waiting `job_wait`, at most 4,
+     a fifth refused with `limit.exceeded`, `details.limit: "concurrentJobWaits"`; `mcp-server-work` (`list_commands`,
+     `describe_command`, `get_docs`, which can outlive a call past its 5 s budget), at most 2, a third refused with
+     `limit.exceeded`, `details.limit: "serverWork"`; `mcp-roots`, at most 1 (a request during a refresh is coalesced
+     into it); job threads (`tt-job_*`), at most 8, the session's `maxJobs` (domain 1..8), refused by the executor with
+     `limit.exceeded`, `details.limit: "maxJobs"`. Measured: idle sessions own 5 each; one session driven to every cap
+     at once owns exactly 20. A stop ends body readers within 50 ms. An SSE subscriber that stops
      reading is dropped (1024 queued messages, 10 s write timeout); a quiet stream notices a departed client within 1 s.
    - **Credentials fail closed (ruling O-6).** The token and session ids come from the operating system's random source
      only; when it fails, no token is made, the server does not start and the window says why (`agent.serverFailed`).
@@ -65,7 +72,11 @@ Origin validation, bearer token, discovery file, off by default); ADR-0015 §10 
    start. The documented port is
    47215 (`agent.server.port`); the next free ports are tried. The token is the discovery file's
    (`agent.token.regenerate` creates it); the host writes `<settings>/agent-discovery.json` with the endpoint and token,
-   readable only by the user, and also `--mcp-discovery <file>` for tests. On POSIX the file's mode is `0600`; on
+   readable only by the user, and also `--mcp-discovery <file>` for tests. **Rewritten in place (round 3):** the first
+   file is created privately and renamed into place; afterwards the host rewrites it in place, as one write of a fixed
+   4 KiB (the JSON padded with spaces, which JSON allows), because on Windows a rename fails while a client has the
+   file open, and a client opening it during a rename can be refused: a client polling the file therefore always finds
+   it present and complete (the old content or the new, never absent or truncated). On POSIX the file's mode is `0600`; on
    Windows it lives in the per-user settings folder (`%APPDATA%`) and inherits that folder's per-user ACL, with no ACL
    of its own. When the server stops, at a graceful quit, and at start while the server is off, the file is rewritten
    without endpoint and process id, keeping the token (ruling O-8): it never advertises a dead endpoint; a file left by

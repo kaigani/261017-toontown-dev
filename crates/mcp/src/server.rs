@@ -1243,6 +1243,7 @@ fn bounded(shared: &Shared, what: &str, work: impl FnOnce() -> Envelope + Send +
     let (tx, rx) = mpsc::channel();
     let slots = shared.server_work.clone();
     let spawned = std::thread::Builder::new().name("mcp-server-work".into()).spawn(move || {
+        tt_persist::lock::boundary(tt_persist::lock::Boundary::ServerWork, std::path::Path::new(""));
         let _ = tx.send(work());
         slots.fetch_sub(1, Ordering::AcqRel);
     });

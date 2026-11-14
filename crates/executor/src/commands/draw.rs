@@ -685,6 +685,7 @@ pub(crate) fn removal_ops(d: &Drawing, targets: &[Located]) -> (Vec<PatchOp>, Ve
 
 #[command(
     id = "draw.object.delete",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Delete drawing objects",
     scopes = [edit],
@@ -764,6 +765,7 @@ pub(crate) struct GroupCreateResult {
 
 #[command(
     id = "draw.group.create",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Group drawing objects",
     scopes = [edit],
@@ -928,6 +930,7 @@ pub(crate) struct GroupDeleteResult {
 
 #[command(
     id = "draw.group.delete",
+    precheck = super::draw::precheck_target,
     kind = action,
     label = "Ungroup drawing objects",
     scopes = [edit],
@@ -1033,4 +1036,14 @@ pub(crate) fn draw_drawing_changed(
     _p: super::common::NoParams,
 ) -> Result<DrawingChangedEvent, CommandError> {
     Err(super::common::event_not_invocable("draw.drawing.changed"))
+}
+
+/// The precheck of the commands that act on `drawingId`, else the drawing at `elementId`/`frame`, else the current
+/// drawing (ruling O-23): with none of them given, a current drawing must exist (the refusal `target` gives).
+pub(crate) fn precheck_target(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if ["drawingId", "elementId", "frame"].iter().any(|k| v.get(*k).is_some_and(|x| !x.is_null())) {
+        return Ok(());
+    }
+    let doc = cx.document()?;
+    if cx.app().current_drawing(doc).is_some() { Ok(()) } else { Err(no_target()) }
 }

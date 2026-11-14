@@ -400,6 +400,15 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
         if let Some(check) = c.decl.enablement.check {
             check(&*cx).map_err(|d| d.to_error(id))?;
         }
+        // The declared precheck: the state refusal availability reads too, so the two are one predicate (ruling
+        // O-23). A panicking precheck is contained.
+        if let Some(pre) = c.decl.precheck {
+            let any: &dyn std::any::Any = &*cx;
+            match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| pre(any, &params))) {
+                Ok(r) => r?,
+                Err(_) => return Err(CommandError::internal(format!("the precheck of `{id}` failed unexpectedly"))),
+            }
+        }
     }
     if let Status::NotImplemented { owner } = entry.status() {
         return Err(CommandError::not_implemented(id, owner));
@@ -1061,6 +1070,17 @@ impl Core {
 
     fn take_session(&mut self) -> Session {
         self.session.take().unwrap_or_default()
+    }
+
+    /// Lends the session to a read-only dry-run context for `f` and takes it back (availability, ruling O-23): no copy
+    /// is made, nothing is staged or emitted. `None` when there is no session, or when `f` unwinds (the session is
+    /// back either way: it is never moved into the closure).
+    pub(crate) fn with_lent_session<T>(&mut self, f: impl FnOnce(&crate::cx::Cx) -> T) -> Option<T> {
+        let s = self.session.take()?;
+        let cx = crate::cx::Cx::new(s, Origin::User, "availability", true);
+        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| f(&cx)));
+        self.session = Some(cx.into_session());
+        out.ok()
     }
 
     pub(crate) fn session(&self) -> Option<&Session> {
