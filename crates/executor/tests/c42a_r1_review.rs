@@ -240,3 +240,95 @@ mod part_b_tools {
         assert_eq!(ok(&h, "edit.history.get", json!({})), history);
     }
 }
+
+mod part_b_pens {
+    use super::*;
+    #[test]
+    fn defaults_mutations_history_and_project_round_trip() {
+        let root = std::env::temp_dir().join(format!("tt-review-pens-{}", tt_executor::random_token(8)));
+        let h = super::part_b_persistence::over(&root);
+        ok(&h, "project.create", json!({"name":"Review"}));
+        let pens = ok(&h, "tool.pen.list", json!({}));
+        let list = pens["pens"].as_array().unwrap();
+        assert_eq!(list.len(), 8);
+        for (name, max, min) in [
+            ("Pen 1", 2.0, 0.5),
+            ("Pen 2", 4.0, 1.0),
+            ("Pen 3", 8.0, 2.0),
+            ("Pen 4", 16.0, 4.0),
+            ("Pen 5", 32.0, 8.0),
+            ("Eraser 1", 10.0, 10.0),
+            ("Eraser 2", 20.0, 20.0),
+            ("Eraser 3", 40.0, 40.0),
+        ] {
+            let p = list.iter().find(|p| p["name"] == name).unwrap();
+            assert_eq!(p["maxSize"].as_f64(), Some(max));
+            assert_eq!(p["minSize"].as_f64(), Some(min));
+            assert_eq!(p["smoothness"], 3);
+        }
+        let r = rev(&h);
+        let id = ok(&h, "tool.pen.create", json!({"name":"Review pen"}))["penId"].clone();
+        assert!(rev(&h) > r);
+        for (command, params, label) in [
+            ("tool.pen.rename", json!({"penId":id,"name":"Renamed"}), "Rename Pen"),
+            ("tool.pen.set", json!({"penId":id,"minSize":90}), "Set Pen Style"),
+            ("tool.pen.delete", json!({"penId":id}), "Delete Pen"),
+        ] {
+            let r = rev(&h);
+            ok(&h, command, params);
+            assert!(rev(&h) > r);
+            assert!(ok(&h, "edit.history.get", json!({})).to_string().contains(label));
+            ok(&h, "edit.undo", json!({}));
+            ok(&h, "edit.redo", json!({}));
+        }
+        ok(&h, "edit.undo", json!({}));
+        for value in [json!(-1), json!(101), json!(1e100)] {
+            let before = ok(&h, "tool.pen.list", json!({}));
+            assert!(
+                ["arg.invalid", "tool.valueOutOfRange"]
+                    .contains(&err(&h, "tool.pen.set", json!({"penId":id,"maxSize":value})).code.as_str())
+            );
+            assert_eq!(ok(&h, "tool.pen.list", json!({})), before);
+        }
+        assert_eq!(err(&h, "tool.pen.create", json!({"name":"Pen 1"})).code, "pen.nameExists");
+        assert!(run(&h, "tool.pen.create", json!({"name":""})).error.is_some());
+        assert!(run(&h, "tool.pen.create", json!({"name":"x".repeat(10000)})).error.is_some());
+        let r = rev(&h);
+        ok(&h, "tool.pen.select", json!({"penId":id}));
+        assert_eq!(rev(&h), r);
+        let rx = h.subscribe();
+        ok(&h, "tool.pen.select", json!({"penId":id}));
+        assert!(!rx.try_iter().any(|e| e.name == "tool.pen.changed"));
+        let before = ok(&h, "tool.pen.list", json!({}));
+        let path = root.join("Review.animpkg");
+        super::part_b_persistence::job(&h, "project.saveAs", json!({"path":path}));
+        ok(&h, "project.close", json!({"onUnsaved":"discard"}));
+        drop(h);
+        let h = super::part_b_persistence::over(&root);
+        super::part_b_persistence::job(&h, "project.open", json!({"path":path}));
+        assert_eq!(ok(&h, "tool.pen.list", json!({})), before);
+        ok(&h, "project.close", json!({"onUnsaved":"discard"}));
+        drop(h);
+        std::fs::remove_dir_all(root).unwrap();
+    }
+}
+mod part_b_persistence {
+    use super::*;
+    use serde_json::Value;
+    pub fn over(root: &std::path::Path) -> tt_executor::ExecutorHandle {
+        tt_executor::ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
+            persist: tt_executor::PersistOptions {
+                user_dirs: Some(tt_executor::UserDirs::under(root)),
+                ..Default::default()
+            },
+            ..Default::default()
+        })
+        .unwrap()
+    }
+    pub fn job(h: &tt_executor::ExecutorHandle, id: &str, params: Value) {
+        let started = ok(h, id, params);
+        let result = ok(h, "job.wait", json!({"jobId":started["jobId"],"timeoutMs":60000}));
+        let record = result.get("record").unwrap_or(&result);
+        assert_eq!(record["state"], "succeeded", "{result}");
+    }
+}
