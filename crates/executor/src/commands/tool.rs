@@ -234,7 +234,66 @@ pub(crate) fn tool_list(cx: &mut Cx, _p: NoParams) -> Result<ToolList, CommandEr
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ActiveParams {
     /// The tool.
-    tool_id: String,
+    tool_id: ToolId,
+}
+
+/// A tool id (02 §5.1; spec A `tool.active.set`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+#[schemars(inline)]
+pub(crate) enum ToolId {
+    /// Select.
+    Select,
+    /// Contour Editor.
+    ContourEditor,
+    /// Perspective.
+    Perspective,
+    /// Reposition All Drawings.
+    RepositionAll,
+    /// Brush.
+    Brush,
+    /// Pencil.
+    Pencil,
+    /// Rectangle.
+    Rectangle,
+    /// Ellipse.
+    Ellipse,
+    /// Polyline.
+    Polyline,
+    /// Line.
+    Line,
+    /// Paint.
+    Paint,
+    /// Unpaint.
+    Unpaint,
+    /// Paint Unpainted.
+    PaintUnpainted,
+    /// Dropper.
+    Dropper,
+    /// Close Gap.
+    CloseGap,
+    /// Stroke.
+    Stroke,
+    /// Edit Texture.
+    EditTexture,
+    /// Eraser.
+    Eraser,
+    /// Cutter.
+    Cutter,
+    /// Scissor.
+    Scissor,
+    /// Zoom.
+    Zoom,
+    /// Grabber.
+    Grabber,
+    /// Text.
+    Text,
+}
+
+impl ToolId {
+    fn name(self) -> String {
+        serde_json::to_value(self).ok().and_then(|v| v.as_str().map(str::to_owned)).unwrap_or_default()
+    }
 }
 
 /// `{toolId}`.
@@ -268,9 +327,10 @@ pub(crate) fn activate(cx: &mut Cx, tool: &str) {
     gui = "the Tools toolbar and tool properties (02, 05); wired in M4 C4.2",
 )]
 pub(crate) fn tool_active_set(cx: &mut Cx, p: ActiveParams) -> Result<ToolIdResult, CommandError> {
-    tool_param(&p.tool_id)?;
-    activate(cx, &p.tool_id);
-    Ok(ToolIdResult { tool_id: p.tool_id })
+    let tool = p.tool_id.name();
+    tool_param(&tool)?;
+    activate(cx, &tool);
+    Ok(ToolIdResult { tool_id: tool })
 }
 
 /// `tool.active.get` result.
@@ -462,6 +522,7 @@ fn inside() -> RectRule {
 /// Marquee and lasso rule.
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
+#[schemars(inline)]
 pub(crate) enum RectRule {
     /// Wholly inside.
     Inside,
@@ -580,6 +641,7 @@ fn pen_max() -> ThicknessSource {
 /// Where the line thickness comes from.
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
+#[schemars(inline)]
 pub(crate) enum ThicknessSource {
     /// The current brush pen's maximum size.
     PenMax,
@@ -645,37 +707,52 @@ pub(crate) struct TextOptions {
     /// Size.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[schemars(range(min = 1.0, max = 512.0))]
+    #[schemars(extend("default" = 36))]
     size: Option<f64>,
     /// Bold.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(extend("default" = false))]
     bold: Option<bool>,
     /// Italic.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(extend("default" = false))]
     italic: Option<bool>,
     /// Baseline.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(extend("default" = "normal"))]
     baseline: Option<Baseline>,
     /// Kerning.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[schemars(range(min = -60, max = 60))]
+    #[schemars(extend("default" = 0))]
     kerning: Option<i64>,
     /// Automatic kerning.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(extend("default" = true))]
     auto_kern: Option<bool>,
     /// Alignment.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(extend("default" = "left"))]
     align: Option<Align>,
     /// Left margin (du).
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(extend("default" = 0))]
+    #[schemars(range(min = 0.0, max = 1000.0))]
     left_margin: Option<f64>,
     /// Right margin (du).
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(extend("default" = 0))]
+    #[schemars(range(min = 0.0, max = 1000.0))]
     right_margin: Option<f64>,
     /// First-line indent (du).
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(extend("default" = 0))]
+    #[schemars(range(min = -99.0, max = 1000.0))]
     indent: Option<f64>,
     /// Extra line spacing (du).
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(extend("default" = 0))]
+    #[schemars(range(min = -99.0, max = 1000.0))]
     line_spacing: Option<f64>,
     /// Outline colour of new text (`null`: none). Absent leaves it; `null` clears it (ruling D-7e).
     #[serde(default, deserialize_with = "present", skip_serializing_if = "Option::is_none")]
@@ -690,6 +767,7 @@ fn present<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<Option<Strin
 /// Baseline.
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
+#[schemars(inline)]
 pub(crate) enum Baseline {
     /// Normal.
     Normal,
@@ -702,6 +780,7 @@ pub(crate) enum Baseline {
 /// Alignment.
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
+#[schemars(inline)]
 pub(crate) enum Align {
     /// Left.
     Left,
@@ -740,6 +819,7 @@ pub(crate) struct PenListParams {
 /// A pen family.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
+#[schemars(inline)]
 pub(crate) enum Family {
     /// Brush pens.
     Brush,
@@ -1103,7 +1183,7 @@ pub(crate) struct PenSetParams {
     pen_id: String,
     /// Tip shape.
     #[serde(default)]
-    tip_shape: Option<String>,
+    tip_shape: Option<TipShape>,
     /// Minimum size (du).
     #[serde(default)]
     #[schemars(range(min = 0.0, max = 100.0))]
@@ -1120,6 +1200,21 @@ pub(crate) struct PenSetParams {
     #[serde(default)]
     #[schemars(range(min = 0.0, max = 360.0))]
     tip_angle: Option<f64>,
+}
+
+/// A pen's tip shape (02 §6.1).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+#[schemars(inline)]
+pub(crate) enum TipShape {
+    /// Round.
+    Round,
+    /// Oval.
+    Oval,
+    /// Square.
+    Square,
+    /// Flat.
+    Flat,
 }
 
 /// `{pen}`.
@@ -1253,14 +1348,17 @@ pub(crate) fn tool_snap_to_contour_set(cx: &mut Cx, p: Enabled) -> Result<Enable
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct TabletParams {
-    /// The tablet acts as a mouse.
+    /// The tablet acts as a mouse (absent: unchanged; a new user's value is false).
     #[serde(default)]
+    #[schemars(extend("default" = false))]
     ignore_tablet: Option<bool>,
     /// Portrait-mode correction.
     #[serde(default)]
+    #[schemars(extend("default" = false))]
     portrait_correction: Option<bool>,
     /// Compatibility handling.
     #[serde(default)]
+    #[schemars(extend("default" = false))]
     compatibility_mode: Option<bool>,
     /// The input interface.
     #[serde(default)]
@@ -1339,6 +1437,32 @@ fn settings_map(cx: &Cx) -> Map<String, Value> {
     example(title = "Every global drawing-tool setting", params = "{}"),
     gui = "the Tools toolbar and tool properties (02, 05); wired in M4 C4.2",
 )]
-pub(crate) fn tool_settings_get(cx: &mut Cx, _p: NoParams) -> Result<Map<String, Value>, CommandError> {
-    Ok(settings_map(cx))
+pub(crate) fn tool_settings_get(cx: &mut Cx, _p: NoParams) -> Result<SettingsResult, CommandError> {
+    let d = cx.ui().drawing();
+    Ok(SettingsResult {
+        place_behind: d.place_behind,
+        draw_top_layer: d.draw_top_layer,
+        snap_to_contour: d.snap_to_contour,
+        symmetry: d.symmetry.clone(),
+        tablet: d.tablet.clone(),
+        gap_closing: super::colour::GapMode::of(cx.pref(super::colour::GAP_PREF).as_ref()),
+    })
+}
+
+/// `tool.settings.get` result (spec A: `{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}`).
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct SettingsResult {
+    /// Draw Behind.
+    place_behind: bool,
+    /// Draw on Top Layer.
+    draw_top_layer: bool,
+    /// Snap to Contour.
+    snap_to_contour: bool,
+    /// Symmetry.
+    symmetry: crate::drawing::SymmetrySetting,
+    /// Tablet input settings.
+    tablet: crate::drawing::TabletSetting,
+    /// The automatic gap-closing mode (03 §8.8).
+    gap_closing: super::colour::GapMode,
 }

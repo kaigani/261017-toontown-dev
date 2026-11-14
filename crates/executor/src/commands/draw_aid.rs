@@ -162,8 +162,8 @@ fn name_of<T: Serialize>(v: T) -> String {
     example(title = "Show the 12-field grid", params = r#"{"visible": true, "type": "field12"}"#),
     gui = "the Drawing view's aid controls (02 §10); wired in M4 C4.2",
 )]
-pub(crate) fn draw_aid_grid_set(cx: &mut Cx, p: GridParams) -> Result<Value, CommandError> {
-    Ok(change(cx, "grid", |a| {
+pub(crate) fn draw_aid_grid_set(cx: &mut Cx, p: GridParams) -> Result<crate::drawing::Grid, CommandError> {
+    change(cx, "grid", |a| {
         if let Some(v) = p.visible {
             a.grid.visible = v;
         }
@@ -173,7 +173,8 @@ pub(crate) fn draw_aid_grid_set(cx: &mut Cx, p: GridParams) -> Result<Value, Com
         if let Some(o) = p.overlay {
             a.grid.overlay = o;
         }
-    }))
+    });
+    Ok(cx.ui().drawing().aids.grid.clone())
 }
 
 /// `drawAid.onionSkin.set` parameters.
@@ -211,10 +212,10 @@ fn count(v: Option<i64>, pointer: &str) -> Result<Option<i64>, CommandError> {
     example(title = "Onion skin with two previous drawings", params = r#"{"enabled": true, "previous": 2}"#),
     gui = "the Drawing view's aid controls (02 §10); wired in M4 C4.2",
 )]
-pub(crate) fn draw_aid_onion_skin_set(cx: &mut Cx, p: OnionParams) -> Result<Value, CommandError> {
+pub(crate) fn draw_aid_onion_skin_set(cx: &mut Cx, p: OnionParams) -> Result<crate::drawing::OnionSkin, CommandError> {
     let prev = count(p.previous, "/previous")?;
     let next = count(p.next, "/next")?;
-    Ok(change(cx, "onionSkin", |a| {
+    change(cx, "onionSkin", |a| {
         if let Some(e) = p.enabled {
             a.onion_skin.enabled = e;
         }
@@ -224,7 +225,8 @@ pub(crate) fn draw_aid_onion_skin_set(cx: &mut Cx, p: OnionParams) -> Result<Val
         if let Some(n) = next {
             a.onion_skin.next = n;
         }
-    }))
+    });
+    Ok(cx.ui().drawing().aids.onion_skin.clone())
 }
 
 /// `drawAid.onionSkinStyle.set` parameters.
@@ -387,15 +389,19 @@ pub(crate) struct ShadeParams {
     example(title = "Unshaded static entries", params = r#"{"static": false}"#),
     gui = "the Drawing view's aid controls (02 §10); wired in M4 C4.2",
 )]
-pub(crate) fn draw_aid_light_table_shade_set(cx: &mut Cx, p: ShadeParams) -> Result<Value, CommandError> {
-    Ok(change(cx, "lightTableShade", |a| {
+pub(crate) fn draw_aid_light_table_shade_set(
+    cx: &mut Cx,
+    p: ShadeParams,
+) -> Result<crate::drawing::Shade, CommandError> {
+    change(cx, "lightTableShade", |a| {
         if let Some(v) = p.auto {
             a.light_table_shade.auto = v;
         }
         if let Some(v) = p.stat {
             a.light_table_shade.stat = v;
         }
-    }))
+    });
+    Ok(cx.ui().drawing().aids.light_table_shade.clone())
 }
 
 #[command(
@@ -511,16 +517,20 @@ pub(crate) struct BackgroundParams {
     example(title = "A white background", params = r##"{"colour": "#FFFFFF"}"##),
     gui = "the Drawing view's aid controls (02 §10); wired in M4 C4.2",
 )]
-pub(crate) fn draw_aid_background_set(cx: &mut Cx, p: BackgroundParams) -> Result<Value, CommandError> {
+pub(crate) fn draw_aid_background_set(
+    cx: &mut Cx,
+    p: BackgroundParams,
+) -> Result<crate::drawing::Background, CommandError> {
     let c = p.colour.as_deref().map(|c| colour(c, "/colour")).transpose()?;
-    Ok(change(cx, "background", |a| {
+    change(cx, "background", |a| {
         if let Some(c) = c {
             a.background.colour = c;
         }
         if let Some(u) = p.use_scene_colour {
             a.background.use_scene_colour = u;
         }
-    }))
+    });
+    Ok(cx.ui().drawing().aids.background.clone())
 }
 
 // ----- static light table ---------------------------------------------------------------------------------------------
@@ -528,6 +538,7 @@ pub(crate) fn draw_aid_background_set(cx: &mut Cx, p: BackgroundParams) -> Resul
 /// Overlay or underlay.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
+#[schemars(inline)]
 pub(crate) enum Placement {
     /// Over the current drawing.
     Overlay,

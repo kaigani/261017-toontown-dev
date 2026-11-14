@@ -42258,7 +42258,21 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "drawAid.background.set.result": {
-    title: "AnyValue",
+    title: "Background",
+    description: "Drawing View background (02 §10.7).",
+    type: "object",
+    properties: {
+      colour: {
+        description: "Colour.",
+        type: "string",
+        default: "#F0F0F0FF",
+      },
+      useSceneColour: {
+        description: "Use the scene's background colour instead.",
+        type: "boolean",
+        default: false,
+      },
+    },
   },
   "drawAid.changed.params": {
     title: "NoParams",
@@ -42371,7 +42385,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "drawAid.grid.set.result": {
-    title: "AnyValue",
+    title: "Grid",
+    description: "The grid (02 §10.1).",
+    type: "object",
+    properties: {
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+        default: false,
+      },
+      type: {
+        description: "`normal`, `field12` or `field16`.",
+        type: "string",
+        default: "normal",
+      },
+      overlay: {
+        description: "Drawn over the drawings.",
+        type: "boolean",
+        default: false,
+      },
+    },
   },
   "drawAid.lightTableShade.set.params": {
     title: "ShadeParams",
@@ -42398,7 +42431,21 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "drawAid.lightTableShade.set.result": {
-    title: "AnyValue",
+    title: "Shade",
+    description: "Light-table shading (02 §10.3-10.4).",
+    type: "object",
+    properties: {
+      auto: {
+        description: "The auto light table is washed out.",
+        type: "boolean",
+        default: true,
+      },
+      static: {
+        description: "Static light-table entries are washed out.",
+        type: "boolean",
+        default: true,
+      },
+    },
   },
   "drawAid.onionSkin.set.params": {
     title: "OnionParams",
@@ -42437,7 +42484,30 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "drawAid.onionSkin.set.result": {
-    title: "AnyValue",
+    title: "OnionSkin",
+    description: "Onion skin (02 §10.2).",
+    type: "object",
+    properties: {
+      enabled: {
+        description: "Master switch.",
+        type: "boolean",
+        default: false,
+      },
+      previous: {
+        description: "Previous drawings, 0-3.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        default: 1,
+        minimum: -9223372036854775808n,
+      },
+      next: {
+        description: "Next drawings, 0-3.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        default: 0,
+        minimum: -9223372036854775808n,
+      },
+    },
   },
   "drawAid.onionSkinCycle.run.Direction": {
     description: "Onion-skin direction.",
@@ -42703,7 +42773,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       placement: {
         description: "Overlay or underlay.",
-        $ref: "#/$defs/drawAid.state.get.Placement",
+        oneOf: [
+          {
+            description: "Over the current drawing.",
+            type: "string",
+            const: "overlay",
+          },
+          {
+            description: "Under it.",
+            type: "string",
+            const: "underlay",
+          },
+        ],
       },
     },
     required: [
@@ -42712,21 +42793,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "sourceKind",
       "visible",
       "placement",
-    ],
-  },
-  "drawAid.state.get.Placement": {
-    description: "Overlay or underlay.",
-    oneOf: [
-      {
-        description: "Over the current drawing.",
-        type: "string",
-        const: "overlay",
-      },
-      {
-        description: "Under it.",
-        type: "string",
-        const: "underlay",
-      },
     ],
   },
   "drawAid.state.get.Shade": {
@@ -42844,21 +42910,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "background",
     ],
   },
-  "drawAid.staticLightTable.add.Placement": {
-    description: "Overlay or underlay.",
-    oneOf: [
-      {
-        description: "Over the current drawing.",
-        type: "string",
-        const: "overlay",
-      },
-      {
-        description: "Under it.",
-        type: "string",
-        const: "underlay",
-      },
-    ],
-  },
   "drawAid.staticLightTable.add.params": {
     title: "AddParams",
     description: "`drawAid.staticLightTable.add` parameters.",
@@ -42892,7 +42943,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       placement: {
         description: "Overlay or underlay.",
-        $ref: "#/$defs/drawAid.staticLightTable.add.Placement",
+        oneOf: [
+          {
+            description: "Over the current drawing.",
+            type: "string",
+            const: "overlay",
+          },
+          {
+            description: "Under it.",
+            type: "string",
+            const: "underlay",
+          },
+        ],
         default: "underlay",
       },
       visible: {
@@ -42955,7 +43017,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       placement: {
         description: "Overlay or underlay.",
-        $ref: "#/$defs/drawAid.staticLightTable.list.Placement",
+        oneOf: [
+          {
+            description: "Over the current drawing.",
+            type: "string",
+            const: "overlay",
+          },
+          {
+            description: "Under it.",
+            type: "string",
+            const: "underlay",
+          },
+        ],
       },
     },
     required: [
@@ -42964,21 +43037,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "sourceKind",
       "visible",
       "placement",
-    ],
-  },
-  "drawAid.staticLightTable.list.Placement": {
-    description: "Overlay or underlay.",
-    oneOf: [
-      {
-        description: "Over the current drawing.",
-        type: "string",
-        const: "overlay",
-      },
-      {
-        description: "Under it.",
-        type: "string",
-        const: "underlay",
-      },
     ],
   },
   "drawAid.staticLightTable.list.result": {
@@ -43040,21 +43098,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "removedEntryIds",
     ],
   },
-  "drawAid.staticLightTable.set.Placement": {
-    description: "Overlay or underlay.",
-    oneOf: [
-      {
-        description: "Over the current drawing.",
-        type: "string",
-        const: "overlay",
-      },
-      {
-        description: "Under it.",
-        type: "string",
-        const: "underlay",
-      },
-    ],
-  },
   "drawAid.staticLightTable.set.params": {
     title: "SetParams",
     description: "`drawAid.staticLightTable.set` parameters.",
@@ -43089,7 +43132,19 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Overlay or underlay them.",
         anyOf: [
           {
-            $ref: "#/$defs/drawAid.staticLightTable.set.Placement",
+            description: "Overlay or underlay.",
+            oneOf: [
+              {
+                description: "Over the current drawing.",
+                type: "string",
+                const: "overlay",
+              },
+              {
+                description: "Under it.",
+                type: "string",
+                const: "underlay",
+              },
+            ],
           },
           {
             type: "null",
@@ -43130,7 +43185,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       placement: {
         description: "Overlay or underlay.",
-        $ref: "#/$defs/drawAid.staticLightTable.set.Placement",
+        oneOf: [
+          {
+            description: "Over the current drawing.",
+            type: "string",
+            const: "overlay",
+          },
+          {
+            description: "Under it.",
+            type: "string",
+            const: "underlay",
+          },
+        ],
       },
     },
     required: [
@@ -78801,7 +78867,123 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       toolId: {
         description: "The tool.",
-        type: "string",
+        oneOf: [
+          {
+            description: "Select.",
+            type: "string",
+            const: "select",
+          },
+          {
+            description: "Contour Editor.",
+            type: "string",
+            const: "contourEditor",
+          },
+          {
+            description: "Perspective.",
+            type: "string",
+            const: "perspective",
+          },
+          {
+            description: "Reposition All Drawings.",
+            type: "string",
+            const: "repositionAll",
+          },
+          {
+            description: "Brush.",
+            type: "string",
+            const: "brush",
+          },
+          {
+            description: "Pencil.",
+            type: "string",
+            const: "pencil",
+          },
+          {
+            description: "Rectangle.",
+            type: "string",
+            const: "rectangle",
+          },
+          {
+            description: "Ellipse.",
+            type: "string",
+            const: "ellipse",
+          },
+          {
+            description: "Polyline.",
+            type: "string",
+            const: "polyline",
+          },
+          {
+            description: "Line.",
+            type: "string",
+            const: "line",
+          },
+          {
+            description: "Paint.",
+            type: "string",
+            const: "paint",
+          },
+          {
+            description: "Unpaint.",
+            type: "string",
+            const: "unpaint",
+          },
+          {
+            description: "Paint Unpainted.",
+            type: "string",
+            const: "paintUnpainted",
+          },
+          {
+            description: "Dropper.",
+            type: "string",
+            const: "dropper",
+          },
+          {
+            description: "Close Gap.",
+            type: "string",
+            const: "closeGap",
+          },
+          {
+            description: "Stroke.",
+            type: "string",
+            const: "stroke",
+          },
+          {
+            description: "Edit Texture.",
+            type: "string",
+            const: "editTexture",
+          },
+          {
+            description: "Eraser.",
+            type: "string",
+            const: "eraser",
+          },
+          {
+            description: "Cutter.",
+            type: "string",
+            const: "cutter",
+          },
+          {
+            description: "Scissor.",
+            type: "string",
+            const: "scissor",
+          },
+          {
+            description: "Zoom.",
+            type: "string",
+            const: "zoom",
+          },
+          {
+            description: "Grabber.",
+            type: "string",
+            const: "grabber",
+          },
+          {
+            description: "Text.",
+            type: "string",
+            const: "text",
+          },
+        ],
       },
     },
     additionalProperties: false,
@@ -79192,21 +79374,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "change",
     ],
   },
-  "tool.pen.create.Family": {
-    description: "A pen family.",
-    oneOf: [
-      {
-        description: "Brush pens.",
-        type: "string",
-        const: "brush",
-      },
-      {
-        description: "Eraser pens.",
-        type: "string",
-        const: "eraser",
-      },
-    ],
-  },
   "tool.pen.create.params": {
     title: "PenCreateParams",
     description: "`tool.pen.create` parameters.",
@@ -79214,7 +79381,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       type: {
         description: "Family.",
-        $ref: "#/$defs/tool.pen.create.Family",
+        oneOf: [
+          {
+            description: "Brush pens.",
+            type: "string",
+            const: "brush",
+          },
+          {
+            description: "Eraser pens.",
+            type: "string",
+            const: "eraser",
+          },
+        ],
         default: "brush",
       },
       fromPenId: {
@@ -79300,21 +79478,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "removedPenId",
     ],
   },
-  "tool.pen.list.Family": {
-    description: "A pen family.",
-    oneOf: [
-      {
-        description: "Brush pens.",
-        type: "string",
-        const: "brush",
-      },
-      {
-        description: "Eraser pens.",
-        type: "string",
-        const: "eraser",
-      },
-    ],
-  },
   "tool.pen.list.params": {
     title: "PenListParams",
     description: "`tool.pen.list` parameters.",
@@ -79324,7 +79487,19 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Only pens of this family.",
         anyOf: [
           {
-            $ref: "#/$defs/tool.pen.list.Family",
+            description: "A pen family.",
+            oneOf: [
+              {
+                description: "Brush pens.",
+                type: "string",
+                const: "brush",
+              },
+              {
+                description: "Eraser pens.",
+                type: "string",
+                const: "eraser",
+              },
+            ],
           },
           {
             type: "null",
@@ -79349,7 +79524,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         description: "Family.",
-        $ref: "#/$defs/tool.pen.list.Family",
+        oneOf: [
+          {
+            description: "Brush pens.",
+            type: "string",
+            const: "brush",
+          },
+          {
+            description: "Eraser pens.",
+            type: "string",
+            const: "eraser",
+          },
+        ],
       },
       tipShape: {
         description: "Tip shape.",
@@ -79470,21 +79656,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "penId",
     ],
   },
-  "tool.pen.select.Family": {
-    description: "A pen family.",
-    oneOf: [
-      {
-        description: "Brush pens.",
-        type: "string",
-        const: "brush",
-      },
-      {
-        description: "Eraser pens.",
-        type: "string",
-        const: "eraser",
-      },
-    ],
-  },
   "tool.pen.select.result": {
     title: "PenSelected",
     description: "`{penId, type}`.",
@@ -79496,7 +79667,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         description: "Its family.",
-        $ref: "#/$defs/tool.pen.select.Family",
+        oneOf: [
+          {
+            description: "Brush pens.",
+            type: "string",
+            const: "brush",
+          },
+          {
+            description: "Eraser pens.",
+            type: "string",
+            const: "eraser",
+          },
+        ],
       },
     },
     required: [
@@ -79515,9 +79697,35 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       tipShape: {
         description: "Tip shape.",
-        type: [
-          "string",
-          "null",
+        anyOf: [
+          {
+            description: "A pen's tip shape (02 §6.1).",
+            oneOf: [
+              {
+                description: "Round.",
+                type: "string",
+                const: "round",
+              },
+              {
+                description: "Oval.",
+                type: "string",
+                const: "oval",
+              },
+              {
+                description: "Square.",
+                type: "string",
+                const: "square",
+              },
+              {
+                description: "Flat.",
+                type: "string",
+                const: "flat",
+              },
+            ],
+          },
+          {
+            type: "null",
+          },
         ],
         default: null,
       },
@@ -79580,21 +79788,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "pen",
     ],
   },
-  "tool.pencil.options.set.ThicknessSource": {
-    description: "Where the line thickness comes from.",
-    oneOf: [
-      {
-        description: "The current brush pen's maximum size.",
-        type: "string",
-        const: "penMax",
-      },
-      {
-        description: "A fixed thickness.",
-        type: "string",
-        const: "fixed",
-      },
-    ],
-  },
   "tool.pencil.options.set.params": {
     title: "PencilOptions",
     description: "Pencil and shape-tool line thickness.",
@@ -79602,7 +79795,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       thicknessSource: {
         description: "`penMax` (the current brush pen's maximum size) or `fixed`.",
-        $ref: "#/$defs/tool.pencil.options.set.ThicknessSource",
+        oneOf: [
+          {
+            description: "The current brush pen's maximum size.",
+            type: "string",
+            const: "penMax",
+          },
+          {
+            description: "A fixed thickness.",
+            type: "string",
+            const: "fixed",
+          },
+        ],
         default: "penMax",
       },
       thickness: {
@@ -79698,21 +79902,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "options",
     ],
   },
-  "tool.select.options.set.RectRule": {
-    description: "Marquee and lasso rule.",
-    oneOf: [
-      {
-        description: "Wholly inside.",
-        type: "string",
-        const: "inside",
-      },
-      {
-        description: "Intersecting.",
-        type: "string",
-        const: "intersect",
-      },
-    ],
-  },
   "tool.select.options.set.params": {
     title: "SelectOptions",
     description: "Select tool options.",
@@ -79720,7 +79909,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       rectRule: {
         description: "`inside` (objects wholly inside) or `intersect`.",
-        $ref: "#/$defs/tool.select.options.set.RectRule",
+        oneOf: [
+          {
+            description: "Wholly inside.",
+            type: "string",
+            const: "inside",
+          },
+          {
+            description: "Intersecting.",
+            type: "string",
+            const: "intersect",
+          },
+        ],
         default: "inside",
       },
     },
@@ -79747,10 +79947,121 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     additionalProperties: false,
   },
-  "tool.settings.get.result": {
-    title: "Map_of_AnyValue",
+  "tool.settings.get.SymmetrySetting": {
+    description: "Symmetry (02 §6.2).",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      mode: {
+        description: "`none`, `mirror` or `kaleidoscope`.",
+        type: "string",
+        default: "none",
+      },
+      angle: {
+        description: "Angle, 0-360°.",
+        type: "number",
+        default: 0,
+      },
+      mirrors: {
+        description: "Mirrors, 2-16.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        default: 6,
+        minimum: -9223372036854775808n,
+      },
+    },
+  },
+  "tool.settings.get.TabletSetting": {
+    description: "Tablet input settings (02 §6.3).",
+    type: "object",
+    properties: {
+      ignoreTablet: {
+        description: "The tablet acts as a mouse.",
+        type: "boolean",
+        default: false,
+      },
+      portraitCorrection: {
+        description: "Portrait-mode correction.",
+        type: "boolean",
+        default: false,
+      },
+      compatibilityMode: {
+        description: "Compatibility handling.",
+        type: "boolean",
+        default: false,
+      },
+      inputInterface: {
+        description: "The input interface (`null`: the platform default).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+  },
+  "tool.settings.get.GapMode": {
+    description: "The automatic gap-closing mode (03 §8.8).",
+    oneOf: [
+      {
+        description: "Off (default).",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small.",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium.",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large.",
+        type: "string",
+        const: "large",
+      },
+    ],
+  },
+  "tool.settings.get.result": {
+    title: "SettingsResult",
+    description: "`tool.settings.get` result (spec A: `{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}`).",
+    type: "object",
+    properties: {
+      placeBehind: {
+        description: "Draw Behind.",
+        type: "boolean",
+      },
+      drawTopLayer: {
+        description: "Draw on Top Layer.",
+        type: "boolean",
+      },
+      snapToContour: {
+        description: "Snap to Contour.",
+        type: "boolean",
+      },
+      symmetry: {
+        description: "Symmetry.",
+        $ref: "#/$defs/tool.settings.get.SymmetrySetting",
+      },
+      tablet: {
+        description: "Tablet input settings.",
+        $ref: "#/$defs/tool.settings.get.TabletSetting",
+      },
+      gapClosing: {
+        description: "The automatic gap-closing mode (03 §8.8).",
+        $ref: "#/$defs/tool.settings.get.GapMode",
+      },
+    },
+    required: [
+      "placeBehind",
+      "drawTopLayer",
+      "snapToContour",
+      "symmetry",
+      "tablet",
+      "gapClosing",
+    ],
   },
   "tool.snapToContour.set.params": {
     title: "Enabled",
@@ -79859,12 +80170,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       ignoreTablet: {
-        description: "The tablet acts as a mouse.",
+        description: "The tablet acts as a mouse (absent: unchanged; a new user's value is false).",
         type: [
           "boolean",
           "null",
         ],
-        default: null,
+        default: false,
       },
       portraitCorrection: {
         description: "Portrait-mode correction.",
@@ -79872,7 +80183,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "boolean",
           "null",
         ],
-        default: null,
+        default: false,
       },
       compatibilityMode: {
         description: "Compatibility handling.",
@@ -79880,7 +80191,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "boolean",
           "null",
         ],
-        default: null,
+        default: false,
       },
       inputInterface: {
         description: "The input interface.",
@@ -79941,51 +80252,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "restartRequired",
     ],
   },
-  "tool.text.options.set.Baseline": {
-    description: "Baseline.",
-    oneOf: [
-      {
-        description: "Normal.",
-        type: "string",
-        const: "normal",
-      },
-      {
-        description: "Subscript.",
-        type: "string",
-        const: "subscript",
-      },
-      {
-        description: "Superscript.",
-        type: "string",
-        const: "superscript",
-      },
-    ],
-  },
-  "tool.text.options.set.Align": {
-    description: "Alignment.",
-    oneOf: [
-      {
-        description: "Left.",
-        type: "string",
-        const: "left",
-      },
-      {
-        description: "Centre.",
-        type: "string",
-        const: "centre",
-      },
-      {
-        description: "Right.",
-        type: "string",
-        const: "right",
-      },
-      {
-        description: "Justified.",
-        type: "string",
-        const: "justify",
-      },
-    ],
-  },
   "tool.text.options.set.params": {
     title: "TextOptions",
     description: "Text defaults for new text (02 §7.6.1).",
@@ -80004,8 +80270,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "number",
           "null",
         ],
-        maximum: 512,
+        default: 36,
         minimum: 1,
+        maximum: 512,
       },
       bold: {
         description: "Bold.",
@@ -80013,6 +80280,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "boolean",
           "null",
         ],
+        default: false,
       },
       italic: {
         description: "Italic.",
@@ -80020,17 +80288,36 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "boolean",
           "null",
         ],
+        default: false,
       },
       baseline: {
         description: "Baseline.",
         anyOf: [
           {
-            $ref: "#/$defs/tool.text.options.set.Baseline",
+            description: "Baseline.",
+            oneOf: [
+              {
+                description: "Normal.",
+                type: "string",
+                const: "normal",
+              },
+              {
+                description: "Subscript.",
+                type: "string",
+                const: "subscript",
+              },
+              {
+                description: "Superscript.",
+                type: "string",
+                const: "superscript",
+              },
+            ],
           },
           {
             type: "null",
           },
         ],
+        default: "normal",
       },
       kerning: {
         description: "Kerning.",
@@ -80038,8 +80325,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "integer",
           "null",
         ],
-        maximum: 60,
+        default: 0,
         minimum: -60,
+        maximum: 60,
       },
       autoKern: {
         description: "Automatic kerning.",
@@ -80047,17 +80335,41 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "boolean",
           "null",
         ],
+        default: true,
       },
       align: {
         description: "Alignment.",
         anyOf: [
           {
-            $ref: "#/$defs/tool.text.options.set.Align",
+            description: "Alignment.",
+            oneOf: [
+              {
+                description: "Left.",
+                type: "string",
+                const: "left",
+              },
+              {
+                description: "Centre.",
+                type: "string",
+                const: "centre",
+              },
+              {
+                description: "Right.",
+                type: "string",
+                const: "right",
+              },
+              {
+                description: "Justified.",
+                type: "string",
+                const: "justify",
+              },
+            ],
           },
           {
             type: "null",
           },
         ],
+        default: "left",
       },
       leftMargin: {
         description: "Left margin (du).",
@@ -80065,6 +80377,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "number",
           "null",
         ],
+        default: 0,
+        minimum: 0,
+        maximum: 1000,
       },
       rightMargin: {
         description: "Right margin (du).",
@@ -80072,6 +80387,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "number",
           "null",
         ],
+        default: 0,
+        minimum: 0,
+        maximum: 1000,
       },
       indent: {
         description: "First-line indent (du).",
@@ -80079,6 +80397,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "number",
           "null",
         ],
+        default: 0,
+        minimum: -99,
+        maximum: 1000,
       },
       lineSpacing: {
         description: "Extra line spacing (du).",
@@ -80086,6 +80407,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "number",
           "null",
         ],
+        default: 0,
+        minimum: -99,
+        maximum: 1000,
       },
       outlineColourId: {
         description: "Outline colour of new text (`null`: none). Absent leaves it; `null` clears it (ruling D-7e).",
@@ -94044,7 +94368,13 @@ export interface drawAid_background_set_params {
   useSceneColour?: boolean | null;
 }
 
-export type drawAid_background_set_result = unknown;
+/** Drawing View background (02 §10.7). */
+export interface drawAid_background_set_result {
+  /** Colour. */
+  colour?: string;
+  /** Use the scene's background colour instead. */
+  useSceneColour?: boolean;
+}
 
 /** No parameters. */
 export type drawAid_changed_params = Record<string, unknown>;
@@ -94082,7 +94412,15 @@ export interface drawAid_grid_set_params {
   overlay?: boolean | null;
 }
 
-export type drawAid_grid_set_result = unknown;
+/** The grid (02 §10.1). */
+export interface drawAid_grid_set_result {
+  /** Shown. */
+  visible?: boolean;
+  /** `normal`, `field12` or `field16`. */
+  type?: string;
+  /** Drawn over the drawings. */
+  overlay?: boolean;
+}
 
 /** `drawAid.lightTableShade.set` parameters. */
 export interface drawAid_lightTableShade_set_params {
@@ -94092,7 +94430,13 @@ export interface drawAid_lightTableShade_set_params {
   static?: boolean | null;
 }
 
-export type drawAid_lightTableShade_set_result = unknown;
+/** Light-table shading (02 §10.3-10.4). */
+export interface drawAid_lightTableShade_set_result {
+  /** The auto light table is washed out. */
+  auto?: boolean;
+  /** Static light-table entries are washed out. */
+  static?: boolean;
+}
 
 /** `drawAid.onionSkin.set` parameters. */
 export interface drawAid_onionSkin_set_params {
@@ -94104,7 +94448,15 @@ export interface drawAid_onionSkin_set_params {
   next?: number | null;
 }
 
-export type drawAid_onionSkin_set_result = unknown;
+/** Onion skin (02 §10.2). */
+export interface drawAid_onionSkin_set_result {
+  /** Master switch. */
+  enabled?: boolean;
+  /** Previous drawings, 0-3. */
+  previous?: number | bigint;
+  /** Next drawings, 0-3. */
+  next?: number | bigint;
+}
 
 /** Onion-skin direction. */
 export type drawAid_onionSkinCycle_run_Direction = 'previous' | 'next';
@@ -94207,11 +94559,8 @@ export interface drawAid_state_get_Entry {
   /** Shown. */
   visible: boolean;
   /** Overlay or underlay. */
-  placement: drawAid_state_get_Placement;
+  placement: 'overlay' | 'underlay';
 }
-
-/** Overlay or underlay. */
-export type drawAid_state_get_Placement = 'overlay' | 'underlay';
 
 /** Light-table shading (02 §10.3-10.4). */
 export interface drawAid_state_get_Shade {
@@ -94263,9 +94612,6 @@ export interface drawAid_state_get_result {
   background: drawAid_state_get_Background;
 }
 
-/** Overlay or underlay. */
-export type drawAid_staticLightTable_add_Placement = 'overlay' | 'underlay';
-
 /** `drawAid.staticLightTable.add` parameters. */
 export interface drawAid_staticLightTable_add_params {
   /** The drawing (default: the drawing at `elementId` and `frame`, else the current drawing). */
@@ -94275,7 +94621,7 @@ export interface drawAid_staticLightTable_add_params {
   /** The frame of that cell (default: the current frame). */
   frame?: number | null;
   /** Overlay or underlay. */
-  placement?: drawAid_staticLightTable_add_Placement;
+  placement?: 'overlay' | 'underlay';
   /** Shown. */
   visible?: boolean;
 }
@@ -94303,11 +94649,8 @@ export interface drawAid_staticLightTable_list_Entry {
   /** Shown. */
   visible: boolean;
   /** Overlay or underlay. */
-  placement: drawAid_staticLightTable_list_Placement;
+  placement: 'overlay' | 'underlay';
 }
-
-/** Overlay or underlay. */
-export type drawAid_staticLightTable_list_Placement = 'overlay' | 'underlay';
 
 /** `{entries}`. */
 export interface drawAid_staticLightTable_list_result {
@@ -94329,9 +94672,6 @@ export interface drawAid_staticLightTable_remove_result {
   removedEntryIds: string[];
 }
 
-/** Overlay or underlay. */
-export type drawAid_staticLightTable_set_Placement = 'overlay' | 'underlay';
-
 /** `drawAid.staticLightTable.set` parameters. */
 export interface drawAid_staticLightTable_set_params {
   /** Entries to change. */
@@ -94341,7 +94681,7 @@ export interface drawAid_staticLightTable_set_params {
   /** Show or hide them. */
   visible?: boolean | null;
   /** Overlay or underlay them. */
-  placement?: drawAid_staticLightTable_set_Placement | null;
+  placement?: 'overlay' | 'underlay' | null;
   /** Show only this entry (hide all others). */
   onlyVisibleEntryId?: string | null;
 }
@@ -94357,7 +94697,7 @@ export interface drawAid_staticLightTable_set_Entry {
   /** Shown. */
   visible: boolean;
   /** Overlay or underlay. */
-  placement: drawAid_staticLightTable_set_Placement;
+  placement: 'overlay' | 'underlay';
 }
 
 /** `{entries}`. */
@@ -103354,7 +103694,7 @@ export interface tool_active_get_result {
 /** `tool.active.set` parameters. */
 export interface tool_active_set_params {
   /** The tool. */
-  toolId: string;
+  toolId: 'select' | 'contourEditor' | 'perspective' | 'repositionAll' | 'brush' | 'pencil' | 'rectangle' | 'ellipse' | 'polyline' | 'line' | 'paint' | 'unpaint' | 'paintUnpainted' | 'dropper' | 'closeGap' | 'stroke' | 'editTexture' | 'eraser' | 'cutter' | 'scissor' | 'zoom' | 'grabber' | 'text';
 }
 
 /** `{toolId}`. */
@@ -103494,13 +103834,10 @@ export interface tool_pen_changed_result {
   change: tool_pen_changed_PenChange;
 }
 
-/** A pen family. */
-export type tool_pen_create_Family = 'brush' | 'eraser';
-
 /** `tool.pen.create` parameters. */
 export interface tool_pen_create_params {
   /** Family. */
-  type?: tool_pen_create_Family;
+  type?: 'brush' | 'eraser';
   /** The pen to copy (default: the family's current pen). */
   fromPenId?: string | null;
   /** Name (default: the next free "Pen n" or "Eraser n"). */
@@ -103531,13 +103868,10 @@ export interface tool_pen_delete_result {
   currentPenId?: string | null;
 }
 
-/** A pen family. */
-export type tool_pen_list_Family = 'brush' | 'eraser';
-
 /** `tool.pen.list` parameters. */
 export interface tool_pen_list_params {
   /** Only pens of this family. */
-  type?: tool_pen_list_Family | null;
+  type?: 'brush' | 'eraser' | null;
 }
 
 /** One pen. */
@@ -103547,7 +103881,7 @@ export interface tool_pen_list_PenEntry {
   /** Name. */
   name: string;
   /** Family. */
-  type: tool_pen_list_Family;
+  type: 'brush' | 'eraser';
   /** Tip shape. */
   tipShape: string;
   /** Minimum size (du). */
@@ -103592,15 +103926,12 @@ export interface tool_pen_select_params {
   penId: string;
 }
 
-/** A pen family. */
-export type tool_pen_select_Family = 'brush' | 'eraser';
-
 /** `{penId, type}`. */
 export interface tool_pen_select_result {
   /** The pen. */
   penId: string;
   /** Its family. */
-  type: tool_pen_select_Family;
+  type: 'brush' | 'eraser';
 }
 
 /** `tool.pen.set` parameters. */
@@ -103608,7 +103939,7 @@ export interface tool_pen_set_params {
   /** The pen. */
   penId: string;
   /** Tip shape. */
-  tipShape?: string | null;
+  tipShape?: 'round' | 'oval' | 'square' | 'flat' | null;
   /** Minimum size (du). */
   minSize?: number | null;
   /** Maximum size (du). */
@@ -103625,13 +103956,10 @@ export interface tool_pen_set_result {
   pen: unknown;
 }
 
-/** Where the line thickness comes from. */
-export type tool_pencil_options_set_ThicknessSource = 'penMax' | 'fixed';
-
 /** Pencil and shape-tool line thickness. */
 export interface tool_pencil_options_set_params {
   /** `penMax` (the current brush pen's maximum size) or `fixed`. */
-  thicknessSource?: tool_pencil_options_set_ThicknessSource;
+  thicknessSource?: 'penMax' | 'fixed';
   /** The fixed thickness (du). */
   thickness?: number | null;
 }
@@ -103668,13 +103996,10 @@ export interface tool_polyline_options_set_result {
   options: Record<string, unknown>;
 }
 
-/** Marquee and lasso rule. */
-export type tool_select_options_set_RectRule = 'inside' | 'intersect';
-
 /** Select tool options. */
 export interface tool_select_options_set_params {
   /** `inside` (objects wholly inside) or `intersect`. */
-  rectRule?: tool_select_options_set_RectRule;
+  rectRule?: 'inside' | 'intersect';
 }
 
 /** `{options}`. */
@@ -103686,7 +104011,46 @@ export interface tool_select_options_set_result {
 /** No parameters. */
 export type tool_settings_get_params = Record<string, unknown>;
 
-export type tool_settings_get_result = Record<string, unknown>;
+/** Symmetry (02 §6.2). */
+export interface tool_settings_get_SymmetrySetting {
+  /** `none`, `mirror` or `kaleidoscope`. */
+  mode?: string;
+  /** Angle, 0-360°. */
+  angle?: number;
+  /** Mirrors, 2-16. */
+  mirrors?: number | bigint;
+}
+
+/** Tablet input settings (02 §6.3). */
+export interface tool_settings_get_TabletSetting {
+  /** The tablet acts as a mouse. */
+  ignoreTablet?: boolean;
+  /** Portrait-mode correction. */
+  portraitCorrection?: boolean;
+  /** Compatibility handling. */
+  compatibilityMode?: boolean;
+  /** The input interface (`null`: the platform default). */
+  inputInterface?: string | null;
+}
+
+/** The automatic gap-closing mode (03 §8.8). */
+export type tool_settings_get_GapMode = 'off' | 'small' | 'medium' | 'large';
+
+/** `tool.settings.get` result (spec A: `{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}`). */
+export interface tool_settings_get_result {
+  /** Draw Behind. */
+  placeBehind: boolean;
+  /** Draw on Top Layer. */
+  drawTopLayer: boolean;
+  /** Snap to Contour. */
+  snapToContour: boolean;
+  /** Symmetry. */
+  symmetry: tool_settings_get_SymmetrySetting;
+  /** Tablet input settings. */
+  tablet: tool_settings_get_TabletSetting;
+  /** The automatic gap-closing mode (03 §8.8). */
+  gapClosing: tool_settings_get_GapMode;
+}
 
 /** `{enabled}`. */
 export interface tool_snapToContour_set_params {
@@ -103725,7 +104089,7 @@ export interface tool_symmetry_set_result {
 
 /** `tool.tablet.set` parameters. */
 export interface tool_tablet_set_params {
-  /** The tablet acts as a mouse. */
+  /** The tablet acts as a mouse (absent: unchanged; a new user's value is false). */
   ignoreTablet?: boolean | null;
   /** Portrait-mode correction. */
   portraitCorrection?: boolean | null;
@@ -103755,12 +104119,6 @@ export interface tool_tablet_set_result {
   restartRequired: boolean;
 }
 
-/** Baseline. */
-export type tool_text_options_set_Baseline = 'normal' | 'subscript' | 'superscript';
-
-/** Alignment. */
-export type tool_text_options_set_Align = 'left' | 'centre' | 'right' | 'justify';
-
 /** Text defaults for new text (02 §7.6.1). */
 export interface tool_text_options_set_params {
   /** Font family. */
@@ -103772,13 +104130,13 @@ export interface tool_text_options_set_params {
   /** Italic. */
   italic?: boolean | null;
   /** Baseline. */
-  baseline?: tool_text_options_set_Baseline | null;
+  baseline?: 'normal' | 'subscript' | 'superscript' | null;
   /** Kerning. */
   kerning?: number | null;
   /** Automatic kerning. */
   autoKern?: boolean | null;
   /** Alignment. */
-  align?: tool_text_options_set_Align | null;
+  align?: 'left' | 'centre' | 'right' | 'justify' | null;
   /** Left margin (du). */
   leftMargin?: number | null;
   /** Right margin (du). */
