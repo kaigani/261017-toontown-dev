@@ -52,7 +52,7 @@ the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no p
 | `*` | `confirmation.declined` | parameter | only agent callers are asked to confirm (11 §6.3); the GUI calls as the user |
 | `*` | `confirmation.expired` | parameter | only agent callers are asked to confirm (11 §6.3); the GUI calls as the user |
 | `*` | `confirmation.required` | parameter | only agent callers are asked to confirm (11 §6.3); the GUI calls as the user |
-| `*` | `doc.limitExceeded` | execution | the document's revision counter is exhausted (10 REV-01; cannot happen in practice) |
+| `*` | `doc.limitExceeded` | execution | a document limit the change itself would pass, known once the change is computed: the revision counter exhausted (10 REV-01; cannot happen in practice), or an element made longer than a scene's maximum frame count (`timing::check_length`, the frame-array bound) |
 | `*` | `fs.outsideRoots` | parameter | an agent's file-system roots (11 §6.2); the GUI calls as the user |
 | `*` | `history.diverged` | execution | replaying an undo step met a document that diverged (an internal invariant) |
 | `*` | `internal` | execution | an internal invariant failed (never a state the GUI can see) |
