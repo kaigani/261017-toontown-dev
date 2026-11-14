@@ -1,0 +1,19 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "test",
+    "-p",
+    "tt-desktop",
+    "--lib",
+    "--locked",
+    "the_quorum_rule_clause_by_clause",
+    "--",
+    "--nocapture"
+  ],
+  "exit": 0,
+  "seconds": 5.52511190000223,
+  "results": [
+    "     Running unittests src\\lib.rs (target\\debug\\deps\\tt_desktop-d9f2324dd23c4909.exe)",
+    "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 52 filtered out; finished in 0.00s"
+  ]
+}

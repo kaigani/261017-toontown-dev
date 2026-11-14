@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "clippy",
+    "-p",
+    "tt-executor",
+    "--all-targets",
+    "--locked",
+    "--features",
+    "tt-persist/test-hooks",
+    "--",
+    "-D",
+    "warnings",
+    "-A",
+    "clippy::empty_line_after_doc_comments"
+  ],
+  "exit": 0,
+  "seconds": 21.26099839998642,
+  "results": []
+}

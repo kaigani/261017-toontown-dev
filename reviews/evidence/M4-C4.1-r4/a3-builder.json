@@ -1,0 +1,30 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "test",
+    "-p",
+    "tt-executor",
+    "--test",
+    "c41",
+    "--locked",
+    "--features",
+    "tt-persist/test-hooks",
+    "--",
+    "--nocapture"
+  ],
+  "exit": 0,
+  "seconds": 2.5586180000100285,
+  "results": [
+    "     Running tests\\c41.rs (target\\debug\\deps\\c41-ae0912411662ec3e.exe)",
+    "test keymap::over_long_values_answer_their_domain_errors ... ok",
+    "no project: 269 references in 11.3688ms",
+    "empty project: 269 references in 163.1802ms",
+    "nothing selected, empty clipboard: 269 references in 125.5852ms",
+    "a staging selection: 269 references in 126.7548ms",
+    "a filled clipboard: 269 references in 132.9018ms",
+    "an undoable step: 269 references in 124.3366ms",
+    "a redoable step: 269 references in 127.7248ms",
+    "a cell selection: 269 references in 130.043ms",
+    "test result: ok. 43 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.24s"
+  ]
+}
