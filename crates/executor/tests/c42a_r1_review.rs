@@ -113,3 +113,89 @@ mod mapping {
         assert!(!hits["hits"].as_array().unwrap().is_empty());
     }
 }
+mod screenshot {
+    use super::*;
+    use std::time::{Duration, Instant};
+    fn decode(v: &serde_json::Value) -> (u16, u16, Vec<u8>) {
+        let bytes = tt_persist::b64::decode(v["png"].as_str().unwrap()).unwrap();
+        assert_eq!(v["sha256"], tt_persist::fsx::sha256(&bytes));
+        let (w, h, p) = tt_render::decode_png(&bytes, 4096).unwrap();
+        assert_eq!(v["width"], w);
+        assert_eq!(v["height"], h);
+        (w, h, p)
+    }
+    #[test]
+    fn png_determinism_crop_limits_and_known_pixel() {
+        let h = ready();
+        ok(&h, "draw.rectangle.add", json!({"from":{"x":-40,"y":-30},"to":{"x":40,"y":30},"layer":"new"}));
+        ok(&h, "colour.paint.apply", json!({"points":[{"x":0,"y":0}]}));
+        let a = ok(&h, "inspect.screenshot", json!({}));
+        let b = ok(&h, "inspect.screenshot", json!({}));
+        assert_eq!(a["png"], b["png"]);
+        let (w, _, pixels) = decode(&a);
+        let crop = ok(&h, "inspect.screenshot", json!({"region":{"x":940,"y":520,"w":40,"h":40}}));
+        let (_, _, cropped) = decode(&crop);
+        for row in 0..40usize {
+            assert_eq!(
+                &cropped[row * 160..(row + 1) * 160],
+                &pixels[((520 + row) * usize::from(w) + 940) * 4..((520 + row) * usize::from(w) + 980) * 4]
+            );
+        }
+        assert_ne!(&pixels[(540 * 1920 + 960) * 4..(540 * 1920 + 960) * 4 + 4], &[240, 240, 240, 255]);
+        ok(&h, "view.active.set", json!({"viewId":"drawingView"}));
+        let rendered = ok(&h, "render.frame.run", json!({"composition":"activeView","background":"#F0F0F0FF"}));
+        let data = rendered["data"].as_str().or_else(|| rendered["png"].as_str()).unwrap();
+        let (_, _, rp) = tt_render::decode_png(&tt_persist::b64::decode(data).unwrap(), 4096).unwrap();
+        assert_eq!(pixels, rp);
+        ok(&h, "view.pan.set", json!({"viewId":"drawingView","by":{"x":100,"y":0}}));
+        let after_pan = ok(&h, "inspect.screenshot", json!({}));
+        assert_ne!(a["png"], after_pan["png"]);
+        ok(&h, "draw.rectangle.add", json!({"from":{"x":100,"y":100},"to":{"x":200,"y":200},"layer":"new"}));
+        assert_ne!(after_pan["png"], ok(&h, "inspect.screenshot", json!({}))["png"]);
+        let start = Instant::now();
+        assert_eq!(
+            err(&h, "inspect.screenshot", json!({"region":{"x":0,"y":0,"w":2049,"h":1}})).code,
+            "render.inlineTooLarge"
+        );
+        assert!(start.elapsed() < Duration::from_millis(500));
+        for target in ["dialogs", "properties", "missing"] {
+            assert_eq!(err(&h, "inspect.screenshot", json!({"target":target})).code, "view.notFound");
+        }
+        for region in [
+            json!({"x":0,"y":0,"w":0,"h":10}),
+            json!({"x":0,"y":0,"w":-1,"h":10}),
+            json!({"x":null,"y":0,"w":10,"h":10}),
+        ] {
+            assert_eq!(err(&h, "inspect.screenshot", json!({"region":region})).code, "arg.invalid");
+        }
+    }
+    #[test]
+    fn screenshot_does_not_block_user_command() {
+        let h = ready();
+        let mut latencies = Vec::new();
+        for _ in 0..3 {
+            let shot = h.clone();
+            let (tx, rx) = std::sync::mpsc::channel();
+            let worker = std::thread::spawn(move || {
+                tx.send(()).unwrap();
+                ok(&shot, "inspect.screenshot", json!({}));
+            });
+            rx.recv().unwrap();
+            // Allow the capture request to enter the queue, without sleeping in a timing bound.
+            let entered = Instant::now();
+            while entered.elapsed() < Duration::from_millis(10) {
+                std::thread::yield_now();
+            }
+            let start = Instant::now();
+            ok(&h, "view.transform.get", json!({"viewId":"drawingView"}));
+            latencies.push(start.elapsed());
+            worker.join().unwrap();
+        }
+        eprintln!("user query during screenshot: {latencies:?}");
+        // Three times the 20 ms hold budget allows scheduling/IPC overhead on slow CI.
+        assert!(
+            *latencies.iter().min().unwrap() < Duration::from_millis(60),
+            "screenshot blocks the document thread: {latencies:?}"
+        );
+    }
+}
