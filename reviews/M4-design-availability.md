@@ -44,6 +44,13 @@ redoable step, a cell selection), asserts that availability equals the outcome o
 through the pipeline, in both directions, except the two "ask the user" refusals. It runs in `check`. A handler state
 refusal without a precheck shows up there as "available, but the dry run refuses".
 
+**What a precheck may read, exactly.** Lookups by id and the session's small state (current scene, element, frame,
+drawing; selection lists; the clipboard's kind and, for a cell paste, its items' ids; the layout). Two prechecks read a
+bounded part of the document, stated here: `cell.blank.remove` and `cell.drawing.duplicate` read the exposure column of
+each target element (the handler's own `Column::read`, one element, not the document); `element.delete` counts the
+cameras of the target's scene only when a target is a camera (the handler's own last-camera rule). The 57 prechecks are
+listed in the round-4 response.
+
 **Commands whose state refusal is not expressed as a precheck:** none of the state refusals the sweep meets. The one
 class left to the handler is refusals that need the document walked or a computation run (for example a vector edit
 whose result would be degenerate, an export whose target cannot be written): they are not state refusals with no
@@ -63,6 +70,11 @@ handler's refusal is the command's typed error when it runs.
   under 50 ms on a CI runner; no single request holds the document thread for more than 20 ms on account of
   availability (measured per chunk on the document thread); a user command submitted during continuous availability
   passes on that project completes within 100 ms.
+
+**Measured (debug build, Windows workstation; `passes_stay_constant_on_a_large_project`):** the fixture of 10,101
+elements is built through 102 `element.create` commands in about 27 s (debug) or 20 s (release); a full pass over the
+269 references takes 5.4 ms on the empty project and 5.7 ms on the large one; the longest chunk holds the document
+thread 1.1 ms; the slowest user command during continuous passes took 16 ms.
 
 ## 5. Isolation
 
