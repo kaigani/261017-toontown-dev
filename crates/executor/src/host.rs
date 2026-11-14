@@ -292,14 +292,9 @@ pub struct Availability {
     pub dialog: bool,
 }
 
-/// Why a command reference cannot run now (`None`: it can), by the pipeline's own checks in their order (11 §8), then
-/// the state rule its handler applies to the reference (the selection rule of the selection commands, C41-R2-08).
-fn unavailable(
-    registry: &tt_registry::Registry,
-    cx: &crate::cx::Cx,
-    command_id: &str,
-    params: &Map<String, Value>,
-) -> Option<String> {
+/// Why a command cannot run now by the pipeline's static checks in their order (11 §8): registered, not an event, a
+/// project when it needs one, its declared enablement rule, implemented. The fast path of [`availability_in`].
+fn unavailable(registry: &tt_registry::Registry, cx: &crate::cx::Cx, command_id: &str) -> Option<String> {
     let Some(entry) = registry.get(command_id) else { return Some(format!("`{command_id}` is not registered")) };
     if entry.spec.kind == Kind::Event {
         return Some("an event cannot be invoked".into());
@@ -315,10 +310,33 @@ fn unavailable(
         }
     }
     match entry.status() {
-        tt_registry::Status::Implemented => {
-            crate::commands::edit_ops::selection_rule(cx, command_id, params).map(|e| e.message)
-        }
+        tt_registry::Status::Implemented => None,
         tt_registry::Status::NotImplemented { owner } => Some(format!("arrives with {owner}")),
+    }
+}
+
+/// Refusals a GUI surface answers by asking the user, not by disabling the reference: a save without a location asks
+/// for one (Save As), and an action that would discard unsaved changes asks first (01 §3.5).
+const ASKS_USER: &[&str] = &["project.pathRequired", "project.unsavedChanges"];
+
+/// Why a complete command reference cannot run now, from its handler itself (round 3, C41-R3-03; ruling O-10): the
+/// reference runs through the transaction pipeline as a dry run on a scratch copy of the session, so every state
+/// refusal a handler gives (an empty clipboard, nothing selected, no current drawing, a peg as the current element,
+/// the central view, the last camera, ...) is the reason availability reports, by the same code. Nothing of the dry run
+/// is kept (dry runs stage nothing: ADR-0021 decision 13).
+fn refused_by_handler(
+    registry: &tt_registry::Registry,
+    cx: &crate::cx::Cx,
+    command_id: &str,
+    params: &Value,
+) -> Option<String> {
+    let entry = registry.get(command_id)?;
+    let mut probe = crate::cx::Cx::new(cx.session().clone(), Origin::User, "availability", true);
+    let opts = crate::types::InvokeOptions { dry_run: true, ..Default::default() };
+    match crate::run::run_step(&mut probe, entry, params.clone(), &opts) {
+        Ok(_) => None,
+        Err(e) if ASKS_USER.contains(&e.code.as_str()) => None,
+        Err(e) => Some(e.message),
     }
 }
 
@@ -356,7 +374,11 @@ pub(crate) fn availability_in(
         .filter(|e| e.spec.kind == Kind::Toggle)
         .and_then(|_| checked_of(s, command_id, &params));
     let (params, _, dialog) = complete(registry, s, command_id, params);
-    let reason = unavailable(registry, cx, command_id, params.as_object().unwrap_or(&Map::new()));
+    // The static checks first; a complete reference that passes them is then asked of its handler (C41-R3-03). A
+    // reference with required parameters missing is completed by a dialog (01 §0): its refusals depend on what the
+    // user enters, so only the static checks apply to it.
+    let reason = unavailable(registry, cx, command_id)
+        .or_else(|| if dialog { None } else { refused_by_handler(registry, cx, command_id, &params) });
     let label = match command_id {
         "edit.undo" => history_label(s, true),
         "edit.redo" => history_label(s, false),

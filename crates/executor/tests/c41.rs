@@ -6,6 +6,8 @@
 
 mod common;
 
+#[path = "c41/availability.rs"]
+mod availability;
 #[path = "c41/busy.rs"]
 mod busy;
 #[path = "c41/kernel.rs"]
