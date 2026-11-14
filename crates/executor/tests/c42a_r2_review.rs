@@ -770,6 +770,21 @@ mod part_c_equivalence {
         assert_eq!(ha, hb);
         let e = a.pointer(tt_executor::Origin::User, json!({"view":"drawing","tool":tool,"events":ev}));
         let direct = run(b, id, p.clone());
+        assert!(direct.is_ok(), "direct {direct:?}");
+        assert!(e.is_ok(), "pointer {e:?}");
+        if id == "colour.gap.close" {
+            assert!(direct.result.as_ref().unwrap()["strokeId"].is_string(), "{direct:?}");
+        }
+        if id == "colour.paint.apply" || id == "colour.paintUnpainted.apply" {
+            assert!(!direct.result.as_ref().unwrap()["painted"].as_array().unwrap().is_empty(), "{direct:?}");
+        }
+        if id == "colour.paintUnpainted.apply" {
+            assert_eq!(direct.result.as_ref().unwrap()["painted"].as_array().unwrap().len(), 1);
+        }
+        if id == "colour.paint.remove" {
+            assert_eq!(direct.result.as_ref().unwrap()["unpainted"].as_array().unwrap().len(), 1);
+        }
+
         assert_eq!(e.status, direct.status, "{tool}: pointer {e:?}, direct {direct:?}");
         if e.is_ok() {
             let c = e.result.as_ref().unwrap()["commands"]
@@ -976,7 +991,7 @@ mod part_c_equivalence {
     }
     #[test]
     fn c2_selection_options() {
-        // Â§7.1.1 supplies alternate-lasso and constrain-add; the option is rectRule.
+        // ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§7.1.1 supplies alternate-lasso and constrain-add; the option is rectRule.
         for lasso in [false, true] {
             for rule in ["inside", "intersect"] {
                 let (a, b) = (ready(), ready());
@@ -984,7 +999,7 @@ mod part_c_equivalence {
                     ok(h, "tool.select.options.set", json!({"rectRule":rule}));
                 }
                 let p = if lasso {
-                    json!({"by":"lasso","polygon":[{"x":40.0,"y":40.0},{"x":120.0,"y":80.0}],"rectRule":rule,"mode":"add"})
+                    json!({"by":"lasso","polygon":[{"x":40.0,"y":40.0},{"x":120.0,"y":40.0},{"x":120.0,"y":80.0}],"rectRule":rule,"mode":"add"})
                 } else {
                     json!({"by":"rect","rect":{"x":40.0,"y":40.0,"width":80.0,"height":40.0},"rectRule":rule,"mode":"add"})
                 };
@@ -992,7 +1007,14 @@ mod part_c_equivalence {
                     &a,
                     &b,
                     "select",
-                    events(&[(1000.0, 500.0), (1080.0, 460.0)], if lasso { &["shift", "alt"] } else { &["shift"] }),
+                    events(
+                        if lasso {
+                            &[(1000.0, 500.0), (1080.0, 500.0), (1080.0, 460.0)]
+                        } else {
+                            &[(1000.0, 500.0), (1080.0, 460.0)]
+                        },
+                        if lasso { &["shift", "alt"] } else { &["shift"] },
+                    ),
                     "draw.selection.set",
                     p,
                 );
@@ -1048,5 +1070,147 @@ mod part_c_equivalence {
             assert_eq!(hist(&a), hist(&b));
             assert_eq!(ok(&a, "tool.active.get", json!({}))["toolId"], tool);
         }
+    }
+    #[test]
+    fn c3_dropper() {
+        for painted in [true, false] {
+            let (a, b) = (ready(), ready());
+            let colours: Vec<_> = b
+                .snapshot()
+                .unwrap()
+                .unwrap()
+                .palettes()
+                .flat_map(|p| p.swatches())
+                .map(|s| s.colour_id().as_str().to_owned())
+                .collect();
+            for h in [&a, &b] {
+                rect(h, json!({"x":300,"y":300}), json!({"x":400,"y":360}));
+                ok(h, "colour.paint.apply", json!({"points":[{"x":350,"y":330}],"colourId":colours[0]}));
+                ok(h, "colour.current.set", json!({"colourId":colours[1]}));
+            }
+            let x = if painted { 1310.0 } else { 1510.0 };
+            let p = json!({"point":{"x":x-960.0,"y":330.0},"space":"drawing","view":"drawingView"});
+            let e = a.pointer(
+                Origin::User,
+                json!({"view":"drawing","tool":"dropper","events":events(&[(x,210.0),(x,210.0)],&[])}),
+            );
+            let r = run(&b, "colour.pick", p.clone());
+            assert_eq!(e.status, r.status);
+            let cs = e.result.unwrap()["commands"].as_array().unwrap().clone();
+            assert_eq!(cs.len(), if painted { 3 } else { 2 });
+            assert_eq!(cs[1]["commandId"], "colour.pick");
+            assert_eq!(cs[1]["params"], p);
+            if painted {
+                assert_eq!(cs[2]["commandId"], "colour.current.set");
+                assert_eq!(cs[2]["params"], json!({"colourId":colours[0]}));
+                ok(&b, "colour.current.set", json!({"colourId":colours[0]}));
+            }
+            assert_eq!(canonical(&a), canonical(&b));
+            assert_eq!(hist(&a), hist(&b));
+            let mut p = stroke(&b);
+            p["colourId"] = json!(colours[if painted { 0 } else { 1 }]);
+            check(&a, &b, "brush", events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]), "draw.stroke.add", p);
+        }
+    }
+    #[test]
+    fn c3_wheel_and_click() {
+        for z in [0.0625_f64, 0.125, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0] {
+            for dir in [-1, 1] {
+                let (a, b, m) = (ready(), ready(), ready());
+                for h in [&a, &b, &m] {
+                    ok(h, "view.zoom.set", json!({"viewId":"drawingView","zoom":z}));
+                }
+                let new = (z * if dir == 1 { 2.0 } else { 0.5 }).clamp(0.0625, 16.0);
+                let p = json!({"viewId":"drawingView","zoom":new,"anchor":{"x":1200.0,"y":300.0}});
+                let e = a.pointer(
+                    Origin::User,
+                    json!({"view":"drawing","events":[{"type":"wheel","x":1200,"y":300,"wheelDelta":-120*dir}]}),
+                );
+                assert!(e.is_ok(), "{e:?}");
+                let cs = e.result.unwrap()["commands"].as_array().unwrap().clone();
+                assert_eq!(cs.len(), 1);
+                assert_eq!(cs[0]["commandId"], "view.zoom.set");
+                assert_eq!(cs[0]["params"], p);
+                ok(&b, "view.zoom.set", p);
+                assert_eq!(
+                    ok(&a, "view.transform.get", json!({"viewId":"drawingView"})),
+                    ok(&b, "view.transform.get", json!({"viewId":"drawingView"}))
+                );
+                let centre = json!({"x":240.0/z-240.0/new,"y":240.0/z-240.0/new});
+                ok(&m, "view.zoom.set", json!({"viewId":"drawingView","zoom":new}));
+                ok(&m, "view.pan.set", json!({"viewId":"drawingView","centre":centre}));
+                assert_eq!(
+                    ok(&a, "view.transform.get", json!({"viewId":"drawingView"})),
+                    ok(&m, "view.transform.get", json!({"viewId":"drawingView"}))
+                );
+                assert_eq!(canonical(&a), canonical(&b));
+                assert_eq!(hist(&a), hist(&b));
+            }
+        }
+        let (a, b, m) = (ready(), ready(), ready());
+        let before = mapped(&m, 1200.0, 300.0);
+        check(
+            &a,
+            &b,
+            "zoom",
+            events(&[(1200.0, 300.0), (1200.0, 300.0)], &[]),
+            "view.zoom.set",
+            json!({"viewId":"drawingView","steps":1,"anchor":{"x":1200.0,"y":300.0}}),
+        );
+        let after = mapped(&a, 1200.0, 300.0);
+        assert_eq!(before, after);
+    }
+    #[test]
+    fn c3_close_gap_then_fill() {
+        let (a, b) = (ready(), ready());
+        for h in [&a, &b] {
+            ok(
+                h,
+                "draw.stroke.add",
+                json!({"kind":"pencil","points":[{"x":300,"y":300},{"x":400,"y":300},{"x":400,"y":360},{"x":300,"y":360},{"x":300,"y":305}],"fit":false,"thickness":1}),
+            );
+        }
+        check(
+            &a,
+            &b,
+            "closeGap",
+            events(&[(1260.0, 240.0), (1260.0, 235.0)], &[]),
+            "colour.gap.close",
+            json!({"from":{"x":300.0,"y":300.0},"to":{"x":300.0,"y":305.0},"space":"drawing","view":"drawingView"}),
+        );
+        check(
+            &a,
+            &b,
+            "paint",
+            events(&[(1310.0, 210.0), (1310.0, 210.0)], &[]),
+            "colour.paint.apply",
+            json!({"points":[{"x":350.0,"y":330.0}],"colourId":colour(&b),"space":"drawing","view":"drawingView","gapClosing":"off"}),
+        );
+    }
+    #[test]
+    fn c3_mixed_unpainted() {
+        let (a, b) = (ready(), ready());
+        for h in [&a, &b] {
+            rect(h, json!({"x":300,"y":300}), json!({"x":400,"y":360}));
+            rect(h, json!({"x":450,"y":300}), json!({"x":550,"y":360}));
+            ok(h, "colour.paint.apply", json!({"points":[{"x":350,"y":330}],"colourId":colour(h)}));
+        }
+        let ps = [(1240.0, 260.0), (1530.0, 260.0), (1530.0, 160.0), (1240.0, 160.0), (1240.0, 260.0)];
+        check(
+            &a,
+            &b,
+            "paintUnpainted",
+            events(&ps, &[]),
+            "colour.paintUnpainted.apply",
+            json!({"lasso":[{"x":280.0,"y":280.0},{"x":570.0,"y":280.0},{"x":570.0,"y":380.0},{"x":280.0,"y":380.0},{"x":280.0,"y":280.0}],"space":"drawing","view":"drawingView","colourId":colour(&b),"gapClosing":"off"}),
+        );
+        check(
+            &a,
+            &b,
+            "unpaint",
+            events(&[(1310.0, 210.0), (1310.0, 210.0)], &[]),
+            "colour.paint.remove",
+            json!({"points":[{"x":350.0,"y":330.0}],"space":"drawing","view":"drawingView","gapClosing":"off"}),
+        );
     }
 }
