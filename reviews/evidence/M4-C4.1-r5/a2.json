@@ -1,0 +1,18 @@
+{
+  "objects": 10101,
+  "creation_commands": 102,
+  "build_seconds": 16.649695,
+  "references": 269,
+  "empty_ms": 5.4643,
+  "large_ms": 5.7195,
+  "selection_ms": 28.1592,
+  "clipboard_ms": 26.3758,
+  "hold_ms": 11.5037,
+  "user_samples": 200,
+  "worst_user_ms": 88.4121,
+  "independent_tests": {
+    "independent_large_state_budgets": "pass",
+    "current_drawing_empty_selection_parity": "fails at 5767c91: drawing.nothingToDo",
+    "locked_current_drawing_parity": "fails at 5767c91: drawing.locked"
+  }
+}
