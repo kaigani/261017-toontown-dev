@@ -548,3 +548,43 @@ mod part_b_busy {
         assert!(accepted.is_empty(), "agent changed tool during user activity: {accepted:?}");
     }
 }
+
+mod part_c_equivalence {
+    use super::*;
+    use serde_json::Value;
+    fn canonical(h: &tt_executor::ExecutorHandle) -> Vec<String> {
+        let d = h.snapshot().unwrap().unwrap();
+        d.entry_keys()
+            .iter()
+            .map(|k| tt_model::canonical::to_canonical_string(&d.entry_raw_json(k).unwrap()).unwrap())
+            .collect()
+    }
+    #[test]
+    fn freehand_samples_and_direct_content() {
+        // 02 section 13.3: pressure is per sample, including duplicate points and release.
+        for tool in ["brush", "pencil", "stroke"] {
+            for n in [2, 7, 100] {
+                let (a, b) = (ready(), ready());
+                let events: Vec<Value> = (0..n).map(|i| json!({"type":if i==0 {"down"} else if i==n-1 {"up"} else {"move"},"x":1000.0+(if n == 2 { i } else { i/2 }) as f64,"y":500.0,"pressure":(i%5) as f64/4.0,"dt":i%3})).collect();
+                let points: Vec<Value> = events
+                    .iter()
+                    .map(|e| json!({"x":e["x"].as_f64().unwrap()-960.0,"y":40.0,"pressure":e["pressure"]}))
+                    .collect();
+                let env = a.pointer(tt_executor::Origin::User, json!({"view":"drawing","tool":tool,"events":events}));
+                assert!(env.is_ok(), "{env:?}");
+                let c = &env.result.as_ref().unwrap()["commands"][1];
+                assert_eq!(c["commandId"], "draw.stroke.add");
+                assert_eq!(c["params"]["points"], json!(points));
+                assert_eq!(c["params"]["kind"], if tool == "stroke" { "invisible" } else { tool });
+                assert_eq!(c["params"]["fit"], true);
+                // Explicit resolved styling is replayed; this comparison does not independently validate styling.
+                ok(&b, "draw.stroke.add", c["params"].clone());
+                assert_eq!(canonical(&a), canonical(&b));
+                assert_eq!(
+                    ok(&a, "edit.history.get", json!({}))["entries"][0]["label"],
+                    ok(&b, "edit.history.get", json!({}))["entries"][0]["label"]
+                );
+            }
+        }
+    }
+}
