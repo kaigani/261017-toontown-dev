@@ -411,4 +411,94 @@ mod part_b_equivalence {
             }
         }
     }
+    #[test]
+    fn b2_individual_drawing_settings() {
+        // Derived before gesture execution: section 6.1 pen carries size/tip;
+        // section 6.2 copies share a single command; SI-131 layer precedence.
+        for tool in ["brush", "pencil", "rectangle"] {
+            for variant in [
+                "minimum",
+                "maximum",
+                "tip",
+                "angle",
+                "smoothness",
+                "colour",
+                "behind",
+                "top",
+                "both",
+                "mirror",
+                "kaleidoscope",
+            ] {
+                let (a, b) = (ready(), ready());
+                let pens = ok(&b, "tool.pen.list", json!({}));
+                let pen =
+                    pens["pens"].as_array().unwrap().iter().find(|p| p["type"] == "brush").unwrap()["penId"].clone();
+                for h in [&a, &b] {
+                    match variant {
+                        "minimum" => {
+                            ok(h, "tool.pen.set", json!({"penId":pen,"minSize":1.5}));
+                        }
+                        "maximum" => {
+                            ok(h, "tool.pen.set", json!({"penId":pen,"maxSize":9}));
+                        }
+                        "tip" => {
+                            ok(h, "tool.pen.set", json!({"penId":pen,"tipShape":"square"}));
+                        }
+                        "angle" => {
+                            ok(h, "tool.pen.set", json!({"penId":pen,"tipAngle":45}));
+                        }
+                        "smoothness" => {
+                            ok(h, "tool.pen.set", json!({"penId":pen,"smoothness":7}));
+                        }
+                        "colour" => {
+                            ok(h, "colour.current.set", json!({"colourId":colour(h)}));
+                        }
+                        "behind" => {
+                            ok(h, "tool.placeBehind.set", json!({"enabled":true}));
+                        }
+                        "top" => {
+                            ok(h, "tool.drawTopLayer.set", json!({"enabled":true}));
+                        }
+                        "both" => {
+                            ok(h, "tool.drawTopLayer.set", json!({"enabled":true}));
+                            ok(h, "tool.placeBehind.set", json!({"enabled":true}));
+                        }
+                        "mirror" => {
+                            ok(h, "tool.symmetry.set", json!({"mode":"mirror","angle":25}));
+                        }
+                        _ => {
+                            ok(h, "tool.symmetry.set", json!({"mode":"kaleidoscope","mirrors":3,"angle":15}));
+                        }
+                    }
+                }
+                let mut p = if tool == "rectangle" {
+                    style(
+                        &b,
+                        json!({"from":{"x":40.0,"y":40.0},"to":{"x":120.0,"y":80.0},"square":false,"fromCentre":false}),
+                    )
+                } else {
+                    style(
+                        &b,
+                        json!({"kind":tool,"points":[{"x":40.0,"y":40.0,"pressure":1.0},{"x":120.0,"y":80.0,"pressure":1.0}],"fit":true}),
+                    )
+                };
+                if tool == "brush" {
+                    p.as_object_mut().unwrap().remove("thickness");
+                }
+                p["layer"] = json!(match variant {
+                    "behind" => "behind",
+                    "top" | "both" => "top",
+                    _ => "auto",
+                });
+                check(
+                    &a,
+                    &b,
+                    tool,
+                    events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]),
+                    if tool == "rectangle" { "draw.rectangle.add" } else { "draw.stroke.add" },
+                    p,
+                );
+            }
+        }
+    }
 }
