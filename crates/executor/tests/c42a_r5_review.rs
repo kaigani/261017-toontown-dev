@@ -12,6 +12,8 @@ fn setup() -> (ExecutorHandle, Value, Value, Value) {
         .clone();
     let d=ok(&h,"element.drawing.create",json!({"elementId":b,"name":"Target","exposeFrom":5,"exposeTo":5}))["drawingId"].clone();
     let s=ok(&h,"draw.rectangle.add",json!({"drawingId":d,"from":{"x":1000,"y":1000},"to":{"x":1100,"y":1100}}))["strokeIds"][0].clone();
+    ok(&h, "app.context.set", json!({"elementId":A,"frame":1}));
+    assert_eq!(ok(&h, "app.state.get", json!({}))["frame"], 1);
     (h, b, d, s)
 }
 fn params(id: &str, s: &Value) -> Value {
@@ -40,12 +42,20 @@ fn second_element_eight_families_and_refusals() {
         let (h, b, d, s) = setup();
         let (r, _, rd, rs) = setup();
         let before = ok(&h, "draw.drawing.get", json!({"elementId":A,"frame":1}));
+        let target_before = ok(&h, "draw.drawing.get", json!({"drawingId":d}));
         let mut p = params(id, &s);
         p["elementId"] = b.clone();
         p["frame"] = json!(5);
         let mut q = params(id, &rs);
         q["drawingId"] = rd.clone();
-        assert_eq!(ok(&h, id, p.clone()), ok(&r, id, q), "{id}");
+        let answer = ok(&h, id, p.clone());
+        assert_eq!(answer, ok(&r, id, q), "{id}");
+        match id {
+            "draw.selection.set" => assert!(!answer["selectedIds"].as_array().unwrap().is_empty()),
+            "draw.pointSelection.set" => assert!(!answer["selectedPoints"].as_array().unwrap().is_empty()),
+            "draw.hitTest.get" => assert!(!answer["hits"].as_array().unwrap().is_empty()),
+            _ => assert_ne!(target_before, ok(&h, "draw.drawing.get", json!({"drawingId":d})), "edit lands in B: {id}"),
+        }
         assert_eq!(
             ok(&h, "draw.drawing.get", json!({"drawingId":d})),
             ok(&r, "draw.drawing.get", json!({"drawingId":rd})),
@@ -59,9 +69,9 @@ fn second_element_eight_families_and_refusals() {
         ] {
             p["elementId"] = element;
             p["frame"] = json!(frame);
-            let mut refusal = json!({"point":{"x":1000,"y":1050},"elementId":p["elementId"],"frame":p["frame"]});
-            let e = err(&h, "draw.hitTest.get", refusal.take());
-            println!("REFUSAL {id} {p}: {}", e.code);
+            let refusal = json!({"point":{"x":1000,"y":1050},"elementId":p["elementId"],"frame":p["frame"]});
+            let e = err(&h, "draw.hitTest.get", refusal.clone());
+            println!("REFUSAL draw.hitTest.get (fixture for {id}) {refusal}: {}", e.code);
             if p["elementId"].as_str().unwrap().contains("Absent") {
                 assert_eq!(e.code, "ref.notFound");
             } else if p["elementId"].as_str().unwrap().contains("Dialogue") {

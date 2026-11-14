@@ -1,0 +1,241 @@
+RUN 1 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.89s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 250.9605ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 26.75s
+
+
+EXIT 0
+RUN 2 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 256.4611ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 28.18s
+
+
+EXIT 0
+RUN 3 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 245.9816ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 29.10s
+
+
+EXIT 0
+RUN 4 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 262.6883ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 27.72s
+
+
+EXIT 0
+RUN 5 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.75s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 253.7524ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 28.59s
+
+
+EXIT 0
+RUN 6 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.22s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 252.4187ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 28.00s
+
+
+EXIT 0
+RUN 7 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 265.8259ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 27.22s
+
+
+EXIT 0
+RUN 8 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 258.5266ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 24.05s
+
+
+EXIT 0
+RUN 9 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.22s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 262.2357ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 24.64s
+
+
+EXIT 0
+RUN 10 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.49s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 259.1955ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 23.55s
+
+
+EXIT 0
+RUN 11 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 264.5533ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 23.25s
+
+
+EXIT 0
+RUN 12 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 255.4764ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 23.23s
+
+
+EXIT 0
+RUN 13 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 258.5531ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 23.05s
+
+
+EXIT 0
+RUN 14 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 258.3318ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 23.30s
+
+
+EXIT 0
+RUN 15 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.26s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 265.388ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 22.94s
+
+
+EXIT 0
+RUN 16 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 254.3334ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 22.84s
+
+
+EXIT 0
+RUN 17 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 264.5904ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 22.82s
+
+
+EXIT 0
+RUN 18 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 263.9631ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 23.10s
+
+
+EXIT 0
+RUN 19 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 261.8011ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 23.02s
+
+
+EXIT 0
+RUN 20 ['cargo', 'test', '-p', 'tt-executor', '--test', 'c42_isolated', 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards', '--locked', '--', '--nocapture']
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 1 test
+budget waiter: Some("limit.exceeded") after 264.2188ms; capture jobs 2 -> 2; peak running 2
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 23.14s
+
+
+EXIT 0
