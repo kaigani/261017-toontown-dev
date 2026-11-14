@@ -1,0 +1,249 @@
+{
+  "conclusion": "",
+  "headSha": "64970ec4f77b9b45c51b9e8c1b8a8f01d1d21170",
+  "jobs": [
+    {
+      "name": "headless release (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 2124.0,
+      "failedSteps": []
+    },
+    {
+      "name": "m3 properties release (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 226.0,
+      "failedSteps": []
+    },
+    {
+      "name": "desktop diagnostics (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 634.0,
+      "failedSteps": []
+    },
+    {
+      "name": "review properties release (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 1002.0,
+      "failedSteps": []
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "status": "in_progress",
+      "conclusion": "",
+      "seconds": null,
+      "failedSteps": []
+    },
+    {
+      "name": "c33 render release (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 1246.0,
+      "failedSteps": []
+    },
+    {
+      "name": "measurements release (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 527.0,
+      "failedSteps": []
+    },
+    {
+      "name": "lint (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 773.0,
+      "failedSteps": []
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 170.0,
+      "failedSteps": []
+    },
+    {
+      "name": "check properties (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 1528.0,
+      "failedSteps": []
+    },
+    {
+      "name": "m3 properties release (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 187.0,
+      "failedSteps": []
+    },
+    {
+      "name": "measurements release (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 1024.0,
+      "failedSteps": []
+    },
+    {
+      "name": "e4 release (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 483.0,
+      "failedSteps": []
+    },
+    {
+      "name": "history oracles release (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 1256.0,
+      "failedSteps": []
+    },
+    {
+      "name": "e2 release (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 292.0,
+      "failedSteps": []
+    },
+    {
+      "name": "check (macos-latest)",
+      "status": "completed",
+      "conclusion": "failure",
+      "seconds": 844.0,
+      "failedSteps": [
+        "Run cargo test --workspace --locked"
+      ]
+    },
+    {
+      "name": "lint (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 694.0,
+      "failedSteps": []
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 346.0,
+      "failedSteps": []
+    },
+    {
+      "name": "review properties release (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 2068.0,
+      "failedSteps": []
+    },
+    {
+      "name": "e4 release (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 349.0,
+      "failedSteps": []
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 825.0,
+      "failedSteps": []
+    },
+    {
+      "name": "e2 release (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 470.0,
+      "failedSteps": []
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 536.0,
+      "failedSteps": []
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 960.0,
+      "failedSteps": []
+    },
+    {
+      "name": "c33 render release (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 1114.0,
+      "failedSteps": []
+    },
+    {
+      "name": "check (windows-latest)",
+      "status": "completed",
+      "conclusion": "failure",
+      "seconds": 1074.0,
+      "failedSteps": [
+        "Run cargo test --workspace --locked"
+      ]
+    },
+    {
+      "name": "desktop diagnostics (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 717.0,
+      "failedSteps": []
+    },
+    {
+      "name": "check properties (macos-latest)",
+      "status": "in_progress",
+      "conclusion": "",
+      "seconds": null,
+      "failedSteps": []
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 222.0,
+      "failedSteps": []
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 167.0,
+      "failedSteps": []
+    },
+    {
+      "name": "e4 cross-OS",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 5.0,
+      "failedSteps": []
+    },
+    {
+      "name": "desktop gui (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 94.0,
+      "failedSteps": []
+    },
+    {
+      "name": "desktop gui (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 144.0,
+      "failedSteps": []
+    },
+    {
+      "name": "c33 cross-OS",
+      "status": "completed",
+      "conclusion": "success",
+      "seconds": 7.0,
+      "failedSteps": []
+    }
+  ],
+  "status": "in_progress"
+}
