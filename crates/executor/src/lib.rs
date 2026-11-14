@@ -29,6 +29,8 @@ mod align;
 mod app;
 pub mod commands;
 mod cx;
+mod drawing;
+pub mod gesture;
 mod help;
 mod history;
 pub mod host;

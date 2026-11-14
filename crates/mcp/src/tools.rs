@@ -656,10 +656,8 @@ pub fn plan(name: &str, args: &Map<String, Value>) -> Result<Plan, String> {
             ),
         ),
         "inspect_ui" => command("inspect.ui.tree", pick(args, &[("target", "target"), ("depth", "depth")])),
-        "pointer" => Plan::Unavailable {
-            milestone: "M2 C2.3",
-            reason: "pointer gestures produce the structured commands of the drawing tools (gesture equivalence, 11 §7.6), which arrive with M2",
-        },
+        // The gestures of the drawing tools (11 §7.6; M4 C4.2), answered by the server (`ExecutorHandle::pointer`).
+        "pointer" => Plan::Server,
         // The keymap dispatch of the desktop shell (M4 C4.1), answered by the server (`key_tool`).
         "key" => Plan::Server,
         "type_text" => Plan::Unavailable {

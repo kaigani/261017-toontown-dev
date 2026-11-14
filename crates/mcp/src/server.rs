@@ -1124,6 +1124,28 @@ fn call_tool(
                 let (command, env) = key_tool(shared, rid, &origin, args, started);
                 return ToolOutcome::Result(tool_result(name, &command, &env));
             }
+            "pointer" => {
+                // One document-thread request for the whole call (design note 4 §2): the gestures' commands run with
+                // this session's origin and scopes; the call is audited once, under the last command it produced.
+                let params = Value::Object(args.clone());
+                let env = shared.handle.pointer(origin.clone(), params.clone());
+                let command = env
+                    .result
+                    .as_ref()
+                    .and_then(|r| r.get("commands"))
+                    .and_then(Value::as_array)
+                    .and_then(|a| a.last())
+                    .and_then(|c| c.get("commandId"))
+                    .and_then(Value::as_str)
+                    .or_else(|| {
+                        env.error.as_ref().and_then(|e| e.details.get("gestureCommandId")).and_then(Value::as_str)
+                    })
+                    .unwrap_or("pointer")
+                    .to_owned();
+                shared.handle.audit_call(&origin, "pointer", &command, &params, &env, started.elapsed());
+                mark(shared, "app://activity");
+                return ToolOutcome::Result(tool_result(name, &command, &env));
+            }
             "job_wait" => match job_wait(shared, rid, &origin, args, progress) {
                 Some(env) => ("job.wait".to_owned(), env, false),
                 None => return ToolOutcome::Cancelled,
@@ -1156,17 +1178,35 @@ fn key_tool(
 ) -> (String, Envelope) {
     let keys = args.get("keys").and_then(Value::as_str).unwrap_or_default();
     let params = Value::Object(args.clone());
-    if args.contains_key("view") {
-        let env = envelope_error(
-            "command.notImplemented",
-            "targeting a view with `key` needs the interactive views (M4 C4.2); omit `view` to use the active one"
-                .into(),
-            json!({ "tool": "key", "milestone": "M4 C4.2" }),
-            None,
-        );
-        shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
-        return ("key".to_owned(), env);
-    }
+    // `view` (M4 C4.2): the view the key is aimed at. It must exist; a bound `view.*` command without its own `viewId`
+    // acts on that view instead of the active one. The user's active view is not changed.
+    let view = match args.get("view") {
+        None => None,
+        Some(v) => {
+            let name = v.as_str().unwrap_or_default().to_owned();
+            let list = shared.handle.invoke(Invocation::user("view.list", json!({})));
+            let found = list.result.as_ref().and_then(Value::as_array).and_then(|views| {
+                views
+                    .iter()
+                    .find(|w| w["viewId"] == name.as_str())
+                    .or_else(|| views.iter().find(|w| w["type"] == name.as_str()))
+                    .and_then(|w| w["viewId"].as_str().map(str::to_owned))
+            });
+            match found {
+                Some(id) => Some(id),
+                None => {
+                    let env = envelope_error(
+                        "view.notFound",
+                        format!("view `{name}` does not exist"),
+                        json!({ "view": name, "pointer": "/view" }),
+                        None,
+                    );
+                    shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+                    return ("key".to_owned(), env);
+                }
+            }
+        }
+    };
     let resolved = match shared.handle.resolve_key(keys) {
         Ok(r) => r,
         Err(e) => {
@@ -1195,7 +1235,13 @@ fn key_tool(
             shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
             ("key".to_owned(), env)
         }
-        tt_executor::host::KeyResolution::Command { command_id, params: cparams, .. } => {
+        tt_executor::host::KeyResolution::Command { command_id, params: mut cparams, .. } => {
+            if let (Some(v), Some(m)) = (&view, cparams.as_object_mut())
+                && command_id.starts_with("view.")
+                && !m.contains_key("viewId")
+            {
+                m.insert("viewId".into(), Value::String(v.clone()));
+            }
             let inv = Invocation {
                 command: command_id.clone(),
                 params: cparams.clone(),

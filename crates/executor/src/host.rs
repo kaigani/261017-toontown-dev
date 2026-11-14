@@ -596,6 +596,36 @@ impl ExecutorHandle {
         })));
     }
 
+    /// The `pointer` tool (11 §7.6; M4 C4.2, design note 4): the events are grouped into gestures, each gesture's
+    /// equivalent command ([`crate::gesture::to_command`]) is invoked with `origin`, all on the document thread as one
+    /// request. The answer is the first refused command's envelope, else `{commands, hover}`.
+    #[must_use]
+    pub fn pointer(&self, origin: crate::types::Origin, request: Value) -> crate::types::Envelope {
+        let req: crate::gesture::PointerRequest = match serde_json::from_value(request) {
+            Ok(r) => r,
+            Err(e) => {
+                return crate::types::Envelope::error(
+                    CommandError::with_details(
+                        tt_registry::codes::ARG_INVALID,
+                        e.to_string(),
+                        json!({ "pointer": "" }),
+                    ),
+                    None,
+                );
+            }
+        };
+        let run = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
+            let out = crate::gesture::run(core, &origin, &req);
+            let rev = core.session().and_then(|s| s.project.as_ref()).map(|p| p.doc.document_rev());
+            match out {
+                Ok(o) => o.envelope(rev),
+                // Refused before any gesture ran: no revision is reported (nothing was attempted on the document).
+                Err(e) => crate::types::Envelope::error(e, None),
+            }
+        });
+        run.unwrap_or_else(|e| crate::types::Envelope::error(e, None))
+    }
+
     /// Resolves a key sequence to the command it runs now (01 §8.4); the caller invokes it.
     ///
     /// # Errors

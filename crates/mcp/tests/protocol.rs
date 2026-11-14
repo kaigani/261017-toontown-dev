@@ -122,7 +122,7 @@ fn tools_list_schemas_and_structured_content_validate() {
     }
     let pointer = c.call("pointer", json!({ "view": "camera", "events": [{ "type": "down", "x": 1, "y": 1 }] }));
     assert_eq!(pointer["structuredContent"]["error"]["code"], "command.notImplemented");
-    assert_eq!(pointer["structuredContent"]["error"]["details"]["milestone"], "M2 C2.3");
+    assert_eq!(pointer["structuredContent"]["error"]["details"]["milestone"], "M4 C4.3", "{pointer}");
     let state = c.call("get_state", json!({ "include": ["agent", "project"] }))["structuredContent"]["result"].clone();
     assert_eq!(state["agent"]["policy"], "assist", "{state}");
     assert!(state.get("selection").is_none(), "include projects the state: {state}");
