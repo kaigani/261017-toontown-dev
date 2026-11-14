@@ -653,3 +653,23 @@ mod part_c_pointer {
         );
     }
 }
+
+mod part_c_availability {
+    use super::*;
+    #[test]
+    fn constructed_view_states_agree_with_availability() {
+        // O-24: all parameters present; refusal is caused by the view type.
+        let mut mismatches = Vec::new();
+        for view_type in ["camera", "top", "side"] {
+            let h = ready();
+            ok(&h, "view.type.set", json!({"viewId":"drawingView","type":view_type}));
+            let p = json!({"viewId":"drawingView","from":"view","to":"drawing","point":{"x":960,"y":540}});
+            let a = h.availability(vec![("view.coordinates.convert".into(), p.as_object().unwrap().clone())]).unwrap();
+            let result = run(&h, "view.coordinates.convert", p);
+            if a[0].enabled != result.is_ok() {
+                mismatches.push(format!("{view_type}: availability {:?}, handler {result:?}", a[0]));
+            }
+        }
+        assert!(mismatches.is_empty(), "{}", mismatches.join("\n"));
+    }
+}
