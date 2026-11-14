@@ -758,6 +758,227 @@ mod part_d_equivalence {
         }
     }
 
+    #[test]
+    fn brush_and_rectangle_edges() {
+        for tool in ["brush", "rectangle"] {
+            for ps in [
+                vec![(-100.0, -100.0), (-100.0, -100.0), (-80.0, -60.0)],
+                vec![(10_000_000.0, 500.0), (10_000_000.0, 500.0)],
+            ] {
+                let (a, b) = (ready(), ready());
+                let p = if tool == "rectangle" {
+                    style(
+                        &b,
+                        json!({"from":point(ps[0].0,ps[0].1),"to":point(ps.last().unwrap().0,ps.last().unwrap().1),"square":false,"fromCentre":false}),
+                    )
+                } else {
+                    let points: Vec<Value> = ps
+                        .iter()
+                        .map(|(x, y)| {
+                            let mut p = point(*x, *y);
+                            p["pressure"] = json!(1.0);
+                            p
+                        })
+                        .collect();
+                    let mut p = style(&b, json!({"kind":"brush","points":points,"fit":true}));
+                    p.as_object_mut().unwrap().remove("thickness");
+                    p
+                };
+                check(
+                    &a,
+                    &b,
+                    tool,
+                    events(&ps, &[]),
+                    if tool == "rectangle" { "draw.rectangle.add" } else { "draw.stroke.add" },
+                    p,
+                );
+            }
+        }
+    }
+    #[test]
+    fn temporary_overrides_restore_tool() {
+        for (mods, kind, id, p) in [
+            (
+                vec!["ctrl"],
+                "mouse",
+                "draw.selection.set",
+                json!({"by":"point","point":{"x":40.0,"y":40.0},"mode":"replace"}),
+            ),
+            (
+                vec!["alt"],
+                "mouse",
+                "colour.pick",
+                json!({"point":{"x":40.0,"y":40.0},"space":"drawing","view":"drawingView"}),
+            ),
+            (vec![], "penEraser", "draw.erase.apply", json!({})),
+        ] {
+            let (a, b) = (ready(), ready());
+            ok(&a, "tool.active.set", json!({"toolId":"brush"}));
+            let mut p = p;
+            if kind == "penEraser" {
+                let pens = ok(&b, "tool.pen.list", json!({"type":"eraser"}));
+                p = json!({"path":[{"x":40.0,"y":40.0,"pressure":1.0},{"x":40.0,"y":40.0,"pressure":1.0}],"penId":pens["pens"][0]["penId"]});
+            }
+            let e = a.pointer(
+                tt_executor::Origin::User,
+                json!({"view":"drawing","pointerType":kind,"events":events(&[(1000.0,500.0),(1000.0,500.0)],&mods)}),
+            );
+            let direct = run(&b, id, p.clone());
+            assert_eq!(e.status, direct.status);
+            if e.is_ok() {
+                let c = &e.result.as_ref().unwrap()["commands"][0];
+                assert_eq!(c["commandId"], id);
+                assert_eq!(c["params"], p);
+            }
+            assert_eq!(canonical(&a), canonical(&b));
+            assert_eq!(hist(&a), hist(&b));
+            assert_eq!(ok(&a, "tool.active.get", json!({}))["toolId"], "brush");
+        }
+    }
+    fn painted(h: &ExecutorHandle) {
+        ok(h, "draw.rectangle.add", json!({"from":{"x":300,"y":300},"to":{"x":400,"y":360}}));
+        let c = colour(h);
+        ok(h, "colour.paint.apply", json!({"points":[{"x":350,"y":330}],"colourId":c}));
+    }
+    #[test]
+    fn eraser() {
+        let (a, b) = (ready(), ready());
+        painted(&a);
+        painted(&b);
+        let pens = ok(&b, "tool.pen.list", json!({"type":"eraser"}));
+        let pen = pens["pens"][0]["penId"].clone();
+        check(
+            &a,
+            &b,
+            "eraser",
+            events(&[(1310.0, 250.0), (1310.0, 170.0)], &[]),
+            "draw.erase.apply",
+            json!({"path":[{"x":350.0,"y":290.0,"pressure":1.0},{"x":350.0,"y":370.0,"pressure":1.0}],"penId":pen}),
+        );
+    }
+    fn cut(tool: &str, alternate: bool) {
+        let (a, b) = (ready(), ready());
+        painted(&a);
+        painted(&b);
+        let ps = if tool == "cutter" || alternate {
+            vec![(1280.0, 230.0), (1340.0, 230.0), (1340.0, 190.0), (1280.0, 190.0), (1280.0, 230.0)]
+        } else {
+            vec![(1280.0, 230.0), (1340.0, 190.0)]
+        };
+        let p = if ps.len() > 2 {
+            json!({"polygon":ps.iter().map(|(x,y)|point(*x,*y)).collect::<Vec<_>>()})
+        } else {
+            json!({"rect":{"x":320.0,"y":310.0,"width":60.0,"height":40.0}})
+        };
+        check(&a, &b, tool, events(&ps, if alternate { &["alt"] } else { &[] }), "draw.cut.apply", p);
+    }
+    #[test]
+    fn cutter() {
+        cut("cutter", false);
+    }
+    #[test]
+    fn scissor() {
+        cut("scissor", false);
+        cut("scissor", true);
+    }
+    fn painting(tool: &str, id: &str) {
+        for drag in [false, true] {
+            let (a, b) = (ready(), ready());
+            painted(&a);
+            painted(&b);
+            let ps = if drag {
+                vec![(1300.0, 220.0), (1320.0, 220.0), (1320.0, 200.0), (1300.0, 200.0), (1300.0, 220.0)]
+            } else {
+                vec![(1310.0, 210.0), (1310.0, 210.0)]
+            };
+            let mut p = json!({"space":"drawing","view":"drawingView","gapClosing":"off"});
+            let key = if !drag || tool == "unpaint" {
+                "points"
+            } else if tool == "paint" {
+                "path"
+            } else {
+                "lasso"
+            };
+            p[key] = if key == "points" {
+                json!([point(ps[0].0, ps[0].1)])
+            } else {
+                json!(ps.iter().map(|(x, y)| point(*x, *y)).collect::<Vec<_>>())
+            };
+            if tool != "unpaint" {
+                p["colourId"] = colour(&b);
+            }
+            check(&a, &b, tool, events(&ps, &[]), id, p);
+        }
+    }
+    #[test]
+    fn paint() {
+        painting("paint", "colour.paint.apply");
+    }
+    #[test]
+    fn unpaint() {
+        painting("unpaint", "colour.paint.remove");
+    }
+    #[test]
+    fn paint_unpainted() {
+        painting("paintUnpainted", "colour.paintUnpainted.apply");
+    }
+    #[test]
+    fn close_gap() {
+        let (a, b) = (ready(), ready());
+        check(
+            &a,
+            &b,
+            "closeGap",
+            events(&[(1500.0, 400.0), (1520.0, 400.0)], &[]),
+            "colour.gap.close",
+            json!({"from":point(1500.0,400.0),"to":point(1520.0,400.0),"space":"drawing","view":"drawingView"}),
+        );
+    }
+    #[test]
+    fn grabber() {
+        let (a, b) = (ready(), ready());
+        check(
+            &a,
+            &b,
+            "grabber",
+            events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]),
+            "view.pan.set",
+            json!({"viewId":"drawingView","by":{"x":80.0,"y":-40.0}}),
+        );
+        assert_eq!(
+            ok(&a, "view.transform.get", json!({"viewId":"drawingView"})),
+            ok(&b, "view.transform.get", json!({"viewId":"drawingView"}))
+        );
+    }
+    #[test]
+    fn zoom_click() {
+        for alt in [false, true] {
+            let (a, b) = (ready(), ready());
+            check(
+                &a,
+                &b,
+                "zoom",
+                events(&[(1000.0, 500.0), (1000.0, 500.0)], if alt { &["alt"] } else { &[] }),
+                "view.zoom.set",
+                json!({"viewId":"drawingView","steps":if alt{-1}else{1},"anchor":{"x":1000.0,"y":500.0}}),
+            );
+            assert_eq!(
+                ok(&a, "view.transform.get", json!({"viewId":"drawingView"})),
+                ok(&b, "view.transform.get", json!({"viewId":"drawingView"}))
+            );
+        }
+    }
+    #[test]
+    fn zoom_marquee_fits_region() {
+        let h = ready();
+        let e = h.pointer(
+            tt_executor::Origin::User,
+            json!({"view":"drawing","tool":"zoom","events":events(&[(1000.0,500.0),(1200.0,380.0)],&[])}),
+        );
+        assert!(e.is_ok(), "{e:?}");
+        let t = ok(&h, "view.transform.get", json!({"viewId":"drawingView"}));
+        assert_eq!(t["zoom"], 9.0, "02 section 7.5 line 658: rectangle zooms to fit; min(1920/200,1080/120)=9");
+    }
     fn selected(h: &ExecutorHandle) {
         ok(h, "draw.rectangle.add", json!({"from":{"x":300,"y":300},"to":{"x":400,"y":360}}));
         ok(h, "draw.selection.set", json!({"by":"point","point":{"x":300,"y":330},"mode":"replace"}));
