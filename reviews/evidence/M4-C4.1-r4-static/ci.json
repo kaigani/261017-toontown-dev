@@ -1,0 +1,430 @@
+{
+  "43548393377": {
+    "headSha": "cd06751b75aa6fe0d22e46209819577fd6ba7de2",
+    "status": "completed",
+    "conclusion": "failure",
+    "jobs": [
+      {
+        "name": "check (macos-latest)",
+        "status": "completed",
+        "conclusion": "failure",
+        "failedSteps": [
+          "Run cargo test --workspace --locked"
+        ]
+      },
+      {
+        "name": "lint (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "bundle (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "history oracles release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "e2 release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "raster determinism (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "m3 properties release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "desktop diagnostics (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "desktop gui (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "raster determinism (ubuntu-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "bundle (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "review properties release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "c33 render release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "e4 cross-OS",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "desktop gui (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "c33 cross-OS",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "lint (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "m3 properties release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "c33 render release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "raster determinism (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "review properties release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "history oracles release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "measurements release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "headless without a display (ubuntu)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "check (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "e4 release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "measurements release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "check properties (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "headless release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "headless release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "e2 release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "e4 release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "check properties (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "desktop diagnostics (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      }
+    ]
+  },
+  "43554004796": {
+    "headSha": "88ac1b5a0238dfb231d7c53cb7c550cc94e1437c",
+    "status": "in_progress",
+    "conclusion": "",
+    "jobs": [
+      {
+        "name": "check (windows-latest)",
+        "status": "in_progress",
+        "conclusion": "",
+        "failedSteps": []
+      },
+      {
+        "name": "bundle (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "m3 properties release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "history oracles release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "headless release (windows-latest)",
+        "status": "in_progress",
+        "conclusion": "",
+        "failedSteps": []
+      },
+      {
+        "name": "bundle (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "m3 properties release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "c33 render release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "lint (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "e2 release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "raster determinism (ubuntu-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "measurements release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "raster determinism (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "measurements release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "headless release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "raster determinism (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "review properties release (windows-latest)",
+        "status": "in_progress",
+        "conclusion": "",
+        "failedSteps": []
+      },
+      {
+        "name": "c33 render release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "check (macos-latest)",
+        "status": "completed",
+        "conclusion": "failure",
+        "failedSteps": [
+          "Run cargo test --workspace --locked"
+        ]
+      },
+      {
+        "name": "headless without a display (ubuntu)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "review properties release (macos-latest)",
+        "status": "in_progress",
+        "conclusion": "",
+        "failedSteps": []
+      },
+      {
+        "name": "lint (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "e4 release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "e2 release (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "e4 release (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "desktop diagnostics (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "history oracles release (macos-latest)",
+        "status": "in_progress",
+        "conclusion": "",
+        "failedSteps": []
+      },
+      {
+        "name": "desktop diagnostics (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "check properties (windows-latest)",
+        "status": "in_progress",
+        "conclusion": "",
+        "failedSteps": []
+      },
+      {
+        "name": "check properties (macos-latest)",
+        "status": "in_progress",
+        "conclusion": "",
+        "failedSteps": []
+      },
+      {
+        "name": "desktop gui (macos-latest)",
+        "status": "in_progress",
+        "conclusion": "",
+        "failedSteps": []
+      },
+      {
+        "name": "desktop gui (windows-latest)",
+        "status": "completed",
+        "conclusion": "failure",
+        "failedSteps": [
+          "Reviewer float-window probe (C4.1 round 2; Windows only) against the running application"
+        ]
+      },
+      {
+        "name": "e4 cross-OS",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      },
+      {
+        "name": "c33 cross-OS",
+        "status": "completed",
+        "conclusion": "success",
+        "failedSteps": []
+      }
+    ]
+  }
+}
