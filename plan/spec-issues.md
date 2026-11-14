@@ -1422,3 +1422,61 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   opened, each window that reported anything.
 - **Question:** confirm both fields (names, `null`, the 2 s wait) for 11 §7.5, or specify another way to tell an agent
   which events a tree reflects.
+
+## SI-122 — the Drawing view's zoom range (found in M4 C4.2 planning; interim, ruling D-10)
+
+- **Sections:** 02 §4.3 (1/16× to 16× in steps of 2), 01 §6.5 and 01 §12.2 `view.zoom.set` (a table from 6.25 % to
+  6400 %).
+- **Problem:** the two ranges and step sets differ.
+- **Interim decision:** `view.zoom.set` accepts the wider declared range (6.25 % to 6400 %); wheel and zoom-tool steps
+  snap to the 02 §4.3 ladder (powers of two between 1/16 and 16).
+- **Question:** which range and steps are normative for the Drawing view.
+
+## SI-123 — a rotate-view navigation tool (found in M4 C4.2 planning; interim, ruling D-10)
+
+- **Sections:** 01 §6.5 ("Rotate view", "Pan"), 02 §5.1 and the `tool.active.set` enum (`zoom`, `grabber` only).
+- **Problem:** 01 names a rotate-view tool that 02 and the tool enum do not have.
+- **Interim decision:** no new `tool.active.set` value; view rotation only through `view.rotation.set` (and its key
+  bindings); the pan tool is `grabber`.
+- **Question:** add a rotate-view tool to 02 §5.1 and the enum, or drop it from 01 §6.5.
+
+## SI-124 — `tool.*.select` in 11 §7.6 (found in M4 C4.2 planning; interim, ruling D-10)
+
+- **Sections:** 11 §7.6 (line 359), 02 §13.2, the registry (`tool.active.set`, `tool.group.select`).
+- **Problem:** 11 §7.6 refers to `tool.*.select` commands that the registry does not declare.
+- **Interim decision:** `tool.active.set` (and `tool.group.select` for a group) are the commands `pointer {tool}` and the
+  rail use.
+- **Question:** correct 11 §7.6 to the registry's names.
+
+## SI-125 — `pointer` spaces and tilt against 02 §13.3 (found in M4 C4.2 planning; interim, ruling D-10)
+
+- **Sections:** 11 tool `pointer` (line 354: `space` view, drawing, scene or camera; `tiltX`, `tiltY`), 02 §13.3
+  (samples in view pixels, mapped with the view mapping at the press; no tilt).
+- **Problem:** `pointer` accepts coordinates in other spaces, and tilt, which the gesture-equivalence definition does
+  not mention.
+- **Interim decision:** samples given in `drawing` space are converted to view pixels with the view mapping at the press
+  and then handled as view samples (one path); `scene` and `camera` space in the Drawing view are refused
+  (`arg.invalid`: they belong to the Camera view of C4.3); tilt is carried by the input-source abstraction and recorded,
+  and changes no stroke (no tool option of 02 §6 to §7 uses it).
+- **Question:** specify the spaces and tilt in 02 §13.3, or restrict `pointer`.
+
+## SI-126 — the static light-table panel before the Exposure Sheet exists (found in M4 C4.2 planning; interim)
+
+- **Sections:** 02 §10.4 (the panel "inside the Exposure Sheet area"), SI-085 (two storage models), plan M5 (the
+  Exposure Sheet).
+- **Problem:** C4.2 has no Exposure Sheet to hold the static light-table panel.
+- **Interim decision:** static light-table entries are edited through the `drawAid.staticLightTable.*` commands and a
+  section of the Drawing view's aid controls; the panel moves into the Exposure Sheet in M5. Storage follows 02 §12.3
+  (scene scope) pending SI-085.
+- **Question:** confirm, together with SI-085.
+
+## SI-127 — Drawing-view UI conventions the spec does not state (found in M4 C4.2 planning; interim)
+
+- **Sections:** 01 §5.1 to §5.7, 02 §5.1, 02 §10, SI-115.
+- **Problem:** the spec does not state the tool palette's placement and order, a Drawing-view toolbar, the place of the
+  aid controls beyond the toolbar items, or cursor shapes beyond the polyline cues.
+- **Interim decision (the orchestrator's conventions for M4 to M7):** the tool palette is the left vertical rail in
+  02 §5.1 group order, one button per group showing the last-used tool; view toolbars inside their view (the Drawing
+  view's holds navigation and the aids); workspace toolbars at the top; tool options in the Properties panel; system
+  cursors plus a crosshair for the drawing tools.
+- **Question:** confirm or specify, together with SI-115.
