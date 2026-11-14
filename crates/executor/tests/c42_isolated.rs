@@ -154,6 +154,15 @@ fn a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afte
             })
             .collect()
     };
+    let captures_started =
+        |h: &ExecutorHandle| h.jobs().list(None, None).iter().filter(|j| j.command_id == "inspect.screenshot").count();
+    let wait_all_ended = |h: &ExecutorHandle| {
+        let start = Instant::now();
+        while running_captures(h) > 0 && start.elapsed() < Duration::from_secs(60) {
+            std::thread::yield_now();
+        }
+        assert_eq!(running_captures(h), 0, "every capture job ended");
+    };
     let wait_both_running = |h: &ExecutorHandle| {
         let start = Instant::now();
         while running_captures(h) < 2 && start.elapsed() < Duration::from_secs(60) {
@@ -174,11 +183,16 @@ fn a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afte
     let took = asked.elapsed();
     assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{env:?}");
     assert!(took < Duration::from_secs(10), "answered after its cancellation, well within bounds ({took:?})");
+    assert_eq!(captures_started(&h), 2, "at its answer: the holders' two capture jobs, none for the waiter");
     for t in holders {
         assert_eq!(t.join().unwrap().status, Status::Ok);
     }
-    let captures = h.jobs().list(None, None).iter().filter(|j| j.command_id == "inspect.screenshot").count();
-    assert_eq!(captures, 2, "the holders' two capture jobs, none for the cancelled waiter");
+    wait_all_ended(&h);
+    assert_eq!(
+        captures_started(&h),
+        2,
+        "after the holders finished: still two, the cancelled waiter started none later"
+    );
     drop(h);
 
     // 2. Budget. Every call of this executor has a 250 ms budget, so the holders' calls end at their budget too and
@@ -201,18 +215,16 @@ fn a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afte
     };
     let holders = holders_of(&h);
     wait_both_running(&h);
-    let before = h.jobs().list(None, None).len();
+    let before = captures_started(&h);
     let asked = Instant::now();
     let env = h.invoke(Invocation::user("inspect.screenshot", region.clone()));
     let took = asked.elapsed();
-    let after = h.jobs().list(None, None).len();
+    let after = captures_started(&h);
     for t in holders {
         let _ = t.join().unwrap();
     }
-    let start = Instant::now();
-    while running_captures(&h) > 0 && start.elapsed() < Duration::from_secs(60) {
-        std::thread::yield_now();
-    }
+    wait_all_ended(&h);
+    let finally = captures_started(&h);
     stop.store(true, std::sync::atomic::Ordering::SeqCst);
     sampler.join().unwrap();
     let code = env.error.as_ref().map(|e| e.code.clone());
@@ -228,5 +240,11 @@ fn a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afte
         }
         other => panic!("unexpected answer {other:?}: {env:?}"),
     }
+    // The fact the name claims: once the waiter has answered (its budget spent or a slot taken), the number of capture
+    // jobs is fixed; it is the same after the holders and every capture job have finished.
+    assert_eq!(
+        finally, after,
+        "nothing started after the waiter answered ({after} at its answer, {finally} at the end)"
+    );
     assert!(peak.load(std::sync::atomic::Ordering::SeqCst) <= 2, "never more than two capture jobs at once");
 }
