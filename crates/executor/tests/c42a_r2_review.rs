@@ -501,4 +501,224 @@ mod part_b_equivalence {
             }
         }
     }
+    #[test]
+    fn b3_zero_size_and_outside_view() {
+        for tool in ["rectangle", "ellipse", "line", "brush"] {
+            let (a, b) = (ready(), ready());
+            let ps = if tool == "brush" {
+                vec![(-100.0, -100.0), (-80.0, -60.0)]
+            } else {
+                vec![(1000.0, 500.0), (1000.0, 500.0)]
+            };
+            let m = ready();
+            let from = mapped(&m, ps[0].0, ps[0].1);
+            let to = mapped(&m, ps[1].0, ps[1].1);
+            let mut p = if tool == "brush" {
+                let mut f = from;
+                let mut t = to;
+                f["pressure"] = json!(1.0);
+                t["pressure"] = json!(1.0);
+                let mut p = style(&b, json!({"kind":"brush","points":[f,t],"fit":true}));
+                p.as_object_mut().unwrap().remove("thickness");
+                p
+            } else {
+                style(&b, json!({"from":from,"to":to}))
+            };
+            if tool == "line" {
+                p["constrainAngle"] = json!(false);
+                p["continuePrevious"] = json!(false);
+            } else if tool != "brush" {
+                p[if tool == "rectangle" { "square" } else { "circle" }] = json!(false);
+                p["fromCentre"] = json!(false);
+            }
+            check(
+                &a,
+                &b,
+                tool,
+                events(&ps, &[]),
+                if tool == "brush" {
+                    "draw.stroke.add"
+                } else if tool == "line" {
+                    "draw.line.add"
+                } else if tool == "rectangle" {
+                    "draw.rectangle.add"
+                } else {
+                    "draw.ellipse.add"
+                },
+                p,
+            );
+        }
+    }
+    #[test]
+    fn b3_successful_paint_and_unpaint() {
+        for remove in [false, true] {
+            let (a, b, m) = (ready(), ready(), ready());
+            for h in [&a, &b] {
+                ok(h, "draw.rectangle.add", json!({"from":{"x":300,"y":300},"to":{"x":400,"y":360}}));
+                if remove {
+                    ok(h, "colour.paint.apply", json!({"points":[{"x":350,"y":330}],"colourId":colour(h)}));
+                }
+            }
+            let mut p =
+                json!({"points":[mapped(&m,1310.0,210.0)],"space":"drawing","view":"drawingView","gapClosing":"off"});
+            if !remove {
+                p["colourId"] = colour(&b);
+            }
+            check(
+                &a,
+                &b,
+                if remove { "unpaint" } else { "paint" },
+                events(&[(1310.0, 210.0), (1310.0, 210.0)], &[]),
+                if remove { "colour.paint.remove" } else { "colour.paint.apply" },
+                p,
+            );
+        }
+    }
+    #[test]
+    fn b3_zoom_marquee_independent_fit() {
+        for (z, end) in [(4.0, (1200.0, 380.0)), (0.25, (1200.0, 380.0)), (4.0, (1002.0, 500.0))] {
+            let (a, b, m) = (ready(), ready(), ready());
+            for h in [&a, &b, &m] {
+                view(h, z);
+            }
+            let click = end.0 - 1000.0 <= 3.0;
+            if click {
+                check(
+                    &a,
+                    &b,
+                    "zoom",
+                    events(&[(1000.0, 500.0), end], &[]),
+                    "view.zoom.set",
+                    json!({"viewId":"drawingView","steps":1,"anchor":{"x":1000.0,"y":500.0}}),
+                );
+            } else {
+                let f = mapped(&m, 1000.0, 500.0);
+                let t = mapped(&m, end.0, end.1);
+                let centre = json!({"x":(f["x"].as_f64().unwrap()+t["x"].as_f64().unwrap())/2.0,"y":(f["y"].as_f64().unwrap()+t["y"].as_f64().unwrap())/2.0});
+                let zoom = (z * (1920.0 / (end.0 - 1000.0)).min(1080.0 / (500.0 - end.1))).clamp(0.0625, 64.0);
+                let params =
+                    [json!({"viewId":"drawingView","zoom":zoom}), json!({"viewId":"drawingView","centre":centre})];
+                let e = a.pointer(
+                    tt_executor::Origin::User,
+                    json!({"view":"drawing","tool":"zoom","events":events(&[(1000.0,500.0),end],&[])}),
+                );
+                assert!(e.is_ok(), "{e:?}");
+                let cs = e.result.unwrap()["commands"].as_array().unwrap().clone();
+                for (i, id) in ["view.zoom.set", "view.pan.set"].iter().enumerate() {
+                    assert_eq!(cs[i + 1]["commandId"], *id);
+                    assert_eq!(cs[i + 1]["params"], params[i]);
+                    ok(&b, id, params[i].clone());
+                }
+                assert_eq!(canonical(&a), canonical(&b));
+                assert_eq!(hist(&a), hist(&b));
+            }
+            assert_eq!(
+                ok(&a, "view.transform.get", json!({"viewId":"drawingView"})),
+                ok(&b, "view.transform.get", json!({"viewId":"drawingView"}))
+            );
+        }
+    }
+    #[test]
+    fn b3_polyline_handles_derived_trigonometry() {
+        for constrained in [false, true] {
+            let (a, b, m) = (ready(), ready(), ready());
+            let mut mid = mapped(&m, 1000.0, 500.0);
+            let (x, y) = if constrained {
+                let r = 40f64.hypot(13.0);
+                (r * 15f64.to_radians().cos(), r * 15f64.to_radians().sin())
+            } else {
+                (40.0, 13.0)
+            };
+            mid["outHandle"] = json!({"x":x,"y":y});
+            mid["inHandle"] = json!({"x":-x,"y":-y});
+            let p = style(
+                &b,
+                json!({"points":[mapped(&m,900.0,500.0),mid,mapped(&m,1100.0,600.0)],"closed":false,"snap":true,"snapRadius":8.0}),
+            );
+            let mut ev = events(&[(900.0, 500.0), (900.0, 500.0)], &[]).as_array().unwrap().clone();
+            ev.extend(
+                events(&[(1000.0, 500.0), (1040.0, 487.0)], if constrained { &["shift"] } else { &[] })
+                    .as_array()
+                    .unwrap()
+                    .clone(),
+            );
+            ev.extend(events(&[(1100.0, 600.0), (1100.0, 600.0)], &[]).as_array().unwrap().clone());
+            ev.push(json!({"type":"doubleClick","x":1100,"y":600}));
+            check(&a, &b, "polyline", json!(ev), "draw.polyline.add", p);
+        }
+    }
+    #[test]
+    fn b3_gradient_mapping() {
+        let (a, b, m) = (ready(), ready(), ready());
+        let d = b.snapshot().unwrap().unwrap();
+        // Fixture Sky is used because a swatch creation command is not required here.
+        let sky = d
+            .palettes()
+            .flat_map(|p| p.swatches())
+            .find(|s| s.name() == "Sky")
+            .unwrap()
+            .colour_id()
+            .as_str()
+            .to_owned();
+        for h in [&a, &b] {
+            ok(h, "draw.rectangle.add", json!({"from":{"x":300,"y":300},"to":{"x":400,"y":360}}));
+            ok(h, "colour.paint.apply", json!({"points":[{"x":350,"y":330}],"colourId":colour(h)}));
+            ok(h, "colour.current.set", json!({"colourId":sky}));
+        }
+        let from = mapped(&m, 1310.0, 210.0);
+        let to = mapped(&m, 1330.0, 190.0);
+        check(
+            &a,
+            &b,
+            "paint",
+            events(&[(1310.0, 210.0), (1330.0, 190.0)], &[]),
+            "colour.paint.apply",
+            json!({"points":[from.clone()],"mapping":{"from":from,"to":to},"space":"drawing","view":"drawingView","colourId":sky,"gapClosing":"off"}),
+        );
+    }
+    #[test]
+    fn b3_dropper_then_brush_and_empty_dropper() {
+        for painted in [true, false] {
+            let (a, b) = (ready(), ready());
+            let d = b.snapshot().unwrap().unwrap();
+            let cs: Vec<_> =
+                d.palettes().flat_map(|p| p.swatches()).map(|s| s.colour_id().as_str().to_owned()).collect();
+            for h in [&a, &b] {
+                ok(h, "draw.rectangle.add", json!({"from":{"x":300,"y":300},"to":{"x":400,"y":360}}));
+                if painted {
+                    ok(h, "colour.paint.apply", json!({"points":[{"x":350,"y":330}],"colourId":cs[0]}));
+                }
+                ok(h, "colour.current.set", json!({"colourId":cs[1]}));
+            }
+            let point = if painted { json!({"x":350.0,"y":330.0}) } else { json!({"x":550.0,"y":330.0}) };
+            let x = if painted { 1310.0 } else { 1510.0 };
+            let p = json!({"point":point,"space":"drawing","view":"drawingView"});
+            let e = a.pointer(
+                tt_executor::Origin::User,
+                json!({"view":"drawing","tool":"dropper","events":events(&[(x,210.0),(x,210.0)],&[])}),
+            );
+            let direct = run(&b, "colour.pick", p.clone());
+            assert_eq!(e.status, direct.status);
+            if e.is_ok() {
+                let cs = e.result.unwrap()["commands"].as_array().unwrap().clone();
+                assert_eq!(cs[1]["commandId"], "colour.pick");
+                assert_eq!(cs[1]["params"], p);
+                if painted {
+                    assert_eq!(cs[2]["commandId"], "colour.current.set");
+                    assert_eq!(cs[2]["params"], json!({"colourId":colour(&b)}));
+                    ok(&b, "colour.current.set", json!({"colourId":colour(&b)}));
+                }
+            }
+            assert_eq!(canonical(&a), canonical(&b));
+            assert_eq!(hist(&a), hist(&b));
+            let expected = if painted { colour(&b) } else { json!(cs[1]) };
+            let mut p = style(
+                &b,
+                json!({"kind":"brush","points":[{"x":40.0,"y":40.0,"pressure":1.0},{"x":120.0,"y":80.0,"pressure":1.0}],"fit":true}),
+            );
+            p["colourId"] = expected;
+            p.as_object_mut().unwrap().remove("thickness");
+            check(&a, &b, "brush", events(&[(1000.0, 500.0), (1080.0, 460.0)], &[]), "draw.stroke.add", p);
+        }
+    }
 }
