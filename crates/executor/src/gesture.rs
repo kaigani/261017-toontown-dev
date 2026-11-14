@@ -576,11 +576,10 @@ fn select(cx: &Cx, g: &Gesture, st: &Stroke, p0: Sample, pn: Sample) -> Result<O
     let mode = if st.mods.constrain { "add" } else { "replace" };
     let rule = cx.ui().drawing().options_of("select").get("rectRule").cloned().unwrap_or(json!("inside"));
     let v = if st.is_click() {
-        // The click's hit tolerance is in view pixels (C42A-R2-02): the view is stated whenever it decides the outcome,
-        // that is when the zoom is not 100 % and what lies under the exact point differs from what the tolerance
-        // reaches; otherwise the command without `view` selects the same object.
+        // The click's hit tolerance is in view pixels: the view is stated whenever the zoom is not exactly 100 %
+        // (ruling D-16; 02 §13.1 item 5, §13.3); at 100 % an absent view means the same tolerance by definition.
         let mut v = json!({ "by": "point", "point": pt(p0.d), "mode": mode });
-        if (crate::commands::view::pixels_per_du(w) - 1.0).abs() > 1e-12 && tolerance_decides(cx, w, p0.d) {
+        if (crate::commands::view::pixels_per_du(w) - 1.0).abs() > 1e-12 {
             v["view"] = json!(g.view_id);
         }
         v
@@ -591,19 +590,6 @@ fn select(cx: &Cx, g: &Gesture, st: &Stroke, p0: Sample, pn: Sample) -> Result<O
         json!({ "by": "rect", "rect": rect(p0.d, pn.d), "rectRule": rule, "mode": mode })
     };
     Ok(Some(("draw.selection.set".into(), v)))
-}
-
-/// Whether a point selection at `at` depends on the hit tolerance: the front-most object under the exact point and
-/// the front-most within the view's tolerance differ.
-fn tolerance_decides(cx: &Cx, w: &ViewWindow, at: Point) -> bool {
-    let Some((d, _)) = current_drawing(cx) else { return false };
-    let Ok(zones) = crate::planar::drawing_zones(&cx.planar_cache(), &d) else { return true };
-    let q = tt_vector::geom::P::new(at.x, at.y);
-    let tol = crate::commands::draw_select::HIT_TOLERANCE_PX / crate::commands::view::pixels_per_du(w);
-    let first = |t: f64| {
-        crate::commands::colour::hits(&d, &zones, q, t, false).ok().and_then(|h| h.first().map(|h| h.id.clone()))
-    };
-    first(0.0) != first(tol)
 }
 
 /// The current drawing and its pivot.
@@ -682,8 +668,8 @@ fn polyline(cx: &Cx, g: &Gesture) -> Option<(String, Value)> {
         return None;
     }
     let mut m = obj(json!({ "points": points, "closed": closed, "snap": snap, "snapRadius": radius }));
-    // The snap radius is in view pixels: the view is stated whenever its zoom is not 100 % (02 §13.1 item 5, §13.3
-    // line 1203; C42A-R2-01). At 100 % an absent `view` means the same tolerance, so the command is the same.
+    // The snap radius is in view pixels: the view is stated whenever the zoom is not exactly 100 % (ruling D-16;
+    // 02 §13.1 item 5, §13.3 line 1203); at 100 % an absent view means the same tolerance by definition.
     if cx.ui().shell().view(&g.view_id).is_ok_and(|w| (crate::commands::view::pixels_per_du(w) - 1.0).abs() > 1e-12) {
         m.insert("view".into(), json!(g.view_id));
     }

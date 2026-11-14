@@ -353,7 +353,7 @@ pub(crate) fn draw_cut_apply(cx: &mut Cx, p: CutParams) -> Result<CutResult, Com
         return Err(err("arg.invalid", "a segment cut has no inside to delete", json!({ "pointer": "/then" })));
     }
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -561,7 +561,7 @@ pub(crate) fn draw_erase_apply(cx: &mut Cx, p: EraseParams) -> Result<EraseResul
         _ => return Err(err("arg.invalid", "give exactly one of `path` and `region`", json!({ "pointer": "/path" }))),
     };
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;

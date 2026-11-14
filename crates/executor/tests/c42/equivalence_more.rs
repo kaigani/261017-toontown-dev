@@ -242,7 +242,7 @@ fn in_a_rotated_zoomed_panned_view_each_tool_family_maps_through_the_view() {
         "select",
         drag(&[(960.0, 540.0), (960.0, 540.0)]),
         "draw.selection.set",
-        json!({ "by": "point", "point": conv(&h, 960.0, 540.0), "mode": "replace" }),
+        json!({ "by": "point", "point": conv(&h, 960.0, 540.0), "mode": "replace", "view": "drawingView" }),
     );
 }
 

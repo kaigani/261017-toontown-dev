@@ -379,7 +379,7 @@ pub(crate) fn draw_transform_apply(cx: &mut Cx, p: TransformParams) -> Result<Tr
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, &p.view, p.frame);
     let mut changes = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut changes)?;
+    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut changes)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, p.expect_rev)?;
@@ -687,7 +687,7 @@ pub(crate) fn draw_envelope_apply(cx: &mut Cx, p: EnvelopeParams) -> Result<Tran
         return Err(err("arg.invalid", "four corners are required", json!({ "pointer": "/corners" })));
     }
     let mut changes = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut changes)?;
+    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut changes)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -1098,7 +1098,7 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, p.frame);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;

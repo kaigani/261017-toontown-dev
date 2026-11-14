@@ -1147,11 +1147,11 @@ pub(crate) struct Steps {
 /// The refusal the handler gives for the same state, in its order.
 pub(crate) fn precheck_steps(cx: &Cx, v: &Value, steps: Steps) -> Result<(), CommandError> {
     let text = |k: &str| v.get(k).and_then(Value::as_str);
-    let (element, frame) = if steps.address {
-        (text("elementId"), v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok()))
-    } else {
-        (None, None)
-    };
+    // The target as the handler resolves it (02 §13.1 item 4): `drawingId`, else `elementId` + `frame` where the
+    // command declares them (a member it does not declare is never present), else the current drawing (C42A-R3-01).
+    let _ = steps.address;
+    let (element, frame) =
+        (text("elementId"), v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok()));
     let create = steps.create.is_some_and(|default| v.get("createDrawing").and_then(Value::as_bool).unwrap_or(default));
     let Some(id) = target_existing(cx, text("drawingId"), element, frame, create)? else { return Ok(()) };
     let doc = cx.document()?;

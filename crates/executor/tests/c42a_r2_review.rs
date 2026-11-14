@@ -840,7 +840,7 @@ mod part_c_equivalence {
             "select",
             events(&[(1000.0, 500.0), (1000.0, 500.0)], &[]),
             "draw.selection.set",
-            json!({"by":"point","point":p,"mode":"replace"}),
+            json!({"by":"point","point":p,"mode":"replace","view":"drawingView"}),
         );
         let q = mapped(&m, 1080.0, 460.0);
         let n = hist(&a).len();

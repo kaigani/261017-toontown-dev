@@ -1076,7 +1076,9 @@ pub(crate) fn resolve_colour(cx: &Cx, given: Option<&str>) -> Result<(Option<Str
 struct Call<'a> {
     drawing_id: Option<&'a str>,
     element_id: Option<&'a str>,
-    frame: Frame,
+    /// With `element_id` (default: the current element), the frame whose cell is painted (02 §13.1 item 4).
+    frame: Option<u32>,
+    frame_ref: Frame,
     targets: Targets<'a>,
     mode: Mode,
     colour: (Option<String>, SwatchKind),
@@ -1084,9 +1086,9 @@ struct Call<'a> {
 }
 
 fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError> {
-    let Call { drawing_id, element_id, frame, targets, mode, colour, gap_choice } = call;
+    let Call { drawing_id, element_id, frame: cell, frame_ref: frame, targets, mode, colour, gap_choice } = call;
     let mut none = Vec::new();
-    let t = target(cx, drawing_id, element_id, None, false, &mut none)?;
+    let t = target(cx, drawing_id, element_id, cell, false, &mut none)?;
     let before = cx.document()?.clone();
     let d = t.drawing(&before)?.into_owned();
     check_editable(&d, None)?;
@@ -1297,7 +1299,8 @@ pub(crate) fn colour_paint_apply(cx: &mut Cx, p: PaintParams) -> Result<PaintRes
         Call {
             drawing_id: p.drawing_id.as_deref(),
             element_id: p.element_id.as_deref(),
-            frame,
+            frame_ref: frame,
+            frame: p.frame,
             targets,
             mode: Mode::Paint { only_unpainted: p.only_unpainted, only_painted: p.only_painted },
             colour,
@@ -1411,7 +1414,8 @@ pub(crate) fn colour_paint_unpainted_apply(
         Call {
             drawing_id: p.drawing_id.as_deref(),
             element_id: None,
-            frame,
+            frame_ref: frame,
+            frame: p.frame,
             targets,
             mode: Mode::Paint { only_unpainted: true, only_painted: false },
             colour,
@@ -1424,7 +1428,7 @@ pub(crate) fn colour_paint_unpainted_apply(
         Err(e) if e.code == "colour.alreadyPainted" || (p.all && e.code == "colour.noTarget") => {
             let count = e.details.get("skipped").and_then(Value::as_array).map_or(0, Vec::len);
             let mut none = Vec::new();
-            let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+            let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
             return Ok(PaintUnpaintedResult {
                 drawing_id: t.id.as_str().to_owned(),
                 painted: Vec::new(),
@@ -1549,7 +1553,8 @@ pub(crate) fn colour_paint_remove(cx: &mut Cx, p: UnpaintParams) -> Result<Unpai
         Call {
             drawing_id: p.drawing_id.as_deref(),
             element_id: None,
-            frame,
+            frame_ref: frame,
+            frame: p.frame,
             targets,
             mode: Mode::Remove,
             colour: (None, SwatchKind::Solid),
@@ -1663,7 +1668,7 @@ pub(crate) fn colour_pick(cx: &mut Cx, p: PickParams) -> Result<PickResult, Comm
     let _ = (&p.scene_id, p.frame);
     let at = f.point(p.point, "/point")?;
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let zones = drawing_zones(&cx.planar_cache(), &d)?;
@@ -1876,7 +1881,7 @@ pub(crate) fn colour_gap_close(cx: &mut Cx, p: GapCloseParams) -> Result<GapClos
     let _ = (&p.scene_id, p.frame);
     let (from, to) = (f.point(p.from, "/from")?, f.point(p.to, "/to")?);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
     let before = cx.document()?.clone();
     let d = t.drawing(&before)?.into_owned();
     check_editable(&d, None)?;

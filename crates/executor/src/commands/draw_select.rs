@@ -283,7 +283,7 @@ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, &p.view, p.frame);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let need = |what: &str| {
@@ -486,7 +486,7 @@ pub(crate) fn draw_point_selection_set(
     // The pipeline converted view-space coordinates (crate::addressing).
     let _ = (&p.space, &p.view, p.frame);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), None, p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let mut keys: Vec<AnchorRef> = Vec::new();
