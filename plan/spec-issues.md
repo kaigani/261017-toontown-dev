@@ -1556,3 +1556,16 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   view, else `drawingView`; `drawing`; a view id); another panel or `dialogs` refuses `view.notFound`; the Camera view
   type answers `command.notImplemented` (M4 C4.3). Attached captures (C4.2b, D-6) take every target.
 - **Question:** add a view event to spec A, or confirm `shell.view`; state the headless targets in 11 §15.2.
+
+## SI-133 — a view-space rectangle in a rotated view (found in M4 C4.2a round 3; interim)
+
+- **Sections:** 02 §13.1 item 5 (the common addressing parameters: `space: "view"` points), the rectangle parameters
+  of `draw.selection.set`, `draw.pointSelection.set` and `draw.cut.apply` (`{x, y, width, height}`, axis-aligned in
+  drawing space), 03 §16.2 (`colour.paint.apply {rect}`).
+- **Problem:** a rectangle given in view pixels of a rotated view is a rotated rectangle in drawing space, which the
+  axis-aligned parameter cannot express; the spec does not say what happens.
+- **Interim decision (the conservative choice):** refused with `arg.invalid` ("a rectangle cannot be given in a rotated
+  view; give a polygon"); without rotation it converts exactly. The colour commands, whose rectangle becomes a polygon
+  internally, convert its four corners.
+- **Question:** convert a view-space rectangle to a polygon (where the command takes one), or refuse it?
+

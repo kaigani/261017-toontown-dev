@@ -38,6 +38,13 @@ drawn by the interactive renderer only (06 §6.10): headless screenshots show th
   `c42_isolated::concurrent_captures_are_capped_and_their_threads_counted` races fourteen callers and counts the
   process's OS threads while they run. The reviewer's `concurrent_captures_finish_and_budget_is_bounded` (six
   callers, all answered) holds because six is within two running plus eight waiting.
+- **Waiting** honours the waiting call's own budget and cancellation: a cancelled waiter answers `command.timeout`
+  (`reason: "cancelled"`) and a waiter at its budget answers `limit.exceeded`, and neither starts a capture afterwards
+  (`c42_isolated::a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards`). **Waiters are
+  not served in arrival order:** a freed slot goes to whichever waiting caller the condition variable wakes first.
+- **A capture job that panics** ends `failed` with a typed `internal` error (the job runner catches the panic, for
+  every job), so it never keeps a slot (`c42_isolated::a_panicking_capture_job_releases_its_slot`); the caller's slot is
+  released by its guard on any return or unwind.
 - **A cancelled request does not stop its capture:** ADR-0020 decision 8 lets a job continue after its request is
   cancelled, so the capture finishes in the background (its job's cancellation stops the rasteriser between work
   slices only when the job itself is cancelled); its thread counts against the bound until it ends.

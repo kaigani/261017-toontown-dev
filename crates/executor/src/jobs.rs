@@ -209,7 +209,11 @@ impl JobTable {
             .name(format!("tt-{job_id}"))
             .spawn(move || {
                 progress.table.update(&progress.job_id, |r| r.state = JobState::Running);
-                let outcome = work(&progress).and_then(|v| check_final_result(&command, v));
+                // A panicking job ends failed with a typed error instead of leaving its record running for ever (a
+                // running record holds a bound such as the capture slots; C42A-R3 capture bound).
+                let outcome = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| work(&progress)))
+                    .unwrap_or_else(|_| Err(CommandError::internal(format!("job `{command}` failed unexpectedly"))))
+                    .and_then(|v| check_final_result(&command, v));
                 let cancelled = progress.cancelled();
                 progress.table.update(&progress.job_id, |r| match outcome {
                     // A job that stops at the cancellation and reports what it completed keeps that report
