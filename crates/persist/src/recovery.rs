@@ -49,18 +49,21 @@ pub struct RecoveryInfo {
 
 impl RecoveryInfo {
     /// Whether the owner is gone. A copy released by a restart ([`release_process`], [`release_engine`]: an abandoned
-    /// engine can run in the same process as its replacement) is. Otherwise, on this host, the owner's process decides:
-    /// a live process is never orphaned, however old its heartbeat (heartbeats can be skipped while other engines
-    /// write; closure round 5), a process known dead always is. Otherwise (another host, or liveness unknown) a
-    /// heartbeat older than the stale age.
+    /// engine can run in the same process as its replacement) is. Otherwise, for another process of this host, the
+    /// owner's process decides: a live process is never orphaned, however old its heartbeat (closure round 5), a
+    /// process known dead always is. Otherwise (this process, another host, or liveness unknown) a heartbeat older
+    /// than the stale age.
     #[must_use]
     pub fn orphaned(&self) -> bool {
         if self.heartbeat_at == RELEASED {
             return true;
         }
         let same_host = self.host.is_empty() || self.host == host::host();
-        // Process 0 is no engine's (a placeholder in older copies): only the age decides.
-        if same_host && self.process_id != 0 {
+        // Another process of this host: its liveness decides. This process: its engines cannot be told apart by the
+        // process ID (an abandoned engine runs beside its replacement), so the age decides; a live engine's skipped
+        // heartbeat is retried at the next maintenance pass, so its copy goes stale only if the ownership lock is held
+        // for the whole stale age, and an abandoned engine's copies are released explicitly. Process 0 is no engine's.
+        if same_host && self.process_id != 0 && self.process_id != host::pid() {
             match host::process_alive(self.process_id) {
                 Some(true) => return false,
                 Some(false) => return true,

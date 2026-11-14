@@ -1439,7 +1439,19 @@ fn object_drawing(cx: &Cx, v: &Value, key: &str, rev: bool) -> Result<(), Comman
     };
     let doc = cx.document()?;
     let drawing = match (object.split_once('/'), addressed) {
-        (Some((d, _)), _) => Some(Id::parse(d)?),
+        (Some((d, _)), a) => {
+            let d = Id::parse(d)?;
+            if let Some(a) = a
+                && a != d
+            {
+                return Err(err(
+                    codes::ARG_INVALID,
+                    format!("`{object}` belongs to drawing `{d}`, not to the addressed drawing `{a}`"),
+                    json!({ "pointer": "/drawingId", "drawingId": a.as_str() }),
+                ));
+            }
+            Some(d)
+        }
         (None, Some(a)) => Some(a),
         (None, None) => cx.app().current_drawing(doc),
     };
