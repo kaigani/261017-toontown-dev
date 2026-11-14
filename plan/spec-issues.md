@@ -1623,3 +1623,20 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   8-pixel square handles, gesture ink in the current colour and pen thickness at the current zoom, a dashed outline for
   the lasso.
 - **Question:** confirm or specify.
+
+## SI-139 — how the Drawing view shows onion skin, light tables and shade (found in M4 C4.2b; interim)
+
+- **Sections:** 02 §4.2 (canvas layers 3 to 7), 02 §10.2 (onion skin: "dimmed or tinted", "lighter", recommended opacity
+  50/30/15 %, outline only), 02 §10.3 (auto light table: "all elements as they are layered at the current frame",
+  "washed out" when shade is on), 02 §10.4 (static light table, shade).
+- **Problem:** the spec does not say how a tint is applied, how much "washed out" is, where another element's drawing
+  sits in the Drawing view's drawing space, nor how an outline-only drawing is drawn.
+- **Interim decision:**
+  - A tint replaces each pixel's colour with the tint colour and keeps its coverage.
+  - Transparency multiplies coverage by 50/30/15 % for distances 1/2/3; without it, onion drawings are opaque.
+  - Shade draws a drawing at 40 % opacity over the layers below.
+  - The auto light table shows the other elements' drawings exposed at the current frame in their own drawing space
+    (identity placement, the Drawing view having no camera), back to front in the scene's layering order.
+  - Outline only draws brush outlines and pencil centre lines one view pixel wide in the drawing's colours (or the
+    tint).
+- **Question:** confirm or specify.

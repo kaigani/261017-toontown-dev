@@ -137,3 +137,30 @@ holds.
   directions.
 - **Invariants added:** T7 (D-7a) — a float window has its own queue, frame loop and resident set, and closing it drops
   them without affecting the main window.
+
+## 9. Amendment before the transport code: state, pulled by the canvas
+
+A simpler rule replaces the pushed delta queue of §1, §3 and §4 (the C4.2a lesson: simple rules over clever ones).
+
+- **Two host commands, no host-side stream.**
+  - `canvas_scene {viewId}` answers the view's whole composition as JSON. It lists the drawings shown in 02 §4.2's
+    order, each with its revision, role, opacity, tint and shade. It also gives the background, the grid settings, the
+    resolved value of every solid colour id, and a palette stamp.
+  - `canvas_load {drawingId, bucket}` answers one drawing's TTRD payload, binary, at the drawing's current revision and
+    the engine's generation.
+  - Both read the document thread only to take a snapshot (§6).
+- **The canvas pulls.**
+  - Every engine event (already broadcast to every window, `shell.view` included) marks the canvas dirty.
+  - On its next frame, with no scene request in flight, the canvas asks for the scene.
+  - It then loads every entry whose revision it does not hold, or whose palette stamp changed if the drawing has
+    gradient or texture slots, within the frame budget of note 2 (F1).
+  - Solid colour changes apply from the scene's colour values, without geometry (06 §6.3).
+- **What T1 to T6 become:**
+  - Every message is a full state (latest wins), so nothing is dropped or reordered (T2).
+  - At most one scene request and one load per drawing are in flight, so the bound of T3 is 1 (stated and measured;
+    the 64 of §4 is withdrawn).
+  - A payload of another generation, or of a revision older than the latest scene's, is discarded and asked for again
+    (T1, T6).
+  - A resident drawing missing from the scene is dropped. Off-screen eviction (§5) rebuilds from `canvas_load` (T5).
+- **E-C1** measures this pull loop on a groups1k-like scene (the scene request every frame) against the one-frame
+  latency criterion of plan §7.
