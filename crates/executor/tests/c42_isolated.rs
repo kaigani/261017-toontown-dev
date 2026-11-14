@@ -95,21 +95,28 @@ fn concurrent_captures_are_capped_and_their_threads_counted() {
     assert!(peak <= base + callers + 2 + 2, "peak {peak} threads over base {base}");
 }
 
-/// A heavy drawing on an executor with the given budget, so a capture lasts long enough to hold its slot.
+/// A heavy drawing on an executor with the given budget, so a capture lasts long enough to hold its slot. The drawing
+/// is built on an executor with a long budget (a short budget would cut the building commands on a slow runner) and
+/// its document opened in the one returned.
 fn heavy(budget: Duration, strokes: u32) -> Arc<ExecutorHandle> {
-    let h = Arc::new(ExecutorHandle::spawn(ExecutorConfig { budget }).unwrap());
-    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
-    ok(&h, "app.context.set", json!({ "elementId": "scene:#1/element:\"Bob\"", "frame": 1 }));
+    let builder = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_secs(120) }).unwrap();
+    assert!(builder.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+    ok(&builder, "app.context.set", json!({ "elementId": "scene:#1/element:\"Bob\"", "frame": 1 }));
     for k in 0..strokes {
         let points: Vec<_> = (0..400)
             .map(|i| json!({ "x": -900.0 + f64::from(i) * 4.5, "y": -500.0 + f64::from(k % 30) * 33.0 + f64::from(k / 30) + f64::from(i % 9) * 3.0 }))
             .collect();
         ok(
-            &h,
+            &builder,
             "draw.stroke.add",
             json!({ "kind": "brush", "points": points, "pen": { "tipShape": "round", "minSize": 20, "maxSize": 40 } }),
         );
     }
+    let doc = builder.snapshot().unwrap().unwrap();
+    drop(builder);
+    let h = Arc::new(ExecutorHandle::spawn(ExecutorConfig { budget }).unwrap());
+    assert!(h.open_document(doc, None, false).is_ok());
+    ok(&h, "app.context.set", json!({ "elementId": "scene:#1/element:\"Bob\"", "frame": 1 }));
     h
 }
 
