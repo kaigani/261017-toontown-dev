@@ -1,0 +1,30 @@
+[
+  {
+    "file": "tests\\adversarial\\c41-r1s-messages.py",
+    "exit": 0
+  },
+  {
+    "file": "tests\\adversarial\\c41-r1s-parity.py",
+    "exit": 0
+  },
+  {
+    "file": "tests\\adversarial\\c41-r1s-prefs.py",
+    "exit": 0
+  },
+  {
+    "file": "tests\\adversarial\\c41-r2s-keymap-schema.py",
+    "exit": 0
+  },
+  {
+    "file": "tests\\adversarial\\c41-r2s-message-coverage.py",
+    "exit": 0
+  },
+  {
+    "file": "tests\\adversarial\\c41-r3s-generated-sequence.py",
+    "exit": 0
+  },
+  {
+    "file": "tests\\adversarial\\c41-r3s-message-constant.py",
+    "exit": 0
+  }
+]
