@@ -515,19 +515,33 @@ fn read_head(stream: &mut TcpStream, deadline: Instant, evicted: &AtomicBool) ->
     }
 }
 
-/// Reads `len` body bytes incrementally (`first` already arrived with the head) before `deadline`.
-fn read_body(stream: &mut TcpStream, first: Vec<u8>, len: usize, deadline: Instant) -> Option<Vec<u8>> {
+/// Reads `len` body bytes incrementally (`first` already arrived with the head) before `deadline`, in slices of
+/// [`EVICT_POLL`]: a server stop ends the read within one slice (C41-R3-02), and the worker then drops what kept its
+/// session's protocol loop alive.
+fn read_body(
+    stream: &mut TcpStream,
+    first: Vec<u8>,
+    len: usize,
+    deadline: Instant,
+    stopped: &AtomicBool,
+) -> Option<Vec<u8>> {
     let mut body = first;
     body.truncate(len);
     let mut chunk = vec![0u8; BODY_CHUNK.min(len.max(1))];
     while body.len() < len {
-        if !arm(stream, deadline) {
+        if stopped.load(Ordering::Acquire) || !arm(stream, deadline.min(Instant::now() + EVICT_POLL)) {
             return None;
         }
         let want = (len - body.len()).min(chunk.len());
         match stream.read(&mut chunk[..want]) {
-            Ok(0) | Err(_) => return None,
+            Ok(0) => return None,
             Ok(n) => body.extend_from_slice(&chunk[..n]),
+            Err(e) if matches!(e.kind(), std::io::ErrorKind::WouldBlock | std::io::ErrorKind::TimedOut) => {
+                if Instant::now() >= deadline {
+                    return None;
+                }
+            }
+            Err(_) => return None,
         }
     }
     Some(body)
@@ -1122,7 +1136,12 @@ fn post(
         },
         None => None,
     };
-    let Some(body) = read_body(stream, first, head.content_length, accepted + shared.limits.request_deadline) else {
+    let deadline = accepted + shared.limits.request_deadline;
+    let Some(body) = read_body(stream, first, head.content_length, deadline, &shared.stopped) else {
+        if shared.stopped.load(Ordering::Acquire) {
+            // Stopping: the worker ends now; its session's input sender goes with it (C41-R3-02).
+            return;
+        }
         return json_error(stream, "408 Request Timeout", "the request body did not arrive in time");
     };
     read_all.set(true);

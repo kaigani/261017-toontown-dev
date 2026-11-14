@@ -74,28 +74,8 @@ fn get_stream(srv: &HttpServer, sid: &str) -> BufReader<TcpStream> {
     r
 }
 
-/// I-1: under idle and refused bursts the server never holds more workers, pending connections or lingering sockets
-/// than its caps (threads `3 + C + S`, sockets `2 + C + L`), and gives everything back afterwards.
-#[test]
-fn admission_bounds_hold_under_idle_and_refused_bursts() {
-    let srv = limited(Limits { max_connections: 4, max_unauthenticated: 2, max_lingering: 8, ..Default::default() });
-    let mut held = Vec::new();
-    for i in 0..40 {
-        if i % 2 == 0 {
-            held.push(silent(&srv));
-        } else {
-            let mut s = TcpStream::connect(srv.addr).unwrap();
-            s.write_all(b"DELETE /mcp HTTP/1.1\r\nHost: localhost\r\n\r\n").unwrap();
-            held.push(s);
-        }
-        let s = srv.stats();
-        assert!(s.workers <= 4 && s.pending <= 2 && s.lingering <= 8 && s.sessions <= 32, "{s:?}");
-    }
-    let s = until(&srv, "the burst settles within the caps", |s| s.workers <= 4);
-    assert!(s.pending <= 2 && s.lingering <= 8, "{s:?}");
-    drop(held);
-    until(&srv, "everything is given back", |s| s.workers == 0 && s.pending == 0 && s.lingering == 0);
-}
+// I-1 (the thread and socket bounds) is measured in OS threads in `tests/c41_isolated.rs`, a binary of its own so no
+// other test's threads disturb the count (ruling O-20).
 
 /// I-2: a newcomer that meets a full pending pool is refused `503` and the connection that has waited longest for its
 /// head is evicted, not a younger one; the younger one is still served.

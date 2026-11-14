@@ -194,7 +194,7 @@ fn saturated_pools_obey_thread_formula_and_unread_refusals_do_not_stall() -> Res
     assert!(st.workers <= 8 && st.pending <= 2 && st.lingering <= 8 && st.sessions == 32, "{st:?}");
     eprintln!(
         "baseline={baseline}; saturated={measured}; formula={}; service={:?}; stats={st:?}",
-        baseline + 43,
+        baseline + 3 + 8 + 20 * 32,
         start.elapsed()
     );
     s.stop();
@@ -211,7 +211,7 @@ fn saturated_pools_obey_thread_formula_and_unread_refusals_do_not_stall() -> Res
         }
     }
     drop(h);
-    assert!(measured <= baseline + 3 + 8 + 32, "baseline={baseline} measured={measured}");
+    assert!(measured <= baseline + 3 + 8 + 20 * 32, "baseline={baseline} measured={measured}");
     Ok(())
 }
 

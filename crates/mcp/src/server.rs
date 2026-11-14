@@ -56,6 +56,24 @@ const SERVER_WORK_BUDGET: Duration = Duration::from_secs(5);
 /// How long closing waits for the running request and for the writer.
 const SHUTDOWN_GRACE: Duration = Duration::from_secs(1);
 
+/// Threads a session keeps for its whole life: the protocol loop itself (the caller of [`serve`]), `mcp-writer`,
+/// `mcp-reader`, `mcp-events` and `mcp-calls` (ruling O-20).
+pub const PERSISTENT_THREADS: usize = 5;
+/// `job_wait` calls of one session waiting at once, each on its own `mcp-wait` thread (it blocks on the caller's side,
+/// 11 P5); one more is refused with `limit.exceeded` (`limit: "concurrentJobWaits"`) (ruling O-20).
+pub const MAX_JOB_WAITS: usize = 4;
+/// Server-side work threads (`mcp-server-work`: `list_commands`, `describe_command`, `get_docs`) of one session alive
+/// at once: such a thread outlives its call when the work passes its budget; one more is refused with
+/// `limit.exceeded` (`limit: "serverWork"`) (ruling O-20).
+pub const MAX_SERVER_WORK: usize = 2;
+/// Root refreshes (`mcp-roots`) of one session at once: requests made while one runs are coalesced into it.
+pub const ROOTS_THREADS: usize = 1;
+/// Job threads the executor runs for one agent session at most: its `maxJobs` limit, whose domain is 1..8 (11 §15;
+/// `agent.policy.defaults`); the executor refuses one more with `limit.exceeded` (`limit: "maxJobs"`).
+pub const JOB_THREADS: usize = 8;
+/// K: the most threads one session can own at once, persistent and transient (ruling O-20): 5 + 4 + 2 + 1 + 8 = 20.
+pub const SESSION_THREADS: usize = PERSISTENT_THREADS + MAX_JOB_WAITS + MAX_SERVER_WORK + ROOTS_THREADS + JOB_THREADS;
+
 /// How the server runs.
 #[derive(Debug, Clone)]
 pub struct ServerOptions {
@@ -125,6 +143,13 @@ struct Shared {
     /// ignored (C14-R3-03). Guarded by the `cancelled` lock's discipline: both sets change only under `cancelled`.
     committed: Mutex<HashSet<String>>,
     closing: Arc<AtomicBool>,
+    /// `mcp-wait` threads alive ([`MAX_JOB_WAITS`]).
+    waits: Arc<AtomicUsize>,
+    /// `mcp-server-work` threads alive ([`MAX_SERVER_WORK`]).
+    server_work: Arc<AtomicUsize>,
+    /// A roots refresh is running; another was asked meanwhile ([`ROOTS_THREADS`]).
+    roots_busy: AtomicBool,
+    roots_again: AtomicBool,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -394,6 +419,10 @@ where
         cancelled: Mutex::new(HashSet::new()),
         committed: Mutex::new(HashSet::new()),
         closing: closing.clone(),
+        waits: Arc::new(AtomicUsize::new(0)),
+        server_work: Arc::new(AtomicUsize::new(0)),
+        roots_busy: AtomicBool::new(false),
+        roots_again: AtomicBool::new(false),
     });
     // Reader: frames no longer than the session's maxInlineBytes.
     let max = handle
@@ -496,13 +525,30 @@ where
                 // `job_wait` blocks on the caller's side (11 P5) and gets its own thread; everything else runs in
                 // arrival order.
                 if method == "tools/call" && params.get("name").and_then(Value::as_str) == Some("job_wait") {
+                    // At most MAX_JOB_WAITS waiting threads per session (ruling O-20).
+                    if !take_slot(&shared.waits, MAX_JOB_WAITS) {
+                        let env = envelope_error(
+                            "limit.exceeded",
+                            format!("this session already waits on {MAX_JOB_WAITS} jobs at once"),
+                            json!({ "limit": "concurrentJobWaits", "value": MAX_JOB_WAITS }),
+                            Some("wait for one job at a time, or read its state with job.get"),
+                        );
+                        shared.send(&jsonrpc::result(&id, tool_result("job_wait", "job.wait", &env)));
+                        release(&shared, &id);
+                        continue;
+                    }
                     let s = shared.clone();
-                    let spawned = std::thread::Builder::new()
-                        .name("mcp-wait".into())
-                        .spawn(move || answer(&s, &id, &method, &params));
+                    let slots = shared.waits.clone();
+                    let spawned = std::thread::Builder::new().name("mcp-wait".into()).spawn(move || {
+                        answer(&s, &id, &method, &params);
+                        slots.fetch_sub(1, Ordering::AcqRel);
+                    });
                     match spawned {
                         Ok(h) => waits.push(h),
-                        Err(e) => return Err(e.to_string()),
+                        Err(e) => {
+                            shared.waits.fetch_sub(1, Ordering::AcqRel);
+                            return Err(e.to_string());
+                        }
                     }
                     waits.retain(|h| !h.is_finished());
                 } else if work_tx.send((id, method, params)).is_err() {
@@ -544,6 +590,11 @@ fn answer(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) {
     {
         shared.send(&r);
     }
+    release(shared, id);
+}
+
+/// The bookkeeping of an admitted request that has been answered or refused.
+fn release(shared: &Shared, id: &Value) {
     let key = id.to_string();
     {
         let mut cancelled = lock(&shared.cancelled);
@@ -554,12 +605,36 @@ fn answer(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) {
     lock(&shared.st).inflight -= 1;
 }
 
+/// Takes one of `cap` slots; `false` when all are taken.
+fn take_slot(counter: &AtomicUsize, cap: usize) -> bool {
+    counter.fetch_update(Ordering::AcqRel, Ordering::Acquire, |n| (n < cap).then_some(n + 1)).is_ok()
+}
+
 fn notification(shared: &Arc<Shared>, method: &str, params: &Value) {
     match method {
         "notifications/initialized" | "notifications/roots/list_changed" => {
             if shared.client_can("roots") {
+                // One refresh at a time (ruling O-20): a request made while one runs makes it read the roots again.
+                shared.roots_again.store(true, Ordering::Release);
+                if shared.roots_busy.swap(true, Ordering::AcqRel) {
+                    return;
+                }
                 let s = shared.clone();
-                let _ = std::thread::Builder::new().name("mcp-roots".into()).spawn(move || refresh_roots(&s));
+                let spawned = std::thread::Builder::new().name("mcp-roots".into()).spawn(move || {
+                    loop {
+                        while s.roots_again.swap(false, Ordering::AcqRel) {
+                            refresh_roots(&s);
+                        }
+                        s.roots_busy.store(false, Ordering::Release);
+                        // A request that came after the last check and found the refresh busy is served here.
+                        if !s.roots_again.load(Ordering::Acquire) || s.roots_busy.swap(true, Ordering::AcqRel) {
+                            break;
+                        }
+                    }
+                });
+                if spawned.is_err() {
+                    shared.roots_busy.store(false, Ordering::Release);
+                }
             }
         }
         // Only a request in progress can be cancelled; an unknown or finished id is ignored (C14-R1-17).
@@ -1001,12 +1076,12 @@ fn call_tool(
         Plan::Server => match name {
             "list_commands" => {
                 let (h, o, a) = (shared.handle.clone(), origin.clone(), args.clone());
-                ("list_commands".to_owned(), bounded("list_commands", move || list_commands(&h, &o, &a)), false)
+                ("list_commands".to_owned(), bounded(shared, "list_commands", move || list_commands(&h, &o, &a)), false)
             }
             "describe_command" => {
                 let cid = args.get("id").and_then(Value::as_str).unwrap_or_default().to_owned();
                 let h = shared.handle.clone();
-                let env = bounded("describe_command", move || match h.describe_command(&cid) {
+                let env = bounded(shared, "describe_command", move || match h.describe_command(&cid) {
                     Some(d) => Envelope::ok(d, None),
                     None => envelope_error(
                         "command.unknown",
@@ -1019,7 +1094,7 @@ fn call_tool(
             }
             "get_docs" => {
                 let topic = args.get("topic").and_then(Value::as_str).unwrap_or("agent-guide").to_owned();
-                let env = bounded("get_docs", move || match docs::topic(reg, &topic) {
+                let env = bounded(shared, "get_docs", move || match docs::topic(reg, &topic) {
                     Some(md) => Envelope::ok(json!({ "topic": topic, "markdown": md }), None),
                     None => envelope_error(
                         "arg.invalid",
@@ -1154,13 +1229,25 @@ fn key_tool(
 }
 
 /// Runs work the server does itself under [`SERVER_WORK_BUDGET`] (C14-R1-05): the call thread is free again when
-/// the budget passes, whatever the work does.
-fn bounded(what: &str, work: impl FnOnce() -> Envelope + Send + 'static) -> Envelope {
+/// the budget passes, whatever the work does. A work thread that outlives its budget still counts against the
+/// session's [`MAX_SERVER_WORK`] until it ends (ruling O-20).
+fn bounded(shared: &Shared, what: &str, work: impl FnOnce() -> Envelope + Send + 'static) -> Envelope {
+    if !take_slot(&shared.server_work, MAX_SERVER_WORK) {
+        return envelope_error(
+            "limit.exceeded",
+            format!("{MAX_SERVER_WORK} earlier server-side requests of this session are still running"),
+            json!({ "limit": "serverWork", "value": MAX_SERVER_WORK, "tool": what }),
+            Some("call again when they have finished"),
+        );
+    }
     let (tx, rx) = mpsc::channel();
+    let slots = shared.server_work.clone();
     let spawned = std::thread::Builder::new().name("mcp-server-work".into()).spawn(move || {
         let _ = tx.send(work());
+        slots.fetch_sub(1, Ordering::AcqRel);
     });
     if let Err(e) = spawned {
+        shared.server_work.fetch_sub(1, Ordering::AcqRel);
         return Envelope::error(CommandError::internal(format!("cannot start `{what}`: {e}")), None);
     }
     rx.recv_timeout(SERVER_WORK_BUDGET).unwrap_or_else(|_| {
