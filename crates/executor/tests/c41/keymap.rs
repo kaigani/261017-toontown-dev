@@ -1,6 +1,7 @@
 //! M4 C4.1: the keymap module (01 §8): canonical sequences per platform, defaults conflict-free, mode precedence,
 //! overrides round trip. Builder-owned.
 
+use serde_json::json;
 use tt_executor::keymap::*;
 #[test]
 fn sequences_are_canonical_and_platform_aware() {
@@ -69,4 +70,49 @@ fn overrides_round_trip_through_effective() {
     desired.sort_by(|a, b| (&a.command_id, a.context, &a.keys).cmp(&(&b.command_id, b.context, &b.keys)));
     e.sort_by(|a, b| (&a.command_id, a.context, &a.keys).cmp(&(&b.command_id, b.context, &b.keys)));
     assert_eq!(e, desired);
+}
+
+/// C41-R2-21: the length bounds of command ids, key sequences and looked-up names are the domain's, so an over-long
+/// value answers the typed domain error, never a schema `arg.invalid` that pre-empts it; through `keymap.set`,
+/// `keymap.remove`, `keymap.get`, `keymap.reset`, the import path, `ui.help.get`, `workspace.export` and
+/// `inspect.ui.tree`.
+#[test]
+fn over_long_values_answer_their_domain_errors() {
+    let h = tt_executor::ExecutorHandle::spawn(Default::default()).unwrap();
+    let code = |id: &str, p: serde_json::Value| h.invoke(tt_executor::Invocation::user(id, p)).error.unwrap().code;
+    let long_id = "a".repeat(257);
+    let long_keys = "x".repeat(65);
+    assert_eq!(code("keymap.set", json!({ "commandId": long_id, "keys": "F2" })), "keymap.unknownCommand");
+    assert_eq!(code("keymap.set", json!({ "commandId": "project.save", "keys": long_keys })), "keymap.invalidSequence");
+    assert_eq!(code("keymap.remove", json!({ "commandId": long_id })), "keymap.unknownCommand");
+    assert_eq!(
+        code("keymap.remove", json!({ "commandId": "project.save", "keys": long_keys })),
+        "keymap.invalidSequence"
+    );
+    assert_eq!(code("keymap.get", json!({ "commandId": long_id })), "keymap.unknownCommand");
+    assert_eq!(code("keymap.get", json!({ "keys": long_keys })), "keymap.invalidSequence");
+    assert_eq!(code("keymap.reset", json!({ "commandId": long_id })), "keymap.unknownCommand");
+    let file = std::env::temp_dir().join(format!("tt-c41-long-{}.json", tt_executor::random_token(6)));
+    for (command, keys, expected) in [
+        (long_id.as_str(), "F2", "keymap.unknownCommand"),
+        ("project.save", long_keys.as_str(), "keymap.invalidSequence"),
+    ] {
+        let data = json!({ "format": "toontown-keymap", "formatVersion": "1.0",
+            "bindings": [{ "commandId": command, "keys": keys, "context": "global" }] });
+        std::fs::write(&file, data.to_string()).unwrap();
+        let e = h
+            .invoke(tt_executor::Invocation::user("keymap.import", json!({ "path": file, "mode": "merge" })))
+            .error
+            .unwrap();
+        assert_eq!((e.code.as_str(), e.details["index"].as_u64()), (expected, Some(0)));
+    }
+    let _ = std::fs::remove_file(&file);
+    let long = "m".repeat(300);
+    assert_eq!(code("ui.help.get", json!({ "messageId": long })), "ui.unknownMessage");
+    assert_eq!(code("ui.help.get", json!({ "commandId": long })), "command.unknown");
+    assert_eq!(code("ui.help.get", json!({ "panelId": long })), "window.panelNotFound");
+    assert_eq!(code("ui.help.get", json!({ "preferenceKey": long })), "prefs.unknownKey");
+    let target = std::env::temp_dir().join("tt-c41-long-workspace.json");
+    assert_eq!(code("workspace.export", json!({ "name": long, "path": target })), "workspace.notFound");
+    assert_eq!(code("inspect.ui.tree", json!({ "target": long })), "window.panelNotFound");
 }

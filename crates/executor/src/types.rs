@@ -275,7 +275,8 @@ impl Envelope {
             status: Status::Ok,
             result: Some(result),
             error: None,
-            ..Self::error(CommandError::new("", ""), document_rev)
+            // The error fields are replaced above; the constructor only supplies the other members.
+            ..Self::error(CommandError::internal(String::new()), document_rev)
         }
     }
 

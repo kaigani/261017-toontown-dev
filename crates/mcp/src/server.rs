@@ -1105,12 +1105,18 @@ fn key_tool(
     };
     match resolved {
         tt_executor::host::KeyResolution::Suspended { keys, reason } => {
-            let (code, message) = if reason == "modal" {
-                ("ui.modalOpen", "a dialog the user opened has the keyboard; keys reach it, not the application")
+            let details = json!({ "keys": keys, "reason": reason });
+            let env = if reason == "modal" {
+                let why = "a dialog the user opened has the keyboard; keys reach it, not the application";
+                envelope_error("ui.modalOpen", why.into(), details, None)
             } else {
-                ("ui.busy", "the user is editing a text field; unmodified keys belong to it")
+                envelope_error(
+                    "ui.busy",
+                    "the user is editing a text field; unmodified keys belong to it".into(),
+                    details,
+                    None,
+                )
             };
-            let env = envelope_error(code, message.into(), json!({ "keys": keys, "reason": reason }), None);
             shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
             ("key".to_owned(), env)
         }

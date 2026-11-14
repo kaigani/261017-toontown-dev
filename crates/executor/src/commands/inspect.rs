@@ -874,9 +874,9 @@ pub(crate) fn inspect_contact_sheet_render(cx: &mut Cx, p: ContactSheetParams) -
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct UiTreeParams {
-    /// `window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`.
+    /// `window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`; an unknown target, however
+    /// long, is `window.panelNotFound` (no schema bound pre-empts it: C41-R2-21 audit).
     #[serde(default)]
-    #[schemars(length(max = 256))]
     target: Option<String>,
     /// Levels below the target to include (default: all).
     #[serde(default)]

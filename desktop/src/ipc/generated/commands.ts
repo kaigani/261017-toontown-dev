@@ -61324,12 +61324,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       target: {
-        description: "`window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`.",
+        description: "`window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`; an unknown target, however\nlong, is `window.panelNotFound` (no schema bound pre-empts it: C41-R2-21 audit).",
         type: [
           "string",
           "null",
         ],
-        maxLength: 256,
         default: null,
       },
       depth: {
@@ -62146,7 +62145,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "string",
           "null",
         ],
-        maxLength: 256,
         default: null,
       },
       keys: {
@@ -62155,7 +62153,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "string",
           "null",
         ],
-        maxLength: 64,
         default: null,
       },
       context: {
@@ -62522,7 +62519,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       commandId: {
         description: "Command whose bindings to remove (empty or unknown: `keymap.unknownCommand`).",
         type: "string",
-        maxLength: 256,
       },
       keys: {
         description: "Only this sequence.",
@@ -62530,7 +62526,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "string",
           "null",
         ],
-        maxLength: 64,
         default: null,
       },
       context: {
@@ -62616,7 +62611,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "string",
           "null",
         ],
-        maxLength: 256,
         default: null,
       },
       all: {
@@ -62684,9 +62678,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       commandId: {
-        description: "Command to bind (an empty or unknown id is `keymap.unknownCommand`, not a schema error: C41-R1-13).",
+        description: "Command to bind (an empty, unknown or over-long id is `keymap.unknownCommand`, not a schema error: C41-R1-13,\nC41-R2-21).",
         type: "string",
-        maxLength: 256,
       },
       params: {
         description: "Fixed parameters of the command reference.",
@@ -62698,9 +62691,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       keys: {
-        description: "Key sequence (01 §12.1 rule 17); an empty one is `keymap.invalidSequence` (C41-R1-13).",
+        description: "Key sequence (01 §12.1 rule 17); an empty or over-long one (more than 64 characters) is\n`keymap.invalidSequence` (C41-R1-13, C41-R2-21).",
         type: "string",
-        maxLength: 64,
       },
       context: {
         description: "Context.",
@@ -79954,7 +79946,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
   },
   "ui.help.get.params": {
     title: "HelpParams",
-    description: "`ui.help.get` parameters (exactly one target).",
+    description: "`ui.help.get` parameters (exactly one target). No schema length bound: an id longer than any catalogue id is\nunknown and answers its typed error (`command.unknown`, `window.panelNotFound`, `prefs.unknownKey`,\n`ui.unknownMessage`), which a schema bound would pre-empt (C41-R2-21 audit); the frame limit bounds the input.",
     type: "object",
     properties: {
       commandId: {
@@ -79963,7 +79955,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "string",
           "null",
         ],
-        maxLength: 256,
         default: null,
       },
       panelId: {
@@ -79972,7 +79963,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "string",
           "null",
         ],
-        maxLength: 256,
         default: null,
       },
       preferenceKey: {
@@ -79981,7 +79971,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "string",
           "null",
         ],
-        maxLength: 256,
         default: null,
       },
       messageId: {
@@ -79990,7 +79979,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "string",
           "null",
         ],
-        maxLength: 256,
         default: null,
       },
     },
@@ -82781,9 +82769,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       name: {
-        description: "Workspace name (empty or unknown: `workspace.notFound`; C41-R1-13 audit).",
+        description: "Workspace name (empty, unknown or longer than any name: `workspace.notFound`; C41-R1-13, C41-R2-21 audits).",
         type: "string",
-        maxLength: 256,
       },
       path: {
         description: "Absolute target path.",
@@ -98230,7 +98217,7 @@ export type inspect_screenshot_result = Record<string, unknown>;
 
 /** `inspect.ui.tree` parameters (11 §7.5 `inspect_ui`). */
 export interface inspect_ui_tree_params {
-  /** `window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`. */
+  /** `window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`; an unknown target, however long, is `window.panelNotFound` (no schema bound pre-empts it: C41-R2-21 audit). */
   target?: string | null;
   /** Levels below the target to include (default: all). */
   depth?: number | null;
@@ -98661,11 +98648,11 @@ export type keymap_set_OnConflict = 'fail' | 'override';
 
 /** `keymap.set` parameters. */
 export interface keymap_set_params {
-  /** Command to bind (an empty or unknown id is `keymap.unknownCommand`, not a schema error: C41-R1-13). */
+  /** Command to bind (an empty, unknown or over-long id is `keymap.unknownCommand`, not a schema error: C41-R1-13, C41-R2-21). */
   commandId: string;
   /** Fixed parameters of the command reference. */
   params?: Record<string, unknown> | null;
-  /** Key sequence (01 §12.1 rule 17); an empty one is `keymap.invalidSequence` (C41-R1-13). */
+  /** Key sequence (01 §12.1 rule 17); an empty or over-long one (more than 64 characters) is `keymap.invalidSequence` (C41-R1-13, C41-R2-21). */
   keys: string;
   /** Context. */
   context?: keymap_set_Context;
@@ -103153,7 +103140,7 @@ export interface ui_contextHelpMode_set_result {
   enabled: boolean;
 }
 
-/** `ui.help.get` parameters (exactly one target). */
+/** `ui.help.get` parameters (exactly one target). No schema length bound: an id longer than any catalogue id is unknown and answers its typed error (`command.unknown`, `window.panelNotFound`, `prefs.unknownKey`, `ui.unknownMessage`), which a schema bound would pre-empt (C41-R2-21 audit); the frame limit bounds the input. */
 export interface ui_help_get_params {
   /** A command. */
   commandId?: string | null;
@@ -104065,7 +104052,7 @@ export type workspace_export_OnExists = 'fail' | 'overwrite';
 
 /** `workspace.export` parameters. */
 export interface workspace_export_params {
-  /** Workspace name (empty or unknown: `workspace.notFound`; C41-R1-13 audit). */
+  /** Workspace name (empty, unknown or longer than any name: `workspace.notFound`; C41-R1-13, C41-R2-21 audits). */
   name: string;
   /** Absolute target path. */
   path: string;

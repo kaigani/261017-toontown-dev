@@ -240,8 +240,7 @@ pub(crate) fn workspace_layout_set(cx: &mut Cx, p: LayoutParams) -> Result<Layou
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ExportParams {
-    /// Workspace name (empty or unknown: `workspace.notFound`; C41-R1-13 audit).
-    #[schemars(length(max = 256))]
+    /// Workspace name (empty, unknown or longer than any name: `workspace.notFound`; C41-R1-13, C41-R2-21 audits).
     name: String,
     /// Absolute target path.
     #[schemars(length(max = 4096))]

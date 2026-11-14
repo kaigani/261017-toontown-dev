@@ -81,6 +81,7 @@ jobs:
           PY=python3
           if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
           $PY -I scripts/check-message-help.py
+          $PY -I scripts/test_check_message_help.py
 
       - name: Front end — build, diagnostics variant then default (frontendDist is embedded by the Tauri host)
         run: |

@@ -36,9 +36,16 @@ fn stage(cx: &mut Cx, before: &[Binding], after: Vec<Binding>) {
 }
 
 /// Checks that a command can be bound: registered, not an event, the fixed parameters valid for it.
+/// The longest command id a binding may name (the sequence's bound, 64 characters, is the parser's:
+/// `keymap.invalidSequence`).
+const MAX_COMMAND_ID: usize = 256;
+
 pub(crate) fn check_reference(command_id: &str, params: Option<&Map<String, Value>>) -> Result<(), CommandError> {
     let registry = crate::registry().map_err(|e| CommandError::internal(e.0))?;
-    let entry = registry.get(command_id).filter(|e| e.spec.kind != Kind::Event).ok_or_else(|| {
+    // The length bound is the domain's (C41-R2-21): a longer id names no command, so it is `keymap.unknownCommand`,
+    // not a schema refusal that would pre-empt it.
+    let known = (command_id.chars().count() <= MAX_COMMAND_ID).then(|| registry.get(command_id)).flatten();
+    let entry = known.filter(|e| e.spec.kind != Kind::Event).ok_or_else(|| {
         CommandError::with_details(
             kcodes::UNKNOWN_COMMAND,
             format!("`{command_id}` is not a command that can be bound"),
@@ -135,11 +142,9 @@ pub(crate) fn keymap_list(cx: &mut Cx, p: ListParams) -> Result<Vec<Binding>, Co
 pub(crate) struct GetParams {
     /// The command whose bindings to read.
     #[serde(default)]
-    #[schemars(length(max = 256))]
     command_id: Option<String>,
     /// The key sequence whose command to read.
     #[serde(default)]
-    #[schemars(length(max = 64))]
     keys: Option<String>,
     /// Context of `keys` (a mode context falls back to `global`).
     #[serde(default = "global")]
@@ -227,14 +232,14 @@ pub(crate) enum OnConflict {
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct SetParams {
-    /// Command to bind (an empty or unknown id is `keymap.unknownCommand`, not a schema error: C41-R1-13).
-    #[schemars(length(max = 256))]
+    /// Command to bind (an empty, unknown or over-long id is `keymap.unknownCommand`, not a schema error: C41-R1-13,
+    /// C41-R2-21).
     command_id: String,
     /// Fixed parameters of the command reference.
     #[serde(default)]
     params: Option<Map<String, Value>>,
-    /// Key sequence (01 §12.1 rule 17); an empty one is `keymap.invalidSequence` (C41-R1-13).
-    #[schemars(length(max = 64))]
+    /// Key sequence (01 §12.1 rule 17); an empty or over-long one (more than 64 characters) is
+    /// `keymap.invalidSequence` (C41-R1-13, C41-R2-21).
     keys: String,
     /// Context.
     #[serde(default = "global")]
@@ -317,11 +322,9 @@ pub(crate) fn keymap_set(cx: &mut Cx, p: SetParams) -> Result<SetResult, Command
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct RemoveParams {
     /// Command whose bindings to remove (empty or unknown: `keymap.unknownCommand`).
-    #[schemars(length(max = 256))]
     command_id: String,
     /// Only this sequence.
     #[serde(default)]
-    #[schemars(length(max = 64))]
     keys: Option<String>,
     /// Only this context.
     #[serde(default)]
@@ -365,7 +368,6 @@ pub(crate) fn keymap_remove(cx: &mut Cx, p: RemoveParams) -> Result<RemoveResult
 pub(crate) struct ResetParams {
     /// The command to reset to its default bindings.
     #[serde(default)]
-    #[schemars(length(max = 256))]
     command_id: Option<String>,
     /// Restore the whole default keymap.
     #[serde(default)]

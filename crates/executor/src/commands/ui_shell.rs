@@ -303,25 +303,23 @@ pub(crate) fn ui_context_help_mode_set(cx: &mut Cx, p: Enabled) -> Result<Enable
     Ok(p)
 }
 
-/// `ui.help.get` parameters (exactly one target).
+/// `ui.help.get` parameters (exactly one target). No schema length bound: an id longer than any catalogue id is
+/// unknown and answers its typed error (`command.unknown`, `window.panelNotFound`, `prefs.unknownKey`,
+/// `ui.unknownMessage`), which a schema bound would pre-empt (C41-R2-21 audit); the frame limit bounds the input.
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct HelpParams {
     /// A command.
     #[serde(default)]
-    #[schemars(length(max = 256))]
     command_id: Option<String>,
     /// A panel (01 §5.2) or tool palette.
     #[serde(default)]
-    #[schemars(length(max = 256))]
     panel_id: Option<String>,
     /// A preference.
     #[serde(default)]
-    #[schemars(length(max = 256))]
     preference_key: Option<String>,
     /// A message.
     #[serde(default)]
-    #[schemars(length(max = 256))]
     message_id: Option<String>,
 }
 
