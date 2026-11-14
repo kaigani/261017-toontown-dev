@@ -42,7 +42,9 @@ number). Events must be finite numbers within ±10,000,000 view pixels (`arg.inv
 - **P2** A user press during an agent gesture cancels the agent's with a typed error and leaves the document unchanged
   (C4.2b).
 - **P3** `dt` never reads the wall clock: the same events give the same commands on every run.
-- **P4** Agent mutations during a user gesture wait at most `waitForUserMs`, then `ui.busy` (C4.2b; headless has no
-  user gestures).
+- **P4** Agent mutations during a user gesture wait at most `waitForUserMs`, then `ui.busy`. The kernel rule is
+  C4.2a's (ruling D-12: every agent command that writes document or session state, `ui` kinds and `pointer` included,
+  while the reported modal state is a gesture; tested with a reported gesture); the attached input queue that reports
+  the gesture is C4.2b's.
 - **P5** The envelopes returned are those of the commands invoked, in order; a refused gesture's envelope is its typed
   refusal.

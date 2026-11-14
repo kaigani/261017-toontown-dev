@@ -280,8 +280,13 @@ pub(crate) fn view_active_set(cx: &mut Cx, p: ActiveParams) -> Result<ViewIdResu
     if !cx.ui().panel_visible(&id) {
         cx.ui_mut().set_panel(&id, Some(true), None, true, None)?;
     }
-    cx.ui_mut().shell_mut().active_view = Some(id.clone());
-    announce(cx, &id);
+    // An event only for an effective change (the C4.1 change-event rule).
+    if cx.ui().active_view() != id {
+        cx.ui_mut().shell_mut().active_view = Some(id.clone());
+        announce(cx, &id);
+    } else {
+        cx.ui_mut().shell_mut().active_view = Some(id.clone());
+    }
     Ok(ViewIdResult { view_id: id })
 }
 

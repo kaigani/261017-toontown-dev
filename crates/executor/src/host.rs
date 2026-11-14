@@ -201,6 +201,9 @@ const FOCUS_CHANGING: &[&str] = &[
     "ui.preferences.open",
     "ui.help.open",
     "ui.startScreen.set",
+    // M4 C4.2 (C42A-R1-05, ruling D-12): the active tool decides what the user's next input does.
+    "tool.active.set",
+    "tool.group.select",
 ];
 
 /// The poll interval of a waiting agent caller.
@@ -614,6 +617,10 @@ impl ExecutorHandle {
                 );
             }
         };
+        // User priority (11 §6.4; ruling D-12): an agent's gestures wait for the user's dialog or gesture, then `ui.busy`.
+        if let Err(e) = self.user_priority(&origin, "pointer", &|| false) {
+            return crate::types::Envelope::error(e, None);
+        }
         let run = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
             let out = crate::gesture::run(core, &origin, &req);
             let rev = core.session().and_then(|s| s.project.as_ref()).map(|p| p.doc.document_rev());
@@ -826,8 +833,12 @@ impl ExecutorHandle {
         if !matches!(origin, Origin::Agent { .. }) {
             return Ok(());
         }
-        let kind =
-            if command == "batch" { Some(Kind::Action) } else { self.registry.get(command).map(|e| e.spec.kind) };
+        // A batch and a `pointer` call are arbitrated as actions (the gestures' commands change the document).
+        let kind = if command == "batch" || command == "pointer" {
+            Some(Kind::Action)
+        } else {
+            self.registry.get(command).map(|e| e.spec.kind)
+        };
         let modal = || self.shell.modal.lock().unwrap_or_else(PoisonError::into_inner).clone();
         let Some(m) = modal() else { return Ok(()) };
         match kind {
@@ -838,29 +849,39 @@ impl ExecutorHandle {
                     json!({ "blockedBy": { "kind": m.kind, "title": m.title } }),
                 ))
             }
+            // Under a dialog actions and jobs wait (C4.1); while the user is mid-gesture every agent command that
+            // writes document or session state waits, `ui` and toggle kinds included (11 §6.4; ruling D-12).
             Some(Kind::Action | Kind::Job) if m.kind == "dialog" || m.kind == "gesture" => {
-                let wait =
-                    Duration::from_millis(self.shell.wait_for_user_ms.load(Ordering::Acquire)).min(self.config.budget);
-                let start = Instant::now();
-                loop {
-                    match modal() {
-                        None => return Ok(()),
-                        Some(now) if now.kind != "dialog" && now.kind != "gesture" => return Ok(()),
-                        Some(now) => {
-                            if cancelled() {
-                                return Err(crate::request_cancelled_error(command));
-                            }
-                            if start.elapsed() >= wait {
-                                return Err(ui_busy(&now, start.elapsed()));
-                            }
-                        }
+                self.wait_for_user(&modal, command, cancelled)
+            }
+            Some(Kind::Ui | Kind::Toggle) if m.kind == "gesture" => self.wait_for_user(&modal, command, cancelled),
+            _ => Ok(()),
+        }
+    }
+
+    /// Waits while the user's dialog or gesture lasts, up to `waitForUserMs` and the call's budget, then `ui.busy`.
+    fn wait_for_user(
+        &self,
+        modal: &dyn Fn() -> Option<ModalReport>,
+        command: &str,
+        cancelled: &dyn Fn() -> bool,
+    ) -> Result<(), CommandError> {
+        let wait = Duration::from_millis(self.shell.wait_for_user_ms.load(Ordering::Acquire)).min(self.config.budget);
+        let start = Instant::now();
+        loop {
+            match modal() {
+                None => return Ok(()),
+                Some(now) if now.kind != "dialog" && now.kind != "gesture" => return Ok(()),
+                Some(now) => {
+                    if cancelled() {
+                        return Err(crate::request_cancelled_error(command));
                     }
-                    std::thread::sleep(
-                        WAIT_POLL.min(wait.saturating_sub(start.elapsed())).max(Duration::from_millis(1)),
-                    );
+                    if start.elapsed() >= wait {
+                        return Err(ui_busy(&now, start.elapsed()));
+                    }
                 }
             }
-            _ => Ok(()),
+            std::thread::sleep(WAIT_POLL.min(wait.saturating_sub(start.elapsed())).max(Duration::from_millis(1)));
         }
     }
 }

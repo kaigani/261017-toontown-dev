@@ -23,14 +23,19 @@ Status: decided before implementation (M4 C4.1). Owner: builder. Spec: 01 §12.1
   applied between requests.
 - **Busy arbitration** runs on the caller's side of an agent call (the MCP request thread), never on the document
   thread, before the request is queued:
-  - *Waits:* an agent `action`, `job` or batch while `modal` is a dialog or a gesture. The wait polls a shared flag
+  - *Waits:* an agent `action`, `job`, batch or `pointer` call while `modal` is a dialog or a gesture; **while the user
+    is mid-gesture (M4 C4.2, ruling D-12), also every agent `ui` and `toggle` command**: `tool.*`, the pen commands,
+    `drawAid.*`, `view.*` and `colour.current.set` change the session state the user's gesture depends on (11 §6.4
+    lines 237-241). Queries still run. The wait polls a shared flag
     every 20 ms, bounded by the session's `waitForUserMs` and by the call's watchdog budget; it ends early when the
     modal state clears or the caller cancels (cancellation answers `command.timeout` with `reason: "cancelled"`, as
     every cancelled request does, ADR-0020 decision 8).
   - *Refused at once with `ui.modalOpen`:* an agent focus-changing `ui`/`toggle` command while a user *dialog* is
     open (`window.panel.set`, `window.panel.move`, `view.active.set`, `view.type.set`, `app.mode.set`,
     `workspace.select`, `workspace.layout.set`, `workspace.reset`, `window.fullScreen.set`, `window.minimized.set`,
-    `window.raiseAll.run`, `window.geometry.set`, `ui.preferences.open`, `ui.help.open`, `ui.startScreen.set`).
+    `window.raiseAll.run`, `window.geometry.set`, `ui.preferences.open`, `ui.help.open`, `ui.startScreen.set`; since
+    M4 C4.2 also `tool.active.set` and `tool.group.select`, since the active tool decides what the user's next input
+    does). Other `ui` commands under a dialog run as in C4.1.
   - *Never blocked:* queries, and every user-origin call (the GUI's own commands run; the modal dialog that is open is
     the user's).
   - On expiry: `ui.busy` with `details: {blockedBy: {kind, title}, waitedMs}`. Nothing was queued, so nothing ran.

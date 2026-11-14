@@ -550,7 +550,7 @@ impl Placement {
 }
 
 /// One static light-table entry.
-#[derive(Debug, Clone, Serialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct Entry {
     /// Entry id.
@@ -592,13 +592,16 @@ fn entries(cx: &Cx, scene: &Id) -> Vec<Entry> {
         .unwrap_or_default()
 }
 
-/// Drops entries whose sources are gone, then announces the scene's light table.
-fn announce(cx: &mut Cx, scene: &Id) -> Vec<Entry> {
+/// Drops entries whose sources are gone, then announces the scene's light table when it differs from `before` (an
+/// event only for an effective change, the C4.1 change-event rule).
+fn announce(cx: &mut Cx, scene: &Id, before: &[Entry]) -> Vec<Entry> {
     let live = entries(cx, scene);
     if let Some(items) = cx.session_mut().timeline.light_tables.get_mut(scene.as_str()) {
         items.retain(|it| live.iter().any(|e| e.entry_id == it.item_id));
     }
-    cx.emit("drawAid.changed", json!({ "aid": "staticLightTable", "state": live }));
+    if live != before {
+        cx.emit("drawAid.changed", json!({ "aid": "staticLightTable", "state": live }));
+    }
     live
 }
 
@@ -718,6 +721,7 @@ pub(crate) fn draw_aid_static_light_table_add(cx: &mut Cx, p: AddParams) -> Resu
         .scene_of(&element)
         .cloned()
         .ok_or_else(|| err("element.notFound", "the element has no scene", json!({ "pointer": "/elementId" })))?;
+    let before = entries(cx, &scene);
     let table = cx.session_mut().timeline.light_tables.entry(scene.as_str().to_owned()).or_default();
     if table.len() >= MAX_ENTRIES {
         return Err(err(
@@ -735,7 +739,7 @@ pub(crate) fn draw_aid_static_light_table_add(cx: &mut Cx, p: AddParams) -> Resu
         visible: p.visible,
         placement: p.placement.stored().to_owned(),
     });
-    announce(cx, &scene);
+    announce(cx, &scene, &before);
     Ok(EntryIdResult { entry_id })
 }
 
@@ -799,10 +803,11 @@ pub(crate) struct Removed {
 pub(crate) fn draw_aid_static_light_table_remove(cx: &mut Cx, p: RemoveParams) -> Result<Removed, CommandError> {
     let scene = current_scene(cx)?;
     let ids = chosen(cx, &scene, p.entry_ids.as_deref(), p.all)?;
+    let before = entries(cx, &scene);
     if let Some(items) = cx.session_mut().timeline.light_tables.get_mut(scene.as_str()) {
         items.retain(|it| !ids.contains(&it.item_id));
     }
-    announce(cx, &scene);
+    announce(cx, &scene, &before);
     Ok(Removed { removed_entry_ids: ids })
 }
 
@@ -861,6 +866,7 @@ pub(crate) fn draw_aid_static_light_table_set(cx: &mut Cx, p: SetParams) -> Resu
     } else {
         chosen(cx, &scene, p.entry_ids.as_deref(), p.all)?
     };
+    let before = entries(cx, &scene);
     if let Some(items) = cx.session_mut().timeline.light_tables.get_mut(scene.as_str()) {
         for it in items.iter_mut() {
             if ids.contains(&it.item_id) {
@@ -876,7 +882,7 @@ pub(crate) fn draw_aid_static_light_table_set(cx: &mut Cx, p: SetParams) -> Resu
             }
         }
     }
-    Ok(EntriesResult { entries: announce(cx, &scene) })
+    Ok(EntriesResult { entries: announce(cx, &scene, &before) })
 }
 
 /// `drawAid.staticLightTable.list` parameters.

@@ -153,3 +153,36 @@ fn p1_one_call_is_one_document_thread_request() {
         assert!(pts.iter().all(|p| (p["x"].as_f64().unwrap() - x0).abs() <= 50.0), "one call's clicks only: {c}");
     }
 }
+
+#[test]
+fn p4_kernel_rule_agent_writes_wait_for_a_user_gesture_then_answer_busy() {
+    let h = ready();
+    h.set_wait_for_user(std::time::Duration::from_millis(30));
+    h.report_shell(serde_json::from_value(json!({ "modal": { "kind": "gesture", "title": "Brush" } })).unwrap());
+    let a = agent(&[Scope::Ui, Scope::Read, Scope::Edit]);
+    for (id, p) in [
+        ("tool.active.set", json!({ "toolId": "brush" })),
+        ("drawAid.grid.set", json!({ "visible": true })),
+        ("view.zoom.set", json!({ "viewId": "drawingView", "steps": 1 })),
+    ] {
+        let e = h.invoke(tt_executor::Invocation {
+            command: id.into(),
+            params: p,
+            options: Default::default(),
+            origin: a.clone(),
+        });
+        assert_eq!(e.error.map(|x| x.code), Some("ui.busy".to_owned()), "{id}");
+    }
+    let e = h.pointer(
+        a.clone(),
+        json!({ "view": "drawing", "tool": "brush", "events": drag(&[(1000.0, 500.0), (1010.0, 490.0)]) }),
+    );
+    assert_eq!(e.error.map(|x| x.code), Some("ui.busy".to_owned()));
+    let q = h.invoke(tt_executor::Invocation {
+        command: "tool.active.get".into(),
+        params: json!({}),
+        options: Default::default(),
+        origin: a,
+    });
+    assert!(q.is_ok(), "queries still run");
+}

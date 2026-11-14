@@ -68,3 +68,15 @@ fn the_static_light_table_holds_references_per_scene_and_drops_deleted_sources()
     assert_eq!(ok(&h, "drawAid.staticLightTable.list", json!({}))["entries"], json!([]));
     assert_eq!(ok(&h, "drawAid.state.get", json!({}))["staticLightTable"], json!([]));
 }
+
+#[test]
+fn light_table_edits_announce_only_effective_changes() {
+    let h = ready();
+    let a = ok(&h, "drawAid.staticLightTable.add", json!({}))["entryId"].clone();
+    let rx = h.subscribe();
+    ok(&h, "drawAid.staticLightTable.set", json!({ "entryIds": [a], "visible": true }));
+    ok(&h, "drawAid.staticLightTable.set", json!({ "all": true, "placement": "underlay" }));
+    assert_eq!(rx.try_iter().filter(|e| e.name == "drawAid.changed").count(), 0, "nothing changed");
+    ok(&h, "drawAid.staticLightTable.set", json!({ "all": true, "visible": false }));
+    assert_eq!(rx.try_iter().filter(|e| e.name == "drawAid.changed").count(), 1);
+}

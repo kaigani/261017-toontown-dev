@@ -186,3 +186,45 @@ fn symmetry_is_a_global_drawing_setting_read_by_strokes() {
     );
     assert_eq!(r["strokeIds"].as_array().unwrap().len(), 8, "a kaleidoscope of 4 mirrors draws 8 copies: {r}");
 }
+
+#[test]
+fn c42a_r1_28_a_wrong_kind_anywhere_is_a_wrong_shape_and_a_stale_value_falls_back_alone() {
+    let r = root("shape");
+    let dirs = UserDirs::under(&r);
+    std::fs::create_dir_all(&dirs.settings).unwrap();
+    let write = |data: Value| {
+        let v = json!({ "format": "toontown-settings", "kind": "drawing", "formatVersion": "1.0", "data": data });
+        std::fs::write(dirs.settings.join("drawing.json"), v.to_string()).unwrap();
+    };
+    for bad in [
+        json!({ "placeBehind": "bad" }),
+        json!({ "aids": { "grid": { "visible": 3 } } }),
+        json!({ "symmetry": { "angle": "x" } }),
+    ] {
+        write(bad.clone());
+        let h = ExecutorHandle::spawn_with_options(ExecutorOptions {
+            persist: PersistOptions { user_dirs: Some(UserDirs::under(&r)), ..Default::default() },
+            ..Default::default()
+        })
+        .unwrap();
+        let rx = h.subscribe();
+        let _ = ok(&h, "app.state.get", json!({}));
+        let shown: Vec<Value> = rx.try_iter().filter(|e| e.name == "ui.message.shown").map(|e| e.payload).collect();
+        assert!(shown.iter().any(|m| m.to_string().contains("drawing")), "{bad}: told: {shown:?}");
+        drop(h);
+    }
+    // Right kinds, stale values: each falls back alone, its siblings survive, nothing is told.
+    write(
+        json!({ "placeBehind": true, "symmetry": { "mode": "spiral", "angle": 30 }, "aids": { "grid": { "type": "hex", "visible": true } } }),
+    );
+    let h = over(&r);
+    let s = ok(&h, "tool.settings.get", json!({}));
+    assert_eq!(
+        (s["placeBehind"].as_bool(), s["symmetry"]["mode"].as_str(), s["symmetry"]["angle"].as_f64()),
+        (Some(true), Some("none"), Some(30.0))
+    );
+    let g = ok(&h, "drawAid.state.get", json!({}))["grid"].clone();
+    assert_eq!(g, json!({ "visible": true, "type": "normal", "overlay": false }));
+    drop(h);
+    let _ = std::fs::remove_dir_all(&r);
+}

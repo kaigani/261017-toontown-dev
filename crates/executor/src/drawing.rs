@@ -71,8 +71,9 @@ pub fn check_option(tool: &str, key: &str, v: &Value) -> Result<(), (&'static st
         ("text", "baseline") => matches!(v.as_str(), Some("normal" | "subscript" | "superscript")),
         ("text", "kerning") => v.as_i64().is_some_and(|k| (-60..=60).contains(&k)),
         ("text", "align") => matches!(v.as_str(), Some("left" | "centre" | "right" | "justify")),
-        // SI-131: the spec gives no range for margins, indent and line spacing; ±10,000 du is accepted.
-        ("text", "leftMargin" | "rightMargin" | "indent" | "lineSpacing") => num(-10_000.0, 10_000.0),
+        // 02 §7.6.1: margins 0-1000 du, indent and line spacing -99-1000 du (C42A-R1-03).
+        ("text", "leftMargin" | "rightMargin") => num(0.0, 1000.0),
+        ("text", "indent" | "lineSpacing") => num(-99.0, 1000.0),
         ("text", "outlineColourId") => v.is_null() || v.as_str().is_some_and(|s| !s.is_empty() && s.len() <= 256),
         _ => true,
     };
@@ -341,7 +342,48 @@ impl DrawingSettings {
         }
         s.last_in_group.retain(|g, t| group_of(t) == Some(g.as_str()));
         s.options.retain(|t, _| is_tool(t));
+        s.sanitize();
         s
+    }
+
+    /// Replaces every member outside its domain by its default, member by member, with the same rules the commands
+    /// apply (C42A-R1-04): a stale value in a file of the right shape falls back alone and its siblings survive.
+    pub fn sanitize(&mut self) {
+        let d = Self::default();
+        let colour = |c: &str| tt_model::value::Colour::parse(c).is_ok();
+        let sym = &mut self.symmetry;
+        if !matches!(sym.mode.as_str(), "none" | "mirror" | "kaleidoscope") {
+            sym.mode = d.symmetry.mode.clone();
+        }
+        if !(sym.angle.is_finite() && (0.0..=360.0).contains(&sym.angle)) {
+            sym.angle = d.symmetry.angle;
+        }
+        if !(2..=16).contains(&sym.mirrors) {
+            sym.mirrors = d.symmetry.mirrors;
+        }
+        if self.tablet.input_interface.as_ref().is_some_and(|s| s.is_empty() || s.len() > 64) {
+            self.tablet.input_interface = None;
+        }
+        let a = &mut self.aids;
+        if !matches!(a.grid.ty.as_str(), "normal" | "field12" | "field16") {
+            a.grid.ty = d.aids.grid.ty.clone();
+        }
+        if !(0..=3).contains(&a.onion_skin.previous) {
+            a.onion_skin.previous = d.aids.onion_skin.previous;
+        }
+        if !(0..=3).contains(&a.onion_skin.next) {
+            a.onion_skin.next = d.aids.onion_skin.next;
+        }
+        let st = &mut a.onion_skin_style;
+        if !colour(&st.previous_colour) {
+            st.previous_colour = d.aids.onion_skin_style.previous_colour.clone();
+        }
+        if !colour(&st.next_colour) {
+            st.next_colour = d.aids.onion_skin_style.next_colour.clone();
+        }
+        if !colour(&a.background.colour) {
+            a.background.colour = d.aids.background.colour.clone();
+        }
     }
 
     /// The stored form.
@@ -358,13 +400,63 @@ impl DrawingSettings {
 /// What is wrong.
 pub fn shape(d: &Value) -> Result<(), String> {
     let Some(m) = d.as_object() else { return Err("not an object".into()) };
-    for k in ["lastInGroup", "options", "symmetry", "tablet", "aids"] {
-        if m.get(k).is_some_and(|v| !v.is_object()) {
-            return Err(format!("`{k}` is not an object"));
+    // The top-level scalars by name (C42A-R1-28), then every member against the defaults' kinds.
+    for k in ["placeBehind", "drawTopLayer", "snapToContour"] {
+        if m.get(k).is_some_and(|v| !v.is_boolean()) {
+            return Err(format!("`{k}` is not a boolean"));
         }
     }
     if m.get("activeTool").is_some_and(|v| !v.is_string()) {
         return Err("`activeTool` is not a string".into());
+    }
+    let defaults = DrawingSettings::default().to_stored();
+    kinds(d, &defaults, "")
+}
+
+/// The JSON kind of a value (numbers are one kind: the domain checks tell integers from fractions).
+fn kind(v: &Value) -> &'static str {
+    match v {
+        Value::Null => "null",
+        Value::Bool(_) => "boolean",
+        Value::Number(_) => "number",
+        Value::String(_) => "string",
+        Value::Array(_) => "array",
+        Value::Object(_) => "object",
+    }
+}
+
+/// Every member of `v` that the defaults know has the defaults' kind (a `null` default admits a string: the optional
+/// members); `lastInGroup` maps groups to strings and `options` tools to objects. Unknown members are ignored (a newer
+/// minor version may add some). A wrong kind is a wrong shape (ADR-0021 decision 13); a value of the right kind outside
+/// its domain is stale and falls back alone ([`DrawingSettings::sanitize`]).
+fn kinds(v: &Value, defaults: &Value, path: &str) -> Result<(), String> {
+    let (Some(m), Some(dm)) = (v.as_object(), defaults.as_object()) else { return Ok(()) };
+    for (k, x) in m {
+        let here = format!("{path}/{k}");
+        match k.as_str() {
+            "lastInGroup" if path.is_empty() => {
+                let Some(groups) = x.as_object() else { return Err(format!("`{here}` is not an object")) };
+                if let Some((g, _)) = groups.iter().find(|(_, t)| !t.is_string()) {
+                    return Err(format!("`{here}/{g}` is not a string"));
+                }
+            }
+            "options" if path.is_empty() => {
+                let Some(tools) = x.as_object() else { return Err(format!("`{here}` is not an object")) };
+                if let Some((t, _)) = tools.iter().find(|(_, o)| !o.is_object()) {
+                    return Err(format!("`{here}/{t}` is not an object"));
+                }
+            }
+            _ => {
+                let Some(dx) = dm.get(k) else { continue };
+                let ok = kind(x) == kind(dx) || (dx.is_null() && x.is_string());
+                if !ok {
+                    return Err(format!("`{here}` is a {}, not a {}", kind(x), kind(dx)));
+                }
+                if dx.is_object() {
+                    kinds(x, dx, &here)?;
+                }
+            }
+        }
     }
     Ok(())
 }

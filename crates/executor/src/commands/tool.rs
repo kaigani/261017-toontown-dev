@@ -194,9 +194,8 @@ fn option_schema(tool: &str) -> Value {
                 (_, "baseline") => json!({ "enum": ["normal", "subscript", "superscript"] }),
                 (_, "kerning") => json!({ "type": "integer", "minimum": -60, "maximum": 60 }),
                 (_, "align") => json!({ "enum": ["left", "centre", "right", "justify"] }),
-                (_, "leftMargin" | "rightMargin" | "indent" | "lineSpacing") => {
-                    json!({ "type": "number", "minimum": -10_000, "maximum": 10_000 })
-                }
+                (_, "leftMargin" | "rightMargin") => json!({ "type": "number", "minimum": 0, "maximum": 1000 }),
+                (_, "indent" | "lineSpacing") => json!({ "type": "number", "minimum": -99, "maximum": 1000 }),
                 (_, "outlineColourId") => json!({ "type": ["string", "null"] }),
                 _ => json!({}),
             };
@@ -1084,8 +1083,12 @@ pub(crate) struct PenRenameParams {
     gui = "the Tools toolbar and tool properties (02, 05); wired in M4 C4.2",
 )]
 pub(crate) fn tool_pen_rename(cx: &mut Cx, p: PenRenameParams) -> Result<PenIdName, CommandError> {
-    let (id, _, _) = find_pen(cx, &p.pen_id)?;
+    let (id, _, current) = find_pen(cx, &p.pen_id)?;
     check_name(cx, &p.name, Some(&id))?;
+    if current == p.name {
+        // Nothing to change: no undo step and no event.
+        return Ok(PenIdName { pen_id: id.as_str().to_owned(), name: p.name });
+    }
     let (_, i) = pen_index(cx, &id)?;
     cx.patch_entries(vec![(EntryKey::Project, vec![op("replace", &format!("/pens/{i}/name"), Some(json!(p.name)))])])?;
     emit_pen(cx, id.as_str(), PenChange::Modified);
