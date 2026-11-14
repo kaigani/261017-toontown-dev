@@ -1,0 +1,6 @@
+Product c745a55; Windows
+Final reviewer suite: 4 pass, 2 fail (mapping grid; screenshot user-query latency).
+Screenshot user query ms: 118.7439, 99.4279, 99.4624. Separate run: 129.054, 148.7373, 129.995.
+Screenshot functional probe passes. Existing builder views module: 8 pass.
+cargo fmt --check: pass
+cargo clippy -p tt-executor --all-targets --locked --features tt-persist/test-hooks -- -D warnings -A clippy::empty_line_after_doc_comments: pass
