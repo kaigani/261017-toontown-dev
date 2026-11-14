@@ -356,7 +356,7 @@ fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
 
 #[command(
     id = "draw.transform.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_transform,
     kind = action,
     label = "Transform",
     scopes = [edit],
@@ -504,6 +504,7 @@ pub(crate) struct FlipParams {
 
 #[command(
     id = "draw.flip.apply",
+    precheck = super::draw::precheck_flip,
     kind = action,
     label = "Flip",
     scopes = [edit],
@@ -559,6 +560,7 @@ pub(crate) struct RotateParams {
 
 #[command(
     id = "draw.rotate.apply",
+    precheck = super::draw::precheck_rotate,
     kind = action,
     label = "Rotate",
     scopes = [edit],
@@ -649,6 +651,7 @@ fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, Com
 
 #[command(
     id = "draw.envelope.apply",
+    precheck = super::draw::precheck_envelope,
     kind = action,
     label = "Perspective",
     scopes = [edit],
@@ -898,6 +901,7 @@ fn nearest_location(path: &Path, q: P) -> Option<(usize, f64)> {
 
 #[command(
     id = "draw.point.add",
+    precheck = super::draw::precheck_contour,
     kind = action,
     label = "Add point",
     scopes = [edit],
@@ -1023,6 +1027,7 @@ fn nearest_on(path: &tt_vector::path::Path, q: P) -> Option<(f64, usize, f64, P)
 
 #[command(
     id = "draw.point.move",
+    precheck = super::draw::precheck_point_move,
     kind = action,
     label = "Move points",
     scopes = [edit],
@@ -1174,6 +1179,7 @@ pub(crate) struct PointSetResult {
 
 #[command(
     id = "draw.point.set",
+    precheck = super::draw::precheck_contour,
     kind = action,
     label = "Set point",
     scopes = [edit],
@@ -1234,7 +1240,7 @@ pub(crate) struct PointDeleteParams {
 
 #[command(
     id = "draw.point.delete",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_point_delete,
     kind = action,
     label = "Delete points",
     scopes = [edit],
@@ -1321,6 +1327,7 @@ fn half() -> f64 {
 
 #[command(
     id = "draw.segment.move",
+    precheck = super::draw::precheck_contour,
     kind = action,
     label = "Move segment",
     scopes = [edit],
@@ -1364,8 +1371,19 @@ pub(crate) fn precheck_reposition_all(cx: &Cx, v: &Value) -> Result<(), CommandE
             err("drawing.noTarget", "there is no current element", json!({ "pointer": "/elementId" }))
         })?;
     let doc = cx.document()?;
-    if doc.element(&element).and_then(|e| e.drawing_bank_id().clone()).is_none() {
+    let Some(bank) = doc.element(&element).and_then(|e| e.drawing_bank_id().clone()) else {
         return Err(err("drawing.notVectorElement", "the element has no drawings", json!({ "pointer": "/elementId" })));
-    }
-    Ok(())
+    };
+    // Something to move: an unlocked drawing with content (with corners, with bounds), as the handler's loop finds;
+    // read once per document revision (`memo`).
+    let corners = v.get("corners").is_some_and(|x| !x.is_null());
+    let (project, rev) = crate::memo::document_version(cx);
+    crate::memo::memo_rev(&format!("reposition:{project}:{bank}:{corners}"), rev, || {
+        let ids: Vec<Id> = doc.bank(&bank).map(|b| b.drawings().ids().to_vec()).unwrap_or_default();
+        let movable = ids
+            .iter()
+            .filter_map(|id| doc.drawing(id))
+            .any(|d| !*d.locked() && !d.nodes().is_empty() && (!corners || vd::drawing_bounds(d, true).is_some()));
+        if movable { Ok(()) } else { Err(nothing_to_do("reposition")) }
+    })
 }

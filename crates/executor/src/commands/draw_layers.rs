@@ -407,7 +407,7 @@ pub(crate) struct FlattenResult {
 
 #[command(
     id = "draw.flatten.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_flatten,
     kind = action,
     label = "Flatten",
     scopes = [edit],
@@ -528,7 +528,7 @@ fn siblings_adjacent(d: &Drawing, a: &str, b: &str) -> bool {
 
 #[command(
     id = "draw.optimize.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_optimize,
     kind = action,
     label = "Optimize",
     scopes = [edit],
@@ -690,6 +690,7 @@ fn each_list(nodes: &mut Vec<Value>, f: &mut impl FnMut(&mut Vec<Value>)) {
 
 #[command(
     id = "draw.arrange.apply",
+    precheck = super::draw::precheck_arrange,
     kind = action,
     label = "Arrange",
     scopes = [edit],

@@ -155,6 +155,8 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
     ("keymap.reservedKey", "The key sequence is reserved by the system or the application."),
     ("keymap.conflict", "The key sequence is already bound to another command."),
     ("ui.unknownMessage", "There is no message with that id."),
+    ("scene.noTarget", "There is no current scene and no scene was given."),
+    ("render.noCamera", "The scene has no camera to render through; add a camera or name one."),
     ("command.timeout", "The command did not answer in time and was cancelled unless it had already committed."),
     ("project.mediaMissing", "Some media referenced by the project are missing; placeholders are shown."),
 ];

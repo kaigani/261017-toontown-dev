@@ -486,6 +486,7 @@ pub(crate) fn inline_side(cx: &Cx, width: u32, height: u32) -> Result<(), Comman
 
 #[command(
     id = "render.frame.run",
+    precheck = crate::prechecks::render_frame_run,
     kind = query,
     label = "Render frame",
     scopes = [read],
@@ -1445,6 +1446,7 @@ fn encode_sequence(format: SequenceFormat, pixels: &[u8], w: u32, h: u32) -> Res
 
 #[command(
     id = "render.range.run",
+    precheck = crate::prechecks::render_range_run,
     kind = job,
     label = "Render range",
     scopes = [read, files_write],

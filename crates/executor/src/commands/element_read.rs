@@ -609,8 +609,21 @@ pub(crate) struct HierarchySelectParams {
     element_id: Option<String>,
 }
 
+/// `element.hierarchy.select`: without `elementId`, a current element.
+pub(crate) fn precheck_hierarchy_select(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if v.get("elementId").is_none_or(Value::is_null) && cx.app().element.is_none() {
+        return Err(err(
+            "element.notFound",
+            "there is no current element and no elementId was given",
+            json!({ "pointer": "/elementId" }),
+        ));
+    }
+    Ok(())
+}
+
 #[command(
     id = "element.hierarchy.select",
+    precheck = precheck_hierarchy_select,
     kind = ui,
     label = "Select in hierarchy",
     scopes = [ui],

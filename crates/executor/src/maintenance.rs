@@ -48,6 +48,11 @@ pub(crate) fn tick(core: &mut Core, force_autosave: bool) -> Timings {
         heartbeat(s);
         t.heartbeat = Some(start.elapsed());
         s.env.last_heartbeat = Some(now);
+    } else if s.env.recovery_beat_pending {
+        // A recovery heartbeat skipped while another engine held the ownership lock: retried at the next pass.
+        let start = Instant::now();
+        recovery_heartbeat(s);
+        t.heartbeat = Some(start.elapsed());
     }
     if force_autosave || s.env.last_watch.is_none_or(|t| now.duration_since(t) >= m.watch) {
         let start = Instant::now();
@@ -70,7 +75,6 @@ fn heartbeat(s: &mut Session) {
     if fenced(s) {
         return;
     }
-    let root = s.env.dirs.recovery.clone();
     let Some(p) = s.project.as_mut() else { return };
     if let Some(l) = &p.store.lock
         && let Err(e) = l.refresh()
@@ -80,9 +84,20 @@ fn heartbeat(s: &mut Session) {
         p.store.locked_by = e.details().get("lock").cloned();
         p.store.lock = None;
     }
-    if p.store.autosaved_rev.is_some() {
-        recovery::heartbeat_owned(&root, &p.store.recovery_id, &s.env.fence);
-    }
+    recovery_heartbeat(s);
+}
+
+/// The recovery copy's heartbeat (when there is one); a skip (the ownership lock was held) leaves it pending for the
+/// next maintenance pass.
+fn recovery_heartbeat(s: &mut Session) {
+    let root = s.env.dirs.recovery.clone();
+    let ran = match s.project.as_ref() {
+        Some(p) if p.store.autosaved_rev.is_some() => {
+            recovery::heartbeat_owned(&root, &p.store.recovery_id, &s.env.fence)
+        }
+        _ => true,
+    };
+    s.env.recovery_beat_pending = !ran;
 }
 
 fn watch(s: &mut Session) {

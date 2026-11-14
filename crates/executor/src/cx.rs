@@ -139,7 +139,7 @@ pub(crate) struct Savepoint {
     ids_drawn: u64,
     app: AppContext,
     ui: UiState,
-    clipboard: Option<Value>,
+    clipboard: Option<std::sync::Arc<Value>>,
     edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     checkpoints: Option<Vec<Checkpoint>>,
     /// Timeline/Exposure Sheet view state (C31-R1-02).

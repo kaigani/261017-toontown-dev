@@ -335,6 +335,7 @@ pub(crate) struct CreateResult {
 
 #[command(
     id = "element.create",
+    precheck = precheck_create,
     kind = action,
     label = "New elements",
     scopes = [edit],
@@ -596,6 +597,7 @@ fn extent(doc: &Document, id: &Id) -> Option<(u32, u32)> {
 
 #[command(
     id = "element.parentPeg.create",
+    precheck = precheck_targets_one_scene,
     kind = action,
     label = "Add parent peg",
     scopes = [edit],
@@ -893,6 +895,7 @@ pub(crate) struct DuplicateResult {
 
 #[command(
     id = "element.duplicate",
+    precheck = precheck_targets,
     kind = action,
     label = "Duplicate element",
     scopes = [edit],
@@ -1315,6 +1318,7 @@ fn moved(list: &[Id], picked: &BTreeSet<Id>, to: To, front_first: bool) -> Vec<I
 
 #[command(
     id = "element.order.move",
+    precheck = precheck_order_move,
     kind = action,
     label = "Arrange",
     scopes = [edit],
@@ -1405,6 +1409,7 @@ pub(crate) struct OrderSetResult {
 
 #[command(
     id = "element.order.set",
+    precheck = precheck_order_set,
     kind = action,
     label = "Set order",
     scopes = [edit],
@@ -1502,7 +1507,7 @@ pub(crate) struct ParentResult {
 
 #[command(
     id = "element.parent.set",
-    precheck = crate::prechecks::element_parent_set,
+    precheck = precheck_parent_set,
     kind = action,
     label = "Attach to parent",
     scopes = [edit],
@@ -1603,6 +1608,7 @@ pub(crate) struct ParentRemoveParams {
 
 #[command(
     id = "element.parent.remove",
+    precheck = precheck_targets_one_scene,
     kind = action,
     label = "Detach from parent",
     scopes = [edit],
@@ -1686,6 +1692,7 @@ fn colour_value(v: &str, pointer: &str) -> Result<Value, CommandError> {
 
 #[command(
     id = "element.colour.set",
+    precheck = precheck_targets,
     kind = action,
     label = "Set element colour",
     scopes = [edit],
@@ -2474,6 +2481,7 @@ fn toggle_set(
 
 #[command(
     id = "element.visibility.set",
+    precheck = precheck_visibility,
     kind = toggle,
     label = "Show/hide elements",
     scopes = [edit],
@@ -2551,6 +2559,7 @@ pub(crate) struct LockParams {
 
 #[command(
     id = "element.lock.set",
+    precheck = precheck_toggle,
     kind = toggle,
     label = "Lock elements",
     scopes = [edit],
@@ -2644,6 +2653,7 @@ pub(crate) struct CollapsedParams {
 
 #[command(
     id = "element.collapsed.set",
+    precheck = precheck_targets,
     kind = toggle,
     label = "Collapse / expand",
     scopes = [ui],
@@ -2694,6 +2704,7 @@ pub(crate) struct SoloResult {
 
 #[command(
     id = "element.solo.set",
+    precheck = precheck_solo,
     kind = toggle,
     label = "Solo mode",
     scopes = [ui],
@@ -2737,7 +2748,7 @@ pub(crate) fn element_state_changed(_cx: &mut Cx, _p: NoParams) -> Result<StateC
     Err(super::common::event_not_invocable("element.state.changed"))
 }
 
-// ----- prechecks (ruling O-23; reviews/M4-design-availability.md) -------------------------------------------------
+// ----- prechecks (rulings O-23, O-24; reviews/M4-design-availability.md) -------------------------------------------
 
 fn precheck_ids(v: &Value) -> Option<Vec<String>> {
     v.get("elementIds")
@@ -2745,48 +2756,178 @@ fn precheck_ids(v: &Value) -> Option<Vec<String>> {
         .map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect())
 }
 
-/// `element.timing.set`: every target has a bar (pegs and other bar elements; drawings time by exposure).
-pub(crate) fn precheck_timing_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    let ids = targets(cx, precheck_ids(v).as_deref())?;
-    let doc = cx.document()?;
-    for id in &ids {
-        let e = element(doc, id)?;
-        if e.start().is_none() || e.duration().is_none() {
-            let t = *e.element_type();
-            return Err(err(
-                "cell.notApplicable",
-                format!(
-                    "{} element `{}` has no bar: its timing is its exposure (use the cell commands)",
-                    t.as_str(),
-                    e.name()
-                ),
-                json!({ "elementId": id.as_str(), "elementType": t.as_str() }),
-            ));
+/// An element command's precheck, computed once per state (`memo`, ruling O-24): without `elementIds` its targets are
+/// the Timeline selection, else the cell selection, else the current element ([`targets`]), so it is kept for both
+/// selection lists, the current element and the document revision.
+pub(crate) fn on_elements(
+    cx: &Cx,
+    v: &Value,
+    command: &str,
+    check: impl FnOnce() -> Result<(), CommandError>,
+) -> Result<(), CommandError> {
+    let (project, rev) = crate::memo::document_version(cx);
+    let tag = format!("elements:{command}:{v}:{project}:{}", cx.app().element.as_ref().map_or("", Id::as_str));
+    if ["elementIds", "nodeIds"].iter().any(|k| v.get(*k).is_some_and(|x| !x.is_null())) {
+        crate::memo::memo_rev(&tag, rev, check)
+    } else {
+        crate::memo::memo_many(&tag, &crate::memo::selections(cx, &["timeline", "xsheet"]), rev, check)
+    }
+}
+
+/// The commands whose handler acts on [`targets`] and refuses nothing else for a state reason.
+pub(crate) fn precheck_targets(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_elements(cx, v, "targets", || targets(cx, precheck_ids(v).as_deref()).map(|_| ()))
+}
+
+/// The commands whose handler acts on [`targets`] in one scene ([`one_scene`]).
+pub(crate) fn precheck_targets_one_scene(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_elements(cx, v, "targets-one-scene", || {
+        let ids = targets(cx, precheck_ids(v).as_deref())?;
+        one_scene(cx.document()?, &ids).map(|_| ())
+    })
+}
+
+/// `element.parent.set`: its parameter rule, then its targets in one scene.
+pub(crate) fn precheck_parent_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    crate::prechecks::element_parent_set(cx, v)?;
+    precheck_targets_one_scene(cx, v)
+}
+
+/// `element.solo.set`: with `enabled` (the default), its targets.
+pub(crate) fn precheck_solo(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if v.get("enabled").and_then(Value::as_bool) == Some(false) {
+        return Ok(());
+    }
+    precheck_targets(cx, v)
+}
+
+/// `element.lock.set` and `element.visibility.set` ([`toggle_set`]): all elements of the current scene, or the
+/// targets in one scene.
+pub(crate) fn precheck_toggle(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let apply: Apply = v.get("apply").cloned().map_or(Ok(Apply::Given), serde_json::from_value).unwrap_or(Apply::Given);
+    on_elements(cx, v, "toggle", || {
+        let ids = precheck_ids(v);
+        match (apply, ids) {
+            (Apply::All, None) => scene_id(cx, None).map(|_| ()),
+            (_, ids) => {
+                let t = targets(cx, ids.as_deref())?;
+                one_scene(cx.document()?, &t).map(|_| ())
+            }
         }
+    })
+}
+
+/// `element.order.move`: its targets in one scene; the Exposure Sheet order takes only columns.
+pub(crate) fn precheck_order_move(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_elements(cx, v, "element.order.move", || {
+        let ids = targets(cx, precheck_ids(v).as_deref())?;
+        let doc = cx.document()?;
+        let scene = one_scene(doc, &ids)?;
+        if v.get("order").and_then(Value::as_str) == Some("xsheet")
+            && let Some(sc) = doc.scene(&scene)
+        {
+            for id in &ids {
+                if !sc.column_order().contains(id) {
+                    return Err(err(
+                        "element.notCellBased",
+                        "only cell-based elements have Exposure Sheet columns",
+                        json!({ "elementId": id.as_str() }),
+                    ));
+                }
+            }
+        }
+        Ok(())
+    })
+}
+
+/// `element.visibility.set`: [`precheck_toggle`]; in the Exposure Sheet scope, each given target has a column.
+pub(crate) fn precheck_visibility(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_toggle(cx, v)?;
+    let apply: Apply = v.get("apply").cloned().map_or(Ok(Apply::Given), serde_json::from_value).unwrap_or(Apply::Given);
+    if v.get("scope").and_then(Value::as_str) != Some("xsheet") || apply != Apply::Given {
+        return Ok(());
+    }
+    on_elements(cx, v, "element.visibility.set", || {
+        let ids = targets(cx, precheck_ids(v).as_deref())?;
+        let doc = cx.document()?;
+        let types: Option<Vec<ElementType>> = v.get("types").cloned().and_then(|t| serde_json::from_value(t).ok());
+        for id in &ids {
+            let e = element(doc, id)?;
+            if types.as_ref().is_some_and(|t| !t.contains(e.element_type())) {
+                continue;
+            }
+            if e.visible_in_xsheet().is_none() {
+                return Err(err(
+                    "element.notCellBased",
+                    format!("{} element `{}` has no Exposure Sheet column", e.element_type().as_str(), e.name()),
+                    json!({ "elementId": id.as_str() }),
+                ));
+            }
+        }
+        Ok(())
+    })
+}
+
+/// `element.order.set`: without elements, a parent or `sceneId`, the current scene.
+pub(crate) fn precheck_order_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let none = v.get("elementIds").and_then(Value::as_array).is_none_or(Vec::is_empty);
+    if none && v.get("parentId").is_none_or(Value::is_null) && v.get("sceneId").is_none_or(Value::is_null) {
+        scene_id(cx, None)?;
     }
     Ok(())
 }
 
-/// `element.delete`: no parameter element on its own, and a scene keeps a camera. The scene's cameras are counted only
-/// when a target is a camera (a walk of that scene, never of the document).
+/// `element.create`: the scene (given, from a given parent or element, else the current scene).
+pub(crate) fn precheck_create(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let given = ["sceneId", "parentId", "elementId"].iter().any(|k| v.get(*k).is_some_and(|x| !x.is_null()));
+    if given { Ok(()) } else { scene_id(cx, None).map(|_| ()) }
+}
+
+/// `element.timing.set`: every target has a bar (pegs and other bar elements; drawings time by exposure).
+pub(crate) fn precheck_timing_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_elements(cx, v, "element.timing.set", || {
+        let ids = targets(cx, precheck_ids(v).as_deref())?;
+        let doc = cx.document()?;
+        for id in &ids {
+            let e = element(doc, id)?;
+            if e.start().is_none() || e.duration().is_none() {
+                let t = *e.element_type();
+                return Err(err(
+                    "cell.notApplicable",
+                    format!(
+                        "{} element `{}` has no bar: its timing is its exposure (use the cell commands)",
+                        t.as_str(),
+                        e.name()
+                    ),
+                    json!({ "elementId": id.as_str(), "elementType": t.as_str() }),
+                ));
+            }
+        }
+        Ok(())
+    })
+}
+
+/// `element.delete`: no parameter element on its own, and a scene keeps a camera.
 pub(crate) fn precheck_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    let ids = targets(cx, precheck_ids(v).as_deref())?;
-    let doc = cx.document()?;
-    for id in &ids {
-        let e = element(doc, id)?;
-        if *e.element_type() == ElementType::EffectParameter {
-            return Err(err(
-                codes::ARG_INVALID,
-                format!("parameter element `{}` is deleted only with its effect", e.name()),
-                json!({ "elementId": id.as_str() }),
-            ));
+    on_elements(cx, v, "element.delete", || {
+        let ids = targets(cx, precheck_ids(v).as_deref())?;
+        let doc = cx.document()?;
+        for id in &ids {
+            let e = element(doc, id)?;
+            if *e.element_type() == ElementType::EffectParameter {
+                return Err(err(
+                    codes::ARG_INVALID,
+                    format!("parameter element `{}` is deleted only with its effect", e.name()),
+                    json!({ "elementId": id.as_str() }),
+                ));
+            }
         }
-    }
-    let gone: BTreeSet<Id> = ids.iter().cloned().collect();
-    for id in ids.iter().filter(|i| doc.element(i).is_some_and(|e| *e.element_type() == ElementType::Camera)) {
-        if let Some(scene) = doc.scene_of(id) {
-            super::anim_camera::refuse_last_camera(doc, scene, &|c| gone.contains(c))?;
+        let gone: BTreeSet<Id> = ids.iter().cloned().collect();
+        for id in ids.iter().filter(|i| doc.element(i).is_some_and(|e| *e.element_type() == ElementType::Camera)) {
+            if let Some(scene) = doc.scene_of(id) {
+                super::anim_camera::refuse_last_camera(doc, scene, &|c| gone.contains(c))?;
+            }
         }
-    }
-    Ok(())
+        Ok(())
+    })
 }

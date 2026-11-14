@@ -103,6 +103,7 @@ fn mul_or(relative: bool, current: f64, v: f64) -> f64 {
 
 #[command(
     id = "anim.transform.set",
+    precheck = super::anim_key::precheck_transformable,
     kind = action,
     label = "Set transform",
     scopes = [edit],

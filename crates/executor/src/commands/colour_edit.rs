@@ -182,6 +182,7 @@ fn mapping_of(doc: &Document, t: &Target, solid_too: bool) -> Result<(String, Sw
 
 #[command(
     id = "colour.fillMapping.get",
+    precheck = super::draw::precheck_drawing,
     kind = query,
     label = "Get fill mapping",
     scopes = [read],
@@ -365,6 +366,7 @@ fn explicit_matrix(m: &MappingObject, kind: SwatchKind) -> Result<[f64; 6], &'st
 
 #[command(
     id = "colour.fillMapping.set",
+    precheck = super::draw::precheck_fill_mapping_set,
     kind = action,
     label = "Edit fill mapping",
     scopes = [edit],
@@ -536,7 +538,7 @@ fn recolour_text(v: &mut Value, colour: &str) -> usize {
 
 #[command(
     id = "colour.selection.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_colour_selection,
     kind = action,
     label = "Set colour",
     scopes = [edit],
@@ -739,6 +741,22 @@ pub(crate) enum RecolourTarget {
 
 fn all_targets() -> Vec<RecolourTarget> {
     vec![RecolourTarget::Zones, RecolourTarget::Lines, RecolourTarget::BrushStrokes, RecolourTarget::Text]
+}
+
+/// The mapping `clipboard` of `colour.fillMapping.set` needs a copied mapping (the handler's first refusal of it).
+pub(crate) fn precheck_mapping_clipboard(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if v.get("mapping").and_then(Value::as_str) != Some("clipboard") {
+        return Ok(());
+    }
+    let copied: Option<Value> = cx.app().tool_memory.get(CLIPBOARD).and_then(|s| serde_json::from_str(s).ok());
+    if copied.is_none() {
+        return Err(err(
+            "colour.clipboardEmpty",
+            "no fill mapping was copied (colour.fillMapping.get {toClipboard: true})",
+            json!({ "pointer": "/mapping" }),
+        ));
+    }
+    Ok(())
 }
 
 /// `colour.recolour.apply` parameters.

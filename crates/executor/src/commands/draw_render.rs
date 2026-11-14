@@ -480,6 +480,7 @@ fn region_rect(cx: &Cx, d: &Drawing, r: RegionIn) -> Result<Rect, CommandError> 
 
 #[command(
     id = "draw.drawing.render",
+    precheck = super::draw::precheck_drawing,
     kind = query,
     label = "Render drawing",
     scopes = [read],

@@ -1227,7 +1227,7 @@ struct Targets<'a> {
 
 #[command(
     id = "colour.paint.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_paint,
     kind = action,
     label = "Paint",
     scopes = [edit],
@@ -1342,7 +1342,7 @@ pub(crate) struct PaintUnpaintedResult {
 
 #[command(
     id = "colour.paintUnpainted.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_paint_unpainted,
     kind = action,
     label = "Paint Unpainted",
     scopes = [edit],
@@ -1483,7 +1483,7 @@ pub(crate) struct UnpaintResult {
 
 #[command(
     id = "colour.paint.remove",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_unpaint,
     kind = action,
     label = "Unpaint",
     scopes = [edit],
@@ -1613,6 +1613,7 @@ pub(crate) struct PickResult {
 
 #[command(
     id = "colour.pick",
+    precheck = super::draw::precheck_target,
     kind = query,
     label = "Pick colour",
     scopes = [read],
@@ -1815,6 +1816,7 @@ pub(crate) struct GapCloseResult {
 
 #[command(
     id = "colour.gap.close",
+    precheck = super::draw::precheck_edit,
     kind = action,
     label = "Close Gap",
     scopes = [edit],

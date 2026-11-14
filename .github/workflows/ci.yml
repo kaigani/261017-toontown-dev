@@ -249,6 +249,14 @@ jobs:
             cargo fmt -p "$p" --check
           done
 
+      # M4 C4.1 closure, ruling O-24: every refusal a GUI command's handler can return is classified in
+      # docs/availability-inventory.md, and every pair marked `precheck` is reachable from the command's precheck.
+      - name: Availability inventory
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          $PY -I scripts/check-availability-inventory.py
+
       # Product code (libraries, binaries, examples) is linted with every warning denied. All targets, tests included,
       # likewise except one style lint: the reviewer-owned `c24_r4_closure.rs` has blank lines after doc comments, and
       # reviewer-owned files are not edited (M2 merge candidate, declared CI edit; drop the `-A` once that file is fixed).

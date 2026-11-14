@@ -710,6 +710,7 @@ pub(crate) struct LockParams {
 
 #[command(
     id = "element.drawingLock.set",
+    precheck = precheck_drawing_lock,
     kind = toggle,
     label = "Lock drawing",
     scopes = [edit],
@@ -773,9 +774,37 @@ pub(crate) fn element_drawing_changed(_cx: &mut Cx, _p: NoParams) -> Result<Draw
 
 /// `element.drawingContent.delete` (ruling O-23): the drawings given, else the drawing at the current cell.
 pub(crate) fn precheck_drawing_content_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    let given: Option<Vec<String>> = v
-        .get("drawingIds")
+    let ids = drawings_or_current(cx, precheck_drawing_ids(v).as_deref())?;
+    let doc = cx.document()?;
+    for d in &ids {
+        let dr = doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;
+        let bank = doc.bank_of(d).cloned().ok_or_else(|| internal("drawing without bank"))?;
+        if let Some(e) = doc.bank_users(&bank).first() {
+            applicable(doc, e, "element.drawingContent.delete", VECTOR)?;
+        }
+        if *dr.locked() {
+            return Err(locked(doc, d));
+        }
+    }
+    Ok(())
+}
+
+fn precheck_drawing_ids(v: &Value) -> Option<Vec<String>> {
+    v.get("drawingIds")
         .and_then(Value::as_array)
-        .map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect());
-    drawings_or_current(cx, given.as_deref()).map(|_| ())
+        .map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect())
+}
+
+/// `element.drawingLock.set`: the drawings (given, else the current one) of drawing or annotation elements (the loop
+/// of the handler, without its changes).
+pub(crate) fn precheck_drawing_lock(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let ids = drawings_or_current(cx, precheck_drawing_ids(v).as_deref())?;
+    let doc = cx.document()?;
+    for d in &ids {
+        doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;
+        if let Some(e) = doc.bank_of(d).and_then(|b| doc.bank_users(b).first()) {
+            applicable(doc, e, "element.drawingLock.set", VECTOR)?;
+        }
+    }
+    Ok(())
 }

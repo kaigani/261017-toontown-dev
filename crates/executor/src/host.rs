@@ -362,6 +362,9 @@ fn unavailable(
 
 /// References one availability request evaluates at most (ruling O-23).
 const AVAILABILITY_CHUNK: usize = 32;
+/// The time after which an availability request ends its chunk (ruling O-24): it holds the document thread at most
+/// this plus one precheck.
+const AVAILABILITY_SLICE: Duration = Duration::from_millis(5);
 
 /// The check mark of a toggle reference: the toggled state now.
 fn checked_of(s: &crate::session::Session, command_id: &str, params: &Map<String, Value>) -> Option<bool> {
@@ -638,23 +641,52 @@ impl ExecutorHandle {
     /// # Errors
     /// `command.timeout` when the document thread does not answer within the budget.
     pub fn availability(&self, refs: Vec<(String, Map<String, Value>)>) -> Result<Vec<Availability>, CommandError> {
+        self.availability_timed(refs).map(|(out, _)| out)
+    }
+
+    /// [`Self::availability`] and how long each of its requests held the document thread (tests of the budgets of
+    /// rulings O-23 and O-24).
+    #[doc(hidden)]
+    pub fn availability_holds(&self, refs: Vec<(String, Map<String, Value>)>) -> Result<Vec<Duration>, CommandError> {
+        self.availability_timed(refs).map(|(_, holds)| holds)
+    }
+
+    fn availability_timed(
+        &self,
+        refs: Vec<(String, Map<String, Value>)>,
+    ) -> Result<(Vec<Availability>, Vec<Duration>), CommandError> {
         // In chunks, each its own request on the document thread, so a user command waits at most one chunk (ruling
-        // O-23; reviews/M4-design-availability.md §4).
+        // O-23; reviews/M4-design-availability.md §4). A chunk ends after `AVAILABILITY_CHUNK` references or once it
+        // has held the thread `AVAILABILITY_SLICE` (the first pass after a large selection or clipboard changes reads
+        // it once: ruling O-24), so a request holds the thread at most the slice plus one precheck.
         let mut out = Vec::with_capacity(refs.len());
-        let mut rest = refs;
+        let mut holds = Vec::new();
+        let mut rest: std::collections::VecDeque<(String, Map<String, Value>)> = refs.into();
         while !rest.is_empty() {
-            let tail = rest.split_off(rest.len().min(AVAILABILITY_CHUNK));
-            let chunk = std::mem::replace(&mut rest, tail);
-            let part = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
+            let chunk = std::mem::take(&mut rest);
+            let (part, left, held) = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
                 let registry = core.registry();
-                core.with_lent_session(|cx| {
-                    chunk.into_iter().map(|(id, params)| availability_in(registry, cx, &id, params)).collect::<Vec<_>>()
-                })
-                .ok_or_else(|| CommandError::internal("the session is unavailable"))
+                let started = Instant::now();
+                let mut chunk = chunk;
+                let part = core
+                    .with_lent_session(|cx| {
+                        let mut part = Vec::new();
+                        while let Some((id, params)) = chunk.pop_front() {
+                            part.push(availability_in(registry, cx, &id, params));
+                            if part.len() >= AVAILABILITY_CHUNK || started.elapsed() >= AVAILABILITY_SLICE {
+                                break;
+                            }
+                        }
+                        (part, chunk)
+                    })
+                    .ok_or_else(|| CommandError::internal("the session is unavailable"))?;
+                Ok::<_, CommandError>((part.0, part.1, started.elapsed()))
             })??;
             out.extend(part);
+            holds.push(held);
+            rest = left;
         }
-        Ok(out)
+        Ok((out, holds))
     }
 
     /// The time one availability chunk held the document thread, measured on it (tests of ruling O-23's budget).

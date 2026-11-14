@@ -261,7 +261,7 @@ fn point_json(cx: &Cx, d: &Drawing) -> Vec<Value> {
 
 #[command(
     id = "draw.selection.set",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_selection_set,
     kind = ui,
     label = "Select drawing objects",
     scopes = [ui],
@@ -392,6 +392,7 @@ pub(crate) struct SelectionGetResult {
 
 #[command(
     id = "draw.selection.get",
+    precheck = super::draw::precheck_drawing,
     kind = query,
     label = "Get the drawing selection",
     scopes = [read],
@@ -447,7 +448,7 @@ pub(crate) struct PointSelectionResult {
 
 #[command(
     id = "draw.pointSelection.set",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_drawing,
     kind = ui,
     label = "Select anchor points",
     scopes = [ui],
@@ -498,7 +499,7 @@ pub(crate) fn draw_point_selection_set(
         cx.app().points.iter().filter(|(k, _)| !k.starts_with(&format!("{prefix}/"))).cloned().collect();
     let mut all = others;
     all.extend(cur.iter().map(|a| (format!("{prefix}/{}", a.stroke_id), a.anchor)));
-    cx.app_mut().points = all;
+    cx.app_mut().set_points(all);
     let ids = selected(cx, &d);
     let points = point_json(cx, &d);
     cx.emit("draw.selection.changed", json!({ "drawingId": prefix, "selectedIds": ids, "selectedPoints": points }));
@@ -558,6 +559,7 @@ pub(crate) struct BoundsResult {
 
 #[command(
     id = "draw.bounds.get",
+    precheck = super::draw::precheck_drawing,
     kind = query,
     label = "Get bounds",
     scopes = [read],
@@ -739,6 +741,7 @@ pub(crate) struct RenameResult {
 
 #[command(
     id = "draw.drawing.rename",
+    precheck = super::draw::precheck_drawing,
     kind = action,
     label = "Rename drawing",
     scopes = [edit],
@@ -809,6 +812,7 @@ pub(crate) struct LockResult {
 
 #[command(
     id = "draw.lock.set",
+    precheck = super::draw::precheck_drawing,
     kind = toggle,
     label = "Lock drawing",
     scopes = [edit],

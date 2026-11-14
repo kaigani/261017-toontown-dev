@@ -48,19 +48,37 @@ pub struct RecoveryInfo {
 }
 
 impl RecoveryInfo {
-    /// Whether the owner is gone (heartbeat stale, or its process known dead on this host).
+    /// Whether the owner is gone. A copy released by a restart ([`release_process`], [`release_engine`]: an abandoned
+    /// engine can run in the same process as its replacement) is. Otherwise, on this host, the owner's process decides:
+    /// a live process is never orphaned, however old its heartbeat (heartbeats can be skipped while other engines
+    /// write; closure round 5), a process known dead always is. Otherwise (another host, or liveness unknown) a
+    /// heartbeat older than the stale age.
     #[must_use]
     pub fn orphaned(&self) -> bool {
+        if self.heartbeat_at == RELEASED {
+            return true;
+        }
+        let same_host = self.host.is_empty() || self.host == host::host();
+        // Process 0 is no engine's (a placeholder in older copies): only the age decides.
+        if same_host && self.process_id != 0 {
+            match host::process_alive(self.process_id) {
+                Some(true) => return false,
+                Some(false) => return true,
+                None => {}
+            }
+        }
         let beat = if self.heartbeat_at.is_empty() { &self.saved_at } else { &self.heartbeat_at };
         let age = time::ms_from_iso(beat).map_or(i64::MAX, |t| time::now_ms().saturating_sub(t));
         #[allow(clippy::cast_possible_wrap, reason = "constant")]
         if age > (lock::STALE_SECS as i64) * 1000 {
             return true;
         }
-        let same_host = self.host.is_empty() || self.host == host::host();
-        same_host && host::process_alive(self.process_id) == Some(false)
+        false
     }
 }
+
+/// The `heartbeatAt` a release writes ([`release_process`], [`release_engine`]): the copy is offered as orphaned.
+const RELEASED: &str = "1970-01-01T00:00:00Z";
 
 /// A valid recovery ID: `rc_` and 4–64 lower-case hex digits (folder names under our control).
 #[must_use]
@@ -124,17 +142,19 @@ pub fn write_owned(
 }
 
 /// [`heartbeat`] of an engine, under the ownership lock and its `fence` (ruling O-18). It runs on the document
-/// thread, so it never waits for the lock: while any engine of the process is writing a recovery copy (which writes a
-/// fresh `heartbeatAt` itself) or a release runs, this heartbeat is skipped; the next one comes a minute later.
-pub fn heartbeat_owned(root: &Path, recovery_id: &str, fence: &AtomicBool) {
+/// thread, so it never waits for the lock: while any engine of the process is writing a recovery copy or a release
+/// runs, this heartbeat is skipped and `false` is returned; the caller retries at its next maintenance pass (a second
+/// later), not at the next heartbeat interval (closure round 5). `true` when it ran (or the engine is fenced).
+pub fn heartbeat_owned(root: &Path, recovery_id: &str, fence: &AtomicBool) -> bool {
     let _owner = match OWNERSHIP.try_lock() {
         Ok(g) => g,
         Err(std::sync::TryLockError::Poisoned(p)) => p.into_inner(),
-        Err(std::sync::TryLockError::WouldBlock) => return,
+        Err(std::sync::TryLockError::WouldBlock) => return false,
     };
     if !fence.load(Ordering::Acquire) {
         heartbeat(root, recovery_id);
     }
+    true
 }
 
 /// Refreshes a recovery copy's heartbeat.
@@ -167,7 +187,7 @@ pub fn release_process(root: &Path, process_id: u32, keep: Option<&str>) -> usiz
         if info.process_id != process_id || (!info.host.is_empty() && info.host != host::host()) {
             continue;
         }
-        "1970-01-01T00:00:00Z".clone_into(&mut info.heartbeat_at);
+        RELEASED.clone_into(&mut info.heartbeat_at);
         if let Ok(text) = serde_json::to_vec_pretty(&info)
             && fsx::write_atomic(&p, &text, fsx::fs_error).is_ok()
         {
@@ -260,7 +280,7 @@ pub fn release_engine(root: &Path, engine: &str, keep: Option<&str>) -> usize {
         if info.process_id != host::pid() || (!info.host.is_empty() && info.host != host::host()) {
             continue;
         }
-        "1970-01-01T00:00:00Z".clone_into(&mut info.heartbeat_at);
+        RELEASED.clone_into(&mut info.heartbeat_at);
         if let Ok(text) = serde_json::to_vec_pretty(&info)
             && fsx::write_atomic(&p, &text, fsx::fs_error).is_ok()
         {

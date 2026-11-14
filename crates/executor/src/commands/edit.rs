@@ -846,7 +846,7 @@ pub(crate) struct ClipboardGetParams {
 )]
 pub(crate) fn edit_clipboard_get(cx: &mut Cx, p: ClipboardGetParams) -> Result<Option<Clipboard>, CommandError> {
     let clip: Option<Clipboard> = match &cx.session().clipboard {
-        Some(v) => Some(serde_json::from_value(v.clone()).map_err(|e| CommandError::internal(e.to_string()))?),
+        Some(v) => Some(serde_json::from_value(Value::clone(v)).map_err(|e| CommandError::internal(e.to_string()))?),
         None => None,
     };
     Ok(clip.map(|mut c| {
@@ -880,7 +880,8 @@ pub(crate) struct ClipboardSummary {
 pub(crate) fn store_clipboard(cx: &mut Cx, clip: &Clipboard) -> Result<ClipboardSummary, CommandError> {
     validate_clipboard(clip)?;
     let summary = ClipboardSummary { kind: clip.kind, item_count: clip.item_count };
-    cx.session_mut().clipboard = Some(serde_json::to_value(clip).map_err(|e| CommandError::internal(e.to_string()))?);
+    cx.session_mut().clipboard =
+        Some(std::sync::Arc::new(serde_json::to_value(clip).map_err(|e| CommandError::internal(e.to_string()))?));
     cx.emit("edit.clipboard.changed", json!({ "kind": summary.kind, "itemCount": summary.item_count }));
     Ok(summary)
 }

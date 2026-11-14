@@ -203,7 +203,7 @@ struct Rollback {
     app: AppContext,
     ui: UiState,
     checkpoints: Option<Vec<Checkpoint>>,
-    clipboard: Option<Value>,
+    clipboard: Option<std::sync::Arc<Value>>,
     edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     /// The agent hub's sessions, grants and policy (C23-R3-01). Its confirmation requests and activity log are
     /// records a refused call makes on purpose (11 §6.3, §11) and are kept.
@@ -1079,7 +1079,7 @@ impl Core {
     pub(crate) fn with_lent_session<T>(&mut self, f: impl FnOnce(&crate::cx::Cx) -> T) -> Option<T> {
         let s = self.session.take()?;
         let cx = crate::cx::Cx::new(s, Origin::User, "availability", true);
-        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| f(&cx)));
+        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| crate::memo::enabled(|| f(&cx))));
         self.session = Some(cx.into_session());
         out.ok()
     }

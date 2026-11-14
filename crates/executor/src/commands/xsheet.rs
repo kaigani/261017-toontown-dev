@@ -447,6 +447,7 @@ fn run_error(code: &str, message: String, column: usize, run: Option<usize>) -> 
 
 #[command(
     id = "xsheet.exposures.set",
+    precheck = crate::prechecks::xsheet_exposures_set,
     kind = action,
     label = "Set exposure sheet",
     scopes = [edit],

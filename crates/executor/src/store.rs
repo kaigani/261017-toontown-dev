@@ -117,6 +117,9 @@ pub(crate) struct Env {
     /// File-system roots granted to agent sessions (11 §6.2), by session ID.
     pub roots: BTreeMap<String, Vec<PathBuf>>,
     pub last_heartbeat: Option<Instant>,
+    /// The last recovery heartbeat was skipped (another engine held the ownership lock): retried at the next
+    /// maintenance pass (closure round 5).
+    pub recovery_beat_pending: bool,
     pub last_watch: Option<Instant>,
     /// This engine's recovery ownership token (written beside each recovery entry; C41-R1-15).
     pub engine: String,
@@ -142,6 +145,7 @@ impl Default for Env {
             poster: None,
             roots: BTreeMap::new(),
             last_heartbeat: None,
+            recovery_beat_pending: false,
             last_watch: None,
             engine: format!("en_{}", tt_persist::fsx::random_token(12)),
             fence: std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false)),

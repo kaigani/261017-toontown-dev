@@ -182,6 +182,7 @@ impl BoxShapeParams {
 
 #[command(
     id = "draw.rectangle.add",
+    precheck = super::draw::precheck_shape,
     kind = action,
     label = "Rectangle",
     scopes = [edit],
@@ -250,6 +251,7 @@ pub(crate) struct EllipseParams {
 
 #[command(
     id = "draw.ellipse.add",
+    precheck = super::draw::precheck_shape,
     kind = action,
     label = "Ellipse",
     scopes = [edit],
@@ -347,6 +349,7 @@ pub(crate) struct LineParams {
 
 #[command(
     id = "draw.line.add",
+    precheck = super::draw::precheck_line,
     kind = action,
     label = "Line",
     scopes = [edit],
@@ -497,6 +500,7 @@ fn eight() -> f64 {
 
 #[command(
     id = "draw.polyline.add",
+    precheck = super::draw::precheck_shape,
     kind = action,
     label = "Polyline",
     scopes = [edit],

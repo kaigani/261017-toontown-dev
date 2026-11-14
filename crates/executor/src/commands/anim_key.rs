@@ -99,6 +99,7 @@ pub(crate) struct KeyAddResult {
 
 #[command(
     id = "anim.key.add",
+    precheck = super::anim_key::precheck_transformable,
     kind = action,
     label = "Add keyframe",
     scopes = [edit],
@@ -819,17 +820,38 @@ pub(crate) fn precheck_key_remove(cx: &Cx, v: &Value) -> Result<(), CommandError
     if v.get("all").and_then(Value::as_bool) == Some(true) || v.get("channels").is_some_and(|x| !x.is_null()) {
         return Ok(());
     }
-    let given: Option<Vec<String>> = v
-        .get("nodeIds")
-        .and_then(Value::as_array)
-        .map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect());
-    let ids = nodes(cx, given.as_deref())?;
-    let doc = cx.document()?;
-    for id in &ids {
-        let e = node(doc, id)?;
-        for c in ["position", "rotation", "scale.x", "scale.y", "skew"] {
-            check_channel(e, c)?;
+    super::element::on_elements(cx, v, "anim.key.remove", || {
+        let ids = nodes(cx, precheck_node_ids(v).as_deref())?;
+        let doc = cx.document()?;
+        for id in &ids {
+            let e = node(doc, id)?;
+            for c in ["position", "rotation", "scale.x", "scale.y", "skew"] {
+                check_channel(e, c)?;
+            }
         }
-    }
-    Ok(())
+        Ok(())
+    })
+}
+
+pub(crate) fn precheck_node_ids(v: &Value) -> Option<Vec<String>> {
+    v.get("nodeIds").and_then(Value::as_array).map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect())
+}
+
+/// `anim.key.add` and `anim.transform.set`: the targets (`nodeIds`, else the selection or the current element) at
+/// the frame (given, else the current one), each with a transformation.
+pub(crate) fn precheck_transformable(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    super::element::on_elements(cx, v, "transformable", || {
+        let ids = nodes(cx, precheck_node_ids(v).as_deref())?;
+        super::anim_common::scene_frame(cx, v.get("frame").and_then(Value::as_f64))?;
+        let doc = cx.document()?;
+        for id in &ids {
+            super::anim_common::transformable(doc, id)?;
+        }
+        Ok(())
+    })
+}
+
+/// The camera queries: the scene (given, else the current one).
+pub(crate) fn precheck_scene(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    super::timing::scene_id(cx, v.get("sceneId").and_then(Value::as_str)).map(|_| ())
 }

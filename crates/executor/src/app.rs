@@ -50,8 +50,24 @@ pub(crate) struct AppContext {
     /// The Contour Editor's anchor selection (02 §7.1.2; `draw.pointSelection.set`): compound stroke keys
     /// (`<drawingId>/<strokeId>`) with anchor indices, in selection order.
     pub points: Vec<(String, u32)>,
+    /// The drawings `points` holds anchors of (every `<drawingId>` prefix of its keys), kept with it by
+    /// [`AppContext::set_points`] and repair: a precheck asks whether a drawing has selected anchors with one lookup
+    /// (ruling O-24).
+    pub point_drawings: std::collections::BTreeSet<String>,
     /// Tool memory of the session that is not document content (the Line tool's last end per drawing: `x,y`).
     pub tool_memory: std::collections::BTreeMap<String, String>,
+}
+
+/// Every prefix of the keys that ends before a `/` (`<drawingId>` of `<drawingId>/<localId>`, whatever the IDs
+/// contain).
+pub(crate) fn prefixes<'a>(keys: impl Iterator<Item = &'a str>) -> std::collections::BTreeSet<String> {
+    let mut out = std::collections::BTreeSet::new();
+    for k in keys {
+        for (i, _) in k.match_indices('/') {
+            out.insert(k[..i].to_owned());
+        }
+    }
+    out
 }
 
 impl Default for AppContext {
@@ -64,6 +80,7 @@ impl Default for AppContext {
             selection: Selection { context: "staging".to_owned(), ids: Ids::default() },
             selections: std::collections::BTreeMap::new(),
             points: Vec::new(),
+            point_drawings: std::collections::BTreeSet::new(),
             tool_memory: std::collections::BTreeMap::new(),
         }
     }
@@ -311,6 +328,7 @@ impl AppContext {
             selection: Selection { context: self.selection.context.clone(), ids: Ids::default() },
             selections: std::collections::BTreeMap::new(),
             points: self.points.clone(),
+            point_drawings: self.point_drawings.clone(),
             tool_memory: self.tool_memory.clone(),
         }
     }
@@ -324,6 +342,23 @@ impl AppContext {
     /// The selection of a context, borrowed (no copy of a large list).
     pub(crate) fn selection_list(&self, context: &str) -> &[String] {
         self.selections.get(context).map_or(&[], |v| v.as_slice())
+    }
+
+    /// The shared selection list of a context (its identity changes whenever its content does: lists are replaced,
+    /// and repair's in-place edit reallocates a list that is also referenced elsewhere).
+    pub(crate) fn selection_shared(&self, context: &str) -> Option<&Ids> {
+        self.selections.get(context)
+    }
+
+    /// Replaces the anchor selection and its drawing index.
+    pub(crate) fn set_points(&mut self, points: Vec<(String, u32)>) {
+        self.points = points;
+        self.point_drawings = prefixes(self.points.iter().map(|(k, _)| k.as_str()));
+    }
+
+    /// Whether the anchor selection holds anchors of `drawing` (one lookup).
+    pub(crate) fn has_points_in(&self, drawing: &str) -> bool {
+        self.point_drawings.contains(drawing)
     }
 
     /// Sets the selection of a context and makes it the reported one.
@@ -424,6 +459,9 @@ impl AppContext {
             }
         }
         self.points.retain(|(k, anchor)| anchor_exists(doc, k, *anchor));
+        if self.points.len() != before.points.len() {
+            self.point_drawings = prefixes(self.points.iter().map(|(k, _)| k.as_str()));
+        }
         *self != before
     }
 

@@ -125,7 +125,7 @@ pub(crate) struct SmoothResult {
 
 #[command(
     id = "draw.smooth.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_smooth,
     kind = action,
     label = "Smooth",
     scopes = [edit],
@@ -266,7 +266,7 @@ pub(crate) struct LinesToBrushResult {
 
 #[command(
     id = "draw.linesToBrush.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_lines_to_brush,
     kind = action,
     label = "Convert Lines to Brush",
     scopes = [edit],
@@ -391,7 +391,7 @@ pub(crate) struct BreakApartResult {
 
 #[command(
     id = "draw.breakApart.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_break_apart,
     kind = action,
     label = "Break Text Apart",
     scopes = [edit],
@@ -530,9 +530,53 @@ pub(crate) struct CentreLineResult {
     rev: u64,
 }
 
+/// The brush strokes `draw.centreLine.apply` extracts from `list` and its warnings, or its refusal (painted zones
+/// without brush strokes; nothing to extract): shared by the handler and its precheck (ruling O-24).
+///
+/// # Errors
+/// `drawing.centreLineOnFill`, `drawing.nothingToDo`, the refusals of [`strokes_of`].
+pub(crate) fn centre_line_sources(
+    cx: &Cx,
+    d: &Drawing,
+    list: &[String],
+) -> Result<(Vec<Located>, Vec<String>), CommandError> {
+    let mut warnings = Vec::new();
+    // Painted zones in the selection that are not brush strokes would give unwanted centre lines (02 §8.5).
+    if list.iter().any(|i| i.starts_with("zn_") || i.contains("/zn_")) {
+        let zones = crate::planar::drawing_zones(&cx.planar_cache(), d)?;
+        let painted = list.iter().any(|i| {
+            let local = vd::local_id(d.id().as_str(), i).unwrap_or(i);
+            zones.iter().any(|lz| {
+                lz.map
+                    .zone_by_id(local)
+                    .is_some_and(|z| lz.fills.get(z).cloned().flatten().is_some_and(|f| f.painted()))
+            })
+        });
+        if painted {
+            warnings.push("drawing.centreLineOnFill".to_owned());
+        }
+    }
+    let brushes: Vec<Located> = strokes_of(cx, d, Some(&list.to_vec()), "extract")?
+        .into_iter()
+        .filter(|l| vd::stroke_at(d, &l.pointer).is_some_and(|s| *s.kind() == StrokeKind::Brush))
+        .collect();
+    if brushes.is_empty() {
+        // Only painted zones that are not brush strokes: the typed reason (02 §8.5; C23-R1-12).
+        if warnings.iter().any(|w| w == "drawing.centreLineOnFill") {
+            return Err(err(
+                "drawing.centreLineOnFill",
+                "the selection holds painted zones but no brush strokes; extract centre lines before filling",
+                json!({ "pointer": "/ids" }),
+            ));
+        }
+        return Err(nothing_to_do("extract"));
+    }
+    Ok((brushes, warnings))
+}
+
 #[command(
     id = "draw.centreLine.apply",
-    precheck = super::draw::precheck_target,
+    precheck = super::draw::precheck_centre_line,
     kind = action,
     label = "Extract Centre Line",
     scopes = [edit],
@@ -548,37 +592,7 @@ pub(crate) fn draw_centre_line_apply(cx: &mut Cx, p: CentreLineParams) -> Result
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
     let list = p.ids.clone().unwrap_or_else(|| super::draw::selection_ids(cx, &d));
-    let mut warnings = Vec::new();
-    // Painted zones in the selection that are not brush strokes would give unwanted centre lines (02 §8.5).
-    if list.iter().any(|i| i.starts_with("zn_") || i.contains("/zn_")) {
-        let zones = crate::planar::drawing_zones(&cx.planar_cache(), &d)?;
-        let painted = list.iter().any(|i| {
-            let local = vd::local_id(d.id().as_str(), i).unwrap_or(i);
-            zones.iter().any(|lz| {
-                lz.map
-                    .zone_by_id(local)
-                    .is_some_and(|z| lz.fills.get(z).cloned().flatten().is_some_and(|f| f.painted()))
-            })
-        });
-        if painted {
-            warnings.push("drawing.centreLineOnFill".to_owned());
-        }
-    }
-    let brushes: Vec<Located> = strokes_of(cx, &d, Some(&list), "extract")?
-        .into_iter()
-        .filter(|l| vd::stroke_at(&d, &l.pointer).is_some_and(|s| *s.kind() == StrokeKind::Brush))
-        .collect();
-    if brushes.is_empty() {
-        // Only painted zones that are not brush strokes: the typed reason (02 §8.5; C23-R1-12).
-        if warnings.iter().any(|w| w == "drawing.centreLineOnFill") {
-            return Err(err(
-                "drawing.centreLineOnFill",
-                "the selection holds painted zones but no brush strokes; extract centre lines before filling",
-                json!({ "pointer": "/ids" }),
-            ));
-        }
-        return Err(nothing_to_do("extract"));
-    }
+    let (brushes, mut warnings) = centre_line_sources(cx, &d, &list)?;
     let mut order: Vec<&Located> = brushes.iter().collect();
     order.sort_by(|a, b| b.list.cmp(&a.list).then(b.index.cmp(&a.index)));
     let mut ops = Vec::new();

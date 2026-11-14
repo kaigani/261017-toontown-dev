@@ -81,13 +81,60 @@ pub(crate) fn cell_label_set(_cx: &Cx, v: &Value) -> Result<(), CommandError> {
     exactly_one(v, &["drawing", "drawingId", "step"])
 }
 
-/// `colour.recolour.apply`: `fromColourId` and `toColourId`, or `map`.
-pub(crate) fn colour_recolour_apply(_cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    if (has(v, "fromColourId") && has(v, "toColourId")) || has(v, "map") {
-        Ok(())
-    } else {
-        Err(invalid("give fromColourId and toColourId, or map", "/fromColourId"))
+/// `colour.recolour.apply`: `fromColourId` and `toColourId`, or `map`; the scope `scene` without `sceneId` needs a
+/// current scene.
+pub(crate) fn colour_recolour_apply(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if !((has(v, "fromColourId") && has(v, "toColourId")) || has(v, "map")) {
+        return Err(invalid("give fromColourId and toColourId, or map", "/fromColourId"));
     }
+    if v.get("scope").and_then(Value::as_str) == Some("scene") && !has(v, "sceneId") && cx.app().scene.is_none() {
+        return Err(CommandError::with_details(
+            "scene.noTarget",
+            "there is no current scene",
+            json!({ "pointer": "/sceneId" }),
+        ));
+    }
+    Ok(())
+}
+
+/// `xsheet.exposures.set`: without columns or `sceneId`, the current scene.
+pub(crate) fn xsheet_exposures_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if v.get("columns").and_then(Value::as_array).is_none_or(Vec::is_empty) && !has(v, "sceneId") {
+        crate::commands::timing::scene_id(cx, None)?;
+    }
+    Ok(())
+}
+
+/// `render.range.run`: the scene (given, else the current or first one).
+pub(crate) fn render_range_run(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    crate::commands::render::scene_param(cx, v.get("sceneId").and_then(Value::as_str)).map(|_| ())
+}
+
+/// `render.frame.run`: the scene (given, else the current or first one), the frame (given, else the current one) and,
+/// without `cameraId`, the scene's current camera, for the camera composition (the refusals of `scene_param`,
+/// `frame_param` and the render list).
+pub(crate) fn render_frame_run(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let composition = v.get("composition").and_then(Value::as_str).unwrap_or("camera");
+    if matches!(composition, "xsheet" | "activeView") {
+        return Ok(());
+    }
+    let scene = crate::commands::render::scene_param(cx, v.get("sceneId").and_then(Value::as_str))?;
+    let frame = v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok());
+    crate::commands::render::frame_param(cx, frame)?;
+    let drawing_space = composition == "element" && has(v, "drawingId");
+    if !drawing_space && !has(v, "cameraId") {
+        let doc = cx.document()?;
+        if let Some(sc) = doc.scene(&scene)
+            && sc.current_camera_id().is_none()
+        {
+            return Err(CommandError::with_details(
+                "render.noCamera",
+                format!("scene `{}` has no camera to render through", sc.name()),
+                json!({ "sceneId": scene.as_str() }),
+            ));
+        }
+    }
+    Ok(())
 }
 
 /// `doc.asset.embed`: `assetIds` or `all: true`.

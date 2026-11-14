@@ -400,7 +400,7 @@ fn transform_geometry(g: &Geometry, m: &tt_vector::geom::Affine) -> Geometry {
 
 #[command(
     id = "draw.stroke.add",
-    precheck = crate::prechecks::draw_stroke_add,
+    precheck = super::draw::precheck_stroke_add,
     kind = action,
     label = "Add stroke",
     scopes = [edit],
@@ -650,6 +650,7 @@ pub(crate) fn drawing_in<'a>(doc: &'a Document, id: &tt_model::Id) -> Result<&'a
 
 #[command(
     id = "draw.stroke.set",
+    precheck = super::draw::precheck_stroke_set,
     kind = action,
     label = "Edit stroke",
     scopes = [edit],
@@ -788,6 +789,7 @@ pub(crate) struct ContentAddResult {
 
 #[command(
     id = "draw.content.add",
+    precheck = super::draw::precheck_add_content,
     kind = action,
     label = "Insert drawing content",
     scopes = [edit],

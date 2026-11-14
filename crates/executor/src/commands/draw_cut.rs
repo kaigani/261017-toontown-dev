@@ -299,7 +299,7 @@ fn check_finite(v: &[P], pointer: &str) -> Result<(), CommandError> {
 
 #[command(
     id = "draw.cut.apply",
-    precheck = crate::prechecks::draw_cut_apply,
+    precheck = super::draw::precheck_cut,
     kind = action,
     label = "Cut",
     scopes = [edit],
@@ -516,7 +516,7 @@ fn swept(path: &[ErasePoint], pen: &BrushPen) -> Result<Vec<P>, CommandError> {
 
 #[command(
     id = "draw.erase.apply",
-    precheck = crate::prechecks::draw_erase_apply,
+    precheck = super::draw::precheck_erase,
     kind = action,
     label = "Erase",
     scopes = [edit],

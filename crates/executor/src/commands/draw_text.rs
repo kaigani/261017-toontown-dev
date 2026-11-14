@@ -247,6 +247,7 @@ pub(crate) struct TextResult {
 
 #[command(
     id = "draw.text.add",
+    precheck = super::draw::precheck_add_content,
     kind = action,
     label = "Add text",
     scopes = [edit],
@@ -407,6 +408,7 @@ fn text_node(
 
 #[command(
     id = "draw.text.set",
+    precheck = super::draw::precheck_text_set,
     kind = action,
     label = "Edit text",
     scopes = [edit],
@@ -618,6 +620,7 @@ pub(crate) struct TextFormatResult {
 
 #[command(
     id = "draw.textFormat.set",
+    precheck = super::draw::precheck_text_set,
     kind = action,
     label = "Format text",
     scopes = [edit],

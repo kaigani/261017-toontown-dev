@@ -691,6 +691,64 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) 
     delete_with(cx, picked, remove_frames, descendants, false)
 }
 
+/// The refusals of a deletion of `picked`, read-only (the precheck of cut and delete runs it too; ruling O-24): a
+/// locked drawing of a drawing object, a locked element (with its descendants for a cut), the last camera of a scene
+/// (not when a replacing import brings its own).
+///
+/// # Errors
+/// `drawing.locked`, `element.locked`, `anim.lastCamera`.
+fn deletion_refusal(doc: &Document, picked: &Picked, descendants: bool, replacing: bool) -> Result<(), CommandError> {
+    match picked {
+        Picked::Drawing(keys) => {
+            for k in &top_level(doc, keys) {
+                if let Some((d, _)) = k.split_once('/') {
+                    check_drawing_unlocked(doc, d)?;
+                }
+            }
+        }
+        Picked::Elements(keys) => {
+            // Per scene: the picked elements, with their descendants for a cut (one walk of the scene's tree).
+            let mut by_scene: BTreeMap<&Id, BTreeSet<Id>> = BTreeMap::new();
+            for k in keys {
+                let id = Id::parse(k)?;
+                let scene = doc.scene_of(&id).ok_or_else(|| internal("element without scene"))?;
+                by_scene.entry(scene).or_default().insert(id);
+            }
+            for (scene, roots) in &by_scene {
+                let mut gone = roots.clone();
+                if descendants && let Some(sc) = doc.scene(scene) {
+                    under(sc.tree(), false, roots, &mut gone);
+                }
+                for id in &gone {
+                    if doc.element(id).is_some_and(|e| *e.locked()) {
+                        return Err(CommandError::with_details(
+                            "element.locked",
+                            format!("element `{id}` is locked"),
+                            json!({ "elementId": id.as_str() }),
+                        ));
+                    }
+                }
+                if !replacing {
+                    super::anim_camera::refuse_last_camera(doc, scene, &|c| gone.contains(c))?;
+                }
+            }
+        }
+        Picked::Keys(_) | Picked::Points(_) | Picked::Library(_) | Picked::Cells(_) => {}
+    }
+    Ok(())
+}
+
+/// Adds every element under a node of `roots` (in `nodes`, or under one) to `out`.
+fn under(nodes: &[tt_model::entities::scene::TreeNode], inside: bool, roots: &BTreeSet<Id>, out: &mut BTreeSet<Id>) {
+    for n in nodes {
+        let here = inside || roots.contains(&n.id);
+        if here {
+            out.insert(n.id.clone());
+        }
+        under(&n.children, here, roots, out);
+    }
+}
+
 fn delete_with(
     cx: &mut Cx,
     picked: &Picked,
@@ -699,6 +757,7 @@ fn delete_with(
     replacing: bool,
 ) -> Result<Vec<String>, CommandError> {
     let doc = cx.document()?.clone();
+    deletion_refusal(&doc, picked, descendants, replacing)?;
     match picked {
         Picked::Drawing(keys) => {
             let keys = top_level(&doc, keys);
@@ -1520,7 +1579,7 @@ fn channel_name(doc: &Document, channel: &str) -> Result<String, CommandError> {
 
 fn clipboard(cx: &Cx) -> Result<Clipboard, CommandError> {
     match &cx.session().clipboard {
-        Some(v) => serde_json::from_value(v.clone()).map_err(internal),
+        Some(v) => serde_json::from_value(Value::clone(v)).map_err(internal),
         None => Err(CommandError::with_details("edit.clipboardEmpty", "the clipboard is empty", json!({}))),
     }
 }
@@ -1549,7 +1608,7 @@ pub(crate) struct ClipResult {
 
 #[command(
     id = "edit.cut",
-    precheck = precheck_on_selection,
+    precheck = precheck_cut,
     kind = action,
     label = "Cut",
     scopes = [edit],
@@ -1569,7 +1628,7 @@ pub(crate) fn edit_cut(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, Comm
 
 #[command(
     id = "edit.copy",
-    precheck = precheck_on_selection,
+    precheck = precheck_copy,
     kind = ui,
     label = "Copy",
     scopes = [ui],
@@ -1595,7 +1654,7 @@ pub(crate) struct DeleteResult {
 
 #[command(
     id = "edit.delete",
-    precheck = precheck_on_selection,
+    precheck = precheck_delete,
     kind = action,
     label = "Delete",
     scopes = [edit],
@@ -1665,7 +1724,7 @@ pub(crate) struct CutSpecialParams {
 
 #[command(
     id = "edit.cutSpecial",
-    precheck = precheck_on_selection,
+    precheck = precheck_cut,
     kind = action,
     label = "Cut Special",
     scopes = [edit],
@@ -1927,6 +1986,36 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
 
 /// Copies (or cuts, with the elements' descendants as `edit.cut` does) whole elements to the clipboard in the
 /// Timeline context: `cell.clipboard.set {wholeElements: true}` (04 §13.16).
+/// The refusals of cutting whole elements ([`copy_elements`] with `cut`), read-only (`cell.clipboard.set` precheck).
+///
+/// # Errors
+/// `element.locked`, `anim.lastCamera`.
+pub(crate) fn element_cut_refusal(doc: &Document, ids: &[String]) -> Result<(), CommandError> {
+    deletion_refusal(doc, &Picked::Elements(ids.to_vec()), true, false)
+}
+
+/// An elements clipboard's copied elements that name an element of the project are still in it (the refusal of the
+/// elements branch of [`paste`]), read once per clipboard and document revision (`memo`).
+fn copied_elements_present(cx: &Cx, context: EditContext) -> Result<(), CommandError> {
+    let Some(clip) = cx.session().clipboard.as_ref() else { return Ok(()) };
+    let (project, rev) = crate::memo::document_version(cx);
+    crate::memo::memo(&format!("copied-elements:{project}:{}", context.as_str()), clip, rev, || {
+        for it in clip.get("items").and_then(Value::as_array).into_iter().flatten() {
+            if let Some(r) = it.get("elementId").and_then(Value::as_str)
+                && cx.resolve_as(r, ObjectType::Element).is_err()
+            {
+                return Err(not_allowed(ClipboardKind::Elements, context, "a copied element is not in this project"));
+            }
+        }
+        Ok(())
+    })
+}
+
+/// The elements-clipboard refusals of `cell.clipboard.apply` (its elements branch pastes into the Timeline).
+pub(crate) fn precheck_paste_elements(cx: &Cx) -> Result<(), CommandError> {
+    copied_elements_present(cx, EditContext::Timeline)
+}
+
 pub(crate) fn copy_elements(cx: &mut Cx, ids: &[String], cut: bool) -> Result<ClipboardSummary, CommandError> {
     let picked = Picked::Elements(ids.to_vec());
     let clip = copy_content(cx, EditContext::Timeline, &picked, None)?;
@@ -2062,15 +2151,51 @@ pub(crate) fn element_reference_fixes(v: &Value, ids: &BTreeSet<String>) -> Vec<
 
 // ----- prechecks (ruling O-23; reviews/M4-design-availability.md) -------------------------------------------------
 
-/// `edit.copy`, `edit.cut`, `edit.cutSpecial`, `edit.delete`: without `objectIds` they act on the selection of their
-/// context, which must not be empty (the refusal `pick` gives).
-pub(crate) fn precheck_on_selection(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    if v.get("objectIds").is_some_and(|x| !x.is_null()) {
-        return Ok(());
-    }
+/// What a cut, a copy or a delete does with what it picked.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Use {
+    Copy,
+    /// Cut and cut special: the picked nodes go with their descendants.
+    Cut,
+    Delete,
+}
+
+/// `edit.copy`, `edit.cut`, `edit.cutSpecial`, `edit.delete` (ruling O-24): exactly what the handler checks before its
+/// work: [`pick`] (the selection of the context, or `objectIds`; the kinds a context edits; cells with exposure), then
+/// for a cut or a delete [`deletion_refusal`] (locked drawings and elements, the last camera). On the selection the
+/// result is computed once per selection list and document revision (`memo`); an empty selection is one lookup.
+fn precheck_use(cx: &Cx, v: &Value, how: Use) -> Result<(), CommandError> {
     let context = v.get("context").cloned().map_or(Ok(EditContext::Auto), serde_json::from_value).unwrap_or_default();
     let context = resolve_context(cx, context);
-    if selection_in(cx, context).is_empty() { Err(nothing_selected(context)) } else { Ok(()) }
+    let check = |ids: Option<Vec<String>>| -> Result<(), CommandError> {
+        let picked = pick(cx, context, ids)?;
+        match how {
+            Use::Copy => Ok(()),
+            Use::Cut => deletion_refusal(cx.document()?, &picked, true, false),
+            Use::Delete => deletion_refusal(cx.document()?, &picked, false, false),
+        }
+    };
+    if let Some(given) = v.get("objectIds").filter(|x| !x.is_null()) {
+        let Ok(ids) = serde_json::from_value::<Vec<String>>(given.clone()) else { return Ok(()) };
+        return check(Some(ids));
+    }
+    let Some(list) = cx.app().selection_shared(context.as_str()).filter(|l| !l.is_empty()) else {
+        return Err(nothing_selected(context));
+    };
+    let (project, rev) = crate::memo::document_version(cx);
+    crate::memo::memo(&format!("pick:{}:{how:?}:{project}", context.as_str()), list, rev, || check(None))
+}
+
+pub(crate) fn precheck_copy(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_use(cx, v, Use::Copy)
+}
+
+pub(crate) fn precheck_cut(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_use(cx, v, Use::Cut)
+}
+
+pub(crate) fn precheck_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_use(cx, v, Use::Delete)
 }
 
 /// The clipboard's kind, read without decoding its items.
@@ -2082,12 +2207,105 @@ fn clipboard_empty() -> CommandError {
     CommandError::with_details("edit.clipboardEmpty", "the clipboard is empty", json!({}))
 }
 
-/// `edit.paste`: the clipboard holds something.
-pub(crate) fn precheck_paste(cx: &Cx, _v: &Value) -> Result<(), CommandError> {
-    if cx.session().clipboard.is_none() { Err(clipboard_empty()) } else { Ok(()) }
+/// The refusals [`paste`] gives before it reads the copied items (ruling O-24), read-only and constant cost: the
+/// clipboard holds something; its kind against the context and the destination; the current drawing, scene, element
+/// or function it falls back to; a locked target drawing; a target column without exposure cells; an empty target
+/// selection for a motion point or element properties; an image (not implemented). What depends on the copied items
+/// themselves (a copied element or drawing no longer in the project, too few columns to the right of the target, a
+/// column type mismatch, a function without keys) is the handler's.
+fn paste_refusal(cx: &Cx, context: EditContext, v: &Value) -> Result<(), CommandError> {
+    if cx.session().clipboard.is_none() {
+        return Err(clipboard_empty());
+    }
+    let Some(kind) = clipboard_kind(cx) else { return Ok(()) };
+    let dest = v.get("destination");
+    let given = |k: &str| dest.and_then(|d| d.get(k)).and_then(Value::as_str);
+    let targets_empty = |selection: EditContext| match dest.and_then(|d| d.get("objectIds")).and_then(Value::as_array) {
+        Some(ids) => ids.is_empty(),
+        None => cx.app().selection_list(selection.as_str()).is_empty(),
+    };
+    match kind {
+        ClipboardKind::DrawingObjects => {
+            if context != EditContext::Drawing && given("drawingId").is_none() {
+                return Err(not_allowed(kind, context, "drawing objects paste into a drawing"));
+            }
+            let drawing = match given("drawingId") {
+                Some(d) => cx.resolve_as(d, ObjectType::Drawing)?,
+                None => cx
+                    .resolve_as("@current", ObjectType::Drawing)
+                    .map_err(|_| not_allowed(kind, context, "there is no current drawing"))?,
+            };
+            check_drawing_unlocked(cx.document()?, &drawing)
+        }
+        ClipboardKind::Elements => {
+            if !matches!(context, EditContext::Staging | EditContext::Timeline) && given("sceneId").is_none() {
+                return Err(not_allowed(kind, context, "elements paste into the Timeline or the camera view"));
+            }
+            current_scene(cx, given("sceneId"))?;
+            copied_elements_present(cx, context)
+        }
+        ClipboardKind::Cells => {
+            if !matches!(context, EditContext::Xsheet | EditContext::Timeline) && given("elementId").is_none() {
+                return Err(not_allowed(kind, context, "cells paste into the Exposure Sheet or the Timeline"));
+            }
+            let target = match given("elementId") {
+                Some(e) => cx.resolve_as(e, ObjectType::Element)?,
+                None => cx
+                    .resolve_as("@current", ObjectType::Element)
+                    .map_err(|_| not_allowed(kind, context, "there is no current element"))?,
+            };
+            let doc = cx.document()?;
+            match doc.element(&Id::parse(&target)?) {
+                Some(tel) if !tel.element_type().has_exposure() => Err(CommandError::with_details(
+                    "edit.wrongElementType",
+                    format!("element `{}` has no exposure cells", tel.name()),
+                    json!({ "elementId": target }),
+                )),
+                _ => Ok(()),
+            }
+        }
+        ClipboardKind::Keyframes | ClipboardKind::FunctionPoints => {
+            if context != EditContext::FunctionEditor && given("functionId").is_none() {
+                return Err(not_allowed(kind, context, "keys paste into a function"));
+            }
+            match given("functionId") {
+                Some(f) => cx.resolve_as(f, ObjectType::Channel).map(|_| ()),
+                None => {
+                    let doc = cx.document()?;
+                    if cx.app().element.as_ref().and_then(|e| doc.element(e)).is_none() {
+                        Err(not_allowed(kind, context, "there is no current element"))
+                    } else {
+                        Ok(())
+                    }
+                }
+            }
+        }
+        ClipboardKind::MotionPoint if targets_empty(EditContext::FunctionEditor) => {
+            Err(not_allowed(kind, context, "select motion points to paste onto"))
+        }
+        ClipboardKind::Templates if context != EditContext::Library && given("catalogId").is_none() => {
+            Err(not_allowed(kind, context, "templates paste into a library catalog"))
+        }
+        ClipboardKind::ElementProperties if targets_empty(EditContext::Staging) => {
+            Err(not_allowed(kind, context, "select elements to paste properties onto"))
+        }
+        ClipboardKind::Image => Err(CommandError::not_implemented("edit.paste (image import, 09)", "M10")),
+        ClipboardKind::MotionPoint | ClipboardKind::Templates | ClipboardKind::ElementProperties => Ok(()),
+    }
 }
 
-/// `edit.pasteSpecial`: the clipboard holds something; `useLast` needs an earlier paste special.
+fn paste_context(cx: &Cx, v: &Value) -> EditContext {
+    let context = v.get("context").cloned().map_or(Ok(EditContext::Auto), serde_json::from_value).unwrap_or_default();
+    resolve_context(cx, context)
+}
+
+/// `edit.paste`: [`paste_refusal`].
+pub(crate) fn precheck_paste(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    paste_refusal(cx, paste_context(cx, v), v)
+}
+
+/// `edit.pasteSpecial`: the clipboard holds something; `useLast` needs an earlier paste special; then
+/// [`paste_refusal`].
 pub(crate) fn precheck_paste_special(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     if cx.session().clipboard.is_none() {
         return Err(clipboard_empty());
@@ -2103,7 +2321,7 @@ pub(crate) fn precheck_paste_special(cx: &Cx, v: &Value) -> Result<(), CommandEr
             ));
         }
     }
-    Ok(())
+    paste_refusal(cx, paste_context(cx, v), v)
 }
 
 /// `edit.pasteAsNewElement`: something on the clipboard, a scene, cells or drawing objects, and copied drawings that
@@ -2113,19 +2331,24 @@ pub(crate) fn precheck_paste_as_new_element(cx: &Cx, v: &Value) -> Result<(), Co
     current_scene(cx, v.get("sceneId").and_then(Value::as_str))?;
     match clipboard_kind(cx) {
         Some(ClipboardKind::Cells) => {
-            let doc = cx.document()?;
-            for it in clip.get("items").and_then(Value::as_array).into_iter().flatten() {
-                let Some(d) = it.get("drawingRef").and_then(Value::as_str) else { continue };
-                let present = Id::parse(d).ok().is_some_and(|id| doc.entry_raw_json(&EntryKey::Drawing(id)).is_ok());
-                if !present {
-                    return Err(not_allowed(
-                        ClipboardKind::Cells,
-                        EditContext::Xsheet,
-                        "a copied drawing is not in this project",
-                    ));
+            // Whether every copied drawing is still in the project: read once per clipboard and document revision.
+            let (project, rev) = crate::memo::document_version(cx);
+            crate::memo::memo(&format!("paste-new-cells:{project}"), clip, rev, || {
+                let doc = cx.document()?;
+                for it in clip.get("items").and_then(Value::as_array).into_iter().flatten() {
+                    let Some(d) = it.get("drawingRef").and_then(Value::as_str) else { continue };
+                    let present =
+                        Id::parse(d).ok().is_some_and(|id| doc.entry_raw_json(&EntryKey::Drawing(id)).is_ok());
+                    if !present {
+                        return Err(not_allowed(
+                            ClipboardKind::Cells,
+                            EditContext::Xsheet,
+                            "a copied drawing is not in this project",
+                        ));
+                    }
                 }
-            }
-            Ok(())
+                Ok(())
+            })
         }
         Some(ClipboardKind::DrawingObjects) => Ok(()),
         Some(other) => {
@@ -2139,9 +2362,10 @@ pub(crate) fn precheck_paste_as_new_element(cx: &Cx, v: &Value) -> Result<(), Co
 pub(crate) fn precheck_cell_clipboard_apply(cx: &Cx, _v: &Value) -> Result<(), CommandError> {
     let empty = || CommandError::with_details("cell.clipboardEmpty", "the clipboard holds nothing to paste", json!({}));
     let Some(clip) = cx.session().clipboard.as_ref() else { return Err(empty()) };
+    // What the clipboard holds for a cell paste: read once per clipboard (and document revision) (`memo`).
     match clipboard_kind(cx) {
         Some(ClipboardKind::Elements) => Ok(()),
-        Some(ClipboardKind::Cells) => {
+        Some(ClipboardKind::Cells) => crate::memo::memo("cell-paste-usable", clip, 0, || {
             let usable = clip.get("items").and_then(Value::as_array).is_some_and(|items| {
                 items.iter().any(|it| {
                     it.get("elementId").and_then(Value::as_str).is_some_and(|s| Id::parse(s).is_ok())
@@ -2149,7 +2373,10 @@ pub(crate) fn precheck_cell_clipboard_apply(cx: &Cx, _v: &Value) -> Result<(), C
                 })
             });
             if usable { Ok(()) } else { Err(empty()) }
+        }),
+        _ => {
+            let (project, rev) = crate::memo::document_version(cx);
+            crate::memo::memo(&format!("cell-paste-cells:{project}"), clip, rev, || clipboard_cells(cx).map(|_| ()))
         }
-        _ => clipboard_cells(cx).map(|_| ()),
     }
 }

@@ -36,6 +36,7 @@ mod jobs;
 pub mod keymap;
 mod load_repair;
 mod maintenance;
+mod memo;
 mod persistence;
 mod planar;
 mod prechecks;
