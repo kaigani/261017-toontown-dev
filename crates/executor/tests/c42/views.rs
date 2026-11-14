@@ -198,11 +198,8 @@ fn m3_item3_refusals_become_implementations_and_agree_with_the_mapping() {
     let data = r["data"].as_str().or_else(|| r["png"].as_str()).unwrap();
     assert!(px(data) == px(shot["png"].as_str().unwrap()), "activeView and screenshot agree");
     // `exclude` wins: the drawing's element excluded leaves the background only.
-    let ex = ok(
-        &h,
-        "render.frame.run",
-        json!({ "composition": "activeView", "background": "#F0F0F0FF", "exclude": [BOB] }),
-    );
+    let ex =
+        ok(&h, "render.frame.run", json!({ "composition": "activeView", "background": "#F0F0F0FF", "exclude": [BOB] }));
     let e = px(ex["data"].as_str().or_else(|| ex["png"].as_str()).unwrap());
     assert!(e.chunks(4).all(|c| c == [0xF0, 0xF0, 0xF0, 0xFF]), "excluded: background only");
 }

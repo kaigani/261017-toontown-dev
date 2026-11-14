@@ -84,7 +84,10 @@ fn the_mapping_function_is_cheap_and_round_trips() {
         worst = worst.max((q.x - p.x).abs().max((q.y - p.y).abs()));
     }
     let took = start.elapsed();
-    eprintln!("mapping: {n} round trips in {took:?} ({:.0} ns each), worst error {worst:e} px", took.as_nanos() as f64 / f64::from(n));
+    eprintln!(
+        "mapping: {n} round trips in {took:?} ({:.0} ns each), worst error {worst:e} px",
+        took.as_nanos() as f64 / f64::from(n)
+    );
     assert!(worst < 1e-9, "{worst}");
     assert!(took < Duration::from_millis(200), "{took:?}");
 }

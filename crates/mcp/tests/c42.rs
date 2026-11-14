@@ -47,8 +47,11 @@ fn pointer_answers_the_commands_its_gestures_produced() {
         undo["structuredContent"]["result"]["entries"].as_array().unwrap().iter().map(|e| e["label"].clone()).collect();
     assert!(labels.contains(&json!("Brush Tool")), "{labels:?}");
     // A refusal is the tool's error, with the gesture it came from.
-    let r = c.call("pointer", json!({ "view": "drawing", "tool": "text", "events": [
-        { "type": "down", "x": 1, "y": 1 }, { "type": "up", "x": 1, "y": 1 } ] }));
+    let r = c.call(
+        "pointer",
+        json!({ "view": "drawing", "tool": "text", "events": [
+        { "type": "down", "x": 1, "y": 1 }, { "type": "up", "x": 1, "y": 1 } ] }),
+    );
     assert_eq!(r["isError"], true, "{r}");
     assert_eq!(r["structuredContent"]["error"]["details"]["gestureCommandId"], "tool:text");
     let _ = std::fs::remove_dir_all(&dir);

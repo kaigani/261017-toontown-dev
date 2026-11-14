@@ -167,7 +167,10 @@ async def run(binary, workdir):
             check("notifications/progress", bool(progress), progress)
 
             r = await s.call_tool("pointer", {"view": "camera", "events": [{"type": "down", "x": 1, "y": 1}]})
-            check("pointer answers notImplemented with its milestone", sc(r).get("error", {}).get("details", {}).get("milestone") == "M2 C2.3", sc(r))
+            # M4 C4.2: gestures in the Drawing view; the Camera view's arrive with M4 C4.3.
+            check("pointer in the camera view answers notImplemented with its milestone", sc(r).get("error", {}).get("details", {}).get("milestone") == "M4 C4.3", sc(r))
+            r = await s.call_tool("pointer", {"view": "drawing", "events": [{"type": "hover", "x": 5, "y": 5}]})
+            check("pointer in the drawing view answers commands and hover", sc(r).get("status") == "ok" and sc(r).get("result", {}).get("hover", {}).get("view") == {"x": 5.0, "y": 5.0}, sc(r))
 
 
 def launch_desktop(app, workdir):

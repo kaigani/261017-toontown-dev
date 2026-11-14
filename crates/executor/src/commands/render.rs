@@ -698,23 +698,27 @@ fn active_view(cx: &mut Cx, p: &FrameParams, doc: &Document, frame: u32) -> Resu
     let (sx, sy) = (w / vw, h / vh);
     let d2p = [m[0] * sx, m[1] * sy, m[2] * sx, m[3] * sy, m[4] * sx, m[5] * sy];
     let bg = background(doc, &scene, &p.background)?;
-    let styles: Option<std::collections::BTreeMap<Id, Id>> =
-        doc.scene(&scene).map(|sc| sc.palette_styles().iter().map(|(a, b)| (a.clone(), b.clone())).collect());
-    let blobs = cx.project().ok().map(|pr| &pr.store.blobs);
-    let cache = cx.planar_cache();
-    let mut builder =
-        super::draw_render::Builder::in_drawing_units(doc, blobs, styles, u64::from(wu) * u64::from(hu) / 1024);
-    if !excluded {
-        let zones: std::collections::BTreeMap<String, crate::planar::LayerZones> =
-            crate::planar::drawing_zones(&cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
-        builder.nodes(d.nodes(), &zones)?;
-    }
-    let items = vec![tt_render::Item::Layer { transform: d2p, items: builder.take_items() }];
-    let mut warnings = std::mem::take(&mut builder.warnings);
+    // One rasteriser and one mapping with the headless screenshot and `draw.drawing.render` (design note 5, S4).
+    let mut warnings = Vec::new();
+    let pixels = if excluded {
+        bg.repeat(wu as usize * hu as usize)
+    } else {
+        let raster = super::draw_render::Raster {
+            d2p: tt_vector::geom::Affine(d2p),
+            scale: (d2p[0] * d2p[3] - d2p[1] * d2p[2]).abs().sqrt(),
+            width: wu,
+            height: hu,
+            background: bg,
+            show_strokes: false,
+            show_selection: false,
+        };
+        let (px, w) = super::draw_render::rasterise(cx, doc, d, None, raster, std::time::Instant::now())?;
+        warnings = w;
+        px
+    };
     if p.quality == Quality::Draft {
         warnings.push(json!({ "code": "render.draftAsFinal", "message": "headless renders use the final software rasteriser; draft quality is the interactive canvas's" }));
     }
-    let pixels = rasterise(&Scene { width: wu, height: hu, background: bg, items }, &|| false)?;
     let (bytes, mime) = encode(p.format, &pixels, wu, hu, p.jpeg_quality)?;
     let image = Image {
         bytes,
