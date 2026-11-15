@@ -21,3 +21,9 @@ Build to use: the `desktop-<OS>` artifact of the CI run named in the handoff (`o
 | [C4.1-display-scaling.md](C4.1-display-scaling.md) | both | C4.1 (round 1) |
 | [C4.1-dialog-then-shortcut.md](C4.1-dialog-then-shortcut.md) | both | C4.1 (round 1) |
 | [C4.1-floating-windows.md](C4.1-floating-windows.md) | both | C4.1 (round 1, ruling O-2) |
+| [C4.2-tablet.md](C4.2-tablet.md) | both | C4.2b |
+| [C4.2-visual-fidelity.md](C4.2-visual-fidelity.md) | both | C4.2b |
+| [C4.2-feel.md](C4.2-feel.md) | both | C4.2b |
+| [C4.2-navigation.md](C4.2-navigation.md) | both | C4.2b |
+| [C4.2-display-scaling.md](C4.2-display-scaling.md) | both | C4.2b |
+| [C4.2-gpu-less.md](C4.2-gpu-less.md) | both | C4.2b |
