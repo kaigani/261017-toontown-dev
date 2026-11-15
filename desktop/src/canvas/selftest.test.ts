@@ -83,8 +83,21 @@ describe('the back-end measurement', () => {
   it('a frame over the abort bound ends the cell at once, missed at that rate', async () => {
     const clock = { t: 0 };
     const cell = await measureCell(fakeRenderer(clock, 1600), 'paths100k', env(clock));
-    expect(cell.status).toBe('missed');
-    expect(clock.t).toBe(1600);
+    expect(cell).toEqual({ status: 'missed', fps: 1000 / 1600 });
+    // The untimed warm-up frame, then one timed frame.
+    expect(clock.t).toBe(3200);
+  });
+
+  it('the first frame after the upload is a warm-up: its one-time cost is not the scene rate', async () => {
+    const clock = { t: 0 };
+    let n = 0;
+    const cell = await measureCell(
+      fakeRenderer(clock, () => (n++ === 0 ? 900 : 10)),
+      'groups1k',
+      env(clock),
+    );
+    expect(cell).toEqual({ status: 'met', fps: 100 });
+    expect(clock.t).toBeGreaterThanOrEqual(900 + CELL_MS);
   });
 
   it('a failing back end gives failed or unavailable cells, never selected over a measured one', async () => {

@@ -1599,7 +1599,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Problem:** the product measurement's duration and scheduling are not stated; 10 s on each of six cells would hold
   the GPU for a minute at first launch.
 - **Interim decision:** 2 s per cell on an offscreen canvas, after the first launch and after each version change; until
-  a result exists the canvas runs WebGL2; an inconclusive cell is measured again on the next change.
+  a result exists the canvas runs WebGL2; an inconclusive cell is measured again on the next change. Each cell's timed
+  frames follow one untimed warm-up frame (the first use of freshly uploaded buffers), and a timed frame over 500 ms
+  ends the cell, missed at that rate, so a software adapter is not held for the whole cell.
 - **Question:** confirm, or state the duration.
 
 ## SI-137 — interactive tessellation tolerance, zoom buckets and the resident geometry budget (found in M4 C4.2b; interim)
@@ -1609,9 +1611,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Problem:** the spec gives no flattening tolerance for the interactive canvas, no geometry memory budget, and no rule
   for fills the canvas cannot yet show exactly.
 - **Interim decision:** curves are flattened to 0.25 view pixels at the top of the zoom bucket (buckets are the powers of
-  two of the zoom table), and crossing a bucket reloads the visible drawings; resident geometry is capped at 256 MB per
-  window, evicting off-screen drawings least recently used; a texture-filled zone is drawn with its texture's mean
-  colour until bitmap transport exists (exported pixels come only from the final renderer).
+  two of the zoom table), and crossing a bucket reloads the visible drawings; the resident set is the Drawing view's
+  composition (a drawing leaving it is dropped and reloaded when it returns), so no byte cap or off-screen eviction is
+  needed for this view (`display.cacheMemoryPercent` bounds nothing here yet); a texture-filled zone and a bitmap node
+  are drawn with their image's mean colour until bitmap pixels are transported, and `display.smoothBitmaps` and
+  `display.bitmapPreviewMaxSize` act from then on (exported pixels come only from the final renderer).
 - **Question:** confirm or state these values.
 
 ## SI-138 — the appearance of the Drawing view's overlay (found in M4 C4.2b; interim)

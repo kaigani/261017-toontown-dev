@@ -2,14 +2,15 @@
 // launch and after a GPU, driver or webview change; SI-136: 2 s per cell; SI-140: persisted in the preferences).
 //
 // Each back end draws the rule set's three scenes (paths100k, groups1k, brush10k), generated here as decoded drawings,
-// on a detached canvas: every frame redraws the static layers through an animated view and waits for the GPU
-// (`Renderer.finish`), yielding to the page between frames. A cell ends after its time, or at its first frame over
+// on a detached canvas: after one untimed warm-up frame, every frame redraws the static layers through an animated
+// view and waits for the GPU (`Renderer.finish`), yielding to the page between frames. A cell ends after its time, or
+// at its first timed frame over
 // `FRAME_ABORT_MS` (a software adapter can take seconds per frame: the cell is then missed without holding the machine).
 
 import { cellOf, SCENES, type Cell, type Measurement, type SceneName } from './backend';
 import { VERTEX_LEN, type DecodedDrawing } from './format';
 import type { Affine } from './geometry';
-import type { BackendKind, Renderer } from './renderer';
+import type { BackendKind, FrameInput, Renderer } from './renderer';
 import type { Scene, SceneEntry } from './scene';
 
 export const CELL_MS = 2000;
@@ -133,35 +134,36 @@ export interface MeasureEnv {
 }
 
 /** One cell: the scene drawn on `renderer` until `CELL_MS` passes or a frame exceeds `FRAME_ABORT_MS`. */
+/** Frame `t` of the rule set's pan and zoom: a slow animated view over the scene. */
+function frameInput(scene: Scene, t: number): FrameInput {
+  const z = 0.8 + 0.2 * Math.sin(t / 40);
+  const d2v: Affine = [z, 0, 0, -z, WIDTH / 2 + 80 * Math.sin(t / 60), HEIGHT / 2 + 40 * Math.cos(t / 50)];
+  return {
+    scene,
+    drawingToView: d2v,
+    width: WIDTH,
+    height: HEIGHT,
+    dpr: 1,
+    staticDirty: true,
+    grid: null,
+    overlay: null,
+  };
+}
+
 export async function measureCell(renderer: Renderer, name: SceneName, env: MeasureEnv): Promise<Cell> {
   const { drawings, scene } = measureScene(name);
   try {
     for (const [id, d] of drawings) renderer.upload(id, d);
+    // One untimed warm-up frame: the first use of freshly uploaded buffers carries one-time costs (the upload itself
+    // on some drivers) that are not the scene's frame rate; the C0.3 spike also timed the pan/zoom after its upload.
+    renderer.frame(frameInput(scene, 0));
+    await renderer.finish();
     const start = env.now();
     let frames = 0;
     let t = 0;
     while (env.now() - start < CELL_MS) {
       const a = env.now();
-      // The rule set's pan and zoom: a slow animated view over the scene.
-      const z = 0.8 + 0.2 * Math.sin(t / 40);
-      const d2v: Affine = [
-        z,
-        0,
-        0,
-        -z,
-        WIDTH / 2 + 80 * Math.sin(t / 60),
-        HEIGHT / 2 + 40 * Math.cos(t / 50),
-      ];
-      renderer.frame({
-        scene,
-        drawingToView: d2v,
-        width: WIDTH,
-        height: HEIGHT,
-        dpr: 1,
-        staticDirty: true,
-        grid: null,
-        overlay: null,
-      });
+      renderer.frame(frameInput(scene, t));
       await renderer.finish();
       frames++;
       t++;
