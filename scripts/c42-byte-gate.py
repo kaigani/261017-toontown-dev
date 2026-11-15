@@ -10,6 +10,11 @@ be identical and the result's metadata identical except the named volatile field
 took and the job that ran it). Receipts in <out dir>: `attached/` and `headless/` PNGs (the retained goldens of this
 run), `manifest.json` (kind `toontown.c42.byte-gate`: hashes, revisions, the volatile fields and every difference).
 Exit 0 when the gate holds.
+
+What this gate checks, and what it does not: it compares the running application's executor export (the final
+renderer, `render.frame.run`) with the headless binary's, which is what the M3 merge note §8 item 2 asks. It is not a
+check of interactive pixels: the canvas is a preview (06 §6.10) and is compared with the final render, within a
+bound, by `scripts/c42-gui-e2e.py` (a real capture of the view against the `activeView` render).
 """
 
 from __future__ import annotations

@@ -44,6 +44,14 @@ NOT_SUITES = {
     "c41-r3-desktop-visibility.py": "Windows float-visibility sequence probe: needs the application binary and a receipt "
     "path; the reviewer's receipt is reviews/evidence/M4-C4.1-r3/c2-visibility.json (C41-R2-10 closed); the same "
     "sequences are in the builder e2e and the round-2 float probe in CI",
+    # M4 C4.2b round 1 (declared in reviews/M4-C4.2b-r1-response.md): probes of the running application.
+    "c42b-r1-live.py": "Windows OS-input and live-budget probe of the running application: needs the release binary "
+    "and a mode; CI runs modes c2, c3, d2, d2-exact-attached, d2-exact-headless and d3-webgl2 in the `desktop gui` "
+    "job on Windows against the diagnostics build (receipt desktop-gui-Windows/c42b-r1-live); the budget modes "
+    "d1-long-webgpu, d1-long-webgl2, d1-extra and d3-webgpu (a WebGPU adapter) are workstation receipts "
+    "(reviews/evidence/M4-C4.2b/live/, copied from the probe's output folder)",
+    "c42b-r1-conformance.py": "attached-mode MCP conformance through the running application: needs the release "
+    "binary; the same suite (scripts/mcp-conformance.py --http) runs in the `desktop gui` job on both OSes",
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
     "inventory.json and asserts the register ends at SI-110 (SI-111 is ruled in round 2); its live counterpart is "
     "scripts/check-merge-note-inventory.py",

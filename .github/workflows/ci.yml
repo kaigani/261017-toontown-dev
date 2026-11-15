@@ -977,7 +977,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
       - uses: actions/download-artifact@v7
@@ -1049,6 +1049,20 @@ jobs:
       - name: Reviewer agent-server and freshness probe (C4.1 round 3; Windows only) against the running application
         if: always() && runner.os == 'Windows'
         run: PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c41-r3-desktop-changes.py desktop-artifact/default-build/toontown.exe desktop-gui/c41-r3-desktop-changes.json
+      # M4 C4.2b round 1: the reviewer's Windows OS-input probes of the Drawing view (real-window gestures and their
+      # record, captures against the final render, the attached pointer, the float lifecycle on WebGL2). Its budget
+      # modes (d1-*) and d3-webgpu need the workstation (a WebGPU adapter) and are committed receipts there.
+      - name: Reviewer Drawing view probes (C4.2b round 1; Windows only) against the running application
+        if: always() && runner.os == 'Windows'
+        run: |
+          status=0
+          for mode in c2 c3 d2 d2-exact-attached d2-exact-headless d3-webgl2; do
+            echo "== c42b-r1-live.py $mode"
+            PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c42b-r1-live.py desktop-artifact/default-build/toontown.exe $mode || status=1
+          done
+          mkdir -p desktop-gui/c42b-r1-live
+          cp -r reviews/evidence/M4-C4.2b-r1/. desktop-gui/c42b-r1-live/
+          exit $status
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -1065,7 +1079,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v7
       - uses: actions/download-artifact@v7
@@ -1089,6 +1103,18 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; hl=headless-bin/toontown-headless; chmod +x "$hl"
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/c42-byte-gate.py "$app" "$hl" "byte-gate"
+      # M4 C4.2b (plan §5, ruling D-4; C42B-R1-03): every Drawing view tool's gesture through the real window (OS input on
+      # Windows; the agent's pointer played by the window on macOS), its recorded samples replayed headless on a second
+      # engine, and its commands sent directly on a third: equal commands, content and undo step.
+      - name: Gesture equivalence three ways through the real window
+        if: always()
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; hl=headless-bin/toontown-headless.exe; VPY=.venv-gate/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; hl=headless-bin/toontown-headless; VPY=.venv-gate/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/c42-gesture-equivalence.py "$app" "$hl" "byte-gate/gesture-equivalence"
       - uses: actions/upload-artifact@v7
         if: always()
         with:

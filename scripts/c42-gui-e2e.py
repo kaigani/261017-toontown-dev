@@ -6,19 +6,29 @@ Drives the product binary over attached mode (Streamable HTTP, the official MCP 
 whose launch, session and capture helpers it reuses, and checks:
 
 1. The canvas shows the current drawing at the kernel's revision (design note 1 §9, T1 end to end): the canvas's
-   `data-tt-value` in the rendered UI tree names the drawing, its revision and the back end, with no failures.
+   `data-tt-value` in the rendered UI tree names the drawing, its revision and the back end, with no failures. And it
+   draws what the final renderer draws (ruling O-5: the check fails when the canvas draws nothing, the wrong drawing
+   or a mirror of it): a real capture of the view against the `activeView` final render of the same state, in the
+   plain view, zoomed and panned, and rotated, and after every drawing gesture of item 2, with under 1 % of the pixels
+   differing by more than 32 in a channel (the reviewer measured 0.03 to 0.15 %).
 2. Gestures through the window equal the headless path (ruling D-4; design note 2 §6): for every covered tool, the
    agent's `pointer` call is routed through the window (played through the window's collector and overlay, committed
    through gesture_commit), undone, then sent again with the Drawing view hidden (no window shows it: the headless
    path). The produced commands' parameters must be equal value for value, the drawing's content equal (ids and
    revisions aside: the second pass allocates from a later point of the id stream), and each gesture one undo step
-   with the same label.
+   with the same label. The Select tool's handle gestures (corner scale, constrained corner, side scale, rotate, the
+   drawing pivot; frame-loop note §7.3) are rows of the same table.
+2b. The selection overlay (frame-loop note §7; C42B-R1-22): selecting an object with the Select tool shows eight
+   handles in the canvas summary and, in a real capture, the handle squares at the handle positions; deselecting
+   removes them.
 3. Screenshots capture what the user sees (ruling D-6; design note 5 §2): the window capture is the window's size and
    contains the Drawing view capture pixel for pixel at the canvas's place (the chrome is in the window capture and
    not in the view's); with the Preferences dialog open, the window capture changes where the dialog is.
 4. Windows only (OS input): a real mouse drag in the canvas commits one Brush Tool step drawn at the new revision; a
    user press during a long agent gesture aborts it with `ui.busy`, `reason: "userInput"` (P2, SI-135), nothing
    committed.
+5. The float lifecycle (C42B-R1-05): the Drawing view floated draws what the final renderer draws; after the float
+   closes and the view is docked again, `inspect.screenshot` and `pointer` reach the docked view.
 
 Receipts in <out dir>: transcript.json, manifest.json (kind toontown.c42.gui-e2e), the PNGs of the attached captures,
 the UI trees. Exit 0 when every check passed.
@@ -151,6 +161,88 @@ def png_rgba(data: bytes):
     return w, h, ch, rows
 
 
+#: Item 1's bound: the fraction of pixels whose largest channel difference exceeds `RENDER_DELTA`.
+RENDER_BOUND = 0.01
+RENDER_DELTA = 32
+#: The tools whose gestures change the drawing and show no overlay afterwards: compared with the final render.
+DRAWING_TOOLS = {"brush", "pencil", "rectangle", "ellipse", "line", "polyline", "eraser", "cutter", "scissor", "paint",
+                 "unpaint", "paintUnpainted", "closeGap", "dropper"}
+
+
+def png_of(env: dict) -> bytes | None:
+    r = env.get("result") or {}
+    data = r.get("png") or r.get("data")
+    return base64.b64decode(data) if data else None
+
+
+def differing(a: bytes, b: bytes) -> dict:
+    """The fraction of pixels of two equal-sized PNGs whose largest RGB difference exceeds `RENDER_DELTA`."""
+    wa, ha, ca, ra = png_rgba(a)
+    wb, hb, cb, rb = png_rgba(b)
+    if (wa, ha) != (wb, hb):
+        return {"sizes": [[wa, ha], [wb, hb]], "fraction": 1.0}
+    n = 0
+    for y in range(ha):
+        ar, br = ra[y], rb[y]
+        for x in range(wa):
+            i, j = x * ca, x * cb
+            if max(abs(ar[i] - br[j]), abs(ar[i + 1] - br[j + 1]), abs(ar[i + 2] - br[j + 2])) > RENDER_DELTA:
+                n += 1
+    return {"size": [wa, ha], "different": n, "fraction": n / (wa * ha)}
+
+
+async def compare_render(session, run, out: Path, name: str, label: str) -> dict:
+    """Item 1: the view's real capture against the `activeView` final render, a few attempts while the canvas catches
+    up (a bucket reload after a zoom, the overlay clearing after a gesture); the best attempt is the receipt."""
+    best: dict = {}
+    for k in range(4):
+        await asyncio.sleep(0.75 if k == 0 else 1.5)
+        shot = await e2e.run_cmd(session, "inspect.screenshot", {"target": "drawingView"})
+        rend = await e2e.run_cmd(session, "render.frame.run", {"composition": "activeView", "background": "#F0F0F0"})
+        a, b = png_of(shot), png_of(rend)
+        if not a or not b:
+            best = best or {"error": [shot.get("error"), rend.get("error")]}
+            continue
+        d = differing(a, b)
+        if not best or d["fraction"] < best.get("fraction", 2.0):
+            best = d
+            (out / f"render-{name}-capture.png").write_bytes(a)
+            (out / f"render-{name}-final.png").write_bytes(b)
+        if d["fraction"] < RENDER_BOUND:
+            break
+    run.check(best.get("fraction", 2.0) < RENDER_BOUND,
+              f"the canvas shows what the final renderer draws: {label} (a real capture against the activeView render, under 1 % of pixels differ)",
+              best)
+    return best
+
+
+def handle_points(b: list, m: list) -> list:
+    """The Select tool's eight handle centres in view pixels: corners counter-clockwise from the bottom-left (drawing
+    space), then the side midpoints (selection.ts `handlePoints`, the kernel's order)."""
+    c = [apply(m, b[0], b[1]), apply(m, b[2], b[1]), apply(m, b[2], b[3]), apply(m, b[0], b[3])]
+    mids = [((c[i][0] + c[(i + 1) % 4][0]) / 2, (c[i][1] + c[(i + 1) % 4][1]) / 2) for i in range(4)]
+    return c + mids
+
+
+def handles_in(data: bytes, centres: list, ratio: float) -> int:
+    """How many handle squares a capture shows: a white centre (the square's fill) and accent pixels around it."""
+    w, h, ch, rows = png_rgba(data)
+
+    def px(x, y):
+        if 0 <= x < w and 0 <= y < h:
+            return rows[y][x * ch:x * ch + 3]
+        return None
+
+    found = 0
+    for vx, vy in centres:
+        cx, cy = round(vx * ratio), round(vy * ratio)
+        white = any((q := px(cx + dx, cy + dy)) is not None and min(q) >= 250 for dx in range(-2, 3) for dy in range(-2, 3))
+        accent = any((q := px(cx + dx, cy + dy)) is not None and q[2] >= 180 and q[2] - q[0] >= 60 and 90 <= q[1] <= 210
+                     for dx in range(-6, 7) for dy in range(-6, 7))
+        found += 1 if white and accent else 0
+    return found
+
+
 async def first_session(url: str, token: str, run, out: Path) -> None:
     client = e2e.httpx2.AsyncClient(headers={"Authorization": f"Bearer {token}"}, timeout=e2e.httpx2.Timeout(60.0, read=300.0))
     from mcp import types as mt
@@ -198,6 +290,18 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                 run.check(st.get("backend") in ("webgl2", "webgpu") and not st.get("lastError"), "a back end draws without errors", st)
                 run.save("canvas-state.json", st)
 
+                # 1b. The canvas draws what the final renderer draws: plain, zoomed and panned, rotated (no overlay:
+                # a creation tool, nothing selected; the aids off by default).
+                await rc(session, "tool.active.set", {"toolId": "brush"})
+                await rc(session, "draw.selection.set", {"by": "none"})
+                renders = {"plain": await compare_render(session, run, out, "plain", "the plain view")}
+                await rc(session, "view.zoom.set", {"viewId": "drawingView", "zoom": 2})
+                await rc(session, "view.pan.set", {"viewId": "drawingView", "by": {"x": 30, "y": 20}})
+                renders["zoomed"] = await compare_render(session, run, out, "zoomed", "zoomed 200 % and panned")
+                await rc(session, "view.rotation.set", {"viewId": "drawingView", "degrees": 30})
+                renders["rotated"] = await compare_render(session, run, out, "rotated", "zoomed, panned and rotated 30°")
+                await rc(session, "view.transform.reset", {"viewId": "drawingView"})
+
                 # 2. Every covered tool: the window path equals the headless path. The mapping is the view's as the
                 # window reported its size (read after the canvas showed the drawing).
                 m = ((await rc(session, "draw.viewMapping.get", {"view": "drawingView"})).get("result") or {}).get("drawingToView")
@@ -221,14 +325,53 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                     ("zoom", drag([v(-100, -100), v(100, 100)])),
                     ("grabber", drag([v(0, 0), v(40, 20)])),
                 ]
+                cases = [(tool, tool, events, None) for tool, events in cases]
+
+                # The Select tool's handles (frame-loop note §7.3) on the painted rectangle, selected before each pass.
+                async def select_fixture():
+                    await rc(session, "draw.selection.set", {"by": "rect", "rect": {"x": -160, "y": -70, "width": 140, "height": 140},
+                                                             "rectRule": "inside", "mode": "replace"})
+
+                await select_fixture()
+                sb = ((await rc(session, "draw.selection.get", {})).get("result") or {}).get("bounds") or {}
+                await rc(session, "draw.selection.set", {"by": "none"})
+                bx0, by0 = sb.get("x", -150), sb.get("y", -60)
+                bx1, by1 = bx0 + sb.get("width", 120), by0 + sb.get("height", 120)
+                bcx, bcy = (bx0 + bx1) / 2, (by0 + by1) / 2
+                pv = ((await rc(session, "draw.drawing.get", {})).get("result") or {}).get("pivot") or {"x": 0, "y": 0}
+                out_c = (bx1 + 8, by1 + 8)
+                constrained = drag([v(bx1, by1), v(bx1 + 10, by1 + 6), v(bx1 + 20, by1 + 12)])
+                for ev_ in constrained:
+                    ev_["modifiers"] = ["shift"]
+
+                async def reset_pivot():
+                    await rc(session, "draw.selection.set", {"by": "none"})
+                    await rc(session, "draw.pivot.set", {"point": pv})
+
+                cases += [
+                    ("select: corner scale", "select", drag([v(bx1, by1), v(bx1 + 10, by1 + 6), v(bx1 + 20, by1 + 12)]), select_fixture),
+                    ("select: constrained corner", "select", constrained, select_fixture),
+                    ("select: side scale", "select", drag([v(bx1, bcy), v(bx1 + 20, bcy + 3), v(bx1 + 40, bcy + 5)]), select_fixture),
+                    ("select: rotate", "select", drag([v(*out_c), v(bcx - (out_c[1] - bcy), bcy + (out_c[0] - bcx))]), select_fixture),
+                    ("select: drawing pivot", "select", drag([v(pv["x"], pv["y"]), v(pv["x"] + 30, pv["y"] + 20)]), reset_pivot),
+                ]
                 results = []
-                for tool, events in cases:
+                renders["gestures"] = {}
+                for name, tool, events, setup in cases:
                     async def one(hidden: bool):
                         if hidden:
                             await rc(session, "window.panel.set", {"panelId": "drawingView", "visible": False})
                             await asyncio.sleep(0.5)
+                        if setup:
+                            await setup()
                         pos0 = ((await rc(session, "edit.history.get", {"limit": 1000})).get("result") or {}).get("position", 0)
                         envp = await e2e.call(session, "pointer", {"view": "drawingView", "tool": tool, "events": events})
+                        if not hidden and name in DRAWING_TOOLS and envp.get("status") == "ok":
+                            # Item 1 after a drawing gesture: the canvas at the new revision draws what the final renderer
+                            # draws (the gesture's ink cleared, the committed drawing shown).
+                            rev_now = ((await rc(session, "draw.drawing.get", {})).get("result") or {}).get("rev")
+                            await wait_canvas(session, lambda s_: any(d_.get("rev") == rev_now for d_ in s_.get("drawings", [])))
+                            renders["gestures"][name] = await compare_render(session, run, out, f"after-{name}", f"after the {name} gesture")
                         content = (await rc(session, "draw.drawing.get", {})).get("result") or {}
                         sel = (await rc(session, "draw.selection.get", {})).get("result")
                         view = (await rc(session, "view.transform.get", {"viewId": "drawingView"})).get("result")
@@ -250,11 +393,41 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                     env_w, window = await one(False)
                     env_h, headless = await one(True)
                     same = window == headless
-                    results.append({"tool": tool, "same": same, "window": window, "headless": headless})
+                    results.append({"tool": name, "same": same, "window": window, "headless": headless})
                     run.check(same and window["status"] == "ok" and len(window["labels"]) <= 1,
-                              f"D-4 {tool}: the window path equals the headless path (commands, content, one step, label)",
+                              f"D-4 {name}: the window path equals the headless path (commands, content, one step, label)",
                               {"window": window, "headless": headless} if not same or window["status"] != "ok" else window["labels"])
                 run.save("equivalence.json", results)
+                run.save("renders.json", renders)
+
+                # 2b. The selection overlay: the summary and a real capture show the handles; deselecting removes them.
+                await rc(session, "tool.active.set", {"toolId": "select"})
+                await select_fixture()
+                st = await wait_canvas(session, lambda s_: (s_.get("selection") or {}).get("handles") == 8)
+                run.check((st.get("selection") or {}).get("handles") == 8 and (st.get("selection") or {}).get("objects", 0) >= 1,
+                          "selecting an object shows the selection overlay: eight handles and the outlines (canvas summary)", st.get("selection"))
+                mp = (await rc(session, "draw.viewMapping.get", {"view": "drawingView"})).get("result") or {}
+                sb = ((await rc(session, "draw.selection.get", {})).get("result") or {}).get("bounds") or {}
+                centres = handle_points([sb.get("x", 0), sb.get("y", 0), sb.get("x", 0) + sb.get("width", 0), sb.get("y", 0) + sb.get("height", 0)],
+                                        mp.get("drawingToView") or [1, 0, 0, -1, 0, 0])
+                await asyncio.sleep(0.5)
+                shot = png_of(await rc(session, "inspect.screenshot", {"target": "drawingView"}))
+                view_w = (mp.get("viewSize") or {}).get("width") or 1
+                seen = 0
+                if shot:
+                    (out / "selection-shown.png").write_bytes(shot)
+                    seen = handles_in(shot, centres, png_rgba(shot)[0] / view_w)
+                run.check(seen == 8, "a real capture shows the eight handle squares at the handle positions", {"found": seen, "centres": centres})
+                await rc(session, "draw.selection.set", {"by": "none"})
+                st = await wait_canvas(session, lambda s_: (s_.get("selection") or {}).get("handles") == 0)
+                await asyncio.sleep(0.5)
+                shot = png_of(await rc(session, "inspect.screenshot", {"target": "drawingView"}))
+                gone = handles_in(shot, centres, png_rgba(shot)[0] / view_w) if shot else -1
+                if shot:
+                    (out / "selection-cleared.png").write_bytes(shot)
+                run.check(gone == 0 and (st.get("selection") or {}).get("handles") == 0,
+                          "deselecting removes the handles (summary and capture)", {"found": gone, "summary": st.get("selection")})
+                await rc(session, "tool.active.set", {"toolId": "brush"})
 
                 # 3. Screenshots of what the user sees.
                 shots = {}
@@ -329,6 +502,30 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                         run.check((envp.get("error") or {}).get("code") == "ui.busy"
                                   and ((envp.get("error") or {}).get("details") or {}).get("reason") == "userInput",
                                   "P2: a user press during an agent gesture answers ui.busy, reason userInput (SI-135)", envp.get("error") or envp.get("status"))
+
+                # 5. The float lifecycle (C42B-R1-05; 11 §7.5, §15.2): the Drawing view in a float window draws what the
+                # final renderer draws; after the float closes and the view is docked again, the screenshot and pointer
+                # reach the docked view (the window showing it is resolved at each call).
+                mv = await rc(session, "window.panel.move", {"panelId": "cameraView", "area": "central"})
+                fl = await rc(session, "window.panel.set", {"panelId": "drawingView", "floating": True,
+                                                            "geometry": {"x": 100, "y": 100, "width": 900, "height": 700}})
+                run.check(mv.get("status") == "ok" and fl.get("status") == "ok", "the Drawing view floats", [mv.get("error"), fl.get("error")])
+                await wait_canvas(session, lambda s_: bool(s_.get("drawings")))
+                await compare_render(session, run, out, "float", "the Drawing view in a float window")
+                await rc(session, "window.panel.set", {"panelId": "drawingView", "visible": False})
+                await asyncio.sleep(1.0)
+                await rc(session, "window.panel.set", {"panelId": "drawingView", "visible": True, "floating": False})
+                await rc(session, "window.panel.move", {"panelId": "drawingView", "area": "central"})
+                await e2e.gui_tree(session, run, lambda r: e2e.by_id(r, "drawingView.canvas") is not None, "the Drawing view is docked again")
+                await wait_canvas(session, lambda s_: bool(s_.get("drawings")))
+                sh = await rc(session, "inspect.screenshot", {"target": "drawingView"})
+                run.check(sh.get("status") == "ok" and (sh.get("result") or {}).get("source") == "gui",
+                          "after the float closed and the view docked, inspect.screenshot drawingView captures the docked view", sh.get("error"))
+                await compare_render(session, run, out, "docked", "the Drawing view docked again after its float closed")
+                m = ((await rc(session, "draw.viewMapping.get", {"view": "drawingView"})).get("result") or {}).get("drawingToView") or m
+                envp = await e2e.call(session, "pointer", {"view": "drawingView", "tool": "brush",
+                                                           "events": drag([apply(m, -200, -230), apply(m, -100, -240)])})
+                run.check(envp.get("status") == "ok", "pointer reaches the docked view", envp.get("error"))
                 run.save("tree-final.json", (await e2e.tree(session)).get("root"))
 
 
