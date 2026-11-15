@@ -1,0 +1,81 @@
+{
+  "prefs": {
+    "status": "ok",
+    "result": {
+      "values": {
+        "display.canvasBackendMeasured": {
+          "fingerprint": "<redacted machine fingerprint: discrete GPU workstation>",
+          "selected": "webgl2",
+          "cells": "{\"webgpu\":{\"paths100k\":{\"status\":\"met\",\"fps\":269.1635455680399},\"groups1k\":{\"status\":\"met\",\"fps\":162.13519580942878},\"brush10k\":{\"status\":\"met\",\"fps\":277.7361506519144}},\"webgl2\":{\"paths100k\":{\"status\":\"met\",\"fps\":230.84994753272775},\"groups1k\":{\"status\":\"met\",\"fps\":200.87947231780666},\"brush10k\":{\"status\":\"met\",\"fps\":229.45410917406224}}}"
+        }
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": 4
+  },
+  "canvas": {
+    "backend": "webgl2",
+    "generation": 0,
+    "drawings": [
+      {
+        "id": "dr_01K7JJN800B1T1YRT8RKFZ8DYV",
+        "rev": 4,
+        "bucket": 0
+      }
+    ],
+    "failures": [],
+    "gesture": null,
+    "drawn": 1,
+    "residentDrawings": 1,
+    "residentBytes": 23255176,
+    "lastError": null,
+    "metrics": {
+      "frameMs": {
+        "n": 300,
+        "p50": 16.7,
+        "p95": 16.9,
+        "max": 17
+      },
+      "gestureFrameMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "workMs": {
+        "n": 300,
+        "p50": 0.2,
+        "p95": 0.3,
+        "max": 0.5
+      },
+      "inkMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "commitMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "sceneMs": {
+        "n": 300,
+        "p50": 2.1,
+        "p95": 4.5,
+        "max": 24
+      },
+      "commits": [],
+      "commitParts": [],
+      "loads": [
+        {
+          "key": "dr_01K7JJN800B1T1YRT8RKFZ8DYV",
+          "bytes": 9508,
+          "ms": 14.2
+        }
+      ]
+    }
+  }
+}

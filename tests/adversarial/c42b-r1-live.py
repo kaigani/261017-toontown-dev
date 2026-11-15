@@ -39,6 +39,8 @@ async def main(s,part):
     x0,y0=49,126
     async def state():
         return {k:(await rc(cid)) for k,cid in [('history','edit.history.get'),('drawing','draw.drawing.get'),('selection','draw.selection.get'),('activity','agent.activity.list')]}
+    if part.startswith('d'):
+        return await part_d(s,part,rc,state,mapping,dr)
     if part=='c2':
         rows=[]
         for tool in ['brush','pencil','rectangle','ellipse','line','select','eraser','paint']:
@@ -142,6 +144,146 @@ async def main(s,part):
     save('c3-8-hash.json',{'reported':meta.get('sha256'),'actual':hashlib.sha256(full).hexdigest(),'meta':meta})
     save('c3-8-display.json',{'os':e.os_windows(e.APP_PID['pid']),'mapping':mapping})
 
+
+async def part_d(s,part,rc,state,mapping,dr):
+    rows=[]
+    async def record(case,fn):
+        try:
+            data=await fn(); verdict=data.pop('verdict',None)
+            if verdict is None:
+                nested=[v.get('verdict') for v in data.values() if isinstance(v,dict) and 'verdict' in v]
+                verdict=next((v for v in nested if v!='Pass'),'Pass')
+        except Exception as ex: data={'error':repr(ex)};verdict='Inconclusive: probe error'
+        rows.append({'case':case,'verdict':verdict,'observed':data});save(part+'-cases.json',rows)
+    async def snap(name):
+        env=await e.call(s,'screenshot',{'target':'drawingView'})
+        data=base64.b64decode((env.get('result') or {}).pop('png',''))
+        if data:
+            path=O/(name+'.png');path.write_bytes(data);e.strip_png(path)
+        return data
+    async def pair(name):
+        await settle(s);a=await snap(name)
+        env=await rc('render.frame.run',{'composition':'activeView','background':'#F0F0F0'})
+        r=env.get('result') or {};b=base64.b64decode(r.get('png',r.get('data','')))
+        if not a or not b: return {'verdict':'Inconclusive: image missing','render':env}
+        wa,ha,ca,ar=c.png_rgba(a);wb,hb,cb,br=c.png_rgba(b)
+        if (wa,ha)!=(wb,hb): return {'verdict':'Inconclusive: dimensions differ','sizes':[[wa,ha],[wb,hb]]}
+        diff=sum(max(abs(ar[y][x*ca+i]-br[y][x*cb+i]) for i in range(3))>32 for y in range(ha) for x in range(wa))/(wa*ha)
+        return {'fraction':diff,'verdict':'Pass' if diff<.01 else 'Fail'}
+    def events(k=0,n=4):
+        m=mapping['drawingToView'];return c.drag([c.apply(m,-180+i*240/max(1,n-1),-140+k*12+((i%2)*5 if n<100 else 0)) for i in range(n)])
+    async def pointer(tool='brush',ev=None): return await e.call(s,'pointer',{'view':'drawingView','tool':tool,'events':ev or events()})
+    if part.startswith('d1-long-'):
+        for k in range(100):
+            await rc('draw.stroke.add',{'kind':'brush','points':[{'x':-600+i*2.4,'y':-400+k*8+(i%20)*.3,'pressure':.6} for i in range(500)],'fit':False})
+        await settle(s)
+        before=await c.canvas_state(s)
+        responses=[]
+        for _ in range(5):
+            responses.append(await pointer(ev=events(n=9998)))
+            await settle(s)
+        env=responses
+        await settle(s)
+        after=await c.canvas_state(s)
+        save(part+'.json',{'before':before,'response':env,'after':after})
+        commits=(after.get('metrics') or {}).get('commits') or []
+        assert commits and max(commits)<=150, 'C42B-R1-04: large long-stroke release-to-committed exceeds 150 ms'
+        return
+    if part=='d1-extra':
+        end=time.monotonic()+90
+        prefs={}
+        while time.monotonic()<end:
+            prefs=await rc('prefs.get',{'keys':['display.canvasBackendMeasured']})
+            values=(prefs.get('result') or {}).get('values',{})
+            if (values.get('display.canvasBackendMeasured') or {}).get('fingerprint'): break
+        save('d1-auto.json',{'prefs':prefs,'canvas':await c.canvas_state(s)})
+        return
+    if part=='d2':
+        async def equivalence(tools):
+            out=[]
+            for tool in tools:
+                ev=events();before=await state();env=await pointer(tool,ev);after=await state();await snap('d2-'+tool)
+                # A hidden replay in the same engine is supplementary; second-engine exact ids remain unverified.
+                pos=lambda st:(st['history'].get('result') or {}).get('position',0)
+                for _ in range(pos(after)-pos(before)): await rc('edit.undo')
+                await rc('window.panel.set',{'panelId':'drawingView','visible':False});await settle(s)
+                head=await pointer(tool,ev);hd=await state()
+                for _ in range(pos(hd)-pos(before)): await rc('edit.undo')
+                await rc('window.panel.set',{'panelId':'drawingView','visible':True});await settle(s)
+                out.append({'tool':tool,'window':env,'headless':head,'contentEqualModuloIds':c.strip_ids(after['drawing'])==c.strip_ids(hd['drawing'])})
+            return {'results':out,'verdict':'Inconclusive: second-engine exact replay not exercised'}
+        await record(1,lambda:equivalence(['brush']))
+        await record(2,lambda:equivalence(['rectangle','select']))
+        async def cancel():
+            before=await state();task=asyncio.create_task(pointer(ev=events(n=9000)))
+            end=time.monotonic()+10
+            while time.monotonic()<end:
+                st=await c.canvas_state(s)
+                if st.get('gesture') or task.done(): break
+            hold([(249,326),(259,336)])
+            try: env=await task;mid=await state()
+            finally: e.os_escape(e.APP_PID['pid']);release()
+            await settle(s);after=await state()
+            ok=(env.get('error') or {}).get('code')=='ui.busy' and (env.get('error') or {}).get('details',{}).get('reason')=='userInput' and before['drawing']==after['drawing'] and before['history']==after['history']
+            return {'response':env,'before':before,'after':after,'verdict':'Pass' if ok else 'Fail'}
+        await record(3,cancel)
+        async def busy():
+            await rc('tool.active.set',{'toolId':'brush'});hold([(249,326),(259,336)])
+            results=[]
+            try:
+                for name,fn in [('query',lambda:rc('draw.drawing.get')),('tool',lambda:rc('tool.active.set',{'toolId':'rectangle'})),('pointer',lambda:pointer())]:
+                    t=time.monotonic();env=await fn();results.append({'name':name,'ms':(time.monotonic()-t)*1000,'env':env})
+            finally: release()
+            await settle(s);env=await pointer()
+            ok=all((r['env'].get('error') or {}).get('code')=='ui.busy' for r in results[1:]) and env.get('status')=='ok'
+            return {'results':results,'afterRelease':env,'verdict':'Pass' if ok else 'Fail'}
+        await record(4,busy)
+        async def hidden():
+            await rc('window.panel.set',{'panelId':'drawingView','visible':False});await settle(s);before=await state();env=await pointer();after=await state()
+            await rc('window.panel.set',{'panelId':'drawingView','visible':True});await settle(s)
+            return {'response':env,'changed':before['drawing']!=after['drawing'],'verdict':'Pass' if env.get('status')=='ok' and before['drawing']!=after['drawing'] else 'Fail'}
+        await record(5,hidden)
+        async def twenty():
+            before=await state();responses=[await pointer(ev=events(k)) for k in range(20)];after=await state();comparison=await pair('d2-twenty')
+            delta=after['history']['result']['position']-before['history']['result']['position']
+            return {'responses':responses,'historyDelta':delta,'comparison':comparison,'verdict':'Pass' if delta==20 and all(x.get('status')=='ok' for x in responses) and comparison['verdict']=='Pass' else 'Fail'}
+        await record(6,twenty)
+    else:
+        async def floating():
+            env=await rc('window.panel.set',{'panelId':'drawingView','floating':True,'geometry':{'x':100,'y':100,'width':900,'height':700}});await settle(s)
+            return {'response':env,'comparison':await pair(part+'-float'),'windows':e.os_windows(e.APP_PID['pid'])}
+        await record(1,floating)
+        async def osstroke():
+            before=await state();await rc('tool.active.set',{'toolId':'brush'});c.os_drag(e.APP_PID['pid'],[(200,200),(300,250)]);await settle(s);after=await state()
+            return {'before':before,'after':after,'verdict':'Pass' if before['drawing']!=after['drawing'] else 'Fail'}
+        await record(2,osstroke)
+        async def agent():
+            env=await pointer();return {'response':env,'canvas':await c.canvas_state(s),'verdict':'Pass' if env.get('status')=='ok' else 'Fail'}
+        await record(3,agent)
+        async def close():
+            await rc('tool.active.set',{'toolId':'brush'});before=await state();hold([(200,200),(300,250)])
+            try:
+                # OS close bypasses agent-write coexistence, as a user closing the float does.
+                from ctypes import wintypes
+                u=ctypes.windll.user32;handles=[]
+                def cb(h,_):
+                    pid=wintypes.DWORD();u.GetWindowThreadProcessId(h,ctypes.byref(pid))
+                    if pid.value==e.APP_PID['pid'] and u.IsWindowVisible(h): handles.append(h)
+                    return True
+                u.EnumWindows(ctypes.WINFUNCTYPE(ctypes.c_bool,wintypes.HWND,wintypes.LPARAM)(cb),0)
+                u.PostMessageW(handles[0],0x10,0,0)
+            finally: release()
+            await settle(s);after=await state();env=await rc('tool.active.set',{'toolId':'brush'})
+            ok=before['drawing']==after['drawing'] and before['history']==after['history'] and env.get('status')=='ok'
+            return {'before':before,'after':after,'afterCall':env,'verdict':'Pass' if ok else 'Fail'}
+        await record(4,close)
+        async def dock():
+            env=await rc('window.panel.set',{'panelId':'drawingView','visible':True,'floating':False});await settle(s);return {'response':env,'gesture':await pointer(),'comparison':await pair(part+'-dock')}
+        await record(5,dock)
+        async def backend(): return {'canvas':await c.canvas_state(s),'comparison':await pair(part+'-backend')}
+        await record(6,backend)
+
+
 def run():
     deadline=time.monotonic()+180
     while True:
@@ -152,7 +294,10 @@ def run():
     (user/'Settings').mkdir()
     seed={'agent.policy.defaults':{'policy':'autonomous','maxJobs':2,'maxBatchSteps':1000,'maxInlineImagePx':2048,'maxInlineBytes':52428800,'askInApp':True,'letAgentMoveView':True,'highlightAgentChanges':True}}
     (user/'Settings/preferences.json').write_text(json.dumps({'format':'toontown-settings','kind':'preferences','formatVersion':'1.0','data':seed}),encoding='utf-8')
-    p=e.launch(str(Path(sys.argv[1]).resolve()),user,disc)
+    if sys.argv[2].startswith(('d3-','d1-long-')) or sys.argv[2]=='d1-extra':
+        measure=load('measure',R/'scripts/c42-canvas-measure.py')
+        p=measure.launch(str(Path(sys.argv[1]).resolve()),user,disc,None if sys.argv[2]=='d1-extra' else sys.argv[2].split('-')[-1])
+    else: p=e.launch(str(Path(sys.argv[1]).resolve()),user,disc)
     async def connect(d):
         async with e.httpx2.AsyncClient(headers={'Authorization':'Bearer '+d['token']},timeout=300) as client:
             async with e.streamable_http_client(d['endpoint'],http_client=client) as streams:
