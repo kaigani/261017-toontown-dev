@@ -12,7 +12,7 @@ import { parseSceneAnswer, residentKey, type Scene, type SceneAnswer } from './s
 
 export interface CanvasHost {
   canvasScene(viewId: string): Promise<unknown>;
-  canvasLoad(drawingId: string, bucket: number, outline: boolean): Promise<ArrayBuffer>;
+  canvasLoad(drawingId: string, bucket: number, outline: boolean, fastPencil: boolean): Promise<ArrayBuffer>;
 }
 
 /** Where decoded drawings go (a back end, or a recording double in tests), by resident key (`residentKey`). */
@@ -76,6 +76,8 @@ export class CanvasModel {
   peakInFlight = 0;
   /** Bumps whenever what the scene draws changed (a back end redraws its static layers then). */
   version = 0;
+  /** `display.fastPencilRendering` (01 §7.2; read at the canvas's start, its "restart"): every load asks for it. */
+  fastPencil = false;
   /** Called after each upload: the resident key, its bytes, and request-to-upload milliseconds (measurements). */
   onLoaded: ((key: string, bytes: number, ms: number) => void) | null = null;
   /** Called when each scene answer arrives: request-to-arrival milliseconds (measurements, E-C1: delivery). */
@@ -154,7 +156,7 @@ export class CanvasModel {
     const bucket = this.bucket;
     this.loading.set(key, bucket);
     this.requestedAt.set(key, this.clock.now());
-    this.host.canvasLoad(drawingId, bucket, outline).then(
+    this.host.canvasLoad(drawingId, bucket, outline, this.fastPencil).then(
       (bytes) => this.inbox.push({ kind: 'load', key, drawingId, outline, bucket, bytes }),
       (e: unknown) => this.inbox.push({ kind: 'failed', what: `load ${key}`, error: e }),
     );

@@ -134,18 +134,20 @@ export function CanvasView({
       }
     };
 
-    // `display.antiAliasing` (01 §7.2, 06 §6.9; live): the drawing layers multisampled or not.
+    // The display preferences the canvas honours (01 §7.2, 06 §6.9): `display.antiAliasing` and
+    // `display.smoothToolOverlays` live; `display.fastPencilRendering` at the next start (its "restart").
+    const DISPLAY_PREFS = ['display.antiAliasing', 'display.smoothToolOverlays'];
     const refreshDisplayPrefs = () => {
       void engine
-        .run('prefs.get', { keys: ['display.antiAliasing'] })
+        .run('prefs.get', { keys: DISPLAY_PREFS })
         .done.then((env) => {
-          const v = (env.result as { values?: Record<string, unknown> } | undefined)?.values?.[
-            'display.antiAliasing'
-          ];
-          if (typeof v === 'boolean' && renderer) {
-            renderer.setAntialias(v);
-            viewVersion++;
-          }
+          const values = (env.result as { values?: Record<string, unknown> } | undefined)?.values ?? {};
+          const aa = values['display.antiAliasing'];
+          const smooth = values['display.smoothToolOverlays'];
+          if (!renderer) return;
+          if (typeof aa === 'boolean') renderer.setAntialias(aa);
+          if (typeof smooth === 'boolean') renderer.setSmoothOverlays(smooth);
+          viewVersion++;
         })
         .catch(() => undefined);
     };
@@ -185,6 +187,17 @@ export function CanvasView({
         }
         model.setBucket(bucketOf(scaleOf(d2v)));
         refreshDisplayPrefs();
+        // `display.fastPencilRendering` applies at the next start (01 §7.2 "restart"): read once, before any load.
+        const m = model;
+        void engine
+          .run('prefs.get', { keys: ['display.fastPencilRendering'] })
+          .done.then((env) => {
+            const v = (env.result as { values?: Record<string, unknown> } | undefined)?.values?.[
+              'display.fastPencilRendering'
+            ];
+            if (v === true) m.fastPencil = true;
+          })
+          .catch(() => undefined);
       })
       .catch((e: unknown) => {
         el.setAttribute(
@@ -220,7 +233,8 @@ export function CanvasView({
         if (event.name === 'tool.active.changed' || event.name === 'tool.pen.changed') refreshTool();
         if (event.name === 'prefs.changed') {
           const keys = (event.payload as { keys?: unknown } | null)?.keys;
-          if (Array.isArray(keys) && keys.includes('display.antiAliasing')) refreshDisplayPrefs();
+          if (Array.isArray(keys) && keys.some((k) => DISPLAY_PREFS.includes(String(k))))
+            refreshDisplayPrefs();
         }
         if (event.name === 'colour.current.changed') {
           const c = (event.payload as Record<string, unknown> | null)?.['colourId'];

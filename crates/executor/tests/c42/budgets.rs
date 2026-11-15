@@ -231,7 +231,7 @@ fn the_canvas_holds_the_document_thread_briefly_and_its_large_payload_fits() {
     let t = Instant::now();
     let builder = {
         let h = h.clone();
-        std::thread::spawn(move || h.canvas_drawing(None, 1, 0, false))
+        std::thread::spawn(move || h.canvas_drawing(None, 1, 0, tt_executor::canvas::PayloadOptions::default()))
     };
     let mut queries = Vec::new();
     while !builder.is_finished() {

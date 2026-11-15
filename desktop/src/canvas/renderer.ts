@@ -47,6 +47,8 @@ export interface Renderer extends ResidentSink {
   frame(input: FrameInput): void;
   /** `display.antiAliasing` (01 §7.2, 06 §6.9; live): multisampled drawing layers on or off. */
   setAntialias(on: boolean): void;
+  /** `display.smoothToolOverlays` (01 §7.2, 06 §6.9; live): the tool overlay multisampled or not. */
+  setSmoothOverlays(on: boolean): void;
   stats(): BackendStats;
   destroy(): void;
 }

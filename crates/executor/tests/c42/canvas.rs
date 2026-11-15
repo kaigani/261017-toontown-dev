@@ -79,7 +79,7 @@ fn corpus(name: &str, bytes: &[u8]) {
 #[test]
 fn t4_a_drawing_built_by_gestures_encodes_to_the_committed_corpus_bytes() {
     let h = built();
-    let p = h.canvas_drawing(None, 5, 0, false).unwrap();
+    let p = h.canvas_drawing(None, 5, 0, tt_executor::canvas::PayloadOptions::default()).unwrap();
     assert_eq!(p.drawing_id, D1, "the current drawing");
     let got = ok(&h, "draw.drawing.get", json!({ "drawingId": D1 }));
     assert_eq!(json!(p.rev), got["rev"], "the payload is at the drawing's revision");
@@ -108,15 +108,15 @@ fn t4_a_drawing_built_by_gestures_encodes_to_the_committed_corpus_bytes() {
 #[test]
 fn t5_the_same_revision_and_bucket_rebuild_identically_and_an_edit_changes_the_revision() {
     let h = built();
-    let a = h.canvas_drawing(Some(D1), 1, 0, false).unwrap();
-    let b = h.canvas_drawing(None, 1, 0, false).unwrap();
+    let a = h.canvas_drawing(Some(D1), 1, 0, tt_executor::canvas::PayloadOptions::default()).unwrap();
+    let b = h.canvas_drawing(None, 1, 0, tt_executor::canvas::PayloadOptions::default()).unwrap();
     assert_eq!(a, b, "an evicted drawing is rebuilt identically (same revision, same bucket)");
-    let finer = h.canvas_drawing(Some(D1), 1, 2, false).unwrap();
+    let finer = h.canvas_drawing(Some(D1), 1, 2, tt_executor::canvas::PayloadOptions::default()).unwrap();
     assert_eq!(finer.rev, a.rev, "a bucket change is a reload at the same revision");
     assert!(finer.bytes.len() > a.bytes.len(), "a finer bucket flattens curves into more vertices");
     let e = pointer(&h, "pencil", drag(&[(700.0, 200.0), (720.0, 210.0)]));
     assert!(e.is_ok(), "{e:?}");
-    let c = h.canvas_drawing(None, 1, 0, false).unwrap();
+    let c = h.canvas_drawing(None, 1, 0, tt_executor::canvas::PayloadOptions::default()).unwrap();
     assert!(c.rev > a.rev, "an edit moves the drawing's revision ({} -> {})", a.rev, c.rev);
     assert_eq!(decode(&c.bytes).unwrap().identity.rev, c.rev);
 }
@@ -124,11 +124,13 @@ fn t5_the_same_revision_and_bucket_rebuild_identically_and_an_edit_changes_the_r
 #[test]
 fn a_payload_names_its_refusals() {
     let h = ready();
-    let e = h.canvas_drawing(Some("dr_01K7ZZZZZZZZZZZZZZZZZZZZZZ"), 1, 0, false).unwrap_err();
+    let e = h
+        .canvas_drawing(Some("dr_01K7ZZZZZZZZZZZZZZZZZZZZZZ"), 1, 0, tt_executor::canvas::PayloadOptions::default())
+        .unwrap_err();
     assert_eq!(e.code, "ref.notFound", "{e:?}");
     let h = fixture();
     ok(&h, "app.context.set", json!({ "elementId": null }));
-    let e = h.canvas_drawing(None, 1, 0, false).unwrap_err();
+    let e = h.canvas_drawing(None, 1, 0, tt_executor::canvas::PayloadOptions::default()).unwrap_err();
     assert_eq!(e.code, "drawing.noTarget", "{e:?}");
 }
 
@@ -207,11 +209,36 @@ fn the_scene_carries_onion_skin_light_tables_and_shade_in_layer_order() {
     ok(&h, "drawAid.lightTableShade.set", json!({ "auto": false, "static": false }));
     assert!(roles(&h).iter().all(|e| e[4] == json!(false)), "shade follows its settings");
     // The outline-only payload (02 §10.2) is its own variant: no fills, stroke geometry, the outline flag.
-    let o = decode(&h.canvas_drawing(Some(D1), 1, 0, true).unwrap().bytes).unwrap();
+    let o = decode(
+        &h.canvas_drawing(Some(D1), 1, 0, tt_executor::canvas::PayloadOptions { outline: true, ..Default::default() })
+            .unwrap()
+            .bytes,
+    )
+    .unwrap();
     assert_eq!(o.flags, 1);
     assert!(
         o.records.iter().all(|r| matches!(r, Record::Solid { vertices, .. } if vertices.iter().all(|v| v.flags == 1))
             || matches!(r, Record::Gradient { .. })),
         "outlines only"
     );
+}
+
+#[test]
+fn the_fast_pencil_payload_drops_round_joins_and_says_so() {
+    let h = built();
+    let full = h.canvas_drawing(Some(D1), 1, 0, tt_executor::canvas::PayloadOptions::default()).unwrap();
+    let fast = tt_executor::canvas::PayloadOptions { fast_pencil: true, ..Default::default() };
+    let fast = h.canvas_drawing(Some(D1), 1, 0, fast).unwrap();
+    let (a, b) = (decode(&full.bytes).unwrap(), decode(&fast.bytes).unwrap());
+    assert_eq!((a.flags, b.flags), (0, 2), "header flag 2 marks approximate pencil strokes");
+    let count = |d: &tt_render::canvas::CanvasDrawing| -> usize {
+        d.records
+            .iter()
+            .map(|r| match r {
+                Record::Solid { vertices, .. } | Record::Gradient { vertices, .. } => vertices.len(),
+                Record::Bitmap { .. } => 4,
+            })
+            .sum()
+    };
+    assert!(count(&b) < count(&a), "fewer pieces without the joins ({} vs {})", count(&b), count(&a));
 }

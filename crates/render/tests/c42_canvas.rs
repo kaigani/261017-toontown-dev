@@ -359,6 +359,15 @@ fn fills_follow_their_rule_and_strokes_are_a_union_with_round_caps_and_joins() {
     let (v, i) = solid(&canvas::tessellate(&one(corner), 0));
     let want = 2.0 * 500.0 - 25.0 + std::f64::consts::PI * 25.0 + std::f64::consts::PI * 25.0 / 4.0;
     assert!((mesh_area(&v, &i) - want).abs() < want * 0.01, "{} vs {want}", mesh_area(&v, &i));
+    // Without joins (display.fastPencilRendering), the corner keeps its gap: the two quads and the round caps only.
+    let corner = Item::Stroke {
+        path: vec![El::MoveTo(0.0, 0.0), El::LineTo(50.0, 0.0), El::LineTo(50.0, 50.0)],
+        width: 10.0,
+        paint: Paint::Solid([0; 4]),
+    };
+    let (v, i) = solid(&canvas::tessellate_with(&one(corner), 0, false));
+    let want = 2.0 * 500.0 - 25.0 + std::f64::consts::PI * 25.0;
+    assert!((mesh_area(&v, &i) - want).abs() < want * 0.01, "{} vs {want}", mesh_area(&v, &i));
     // A finer bucket flattens a curve into more vertices (SI-137).
     let circle = |t: i16| {
         let r = 50.0;

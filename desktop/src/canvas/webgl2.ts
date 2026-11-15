@@ -221,7 +221,7 @@ export interface WebGL2Options {
 export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}): Renderer {
   const antialias = opts.antialias ?? true;
   const gl = canvas.getContext('webgl2', {
-    antialias,
+    antialias: false,
     premultipliedAlpha: true,
     alpha: false,
     preserveDrawingBuffer: true,
@@ -257,6 +257,8 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
   gl.bindVertexArray(null);
   const scene = new Target(gl, samples);
   const group = new Target(gl, samples);
+  // The tool overlay's own target (display.smoothToolOverlays), composited over the static layers.
+  const overlayTarget = new Target(gl, maxSamples);
   const drawings = new Map<string, GpuDrawing>();
   let colours: Record<string, FormatRgba> = {};
   const counters = { drawn: 0, staticRedraws: 0, staticReuses: 0 };
@@ -444,6 +446,9 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
       scene.samples = on ? maxSamples : 0;
       group.samples = on ? maxSamples : 0;
     },
+    setSmoothOverlays(on) {
+      overlayTarget.samples = on ? maxSamples : 0;
+    },
     frame(input: FrameInput) {
       const W = gl.drawingBufferWidth;
       const H = gl.drawingBufferHeight;
@@ -504,12 +509,21 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
           scene.resolve();
         },
         overlay() {
+          const tris = input.overlay && input.overlay.vertexCount > 0 ? input.overlay : null;
+          if (tris) {
+            overlayTarget.ensure(W, H);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, overlayTarget.drawFb());
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            viewTris(tris, input.width, input.height);
+            overlayTarget.resolve();
+          }
           gl.bindFramebuffer(gl.FRAMEBUFFER, null);
           gl.viewport(0, 0, W, H);
           gl.disable(gl.BLEND);
           composite(scene.tex, 1);
           gl.enable(gl.BLEND);
-          viewTris(input.overlay, input.width, input.height);
+          if (tris) composite(overlayTarget.tex, 1);
         },
       };
       const redraw = input.staticDirty || fresh;
@@ -520,7 +534,7 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
       drawFrame(input.scene, ops, (id) => drawings.has(id), redraw);
     },
     stats(): BackendStats {
-      let residentBytes = scene.bytes() + group.bytes();
+      let residentBytes = scene.bytes() + group.bytes() + overlayTarget.bytes();
       for (const d of drawings.values()) residentBytes += d.bytes;
       const e = gl.getError();
       if (e !== gl.NO_ERROR) lastError = `GL error 0x${e.toString(16)}`;
@@ -530,6 +544,7 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
       for (const id of [...drawings.keys()]) drop(id);
       scene.destroy();
       group.destroy();
+      overlayTarget.destroy();
       gl.deleteProgram(meshProg);
       gl.deleteProgram(viewProg);
       gl.deleteProgram(compProg);

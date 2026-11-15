@@ -69,6 +69,18 @@ fn paint_of(item: &Item) -> Option<&Paint> {
     }
 }
 
+/// The variants of one drawing's payload.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct PayloadOptions {
+    /// Outlines only (02 §10.2; header flag 1).
+    pub outline: bool,
+    /// Approximate pencil strokes: no round joins (`display.fastPencilRendering`, 01 §7.2; header flag 2).
+    pub fast_pencil: bool,
+}
+
+/// Header flag of a payload with approximate pencil strokes.
+pub const FLAG_FAST_PENCIL: u16 = 2;
+
 /// The canvas form of one drawing: the final renderer's walk, colour slots, tessellated records (design note 1 §8).
 ///
 /// # Errors
@@ -77,8 +89,9 @@ pub(crate) fn build(
     src: &CanvasSource,
     generation: u64,
     bucket: i16,
-    outline: bool,
+    opts: PayloadOptions,
 ) -> Result<(CanvasDrawing, Vec<Value>), CommandError> {
+    let outline = opts.outline;
     let d = src.doc.drawing(&src.drawing).ok_or_else(|| not_found(src.drawing.as_str()))?;
     let never = || false;
     let sources = Sources { cache: &src.cache, blobs: src.blobs.as_ref(), selection: None, stop: &never };
@@ -104,12 +117,12 @@ pub(crate) fn build(
             out.push(CanvasItem { item, slot, bitmap });
         }
     }
-    let records = canvas::tessellate(&out, bucket);
+    let records = canvas::tessellate_with(&out, bucket, !opts.fast_pencil);
     let bounds = canvas::bounds(&records);
     let ulid = src.drawing.as_str().strip_prefix("dr_").unwrap_or(src.drawing.as_str()).to_owned();
     let drawing = CanvasDrawing {
         identity: Identity { generation, rev: *d.rev(), drawing_id: ulid, bucket },
-        flags: if outline { FLAG_OUTLINE } else { 0 },
+        flags: (if outline { FLAG_OUTLINE } else { 0 }) | (if opts.fast_pencil { FLAG_FAST_PENCIL } else { 0 }),
         slots,
         records,
         bounds,
@@ -141,9 +154,9 @@ pub(crate) fn payload(
     src: &CanvasSource,
     generation: u64,
     bucket: i16,
-    outline: bool,
+    opts: PayloadOptions,
 ) -> Result<CanvasPayload, CommandError> {
-    let (drawing, warnings) = build(src, generation, bucket, outline)?;
+    let (drawing, warnings) = build(src, generation, bucket, opts)?;
     let bytes = canvas::encode(&drawing).map_err(|e| CommandError::internal(e.to_string()))?;
     Ok(CanvasPayload { drawing_id: src.drawing.as_str().to_owned(), rev: drawing.identity.rev, bytes, warnings })
 }

@@ -349,8 +349,9 @@ fn fill_rings(rings: &[Vec<P>], rule: Rule, tol: f64, slot: u16, flags: u16, out
     out.push(&buffers.vertices, &buffers.indices, slot, flags)
 }
 
-/// The closed pieces whose non-zero union is a round-capped, round-joined stroke of `line` (width `w`).
-fn stroke_pieces(line: &[P], closed: bool, w: f64, tol: f64) -> Vec<Vec<P>> {
+/// The closed pieces whose non-zero union is a round-capped, round-joined stroke of `line` (width `w`); without
+/// `joins`, only the caps are round (`display.fastPencilRendering`: approximate pencil strokes, 01 §7.2).
+fn stroke_pieces(line: &[P], closed: bool, w: f64, tol: f64, joins: bool) -> Vec<Vec<P>> {
     let r = w / 2.0;
     let mut pts: Vec<P> = Vec::with_capacity(line.len());
     for p in line.iter().copied().filter(|p| p.is_finite()) {
@@ -384,15 +385,16 @@ fn stroke_pieces(line: &[P], closed: bool, w: f64, tol: f64) -> Vec<Vec<P>> {
     // Round joins where the turn leaves a gap wider than the tolerance, and round caps at both ends of an open line.
     for i in 0..n {
         let is_end = !closed && (i == 0 || i == n - 1);
-        let needs = is_end || {
-            let prev = pts[(i + n - 1) % n];
-            let next = pts[(i + 1) % n];
-            match ((pts[i] - prev).unit(), (next - pts[i]).unit()) {
-                // The outer gap of a turn is r (1 − cos(θ / 2)) = r (1 − sqrt((1 + cos θ) / 2)).
-                (Some(u), Some(v)) => r * (1.0 - ((1.0 + u.dot(v)).max(0.0) / 2.0).sqrt()) > tol,
-                _ => true,
-            }
-        };
+        let needs = is_end
+            || joins && {
+                let prev = pts[(i + n - 1) % n];
+                let next = pts[(i + 1) % n];
+                match ((pts[i] - prev).unit(), (next - pts[i]).unit()) {
+                    // The outer gap of a turn is r (1 − cos(θ / 2)) = r (1 − sqrt((1 + cos θ) / 2)).
+                    (Some(u), Some(v)) => r * (1.0 - ((1.0 + u.dot(v)).max(0.0) / 2.0).sqrt()) > tol,
+                    _ => true,
+                }
+            };
         if needs {
             pieces.push(circle(pts[i], r, tol));
         }
@@ -455,6 +457,12 @@ fn f32x6(m: &[f64; 6]) -> [f32; 6] {
 /// solid mesh (one draw); a gradient or a bitmap starts its own record.
 #[must_use]
 pub fn tessellate(items: &[CanvasItem], bucket: i16) -> Vec<Record> {
+    tessellate_with(items, bucket, true)
+}
+
+/// [`tessellate`], with stroke joins round (`joins`) or not (approximate pencil strokes: only the caps are round).
+#[must_use]
+pub fn tessellate_with(items: &[CanvasItem], bucket: i16, joins: bool) -> Vec<Record> {
     let tol = tolerance(bucket);
     let mut records = Vec::new();
     let mut solid = Mesh::default();
@@ -492,7 +500,7 @@ pub fn tessellate(items: &[CanvasItem], bucket: i16) -> Vec<Record> {
                 let mut pieces = Vec::new();
                 for (line, closed) in polylines(path, tol) {
                     let line: Vec<P> = line.into_iter().map(|p| apply(&m, p)).collect();
-                    pieces.extend(stroke_pieces(&line, closed, w, tol));
+                    pieces.extend(stroke_pieces(&line, closed, w, tol, joins));
                 }
                 emit(&mut records, &mut solid, &mut flush, ci, paint, &m, |mesh| {
                     fill_rings(&pieces, Rule::NonZero, tol, ci.slot, VERTEX_STROKE, mesh)

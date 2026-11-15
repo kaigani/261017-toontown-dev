@@ -322,6 +322,9 @@ struct CanvasLoadRequest {
     /// The outline-only form (02 §10.2); absent: false.
     #[serde(default)]
     outline: bool,
+    /// Approximate pencil strokes (`display.fastPencilRendering`); absent: false.
+    #[serde(default)]
+    fast_pencil: bool,
 }
 
 /// One drawing's TTRD payload for the interactive canvas (M4 C4.2b; design note 1 §2, §8, §9), binary, at the
@@ -336,7 +339,8 @@ pub async fn canvas_load(app: AppHandle, json: String) -> Result<Response, Strin
     let answer = tauri::async_runtime::spawn_blocking(move || {
         let host = app.state::<Host>();
         let generation = host.generation();
-        host.exec().canvas_drawing(Some(&req.drawing_id), generation, req.bucket.clamp(-8, 8), req.outline)
+        let opts = tt_executor::canvas::PayloadOptions { outline: req.outline, fast_pencil: req.fast_pencil };
+        host.exec().canvas_drawing(Some(&req.drawing_id), generation, req.bucket.clamp(-8, 8), opts)
     })
     .await
     .map_err(|e| internal(e.to_string()))?;
@@ -496,19 +500,23 @@ mod tests {
             assert_eq!(code(&scene(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
         }
 
-        let load = |j: Value| parse::<CanvasLoadRequest>(&j.to_string()).map(|r| (r.drawing_id, r.bucket, r.outline));
+        let load = |j: Value| {
+            parse::<CanvasLoadRequest>(&j.to_string()).map(|r| (r.drawing_id, r.bucket, r.outline || r.fast_pencil))
+        };
         assert_eq!(
             load(json!({ "drawingId": "dr_X", "bucket": 2 })),
             Ok(("dr_X".into(), 2, false)),
             "outline absent: the filled form"
         );
         assert_eq!(load(json!({ "drawingId": "dr_X", "bucket": -1, "outline": true })), Ok(("dr_X".into(), -1, true)));
+        assert_eq!(load(json!({ "drawingId": "dr_X", "bucket": 0, "fastPencil": true })), Ok(("dr_X".into(), 0, true)));
         for bad in [
             json!({ "bucket": 0 }),
             json!({ "drawingId": null, "bucket": 0 }),
             json!({ "drawingId": "dr_X" }),
             json!({ "drawingId": "dr_X", "bucket": null }),
             json!({ "drawingId": "dr_X", "bucket": 0, "outline": null }),
+            json!({ "drawingId": "dr_X", "bucket": 0, "fastPencil": null }),
         ] {
             assert_eq!(code(&load(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
         }

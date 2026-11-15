@@ -283,6 +283,8 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
     return set;
   };
   let samples = SAMPLES;
+  /** The canvas pass's samples (display.smoothToolOverlays): the overlay is drawn there. */
+  let overlaySamples = SAMPLES;
 
   let uniforms = device.createBuffer({
     size: DRAW_STRIDE * 64,
@@ -445,6 +447,9 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
     setAntialias(on) {
       samples = on ? SAMPLES : 1;
     },
+    setSmoothOverlays(on) {
+      overlaySamples = on ? SAMPLES : 1;
+    },
     frame(input: FrameInput) {
       const W = canvas.width;
       const H = canvas.height;
@@ -456,13 +461,13 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
       const pl = pipelines(samples);
       if (
         samples > 1 &&
-        (canvasMsaa?.width !== W || canvasMsaa.height !== H || canvasMsaa.sampleCount !== samples)
+        (canvasMsaa?.width !== W || canvasMsaa.height !== H || canvasMsaa.sampleCount !== overlaySamples)
       ) {
         canvasMsaa?.destroy();
         canvasMsaa = device.createTexture({
           size: [W, H],
           format,
-          sampleCount: samples,
+          sampleCount: overlaySamples,
           usage: GPUTextureUsage.RENDER_ATTACHMENT,
         });
       }
@@ -512,23 +517,23 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
         pass?.end();
         pass = encoder.beginRenderPass({ colorAttachments: [a] });
       };
-      const viewTris = (data: Float32Array | null, offset: number) => {
+      const viewTris = (data: Float32Array | null, offset: number, set = pl) => {
         if (!data || !pass) return;
         const u = nextSlot((f) => {
           f[0] = input.width;
           f[1] = input.height;
         });
-        pass.setPipeline(pl.view);
+        pass.setPipeline(set.view);
         pass.setBindGroup(0, uniformGroup, [u]);
         pass.setVertexBuffer(0, viewBuffer, offset, data.byteLength);
         pass.draw(data.length / 6);
       };
-      const composite = (t: Target, alpha: number, blend: boolean) => {
+      const composite = (t: Target, alpha: number, blend: boolean, set = pl) => {
         if (!pass || !t.group) return;
         const u = nextSlot((f) => {
           f[0] = alpha;
         });
-        pass.setPipeline(blend ? pl.compBlend : pl.compCopy);
+        pass.setPipeline(blend ? set.compBlend : set.compCopy);
         pass.setBindGroup(0, uniformGroup, [u]);
         pass.setBindGroup(1, t.group);
         pass.draw(3);
@@ -613,7 +618,7 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
         overlay() {
           const current = context.getCurrentTexture().createView();
           begin(
-            samples > 1 && canvasMsaa
+            overlaySamples > 1 && canvasMsaa
               ? {
                   view: canvasMsaa.createView(),
                   resolveTarget: current,
@@ -623,8 +628,9 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
                 }
               : { view: current, loadOp: 'clear', storeOp: 'store', clearValue: [0, 0, 0, 1] },
           );
-          composite(scene, 1, false);
-          viewTris(overlayData, overlayAt);
+          const po = pipelines(overlaySamples);
+          composite(scene, 1, false, po);
+          viewTris(overlayData, overlayAt, po);
         },
       };
       const redraw = input.staticDirty || fresh;
