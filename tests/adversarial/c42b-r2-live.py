@@ -17,6 +17,7 @@ import asyncio
 import base64
 import ctypes
 import math
+import inspect
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'reviews/evidence/M4-C4.2b-r2'
@@ -77,13 +78,16 @@ async def selection(m, s, part):
         handles = [] if not box else c.handle_points([box['x'],box['y'],box['x']+box['width'],box['y']+box['height']],await mapping())
         w,h,ch,pixels = c.png_rgba(a)
         extents = []
+        white_extents = []
         for x,y in handles:
             accent = [(dx,dy) for dy in range(-7,8) for dx in range(-7,8)
                       if 0<=round(x)+dx<w and 0<=round(y)+dy<h
                       and (q:=pixels[round(y)+dy][(round(x)+dx)*ch:(round(x)+dx)*ch+3])[2]>=180
                       and q[2]-q[0]>=60 and 90<=q[1]<=210]
             extents.append([max(t[i] for t in accent)-min(t[i] for t in accent)+1 for i in (0,1)] if accent else [0,0])
-        return {'selection':sel,'difference':c.differing(a,b),'handles':c.handles_in(a,handles,1),'finalHandles':c.handles_in(b,handles,1),'handleExtents':extents,'mappedHandles':handles,
+            white = [(dx,dy) for dy in range(-6,7) for dx in range(-6,7) if 0<=round(x)+dx<w and 0<=round(y)+dy<h and min(pixels[round(y)+dy][(round(x)+dx)*ch:(round(x)+dx)*ch+3])>=250]
+            white_extents.append([max(t[i] for t in white)-min(t[i] for t in white)+1 for i in (0,1)] if white else [0,0])
+        return {'selection':sel,'difference':c.differing(a,b),'handles':c.handles_in(a,handles,1),'finalHandles':c.handles_in(b,handles,1),'handleExtents':extents,'whiteCentreExtents':white_extents,'mappedHandles':handles,
                 'record':(await c.canvas_state(s)).get('lastGesture')}
     async def record(n, data, ok):
         rows.append({'case':n,'verdict':'PASS' if ok else 'FAIL','observed':data})
@@ -109,6 +113,10 @@ async def selection(m, s, part):
     for n,(pts,key) in enumerate(drags,5):
         before = (await rc('edit.history.get'))['result']['position']
         box = (await rc('draw.selection.get'))['result']['bounds']
+        if key=='rotate':
+            cx,cy = box['x']+box['width']/2,box['y']+box['height']/2
+            px,py = box['x']+box['width']+8,box['y']+box['height']+8
+            pts = [(px,py),(cx-(py-cy),cy+(px-cx))]
         await gesture(pts)
         data = await capture(n)
         after = (await rc('edit.history.get'))['result']['position']
@@ -135,6 +143,7 @@ async def selection(m, s, part):
         await m.settle(s)
     rows.append({'case':8,'verdict':'PENDING exact mode','observed':{'note':'Exact three-engine comparisons run separately in exact mode; see its rows.'}})
     m.save('selection-cases.json',rows)
+    assert all(r['verdict']!='FAIL' for r in rows), 'selection case failed; see selection-cases.json'
 
 def main():
     app, mode = str(Path(sys.argv[1]).resolve()), sys.argv[2]
@@ -148,16 +157,27 @@ def main():
             m = load('measure_suite', ROOT/'scripts/c42-canvas-measure.py')
             sys.argv = ['measure',app,str(out),'--backend',mode.split('-')[-1],'--bounds','workstation','--long-samples','30']
             code = m.main()
-        elif mode in ('gui', 'byte', 'regression', 'exact'):
+        elif mode in ('gui', 'byte', 'regression', 'exact', 'exact-select', 'exact-tools'):
             file = {'gui':'c42-gui-e2e.py','byte':'c42-byte-gate.py',
-                    'regression':'c41-gui-e2e.py','exact':'c42-gesture-equivalence.py'}[mode]
+                    'regression':'c41-gui-e2e.py','exact':'c42-gesture-equivalence.py',
+                    'exact-select':'c42-gesture-equivalence.py','exact-tools':'c42-gesture-equivalence.py'}[mode]
             m = load('suite', ROOT / 'scripts' / file)
-            if mode == 'exact':
+            if mode.startswith('exact'):
                 # D-4 is exact, including identities. Do not accept builder tolerances.
                 m.close = lambda a, b: a == b
                 m.c42.strip_ids = lambda v: v
-            sys.argv = [file, app] + ([str(Path(sys.argv[3]).resolve())] if mode in ('byte','exact') else []) + [str(out)]
-            code = (m.run_main() if mode == 'exact' else m.main()) or 0
+                if mode != 'exact':
+                    source = inspect.getsource(m.main)
+                    if mode == 'exact-select':
+                        source = source.replace('    results = []', "    rows += [('select: move','select',[(cx,cy),(cx+25,cy-15)],[],True)]\n    results = []")
+                    source = source.replace('            await engine.run("colour.current.set", {"colourId": black})', '            await engine.run("tool.active.set", {"toolId": tool})\n            await engine.run("colour.current.set", {"colourId": black})')
+                    # OS records omit the optional tool override; replay that request shape too.
+                    source = source.replace('"tool": rec["tool"], ', '')
+                    condition = "name in ('select: corner scale','select: rotate','select: move')" if mode == 'exact-select' else "name in ('brush','pencil','rectangle','ellipse','line','polyline','eraser','paint')"
+                    source = source.replace('for name, tool, pts, mods, selected in rows:',f'for name, tool, pts, mods, selected in [r for r in rows if (lambda name: {condition})(r[0])]:')
+                    exec(compile(source,str(__file__),'exec'),m.__dict__)
+            sys.argv = [file, app] + ([str(Path(sys.argv[3]).resolve())] if mode == 'byte' or mode.startswith('exact') else []) + [str(out)]
+            code = (m.run_main() if mode.startswith('exact') else m.main()) or 0
         else:
             m = load('original', ROOT / 'tests/adversarial/c42b-r1-live.py')
             m.O = out
