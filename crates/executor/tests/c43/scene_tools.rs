@@ -446,8 +446,11 @@ struct G10Row {
     pts: Vec<(f64, f64)>,
     setup: fn(&ExecutorHandle),
     label: Option<&'static str>,
-    expect: fn(&[(f64, f64)]) -> (&'static str, Value),
+    expect: Expect,
 }
+
+/// From the samples' drawing points, the spec's command id and its point-carrying parameters.
+type Expect = fn(&[(f64, f64)]) -> (&'static str, Value);
 
 /// G10 (02 §7, line 61, line 413): every drawing tool's gesture in the Camera view (each C4.2 tool but the two
 /// navigation tools, which navigate the view they are used in) produces the spec's command with its samples mapped
