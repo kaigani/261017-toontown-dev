@@ -8,7 +8,16 @@ export const ACTIONABLE =
   'button, [role="button"], [role="menuitem"], [role="menuitemcheckbox"], [role="tab"], [role="checkbox"], [role="switch"], [role="option"], input, select, textarea, a[href]';
 
 /** SI-155: the reasons an actionable element sends no command. */
-export const GUI_ONLY_REASONS = ['geometry', 'scroll', 'typing', 'hover', 'focus'] as const;
+export const GUI_ONLY_REASONS = [
+  'geometry',
+  'scroll',
+  'typing',
+  'hover',
+  'focus',
+  'dismiss',
+  'navigate',
+  'placeholder',
+] as const;
 export type GuiOnlyReason = (typeof GUI_ONLY_REASONS)[number];
 
 export interface Action {
@@ -41,7 +50,16 @@ export function collect(root: Element, surface: string): Collected {
     const region = el.closest('[data-tt-surface]')?.getAttribute('data-tt-surface') ?? surface;
     const id = el.getAttribute('data-tt-id');
     const command = el.getAttribute('data-tt-command');
-    const gui = el.getAttribute('data-tt-gui-only');
+    // A third-party container around a declared element (the dock's tab wrapper around its declared tab) is that
+    // element's: it is not counted twice.
+    if (!id && !command && el.querySelector('[data-tt-id][data-tt-command], [data-tt-id][data-tt-gui-only]'))
+      continue;
+    // SI-155: a field inside a form is typing; the form's submit sends the command its value is for.
+    const field =
+      /^(INPUT|SELECT|TEXTAREA)$/.test(el.tagName) &&
+      !['button', 'submit'].includes(el.getAttribute('type') ?? '');
+    const gui =
+      el.getAttribute('data-tt-gui-only') ?? (field && !command && el.closest('form') ? 'typing' : null);
     if (!id) {
       out.unbound.push({ surface: region, what: `${describe(el)} (no data-tt-id)` });
       continue;

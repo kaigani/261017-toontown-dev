@@ -115,7 +115,14 @@ export function makeActions(
     return saved?.status === 'ok' ? 'fail' : null;
   };
 
-  const prompt = (id: string, title: string, label: string, initial: string, submitLabel: string) =>
+  const prompt = (
+    id: string,
+    title: string,
+    label: string,
+    initial: string,
+    submitLabel: string,
+    command: string,
+  ) =>
     dialogs.open<string>(title, (close) => (
       <NamePrompt
         id={id}
@@ -123,6 +130,7 @@ export function makeActions(
         label={label}
         initial={initial}
         submitLabel={submitLabel}
+        command={command}
         validate={(n) => (n.trim() ? null : 'A name cannot be empty.')}
         close={close}
       />
@@ -167,7 +175,14 @@ export function makeActions(
       }
       case 'workspace.create': {
         if (p['name'] === undefined) {
-          const name = await prompt('workspaceNew', 'New Workspace', 'Name', 'User Workspace', 'Create');
+          const name = await prompt(
+            'workspaceNew',
+            'New Workspace',
+            'Name',
+            'User Workspace',
+            'Create',
+            'workspace.create',
+          );
           if (!name) return null;
           p['name'] = name;
         }
@@ -177,7 +192,14 @@ export function makeActions(
         const current = state()?.workspace.name ?? '';
         if (p['name'] === undefined) p['name'] = current;
         if (p['newName'] === undefined) {
-          const name = await prompt('workspaceRename', 'Rename Workspace', 'New name', current, 'Rename');
+          const name = await prompt(
+            'workspaceRename',
+            'Rename Workspace',
+            'New name',
+            current,
+            'Rename',
+            'workspace.rename',
+          );
           if (!name) return null;
           p['newName'] = name;
         }

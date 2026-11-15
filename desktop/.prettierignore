@@ -9,3 +9,5 @@ src/test/c41-r1s-references.test.ts
 src/test/c41-r1s-toolbar.test.tsx
 # The canvas golden corpus is written by the Rust tests (crates/render/tests/c42_canvas.rs, tests/c42/canvas.rs).
 src/canvas/testdata
+# The parity manifest is written by its generator (pnpm parity:gen, src/ui-bindings/parity.test.tsx), compared byte for byte.
+src/ui-bindings/parity.json

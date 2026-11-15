@@ -70,6 +70,7 @@ export function NewProjectForm({
         aria-invalid={problem ? true : undefined}
         data-tt-role="field"
         data-tt-id={`${idPrefix}.${id}`}
+        data-tt-gui-only="typing"
         onChange={(e) => {
           set(e.target.value);
         }}
@@ -93,6 +94,7 @@ export function NewProjectForm({
           value={preset}
           data-tt-role="field"
           data-tt-id={`${idPrefix}.preset`}
+          data-tt-gui-only="typing"
           onChange={(e) => {
             choose(e.target.value);
           }}
@@ -203,6 +205,7 @@ export function ProjectPropertiesDialog({
     <Dialog
       id="projectProperties"
       title="Project Properties"
+      command="project.properties.set"
       onCancel={() => {
         close(null);
       }}

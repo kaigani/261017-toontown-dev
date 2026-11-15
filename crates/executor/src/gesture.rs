@@ -256,6 +256,9 @@ pub struct Gesture {
     pub strokes: Vec<Stroke>,
     /// Ended by a double click (Polyline).
     pub double_click: bool,
+    /// The mapping taken at the first press, view pixel -> drawing unit (02 §13.3; a Camera view's is the current
+    /// element's plane through the camera, 02 line 61). The Select tool places its handles with its inverse.
+    pub press: [f64; 6],
 }
 
 /// The tools whose gestures C4.2 builds (design note 3 §2); the others answer `command.notImplemented` (SI-129).
@@ -586,16 +589,25 @@ pub fn to_command(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, Comma
 
 fn select(cx: &Cx, g: &Gesture, st: &Stroke, p0: Sample, pn: Sample) -> Result<Option<(String, Value)>, CommandError> {
     let w = cx.ui().shell().view(&g.view_id)?;
+    // Drawing units -> view pixels where the view shows them: a Camera view through the gesture's press mapping (the
+    // element's plane through the camera, 02 line 61), a Drawing view through its own transform. The handles are where
+    // the view draws them (SI-156).
+    let camera = w.ty == crate::shell::ViewType::Camera;
+    let inv = crate::camera_view::invert(&g.press);
+    let view = move |p: Point| match inv {
+        Some(m) if camera => crate::shell::apply(&m, p),
+        _ => crate::commands::view::to_view(w, p),
+    };
     // The drawing pivot handle (02 §7.1 "drag drawing pivot").
     if let Some(d) = current_drawing(cx) {
-        let pv = crate::commands::view::to_view(w, Point { x: d.1.x, y: d.1.y });
+        let pv = view(Point { x: d.1.x, y: d.1.y });
         if !st.is_click() && (pv.x - p0.v.x).hypot(pv.y - p0.v.y) <= PIVOT_HANDLE_PX {
             return Ok(Some(("draw.pivot.set".into(), json!({ "point": pt(pn.d) }))));
         }
         // A drag that starts on a bounding-box handle scales; just outside a corner, rotates (02 §7.1.1).
         if !st.is_click()
             && let Some(b) = selection_box(cx, &d.0)
-            && let Some(h) = handle_at(w, &b, p0)
+            && let Some(h) = handle_at(&view, &b, p0)
         {
             return handle_drag(h, &b, p0, pn, st.mods.constrain).map(Some);
         }
@@ -666,9 +678,8 @@ fn box_corners(b: &tt_vector::geom::Rect) -> [Point; 4] {
 
 /// The handle a drag starting at `p0` takes, tested in order: corners, sides (within [`HANDLE_PX`] of the handle's
 /// centre), then the rotation zone (outside the box, within [`ROTATE_PX`] of a corner).
-fn handle_at(w: &crate::shell::ViewWindow, b: &tt_vector::geom::Rect, p0: Sample) -> Option<Handle> {
+fn handle_at(view: &dyn Fn(Point) -> Point, b: &tt_vector::geom::Rect, p0: Sample) -> Option<Handle> {
     let c = box_corners(b);
-    let view = |p: Point| crate::commands::view::to_view(w, p);
     let dist = |p: Point| {
         let q = view(p);
         (q.x - p0.v.x).hypot(q.y - p0.v.y)
@@ -1104,7 +1115,13 @@ pub(crate) fn run(
                     }
                     _ => {
                         let tool = new_tool.unwrap_or_default();
-                        let g = Gesture { tool, view_id: view_id.clone(), strokes: Vec::new(), double_click: false };
+                        let g = Gesture {
+                            tool,
+                            view_id: view_id.clone(),
+                            strokes: Vec::new(),
+                            double_click: false,
+                            press: matrix,
+                        };
                         pending = Some((g, Some(stroke), Some(matrix)));
                     }
                 }

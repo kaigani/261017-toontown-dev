@@ -1922,9 +1922,33 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Sections:** 11 P1 line 19, §14.1 lines 560-563 (every GUI action has a binding), 01 §12 (`window.*` geometry
   commands), plan §8 ("the parity manifest's treatment of GUI-only conveniences").
-- **Problem:** moving a float, dragging a splitter, scrolling, typing into a field before submitting, hovering and
-  focusing are actions in the GUI but not commands.
+- **Problem:** moving a float, dragging a splitter, scrolling, typing into a field before submitting, hovering,
+  focusing, cancelling a dialog, moving between the pages of a dialog, and a control whose function a later checkpoint
+  builds are actions in the GUI but not commands.
 - **Interim decision:** the parity manifest marks such an element `guiOnly` with one reason from `geometry`, `scroll`,
-  `typing`, `hover`, `focus`; any other unbound element fails the gate. Geometry that ends in a `window.*` command is
-  bound to that command.
-- **Question:** confirm the list.
+  `typing`, `hover`, `focus`, `dismiss` (a dialog's Cancel or close: nothing changes), `navigate` (between the pages
+  of one dialog, as Preferences' categories) and `placeholder` (a control 01 places that a later checkpoint builds,
+  disabled, its owner in the tooltip); any other unbound element fails the gate. A field inside a form is `typing`
+  without a declaration: the form's submit sends the command its value is for. Geometry that ends in a `window.*`
+  command is bound to that command. A command declared agent-only that the GUI's source reads (its state stores, the
+  host's own reads) stays agent-only: that read is plumbing, not a location a person acts at (parity note 9, PA3).
+- **Question:** confirm the list, and that plumbing reads do not bind an agent-only command.
+
+## SI-156 — where the drawing Select tool's handles are in a Camera view (found in M4 C4.3b; defect fixed)
+
+- **Sections:** 02 §7.1 (Select: "drag drawing pivot", bounding-box handles), §7.1.1, line 61 (the Camera view's
+  mapping is the inverse of the element's full scene transform and camera projection, restricted to the drawing
+  plane), §13.3 (the mapping is taken at the press).
+- **Problem:** the gesture driver placed the drawing Select's pivot handle and selection-box handles through the
+  Drawing view's own transform in every view. In a Camera view the drawing's points are shown through the element's
+  plane and the camera, so a press on the pivot or a box handle where the Camera view shows it was taken as a marquee
+  or a move, and a press where the Drawing view would show it took a handle no one could see. The parity gate's
+  gesture battery found it (no Camera view gesture produced `draw.pivot.set`).
+- **Decision (a defect, not an interpretation):** the handles are placed with the inverse of the gesture's press
+  mapping in a Camera view (the same mapping its samples use, 02 line 61), and with the Drawing view's transform in a
+  Drawing view as before. Behaviour change: in a Camera view, a Select drag from the pivot moves the pivot and one from
+  a box handle scales or rotates; the Drawing view is unchanged.
+- **Test:** `crates/executor/tests/c43/scene_tools.rs`
+  `si156_the_drawing_select_handles_in_the_camera_view_are_where_it_shows_them`, and the parity gate's battery; both
+  fail with the mapping disabled.
+

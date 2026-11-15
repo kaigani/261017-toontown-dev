@@ -55,6 +55,7 @@ export function Dialog({
   submitLabel,
   submitDisabled,
   wide,
+  command,
 }: {
   id: string;
   title: string;
@@ -64,6 +65,8 @@ export function Dialog({
   submitLabel?: string;
   submitDisabled?: boolean;
   wide?: boolean;
+  /** The command the submit button sends (the parity manifest binds the button to it; parity note 9). */
+  command?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useModalFocus(ref);
@@ -94,7 +97,13 @@ export function Dialog({
       >
         {children}
         <div className="buttons">
-          <button type="button" onClick={onCancel} data-tt-role="button" data-tt-id={`${id}.cancel`}>
+          <button
+            type="button"
+            onClick={onCancel}
+            data-tt-role="button"
+            data-tt-id={`${id}.cancel`}
+            data-tt-gui-only="dismiss"
+          >
             Cancel
           </button>
           {onSubmit && (
@@ -104,6 +113,7 @@ export function Dialog({
               disabled={submitDisabled}
               data-tt-role="button"
               data-tt-id={`${id}.submit`}
+              {...(command ? { 'data-tt-command': command } : {})}
             >
               {submitLabel ?? 'OK'}
             </button>
@@ -121,6 +131,7 @@ export function NamePrompt({
   label,
   initial,
   submitLabel,
+  command,
   validate,
   close,
 }: {
@@ -129,6 +140,8 @@ export function NamePrompt({
   label: string;
   initial: string;
   submitLabel: string;
+  /** The command the prompt's value is for. */
+  command: string;
   validate: (name: string) => string | null;
   close: Close<string>;
 }) {
@@ -145,6 +158,7 @@ export function NamePrompt({
         close(name.trim());
       }}
       submitLabel={submitLabel}
+      command={command}
       submitDisabled={problem !== null}
     >
       <label>

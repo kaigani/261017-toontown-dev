@@ -54,6 +54,7 @@ function Tab(props: IDockviewPanelHeaderProps<{ panelId: string }>) {
       aria-selected={shown}
       data-tt-role="tab"
       data-tt-id={`tab.${id}`}
+      data-tt-command="window.panel.set"
       data-tt-label={title(id)}
       onDoubleClick={() => {
         // Double-click toggles floating/docked (01 §5.4).

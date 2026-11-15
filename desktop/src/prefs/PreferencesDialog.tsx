@@ -148,6 +148,7 @@ export function PreferencesDialog({
       onCancel={cancel}
       onSubmit={() => void ok()}
       submitLabel="OK"
+      command="prefs.set"
       wide
     >
       <div className="prefs-layout">
@@ -174,6 +175,7 @@ export function PreferencesDialog({
               aria-pressed={category === c.id}
               data-tt-role="tab"
               data-tt-id={`preferences.category.${c.id}`}
+              data-tt-gui-only="navigate"
               onClick={() => {
                 setCategory(c.id);
                 setSearch('');

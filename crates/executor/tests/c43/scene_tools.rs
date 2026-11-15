@@ -8,13 +8,13 @@ use tt_executor::{ExecutorHandle, Origin};
 use crate::camera::{BOB, apply, id_of, matrix, scene};
 use crate::common::*;
 
-fn ready() -> ExecutorHandle {
+pub(crate) fn ready() -> ExecutorHandle {
     let h = fixture();
     ok(&h, "app.context.set", json!({ "elementId": BOB, "frame": 1 }));
     h
 }
 
-fn drag(points: &[(f64, f64)], mods: &[&str]) -> Vec<Value> {
+pub(crate) fn drag(points: &[(f64, f64)], mods: &[&str]) -> Vec<Value> {
     let n = points.len();
     points
         .iter()
@@ -32,7 +32,7 @@ fn drag(points: &[(f64, f64)], mods: &[&str]) -> Vec<Value> {
         .collect()
 }
 
-fn click(p: (f64, f64), mods: &[&str]) -> Vec<Value> {
+pub(crate) fn click(p: (f64, f64), mods: &[&str]) -> Vec<Value> {
     drag(&[p, p], mods)
 }
 
@@ -70,7 +70,7 @@ fn canonical(h: &ExecutorHandle) -> Vec<String> {
 }
 
 /// Bob's drawing units → Camera view pixels.
-fn bob_to_view(h: &ExecutorHandle) -> [f64; 6] {
+pub(crate) fn bob_to_view(h: &ExecutorHandle) -> [f64; 6] {
     let s = scene(h);
     let bob = id_of(h, BOB);
     let e = s["entries"].as_array().unwrap().iter().find(|e| e["elementId"] == json!(bob)).cloned().unwrap();
@@ -86,7 +86,7 @@ fn bob_to_view(h: &ExecutorHandle) -> [f64; 6] {
 }
 
 /// The selection's union box and the first pivot, in Camera view pixels (scene answer overlays).
-fn furniture(h: &ExecutorHandle) -> ([f64; 4], (f64, f64)) {
+pub(crate) fn furniture(h: &ExecutorHandle) -> ([f64; 4], (f64, f64)) {
     let s = scene(h);
     let v = matrix(&s["camera"]["cameraToView"]);
     let u: Vec<f64> = s["overlays"]["selectionUnion"].as_array().unwrap().iter().map(|x| x.as_f64().unwrap()).collect();
@@ -151,7 +151,7 @@ struct Row {
     keys: &'static [&'static str],
 }
 
-fn centre(b: &[f64; 4]) -> (f64, f64) {
+pub(crate) fn centre(b: &[f64; 4]) -> (f64, f64) {
     ((b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0)
 }
 
@@ -343,7 +343,7 @@ fn an_unreleased_scene_drag_commits_nothing() {
 
 /// How a G10 row's gesture is made from its drawing-unit points.
 #[derive(Clone, Copy)]
-enum Shape {
+pub(crate) enum Shape {
     /// One press, moves through the points, a release.
     Drag,
     /// A click at the first point.
@@ -352,7 +352,7 @@ enum Shape {
     Clicks,
 }
 
-fn gesture(shape: Shape, pts: &[(f64, f64)]) -> Vec<Value> {
+pub(crate) fn gesture(shape: Shape, pts: &[(f64, f64)]) -> Vec<Value> {
     match shape {
         Shape::Drag => drag(pts, &[]),
         Shape::Click => click(pts[0], &[]),
@@ -375,7 +375,7 @@ fn outlined(h: &ExecutorHandle) {
 }
 
 /// The same rectangle painted (for Unpaint, the Dropper and the cuts).
-fn painted(h: &ExecutorHandle) {
+pub(crate) fn painted(h: &ExecutorHandle) {
     outlined(h);
     ok(h, "colour.paint.apply", json!({ "points": [{ "x": 350, "y": 330 }] }));
 }
@@ -440,31 +440,27 @@ fn has_fields(got: &Value, want: &Value) -> bool {
 /// One G10 row: the tool, its gesture, its drawing-unit points, a setup, 02 §7's label (`None`: not an undo step: the
 /// Dropper sets the current colour, a Select rubber band selects), and the spec's command: from the samples' drawing
 /// points `e` (derived through 02 line 61's inverse mapping), the command id and the point-carrying parameters.
-struct G10Row {
-    tool: &'static str,
-    shape: Shape,
-    pts: Vec<(f64, f64)>,
-    setup: fn(&ExecutorHandle),
-    label: Option<&'static str>,
-    expect: Expect,
+pub(crate) struct G10Row {
+    pub(crate) tool: &'static str,
+    pub(crate) shape: Shape,
+    pub(crate) pts: Vec<(f64, f64)>,
+    pub(crate) setup: fn(&ExecutorHandle),
+    pub(crate) label: Option<&'static str>,
+    pub(crate) expect: Expect,
 }
 
 /// From the samples' drawing points, the spec's command id and its point-carrying parameters.
-type Expect = fn(&[(f64, f64)]) -> (&'static str, Value);
+pub(crate) type Expect = fn(&[(f64, f64)]) -> (&'static str, Value);
 
-/// G10 (02 §7, line 61, line 413): every drawing tool's gesture in the Camera view (each C4.2 tool but the two
-/// navigation tools, which navigate the view they are used in) produces the spec's command with its samples mapped
-/// into drawing units by the inverse of the element's full scene transform and the camera projection (02 line 61;
-/// derived in the test, ruling D-23, C43A-R2-20), and then the command, the parameters and the 02 §7 label of the same
-/// gesture made in the Drawing view.
-#[test]
-fn g10_drawing_tools_in_the_camera_view_equal_the_drawing_view() {
+/// The G10 rows: every drawing tool's gesture with its points, setup, label and the spec's command (the parity
+/// gate's gesture battery makes them too).
+pub(crate) fn g10_rows() -> Vec<G10Row> {
     let line = [(-60.0, 20.0), (-20.0, 45.0), (30.0, 10.0)];
     // Across the painted rectangle (300..400 x 300..360), so a cut divides it.
     let across = [(350.0, 380.0), (420.0, 380.0), (420.0, 280.0), (350.0, 280.0)];
     let lasso = [(280.0, 380.0), (420.0, 380.0), (420.0, 280.0), (280.0, 280.0)];
     let none: fn(&ExecutorHandle) = |_| {};
-    let rows = vec![
+    vec![
         // 02 line 495: the Brush adds a brush stroke through the samples.
         G10Row {
             tool: "brush",
@@ -631,8 +627,17 @@ fn g10_drawing_tools_in_the_camera_view_equal_the_drawing_view() {
             label: None,
             expect: |e| ("draw.selection.set", json!({ "by": "rect", "rect": rect(e[0], e[1]) })),
         },
-    ];
-    for row in rows {
+    ]
+}
+
+/// G10 (02 §7, line 61, line 413): every drawing tool's gesture in the Camera view (each C4.2 tool but the two
+/// navigation tools, which navigate the view they are used in) produces the spec's command with its samples mapped
+/// into drawing units by the inverse of the element's full scene transform and the camera projection (02 line 61;
+/// derived in the test, ruling D-23, C43A-R2-20), and then the command, the parameters and the 02 §7 label of the same
+/// gesture made in the Drawing view.
+#[test]
+fn g10_drawing_tools_in_the_camera_view_equal_the_drawing_view() {
+    for row in g10_rows() {
         let tool = row.tool;
         let (cam, drw) = (ready(), ready());
         (row.setup)(&cam);
@@ -725,4 +730,28 @@ fn g11_the_scene_tool_and_the_drawing_tool_are_independent() {
     ok(&h, "anim.tool.set", json!({ "tool": "select" }));
     let out = pointer(&h, None, click(c, &[]));
     assert_eq!(last(&out)["commandId"], "edit.selection.set");
+}
+
+/// SI-156 (02 §7.1.1, line 61): the drawing Select tool's handles in a Camera view are where the view shows them, the
+/// drawing's points through the element's plane and the camera. A drag from the selection box's corner, mapped so,
+/// scales about the opposite corner; one from the drawing pivot moves the pivot; through the Drawing view's mapping
+/// instead (the defect the parity gate's battery found) both are marquees.
+#[test]
+fn si156_the_drawing_select_handles_in_the_camera_view_are_where_it_shows_them() {
+    let h = ready();
+    painted(&h);
+    ok(&h, "draw.selection.set", json!({ "by": "all" }));
+    ok(&h, "tool.active.set", json!({ "toolId": "select" }));
+    let m = bob_to_view(&h);
+    let b = ok(&h, "draw.selection.get", json!({}))["bounds"].clone();
+    let (x1, y1) = (b["x"].as_f64().unwrap() + b["width"].as_f64().unwrap(), b["y"].as_f64().unwrap());
+    let corner = apply(&m, x1, y1);
+    let out = pointer(&h, None, drag(&[corner, (corner.0 + 20.0, corner.1 + 10.0)], &[]));
+    let c = last(&out);
+    assert_eq!(c["commandId"], "draw.transform.apply", "{out}");
+    assert!(c["params"]["scale"].is_object(), "a corner drag scales: {c}");
+    let piv = ok(&h, "draw.drawing.get", json!({ "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW" }));
+    let p = apply(&m, piv["pivot"]["x"].as_f64().unwrap(), piv["pivot"]["y"].as_f64().unwrap());
+    let out = pointer(&h, None, drag(&[(p.0 + 1.0, p.1 + 1.0), (p.0 + 30.0, p.1 + 20.0)], &[]));
+    assert_eq!(last(&out)["commandId"], "draw.pivot.set", "{out}");
 }

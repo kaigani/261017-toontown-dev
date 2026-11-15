@@ -114,6 +114,7 @@ export function StartScreen() {
           title="The sample project is authored with the starter content (M9 C9.3)"
           data-tt-role="button"
           data-tt-id="start.sample"
+          data-tt-gui-only="placeholder"
         >
           Sample project
         </button>
@@ -134,6 +135,7 @@ export function StartScreen() {
           checked={showAtStart}
           data-tt-role="field"
           data-tt-id="start.showAtStartup.box"
+          data-tt-command="prefs.set"
           onChange={(e) =>
             // 01 §2: unchecking sets newDefaultProject, checking sets startScreen.
             void actions.run('prefs.set', {

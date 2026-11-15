@@ -322,35 +322,17 @@ pub const TOOLBAR_GROUPS: &[&str] = &[
     "workspaceList",
 ];
 
-/// Default main toolbar set, in order (01 §5.7).
+/// Default main toolbar set, in order (01 §5.7), from `toolbar-default.json` (data the parity manifest reads too:
+/// parity note §3).
 fn default_toolbar() -> MainToolbar {
-    MainToolbar {
-        visible: true,
-        items: [
-            "drawAid.grid.set",
-            "gridType",
-            "gridOverlay",
-            "separator",
-            "drawAid.onionSkin.set",
-            "onionSkinPrevious",
-            "onionSkinNext",
-            "drawAid.autoLightTable.set",
-            "separator",
-            "firstFrame",
-            "playStop",
-            "lastFrame",
-            "playback.loop.set",
-            "space",
-            "lipsync.panel.open",
-            "flexibleSpace",
-            "cameraList",
-            "sceneList",
-            "workspaceList",
-        ]
-        .iter()
-        .map(|s| (*s).to_owned())
-        .collect(),
-    }
+    MainToolbar { visible: true, items: default_toolbar_items() }
+}
+
+/// The default main toolbar's items (`toolbar-default.json`); empty only if that file were malformed, which a test
+/// rules out.
+#[must_use]
+pub fn default_toolbar_items() -> Vec<String> {
+    serde_json::from_str(include_str!("toolbar-default.json")).unwrap_or_default()
 }
 
 fn arrangement(central: &str, corners: Corners, docks: Docks, palettes_visible: &[&str]) -> Arrangement {
