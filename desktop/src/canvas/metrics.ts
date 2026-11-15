@@ -34,12 +34,14 @@ export class CanvasMetrics {
   readonly work: number[] = [];
   readonly ink: number[] = [];
   readonly commit: number[] = [];
+  /** Each commit's parts: release to the commit's answer, the answer to the frame drawing it. */
+  readonly commitParts: { answerMs: number; drawMs: number }[] = [];
   /** Scene pulls, request to apply (E-C1). */
   readonly scenes: number[] = [];
   readonly loads: { key: string; bytes: number; ms: number }[] = [];
   private last: number | null = null;
   private pendingInk: number | null = null;
-  private release: { t: number; version: number } | null = null;
+  private release: { t: number; version: number; answered: number | null } | null = null;
 
   /** A frame began at `now` and its work took `workMs`; `inGesture` while a gesture is in progress. */
   frame(now: number, workMs: number, inGesture = false): void {
@@ -63,13 +65,24 @@ export class CanvasMetrics {
 
   /** The pointer was released at `t`, with the model at `version`. */
   released(t: number, version: number): void {
-    this.release = { t, version };
+    this.release = { t, version, answered: null };
+  }
+
+  /** The commit's answer arrived at `now` (the kernel ran the command). */
+  answered(now: number): void {
+    if (this.release?.answered === null) this.release.answered = now;
   }
 
   /** A frame drew the model at `version` at `now`: the committed drawing, when newer than at the release. */
   drawn(version: number, now: number): void {
     if (this.release && version > this.release.version) {
       ring(this.commit, Math.max(0, now - this.release.t), 50);
+      const a = this.release.answered ?? now;
+      ring(
+        this.commitParts,
+        { answerMs: Math.round((a - this.release.t) * 100) / 100, drawMs: Math.round((now - a) * 100) / 100 },
+        50,
+      );
       this.release = null;
     }
   }
@@ -90,6 +103,7 @@ export class CanvasMetrics {
     commitMs: Stat;
     sceneMs: Stat;
     commits: number[];
+    commitParts: CanvasMetrics['commitParts'];
     loads: CanvasMetrics['loads'];
   } {
     return {
@@ -100,6 +114,7 @@ export class CanvasMetrics {
       commitMs: stat(this.commit),
       sceneMs: stat(this.scenes),
       commits: this.commit.map((v) => Math.round(v * 100) / 100),
+      commitParts: [...this.commitParts],
       loads: [...this.loads],
     };
   }

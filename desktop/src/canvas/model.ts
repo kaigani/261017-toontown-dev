@@ -98,6 +98,8 @@ export class CanvasModel {
   /** An engine event arrived: the composition may have changed. */
   markDirty(): void {
     this.dirty = true;
+    // Asked at once rather than at the next frame (release-to-committed, plan §6); applied in a frame as always (F2).
+    if (!this.sceneInFlight) this.requestScene();
   }
 
   /** The engine generation the window follows (D-7b: a restart is a generation change). */
@@ -145,7 +147,10 @@ export class CanvasModel {
       (v) => {
         this.onScene?.(this.clock.now() - this.sceneAskedAt);
         try {
-          this.inbox.push({ kind: 'scene', answer: parseSceneAnswer(v) });
+          const answer = parseSceneAnswer(v);
+          this.inbox.push({ kind: 'scene', answer });
+          // The drawings this scene needs are asked for at once too; they arrive after the scene in the inbox.
+          if (answer.generation === this.generation) this.requestLoadsFor(answer.scene);
         } catch (e) {
           this.inbox.push({ kind: 'failed', what: 'scene', error: e });
         }
@@ -164,8 +169,19 @@ export class CanvasModel {
     );
   }
 
+  private requestLoadsFor(scene: Scene): void {
+    for (const e of scene.entries) {
+      const key = residentKey(e);
+      if (!this.loading.has(key) && this.wantedIn(scene, key)) this.requestLoad(key, e.drawingId, e.outline);
+    }
+    this.peakInFlight = Math.max(this.peakInFlight, this.inFlight);
+  }
+
   private wanted(key: string): boolean {
-    const s = this.scene;
+    return this.wantedIn(this.scene, key);
+  }
+
+  private wantedIn(s: Scene | null, key: string): boolean {
     const e = s?.entries.find((x) => residentKey(x) === key);
     if (!s || !e) return false;
     const r = this.resident.get(key);

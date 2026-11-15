@@ -207,6 +207,27 @@ describe('the canvas pull loop', () => {
     expect([...model.resident.keys()]).toEqual([id(1)]);
   });
 
+  it('an event asks for the scene at once, and its answer asks for the drawings at once (frames only apply)', async () => {
+    const { host, sink, model } = setup();
+    model.setGeneration(1); // the window's generation (the early loads are for the generation the canvas follows)
+    model.frame();
+    host.scenes[0]?.resolve(scene(1, [[0, 1]]));
+    await flush();
+    expect(host.loads.length).toBe(1); // asked on the answer's arrival, before any frame
+    model.frame();
+    host.loads[0]?.resolve(payload(ULIDS[0] ?? '', 1, 1));
+    await flush();
+    model.frame();
+    model.markDirty();
+    expect(host.scenes.length).toBe(2); // asked by the event itself
+    model.markDirty();
+    expect(host.scenes.length).toBe(2); // one scene request in flight at most (T3)
+    host.scenes[1]?.resolve(scene(1, [[0, 2]]));
+    await flush();
+    expect(host.loads.map((l) => l.drawingId)).toEqual([id(0), id(0)]);
+    expect(sink.uploads.length).toBe(1); // nothing is applied outside a frame (F2)
+  });
+
   it('an identical scene answer changes nothing (no version bump, so no redraw)', async () => {
     const { host, model } = setup();
     model.frame();

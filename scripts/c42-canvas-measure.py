@@ -149,6 +149,16 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict) -> Non
                 g = await gesture("small")
                 record["small"].update({"gesture": g.get("gestureFrameMs"), "ink": g.get("inkMs"), "commit": g.get("commitMs")})
 
+                # The long stroke (D-13): one 10,000-sample Brush gesture through the window (an agent gesture, played
+                # through the window's input queue), release-to-committed from the end of its playback.
+                before = len(((await metrics_now(session)).get("metrics") or {}).get("commits") or [])
+                long_events = c42.drag([v(-500 + i * 0.1, -300 + 40 * ((i // 50) % 2) + (i % 50) * 0.8) for i in range(10_000)])
+                env = await e2e.call(session, "pointer", {"view": "drawingView", "tool": "brush", "events": long_events})
+                await asyncio.sleep(2.0)
+                commits = ((await metrics_now(session)).get("metrics") or {}).get("commits") or []
+                parts = ((await metrics_now(session)).get("metrics") or {}).get("commitParts") or []
+                record["longStroke"] = {"samples": 10_000, "status": env.get("status"), "commitMs": commits[before:],
+                                        "parts": parts[-1:] if commits[before:] else []}
                 # The large drawing: 50,000 points of brush strokes, built through commands, then shown.
                 await rc(session, "app.context.set", {"elementId": eid, "frame": 2})
                 steps = []
@@ -249,6 +259,8 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict) -> Non
                 ]
                 if sys.platform == "win32":
                     checks.append(("input-to-ink p95, small", p95(record["small"]["ink"]), bounds["inkMs"]))
+                long_commit = (record.get("longStroke") or {}).get("commitMs") or []
+                checks.append(("release-to-committed of a 10,000-sample stroke", long_commit[-1] if long_commit else None, bounds["commitLargeMs"]))
                 for name, value, bound in checks:
                     run.check(value is not None and value <= bound, f"{name} <= {bound} ms", value)
 

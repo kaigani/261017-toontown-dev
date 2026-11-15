@@ -416,6 +416,7 @@ export function CanvasView({
       if (!req) return;
       const before = model?.version ?? 0;
       void engine.gestureCommit(req).then((env) => {
+        metrics?.answered(performance.now());
         lastGesture =
           env.status === 'error'
             ? { status: 'error', code: env.error?.code ?? 'error' }
@@ -428,8 +429,10 @@ export function CanvasView({
         if (env.status === 'error') overlay = null;
       });
     };
-    // Up to this many of an agent gesture's events are shown per frame (its simulated time is not waited for: P3).
+    // An agent gesture is shown over at most about two seconds of frames, at least 16 events a frame (its simulated
+    // time is not waited for: P3).
     const AGENT_EVENTS_PER_FRAME = 16;
+    const AGENT_PLAYBACK_FRAMES = 120;
     const playAgent = () => {
       if (!playing) {
         if (collector.active) return;
@@ -441,7 +444,8 @@ export function CanvasView({
       const events = Array.isArray(playing.input.request['events'])
         ? (playing.input.request['events'] as Record<string, unknown>[])
         : [];
-      const end = Math.min(events.length, playing.shown + AGENT_EVENTS_PER_FRAME);
+      const perFrame = Math.max(AGENT_EVENTS_PER_FRAME, Math.ceil(events.length / AGENT_PLAYBACK_FRAMES));
+      const end = Math.min(events.length, playing.shown + perFrame);
       for (let i = playing.shown; i < end; i++) {
         const e = events[i];
         if (e && typeof e['x'] === 'number' && typeof e['y'] === 'number')
@@ -461,6 +465,7 @@ export function CanvasView({
           agentRequest: done.input.requestId,
         })
         .then((env) => {
+          metrics?.answered(performance.now());
           lastGesture =
             env.status === 'error'
               ? { status: 'error', code: env.error?.code ?? 'error' }

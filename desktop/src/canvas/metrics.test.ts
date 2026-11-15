@@ -49,6 +49,10 @@ describe('canvas metrics', () => {
     m.drawn(8, 1042);
     m.drawn(9, 1100); // no release pending
     expect(m.commit).toEqual([42]);
+    m.released(2000, 9);
+    m.answered(2030);
+    m.drawn(10, 2045);
+    expect(m.commitParts[1]).toEqual({ answerMs: 30, drawMs: 15 });
   });
 
   it('keeps bounded windows', () => {
