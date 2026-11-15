@@ -215,7 +215,7 @@ mod scene_tools {
     }
     #[test]
     fn click_short_drag_and_empty_click_are_nonundoable_selection() {
-        // 05:351: more than 3px starts drag. 05:395, Â§17: selection,
+        // 05:351: more than 3px starts drag. 05:395, Ã‚Â§17: selection,
         // not a document mutation or an undo step.
         let (h, id) = ready();
         let before = ok(&h, "edit.history.get", json!({}));
@@ -325,5 +325,56 @@ mod part_b_composition {
             check(&h, &order[1], if order[1] == a { cs[0].1 } else { cs[1].1 });
             visible(&h, &order[0], true);
         }
+    }
+
+    #[test]
+    fn case3_two_cameras() {
+        // 05:236-247 inverse rigid view; 313 current camera; 901-902 outline only.
+        let h = ready();
+        let cs = c33_support::solids(&h, 1);
+        let a = c33_support::square(&h, "CameraMarker", 30., &cs[0].0);
+        put(&h, &a, 1., 0.);
+        let first = ok(&h, "anim.camera.current.get", json!({}))["cameraId"].clone();
+        let second = ok(
+            &h,
+            "anim.camera.create",
+            json!({"name":"Other","position":{"x":-1.,"y":0.5,"z":16.},"makeCurrent":false}),
+        )["cameraId"]
+            .clone();
+        ok(&h, "anim.camera.set", json!({"cameraId":second,"roll":30.}));
+        let mut matrices = Vec::new();
+        let mut images = Vec::new();
+        for (cam, x, y, roll) in [(first, 0., 0., 0_f64), (second, -1., 0.5, 30.)] {
+            ok(&h, "anim.camera.current.set", json!({"cameraId":cam}));
+            assert_eq!(ids(&scene(&h)), vec![a.clone()]);
+            let e = check(&h, &a, cs[0].1);
+            let p = point(&e, 0., 0.);
+            let (sn, co) = roll.to_radians().sin_cos();
+            // Default focal 2560, depth 16; output 1920x1080, render scale 1/4.
+            assert!((p.0 - (960. + 160. * (co * (1. - x) + sn * (-y))) * 0.25).abs() < 1e-6);
+            assert!((p.1 - (540. - 160. * (-sn * (1. - x) + co * (-y))) * 0.25).abs() < 1e-6);
+            matrices.push(e["matrix"].clone());
+            images.push(c33_support::render(&h, json!({"composition":"camera","scale":0.25})).rgba);
+        }
+        assert_ne!(matrices[0], matrices[1]);
+        assert_ne!(images[0], images[1]);
+    }
+    #[test]
+    fn case4_hidden_ancestor() {
+        // CV1 hidden ancestors absent in both; 05:314 all visible hierarchy content.
+        let h = ready();
+        let cs = c33_support::solids(&h, 1);
+        let a = c33_support::square(&h, "Child", 30., &cs[0].0);
+        let peg = ok(&h, "element.create", json!({"type":"peg","name":"Parent"}))["elementIds"][0].clone();
+        ok(&h, "element.parent.set", json!({"elementIds":[a],"parentId":peg}));
+        visible(&h, &a, true);
+        check(&h, &a, cs[0].1);
+        visible(&h, peg.as_str().unwrap(), false);
+        assert!(ids(&scene(&h)).is_empty());
+        let img = c33_support::render(&h, json!({"composition":"camera","scale":0.25}));
+        assert!(!img.rgba.chunks_exact(4).any(|c| c == cs[0].1));
+        visible(&h, peg.as_str().unwrap(), true);
+        assert_eq!(ids(&scene(&h)), vec![a.clone()]);
+        check(&h, &a, cs[0].1);
     }
 }
