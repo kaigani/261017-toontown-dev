@@ -380,9 +380,80 @@ fn painted(h: &ExecutorHandle) {
     ok(h, "colour.paint.apply", json!({ "points": [{ "x": 350, "y": 330 }] }));
 }
 
+/// 02 line 61 (the Camera view's mapping is "the inverse of the element's full scene transform and camera projection at
+/// the current frame, restricted to the drawing plane"): Bob's drawing units -> Camera view pixels, derived apart from
+/// the render list: the drawing plane's three points through `inspect.coordinates.convert` (the evaluator's full scene
+/// transform and 05 §2.6's projection) to output pixels, then the view transform (`cameraToView`).
+fn derived_mapping(h: &ExecutorHandle) -> [f64; 6] {
+    let r = ok(
+        h,
+        "inspect.coordinates.convert",
+        json!({ "from": "drawing", "to": "image", "elementId": BOB, "frame": 1,
+                "points": [{ "x": 0, "y": 0 }, { "x": 1, "y": 0 }, { "x": 0, "y": 1 }] }),
+    );
+    let p = |i: usize| (r["points"][i]["x"].as_f64().unwrap(), r["points"][i]["y"].as_f64().unwrap());
+    let (o, a, b) = (p(0), p(1), p(2));
+    let m = [a.0 - o.0, a.1 - o.1, b.0 - o.0, b.1 - o.1, o.0, o.1];
+    let v = matrix(&scene(h)["camera"]["cameraToView"]);
+    [
+        v[0] * m[0] + v[2] * m[1],
+        v[1] * m[0] + v[3] * m[1],
+        v[0] * m[2] + v[2] * m[3],
+        v[1] * m[2] + v[3] * m[3],
+        v[0] * m[4] + v[2] * m[5] + v[4],
+        v[1] * m[4] + v[3] * m[5] + v[5],
+    ]
+}
+
+/// The inverse of an affine `[a, b, c, d, e, f]`.
+fn inverse(m: &[f64; 6]) -> [f64; 6] {
+    let det = m[0] * m[3] - m[1] * m[2];
+    let (a, b, c, d) = (m[3] / det, -m[1] / det, -m[2] / det, m[0] / det);
+    [a, b, c, d, -(a * m[4] + c * m[5]), -(b * m[4] + d * m[5])]
+}
+
+fn xy(p: (f64, f64)) -> Value {
+    json!({ "x": p.0, "y": p.1 })
+}
+
+/// A mouse sample in drawing units (pressure 1, the mouse's, 02 §5.1).
+fn sample(p: (f64, f64)) -> Value {
+    json!({ "x": p.0, "y": p.1, "pressure": 1.0 })
+}
+
+/// An axis-aligned rectangle `{x, y, width, height}` spanned by two drawing points.
+fn rect(a: (f64, f64), b: (f64, f64)) -> Value {
+    json!({ "x": a.0.min(b.0), "y": a.1.min(b.1), "width": (a.0 - b.0).abs(), "height": (a.1 - b.1).abs() })
+}
+
+/// Every member of `want` is in `got` and equal, numbers within 1e-6 (members of `got` that `want` does not name are
+/// the tool's settings, not the samples' mapping).
+fn has_fields(got: &Value, want: &Value) -> bool {
+    match (got, want) {
+        (Value::Object(g), Value::Object(w)) => w.iter().all(|(k, v)| g.get(k).is_some_and(|x| has_fields(x, v))),
+        (Value::Array(g), Value::Array(w)) => g.len() == w.len() && g.iter().zip(w).all(|(x, v)| has_fields(x, v)),
+        (Value::Number(g), Value::Number(w)) => (g.as_f64().unwrap() - w.as_f64().unwrap()).abs() < 1e-6,
+        _ => got == want,
+    }
+}
+
+/// One G10 row: the tool, its gesture, its drawing-unit points, a setup, 02 §7's label (`None`: not an undo step: the
+/// Dropper sets the current colour, a Select rubber band selects), and the spec's command: from the samples' drawing
+/// points `e` (derived through 02 line 61's inverse mapping), the command id and the point-carrying parameters.
+struct G10Row {
+    tool: &'static str,
+    shape: Shape,
+    pts: Vec<(f64, f64)>,
+    setup: fn(&ExecutorHandle),
+    label: Option<&'static str>,
+    expect: fn(&[(f64, f64)]) -> (&'static str, Value),
+}
+
 /// G10 (02 §7, line 61, line 413): every drawing tool's gesture in the Camera view (each C4.2 tool but the two
-/// navigation tools, which navigate the view they are used in) produces the command, the parameters (in drawing units)
-/// and the 02 §7 label of the same gesture made in the Drawing view.
+/// navigation tools, which navigate the view they are used in) produces the spec's command with its samples mapped
+/// into drawing units by the inverse of the element's full scene transform and the camera projection (02 line 61;
+/// derived in the test, ruling D-23, C43A-R2-20), and then the command, the parameters and the 02 §7 label of the same
+/// gesture made in the Drawing view.
 #[test]
 fn g10_drawing_tools_in_the_camera_view_equal_the_drawing_view() {
     let line = [(-60.0, 20.0), (-20.0, 45.0), (30.0, 10.0)];
@@ -390,57 +461,215 @@ fn g10_drawing_tools_in_the_camera_view_equal_the_drawing_view() {
     let across = [(350.0, 380.0), (420.0, 380.0), (420.0, 280.0), (350.0, 280.0)];
     let lasso = [(280.0, 380.0), (420.0, 380.0), (420.0, 280.0), (280.0, 280.0)];
     let none: fn(&ExecutorHandle) = |_| {};
-    // Each row: the tool, its gesture, its drawing-unit points, a setup, and 02 §7's label with its line (`None`: not
-    // an undo step: the Dropper sets the current colour, a Select rubber band selects).
-    type G10Row = (&'static str, Shape, Vec<(f64, f64)>, fn(&ExecutorHandle), Option<&'static str>);
-    let rows: Vec<G10Row> = vec![
-        ("brush", Shape::Drag, line.to_vec(), none, Some("Brush Tool")), // 02 line 495
-        ("pencil", Shape::Drag, line.to_vec(), none, Some("Pencil Tool")), // line 504
-        ("rectangle", Shape::Drag, line.to_vec(), none, Some("Rectangle Tool")), // line 513
-        ("ellipse", Shape::Drag, line.to_vec(), none, Some("Ellipse Tool")), // line 520
-        ("line", Shape::Drag, line.to_vec(), none, Some("Line Tool")),   // line 543
-        ("polyline", Shape::Clicks, line.to_vec(), none, Some("Polyline Tool")), // line 537
-        ("stroke", Shape::Drag, line.to_vec(), none, Some("Stroke Tool")), // line 614
-        ("eraser", Shape::Drag, line.to_vec(), none, Some("Eraser Tool")), // line 639
-        ("cutter", Shape::Drag, across.to_vec(), painted, Some("Cutter Tool")), // line 647
-        ("scissor", Shape::Drag, vec![(350.0, 380.0), (420.0, 280.0)], painted, Some("Scissor Tool")), // line 654
-        ("paint", Shape::Click, vec![(350.0, 330.0)], outlined, Some("Paint")), // line 564
-        ("unpaint", Shape::Click, vec![(350.0, 330.0)], painted, Some("Unpaint")), // line 573
-        ("paintUnpainted", Shape::Drag, lasso.to_vec(), outlined, Some("Paint Unpainted")), // line 582
-        ("dropper", Shape::Click, vec![(350.0, 330.0)], painted, None),
-        // The fixture drawing's two stroke ends of the `colour.gap.close` example.
-        ("closeGap", Shape::Drag, vec![(-48.0, -50.0), (2.0, 2.0)], none, Some("Close Gap")), // line 603
-        ("select", Shape::Drag, vec![(-150.0, 150.0), (150.0, -150.0)], none, None),
+    let rows = vec![
+        // 02 line 495: the Brush adds a brush stroke through the samples.
+        G10Row {
+            tool: "brush",
+            shape: Shape::Drag,
+            pts: line.to_vec(),
+            setup: none,
+            label: Some("Brush Tool"),
+            expect: |e| {
+                (
+                    "draw.stroke.add",
+                    json!({ "kind": "brush", "points": e.iter().map(|p| sample(*p)).collect::<Vec<_>>() }),
+                )
+            },
+        },
+        // Line 504: the Pencil adds a pencil stroke.
+        G10Row {
+            tool: "pencil",
+            shape: Shape::Drag,
+            pts: line.to_vec(),
+            setup: none,
+            label: Some("Pencil Tool"),
+            expect: |e| {
+                (
+                    "draw.stroke.add",
+                    json!({ "kind": "pencil", "points": e.iter().map(|p| sample(*p)).collect::<Vec<_>>() }),
+                )
+            },
+        },
+        // Line 513: press and release corners.
+        G10Row {
+            tool: "rectangle",
+            shape: Shape::Drag,
+            pts: line.to_vec(),
+            setup: none,
+            label: Some("Rectangle Tool"),
+            expect: |e| ("draw.rectangle.add", json!({ "from": xy(e[0]), "to": xy(e[e.len() - 1]) })),
+        },
+        // Line 520.
+        G10Row {
+            tool: "ellipse",
+            shape: Shape::Drag,
+            pts: line.to_vec(),
+            setup: none,
+            label: Some("Ellipse Tool"),
+            expect: |e| ("draw.ellipse.add", json!({ "from": xy(e[0]), "to": xy(e[e.len() - 1]) })),
+        },
+        // Line 543: press to release.
+        G10Row {
+            tool: "line",
+            shape: Shape::Drag,
+            pts: line.to_vec(),
+            setup: none,
+            label: Some("Line Tool"),
+            expect: |e| ("draw.line.add", json!({ "from": xy(e[0]), "to": xy(e[e.len() - 1]) })),
+        },
+        // Line 537: each click an anchor, the double click ends it open.
+        G10Row {
+            tool: "polyline",
+            shape: Shape::Clicks,
+            pts: line.to_vec(),
+            setup: none,
+            label: Some("Polyline Tool"),
+            expect: |e| {
+                (
+                    "draw.polyline.add",
+                    json!({ "points": e.iter().map(|p| xy(*p)).collect::<Vec<_>>(), "closed": false }),
+                )
+            },
+        },
+        // Line 614: the Stroke tool adds an invisible stroke.
+        G10Row {
+            tool: "stroke",
+            shape: Shape::Drag,
+            pts: line.to_vec(),
+            setup: none,
+            label: Some("Stroke Tool"),
+            expect: |e| {
+                (
+                    "draw.stroke.add",
+                    json!({ "kind": "invisible", "points": e.iter().map(|p| sample(*p)).collect::<Vec<_>>() }),
+                )
+            },
+        },
+        // Line 639: the Eraser erases along the path.
+        G10Row {
+            tool: "eraser",
+            shape: Shape::Drag,
+            pts: line.to_vec(),
+            setup: none,
+            label: Some("Eraser Tool"),
+            expect: |e| ("draw.erase.apply", json!({ "path": e.iter().map(|p| sample(*p)).collect::<Vec<_>>() })),
+        },
+        // Line 647: the Cutter cuts the lasso polygon.
+        G10Row {
+            tool: "cutter",
+            shape: Shape::Drag,
+            pts: across.to_vec(),
+            setup: painted,
+            label: Some("Cutter Tool"),
+            expect: |e| ("draw.cut.apply", json!({ "polygon": e.iter().map(|p| xy(*p)).collect::<Vec<_>>() })),
+        },
+        // Line 654: the Scissor cuts the dragged rectangle.
+        G10Row {
+            tool: "scissor",
+            shape: Shape::Drag,
+            pts: vec![(350.0, 380.0), (420.0, 280.0)],
+            setup: painted,
+            label: Some("Scissor Tool"),
+            expect: |e| ("draw.cut.apply", json!({ "rect": rect(e[0], e[1]) })),
+        },
+        // Line 564: a click paints the zone under it.
+        G10Row {
+            tool: "paint",
+            shape: Shape::Click,
+            pts: vec![(350.0, 330.0)],
+            setup: outlined,
+            label: Some("Paint"),
+            expect: |e| ("colour.paint.apply", json!({ "points": [xy(e[0])] })),
+        },
+        // Line 573.
+        G10Row {
+            tool: "unpaint",
+            shape: Shape::Click,
+            pts: vec![(350.0, 330.0)],
+            setup: painted,
+            label: Some("Unpaint"),
+            expect: |e| ("colour.paint.remove", json!({ "points": [xy(e[0])] })),
+        },
+        // Line 582: a lasso paints the unpainted zones inside it.
+        G10Row {
+            tool: "paintUnpainted",
+            shape: Shape::Drag,
+            pts: lasso.to_vec(),
+            setup: outlined,
+            label: Some("Paint Unpainted"),
+            expect: |e| {
+                ("colour.paintUnpainted.apply", json!({ "lasso": e.iter().map(|p| xy(*p)).collect::<Vec<_>>() }))
+            },
+        },
+        // 02 §7.3.4 (line 584): the Dropper picks the colour under the click and makes it current; line 591: no undo.
+        G10Row {
+            tool: "dropper",
+            shape: Shape::Click,
+            pts: vec![(350.0, 330.0)],
+            setup: painted,
+            label: None,
+            expect: |e| ("colour.pick", json!({ "point": xy(e[0]) })),
+        },
+        // Line 603: Close Gap joins the two ends dragged between (the fixture drawing's stroke ends).
+        G10Row {
+            tool: "closeGap",
+            shape: Shape::Drag,
+            pts: vec![(-48.0, -50.0), (2.0, 2.0)],
+            setup: none,
+            label: Some("Close Gap"),
+            expect: |e| ("colour.gap.close", json!({ "from": xy(e[0]), "to": xy(e[1]) })),
+        },
+        // 02 §7.1.1 line 427: a Select drag on empty space is a marquee selection.
+        G10Row {
+            tool: "select",
+            shape: Shape::Drag,
+            pts: vec![(-150.0, 150.0), (150.0, -150.0)],
+            setup: none,
+            label: None,
+            expect: |e| ("draw.selection.set", json!({ "by": "rect", "rect": rect(e[0], e[1]) })),
+        },
     ];
-    for (tool, shape, pts, setup, label) in rows {
+    for row in rows {
+        let tool = row.tool;
         let (cam, drw) = (ready(), ready());
-        setup(&cam);
-        setup(&drw);
+        (row.setup)(&cam);
+        (row.setup)(&drw);
         let (steps_a, steps_b) = (steps(&cam), steps(&drw));
         let m = bob_to_view(&cam);
-        let view_pts: Vec<(f64, f64)> = pts.iter().map(|p| apply(&m, p.0, p.1)).collect();
+        let view_pts: Vec<(f64, f64)> = row.pts.iter().map(|p| apply(&m, p.0, p.1)).collect();
         // `select` names the scene Select in a Camera view (SI-148): the drawing Select is chosen first.
         let a = if tool == "select" {
             ok(&cam, "tool.active.set", json!({ "toolId": "select" }));
-            pointer(&cam, None, gesture(shape, &view_pts))
+            pointer(&cam, None, gesture(row.shape, &view_pts))
         } else {
-            let a = pointer(&cam, Some(tool), gesture(shape, &view_pts));
+            let a = pointer(&cam, Some(tool), gesture(row.shape, &view_pts));
             assert_eq!(
                 a["commands"][0]["commandId"], "tool.active.set",
                 "{tool}: a drawing tool id selects the drawing tool"
             );
             a
         };
-        // The headless Drawing view's default mapping (SI-069): view = (x + 960, 540 - y).
-        let dv: Vec<(f64, f64)> = pts.iter().map(|p| (p.0 + 960.0, 540.0 - p.1)).collect();
-        let env =
-            drw.pointer(Origin::User, json!({ "view": "drawingView", "tool": tool, "events": gesture(shape, &dv) }));
+        // The spec's command first (ruling D-23): the samples through the derived inverse mapping (02 line 61).
+        let inv = inverse(&derived_mapping(&cam));
+        let e: Vec<(f64, f64)> = view_pts.iter().map(|v| apply(&inv, v.0, v.1)).collect();
+        let (want_id, want) = (row.expect)(&e);
+        let got = a["commands"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|c| c["commandId"] == want_id)
+            .unwrap_or_else(|| panic!("{tool}: the spec's command {want_id}: {a}"));
+        assert!(has_fields(&got["params"], &want), "{tool}: {} against the spec's {want}", got["params"]);
+        // Then the Drawing view's path. Its default mapping (SI-069): view = (x + 960, 540 - y).
+        let dv: Vec<(f64, f64)> = row.pts.iter().map(|p| (p.0 + 960.0, 540.0 - p.1)).collect();
+        let env = drw
+            .pointer(Origin::User, json!({ "view": "drawingView", "tool": tool, "events": gesture(row.shape, &dv) }));
         assert!(env.is_ok(), "{tool}: {env:?}");
         let b = env.result.unwrap();
         let (ca, cb) = (last(&a), last(&b));
         assert_eq!(ca["commandId"], cb["commandId"], "{tool}");
         assert!(params_close(&ca["params"], &cb["params"]), "{tool}: {} vs {}", ca["params"], cb["params"]);
-        match label {
+        match row.label {
             Some(l) => {
                 assert_eq!(last_label(&cam), json!(l), "{tool}: 02 §7");
                 assert_eq!(last_label(&drw), json!(l), "{tool}");

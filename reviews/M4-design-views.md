@@ -107,7 +107,11 @@ onto the plane Z = `depth` (SI-149) and back; it is what an agent simulating the
 or a pivot. `inspect.coordinates.convert` (SI-109) answers in the render's spaces (`image`, `camera`,
 `cameraNormalized`, `scene`, a named element's `drawing`, `local`, `parent`) at a given frame; it needs no view.
 `draw.viewMapping.get` publishes the current drawing's affine view mapping for any view window (02 lines 101-104), in
-the Camera view the matrices the scene answer, the gestures and the addressing parameters use (C43A-R1-01).
+the Camera view the matrices the scene answer, the gestures and the addressing parameters use (C43A-R1-01). It answers
+for the current drawing only: its registry row (A line 277, 02 line 1314) takes `view` alone, with no `drawingId`,
+`elementId` or `frame`, unlike the drawing-addressed commands of 02 §13.1 item 4. An agent that needs another
+element's mapping makes it current (`app.context.set`) or converts points through the addressing parameters, which
+do take a target (round 2 observation).
 
 **Round 1 (C4.3a):** the addressing parameters resolve the element and frame a call addresses before converting
 (SI-146's resolution order; C43A-R1-02), and availability evaluates the same conversion for every reference of the 27

@@ -24,6 +24,10 @@ command (11 maps `pointer` to the active tool's commands, §7.8).
    62-71) calls camera output pixels "Camera output (render) space", which SI-109 names `image`. An agent holding output
    pixels converts them first (`inspect.coordinates.convert {from: "image", to: "camera"}`); SI-109 records the
    convention and asks whether `pointer`'s `camera` should mean output pixels.
+   The point-taking drawing commands take three spaces and refuse `camera` (02 §13.1 item 5 lines 1151-1155:
+   `space: drawing|scene|view`), while `pointer` takes four (11 line 354: `view|drawing|scene|camera`). That difference
+   is the spec's, not an omission: a `pointer` sample in `camera` space becomes a view pixel before any drawing command
+   sees it (round 2 observation).
 5. `dt` adds to a simulated clock; nothing reads the wall clock.
 
 ## 2. Coexistence

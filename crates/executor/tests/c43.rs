@@ -5,6 +5,8 @@
 
 mod common;
 
+#[path = "c43/budgets.rs"]
+mod budgets;
 #[path = "c43/camera.rs"]
 mod camera;
 #[path = "c43/labels.rs"]
@@ -17,5 +19,3 @@ mod renders;
 mod scene_tools;
 #[path = "c43/spec_values.rs"]
 mod spec_values;
-#[path = "c43/budgets.rs"]
-mod budgets;
