@@ -162,10 +162,11 @@ export function CanvasView({
         )
         .catch(() => undefined);
     };
+    // The modal state is reported in order: an end is never overtaken by the start before it (C42B-R2-03).
+    let reports: Promise<unknown> = Promise.resolve();
     const reportGesture = (on: boolean) => {
-      void engine
-        .report({ modal: on ? { kind: 'gesture', title: style.tool } : null })
-        .catch(() => undefined);
+      const modal = on ? { kind: 'gesture' as const, title: style.tool } : null;
+      reports = reports.then(() => engine.report({ modal })).catch(() => undefined);
     };
     const cancelGesture = () => {
       if (collector.cancel()) {
@@ -589,6 +590,19 @@ export function CanvasView({
         e.preventDefault();
         cancelGesture();
       }
+      // Enter ends an open Polyline (02 §7.2.5).
+      if (e.key === 'Enter' && collector.active && !collector.pressed) {
+        const req = collector.end();
+        if (req) {
+          e.preventDefault();
+          reportGesture(false);
+          commit(req);
+        }
+      }
+    };
+    // The window losing focus between a Polyline's clicks discards it (no capture is held between clicks).
+    const onBlur = () => {
+      if (collector.active && !collector.pressed) cancelGesture();
     };
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
@@ -602,6 +616,7 @@ export function CanvasView({
     canvas.addEventListener('wheel', onWheel, { passive: false });
     canvas.addEventListener('dblclick', onDouble);
     window.addEventListener('keydown', onKey, true);
+    window.addEventListener('blur', onBlur);
     const onGeneration = (e: Event) => {
       const g = (e as CustomEvent<unknown>).detail;
       if (typeof g === 'number') adoptGeneration(g);
@@ -645,6 +660,7 @@ export function CanvasView({
       canvas.removeEventListener('wheel', onWheel);
       canvas.removeEventListener('dblclick', onDouble);
       window.removeEventListener('keydown', onKey, true);
+      window.removeEventListener('blur', onBlur);
       window.removeEventListener(GENERATION_EVENT, onGeneration);
       cancelAnimationFrame(raf);
       ro?.disconnect();

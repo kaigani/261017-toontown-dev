@@ -74,6 +74,11 @@ const clampTilt = (t: number) => Math.max(-90, Math.min(90, Number.isFinite(t) ?
 
 /** A Polyline click this close to its first click (view pixels) closes it: the kernel's default snap radius (02 §7.3.5). */
 export const POLYLINE_CLOSE_PX = 8;
+/** A press this soon (ms) and this near (px) after the double click that ended a multi-click gesture continues that
+ *  double click (a triple click) rather than starting the next gesture. A pointer press carries no click count
+ *  (`detail` is 0 on pointer events), so the collector counts for itself. */
+export const DOUBLE_CLICK_MS = 500;
+export const DOUBLE_CLICK_PX = 8;
 
 /**
  * Collects one gesture at a time. In multi-click mode (`multi`: the Polyline, 02 §7.3.5; SI-131 item 10) the clicks
@@ -86,6 +91,8 @@ export class GestureCollector {
   /** Multi-click mode: the Polyline's clicks are one gesture. */
   multi = false;
   private clicks = 0;
+  /** Where and when the double click that last ended a multi-click gesture was (or its latest continuing press). */
+  private ended: { t: number; x: number; y: number } | null = null;
   private kind: PointerKind = 'mouse';
   private last = 0;
   private button: 'left' | 'right' | 'middle' = 'left';
@@ -117,6 +124,16 @@ export class GestureCollector {
    *  or for a button no tool uses). */
   down(s: DomSample): boolean {
     if (this.pressed || (this.active && !this.multi)) return false;
+    // A press continuing a double click never starts a multi-click gesture: the double click that just ended a
+    // Polyline does not open the next one (C42B-R2-03).
+    if (this.multi && !this.active && this.ended) {
+      const e = this.ended;
+      if (s.timeStamp - e.t <= DOUBLE_CLICK_MS && Math.hypot(s.x - e.x, s.y - e.y) <= DOUBLE_CLICK_PX) {
+        e.t = s.timeStamp;
+        return false;
+      }
+      this.ended = null;
+    }
     const b = BUTTONS[s.button];
     if (!b) return false;
     if (!this.active) {
@@ -160,10 +177,17 @@ export class GestureCollector {
     return this.finish();
   }
 
+  /** Enter (02 §7.2.5): ends a pending multi-click gesture as it stands and commits it. */
+  end(): GestureRequest | null {
+    if (!this.multi || this.pressed || !this.active) return null;
+    return this.finish();
+  }
+
   /** A double click: ends a pending multi-click gesture with a `doubleClick` event and commits it. */
   doubleClick(s: DomSample): GestureRequest | null {
     if (!this.multi || this.pressed || !this.active) return null;
     this.events.push({ type: 'doubleClick', x: s.x, y: s.y, modifiers: modifiers(s), dt: 0 });
+    this.ended = { t: s.timeStamp, x: s.x, y: s.y };
     return this.finish();
   }
 

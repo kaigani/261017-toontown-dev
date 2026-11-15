@@ -247,6 +247,32 @@ describe('the Polyline: its clicks are one gesture (02 §7.3.5; SI-131 item 10)'
     expect(req?.events.map((e) => e.type)).toEqual(['down', 'up', 'down', 'move', 'up', 'down', 'up']);
   });
 
+  it('Enter ends it as it stands (02 §7.2.5); a press continuing the double click that ended it opens nothing', () => {
+    const c = new GestureCollector('drawingView');
+    c.multi = true;
+    click(c, 10, 10, 0);
+    click(c, 60, 40, 100);
+    expect(c.end()?.events.map((e) => e.type)).toEqual(['down', 'up', 'down', 'up']);
+    expect(c.active).toBe(false);
+    expect(c.end()).toBeNull(); // nothing open
+    // A double click ends a Polyline; the press continuing it (a triple click: soon after and on the same spot; a
+    // pointer press carries no click count) does not open the next one, nor does a fourth.
+    click(c, 10, 10, 200);
+    click(c, 60, 40, 300);
+    expect(c.doubleClick(s(60, 40, 310))).not.toBeNull();
+    expect(c.down(s(61, 41, 380))).toBe(false);
+    expect(c.up(s(61, 41, 400))).toBeNull();
+    expect(c.down(s(60, 40, 850))).toBe(false); // within 500 ms of the previous continuing press
+    expect(c.active).toBe(false);
+    // A press elsewhere, or later, opens the next Polyline.
+    expect(c.down(s(90, 90, 900))).toBe(true);
+    c.cancel();
+    click(c, 10, 10, 1000);
+    click(c, 60, 40, 1100);
+    expect(c.doubleClick(s(60, 40, 1110))).not.toBeNull();
+    expect(c.down(s(60, 40, 1700))).toBe(true);
+  });
+
   it('a cancel between clicks discards it; outside multi-click mode a release commits at once', () => {
     const c = new GestureCollector('drawingView');
     c.multi = true;
