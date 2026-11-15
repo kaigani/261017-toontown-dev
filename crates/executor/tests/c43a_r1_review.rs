@@ -137,3 +137,112 @@ mod mapping {
         }
     }
 }
+
+mod scene_tools {
+    use super::*;
+    use tt_executor::Origin;
+    fn ready() -> (ExecutorHandle, String) {
+        let h = fixture();
+        c33_support::clear(&h);
+        let (colour, _) = c33_support::solids(&h, 1)[0].clone();
+        let id = c33_support::square(&h, "Gesture", 50., &colour);
+        ok(&h, "app.context.set", json!({"elementId":id,"frame":1}));
+        ok(&h, "edit.selection.set", json!({"context":"staging","ids":[id]}));
+        (h, id)
+    }
+    fn content(h: &ExecutorHandle) -> Vec<String> {
+        let d = h.snapshot().unwrap().unwrap();
+        d.entry_keys()
+            .iter()
+            .map(|k| tt_model::canonical::to_canonical_string(&d.entry_raw_json(k).unwrap()).unwrap())
+            .collect()
+    }
+    fn pointer(h: &ExecutorHandle, tool: &str, a: (f64, f64), b: (f64, f64), mods: &[&str]) -> Value {
+        let e=h.pointer(Origin::User,json!({"view":"cameraView","tool":tool,"events":[{"type":"down","x":a.0,"y":a.1,"modifiers":mods},{"type":"up","x":b.0,"y":b.1,"modifiers":mods}]}));
+        assert!(e.is_ok(), "{e:?}");
+        e.result.unwrap()
+    }
+    #[test]
+    fn select_and_transform_drag_have_spec_parameters_content_and_history() {
+        // 05:347-350: X/Y delta at node depth; 397-398: static Select,
+        // keyed Transform, only changed position channels; 399: one step.
+        // 05:1135 operation + kind; SI-144 fixes wording to Move Element.
+        for tool in ["select", "transform"] {
+            let (a, id) = ready();
+            let d = a.snapshot().unwrap().unwrap();
+            let a = ExecutorHandle::spawn(Default::default()).unwrap();
+            let b = ExecutorHandle::spawn(Default::default()).unwrap();
+            assert!(a.open_document(d.clone(), None, false).is_ok());
+            assert!(b.open_document(d, None, false).is_ok());
+            for h in [&a, &b] {
+                ok(h, "app.context.set", json!({"elementId":id,"frame":1}));
+                ok(h, "edit.selection.set", json!({"context":"staging","ids":[id]}));
+            }
+            let before = ok(&a, "edit.history.get", json!({}))["position"].as_u64().unwrap();
+            // Default camera focal=1920/(2*0.375), depth=16: 160px/field.
+            // Off-centre press avoids the Transform pivot handle.
+            let out = pointer(&a, tool, (490., 280.), (510., 260.), &[]);
+            let cmd = out["commands"].as_array().unwrap().last().unwrap();
+            let mut expected = json!({"nodeIds":[id],"target":if tool=="select" {"static"} else {"key"},"position":{"x":0.125,"y":0.125},"relative":true});
+            if tool == "transform" {
+                expected["frame"] = json!(1);
+            }
+            assert_eq!(cmd["commandId"], "anim.transform.set");
+            // Numerical agreement is checked separately from structural parameters.
+            // This probe does not establish D-4's value-for-value parameter gate.
+            for axis in ["x", "y"] {
+                assert!((cmd["params"]["position"][axis].as_f64().unwrap() - 0.125).abs() < 1e-12);
+            }
+            let mut actual = cmd["params"].clone();
+            actual["position"] = expected["position"].clone();
+            assert_eq!(actual, expected);
+            // Replay checks command causality after the independent numeric
+            // oracle above. Exact independently-derived parameters remain unverified.
+            ok(&b, "anim.transform.set", cmd["params"].clone());
+            assert!(content(&a) == content(&b), "canonical content differs");
+            let mut hist = ok(&a, "edit.history.get", json!({}));
+            let pos = hist["position"].as_u64().unwrap();
+            assert_eq!(pos, before + 1);
+            assert_eq!(hist["entries"][pos as usize - 1]["label"], "Move Element");
+            let mut direct = ok(&b, "edit.history.get", json!({}));
+            for history in [&mut hist, &mut direct] {
+                for e in history["entries"].as_array_mut().unwrap() {
+                    e.as_object_mut().unwrap().remove("time");
+                }
+            }
+            assert_eq!(hist, direct);
+        }
+    }
+    #[test]
+    fn click_short_drag_and_empty_click_are_nonundoable_selection() {
+        // 05:351: more than 3px starts drag. 05:395, §17: selection,
+        // not a document mutation or an undo step.
+        let (h, id) = ready();
+        let before = ok(&h, "edit.history.get", json!({}));
+        let saved = content(&h);
+        for (a, b, ids) in [((490., 280.), (492., 280.), json!([id])), ((1., 1.), (1., 1.), json!([]))] {
+            let out = pointer(&h, "select", a, b, &[]);
+            let c = out["commands"].as_array().unwrap().last().unwrap();
+            assert_eq!(c["commandId"], "edit.selection.set");
+            assert_eq!(c["params"], json!({"context":"staging","ids":ids,"mode":"replace"}));
+            assert_eq!(content(&h), saved);
+            assert_eq!(ok(&h, "edit.history.get", json!({})), before);
+        }
+    }
+    #[test]
+    fn tool_families_are_independent_and_nonundoable() {
+        // spec/05_scene_planning.md:29-31,1217-1218: independent tool,
+        // result {tool}, no undo. Non-C4.3 tools retain an M6 refusal.
+        let (h, _) = ready();
+        let hist = ok(&h, "edit.history.get", json!({}));
+        let draw = ok(&h, "tool.active.get", json!({}));
+        for tool in ["select", "transform"] {
+            assert_eq!(ok(&h, "anim.tool.set", json!({"tool":tool})), json!({"tool":tool}));
+            assert_eq!(ok(&h, "anim.tool.get", json!({})), json!({"tool":tool}));
+            assert_eq!(ok(&h, "tool.active.get", json!({})), draw);
+        }
+        ok(&h, "tool.active.set", json!({"toolId":"brush"}));
+        assert_eq!(ok(&h, "anim.tool.get", json!({})), json!({"tool":"transform"}));
+        assert_eq!(ok(&h, "edit.history.get", json!({})), hist);
+    }
+}

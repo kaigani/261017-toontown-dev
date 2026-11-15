@@ -1,0 +1,12 @@
+{
+  "candidate": "3fb27030",
+  "product_code_modified": false,
+  "review_binary": "c43a_r1_review",
+  "passed": 5,
+  "failed": [
+    "mapping::camera_drawing_mapping_is_queryable",
+    "mapping::explicit_element_scene_point_uses_addressed_element"
+  ],
+  "review_complete": false,
+  "disk_free_before_build": "250 GB"
+}
