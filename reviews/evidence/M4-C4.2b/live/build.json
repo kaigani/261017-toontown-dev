@@ -1,0 +1,9 @@
+{
+ "kind": "toontown.c42b.workstation-receipts",
+ "productCommit": "be8ee437",
+ "note": "the build every receipt here was measured on; later commits change undo labels and documents only (no canvas, host or gesture timing code)",
+ "profile": "release (tauri build --no-bundle; tt-headless --release)",
+ "machine": "Windows 11 workstation, discrete desktop GPU, WebView2 (machine class only)",
+ "input": "real OS input (Windows SendInput through the probes) for the measure modes; the agent's pointer played by the window for d1-long",
+ "fixture": "the measure script's fixed-size drawings: the small drawing and the 50,000-point large drawing; long stroke 9,998 events"
+}

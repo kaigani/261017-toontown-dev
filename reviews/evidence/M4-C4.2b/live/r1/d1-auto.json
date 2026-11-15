@@ -1,0 +1,87 @@
+{
+  "prefs": {
+    "status": "ok",
+    "result": {
+      "values": {
+        "display.canvasBackendMeasured": {
+          "fingerprint": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36 Edg/157.0.0.0 | ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11) | nvidia/lovelace//",
+          "selected": "webgl2",
+          "cells": "{\"webgpu\":{\"paths100k\":{\"status\":\"met\",\"fps\":277.0290506172531},\"groups1k\":{\"status\":\"met\",\"fps\":162.45577316087937},\"brush10k\":{\"status\":\"met\",\"fps\":270.9458108410617}},\"webgl2\":{\"paths100k\":{\"status\":\"met\",\"fps\":230.94226443389152},\"groups1k\":{\"status\":\"met\",\"fps\":203.76566947888475},\"brush10k\":{\"status\":\"met\",\"fps\":230.75770440762116}}}"
+        }
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": 4
+  },
+  "canvas": {
+    "backend": "webgl2",
+    "generation": 0,
+    "drawings": [
+      {
+        "id": "dr_01K7JJN800KB9S7WEM9RPZ51PS",
+        "rev": 4,
+        "bucket": 0
+      }
+    ],
+    "failures": [],
+    "gesture": null,
+    "selection": {
+      "objects": 0,
+      "handles": 0,
+      "points": 0,
+      "pivot": true
+    },
+    "drawn": 1,
+    "residentDrawings": 1,
+    "residentBytes": 34878076,
+    "lastError": null,
+    "metrics": {
+      "frameMs": {
+        "n": 300,
+        "p50": 16.7,
+        "p95": 16.9,
+        "max": 17
+      },
+      "gestureFrameMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "workMs": {
+        "n": 300,
+        "p50": 0.2,
+        "p95": 0.3,
+        "max": 0.6
+      },
+      "inkMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "commitMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "sceneMs": {
+        "n": 300,
+        "p50": 2.1,
+        "p95": 4.3,
+        "max": 25.6
+      },
+      "commits": [],
+      "commitParts": [],
+      "loads": [
+        {
+          "key": "dr_01K7JJN800KB9S7WEM9RPZ51PS",
+          "bytes": 9508,
+          "ms": 6.1
+        }
+      ]
+    }
+  }
+}

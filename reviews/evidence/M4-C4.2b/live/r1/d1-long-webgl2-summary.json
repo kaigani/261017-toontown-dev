@@ -1,0 +1,55 @@
+{
+ "kind": "toontown.c42b.d1-long-summary",
+ "runner": "c42b-r1-live.py (5 samples)",
+ "mode": "d1-long-webgl2",
+ "exitCode": 0,
+ "assertion": "every commit (release-to-committed) <= 150 ms (the reviewer's probe, unchanged)",
+ "commitsMs": [
+  132.8,
+  140.5,
+  138.5,
+  131.2,
+  130.8
+ ],
+ "commitParts": [
+  {
+   "answerMs": 94.5,
+   "drawMs": 38.3
+  },
+  {
+   "answerMs": 95.1,
+   "drawMs": 45.4
+  },
+  {
+   "answerMs": 95.2,
+   "drawMs": 43.3
+  },
+  {
+   "answerMs": 97.1,
+   "drawMs": 34.1
+  },
+  {
+   "answerMs": 91.6,
+   "drawMs": 39.2
+  }
+ ],
+ "commitStats": {
+  "n": 5,
+  "p50": 132.8,
+  "p95": 140.5,
+  "max": 140.5
+ },
+ "frameMs": {
+  "n": 300,
+  "p50": 16.7,
+  "p95": 16.9,
+  "max": 50.1
+ },
+ "backend": "webgl2",
+ "rawFile": {
+  "name": "d1-long-webgl2.json",
+  "bytes": 7539680,
+  "sha256": "c7619c5e0e1f3f9c71a9f95cce7661b2cd2bf7995a542942e259f9f34c0d2625",
+  "note": "the probe's raw output (every sample of every gesture) is not committed for its size"
+ }
+}
