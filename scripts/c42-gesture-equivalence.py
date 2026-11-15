@@ -27,6 +27,7 @@ import asyncio
 import contextlib
 import importlib.util
 import json
+import os
 import shutil
 import sys
 import tempfile
@@ -71,9 +72,14 @@ def inverse(m: list) -> list:
 
 
 def normalised(cmds: list, view_to_drawing: list) -> list:
-    """Commands with new-object ids aside, and view-pixel anchors as the drawing point under them."""
+    """Commands with new-object ids aside, without the tool's activation, and view-pixel anchors as the drawing point
+    under them."""
     out = []
     for cmd in cmds:
+        # The tool's activation is not the gesture's command: an agent's `pointer` call carries it, the user chose
+        # the tool beforehand.
+        if cmd.get("commandId") == "tool.active.set":
+            continue
         params = c42.strip_ids(json.loads(json.dumps(cmd.get("params"))))
         if cmd.get("commandId") == "view.zoom.set" and isinstance(params, dict) and isinstance(params.get("anchor"), dict):
             x, y = c42.apply(view_to_drawing, params["anchor"]["x"], params["anchor"]["y"])
@@ -243,7 +249,11 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
         ("select: drawing pivot", "select", [(pivot["x"], pivot["y"]), (pivot["x"] + 30, pivot["y"] + 20)], [], False),
     ]
     results = []
+    # `C42_EQUIV_ROWS=brush,pencil` runs only those rows (a debugging aid; CI runs every row).
+    only = {x for x in os.environ.get("C42_EQUIV_ROWS", "").split(",") if x}
     for name, tool, pts, mods, selected in rows:
+        if only and name not in only:
+            continue
         # The same starting state on every engine.
         for engine in engines:
             await engine.run("draw.selection.set", sel_rect if selected else {"by": "none"})
@@ -263,8 +273,9 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
         if os_input and offset is not None and not mods:
             client = lambda q: (offset[0] + q[0] * ratio, offset[1] + q[1] * ratio)  # noqa: E731
             if pts == "polyline":
+                # One click, then a real double click at the second anchor (its two clicks and the double click end
+                # the gesture; a further click would start the next Polyline and hold the user's gesture open).
                 c42.os_drag(e2e.APP_PID["pid"], [client(vpts[0]), client(vpts[0])])
-                c42.os_drag(e2e.APP_PID["pid"], [client(vpts[1]), client(vpts[1])])
                 os_double_click(e2e.APP_PID["pid"], client(vpts[1]))
             else:
                 c42.os_drag(e2e.APP_PID["pid"], [client(q) for q in vpts])
@@ -291,6 +302,7 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
         if rec is None or not rec.get("events"):
             run.check(False, f"three-way {name}: the window committed and recorded the gesture", row)
             results.append(row)
+            run.save("rows.json", results)
             continue
         # 2. Engine 2: the recorded samples, as drawing points through the window's own mapping.
         to_d = inverse(rec["drawingToView"])
@@ -326,6 +338,8 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
                   "directly give the same commands, content and undo step",
                   {k: row[k] for k in ("sameCommands", "sameContent", "sameLabels", "statuses", "labels")})
         results.append(row)
+        run.save("rows.json", results)
+        run.save("transcript.json", run.transcript)
         # Back to the fixture on every engine.
         for engine, lab in zip(engines, labels):
             for _ in lab:

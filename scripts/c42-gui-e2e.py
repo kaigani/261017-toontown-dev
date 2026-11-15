@@ -195,6 +195,8 @@ async def compare_render(session, run, out: Path, name: str, label: str) -> dict
     """Item 1: the view's real capture against the `activeView` final render, a few attempts while the canvas catches
     up (a bucket reload after a zoom, the overlay clearing after a gesture); the best attempt is the receipt."""
     best: dict = {}
+    # The final render of the Drawing view: it is the active view (after a float, the Camera view may be central).
+    await e2e.run_cmd(session, "view.active.set", {"viewId": "drawingView"})
     for k in range(4):
         await asyncio.sleep(0.75 if k == 0 else 1.5)
         shot = await e2e.run_cmd(session, "inspect.screenshot", {"target": "drawingView"})
@@ -428,6 +430,9 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                 run.check(gone == 0 and (st.get("selection") or {}).get("handles") == 0,
                           "deselecting removes the handles (summary and capture)", {"found": gone, "summary": st.get("selection")})
                 await rc(session, "tool.active.set", {"toolId": "brush"})
+                # The canvas reads its tool asynchronously: the next captures wait until it no longer draws the Select
+                # tool's pivot (the window and view captures must show the same canvas).
+                await wait_canvas(session, lambda s_: not (s_.get("selection") or {}).get("pivot"))
 
                 # 3. Screenshots of what the user sees.
                 shots = {}
