@@ -12,7 +12,7 @@ fn rotation_patch_matches_owner_and_future_owner_is_named() {
     ok(
         &a,
         "doc.object.patch",
-        json!({"label":"Transform","targets":[node],"ops":[{"op":"replace","path":"/transform/rotation","value":17}]}),
+        json!({"label":"Rotate Element","targets":[node],"ops":[{"op":"replace","path":"/transform/rotation","value":17}]}),
     );
     ok(&b, "anim.transform.set", json!({"nodeIds":[node],"target":"static","rotation":17}));
     assert_eq!(get(&a, node), get(&b, node));
