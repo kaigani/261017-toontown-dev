@@ -454,16 +454,27 @@ async def first_session(url: str, token: str, run: Run) -> None:
                 info = getattr(init, "serverInfo", None) or getattr(init, "server_info", None)
                 run.check(info is not None, "initialize over Streamable HTTP", info.model_dump() if info else None)
 
-                # The front end reports its UI tree: panels, start screen, status bar, main toolbar.
-                root = await gui_tree(session, run, lambda r: by_id(r, "startScreen") is not None, "the GUI shows the start screen")
+                # The front end reports its UI tree: panels, start screen, status bar, main toolbar. The tree is the one
+                # that shows the start screen and every visible panel: the dock's panels mount after the start screen
+                # (the Drawing and Camera view canvases start their back ends), so the first tree may precede them.
+                panels = (await run_cmd(session, "window.panel.list")).get("result") or []
+                shown = [p["panelId"] for p in panels if p.get("visible")]
+
+                def missing_in(r: dict) -> list:
+                    return [p for p in shown if by_id(r, p) is None and by_id(r, f"tab.{p}") is None]
+
+                root = await gui_tree(
+                    session,
+                    run,
+                    lambda r: by_id(r, "startScreen") is not None and not missing_in(r),
+                    "the GUI shows the start screen and its visible panels",
+                )
                 run.save("tree-01-start.json", root)
                 run.shot("01-start-screen", APP_PID["pid"])
                 run.check(by_id(root, "startScreen") is not None, "start screen in the rendered tree")
                 run.check(by_id(root, "statusBar") is not None, "status bar in the rendered tree")
                 run.check(by_id(root, "mainToolbar") is not None, "main toolbar in the rendered tree")
-                panels = (await run_cmd(session, "window.panel.list")).get("result") or []
-                shown = [p["panelId"] for p in panels if p.get("visible")]
-                missing = [p for p in shown if by_id(root, p) is None and by_id(root, f"tab.{p}") is None]
+                missing = missing_in(root)
                 run.check(not missing, "every visible panel is rendered", {"visible": shown, "missing": missing})
 
                 # Agent commands change the GUI: the History panel appears, the status bar hides and returns.
