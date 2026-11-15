@@ -21,6 +21,16 @@ describe('canvas metrics', () => {
     expect(s.workMs.p50).toBe(2);
   });
 
+  it('frames during a gesture are kept apart', () => {
+    const m = new CanvasMetrics();
+    m.frame(0, 1);
+    m.frame(16, 1);
+    m.frame(40, 1, true);
+    m.frame(56, 1, true);
+    expect(m.frames).toEqual([16]);
+    expect(m.gestureFrames).toEqual([24, 16]);
+  });
+
   it('input-to-ink runs from the oldest undrawn sample to the frame that draws it', () => {
     const m = new CanvasMetrics();
     m.sample(100);

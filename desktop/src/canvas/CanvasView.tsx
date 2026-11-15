@@ -263,7 +263,7 @@ export function CanvasView({
       });
       if (metrics) {
         const now = performance.now();
-        metrics.frame(began, now - began);
+        metrics.frame(began, now - began, collector.active || playing !== null);
         if (overlay) metrics.inkDrawn(now);
         metrics.drawn(model.version, now);
       }
@@ -354,6 +354,7 @@ export function CanvasView({
       const done = playing;
       playing = null;
       reportGesture(false);
+      metrics?.released(performance.now(), model?.version ?? 0);
       const before = model?.version ?? 0;
       void engine
         .gestureCommit({

@@ -1010,6 +1010,17 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/c42-gui-e2e.py "$app" "desktop-gui/c42-e2e"
+      # M4 C4.2b (ruling D-5): the canvas's GPU and webview quantities, recorded on the runners with loose sanity bounds
+      # (no GPU); the plan's numbers are asserted on the workstation with committed receipts.
+      - name: Canvas measurements (C4.2b; loose bounds on CI)
+        if: always()
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; VPY=.venv-gui/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/c42-canvas-measure.py "$app" "desktop-gui/c42-measure" --bounds ci
       - name: MCP conformance over Streamable HTTP against the running application
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then

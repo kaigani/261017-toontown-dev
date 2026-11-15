@@ -29,6 +29,8 @@ export function stat(values: readonly number[]): Stat {
 
 export class CanvasMetrics {
   readonly frames: number[] = [];
+  /** Frame intervals while a gesture is in progress (the plan's "during a gesture"). */
+  readonly gestureFrames: number[] = [];
   readonly work: number[] = [];
   readonly ink: number[] = [];
   readonly commit: number[] = [];
@@ -37,9 +39,9 @@ export class CanvasMetrics {
   private pendingInk: number | null = null;
   private release: { t: number; version: number } | null = null;
 
-  /** A frame began at `now` and its work took `workMs`. */
-  frame(now: number, workMs: number): void {
-    if (this.last !== null) ring(this.frames, now - this.last, 300);
+  /** A frame began at `now` and its work took `workMs`; `inGesture` while a gesture is in progress. */
+  frame(now: number, workMs: number, inGesture = false): void {
+    if (this.last !== null) ring(inGesture ? this.gestureFrames : this.frames, now - this.last, 300);
     this.last = now;
     ring(this.work, workMs, 300);
   }
@@ -74,9 +76,17 @@ export class CanvasMetrics {
     ring(this.loads, { key, bytes, ms: Math.round(ms * 100) / 100 }, 20);
   }
 
-  snapshot(): { frameMs: Stat; workMs: Stat; inkMs: Stat; commitMs: Stat; loads: CanvasMetrics['loads'] } {
+  snapshot(): {
+    frameMs: Stat;
+    gestureFrameMs: Stat;
+    workMs: Stat;
+    inkMs: Stat;
+    commitMs: Stat;
+    loads: CanvasMetrics['loads'];
+  } {
     return {
       frameMs: stat(this.frames),
+      gestureFrameMs: stat(this.gestureFrames),
       workMs: stat(this.work),
       inkMs: stat(this.ink),
       commitMs: stat(this.commit),
