@@ -520,25 +520,86 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                                 await asyncio.sleep(0.1)
                             return st_.get("modal")
 
-                        for ending in ("double click", "Enter"):
+                        # Every way a Polyline ends, through the OS: the ones that commit (a double click, Enter, a
+                        # click back on the first anchor) leave one Polyline Tool step; the ones that discard (Escape,
+                        # the user choosing another tool, the window losing focus, the view going away) leave none.
+                        # Each ends the modal state, and an agent write runs again. Every click's release also loses
+                        # the pointer capture, so every row checks that a lost capture between clicks ends nothing.
+                        # The user's tool change and the view going away are keys the user bound (the window has no
+                        # tool buttons yet): F8 chooses the Brush, F9 closes the Drawing view's panel. The central view
+                        # cannot be closed, so for that row the Camera view is central and the Drawing view docked at the
+                        # right, and its canvas is found again in the window capture.
+                        bound = await rc(session, "keymap.set", {"commandId": "tool.active.set", "params": {"toolId": "brush"},
+                                                                 "keys": "F8", "onConflict": "override"})
+                        bound2 = await rc(session, "keymap.set", {"commandId": "window.panel.set",
+                                                                  "params": {"panelId": "drawingView", "visible": False},
+                                                                  "keys": "F9", "onConflict": "override"})
+                        run.check(bound.get("status") == "ok" and bound2.get("status") == "ok",
+                                  "the user binds F8 to the Brush tool and F9 to closing the Drawing view",
+                                  [bound.get("error"), bound2.get("error")])
+                        endings = [("double click", ["Polyline Tool"]), ("Enter", ["Polyline Tool"]),
+                                   ("closing click", ["Polyline Tool"]), ("Escape", []), ("tool change", []),
+                                   ("focus loss", []), ("view going away", [])]
+                        for ending, want in endings:
+                            pa, pb = (x0 + 100, y0 + 260), (x0 + 200, y0 + 240)
+                            if ending == "view going away":
+                                await rc(session, "window.panel.move", {"panelId": "cameraView", "area": "central"})
+                                await rc(session, "window.panel.move", {"panelId": "drawingView", "area": "right"})
+                                await e2e.gui_tree(session, run, lambda r: e2e.by_id(r, "drawingView.canvas") is not None,
+                                                   "the Drawing view is docked at the right")
+                                await wait_canvas(session, lambda s_: bool(s_.get("drawings")))
+                                await asyncio.sleep(0.5)
+                                place = await locate_canvas(session, rc)
+                                run.check(place is not None, "the right-docked canvas is found in the window capture", place)
+                                if place is None:
+                                    continue
+                                cx_, cy_, cw_, ch_ = place
+                                pa, pb = (cx_ + cw_ * 3 // 10, cy_ + ch_ // 2), (cx_ + cw_ * 6 // 10, cy_ + ch_ * 45 // 100)
                             await rc(session, "tool.active.set", {"toolId": "polyline"})
                             await asyncio.sleep(0.5)
                             pos0 = ((await rc(session, "edit.history.get", {"limit": 1000})).get("result") or {}).get("position", 0)
-                            os_drag(e2e.APP_PID["pid"], [(x0 + 100, y0 + 260), (x0 + 100, y0 + 260)])
-                            os_drag(e2e.APP_PID["pid"], [(x0 + 200, y0 + 240), (x0 + 200, y0 + 240)])
+                            os_drag(e2e.APP_PID["pid"], [pa, pa])
+                            os_drag(e2e.APP_PID["pid"], [pb, pb])
+                            await asyncio.sleep(0.6)  # past the double-click interval: the next press is a new click
+                            opened = ((await rc(session, "app.state.get", {})).get("result") or {}).get("modal")
                             if ending == "Enter":
                                 os_key(0x0D)
-                            else:
+                            elif ending == "double click":
                                 os_double_click(e2e.APP_PID["pid"], (x0 + 260, y0 + 260))
+                            elif ending == "closing click":
+                                os_drag(e2e.APP_PID["pid"], [(x0 + 220, y0 + 300), (x0 + 220, y0 + 300)])
+                                await asyncio.sleep(0.6)
+                                os_drag(e2e.APP_PID["pid"], [(x0 + 102, y0 + 261), (x0 + 102, y0 + 261)])
+                            elif ending == "Escape":
+                                os_key(0x1B)
+                            elif ending == "tool change":
+                                os_key(0x77)
+                            elif ending == "focus loss":
+                                os_minimise_restore(e2e.APP_PID["pid"])
+                            else:
+                                os_key(0x78)
                             modal = await modal_after()
                             hist = (await rc(session, "edit.history.get", {"limit": 1000})).get("result") or {}
                             labels = [e.get("label") for e in (hist.get("entries") or [])[pos0:hist.get("position", 0)]]
+                            root_ = (await e2e.tree(session)).get("result", {}).get("root") or {}
+                            canvas_shown = e2e.by_id(root_, "drawingView.canvas") is not None
                             write = await rc(session, "tool.active.set", {"toolId": "brush"})
-                            run.check(modal is None and labels == ["Polyline Tool"] and write.get("status") == "ok",
-                                      f"a Polyline ended by {ending} commits one Polyline Tool step and ends the gesture's modal state",
-                                      {"modal": modal, "labels": labels, "write": write.get("error")})
+                            run.check(opened is not None and modal is None and labels == want and write.get("status") == "ok",
+                                      f"a Polyline ended by {ending} leaves {len(want)} Polyline Tool step(s) and ends the gesture's modal state",
+                                      {"openedModal": opened, "modal": modal, "labels": labels, "canvasShown": canvas_shown,
+                                       "write": write.get("error")})
                             if modal is not None:
                                 e2e.os_escape(e2e.APP_PID["pid"])
+                            if ending == "view going away":
+                                run.check(not canvas_shown, "F9 closed the Drawing view (its canvas is gone)", canvas_shown)
+                                await rc(session, "window.panel.set", {"panelId": "drawingView", "visible": True, "floating": False})
+                                await rc(session, "window.panel.move", {"panelId": "drawingView", "area": "central"})
+                                await e2e.gui_tree(session, run, lambda r: e2e.by_id(r, "drawingView.canvas") is not None,
+                                                   "the Drawing view is shown again")
+                                await rc(session, "view.active.set", {"viewId": "drawingView"})
+                                await wait_canvas(session, lambda s_: bool(s_.get("drawings")))
+                        await rc(session, "keymap.remove", {"commandId": "tool.active.set", "keys": "F8"})
+                        await rc(session, "keymap.remove", {"commandId": "window.panel.set", "keys": "F9"})
 
                 # 5. The float lifecycle (C42B-R1-05; 11 §7.5, §15.2): the Drawing view in a float window draws what the
                 # final renderer draws; after the float closes and the view is docked again, the screenshot and pointer
@@ -573,6 +634,55 @@ def os_key(vk: int) -> None:
     u.keybd_event(vk, 0, 0, 0)
     time.sleep(0.03)
     u.keybd_event(vk, 0, 2, 0)
+
+
+async def locate_canvas(session, rc):
+    """Where the Drawing view's canvas is in the window's client area: the view capture found in the window capture
+    (both are the webview's device pixels). (x, y, width, height), or None."""
+    shots = {}
+    for tgt in ("window", "drawingView"):
+        r = (await rc(session, "inspect.screenshot", {"target": tgt})).get("result") or {}
+        if not r.get("png"):
+            return None
+        shots[tgt] = png_rgba(base64.b64decode(r["png"]))
+    W, H, cw, wrows = shots["window"]
+    w, h, cv, vrows = shots["drawingView"]
+    if w > W or h > H:
+        return None
+    first = [vrows[0][i:i + 3] for i in range(0, w * cv, cv)]
+    for y in range(0, H - h + 1):
+        row = wrows[y]
+        for x in range(0, W - w + 1):
+            if all(row[(x + i) * cw:(x + i) * cw + 3] == first[i] for i in range(0, w, max(1, w // 16))):
+                if all(wrows[y + yy][x * cw:(x + w) * cw][::cw] == vrows[yy][::cv] for yy in range(0, h, max(1, h // 32))):
+                    return (x, y, w, h)
+    return None
+
+
+def os_minimise_restore(pid) -> None:
+    """The application's main window minimised and restored through the operating system: it loses the focus and
+    gets it back (Windows)."""
+    import ctypes
+    from ctypes import wintypes
+    u = ctypes.windll.user32
+    hwnds = []
+
+    def cb(h, _):
+        q = wintypes.DWORD()
+        u.GetWindowThreadProcessId(h, ctypes.byref(q))
+        if q.value == pid and u.IsWindowVisible(h) and u.GetWindow(h, 4) == 0:
+            hwnds.append(h)
+        return True
+
+    u.EnumWindows(ctypes.WINFUNCTYPE(ctypes.c_bool, wintypes.HWND, wintypes.LPARAM)(cb), 0)
+    if not hwnds:
+        return
+    u.ShowWindow(hwnds[0], 6)  # SW_MINIMIZE
+    time.sleep(0.8)
+    u.ShowWindow(hwnds[0], 9)  # SW_RESTORE
+    time.sleep(0.3)
+    u.SetForegroundWindow(hwnds[0])
+    time.sleep(0.5)
 
 
 def os_double_click(pid, p) -> None:
