@@ -1065,12 +1065,13 @@ jobs:
           exit $status
       # M4 C4.2b round 2: the reviewer's round-2 runner. Its modes that need only the application run here; byte and
       # exact* need the headless binary too and run in the drawing byte gate job; measure-*, d1-long-* and d3-webgpu are
-      # workstation receipts (reviews/evidence/M4-C4.2b/live/).
+      # workstation receipts (reviews/evidence/M4-C4.2b/live/). Its observer mode is not run: it asserts that a
+      # read-only session sees the gesture samples, the behaviour ruling D-19 removed (closed over MCP in round 3).
       - name: Reviewer round-2 Drawing view probes (C4.2b round 2; Windows only) against the running application
         if: always() && runner.os == 'Windows'
         run: |
           status=0
-          for mode in c2 d3-webgl2 gui regression selection observer; do
+          for mode in c2 d3-webgl2 gui regression selection; do
             echo "== c42b-r2-live.py $mode"
             PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c42b-r2-live.py desktop-artifact/default-build/toontown.exe $mode || status=1
           done

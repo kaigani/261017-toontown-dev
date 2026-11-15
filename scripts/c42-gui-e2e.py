@@ -528,7 +528,8 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                         # The user's tool change and the view going away are keys the user bound (the window has no
                         # tool buttons yet): F8 chooses the Brush, F9 closes the Drawing view's panel. The central view
                         # cannot be closed, so for that row the Camera view is central and the Drawing view docked at the
-                        # right, and its canvas is found again in the window capture.
+                        # left (on a runner's small screen the right edge of the window lies off the screen), its canvas
+                        # found again in the window capture and the clicks kept on the visible screen.
                         bound = await rc(session, "keymap.set", {"commandId": "tool.active.set", "params": {"toolId": "brush"},
                                                                  "keys": "F8", "onConflict": "override"})
                         bound2 = await rc(session, "keymap.set", {"commandId": "window.panel.set",
@@ -544,17 +545,21 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                             pa, pb = (x0 + 100, y0 + 260), (x0 + 200, y0 + 240)
                             if ending == "view going away":
                                 await rc(session, "window.panel.move", {"panelId": "cameraView", "area": "central"})
-                                await rc(session, "window.panel.move", {"panelId": "drawingView", "area": "right"})
+                                await rc(session, "window.panel.move", {"panelId": "drawingView", "area": "left"})
                                 await e2e.gui_tree(session, run, lambda r: e2e.by_id(r, "drawingView.canvas") is not None,
-                                                   "the Drawing view is docked at the right")
+                                                   "the Drawing view is docked at the left")
                                 await wait_canvas(session, lambda s_: bool(s_.get("drawings")))
                                 await asyncio.sleep(0.5)
                                 place = await locate_canvas(session, rc)
-                                run.check(place is not None, "the right-docked canvas is found in the window capture", place)
-                                if place is None:
+                                visible = os_visible_part(e2e.APP_PID["pid"], place) if place else None
+                                run.check(place is not None and visible is not None,
+                                          "the left-docked canvas is found in the window capture, on the screen",
+                                          {"canvas": place, "visible": visible})
+                                if visible is None:
                                     continue
-                                cx_, cy_, cw_, ch_ = place
-                                pa, pb = (cx_ + cw_ * 3 // 10, cy_ + ch_ // 2), (cx_ + cw_ * 6 // 10, cy_ + ch_ * 45 // 100)
+                                vx0, vy0, vx1, vy1 = visible
+                                pa = (vx0 + (vx1 - vx0) * 3 // 10, vy0 + (vy1 - vy0) // 2)
+                                pb = (vx0 + (vx1 - vx0) * 6 // 10, vy0 + (vy1 - vy0) * 45 // 100)
                             await rc(session, "tool.active.set", {"toolId": "polyline"})
                             await asyncio.sleep(0.5)
                             pos0 = ((await rc(session, "edit.history.get", {"limit": 1000})).get("result") or {}).get("position", 0)
@@ -657,6 +662,34 @@ async def locate_canvas(session, rc):
                 if all(wrows[y + yy][x * cw:(x + w) * cw][::cw] == vrows[yy][::cv] for yy in range(0, h, max(1, h // 32))):
                     return (x, y, w, h)
     return None
+
+
+def os_visible_part(pid, place) -> tuple | None:
+    """The part of a client-area rectangle (x, y, width, height) of the application's main window that lies on the
+    primary screen, in client coordinates and 8 pixels inside its edges, or None when less than 60 by 60 pixels of it
+    is visible (Windows)."""
+    import ctypes
+    from ctypes import wintypes
+    u = ctypes.windll.user32
+    hwnds = []
+
+    def cb(h, _):
+        q = wintypes.DWORD()
+        u.GetWindowThreadProcessId(h, ctypes.byref(q))
+        if q.value == pid and u.IsWindowVisible(h) and u.GetWindow(h, 4) == 0:
+            hwnds.append(h)
+        return True
+
+    u.EnumWindows(ctypes.WINFUNCTYPE(ctypes.c_bool, wintypes.HWND, wintypes.LPARAM)(cb), 0)
+    if not hwnds:
+        return None
+    origin = wintypes.POINT(0, 0)
+    u.ClientToScreen(hwnds[0], ctypes.byref(origin))
+    sw, sh = u.GetSystemMetrics(0), u.GetSystemMetrics(1)
+    x, y, w, h = place
+    x0, y0 = max(x, -origin.x) + 8, max(y, -origin.y) + 8
+    x1, y1 = min(x + w, sw - origin.x) - 8, min(y + h, sh - origin.y) - 8
+    return (x0, y0, x1, y1) if x1 - x0 >= 60 and y1 - y0 >= 60 else None
 
 
 def os_minimise_restore(pid) -> None:
