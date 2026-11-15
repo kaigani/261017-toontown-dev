@@ -1,11 +1,18 @@
 // The Drawing view's composition as `canvas_scene` answers it (M4 C4.2b; design note 1 §9; the Rust type is
 // `tt_executor::canvas::Scene`). Validated here: a malformed answer is refused, never half-applied.
+//
+// 64-bit identities (the engine generation and drawing revisions, u64 in Rust) are carried exactly as `bigint`
+// (docs/canvas-format.md §6): the host's JSON is parsed losslessly (`parseWireJson`), and an integer the parser kept
+// as a number is converted. Coordinates and opacities stay floating numbers.
+
+import type { Box, Pt, SceneSelection } from './selection';
 
 export type Rgba = [number, number, number, number];
 
 export interface SceneEntry {
   drawingId: string;
-  rev: number;
+  /** The drawing's revision (u64, exact). */
+  rev: bigint;
   role: 'current' | 'onion' | 'autoLight' | 'staticUnder' | 'staticOver';
   /** Coverage multiplier 0-1 (SI-139). */
   opacity: number;
@@ -29,10 +36,15 @@ export interface Scene {
   /** Solid colour id → RGBA. */
   colours: Record<string, Rgba>;
   paletteStamp: number;
+  /** The current drawing's pivot (drawing units), or null (frame-loop note §7.1). */
+  drawingPivot: Pt | null;
+  /** The current drawing's selection, or null (frame-loop note §7.1). */
+  selection: SceneSelection | null;
 }
 
 export interface SceneAnswer {
-  generation: number;
+  /** The engine generation (u64, exact). */
+  generation: bigint;
   scene: Scene;
 }
 
@@ -54,6 +66,44 @@ function num(v: unknown, where: string): number {
   throw new TypeError(`${where}: not a finite number`);
 }
 
+const U64_MAX = (1n << 64n) - 1n;
+
+/** An unsigned 64-bit integer, exactly: a `bigint` in range, or a number that is a safe non-negative integer. */
+export function u64(v: unknown, where: string): bigint {
+  if (typeof v === 'bigint' && v >= 0n && v <= U64_MAX) return v;
+  if (typeof v === 'number' && Number.isSafeInteger(v) && v >= 0) return BigInt(v);
+  throw new TypeError(`${where}: not an unsigned 64-bit integer`);
+}
+
+function point(v: unknown, where: string): Pt {
+  if (Array.isArray(v) && v.length === 2) return [num(v[0], where), num(v[1], where)];
+  throw new TypeError(`${where}: not a point`);
+}
+
+function box(v: unknown, where: string): Box {
+  if (Array.isArray(v) && v.length === 4)
+    return [num(v[0], where), num(v[1], where), num(v[2], where), num(v[3], where)];
+  throw new TypeError(`${where}: not a box`);
+}
+
+function list<T>(v: unknown, where: string, item: (x: unknown, w: string) => T): T[] {
+  if (!Array.isArray(v)) throw new TypeError(`${where}: not an array`);
+  return v.map((x: unknown, i) => item(x, `${where}/${String(i)}`));
+}
+
+/** D-7e: absent and `null` both mean nothing selected (a host before the selection overlay omits it). */
+function selectionOf(v: unknown): SceneSelection | null {
+  if (v === null || v === undefined) return null;
+  const o = obj(v);
+  if (!o) throw new TypeError('selection: not an object or null');
+  return {
+    objects: list(o['objects'], 'selection/objects', box),
+    bounds: o['bounds'] === null ? null : box(o['bounds'], 'selection/bounds'),
+    pivot: o['pivot'] === null ? null : point(o['pivot'], 'selection/pivot'),
+    points: list(o['points'], 'selection/points', point),
+  };
+}
+
 function bool(v: unknown, where: string): boolean {
   if (typeof v === 'boolean') return v;
   throw new TypeError(`${where}: not a boolean`);
@@ -68,7 +118,7 @@ function str(v: unknown, where: string): string {
 export function parseSceneAnswer(v: unknown): SceneAnswer {
   const a = obj(v);
   if (!a) throw new TypeError('scene answer: not an object');
-  const generation = num(a['generation'], 'generation');
+  const generation = u64(a['generation'], 'generation');
   const s = obj(a['scene']);
   if (!s) throw new TypeError('scene: not an object');
   const g = obj(s['grid']);
@@ -85,7 +135,7 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
     const tint = o['tint'];
     return {
       drawingId: str(o['drawingId'], `entries/${String(i)}/drawingId`),
-      rev: num(o['rev'], `entries/${String(i)}/rev`),
+      rev: u64(o['rev'], `entries/${String(i)}/rev`),
       role: role as SceneEntry['role'],
       opacity: num(o['opacity'], `entries/${String(i)}/opacity`),
       tint: tint === null ? null : rgba(tint, `entries/${String(i)}/tint`),
@@ -110,6 +160,9 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
       entries,
       colours,
       paletteStamp: num(s['paletteStamp'], 'paletteStamp'),
+      // D-7e: absent and `null` both mean no current drawing (no pivot to show).
+      drawingPivot: s['drawingPivot'] == null ? null : point(s['drawingPivot'], 'drawingPivot'),
+      selection: selectionOf(s['selection']),
     },
   };
 }

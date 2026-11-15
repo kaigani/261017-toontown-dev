@@ -37,7 +37,7 @@ const ULIDS = [
 ];
 const id = (i: number) => `dr_${ULIDS[i] ?? ''}`;
 
-function payload(ulid: string, generation: number, rev: number, from = base): ArrayBuffer {
+function payload(ulid: string, generation: number | bigint, rev: number | bigint, from = base): ArrayBuffer {
   const b = from.slice();
   const v = new DataView(b.buffer);
   v.setBigUint64(16, BigInt(generation), true);
@@ -46,7 +46,7 @@ function payload(ulid: string, generation: number, rev: number, from = base): Ar
   return b.buffer;
 }
 
-function scene(generation: number, entries: [number, number][], stamp = 1) {
+function scene(generation: number | bigint, entries: [number, number | bigint][], stamp = 1) {
   return {
     generation,
     scene: {
@@ -150,6 +150,67 @@ describe('the canvas pull loop', () => {
     model.frame();
     expect(sink.uploads.map((u) => Number(u.d.rev))).toEqual([10, 11]);
     expect(model.peakInFlight).toBeLessThanOrEqual(2);
+  });
+
+  it('a scene differing only in its selection rebuilds the overlay, not the static layers (frame-loop note §7.1)', async () => {
+    const { host, model } = setup();
+    model.frame();
+    host.scenes[0]?.resolve(scene(5, [[0, 10]]));
+    await flush();
+    model.frame();
+    const version = model.version;
+    const selected = model.selectionVersion;
+    const colours = model.scene?.colours;
+    const withSelection = scene(5, [[0, 10]]);
+    Object.assign(withSelection.scene, {
+      drawingPivot: [1, 2],
+      selection: { objects: [[0, 0, 10, 10]], bounds: [0, 0, 10, 10], pivot: [5, 5], points: [] },
+    });
+    model.markDirty();
+    host.scenes[1]?.resolve(withSelection);
+    await flush();
+    model.frame();
+    expect(model.version).toBe(version); // no static redraw
+    expect(model.selectionVersion).toBe(selected + 1);
+    expect(model.scene?.selection?.bounds).toEqual([0, 0, 10, 10]);
+    expect(model.scene?.drawingPivot).toEqual([1, 2]);
+    expect(model.scene?.colours).toBe(colours); // the same colours object: no colour re-upload
+    // Deselecting: the overlay changes again, the static layers still not.
+    model.markDirty();
+    host.scenes[2]?.resolve(scene(5, [[0, 10]]));
+    await flush();
+    model.frame();
+    expect(model.version).toBe(version);
+    expect(model.selectionVersion).toBe(selected + 2);
+    expect(model.scene?.selection).toBeNull();
+  });
+
+  it('T1 above 2^53: revisions and generations compare exactly, never rounded (C42B-R1-20)', async () => {
+    const { host, sink, model } = setup();
+    const big = 9_007_199_254_740_993n; // 2^53 + 1: as a double it would equal 2^53
+    const gen = 9_007_199_254_740_995n;
+    model.setGeneration(gen);
+    model.frame();
+    host.scenes[0]?.resolve(scene(gen, [[0, big]]));
+    await flush();
+    model.frame();
+    // A payload one revision older, equal to the scene's revision once rounded to a double: discarded.
+    host.loads[0]?.resolve(payload(ULIDS[0] ?? '', gen, big - 1n));
+    await flush();
+    model.frame();
+    expect(sink.uploads.length).toBe(0);
+    expect(model.discarded).toBe(1);
+    // Of a generation that rounds to the same double: discarded too.
+    host.loads[1]?.resolve(payload(ULIDS[0] ?? '', gen - 1n, big));
+    await flush();
+    model.frame();
+    expect(sink.uploads.length).toBe(0);
+    expect(model.discarded).toBe(2);
+    host.loads[2]?.resolve(payload(ULIDS[0] ?? '', gen, big));
+    await flush();
+    model.frame();
+    expect(sink.uploads.map((u) => u.d.rev)).toEqual([big]);
+    expect(model.resident.get(id(0))?.rev).toBe(big);
   });
 
   it('T6: a new generation drops every resident drawing and reloads; an old-generation payload is discarded', async () => {

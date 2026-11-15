@@ -8,6 +8,7 @@
 // latest scene's is discarded and asked for again (T1, T6).
 
 import { decodeDrawing, type DecodedDrawing, FormatError } from './format';
+import { stringifyWireJson } from '../ipc/wireJson';
 import { parseSceneAnswer, residentKey, type Scene, type SceneAnswer } from './scene';
 
 export interface CanvasHost {
@@ -26,7 +27,8 @@ export interface Clock {
 }
 
 export interface Resident {
-  rev: number;
+  /** The revision it was loaded at (u64, exact: compared as `bigint`, never rounded). */
+  rev: bigint;
   bucket: number;
   /** The palette stamp it was loaded at (gradient and texture slots resolve at load). */
   stamp: number;
@@ -64,7 +66,7 @@ export class CanvasModel {
   private sceneInFlight = false;
   private readonly loading = new Map<string, number>();
   private readonly inbox: InboxItem[] = [];
-  private generation: number | null = null;
+  private generation: bigint | null = null;
   private bucket = 0;
   scene: Scene | null = null;
   readonly resident = new Map<string, Resident>();
@@ -76,6 +78,9 @@ export class CanvasModel {
   peakInFlight = 0;
   /** Bumps whenever what the scene draws changed (a back end redraws its static layers then). */
   version = 0;
+  /** Bumps whenever the selection or the drawing pivot changed (only the overlay is rebuilt then; note 2 §7.1). */
+  selectionVersion = 0;
+  private selectionText = '';
   /** `display.fastPencilRendering` (01 §7.2; read at the canvas's start, its "restart"): every load asks for it. */
   fastPencil = false;
   /** Called after each upload: the resident key, its bytes, and request-to-upload milliseconds (measurements). */
@@ -103,7 +108,8 @@ export class CanvasModel {
   }
 
   /** The engine generation the window follows (D-7b: a restart is a generation change). */
-  setGeneration(generation: number): void {
+  setGeneration(next: number | bigint): void {
+    const generation = BigInt(next);
     if (this.generation === generation) return;
     this.generation = generation;
     this.dropAll();
@@ -204,8 +210,20 @@ export class CanvasModel {
           this.dropAll();
           this.sceneText = '';
         }
-        const text = JSON.stringify(scene);
-        if (text === this.sceneText && this.scene) return;
+        // The selection and the drawing pivot are overlay (layer 9): compared apart from the static composition, so a
+        // selection change rebuilds the overlay and never redraws layers 1-8 (frame-loop note §7.1).
+        const { selection, drawingPivot, ...composition } = scene;
+        const selectionText = stringifyWireJson({ selection, drawingPivot });
+        if (selectionText !== this.selectionText) {
+          this.selectionText = selectionText;
+          this.selectionVersion++;
+        }
+        const text = stringifyWireJson(composition);
+        if (text === this.sceneText && this.scene) {
+          // The same composition: the scene object (its colours above all) stays; only the overlay's part changes.
+          this.scene = { ...this.scene, selection, drawingPivot };
+          return;
+        }
         this.sceneText = text;
         this.scene = scene;
         const shown = new Set(scene.entries.map(residentKey));
@@ -231,8 +249,8 @@ export class CanvasModel {
         const stale =
           !entry ||
           ((d.flags & 1) === 1) !== item.outline ||
-          Number(d.generation) !== this.generation ||
-          Number(d.rev) !== entry.rev ||
+          d.generation !== this.generation ||
+          d.rev !== entry.rev ||
           item.bucket !== this.bucket ||
           `${DRAWING_PREFIX}${d.drawingUlid}` !== item.drawingId;
         if (stale) {

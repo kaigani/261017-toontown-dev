@@ -107,7 +107,7 @@ export function measureScene(name: SceneName): { drawings: Map<string, DecodedDr
   }
   const entries: SceneEntry[] = [...drawings.keys()].map((drawingId) => ({
     drawingId,
-    rev: 0,
+    rev: 0n,
     role: 'current',
     opacity: 1,
     tint: null,
@@ -123,6 +123,8 @@ export function measureScene(name: SceneName): { drawings: Map<string, DecodedDr
       entries,
       colours: {},
       paletteStamp: 0,
+      drawingPivot: null,
+      selection: null,
     },
   };
 }

@@ -7,7 +7,8 @@
 
 import { useEffect, useRef } from 'react';
 
-import type { AgentInput, EngineApi } from '../ipc';
+import { GENERATION_EVENT, type AgentInput, type EngineApi } from '../ipc';
+import { stringifyWireJson } from '../ipc/wireJson';
 import { bucketOf } from './bucket';
 import { gridGeometry, IDENTITY, scaleOf, ViewTris, type Affine } from './geometry';
 import { ACCENT, GestureCollector, gestureOverlay, type DomSample, type OverlayStyle } from './input';
@@ -19,6 +20,7 @@ import { createWebGPU } from './webgpu';
 import { canvasLaunch } from './launch';
 import { CanvasMetrics } from './metrics';
 import { CanvasModel } from './model';
+import { selectionCursor, selectionOverlay, type SelectionOverlay } from './selection';
 import type { Renderer } from './renderer';
 
 export interface CanvasHandle {
@@ -32,6 +34,16 @@ export interface CanvasHandle {
 
 /** How long the canvas must be quiet (no gesture, no redraw) before the back ends are measured (SI-136). */
 const QUIET_MS = 30_000;
+
+/** Two overlays as one (`a` under `b`); either may be absent. */
+function combine(a: ViewTris | null, b: ViewTris | null): ViewTris | null {
+  if (!a) return b;
+  if (!b) return a;
+  const t = new ViewTris();
+  t.data.push(...a.data);
+  for (const x of b.data) t.data.push(x);
+  return t;
+}
 
 function asAffine(v: unknown): Affine | null {
   return Array.isArray(v) && v.length === 6 && v.every((x) => typeof x === 'number' && Number.isFinite(x))
@@ -65,6 +77,9 @@ export function CanvasView({
     let drawnVersion = -1;
     let drawnView = -1;
     let grid: ViewTris | null = null;
+    // The selection overlay (layer 9; frame-loop note §7): rebuilt when the selection, the mapping or the tool changed.
+    let selection: SelectionOverlay = selectionOverlay(null, null, '', IDENTITY);
+    let selectionKey = '';
     let lastColours: unknown = null;
     let summary = '';
     let raf = 0;
@@ -119,6 +134,8 @@ export function CanvasView({
     // committed unchanged through gesture_commit with their request id; a user press aborts the one playing.
     const agentQueue: AgentInput[] = [];
     let playing: { input: AgentInput; shown: number; points: [number, number][] } | null = null;
+    // The engine generation this window follows (D-7b): input of another generation is never played or committed.
+    let followed = engine.generation();
     const reportPresence = (present: boolean) => {
       const r = canvas.getBoundingClientRect();
       void engine
@@ -139,6 +156,19 @@ export function CanvasView({
         overlay = null;
         reportGesture(false);
       }
+    };
+    // D-7b: a new engine generation discards every gesture in progress, the user's and the agent's (playing or
+    // queued), with nothing committed; the host has already answered the agent's calls (the SI-120 refusal). Run on
+    // the first event of the new generation and when the window adopts it, whichever comes first.
+    const adoptGeneration = (generation: number) => {
+      if (generation === followed) return;
+      followed = generation;
+      cancelGesture();
+      if (playing) reportGesture(false);
+      playing = null;
+      agentQueue.splice(0);
+      overlay = null;
+      clearOverlayAt = null;
     };
 
     // The display preferences the canvas honours (01 §7.2, 06 §6.9): `display.antiAliasing` and
@@ -288,8 +318,10 @@ export function CanvasView({
     let unlisten: (() => void) | null = null;
     void engine
       .onEvent((event) => {
-        if (typeof event.generation === 'number' && event.generation !== engine.generation()) cancelGesture();
-        if (typeof event.generation === 'number') model?.setGeneration(event.generation);
+        if (typeof event.generation === 'number') {
+          adoptGeneration(event.generation);
+          model?.setGeneration(event.generation);
+        }
         if (event.name === 'tool.active.changed' || event.name === 'tool.pen.changed') refreshTool();
         if (event.name === 'prefs.changed') {
           const keys = (event.payload as { keys?: unknown } | null)?.keys;
@@ -338,6 +370,11 @@ export function CanvasView({
         renderer.setColours(scene.colours);
         lastColours = scene.colours;
       }
+      const key = `${String(model.selectionVersion)}/${String(viewVersion)}/${style.tool}`;
+      if (key !== selectionKey) {
+        selectionKey = key;
+        selection = selectionOverlay(scene?.selection ?? null, scene?.drawingPivot ?? null, style.tool, d2v);
+      }
       const staticDirty = model.version !== drawnVersion || viewVersion !== drawnView;
       if (staticDirty || collector.active || playing) lastActivity = performance.now();
       if (staticDirty) {
@@ -357,7 +394,8 @@ export function CanvasView({
         dpr,
         staticDirty,
         grid,
-        overlay,
+        // The selection under the gesture in progress (the drag's own feedback on top).
+        overlay: combine(selection.tris, overlay),
       });
       if (metrics) {
         const now = performance.now();
@@ -368,12 +406,14 @@ export function CanvasView({
       }
       const publish = metrics !== null && began - metricsAt >= 500;
       if (publish) metricsAt = began;
-      const next = JSON.stringify({
+      // Written losslessly: revisions are exact 64-bit integers (`bigint`).
+      const next = stringifyWireJson({
         backend: renderer.kind,
         generation: engine.generation(),
         drawings: [...model.resident.entries()].map(([id, r]) => ({ id, rev: r.rev, bucket: r.bucket })),
         failures: model.failures.slice(-3),
         gesture: lastGesture,
+        selection: selection.shown,
         ...(({ drawn, residentDrawings, residentBytes, lastError }) => ({
           drawn,
           residentDrawings,
@@ -491,7 +531,13 @@ export function CanvasView({
       overlay = gestureOverlay(collector.points, style);
     };
     const onMove = (e: PointerEvent) => {
-      if (!collector.active) return;
+      if (!collector.active) {
+        // Hovering: the Select tool's cursor over its handles and inside the box (frame-loop note §7.3).
+        const b = style.tool === 'select' ? (model?.scene?.selection?.bounds ?? null) : null;
+        const p = sample(e);
+        canvas.style.cursor = selectionCursor(selection.handles, b, d2v, [p.x, p.y]);
+        return;
+      }
       // Input-to-ink counts from the sample's arrival at the page (plan §6: "sample received").
       metrics?.sample(performance.now());
       const list = typeof e.getCoalescedEvents === 'function' ? e.getCoalescedEvents() : [];
@@ -526,11 +572,17 @@ export function CanvasView({
     canvas.addEventListener('lostpointercapture', onCancel);
     canvas.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('keydown', onKey, true);
+    const onGeneration = (e: Event) => {
+      const g = (e as CustomEvent<unknown>).detail;
+      if (typeof g === 'number') adoptGeneration(g);
+    };
+    window.addEventListener(GENERATION_EVENT, onGeneration);
     refreshTool();
     let unlistenAgent: (() => void) | null = null;
     void engine
       .onAgentInput((input) => {
-        if (input.viewId === viewId) agentQueue.push(input);
+        // Routed on another engine generation than the one this window follows: dropped (D-7b).
+        if (input.viewId === viewId && input.generation === engine.generation()) agentQueue.push(input);
       })
       .then((u) => {
         if (stopped) u();
@@ -562,6 +614,7 @@ export function CanvasView({
       canvas.removeEventListener('lostpointercapture', onCancel);
       canvas.removeEventListener('wheel', onWheel);
       window.removeEventListener('keydown', onKey, true);
+      window.removeEventListener(GENERATION_EVENT, onGeneration);
       cancelAnimationFrame(raf);
       ro?.disconnect();
       unlisten?.();

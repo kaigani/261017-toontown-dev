@@ -12,7 +12,7 @@ import { drawingToClip } from './webgl2';
 
 const entry = (drawingId: string, role: SceneEntry['role']): SceneEntry => ({
   drawingId,
-  rev: 1,
+  rev: 1n,
   role,
   opacity: 1,
   tint: null,
@@ -21,7 +21,16 @@ const entry = (drawingId: string, role: SceneEntry['role']): SceneEntry => ({
 });
 
 function scene(grid: Scene['grid'], entries: SceneEntry[]): Scene {
-  return { viewId: 'drawingView', background: [1, 2, 3, 255], grid, entries, colours: {}, paletteStamp: 0 };
+  return {
+    viewId: 'drawingView',
+    background: [1, 2, 3, 255],
+    grid,
+    entries,
+    colours: {},
+    paletteStamp: 0,
+    drawingPivot: null,
+    selection: null,
+  };
 }
 
 function recorder() {

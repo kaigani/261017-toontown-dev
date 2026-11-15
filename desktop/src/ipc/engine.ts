@@ -119,7 +119,8 @@ export interface EngineApi {
     fastPencil?: boolean,
   ): Promise<ArrayBuffer>;
   /** `gesture_commit` (M4 C4.2b; design note 2 §6): a gesture made in a view window, as `pointer` request fields; the
-   *  host runs the headless `pointer` driver with the user's origin and answers its envelope. */
+   *  host runs the headless `pointer` driver with the user's origin and answers its envelope. The request names the
+   *  generation the window follows; a gesture of a replaced engine is refused, nothing run (D-7b). */
   gestureCommit(request: {
     view: string;
     pointerType?: 'mouse' | 'pen' | 'penEraser';
@@ -142,6 +143,8 @@ export interface EngineApi {
 export interface AgentInput {
   requestId: number;
   viewId: string;
+  /** The engine generation it was routed on: played only while the window follows it (D-7b). */
+  generation: number;
   request: Record<string, unknown>;
 }
 
@@ -286,7 +289,7 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     },
     async gestureCommit(request) {
       try {
-        const v = await invoke('gesture_commit', request);
+        const v = await invoke('gesture_commit', { ...request, generation });
         return (
           asEnvelope(v) ??
           localFailure('ipc.invalidResponse', 'the answer to a gesture is not a command envelope')
@@ -309,10 +312,12 @@ export function createEngineApi(transport: HostTransport): EngineApi {
           const o = v as Record<string, unknown>;
           const req = o['request'];
           if (typeof o['requestId'] !== 'number' || typeof o['viewId'] !== 'string') return;
+          if (typeof o['generation'] !== 'number') return;
           if (typeof req !== 'object' || req === null) return;
           handler({
             requestId: o['requestId'],
             viewId: o['viewId'],
+            generation: o['generation'],
             request: req as Record<string, unknown>,
           });
         } catch {
