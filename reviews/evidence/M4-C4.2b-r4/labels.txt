@@ -1,0 +1,30 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.35s
+     Running tests\c42.rs (target\debug\deps\c42-298037a06752eabc.exe)
+
+running 1 test
+brush (02 line 495): spec "Brush Tool", product "Brush Tool"
+pencil (02 line 504): spec "Pencil Tool", product "Pencil Tool"
+rectangle (02 line 513): spec "Rectangle Tool", product "Rectangle Tool"
+ellipse (02 line 520): spec "Ellipse Tool", product "Ellipse Tool"
+polyline (02 line 537): spec "Polyline Tool", product "Polyline Tool"
+line (02 line 543): spec "Line Tool", product "Line Tool"
+paint (02 line 564): spec "Paint", product "Paint"
+unpaint (02 line 573): spec "Unpaint", product "Unpaint"
+paintUnpainted (02 line 582): spec "Paint Unpainted", product "Paint Unpainted"
+closeGap (02 line 603): spec "Close Gap", product "Close Gap"
+stroke (02 line 614): spec "Stroke Tool", product "Stroke Tool"
+eraser (02 line 639): spec "Eraser Tool", product "Eraser Tool"
+cutter (02 line 647): spec "Cutter Tool", product "Cutter Tool"
+scissor (02 line 654): spec "Scissor Tool", product "Scissor Tool"
+scissor (02 line 654): spec "Scissor Tool", product "Scissor Tool"
+select (02 line 440): spec "Move Object", product "Move Object"
+select (02 line 440): spec "Copy Object", product "Copy Object"
+select (02 line 440): spec "Scale Object", product "Scale Object"
+select (02 line 440): spec "Rotate Object", product "Rotate Object"
+select (02 line 437): spec "Change Drawing Pivot", product "Change Drawing Pivot"
+brush (02 line 340): spec "Move Object", product "Move Object"
+test canvas::every_tool_commits_under_its_specified_undo_label ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 77 filtered out; finished in 0.27s
+

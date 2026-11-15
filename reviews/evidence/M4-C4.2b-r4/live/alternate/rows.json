@@ -1,0 +1,246 @@
+[
+  {
+    "name": "scissor",
+    "tool": "scissor",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "scissor",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        322.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 280,
+          "y": 402,
+          "modifiers": [
+            "alt"
+          ],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 360,
+          "y": 402,
+          "modifiers": [
+            "alt"
+          ],
+          "dt": 32,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 360,
+          "y": 242,
+          "modifiers": [
+            "alt"
+          ],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 280,
+          "y": 242,
+          "modifiers": [
+            "alt"
+          ],
+          "dt": 34,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 280,
+          "y": 402,
+          "modifiers": [
+            "alt"
+          ],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 280,
+          "y": 402,
+          "modifiers": [
+            "alt"
+          ],
+          "dt": 40,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 6,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.cut.apply",
+          "params": {
+            "polygon": [
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.cut.apply",
+          "params": {
+            "polygon": [
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              }
+            ]
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.cut.apply",
+          "params": {
+            "polygon": [
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Cutter Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        322.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Scissor Tool",
+    "undoRedo": [
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Cutter Tool"
+      ]
+    ],
+    "verdict": "PASS"
+  }
+]

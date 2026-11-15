@@ -1,0 +1,2 @@
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.42s

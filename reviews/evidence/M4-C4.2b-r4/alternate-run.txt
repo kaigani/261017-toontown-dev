@@ -1,0 +1,14 @@
+ok   the application saves the fixture project
+ok   the canvas is located in the window (OS input)
+ok   three-way scissor (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo scissor
+{
+ "kind": "toontown.c42.gesture-equivalence",
+ "platform": "win32",
+ "seconds": 3.7,
+ "rows": 1,
+ "input": [
+  "os"
+ ],
+ "failures": []
+}

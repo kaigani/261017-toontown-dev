@@ -1,0 +1,20 @@
+[
+  {
+    "tool": "brush",
+    "eventsEqual": true,
+    "drawingEqual": true,
+    "selectionEqual": true
+  },
+  {
+    "tool": "rectangle",
+    "eventsEqual": true,
+    "drawingEqual": true,
+    "selectionEqual": true
+  },
+  {
+    "tool": "select",
+    "eventsEqual": true,
+    "drawingEqual": true,
+    "selectionEqual": true
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "file": "tests\\adversarial\\c42b-r1s-experiments.py",
+    "code": 0
+  },
+  {
+    "file": "tests\\adversarial\\c42b-r1s-generation.py",
+    "code": 0
+  },
+  {
+    "file": "tests\\adversarial\\c42b-r1s-selection.py",
+    "code": 0
+  },
+  {
+    "file": "tests\\adversarial\\c42b-r3s-labels.py",
+    "code": 0
+  },
+  {
+    "file": "scripts\\check-availability-inventory.py",
+    "code": 0
+  },
+  {
+    "file": "scripts\\check-addressing-params.py",
+    "code": 0
+  },
+  {
+    "file": "scripts\\check-message-help.py",
+    "code": 0
+  },
+  {
+    "file": "scripts\\check-product-allows.py",
+    "code": 0
+  }
+]

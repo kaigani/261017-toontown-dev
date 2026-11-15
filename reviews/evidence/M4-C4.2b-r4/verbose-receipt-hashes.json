@@ -1,0 +1,42 @@
+[
+  {
+    "path": "live/c2/c2-escape.json",
+    "bytes": 241702,
+    "sha256": "66e92cd6c6554cfaaf934983a05b28fe38e4ae18174a5731c56d6f13e3b4e355"
+  },
+  {
+    "path": "live/c2/c2-gestures.json",
+    "bytes": 1266336,
+    "sha256": "4af908b082857f7a9fc4ec3a0688ab32cf2bb0b92df782cc31cb3c8d5c3ec03c"
+  },
+  {
+    "path": "live/d2/d2-cases.json",
+    "bytes": 1951150,
+    "sha256": "a7b2ba22bfa6a5c89457a898706c0f83831d1f8483e183c8f49358820f9bd511"
+  },
+  {
+    "path": "live/d3-webgl2/d3-webgl2-cases.json",
+    "bytes": 272020,
+    "sha256": "2a2bfd2de01785e3fab08a6c0b9b63128335fd225e37bec7a1b87a96791cba95"
+  },
+  {
+    "path": "live/d3-webgpu/d3-webgpu-cases.json",
+    "bytes": 268952,
+    "sha256": "1d4052dfa87908d286e376803991e41df3b7c95af5e6278c59f517c6023a31ab"
+  },
+  {
+    "path": "live/exact-tools/rows.json",
+    "bytes": 354719,
+    "sha256": "f27886d4bbfbb1bdf794e24a6faaf1245c916bbfe11d45b57209988c87f23bfe"
+  },
+  {
+    "path": "live/gui/equivalence.json",
+    "bytes": 470182,
+    "sha256": "c167e076f728beb6b060c70838e94859bf9561d88381608a09a96471f6118464"
+  },
+  {
+    "path": "live/endings/gui/equivalence.json",
+    "bytes": 470182,
+    "sha256": "b0ff1cb4d9e37cb26936a7504487a31b00c97cdf169dab18482fbc7142628be2"
+  }
+]

@@ -1,0 +1,61 @@
+src/canvas/format.test.ts > TTRD 1.0 decoder against the golden corpus > %s.ttrd decodes to its expected JSON
+src/canvas/format.test.ts > TTRD 1.0 decoder against the golden corpus > reaches every record kind
+src/canvas/format.test.ts > TTRD 1.0 decoder against the golden corpus > carries every header field
+src/canvas/format.test.ts > TTRD 1.0 decoder against the golden corpus > refuses every corrupt file with its rule, and decodes the unmodified one
+src/canvas/format.test.ts > TTRD 1.0 decoder against the golden corpus > decodes from an unaligned view by copying the indices
+src/canvas/frame.test.ts > F3: the layers of 02 Â§4.2 > draws background, grid under, layers 3 to 7 by role, then the overlay
+src/canvas/frame.test.ts > F3: the layers of 02 Â§4.2 > puts an overlay grid after the drawings and skips an invisible one
+src/canvas/frame.test.ts > F3: the layers of 02 Â§4.2 > skips drawings not yet resident and reuses the static layers when only the overlay changed
+src/canvas/frame.test.ts > F4: the canvas rule set, step 1, on the product selector > step 0: each run maps to exactly one cell status
+src/canvas/frame.test.ts > F4: the canvas rule set, step 1, on the product selector > a score is the worst scene's fps, only when all three cells are met or missed
+src/canvas/frame.test.ts > F4: the canvas rule set, step 1, on the product selector > %s
+src/canvas/frame.test.ts > F4: the canvas rule set, step 1, on the product selector > starts with the override, else the selection, else WebGL2 (SI-136)
+src/canvas/frame.test.ts > the zoom bucket and the mapping > matches Rust's bucket_of (crates/render/tests/c42_canvas.rs)
+src/canvas/frame.test.ts > the zoom bucket and the mapping > drawing â†’ clip follows the announced matrix (the canvas derives nothing)
+src/canvas/frame.test.ts > the grid of 02 Â§10.1 > normal: minor lines every 10 du only while 4 view pixels apart
+src/canvas/frame.test.ts > the grid of 02 Â§10.1 > field guides: nested rectangles per field, the cross-hair and graduations
+src/canvas/frame.test.ts > the scene validator > accepts a well-formed answer, a null tint and a tint
+src/canvas/frame.test.ts > the scene validator > refuses %s
+src/canvas/input.test.ts > the gesture collector > G5: a press, every sample as given (coalesced ones in order), a release; dt in whole milliseconds
+src/canvas/input.test.ts > the gesture collector > a mouse has pressure 1 (02 Â§13.3); a pen its own, with tilt; the eraser end is penEraser
+src/canvas/input.test.ts > the gesture collector > carries the button at the press and the modifiers on every event
+src/canvas/input.test.ts > the gesture collector > F5/F6: a cancel sends nothing and leaves the collector idle; one gesture at a time
+src/canvas/input.test.ts > the gesture collector > a wheel step is a one-event gesture, refused during a gesture (G6)
+src/canvas/input.test.ts > the overlay of every tool (SI-138) > %s: overlay %s
+src/canvas/input.test.ts > the overlay of every tool (SI-138) > marquees are dashed accent outlines one pixel wide; ink follows the style
+src/canvas/input.test.ts > the record of the last committed gesture (C42B-R1-03; SI-141 item 9) > keeps the events as committed, the mapping, the tool and the commands the commit produced
+src/canvas/input.test.ts > the record of the last committed gesture (C42B-R1-03; SI-141 item 9) > a gesture longer than the cap is recorded by its count
+src/canvas/input.test.ts > the Polyline: its clicks are one gesture (02 Â§7.3.5; SI-131 item 10) > a double click commits the clicks with a doubleClick event, as the headless pointer receives them
+src/canvas/input.test.ts > the Polyline: its clicks are one gesture (02 Â§7.3.5; SI-131 item 10) > a click back on the first click closes and commits it; a click-drag gives a handle (moves kept)
+src/canvas/input.test.ts > the Polyline: its clicks are one gesture (02 Â§7.3.5; SI-131 item 10) > Enter ends it as it stands (02 Â§7.2.5); a press continuing the double click that ended it opens nothing
+src/canvas/input.test.ts > the Polyline: its clicks are one gesture (02 Â§7.3.5; SI-131 item 10) > a cancel between clicks discards it; outside multi-click mode a release commits at once
+src/canvas/metrics.test.ts > canvas metrics > statistics: nearest-rank p50 and p95, max, and empty sets
+src/canvas/metrics.test.ts > canvas metrics > frame time is the interval between frames; the work is per frame
+src/canvas/metrics.test.ts > canvas metrics > frames during a gesture are kept apart
+src/canvas/metrics.test.ts > canvas metrics > input-to-ink runs from the oldest undrawn sample to the frame that draws it
+src/canvas/metrics.test.ts > canvas metrics > release-to-committed waits for a newer model version
+src/canvas/metrics.test.ts > canvas metrics > keeps bounded windows
+src/canvas/model.test.ts > the canvas pull loop > F2: frames never wait on IPC; a stalled host leaves one scene request in flight
+src/canvas/model.test.ts > the canvas pull loop > T1, T3: a drawing loads at the scene revision; an older payload is discarded and asked for again
+src/canvas/model.test.ts > the canvas pull loop > settledVersion follows only when every drawing is resident at its scene revision (C42B-R1-04)
+src/canvas/model.test.ts > the canvas pull loop > a scene differing only in its selection rebuilds the overlay, not the static layers (frame-loop note Â§7.1)
+src/canvas/model.test.ts > the canvas pull loop > T1 above 2^53: revisions and generations compare exactly, never rounded (C42B-R1-20)
+src/canvas/model.test.ts > the canvas pull loop > T6: a new generation drops every resident drawing and reloads; an old-generation payload is discarded
+src/canvas/model.test.ts > the canvas pull loop > T2: a drawing that leaves the scene is dropped; the latest scene wins
+src/canvas/model.test.ts > the canvas pull loop > an event asks for the scene at once, and its answer asks for the drawings at once (frames only apply)
+src/canvas/model.test.ts > the canvas pull loop > an identical scene answer changes nothing (no version bump, so no redraw)
+src/canvas/model.test.ts > the canvas pull loop > F1: a frame applies work within its budget and carries the rest; nothing is dropped
+src/canvas/model.test.ts > the canvas pull loop > a palette change reloads drawings with gradient or texture slots, not solid-only ones
+src/canvas/model.test.ts > the canvas pull loop > a zoom bucket change reloads at the new bucket at the same revision
+src/canvas/model.test.ts > the canvas pull loop > an outline entry is its own resident form (02 Â§10.2): loaded with outline, a fill payload is not shown for it
+src/canvas/model.test.ts > the canvas pull loop > a corrupt payload is refused and recorded, never uploaded
+src/canvas/selection.test.ts > the selection overlay > shows outlines, the box, eight handles and the pivot for Select only; outlines for the contour tools
+src/canvas/selection.test.ts > the selection overlay > follows the selection: another selection gives other handles
+src/canvas/selection.test.ts > the selection overlay > follows the mapping: zoomed, panned and rotated, the handles sit at the mapped corners and midpoints
+src/canvas/selection.test.ts > the selection overlay > keeps the handles a constant size in view pixels at zoom 1/4, 1 and 4 and under rotation
+src/canvas/selection.test.ts > the selection overlay > picks the resize cursor of the nearest direction over a handle, move inside, none outside
+src/canvas/selftest.test.ts > the back-end measurement > generates the rule set scenes: 100,000 paths, 1,000 groups, 10,000 brush outlines
+src/canvas/selftest.test.ts > the back-end measurement > a cell is met at 57 fps or more, missed below, and its drawings are dropped afterwards
+src/canvas/selftest.test.ts > the back-end measurement > a frame over the abort bound ends the cell at once, missed at that rate
+src/canvas/selftest.test.ts > the back-end measurement > the first frame after the upload is a warm-up: its one-time cost is not the scene rate
+src/canvas/selftest.test.ts > the back-end measurement > a failing back end gives failed or unavailable cells, never selected over a measured one

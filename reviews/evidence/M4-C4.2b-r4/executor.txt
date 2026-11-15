@@ -1,0 +1,57 @@
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\registry-macros)
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\registry)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 43.53s
+     Running tests\c42b_r1_review.rs (target\debug\deps\c42b_r1_review-f98c4af92f907342.exe)
+
+running 5 tests
+test onion_uses_current_exposure_occurrence ... ok
+test scene_and_load_are_repeatable_pure_queries ... ok
+test part_b_scene::defaults_grid_background_context_and_camera_only_top ... ok
+test part_b_attached::routed_envelopes_scope_and_refusal_purity ... ok
+test large_drawing_budget_receipt ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 59.15s
+
+     Running tests\c42b_r2_review.rs (target\debug\deps\c42b_r2_review-cf701b962931a957.exe)
+
+running 12 tests
+test independent_decoder::five_fresh_encodings ... ok
+test independent_decoder::corpus_and_version_rules ... ok
+test locked_and_invalid_append_leave_content_unchanged ... ok
+test selection_review::scene_selection_tracks_queries_and_changes ... ok
+test append_other_drawing_edit_and_symmetry ... ok
+test selection_review::zero_extent_boxes ... ok
+test selection_review::zoomed_priority_minimum_and_flip ... ok
+test atomic_appends_to_two_layers_or_drawings ... ok
+test five_executor_drawings_pass_independent_decoder ... ok
+test selection_review::handle_equivalence ... ok
+test fifty_append_undo_redo_cycles ... ok
+test seeded_script_profile_receipt ... FAILED
+
+failures:
+
+---- seeded_script_profile_receipt stdout ----
+seed=0xc42b0201
+
+thread 'seeded_script_profile_receipt' (62456) panicked at crates\executor\tests\c42b_r2_review.rs:345:9:
+assertion `left == right` failed
+  left: "9f9162163ee5229b84f3c1e23ea3d9ad1e849b374e22b363dd52103762aeddff"
+ right: "39ed54c599dece98a21f1cc65a3910679a5fdd7d86ab76150d83a39e36cb0d1b"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    seeded_script_profile_receipt
+
+test result: FAILED. 11 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.54s
+
+error: test failed, to rerun pass `-p tt-executor --test c42b_r2_review`

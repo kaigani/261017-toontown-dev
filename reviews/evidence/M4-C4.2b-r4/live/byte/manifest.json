@@ -1,0 +1,72 @@
+{
+  "kind": "toontown.c42.byte-gate",
+  "platform": "win32",
+  "fixture": "reviews/evidence/M3-C3.4-r1/ci-Windows/projects/E1-replay.animpkg",
+  "fixtureSha256": "115f9c14534c16b709130651e735e734dc817be95070cd0c156f91311ffc5bf4",
+  "frames": {
+    "1": {
+      "headless": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "attached": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "metadataDiff": [
+        "renderMs"
+      ],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    },
+    "6": {
+      "headless": "889bda334887a6af0e79af2e53e6bbba8d38270fbab7385dda129704aa1c74c3",
+      "attached": "889bda334887a6af0e79af2e53e6bbba8d38270fbab7385dda129704aa1c74c3",
+      "metadataDiff": [
+        "renderMs"
+      ],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    },
+    "12": {
+      "headless": "37482857e2cfdfff1311091975d40e1b2ce3885045807e12de1fc60e00dc34cf",
+      "attached": "37482857e2cfdfff1311091975d40e1b2ce3885045807e12de1fc60e00dc34cf",
+      "metadataDiff": [
+        "renderMs"
+      ],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    },
+    "18": {
+      "headless": "4b14aa5a7e27ffe7ae0f7349024d4444966b2bfd04202823dbaf3d0958651586",
+      "attached": "4b14aa5a7e27ffe7ae0f7349024d4444966b2bfd04202823dbaf3d0958651586",
+      "metadataDiff": [
+        "renderMs"
+      ],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    },
+    "24": {
+      "headless": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "attached": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "metadataDiff": [
+        "renderMs"
+      ],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    }
+  },
+  "volatile": [
+    "jobId",
+    "renderMs"
+  ],
+  "documentRev": {
+    "headless": 12,
+    "attached": 12
+  },
+  "failures": []
+}

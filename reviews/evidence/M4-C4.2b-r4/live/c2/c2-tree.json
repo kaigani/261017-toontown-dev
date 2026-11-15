@@ -1,0 +1,422 @@
+{
+  "status": "ok",
+  "result": {
+    "source": "gui",
+    "target": "window",
+    "root": {
+      "role": "window",
+      "id": "main",
+      "label": "Toontown \u2014 Review",
+      "children": [
+        {
+          "role": "group",
+          "id": "app",
+          "value": "light",
+          "children": [
+            {
+              "role": "toolbar",
+              "id": "mainToolbar",
+              "label": "Main toolbar",
+              "children": [
+                {
+                  "role": "button",
+                  "id": "mainToolbar.drawAid.grid.set",
+                  "label": "Grid",
+                  "command": {
+                    "commandId": "drawAid.grid.set",
+                    "params": {}
+                  }
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.gridType",
+                  "label": "Grid type",
+                  "enabled": false
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.gridOverlay",
+                  "label": "Overlay",
+                  "enabled": false
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.drawAid.onionSkin.set",
+                  "label": "Onion skin",
+                  "command": {
+                    "commandId": "drawAid.onionSkin.set",
+                    "params": {}
+                  }
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.onionSkinPrevious",
+                  "label": "Previous drawings",
+                  "enabled": false
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.onionSkinNext",
+                  "label": "Next drawings",
+                  "enabled": false
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.drawAid.autoLightTable.set",
+                  "label": "Auto light table",
+                  "command": {
+                    "commandId": "drawAid.autoLightTable.set",
+                    "params": {}
+                  }
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.firstFrame",
+                  "label": "First frame",
+                  "command": {
+                    "commandId": "app.frame.set",
+                    "params": {
+                      "frame": 1
+                    }
+                  }
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.playStop",
+                  "label": "Play/Stop",
+                  "enabled": false
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.lastFrame",
+                  "label": "Last frame",
+                  "enabled": false
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.playback.loop.set",
+                  "label": "Loop playback on/off",
+                  "command": {
+                    "commandId": "playback.loop.set",
+                    "params": {}
+                  },
+                  "enabled": false
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.lipsync.panel.open",
+                  "label": "Open/raise the lip-sync panel",
+                  "command": {
+                    "commandId": "lipsync.panel.open",
+                    "params": {}
+                  },
+                  "enabled": false
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.cameraList",
+                  "label": "Camera",
+                  "enabled": false
+                },
+                {
+                  "role": "button",
+                  "id": "mainToolbar.sceneList",
+                  "label": "Scene",
+                  "enabled": false
+                },
+                {
+                  "role": "field",
+                  "id": "mainToolbar.workspaceList",
+                  "label": "Workspace",
+                  "value": "Drawing",
+                  "command": {
+                    "commandId": "workspace.select"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "toolPalettes",
+              "id": "toolPalettes",
+              "label": "Tool palettes",
+              "children": [
+                {
+                  "role": "toolPalette",
+                  "id": "drawingTools",
+                  "label": "Drawing tools"
+                },
+                {
+                  "role": "toolPalette",
+                  "id": "animationTools",
+                  "label": "Animation tools"
+                }
+              ]
+            },
+            {
+              "role": "dock",
+              "id": "dock",
+              "children": [
+                {
+                  "role": "tab",
+                  "id": "tab.drawingView",
+                  "label": "Drawing view",
+                  "checked": true,
+                  "children": [
+                    {
+                      "role": "button",
+                      "id": "tab.drawingView.hide",
+                      "label": "Hide Drawing view",
+                      "command": {
+                        "commandId": "window.panel.set",
+                        "params": {
+                          "panelId": "drawingView",
+                          "visible": false
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "role": "panel",
+                  "id": "drawingView",
+                  "label": "Drawing view",
+                  "children": [
+                    {
+                      "role": "toolbar",
+                      "id": "drawingView.toolbar",
+                      "children": [
+                        {
+                          "role": "button",
+                          "id": "drawingView.type.drawing",
+                          "label": "Drawing",
+                          "command": {
+                            "commandId": "view.type.set",
+                            "params": {
+                              "viewId": "drawingView",
+                              "type": "drawing"
+                            }
+                          },
+                          "enabled": false
+                        },
+                        {
+                          "role": "button",
+                          "id": "drawingView.type.camera",
+                          "label": "Camera",
+                          "command": {
+                            "commandId": "view.type.set",
+                            "params": {
+                              "viewId": "drawingView",
+                              "type": "camera"
+                            }
+                          },
+                          "enabled": false
+                        },
+                        {
+                          "role": "button",
+                          "id": "drawingView.type.side",
+                          "label": "Side",
+                          "command": {
+                            "commandId": "view.type.set",
+                            "params": {
+                              "viewId": "drawingView",
+                              "type": "side"
+                            }
+                          },
+                          "enabled": false
+                        },
+                        {
+                          "role": "button",
+                          "id": "drawingView.type.top",
+                          "label": "Top",
+                          "command": {
+                            "commandId": "view.type.set",
+                            "params": {
+                              "viewId": "drawingView",
+                              "type": "top"
+                            }
+                          },
+                          "enabled": false
+                        },
+                        {
+                          "role": "button",
+                          "id": "drawingView.focus",
+                          "label": "Focus",
+                          "command": {
+                            "commandId": "window.panel.set"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "role": "canvas",
+                      "id": "drawingView.canvas",
+                      "value": "{\"backend\":\"webgl2\",\"generation\":0,\"drawings\":[{\"id\":\"dr_01K7JJN800EE2SK4YAP2EKAR89\",\"rev\":10,\"bucket\":0}],\"failures\":[],\"gesture\":{\"status\":\"ok\"},\"selection\":{\"objects\":0,\"handles\":0,\"points\":0,\"pivot\":false},\"drawn\":1,\"residentDrawings\":1,\"residentBytes\":34896340,\"lastError\":null,\"lastGesture\":{\"origin\":\"user\",\"tool\":\"paint\",\"view\":\"drawingView\",\"pointerType\":\"mouse\",\"drawingToView\":[1,0,0,-1,450.5,322.5],\"events\":[{\"type\":\"down\",\"x\":450,\"y\":322,\"modifiers\":[],\"dt\":0,\"pressure\":1,\"button\":\"left\"},{\"type\":\"move\",\"x\":450,\"y\":322,\"modifiers\":[],\"dt\":33,\"pressure\":1},{\"type\":\"up\",\"x\":450,\"y\":322,\"modifiers\":[],\"dt\":49,\"pressure\":1}],\"eventCount\":3,\"status\":\"ok\",\"code\":null,\"commands\":[{\"commandId\":\"colour.paint.apply\",\"params\":{\"points\":[{\"x\":-0.5,\"y\":0.5}],\"space\":\"drawing\",\"view\":\"drawingView\",\"colourId\":\"col_01M7FH978ZCKN859ZVNV46BT5V\",\"gapClosing\":\"off\"}}]}}"
+                    }
+                  ]
+                },
+                {
+                  "role": "tab",
+                  "id": "tab.xsheet",
+                  "label": "Exposure sheet",
+                  "checked": true,
+                  "children": [
+                    {
+                      "role": "button",
+                      "id": "tab.xsheet.hide",
+                      "label": "Hide Exposure sheet",
+                      "command": {
+                        "commandId": "window.panel.set",
+                        "params": {
+                          "panelId": "xsheet",
+                          "visible": false
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "role": "panel",
+                  "id": "xsheet",
+                  "label": "Exposure sheet",
+                  "children": [
+                    {
+                      "role": "text",
+                      "id": "xsheet.owner",
+                      "label": "This panel's content arrives with M5 C5.2."
+                    }
+                  ]
+                },
+                {
+                  "role": "tab",
+                  "id": "tab.colour",
+                  "label": "Colour",
+                  "checked": true,
+                  "children": [
+                    {
+                      "role": "button",
+                      "id": "tab.colour.hide",
+                      "label": "Hide Colour",
+                      "command": {
+                        "commandId": "window.panel.set",
+                        "params": {
+                          "panelId": "colour",
+                          "visible": false
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "role": "tab",
+                  "id": "tab.pen",
+                  "label": "Pen",
+                  "checked": false,
+                  "children": [
+                    {
+                      "role": "button",
+                      "id": "tab.pen.hide",
+                      "label": "Hide Pen",
+                      "command": {
+                        "commandId": "window.panel.set",
+                        "params": {
+                          "panelId": "pen",
+                          "visible": false
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "role": "tab",
+                  "id": "tab.text",
+                  "label": "Text",
+                  "checked": false,
+                  "children": [
+                    {
+                      "role": "button",
+                      "id": "tab.text.hide",
+                      "label": "Hide Text",
+                      "command": {
+                        "commandId": "window.panel.set",
+                        "params": {
+                          "panelId": "text",
+                          "visible": false
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "role": "panel",
+                  "id": "colour",
+                  "label": "Colour",
+                  "children": [
+                    {
+                      "role": "text",
+                      "id": "colour.owner",
+                      "label": "This panel's content arrives with M7 C7.1."
+                    }
+                  ]
+                },
+                {
+                  "role": "area",
+                  "id": "area.right",
+                  "value": "330"
+                }
+              ]
+            },
+            {
+              "role": "statusBar",
+              "id": "statusBar",
+              "children": [
+                {
+                  "role": "text",
+                  "id": "status.line"
+                },
+                {
+                  "role": "text",
+                  "id": "status.description"
+                },
+                {
+                  "role": "text",
+                  "id": "status.context",
+                  "label": "Scene-1 \u00b7 frame 1"
+                },
+                {
+                  "role": "text",
+                  "id": "status.pointer",
+                  "label": "1 selected"
+                },
+                {
+                  "role": "text",
+                  "id": "status.playback"
+                },
+                {
+                  "role": "agentIndicator",
+                  "id": "agent",
+                  "label": "mcp",
+                  "value": "connected",
+                  "children": [
+                    {
+                      "role": "button",
+                      "id": "agent.toggle",
+                      "label": "Agent: mcp"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "notifications",
+          "label": "Notifications"
+        }
+      ]
+    },
+    "renderedSeq": 644
+  },
+  "changes": [],
+  "warnings": [],
+  "documentRev": 10
+}
