@@ -11,10 +11,10 @@ mod addressing;
 mod aids;
 #[path = "c42/attached.rs"]
 mod attached;
-#[path = "c42/canvas.rs"]
-mod canvas;
 #[path = "c42/budgets.rs"]
 mod budgets;
+#[path = "c42/canvas.rs"]
+mod canvas;
 #[path = "c42/equivalence.rs"]
 mod equivalence;
 #[path = "c42/equivalence_more.rs"]
