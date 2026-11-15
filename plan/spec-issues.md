@@ -1678,8 +1678,16 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
      centre (02 §8 line 828's pivot); the constrain modifier gives a corner the factor of larger magnitude on both
      axes; a factor below 0.001 in magnitude is refused (`arg.invalid`, nothing committed).
   5. The resize pointer is the platform's cursor of the nearest of eight directions: no platform offers a 15° set.
-  6. The handle gestures produce `draw.transform.apply`, labelled "Move/Scale/Rotate Object" as 02 §13.5 says;
-     02 §7.1.1 lists "Move Object", "Scale Object" and "Rotate Object". The registry's label is kept.
+  6. Undo labels (C42B-R2-04). A tool's gesture commits under the label 02 §7 gives that tool, and the Select tool's
+     drags under 02 §7.1.1's "Move Object", "Copy Object", "Scale Object" and "Rotate Object". 02 §13.5 gives
+     `draw.transform.apply` "Move/Scale/Rotate Object"; it is read as naming the operation the call performs: a call
+     with one operation (translate, scale or rotate alone, or `copy`) carries that operation's label, the same as the
+     gesture; a call combining operations, or carrying `skew` or `matrix`, carries "Move/Scale/Rotate Object". The
+     shape commands carry their tools' labels ("Rectangle Tool", "Ellipse Tool", "Line Tool", "Polyline Tool") and
+     `draw.cut.apply` with `rect` carries "Scissor Tool", with `polygon` "Cutter Tool". One case remains open: the
+     Scissor's free-form cut (alternate, 02 §7.4.3: "Scissor Tool") runs a polygon cut and keeps "Cutter Tool", because
+     the C4.2a reviewer test `part_d_equivalence::scissor` requires the gesture's label to equal the command's.
+     Question: should the free-form Scissor commit as "Scissor Tool"?
   7. A routed agent gesture whose window is destroyed or reloaded, or whose canvas reports `rect: null`, answers
      `ui.viewNotFound` with `details: {reason: "windowClosed", viewId}` at once, nothing committed (D-7a).
   8. An agent gesture is played in the window at no fewer than 16 events per frame and over at most 120 frames (about
@@ -1694,7 +1702,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
      answer, command ids).
   10. A multi-click gesture left open (a Polyline between its clicks) is the user's gesture in progress: the window
       keeps reporting the modal state, so agent writes wait and answer `ui.busy` for as long as it stays open, as with
-      a dialog left open (11 §6.4; accepted in C4.2b round 2). No timeout closes it; Escape, a double click, a click on
-      the first anchor or another tool ends it. Question: should an open multi-click gesture time out, and after how
-      long?
+       a dialog left open (11 §6.4; accepted in C4.2b round 2). No timeout closes it. A double click, Enter or a click
+      on the first anchor ends and commits it; Escape, another tool, the window losing focus or the view going away
+      discards it (no pointer capture is held between clicks, so a lost capture between clicks changes nothing). Each
+      ending ends the modal state. A press within 500 ms and 8 view pixels of the double click that ended it (a triple
+      click) continues that double click and opens nothing: a pointer press carries no click count, so the window
+      counts for itself. Question: should an open multi-click gesture time out, and after how long?
 - **Question:** confirm each, or state the values in 02 and 11.

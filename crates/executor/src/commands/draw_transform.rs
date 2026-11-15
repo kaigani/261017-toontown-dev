@@ -404,8 +404,20 @@ pub(crate) fn draw_transform_apply(cx: &mut Cx, p: TransformParams) -> Result<Tr
     let pivot =
         p.pivot.map(|q| P::new(q.x, q.y)).or_else(|| bounds_of(&d, &objs).map(|b| centre(&b))).unwrap_or_default();
     let m = affine_of(&p, pivot)?;
+    // 02 §13.5 writes the label "Move/Scale/Rotate Object": the three labels of 02 §7.1.1, one per operation
+    // ("Move Object", "Scale Object", "Rotate Object"); a transform combining them, a skew or a matrix keeps the
+    // combined label (C42B-R2-04; SI-141 item 6). A copy is "Copy Object".
+    let single =
+        match (p.translate.is_some(), p.scale.is_some(), p.rotate.is_some(), p.skew.is_some() || p.matrix.is_some()) {
+            (true, false, false, false) => Some("Move Object"),
+            (false, true, false, false) => Some("Scale Object"),
+            (false, false, true, false) => Some("Rotate Object"),
+            _ => None,
+        };
     if p.copy {
         cx.set_label("Copy Object");
+    } else if let Some(label) = single {
+        cx.set_label(label);
     }
     let a = map_objects(cx, &t.id, &objs, &Map::Affine(m), p.copy, &mut changes)?;
     Ok(TransformResult { drawing_id: t.id.as_str().to_owned(), ids: a.ids, changed: a.changed, rev: a.rev })

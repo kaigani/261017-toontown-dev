@@ -409,3 +409,123 @@ fn a_failure_after_fast_path_appends_discards_the_staged_commit() {
     assert!(h.batch(req, tt_executor::Origin::User).is_ok());
     assert_ne!(crate::equivalence::canonical(&h), before);
 }
+
+/// C42B-R2-04: every tool's gesture commits under the undo label 02 §7 gives that tool, and a command sent directly
+/// under the label 02 §13 gives the command (`draw.transform.apply`'s "Move/Scale/Rotate Object" read as 02 §7.1.1's
+/// three labels by operation, so the Select tool's drags and the command agree). One case is held equal to the
+/// command pending a ruling: the Scissor's free-form cut. Each row: the tool, its spec line, the label.
+#[test]
+fn every_tool_commits_under_its_specified_undo_label() {
+    let h = ready();
+    let p = |x: f64, y: f64| (x + 960.0, 540.0 - y);
+    // The e2e fixture: a painted rectangle, an unpainted one, two nearly touching lines on the top layer.
+    ok(&h, "draw.rectangle.add", json!({ "from": { "x": -150, "y": -60 }, "to": { "x": -30, "y": 60 } }));
+    ok(&h, "colour.paint.apply", json!({ "points": [{ "x": -90, "y": 0 }] }));
+    ok(&h, "draw.rectangle.add", json!({ "from": { "x": 30, "y": -60 }, "to": { "x": 150, "y": 60 } }));
+    ok(&h, "draw.line.add", json!({ "from": { "x": -150, "y": 120 }, "to": { "x": -10, "y": 120 }, "layer": "top" }));
+    ok(&h, "draw.line.add", json!({ "from": { "x": -6, "y": 118 }, "to": { "x": 150, "y": 118 }, "layer": "top" }));
+    let select = || {
+        ok(
+            &h,
+            "draw.selection.set",
+            json!({ "by": "rect", "rect": { "x": -160, "y": -70, "width": 140, "height": 140 },
+                                             "rectRule": "inside", "mode": "replace" }),
+        );
+    };
+    let polyline = {
+        let (a, b) = (p(170.0, 100.0), p(220.0, 140.0));
+        let mut e = drag(&[a, a]);
+        e.extend(drag(&[b, b]));
+        e.push(json!({ "type": "doubleClick", "x": b.0, "y": b.1 }));
+        e
+    };
+    let pivot = ok(&h, "draw.drawing.get", json!({}))["pivot"].clone();
+    let (px, py) = (pivot["x"].as_f64().unwrap(), pivot["y"].as_f64().unwrap());
+    let mut free = drag(&[p(-170.0, -80.0), p(-90.0, -80.0), p(-90.0, 80.0), p(-170.0, 80.0), p(-170.0, -80.0)]);
+    for ev in &mut free {
+        ev["modifiers"] = json!(["alt"]);
+    }
+    let mut copy = drag(&[p(-100.0, 10.0), p(-60.0, -20.0)]);
+    for ev in &mut copy {
+        ev["modifiers"] = json!(["alt"]);
+    }
+    // (tool, the spec line of its label, the label, the gesture, whether a selection is made first)
+    let rows: Vec<(&str, u32, &str, Vec<Value>, bool)> = vec![
+        ("brush", 495, "Brush Tool", drag(&[p(-200.0, 160.0), p(-120.0, 190.0), p(-40.0, 170.0)]), false),
+        ("pencil", 504, "Pencil Tool", drag(&[p(-200.0, -120.0), p(-100.0, -150.0), p(0.0, -120.0)]), false),
+        ("rectangle", 513, "Rectangle Tool", drag(&[p(-60.0, -200.0), p(40.0, -140.0)]), false),
+        ("ellipse", 520, "Ellipse Tool", drag(&[p(60.0, -200.0), p(160.0, -140.0)]), false),
+        ("polyline", 537, "Polyline Tool", polyline, false),
+        ("line", 543, "Line Tool", drag(&[p(-200.0, 220.0), p(200.0, 230.0)]), false),
+        ("paint", 564, "Paint", drag(&[p(90.0, 0.0), p(90.0, 0.0)]), false),
+        ("unpaint", 573, "Unpaint", drag(&[p(-90.0, 0.0), p(-90.0, 0.0)]), false),
+        ("paintUnpainted", 582, "Paint Unpainted", drag(&[p(90.0, 0.0), p(90.0, 0.0)]), false),
+        ("closeGap", 603, "Close Gap", drag(&[p(-10.0, 120.0), p(-6.0, 118.0)]), false),
+        ("stroke", 614, "Stroke Tool", drag(&[p(-200.0, 250.0), p(0.0, 260.0)]), false),
+        ("eraser", 639, "Eraser Tool", drag(&[p(-160.0, 0.0), p(-120.0, 10.0), p(-80.0, 0.0)]), false),
+        (
+            "cutter",
+            647,
+            "Cutter Tool",
+            drag(&[p(-170.0, -80.0), p(-90.0, -80.0), p(-90.0, 80.0), p(-170.0, 80.0), p(-170.0, -80.0)]),
+            false,
+        ),
+        ("scissor", 654, "Scissor Tool", drag(&[p(-160.0, -20.0), p(-150.0, 0.0), p(-140.0, 20.0)]), false),
+        // The Scissor's free-form cut (alternate): 02 §7.4.3 says "Scissor Tool"; it runs a polygon cut, labelled
+        // "Cutter Tool" as a command, and the C4.2a reviewer test part_d_equivalence::scissor requires the gesture's
+        // label to equal the command's. Kept equal pending the ruling requested in the C4.2b response (SI-141 item 6).
+        ("scissor", 654, "Cutter Tool", free, false),
+        ("select", 440, "Move Object", drag(&[p(-100.0, 10.0), p(-60.0, -20.0)]), true),
+        ("select", 440, "Copy Object", copy, true),
+        ("select", 440, "Scale Object", drag(&[p(-30.0, 60.0), p(-10.0, 72.0)]), true),
+        ("select", 440, "Rotate Object", drag(&[p(-22.0, 68.0), p(-158.0, 68.0)]), true),
+        ("select", 437, "Change Drawing Pivot", drag(&[p(px, py), p(px + 30.0, py + 20.0)]), false),
+    ];
+    let mut table = Vec::new();
+    for (tool, line, label, events, selected) in rows {
+        ok(&h, "draw.selection.set", json!({ "by": "none" }));
+        if selected {
+            select();
+        }
+        let before = ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap();
+        let env = pointer(&h, tool, events);
+        assert!(env.is_ok(), "{tool} {label}: {env:?}");
+        let hist = ok(&h, "edit.history.get", json!({}));
+        let position = hist["position"].as_u64().unwrap();
+        let got = hist["entries"][usize::try_from(position).unwrap() - 1]["label"].clone();
+        table.push(format!("{tool} (02 line {line}): spec {label:?}, product {got}"));
+        assert_eq!((position, got), (before + 1, json!(label)), "{tool}: one step labelled as 02 line {line} says");
+        ok(&h, "edit.undo", json!({}));
+    }
+    eprintln!("{}", table.join("\n"));
+    // Sent directly, each command carries its own label (02 §13): the Select tool's command differs from its gestures.
+    select();
+    let direct = [
+        // 02 §13.5's "Move/Scale/Rotate Object" names 02 §7.1.1's labels by operation; a combination keeps it whole.
+        ("draw.transform.apply", json!({ "translate": { "x": 5, "y": 0 } }), "Move Object"),
+        ("draw.transform.apply", json!({ "scale": { "x": 1.1, "y": 1.1 } }), "Scale Object"),
+        ("draw.transform.apply", json!({ "rotate": 5 }), "Rotate Object"),
+        ("draw.transform.apply", json!({ "translate": { "x": 5, "y": 0 }, "rotate": 5 }), "Move/Scale/Rotate Object"),
+        ("draw.transform.apply", json!({ "translate": { "x": 5, "y": 0 }, "copy": true }), "Copy Object"),
+        (
+            "draw.rectangle.add",
+            json!({ "from": { "x": 300, "y": 300 }, "to": { "x": 340, "y": 330 } }),
+            "Rectangle Tool",
+        ),
+        ("draw.ellipse.add", json!({ "from": { "x": 300, "y": 300 }, "to": { "x": 340, "y": 330 } }), "Ellipse Tool"),
+        ("draw.line.add", json!({ "from": { "x": 300, "y": 300 }, "to": { "x": 340, "y": 330 } }), "Line Tool"),
+        ("draw.pivot.set", json!({ "point": { "x": 1, "y": 2 } }), "Change Drawing Pivot"),
+        (
+            "draw.cut.apply",
+            json!({ "polygon": [{ "x": 20, "y": -70 }, { "x": 160, "y": -70 }, { "x": 160, "y": 70 }] }),
+            "Cutter Tool",
+        ),
+        ("draw.cut.apply", json!({ "rect": { "x": 20, "y": -70, "width": 50, "height": 50 } }), "Scissor Tool"),
+    ];
+    for (command, params, label) in direct {
+        ok(&h, command, params);
+        let hist = ok(&h, "edit.history.get", json!({}));
+        let position = usize::try_from(hist["position"].as_u64().unwrap()).unwrap();
+        assert_eq!(hist["entries"][position - 1]["label"], json!(label), "{command} sent directly");
+    }
+}

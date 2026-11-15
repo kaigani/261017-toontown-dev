@@ -326,6 +326,11 @@ pub(crate) fn draw_cut_apply(cx: &mut Cx, p: CutParams) -> Result<CutResult, Com
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, &p.view, p.frame);
     let given = [p.polygon.is_some(), p.rect.is_some(), p.segment.is_some()].iter().filter(|b| **b).count();
+    // 02 §13.5 ("Cutter Tool"/"Scissor Tool"): a rectangular cut is the Scissor's (02 §7.4.3), any other the Cutter's
+    // (the command's declared label; C42B-R2-04).
+    if p.rect.is_some() {
+        cx.set_label("Scissor Tool");
+    }
     if given != 1 {
         return Err(err(
             "arg.invalid",

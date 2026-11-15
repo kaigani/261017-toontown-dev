@@ -55,8 +55,15 @@ struct Common<'a> {
     symmetry: bool,
 }
 
-/// Adds a pencil path through `draw.stroke.add`: corner points, or a Bézier list.
-fn add(cx: &mut Cx, c: &Common<'_>, geometry: Value, closed: bool) -> Result<ShapeResult, CommandError> {
+/// Adds a pencil path through `draw.stroke.add`: corner points, or a Bézier list. The step keeps the shape's own undo
+/// label (`label`: 02 §7.2, §13.5; C42B-R2-04), not the stroke command's "Pencil Tool".
+fn add(
+    cx: &mut Cx,
+    c: &Common<'_>,
+    geometry: Value,
+    closed: bool,
+    label: &'static str,
+) -> Result<ShapeResult, CommandError> {
     let mut v = json!({ "kind": "pencil", "fit": false, "closed": closed, "layer": c.layer, "symmetry": c.symmetry });
     if let Some(o) = v.as_object_mut() {
         if let Some(m) = geometry.as_object() {
@@ -81,6 +88,7 @@ fn add(cx: &mut Cx, c: &Common<'_>, geometry: Value, closed: bool) -> Result<Sha
     let p: StrokeAddParams = serde_json::from_value(v)
         .map_err(|e| err("arg.invalid", format!("shape parameters: {e}"), json!({ "pointer": "" })))?;
     let r = serde_json::to_value(draw_stroke_add(cx, p)?).map_err(|e| CommandError::internal(e.to_string()))?;
+    cx.set_label(label);
     let ids = |k: &str| -> Vec<String> {
         r.get(k).and_then(Value::as_array).into_iter().flatten().filter_map(Value::as_str).map(str::to_owned).collect()
     };
@@ -207,7 +215,7 @@ pub(crate) fn draw_rectangle_add(cx: &mut Cx, p: BoxShapeParams) -> Result<Shape
     // Counter-clockwise from the lower-left corner (y up).
     let (x0, x1, y0, y1) = (a.x.min(b.x), a.x.max(b.x), a.y.min(b.y), a.y.max(b.y));
     let pts = [P::new(x0, y0), P::new(x1, y0), P::new(x1, y1), P::new(x0, y1)];
-    add(cx, &p.common(), points_json(&pts), true)
+    add(cx, &p.common(), points_json(&pts), true, "Rectangle Tool")
 }
 
 /// The Bézier constant of a quarter circle.
@@ -315,7 +323,7 @@ pub(crate) fn draw_ellipse_add(cx: &mut Cx, p: EllipseParams) -> Result<ShapeRes
         P::new(cx0 + rx, cy0 - ky),
     ];
     let bezier = json!({ "bezier": list.iter().map(|q| json!({ "x": q.x, "y": q.y })).collect::<Vec<_>>() });
-    add(cx, &p.common(), bezier, true)
+    add(cx, &p.common(), bezier, true, "Ellipse Tool")
 }
 
 /// `draw.line.add` parameters.
@@ -430,7 +438,7 @@ pub(crate) fn draw_line_add(cx: &mut Cx, p: LineParams) -> Result<ShapeResult, C
         layer: &p.layer,
         symmetry: p.symmetry,
     };
-    let r = add(cx, &c, points_json(&[from, to]), false)?;
+    let r = add(cx, &c, points_json(&[from, to]), false, "Line Tool")?;
     remember_line_end(cx, &r.drawing_id, to);
     Ok(r)
 }
@@ -603,5 +611,5 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
         layer: &p.layer,
         symmetry: p.symmetry,
     };
-    add(cx, &c, bezier, p.closed)
+    add(cx, &c, bezier, p.closed, "Polyline Tool")
 }
