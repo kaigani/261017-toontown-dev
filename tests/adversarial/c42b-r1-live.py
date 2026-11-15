@@ -198,6 +198,40 @@ async def part_d(s,part,rc,state,mapping,dr):
             if (values.get('display.canvasBackendMeasured') or {}).get('fingerprint'): break
         save('d1-auto.json',{'prefs':prefs,'canvas':await c.canvas_state(s)})
         return
+    if part.startswith('d2-exact-'):
+        hidden=part.endswith('headless')
+        if hidden:
+            await rc('window.panel.set',{'panelId':'drawingView','visible':False});await settle(s)
+        out=[]
+        for tool in ['brush','rectangle','select']:
+            ev=events()
+            if tool=='select':
+                pt=c.apply(mapping['drawingToView'],-120,0);ev=c.drag([pt,pt])
+            before=await state();env=await pointer(tool,ev);after=await state()
+            if not hidden:await snap(part+'-'+tool)
+            out.append({'tool':tool,'events':ev,'response':env,'drawing':after['drawing']['result'],'selection':after['selection']['result']})
+            delta=after['history']['result']['position']-before['history']['result']['position']
+            for _ in range(delta):await rc('edit.undo')
+            await rc('draw.selection.set',{'by':'none'})
+        save(part+'.json',out)
+        if hidden:
+            import re
+            def canonical(value):
+                ids={}
+                def walk(v):
+                    if isinstance(v,dict):return {k:walk(x) for k,x in v.items() if k!='rev'}
+                    if isinstance(v,list):return [walk(x) for x in v]
+                    if isinstance(v,str):
+                        def sub(m):
+                            key=m[0];ids.setdefault(key,key.split('_')[0]+'_'+str(len(ids)));return ids[key]
+                        return re.sub(r'[a-z]+_[0-9A-Z]{26}',sub,v)
+                    return v
+                return walk(value)
+            attached=json.loads((O/'d2-exact-attached.json').read_text())
+            comparisons=[{'tool':a['tool'],'eventsEqual':a['events']==b['events'],'drawingEqual':canonical(a['drawing'])==canonical(b['drawing']),'selectionEqual':canonical(a['selection'])==canonical(b['selection'])} for a,b in zip(attached,out)]
+            save('d2-exact-comparison.json',comparisons)
+            assert all(all(v for k,v in row.items() if k!='tool') for row in comparisons)
+        return
     if part=='d2':
         async def equivalence(tools):
             out=[]

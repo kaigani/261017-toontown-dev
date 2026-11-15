@@ -1,0 +1,1207 @@
+[
+  {
+    "tool": "brush",
+    "events": [
+      {
+        "type": "down",
+        "x": 270.5,
+        "y": 462.5,
+        "dt": 0
+      },
+      {
+        "type": "move",
+        "x": 350.5,
+        "y": 457.5,
+        "dt": 16
+      },
+      {
+        "type": "move",
+        "x": 430.5,
+        "y": 462.5,
+        "dt": 16
+      },
+      {
+        "type": "up",
+        "x": 510.5,
+        "y": 457.5,
+        "dt": 16
+      }
+    ],
+    "response": {
+      "status": "ok",
+      "result": {
+        "commands": [
+          {
+            "commandId": "tool.active.set",
+            "params": {
+              "toolId": "brush"
+            },
+            "envelope": {
+              "status": "ok",
+              "result": {
+                "toolId": "brush"
+              },
+              "changes": [],
+              "warnings": [],
+              "documentRev": 4
+            }
+          },
+          {
+            "commandId": "draw.stroke.add",
+            "params": {
+              "kind": "brush",
+              "points": [
+                {
+                  "x": -180.0,
+                  "y": -140.0,
+                  "pressure": 1.0
+                },
+                {
+                  "x": -100.0,
+                  "y": -135.0,
+                  "pressure": 1.0
+                },
+                {
+                  "x": -20.0,
+                  "y": -140.0,
+                  "pressure": 1.0
+                },
+                {
+                  "x": 60.0,
+                  "y": -135.0,
+                  "pressure": 1.0
+                }
+              ],
+              "fit": true,
+              "penId": "pen_01M7EQETBTCD6XYAJJ4MYFQN75",
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C",
+              "layer": "auto",
+              "symmetry": true
+            },
+            "envelope": {
+              "status": "ok",
+              "result": {
+                "drawingId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+                "createdDrawing": false,
+                "strokeIds": [
+                  "st_01K7JJN80018MXQ08CP067HHTQ"
+                ],
+                "zoneIds": [],
+                "layerId": "nd_01K7JJN801PWP426003QN84883",
+                "createdIds": [
+                  "st_01K7JJN80018MXQ08CP067HHTQ",
+                  "nd_01K7JJN801PWP426003QN84883"
+                ],
+                "modifiedIds": [],
+                "removedIds": [],
+                "rev": 5,
+                "hints": []
+              },
+              "changes": [
+                {
+                  "id": "dr_01K7JJN800SBYE8ZEWJV1DW71D/st_01K7JJN80018MXQ08CP067HHTQ",
+                  "type": "stroke",
+                  "op": "created",
+                  "rev": 5,
+                  "parentId": "dr_01K7JJN800SBYE8ZEWJV1DW71D/nd_01K7JJN801PWP426003QN84883",
+                  "index": 0
+                },
+                {
+                  "id": "dr_01K7JJN800SBYE8ZEWJV1DW71D/nd_01K7JJN801PWP426003QN84883",
+                  "type": "drawingNode",
+                  "op": "created",
+                  "rev": 5,
+                  "parentId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+                  "index": 1
+                },
+                {
+                  "id": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+                  "type": "drawing",
+                  "op": "modified",
+                  "rev": 5,
+                  "patch": [
+                    {
+                      "op": "add",
+                      "path": "/nodes/1",
+                      "value": {
+                        "id": "nd_01K7JJN801PWP426003QN84883",
+                        "type": "drawingNode"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "undo": {
+                "stepId": "u-4",
+                "label": "Brush Tool"
+              },
+              "warnings": [],
+              "documentRev": 5
+            }
+          }
+        ],
+        "hover": {
+          "viewId": "drawingView",
+          "view": {
+            "x": 510.5,
+            "y": 457.5
+          },
+          "drawing": {
+            "x": 60.0,
+            "y": -135.0
+          },
+          "objects": [
+            {
+              "elementId": "el_01K7JJN800EMWWHQKEWG5GNGAR",
+              "drawingId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+              "layerId": "nd_01K7JJN801PWP426003QN84883",
+              "objectId": "st_01K7JJN80018MXQ08CP067HHTQ",
+              "kind": "brush",
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C"
+            }
+          ]
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 5
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+      "elementId": "el_01K7JJN800EMWWHQKEWG5GNGAR",
+      "name": "1",
+      "rev": 5,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -184.02260325018926,
+        "y": -144.04754438834885,
+        "width": 308.02260325018926,
+        "height": 228.04754438834885
+      },
+      "nodes": [
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN80181QF5AATF4WS7MNB",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800J36RDY2C7S1YBVBN",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -80.0
+                }
+              ],
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -124.0,
+                "y": -84.0,
+                "width": 248.0,
+                "height": 168.0
+              },
+              "leftZoneId": "zn_QPA37WH9MM5P3TXXJVGGR3BVPW",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_QPA37WH9MM5P3TXXJVGGR3BVPW",
+              "colourId": null,
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800J36RDY2C7S1YBVBN"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 38400,
+              "bounds": {
+                "x": -120,
+                "y": -80,
+                "width": 240,
+                "height": 160
+              },
+              "interiorPoint": {
+                "x": 0,
+                "y": -68.5703125
+              }
+            }
+          ]
+        },
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN801PWP426003QN84883",
+          "layerKind": "brush",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN80018MXQ08CP067HHTQ",
+              "kind": "brush",
+              "closed": false,
+              "bezier": [
+                {
+                  "x": -180.0,
+                  "y": -140.0
+                },
+                {
+                  "x": -153.33333333333334,
+                  "y": -138.33333333333334
+                },
+                {
+                  "x": -126.71869923646899,
+                  "y": -135.0
+                },
+                {
+                  "x": -100.0,
+                  "y": -135.0
+                },
+                {
+                  "x": -73.28130076353101,
+                  "y": -135.0
+                },
+                {
+                  "x": -46.71869923646899,
+                  "y": -140.0
+                },
+                {
+                  "x": -20.0,
+                  "y": -140.0
+                },
+                {
+                  "x": 6.718699236468996,
+                  "y": -140.0
+                },
+                {
+                  "x": 33.33333333333333,
+                  "y": -136.66666666666666
+                },
+                {
+                  "x": 60.0,
+                  "y": -135.0
+                }
+              ],
+              "pressure": [
+                {
+                  "t": 0.0,
+                  "p": 1.0
+                },
+                {
+                  "t": 1.0,
+                  "p": 1.0
+                }
+              ],
+              "penId": "pen_01M7EQETBTCD6XYAJJ4MYFQN75",
+              "pen": {
+                "tipShape": "round",
+                "minSize": 2.0,
+                "maxSize": 8.0,
+                "tipAngle": 0.0
+              },
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C",
+              "textureMatrix": null,
+              "outline": [
+                [
+                  {
+                    "x": -184.0,
+                    "y": -139.5625
+                  },
+                  {
+                    "x": -184.22678903473627,
+                    "y": -141.64139948508242
+                  },
+                  {
+                    "x": -182.72086433826726,
+                    "y": -143.62780451294668
+                  },
+                  {
+                    "x": -180.65625,
+                    "y": -143.96875
+                  },
+                  {
+                    "x": -179.131549721221,
+                    "y": -144.2205353671378
+                  },
+                  {
+                    "x": -176.48037329153223,
+                    "y": -143.79780064867975
+                  },
+                  {
+                    "x": -174.85625,
+                    "y": -143.690625
+                  },
+                  {
+                    "x": -170.48082456989633,
+                    "y": -143.40189134217604
+                  },
+                  {
+                    "x": -166.10992748223975,
+                    "y": -143.032483190227
+                  },
+                  {
+                    "x": -161.73854166666666,
+                    "y": -142.68854166666668
+                  },
+                  {
+                    "x": -136.3429977922432,
+                    "y": -140.69041511817147
+                  },
+                  {
+                    "x": -110.89286162772038,
+                    "y": -138.01966594772338
+                  },
+                  {
+                    "x": -85.390625,
+                    "y": -139.453125
+                  },
+                  {
+                    "x": -65.16504908684904,
+                    "y": -140.58998743694798
+                  },
+                  {
+                    "x": -45.0669608194264,
+                    "y": -143.52603361704865
+                  },
+                  {
+                    "x": -24.796875,
+                    "y": -143.96875
+                  },
+                  {
+                    "x": -6.828599816158967,
+                    "y": -144.361192827728
+                  },
+                  {
+                    "x": 11.168168571669742,
+                    "y": -142.92341481506307
+                  },
+                  {
+                    "x": 29.058333333333334,
+                    "y": -141.425
+                  },
+                  {
+                    "x": 38.072344720294055,
+                    "y": -140.6700193508384
+                  },
+                  {
+                    "x": 47.08840628209656,
+                    "y": -139.8820943823998
+                  },
+                  {
+                    "x": 56.114583333333336,
+                    "y": -139.28645833333334
+                  },
+                  {
+                    "x": 58.61791342042805,
+                    "y": -139.1212639621037
+                  },
+                  {
+                    "x": 61.93973018099149,
+                    "y": -139.528636252152
+                  },
+                  {
+                    "x": 63.4296875,
+                    "y": -137.0625
+                  },
+                  {
+                    "x": 63.79371784746964,
+                    "y": -136.45996701108473
+                  },
+                  {
+                    "x": 64.03125,
+                    "y": -135.713874817623
+                  },
+                  {
+                    "x": 64.03125,
+                    "y": -135.0
+                  },
+                  {
+                    "x": 64.03125,
+                    "y": -132.90517591645147
+                  },
+                  {
+                    "x": 62.29963533426603,
+                    "y": -131.0968552883387
+                  },
+                  {
+                    "x": 60.21875,
+                    "y": -130.984375
+                  },
+                  {
+                    "x": 58.465499384714164,
+                    "y": -130.88960469647103
+                  },
+                  {
+                    "x": 56.593369834349495,
+                    "y": -131.21320899314742
+                  },
+                  {
+                    "x": 54.840625,
+                    "y": -131.32916666666668
+                  },
+                  {
+                    "x": 50.18777173810392,
+                    "y": -131.6369890198709
+                  },
+                  {
+                    "x": 45.53875238423225,
+                    "y": -132.0185385639051
+                  },
+                  {
+                    "x": 40.890625,
+                    "y": -132.390625
+                  },
+                  {
+                    "x": 14.9972375055453,
+                    "y": -134.46341205482966
+                  },
+                  {
+                    "x": -10.883725982129452,
+                    "y": -137.0101968136172
+                  },
+                  {
+                    "x": -36.880208333333336,
+                    "y": -135.38541666666666
+                  },
+                  {
+                    "x": -56.19693346764535,
+                    "y": -134.17812134577193
+                  },
+                  {
+                    "x": -75.41478378041828,
+                    "y": -131.4542305414571
+                  },
+                  {
+                    "x": -94.78125,
+                    "y": -131.03125
+                  },
+                  {
+                    "x": -113.02783019211071,
+                    "y": -130.6327287477544
+                  },
+                  {
+                    "x": -131.31407380409368,
+                    "y": -132.09638692248126
+                  },
+                  {
+                    "x": -149.48125,
+                    "y": -133.621875
+                  },
+                  {
+                    "x": -158.22621248644936,
+                    "y": -134.35618482710638
+                  },
+                  {
+                    "x": -166.9743268894957,
+                    "y": -135.12838197747965
+                  },
+                  {
+                    "x": -175.73125,
+                    "y": -135.70625
+                  },
+                  {
+                    "x": -178.77677539027349,
+                    "y": -135.90722375671848
+                  },
+                  {
+                    "x": -183.5460948143004,
+                    "y": -135.4017024644204
+                  }
+                ]
+              ],
+              "bounds": {
+                "x": -184.02260325018926,
+                "y": -144.04754438834885,
+                "width": 248.05385325018926,
+                "height": 13.082656499879562
+              }
+            }
+          ],
+          "zones": []
+        }
+      ]
+    },
+    "selection": {
+      "selectedIds": [],
+      "bounds": null,
+      "selectedPoints": []
+    }
+  },
+  {
+    "tool": "rectangle",
+    "events": [
+      {
+        "type": "down",
+        "x": 270.5,
+        "y": 462.5,
+        "dt": 0
+      },
+      {
+        "type": "move",
+        "x": 350.5,
+        "y": 457.5,
+        "dt": 16
+      },
+      {
+        "type": "move",
+        "x": 430.5,
+        "y": 462.5,
+        "dt": 16
+      },
+      {
+        "type": "up",
+        "x": 510.5,
+        "y": 457.5,
+        "dt": 16
+      }
+    ],
+    "response": {
+      "status": "ok",
+      "result": {
+        "commands": [
+          {
+            "commandId": "tool.active.set",
+            "params": {
+              "toolId": "rectangle"
+            },
+            "envelope": {
+              "status": "ok",
+              "result": {
+                "toolId": "rectangle"
+              },
+              "changes": [],
+              "warnings": [],
+              "documentRev": 6
+            }
+          },
+          {
+            "commandId": "draw.rectangle.add",
+            "params": {
+              "from": {
+                "x": -180.0,
+                "y": -140.0
+              },
+              "to": {
+                "x": 60.0,
+                "y": -135.0
+              },
+              "square": false,
+              "fromCentre": false,
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C",
+              "thickness": 8.0,
+              "penId": "pen_01M7EQETBTCD6XYAJJ4MYFQN75",
+              "layer": "auto",
+              "symmetry": true
+            },
+            "envelope": {
+              "status": "ok",
+              "result": {
+                "drawingId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+                "strokeIds": [
+                  "st_01K7JJN800B64HC9WRM1N6QTZT"
+                ],
+                "zoneIds": [
+                  "zn_55BY4GC66GRFPM6JQV6G13QTPY"
+                ],
+                "layerId": "nd_01K7JJN801V6GQ1SG02VQQDD0Y",
+                "createdIds": [
+                  "st_01K7JJN800B64HC9WRM1N6QTZT",
+                  "nd_01K7JJN801V6GQ1SG02VQQDD0Y",
+                  "zn_55BY4GC66GRFPM6JQV6G13QTPY"
+                ],
+                "modifiedIds": [],
+                "removedIds": [],
+                "rev": 7
+              },
+              "changes": [
+                {
+                  "id": "dr_01K7JJN800SBYE8ZEWJV1DW71D/st_01K7JJN800B64HC9WRM1N6QTZT",
+                  "type": "stroke",
+                  "op": "created",
+                  "rev": 7,
+                  "parentId": "dr_01K7JJN800SBYE8ZEWJV1DW71D/nd_01K7JJN801V6GQ1SG02VQQDD0Y",
+                  "index": 0
+                },
+                {
+                  "id": "dr_01K7JJN800SBYE8ZEWJV1DW71D/nd_01K7JJN801V6GQ1SG02VQQDD0Y",
+                  "type": "drawingNode",
+                  "op": "created",
+                  "rev": 7,
+                  "parentId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+                  "index": 1
+                },
+                {
+                  "id": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+                  "type": "drawing",
+                  "op": "modified",
+                  "rev": 7,
+                  "patch": [
+                    {
+                      "op": "add",
+                      "path": "/nodes/1",
+                      "value": {
+                        "id": "nd_01K7JJN801V6GQ1SG02VQQDD0Y",
+                        "type": "drawingNode"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "undo": {
+                "stepId": "u-5",
+                "label": "Pencil Tool"
+              },
+              "warnings": [],
+              "documentRev": 7
+            }
+          }
+        ],
+        "hover": {
+          "viewId": "drawingView",
+          "view": {
+            "x": 510.5,
+            "y": 457.5
+          },
+          "drawing": {
+            "x": 60.0,
+            "y": -135.0
+          },
+          "objects": [
+            {
+              "elementId": "el_01K7JJN800EMWWHQKEWG5GNGAR",
+              "drawingId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+              "layerId": "nd_01K7JJN801V6GQ1SG02VQQDD0Y",
+              "objectId": "st_01K7JJN800B64HC9WRM1N6QTZT",
+              "kind": "pencil",
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C"
+            }
+          ]
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 7
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+      "elementId": "el_01K7JJN800EMWWHQKEWG5GNGAR",
+      "name": "1",
+      "rev": 7,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -184.0,
+        "y": -144.0,
+        "width": 308.0,
+        "height": 228.0
+      },
+      "nodes": [
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN80181QF5AATF4WS7MNB",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800J36RDY2C7S1YBVBN",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -80.0
+                }
+              ],
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -124.0,
+                "y": -84.0,
+                "width": 248.0,
+                "height": 168.0
+              },
+              "leftZoneId": "zn_QPA37WH9MM5P3TXXJVGGR3BVPW",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_QPA37WH9MM5P3TXXJVGGR3BVPW",
+              "colourId": null,
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800J36RDY2C7S1YBVBN"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 38400,
+              "bounds": {
+                "x": -120,
+                "y": -80,
+                "width": 240,
+                "height": 160
+              },
+              "interiorPoint": {
+                "x": 0,
+                "y": -68.5703125
+              }
+            }
+          ]
+        },
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN801V6GQ1SG02VQQDD0Y",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800B64HC9WRM1N6QTZT",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -180.0,
+                  "y": -140.0
+                },
+                {
+                  "x": -180.0,
+                  "y": -140.0
+                },
+                {
+                  "x": 60.0,
+                  "y": -140.0
+                },
+                {
+                  "x": 60.0,
+                  "y": -140.0
+                },
+                {
+                  "x": 60.0,
+                  "y": -140.0
+                },
+                {
+                  "x": 60.0,
+                  "y": -135.0
+                },
+                {
+                  "x": 60.0,
+                  "y": -135.0
+                },
+                {
+                  "x": 60.0,
+                  "y": -135.0
+                },
+                {
+                  "x": -180.0,
+                  "y": -135.0
+                },
+                {
+                  "x": -180.0,
+                  "y": -135.0
+                },
+                {
+                  "x": -180.0,
+                  "y": -135.0
+                },
+                {
+                  "x": -180.0,
+                  "y": -140.0
+                }
+              ],
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -184.0,
+                "y": -144.0,
+                "width": 248.0,
+                "height": 13.0
+              },
+              "leftZoneId": "zn_55BY4GC66GRFPM6JQV6G13QTPY",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_55BY4GC66GRFPM6JQV6G13QTPY",
+              "colourId": null,
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800B64HC9WRM1N6QTZT"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 1200,
+              "bounds": {
+                "x": -180,
+                "y": -140,
+                "width": 240,
+                "height": 5
+              },
+              "interiorPoint": {
+                "x": -60,
+                "y": -139.6484375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "selection": {
+      "selectedIds": [],
+      "bounds": null,
+      "selectedPoints": []
+    }
+  },
+  {
+    "tool": "select",
+    "events": [
+      {
+        "type": "down",
+        "x": 330.5,
+        "y": 322.5,
+        "dt": 0
+      },
+      {
+        "type": "up",
+        "x": 330.5,
+        "y": 322.5,
+        "dt": 16
+      }
+    ],
+    "response": {
+      "status": "ok",
+      "result": {
+        "commands": [
+          {
+            "commandId": "tool.active.set",
+            "params": {
+              "toolId": "select"
+            },
+            "envelope": {
+              "status": "ok",
+              "result": {
+                "toolId": "select"
+              },
+              "changes": [],
+              "warnings": [],
+              "documentRev": 8
+            }
+          },
+          {
+            "commandId": "draw.selection.set",
+            "params": {
+              "by": "point",
+              "point": {
+                "x": -120.0,
+                "y": 0.0
+              },
+              "mode": "replace"
+            },
+            "envelope": {
+              "status": "ok",
+              "result": {
+                "selectedIds": [
+                  "st_01K7JJN800J36RDY2C7S1YBVBN"
+                ],
+                "bounds": {
+                  "x": -124.0,
+                  "y": -84.0,
+                  "width": 248.0,
+                  "height": 168.0
+                }
+              },
+              "changes": [],
+              "warnings": [],
+              "documentRev": 8
+            }
+          }
+        ],
+        "hover": {
+          "viewId": "drawingView",
+          "view": {
+            "x": 330.5,
+            "y": 322.5
+          },
+          "drawing": {
+            "x": -120.0,
+            "y": 0.0
+          },
+          "objects": [
+            {
+              "elementId": "el_01K7JJN800EMWWHQKEWG5GNGAR",
+              "drawingId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+              "layerId": "nd_01K7JJN80181QF5AATF4WS7MNB",
+              "objectId": "st_01K7JJN800J36RDY2C7S1YBVBN",
+              "kind": "pencil",
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C"
+            }
+          ]
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 8
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN800SBYE8ZEWJV1DW71D",
+      "elementId": "el_01K7JJN800EMWWHQKEWG5GNGAR",
+      "name": "1",
+      "rev": 8,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -124.0,
+        "y": -84.0,
+        "width": 248.0,
+        "height": 168.0
+      },
+      "nodes": [
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN80181QF5AATF4WS7MNB",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800J36RDY2C7S1YBVBN",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 80.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -80.0
+                }
+              ],
+              "colourId": "col_01M7EQETBTCD6XYAJJ4MYFQN3C",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -124.0,
+                "y": -84.0,
+                "width": 248.0,
+                "height": 168.0
+              },
+              "leftZoneId": "zn_QPA37WH9MM5P3TXXJVGGR3BVPW",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_QPA37WH9MM5P3TXXJVGGR3BVPW",
+              "colourId": null,
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800J36RDY2C7S1YBVBN"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 38400,
+              "bounds": {
+                "x": -120,
+                "y": -80,
+                "width": 240,
+                "height": 160
+              },
+              "interiorPoint": {
+                "x": 0,
+                "y": -68.5703125
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "selection": {
+      "selectedIds": [
+        "st_01K7JJN800J36RDY2C7S1YBVBN"
+      ],
+      "bounds": {
+        "x": -124.0,
+        "y": -84.0,
+        "width": 248.0,
+        "height": 168.0
+      },
+      "selectedPoints": []
+    }
+  }
+]
