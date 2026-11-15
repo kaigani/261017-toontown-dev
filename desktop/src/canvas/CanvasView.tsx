@@ -1,6 +1,8 @@
-// The interactive canvas of a Drawing view window (M4 C4.2b; design notes 1 and 2). One per window (D-7a): its own
-// model (the pull loop), back end and frame loop. The canvas follows the kernel: the composition from `canvas_scene`,
-// geometry from `canvas_load`, the mapping from `shell.view` and `draw.viewMapping.get` (it never derives a mapping).
+// The interactive canvas of a Drawing or Camera view window (M4 C4.2b, C4.3b; design notes 1 and 2, camera-view note
+// §6). One per window (D-7a): its own model (the pull loop), back end and frame loop. The canvas follows the kernel:
+// the composition from `canvas_scene` (its `viewType` decides which view it draws), geometry from `canvas_load`, the
+// drawing mapping from `shell.view` (Drawing view) and `draw.viewMapping.get` (both views), the Camera view's
+// occurrence matrices and overlays from the scene answer (it never derives a mapping or a projection: CV3).
 //
 // The element's `data-tt-value` carries what the canvas shows (back end, generation, each resident drawing and its
 // revision), so the UI tree (`inspect_ui`) and the running-application tests can check it.
@@ -26,6 +28,7 @@ import { fingerprint, HEIGHT as MEASURE_H, measureBackends, WIDTH as MEASURE_W }
 import { createWebGL2 } from './webgl2';
 import { createWebGPU } from './webgpu';
 import { canvasLaunch } from './launch';
+import { cameraGridMatrix, cameraOverlay } from './cameraOverlay';
 import { CanvasMetrics } from './metrics';
 import { CanvasModel } from './model';
 import { selectionCursor, selectionOverlay, type SelectionOverlay } from './selection';
@@ -89,6 +92,13 @@ export function CanvasView({
     let selection: SelectionOverlay = selectionOverlay(null, null, '', IDENTITY);
     let selectionKey = '';
     let lastColours: unknown = null;
+    // The Camera view (camera-view note §6): the scene tool and family (SI-148, SI-152: a new session runs the scene
+    // tools, Select), the active view for click-to-activate (V9), the drawing mapping asked again per scene revision.
+    let sceneTool = 'select';
+    let sceneFamily = true;
+    let activeView: string | null = null;
+    let mappedVersion = -1;
+    let cameraShown: ReturnType<typeof cameraOverlay>['shown'] | null = null;
     let summary = '';
     let raf = 0;
     let stopped = false;
@@ -118,6 +128,25 @@ export function CanvasView({
             : 1;
       const ink = (currentColour ? model?.scene?.colours[currentColour] : undefined) ?? ACCENT;
       style = { tool, ink, width };
+    };
+    const refreshSceneTool = () => {
+      void engine
+        .run('anim.tool.get', {})
+        .done.then((env) => {
+          const t = (env.result as Record<string, unknown> | undefined)?.['tool'];
+          if (typeof t === 'string') sceneTool = t;
+          viewVersion++;
+        })
+        .catch(() => undefined);
+    };
+    const refreshActiveView = () => {
+      void engine
+        .run('app.state.get', {})
+        .done.then((env) => {
+          const v = (env.result as Record<string, unknown> | undefined)?.['activeView'];
+          if (typeof v === 'string') activeView = v;
+        })
+        .catch(() => undefined);
     };
     const refreshTool = () => {
       void engine.run('tool.active.get', {}).done.then((env) => {
@@ -340,6 +369,12 @@ export function CanvasView({
           model?.setGeneration(event.generation);
         }
         if (event.name === 'tool.active.changed' || event.name === 'tool.pen.changed') refreshTool();
+        // SI-148: the family chosen last runs in the Camera view.
+        if (event.name === 'tool.active.changed') sceneFamily = false;
+        if (event.name === 'anim.tool.changed') {
+          sceneFamily = true;
+          refreshSceneTool();
+        }
         if (event.name === 'prefs.changed') {
           const keys = (event.payload as { keys?: unknown } | null)?.keys;
           if (Array.isArray(keys) && keys.some((k) => DISPLAY_PREFS.includes(String(k))))
@@ -352,13 +387,23 @@ export function CanvasView({
         }
         if (event.name === 'shell.view') {
           const p = event.payload as Record<string, unknown> | null;
-          const m = asAffine(p?.['drawingToView']);
-          if (p?.['viewId'] === viewId && m) {
-            d2v = m;
-            viewVersion++;
-            model?.setBucket(bucketOf(scaleOf(m)));
-            refreshStyle();
+          refreshActiveView();
+          if (p?.['viewId'] !== viewId) return;
+          if (p['type'] === 'drawing') {
+            const m = asAffine(p['drawingToView']);
+            if (m) {
+              d2v = m;
+              viewVersion++;
+              model?.setBucket(bucketOf(scaleOf(m)));
+              refreshStyle();
+            }
+            // A Camera view switched back to the Drawing type: its composition changes too.
+            if (model?.scene?.viewType === 'camera') model.markDirty();
+            return;
           }
+          // A Camera view's transform is part of its answer (`cameraToView`) and of its drawing mapping (C43A-R1-01).
+          model?.markDirty();
+          refreshMapping();
           return;
         }
         model?.markDirty();
@@ -387,18 +432,46 @@ export function CanvasView({
         renderer.setColours(scene.colours);
         lastColours = scene.colours;
       }
-      const key = `${String(model.selectionVersion)}/${String(viewVersion)}/${style.tool}`;
+      const camera = scene?.viewType === 'camera' ? scene : null;
+      // The Camera view's drawing mapping depends on the composition (the current element, the frame, the camera):
+      // asked again once per scene revision (C43A-R1-01).
+      if (camera && model.version !== mappedVersion) {
+        mappedVersion = model.version;
+        refreshMapping();
+      }
+      const actingTool = camera && sceneFamily ? sceneTool : style.tool;
+      const key = `${String(model.selectionVersion)}/${String(viewVersion)}/${String(model.version)}/${actingTool}`;
       if (key !== selectionKey) {
         selectionKey = key;
-        selection = selectionOverlay(scene?.selection ?? null, scene?.drawingPivot ?? null, style.tool, d2v);
+        if (camera) {
+          const c = cameraOverlay(camera, size.width, size.height, sceneFamily ? sceneTool : null);
+          selection = {
+            tris: c.tris,
+            shown: { objects: 0, handles: c.handles.length, points: 0, pivot: false },
+            handles: c.handles,
+          };
+          cameraShown = c.shown;
+        } else {
+          selection = selectionOverlay(
+            scene?.selection ?? null,
+            scene?.drawingPivot ?? null,
+            style.tool,
+            d2v,
+          );
+          cameraShown = null;
+        }
       }
       const staticDirty = model.version !== drawnVersion || viewVersion !== drawnView;
       if (staticDirty || collector.active || playing) lastActivity = performance.now();
       if (staticDirty) {
         grid = null;
         if (scene?.grid.visible) {
-          grid = new ViewTris();
-          gridGeometry(scene.grid, d2v, size.width, size.height, grid);
+          // The Camera view's field guide lies on the camera frame (SI-153).
+          const g = camera ? cameraGridMatrix(camera, scene.grid) : d2v;
+          if (g) {
+            grid = new ViewTris();
+            gridGeometry(scene.grid, g, size.width, size.height, grid);
+          }
         }
         drawnVersion = model.version;
         drawnView = viewVersion;
@@ -406,6 +479,7 @@ export function CanvasView({
       renderer.frame({
         scene,
         drawingToView: d2v,
+        cameraToView: camera?.camera?.cameraToView ?? null,
         width: size.width,
         height: size.height,
         dpr,
@@ -432,6 +506,8 @@ export function CanvasView({
         failures: model.failures.slice(-3),
         gesture: lastGesture,
         selection: selection.shown,
+        viewType: scene?.viewType ?? null,
+        ...(cameraShown ? { camera: cameraShown } : {}),
         ...(({ drawn, residentDrawings, residentBytes, lastError }) => ({
           drawn,
           residentDrawings,
@@ -538,6 +614,12 @@ export function CanvasView({
       });
     };
     const onDown = (e: PointerEvent) => {
+      // V9 (answer 4; SI-142): a press in a view window that is not the active view activates it first (user origin,
+      // UI state, no undo step); the same press is then the tool's press.
+      if (activeView !== null && activeView !== viewId) {
+        activeView = viewId;
+        void engine.run('view.active.set', { viewId }).done.catch(() => undefined);
+      }
       if (playing) {
         // P2: the user's press wins; the agent's gesture is discarded before any command.
         void engine.gestureAbort(playing.input.requestId).catch(() => undefined);
@@ -623,6 +705,8 @@ export function CanvasView({
     };
     window.addEventListener(GENERATION_EVENT, onGeneration);
     refreshTool();
+    refreshSceneTool();
+    refreshActiveView();
     let unlistenAgent: (() => void) | null = null;
     void engine
       .onAgentInput((input) => {

@@ -7,7 +7,9 @@
 // one load per drawing are in flight (T3: bound 1). A payload of another generation or of a revision other than the
 // latest scene's is discarded and asked for again (T1, T6).
 
+import { bucketOf } from './bucket';
 import { decodeDrawing, type DecodedDrawing, FormatError } from './format';
+import { compose, scaleOf } from './geometry';
 import { stringifyWireJson } from '../ipc/wireJson';
 import { parseSceneAnswer, residentKey, type Scene, type SceneAnswer } from './scene';
 
@@ -134,6 +136,23 @@ export class CanvasModel {
     return this.bucket;
   }
 
+  /**
+   * The zoom bucket a resident drawing needs in scene `s`: in the Camera view, the bucket of its largest occurrence
+   * (`cameraToView · matrix`; SI-145, CV2: a drawing shown twice is loaded once, at the finer bucket); in the Drawing
+   * view, the view's bucket (`setBucket`).
+   */
+  bucketIn(s: Scene | null, key: string): number {
+    const camera = s?.viewType === 'camera' ? s.camera : null;
+    if (!s || !camera) return this.bucket;
+    let best: number | null = null;
+    for (const e of s.entries) {
+      if (residentKey(e) !== key || !e.matrix) continue;
+      const b = bucketOf(scaleOf(compose(camera.cameraToView, e.matrix)));
+      best = best === null ? b : Math.max(best, b);
+    }
+    return best ?? this.bucket;
+  }
+
   /** Requests in flight (T3). */
   get inFlight(): number {
     return (this.sceneInFlight ? 1 : 0) + this.loading.size;
@@ -173,8 +192,7 @@ export class CanvasModel {
     );
   }
 
-  private requestLoad(key: string, drawingId: string, outline: boolean): void {
-    const bucket = this.bucket;
+  private requestLoad(key: string, drawingId: string, outline: boolean, bucket: number): void {
     this.loading.set(key, bucket);
     this.requestedAt.set(key, this.clock.now());
     this.host.canvasLoad(drawingId, bucket, outline, this.fastPencil).then(
@@ -186,7 +204,8 @@ export class CanvasModel {
   private requestLoadsFor(scene: Scene): void {
     for (const e of scene.entries) {
       const key = residentKey(e);
-      if (!this.loading.has(key) && this.wantedIn(scene, key)) this.requestLoad(key, e.drawingId, e.outline);
+      if (!this.loading.has(key) && this.wantedIn(scene, key))
+        this.requestLoad(key, e.drawingId, e.outline, this.bucketIn(scene, key));
     }
     this.peakInFlight = Math.max(this.peakInFlight, this.inFlight);
   }
@@ -200,7 +219,9 @@ export class CanvasModel {
     if (!s || !e) return false;
     const r = this.resident.get(key);
     if (!r) return true;
-    return r.rev !== e.rev || r.bucket !== this.bucket || (r.paletteBound && r.stamp !== s.paletteStamp);
+    return (
+      r.rev !== e.rev || r.bucket !== this.bucketIn(s, key) || (r.paletteBound && r.stamp !== s.paletteStamp)
+    );
   }
 
   private apply(item: InboxItem): void {
@@ -259,7 +280,7 @@ export class CanvasModel {
           ((d.flags & 1) === 1) !== item.outline ||
           d.generation !== this.generation ||
           d.rev !== entry.rev ||
-          item.bucket !== this.bucket ||
+          item.bucket !== this.bucketIn(this.scene, item.key) ||
           `${DRAWING_PREFIX}${d.drawingUlid}` !== item.drawingId;
         if (stale) {
           // Never shown at another revision (T1) or generation (T6); asked for again when still wanted.
@@ -308,7 +329,7 @@ export class CanvasModel {
       for (const e of this.scene.entries) {
         const key = residentKey(e);
         if (!this.loading.has(key) && this.wanted(key)) {
-          this.requestLoad(key, e.drawingId, e.outline);
+          this.requestLoad(key, e.drawingId, e.outline, this.bucketIn(this.scene, key));
           requested++;
         }
       }

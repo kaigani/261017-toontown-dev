@@ -327,3 +327,71 @@ fn cv3_every_occurrence_carries_its_element_and_matrix() {
         assert!((v[0] * v[3] - v[1] * v[2]).abs() > 1e-12, "{step}");
     }
 }
+
+/// CV5 (camera-view note §6; 05 §3.2 lines 319-321, 02 §10.7; SI-153): the selection display is the composition's.
+/// The table of the three options:
+/// - box highlighting off fades exactly the unselected occurrences (opacity 0.35), on leaves all at 1;
+/// - outline on selection with box highlighting adds one outline entry per selected element, in the highlight colour,
+///   after the occurrences, including a selected hidden one ("even where the element is hidden"); without box
+///   highlighting it adds nothing (it "requires box highlighting");
+/// - selection always visible shows a selected hidden element, and only a selected one.
+///
+/// No option changes a render's bytes (CV4).
+#[test]
+fn cv5_the_selection_display_is_the_compositions_and_never_reaches_a_render() {
+    let h = fixture();
+    let a = square(&h, "SelA", (-2.0, 0.0, 0.0), 0.0);
+    let b = square(&h, "SelB", (2.0, 0.0, 0.0), 0.0);
+    let hidden = square(&h, "SelHidden", (0.0, 1.5, 0.0), 0.0);
+    ok(&h, "element.visibility.set", json!({ "elementIds": [hidden], "scope": "scene", "visible": false }));
+    ok(&h, "edit.selection.set", json!({ "context": "staging", "ids": [a, hidden] }));
+    let render = |h: &ExecutorHandle| {
+        ok(h, "render.frame.run", json!({ "composition": "camera", "scale": 0.25 }))["sha256"].clone()
+    };
+    let before = render(&h);
+    let entries = |h: &ExecutorHandle| scene(h)["entries"].as_array().unwrap().clone();
+    let of = |es: &[Value], id: &str, outline: bool| -> Vec<Value> {
+        es.iter().filter(|e| e["elementId"] == json!(id) && e["outline"] == json!(outline)).cloned().collect()
+    };
+    for (boxes, outline, visible) in [
+        (true, false, false),
+        (false, false, false),
+        (true, true, false),
+        (false, true, false),
+        (true, false, true),
+        (true, true, true),
+        (false, false, true),
+    ] {
+        ok(
+            &h,
+            "drawAid.selectionDisplay.set",
+            json!({ "boxHighlighting": boxes, "outlineOnSelection": outline, "keepSelectionVisible": visible }),
+        );
+        let es = entries(&h);
+        let cell = format!("boxes {boxes} outline {outline} visible {visible}");
+        // Fading: the unselected occurrences (b and the fixture's elements) at 0.35 exactly when box highlighting is off.
+        for e in es.iter().filter(|e| e["outline"] == json!(false)) {
+            let selected = e["elementId"] == json!(a) || e["elementId"] == json!(hidden);
+            let want = if !boxes && !selected { 0.35 } else { 1.0 };
+            assert!((e["opacity"].as_f64().unwrap() - want).abs() < 1e-6, "{cell}: {e}");
+        }
+        assert_eq!(of(&es, &b, false).len(), 1, "{cell}: b shown once");
+        // Selection always visible: the selected hidden element is shown, only then.
+        assert_eq!(of(&es, &hidden, false).len(), usize::from(visible), "{cell}: the hidden selected element");
+        // Outline on selection, with box highlighting: one outline entry per selected element, hidden included, last.
+        let want_outlines = boxes && outline;
+        for id in [&a, &hidden] {
+            let o = of(&es, id, true);
+            assert_eq!(o.len(), usize::from(want_outlines), "{cell}: the outline of {id}");
+            if let Some(o) = o.first() {
+                assert_eq!(o["tint"], json!([32, 128, 255, 255]), "{cell}: the highlight colour");
+            }
+        }
+        assert!(of(&es, &b, true).is_empty(), "{cell}: an unselected element has no outline");
+        if want_outlines {
+            let first_outline = es.iter().position(|e| e["outline"] == json!(true)).unwrap();
+            assert!(es[first_outline..].iter().all(|e| e["outline"] == json!(true)), "{cell}: outlines come last");
+        }
+        assert_eq!(render(&h), before, "{cell}: the render is unchanged (CV4)");
+    }
+}

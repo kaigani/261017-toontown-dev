@@ -10,8 +10,11 @@ export type BackendKind = 'webgpu' | 'webgl2';
 
 export interface FrameInput {
   scene: Scene | null;
-  /** Drawing → view pixels (the announced `drawingToView`). */
+  /** Drawing → view pixels (the announced `drawingToView`): the Drawing view's entries. */
   drawingToView: Affine;
+  /** Camera view: camera output pixels → view pixels (the answer's `cameraToView`); each entry is drawn through it
+   *  composed with its own `matrix` (camera-view note §6). Null in the Drawing view. */
+  cameraToView: Affine | null;
   /** The view's size in CSS pixels (= view pixels). */
   width: number;
   height: number;

@@ -23,6 +23,18 @@ export function invert(m: Affine): Affine | null {
   return [a, b, c, d, -(a * m[4] + c * m[5]), -(b * m[4] + d * m[5])];
 }
 
+/** `a` after `b`: the affine mapping a point through `b`, then through `a`. */
+export function compose(a: Affine, b: Affine): Affine {
+  return [
+    a[0] * b[0] + a[2] * b[1],
+    a[1] * b[0] + a[3] * b[1],
+    a[0] * b[2] + a[2] * b[3],
+    a[1] * b[2] + a[3] * b[3],
+    a[0] * b[4] + a[2] * b[5] + a[4],
+    a[1] * b[4] + a[3] * b[5] + a[5],
+  ];
+}
+
 /** The view's linear scale (view pixels per drawing unit). */
 export function scaleOf(m: Affine): number {
   return Math.sqrt(Math.abs(m[0] * m[3] - m[1] * m[2]));

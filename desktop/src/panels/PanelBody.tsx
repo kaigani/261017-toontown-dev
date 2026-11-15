@@ -102,8 +102,9 @@ export function ViewPanel({ panelId }: { panelId: string }) {
   const actions = useActions();
   const canvas = useRef<HTMLDivElement | null>(null);
   const info = panelInfo(panelId);
-  // The Drawing view's canvas reports its own size (M4 C4.2b); the other view windows keep the placeholder (C4.3).
-  const drawing = panelId === 'drawingView';
+  // The Drawing and Camera view windows show the canvas, which reports its own size (M4 C4.2b, C4.3b; camera-view note
+  // §6: it follows the scene answer's view type); the Top and Side windows keep the placeholder (M6 C6.1).
+  const drawing = panelId === 'drawingView' || panelId === 'cameraView';
   useEffect(() => {
     const el = canvas.current;
     if (drawing || !el || typeof ResizeObserver === 'undefined') return undefined;

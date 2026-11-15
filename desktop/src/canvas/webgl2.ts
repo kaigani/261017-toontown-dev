@@ -7,7 +7,7 @@
 // - layers 1 to 8 render to a cached scene target reused while only the overlay changes (06 §6.9 overlay buffering);
 // - MSAA when `interactiveAntialiasing` is on (06 §6.9).
 
-import { drawFrame, type LayerOps } from './layers';
+import { drawFrame, entryToView, type LayerOps } from './layers';
 import { VERTEX_LEN, type DecodedDrawing, type Rgba as FormatRgba } from './format';
 import type { Affine, ViewTris } from './geometry';
 import { BackendUnavailable, type BackendStats, type FrameInput, type Renderer } from './renderer';
@@ -498,10 +498,18 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
           const d = drawings.get(residentKey(e));
           if (!d) return;
           counters.drawn++;
+          // A Camera-view occurrence through its own matrix (camera-view note §6); a Drawing-view entry through d2c.
+          const m = e.matrix
+            ? drawingToClip(
+                entryToView(e, input.cameraToView, input.drawingToView),
+                input.width,
+                input.height,
+              )
+            : d2c;
           const alpha = Math.max(0, Math.min(1, e.opacity)) * (e.shade ? SHADE_OPACITY : 1);
           if (alpha >= 1) {
             flushGroup();
-            drawMeshes(d, d2c, e.tint);
+            drawMeshes(d, m, e.tint);
             return;
           }
           if (groupAlpha !== alpha) {
@@ -511,7 +519,7 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
             gl.clear(gl.COLOR_BUFFER_BIT);
             groupAlpha = alpha;
           }
-          drawMeshes(d, d2c, e.tint);
+          drawMeshes(d, m, e.tint);
         },
         endStatic() {
           flushGroup();

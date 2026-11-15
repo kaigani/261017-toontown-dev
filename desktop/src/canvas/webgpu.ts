@@ -2,7 +2,7 @@
 // decoded (12-byte vertices; the slot is the first half of a uint16x2), per-drawing slot textures (06 §6.3), gradients
 // per fragment, group opacity through an offscreen target (SI-139), cached static layers (06 §6.9), 4× MSAA.
 
-import { drawFrame, type LayerOps } from './layers';
+import { drawFrame, entryToView, type LayerOps } from './layers';
 import { VERTEX_LEN, type DecodedDrawing, type Rgba as FormatRgba } from './format';
 import { BackendUnavailable, type BackendStats, type FrameInput, type Renderer } from './renderer';
 import { residentKey, type SceneEntry } from './scene';
@@ -541,7 +541,7 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
         pass.setBindGroup(1, t.group);
         pass.draw(3);
       };
-      const drawMeshes = (d: GpuDrawing, tint: SceneEntry['tint']) => {
+      const drawMeshes = (d: GpuDrawing, d2c: Float32Array, tint: SceneEntry['tint']) => {
         if (!pass) return;
         pass.setPipeline(pl.mesh);
         pass.setBindGroup(1, d.slotGroup);
@@ -600,10 +600,18 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
           const d = drawings.get(residentKey(e));
           if (!d) return;
           counters.drawn++;
+          // A Camera-view occurrence through its own matrix (camera-view note §6); a Drawing-view entry through d2c.
+          const m = e.matrix
+            ? drawingToClip(
+                entryToView(e, input.cameraToView, input.drawingToView),
+                input.width,
+                input.height,
+              )
+            : d2c;
           const alpha = Math.max(0, Math.min(1, e.opacity)) * (e.shade ? SHADE_OPACITY : 1);
           if (alpha >= 1) {
             flushGroup();
-            drawMeshes(d, e.tint);
+            drawMeshes(d, m, e.tint);
             return;
           }
           if (groupAlpha !== alpha) {
@@ -611,7 +619,7 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
             begin(group.attachment('clear'));
             groupAlpha = alpha;
           }
-          drawMeshes(d, e.tint);
+          drawMeshes(d, m, e.tint);
         },
         endStatic() {
           flushGroup();

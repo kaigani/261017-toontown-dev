@@ -148,6 +148,7 @@ function frameInput(scene: Scene, t: number): FrameInput {
   return {
     scene,
     drawingToView: d2v,
+    cameraToView: null,
     width: WIDTH,
     height: HEIGHT,
     dpr: 1,

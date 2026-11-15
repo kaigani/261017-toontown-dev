@@ -485,9 +485,15 @@ fn colours_of(
     (colours, stamp & ((1 << 53) - 1))
 }
 
+/// The opacity of an unselected occurrence when box highlighting is off (SI-153).
+const FADED: f32 = 0.35;
+/// The highlight colour of the selection display (SI-153: SI-138's accent colour).
+const HIGHLIGHT: [u8; 4] = [32, 128, 255, 255];
+
 /// The Camera view's composition (camera-view note §1-§3): the final renderer's camera walk at the view's frame and
 /// the camera's output size, each element with a plane matrix in front of the camera as an occurrence (drawn, or out
-/// of the frame: the view shows the table around it), in the walk's order; and the overlays.
+/// of the frame: the view shows the table around it), in the walk's order; the selection display's view-only entries
+/// (camera-view note §6, CV5); and the overlays.
 ///
 /// # Errors
 /// `view.notFound`, `no.project`, `render.noScene`; the evaluator's refusals.
@@ -553,16 +559,31 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
     let mut ev = crate::commands::anim_common::evaluator(doc, "composing the Camera view");
     let list = render_list::build(doc, &req, &mut ev)?;
     let current = cx.app().element.clone();
+    let selected: Vec<Id> = cx.app().selection_list("staging").iter().filter_map(|k| Id::parse(k).ok()).collect();
+    // The selection display (05 §3.2 lines 319-321, 02 §10.7; camera-view note §6, CV5; SI-153): with box highlighting
+    // off the unselected occurrences are faded; with outline on selection (which needs box highlighting) each selected
+    // occurrence is drawn again as outlines in the highlight colour, on top, even where hidden; with selection always
+    // visible a selected element hidden in the scene is shown. These entries are the view's alone: a render never has
+    // them (CV4).
+    let fade = !display.box_highlighting;
+    let outlines = display.box_highlighting && display.outline_on_selection;
+    let mut outlined = Vec::new();
     for en in &list.entries {
         let (Some(m), Some(d)) = (en.to_pixel, en.drawing.as_ref().and_then(|d| doc.drawing(d))) else { continue };
-        if !matches!(en.verdict, Verdict::Drawn | Verdict::OutOfFrame) {
+        let is_selected = selected.contains(&en.id);
+        let shown = matches!(en.verdict, Verdict::Drawn | Verdict::OutOfFrame)
+            || (en.verdict == Verdict::Hidden && is_selected && display.keep_selection_visible);
+        if is_selected && outlines && (shown || en.verdict == Verdict::Hidden) {
+            outlined.push((d, en, m));
+        }
+        if !shown {
             continue;
         }
         out.entries.push(SceneEntry {
             drawing_id: d.id().as_str().to_owned(),
             rev: *d.rev(),
             role: if current.as_ref() == Some(&en.id) { "current" } else { "staticUnder" }.to_owned(),
-            opacity: 1.0,
+            opacity: if fade && !is_selected { FADED } else { 1.0 },
             tint: None,
             shade: false,
             outline: false,
@@ -570,8 +591,20 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
             matrix: Some(m.0),
         });
     }
+    for (d, en, m) in outlined {
+        out.entries.push(SceneEntry {
+            drawing_id: d.id().as_str().to_owned(),
+            rev: *d.rev(),
+            role: if current.as_ref() == Some(&en.id) { "current" } else { "staticUnder" }.to_owned(),
+            opacity: 1.0,
+            tint: Some(HIGHLIGHT),
+            shade: false,
+            outline: true,
+            element_id: Some(en.id.as_str().to_owned()),
+            matrix: Some(m.0),
+        });
+    }
     // The overlays: the selected elements' boxes and pivots, and the selected non-current cameras' frames.
-    let selected: Vec<Id> = cx.app().selection_list("staging").iter().filter_map(|k| Id::parse(k).ok()).collect();
     let mut boxes = Vec::new();
     let mut pivots = Vec::new();
     let mut cameras = Vec::new();
