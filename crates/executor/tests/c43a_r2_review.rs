@@ -183,3 +183,99 @@ fn case7_transformed_edge_and_fresh_extent() {
         assert!(es.iter().any(|v| v["elementId"] == sibling));
     }
 }
+
+// 05:394 temporary Skew; 397-399 keyed channels/current frame/one step;
+// 403-418 Select static, Transform keyed. SI-144/151 label Skew Element.
+#[test]
+fn case6_channels_geometry_and_exact_replay() {
+    for tool in ["transform", "select"] {
+        for kind in ["skew", "horizontal", "vertical", "corner"] {
+            let h = fixture();
+            let colour = c33_support::solids(&h, 1)[0].0.clone();
+            let id = c33_support::square(&h, "Handles", 50., &colour);
+            ok(&h, "app.context.set", json!({"elementId":id,"frame":7}));
+            ok(&h, "anim.tool.set", json!({"tool":tool}));
+            ok(&h, "edit.selection.set", json!({"context":"staging","ids":[id]}));
+            let s = serde_json::to_value(h.canvas_scene("cameraView").unwrap()).unwrap();
+            let u = &s["overlays"]["selectionUnion"];
+            let a = apply(&s["camera"]["cameraToView"], (u[0].as_f64().unwrap(), u[1].as_f64().unwrap()));
+            let b = apply(&s["camera"]["cameraToView"], (u[2].as_f64().unwrap(), u[3].as_f64().unwrap()));
+            let (l, t, r, b) = (a.0.min(b.0), a.1.min(b.1), a.0.max(b.0), a.1.max(b.1));
+            let (start, end, fields, channels, mods) = match kind {
+                "skew" => (
+                    ((l + r) / 2., t),
+                    ((l + r) / 2. + 20., t),
+                    json!({"skew":(20./((b-t)/2.)).atan().to_degrees()}),
+                    vec!["skew"],
+                    vec!["alt"],
+                ),
+                "horizontal" => (
+                    (r, (t + b) / 2.),
+                    (r + 20., (t + b) / 2.),
+                    json!({"scale":{"x":(r+20.-l)/(r-l)}}),
+                    vec!["scale.x"],
+                    vec![],
+                ),
+                "vertical" => (
+                    ((l + r) / 2., t),
+                    ((l + r) / 2., t - 20.),
+                    json!({"scale":{"y":(t-20.-b)/(t-b)}}),
+                    vec!["scale.y"],
+                    vec![],
+                ),
+                _ => (
+                    (r, t),
+                    (r + 20., t - 20.),
+                    json!({"scale":{"x":(r+20.-l)/(r-l),"y":(t-20.-b)/(t-b)}}),
+                    vec!["scale.x", "scale.y"],
+                    vec![],
+                ),
+            };
+            // Select's alternate modifier does not activate Skew; use its skew handle.
+            let (start, end) = if kind == "skew" && tool == "select" {
+                ((start.0, start.1 - 12.), (end.0, end.1 - 12.))
+            } else {
+                (start, end)
+            };
+            let twin = ExecutorHandle::spawn(Default::default()).unwrap();
+            assert!(twin.open_document(h.snapshot().unwrap().unwrap(), None, false).is_ok());
+            let before = ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap();
+            let out=h.pointer(tt_executor::Origin::User,json!({"view":"cameraView","tool":tool,"events":[{"type":"down","x":start.0,"y":start.1,"modifiers":mods},{"type":"up","x":end.0,"y":end.1,"modifiers":mods}]}));
+            assert!(out.is_ok(), "{out:?}");
+            let out = out.result.unwrap();
+            let cmd =
+                out["commands"].as_array().unwrap().iter().find(|c| c["commandId"] == "anim.transform.set").unwrap();
+            let mut expected = fields;
+            expected["nodeIds"] = json!([id]);
+            expected["relative"] = json!(true);
+            expected["target"] = json!(if tool == "transform" { "key" } else { "static" });
+            if tool == "transform" {
+                expected["frame"] = json!(7);
+            }
+            near(&cmd["params"], &expected);
+            ok(&twin, "anim.transform.set", cmd["params"].clone());
+            let snap = h.snapshot().unwrap().unwrap();
+            let other = twin.snapshot().unwrap().unwrap();
+            for k in snap.entry_keys() {
+                assert_eq!(snap.entry_raw_json(&k), other.entry_raw_json(&k), "D-4 {k:?}");
+            }
+            let keys = ok(&h, "anim.key.list", json!({"nodeId":id}));
+            let got: Vec<&str> = keys["keys"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .flat_map(|v| v["channels"].as_array().unwrap().iter().map(|v| v.as_str().unwrap()))
+                .collect();
+            assert_eq!(got, if tool == "transform" { channels } else { vec![] });
+            eprintln!("{tool} {kind}: keys {keys}");
+            let hist = ok(&h, "edit.history.get", json!({}));
+            let pos = hist["position"].as_u64().unwrap();
+            assert_eq!(pos, before + 1);
+            assert_eq!(
+                hist["entries"][pos as usize - 1]["label"],
+                if kind == "skew" { "Skew Element" } else { "Scale Element" }
+            );
+            assert_eq!(ok(&h, "anim.tool.get", json!({}))["tool"], tool);
+        }
+    }
+}
