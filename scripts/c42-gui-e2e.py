@@ -508,6 +508,38 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                                   and ((envp.get("error") or {}).get("details") or {}).get("reason") == "userInput",
                                   "P2: a user press during an agent gesture answers ui.busy, reason userInput (SI-135)", envp.get("error") or envp.get("status"))
 
+                        # A Polyline ends its gesture however it ends (02 §7.2.5; C42B-R2-03): click, click and a real
+                        # double click; click, click and Enter. The modal state is gone and agent writes run again.
+                        async def modal_after(bound=3.0):
+                            t1 = time.monotonic()
+                            st_ = {}
+                            while time.monotonic() - t1 < bound:
+                                st_ = (await rc(session, "app.state.get", {})).get("result") or {}
+                                if st_.get("modal") is None:
+                                    break
+                                await asyncio.sleep(0.1)
+                            return st_.get("modal")
+
+                        for ending in ("double click", "Enter"):
+                            await rc(session, "tool.active.set", {"toolId": "polyline"})
+                            await asyncio.sleep(0.5)
+                            pos0 = ((await rc(session, "edit.history.get", {"limit": 1000})).get("result") or {}).get("position", 0)
+                            os_drag(e2e.APP_PID["pid"], [(x0 + 100, y0 + 260), (x0 + 100, y0 + 260)])
+                            os_drag(e2e.APP_PID["pid"], [(x0 + 200, y0 + 240), (x0 + 200, y0 + 240)])
+                            if ending == "Enter":
+                                os_key(0x0D)
+                            else:
+                                os_double_click(e2e.APP_PID["pid"], (x0 + 260, y0 + 260))
+                            modal = await modal_after()
+                            hist = (await rc(session, "edit.history.get", {"limit": 1000})).get("result") or {}
+                            labels = [e.get("label") for e in (hist.get("entries") or [])[pos0:hist.get("position", 0)]]
+                            write = await rc(session, "tool.active.set", {"toolId": "brush"})
+                            run.check(modal is None and labels == ["Polyline Tool"] and write.get("status") == "ok",
+                                      f"a Polyline ended by {ending} commits one Polyline Tool step and ends the gesture's modal state",
+                                      {"modal": modal, "labels": labels, "write": write.get("error")})
+                            if modal is not None:
+                                e2e.os_escape(e2e.APP_PID["pid"])
+
                 # 5. The float lifecycle (C42B-R1-05; 11 §7.5, §15.2): the Drawing view in a float window draws what the
                 # final renderer draws; after the float closes and the view is docked again, the screenshot and pointer
                 # reach the docked view (the window showing it is resolved at each call).
@@ -532,6 +564,42 @@ async def first_session(url: str, token: str, run, out: Path) -> None:
                                                            "events": drag([apply(m, -200, -230), apply(m, -100, -240)])})
                 run.check(envp.get("status") == "ok", "pointer reaches the docked view", envp.get("error"))
                 run.save("tree-final.json", (await e2e.tree(session)).get("root"))
+
+
+def os_key(vk: int) -> None:
+    """A key pressed and released through the operating system in the foreground window (Windows)."""
+    import ctypes
+    u = ctypes.windll.user32
+    u.keybd_event(vk, 0, 0, 0)
+    time.sleep(0.03)
+    u.keybd_event(vk, 0, 2, 0)
+
+
+def os_double_click(pid, p) -> None:
+    """Two quick left clicks at client point `p` of the application's window: a real double click (Windows)."""
+    import ctypes
+    from ctypes import wintypes
+    u = ctypes.windll.user32
+    hwnds = []
+
+    def cb(h, _):
+        q = wintypes.DWORD()
+        u.GetWindowThreadProcessId(h, ctypes.byref(q))
+        if q.value == pid and u.IsWindowVisible(h):
+            hwnds.append(h)
+        return True
+
+    u.EnumWindows(ctypes.WINFUNCTYPE(ctypes.c_bool, wintypes.HWND, wintypes.LPARAM)(cb), 0)
+    if not hwnds:
+        return
+    origin = wintypes.POINT(0, 0)
+    u.ClientToScreen(hwnds[0], ctypes.byref(origin))
+    u.SetCursorPos(origin.x + int(p[0]), origin.y + int(p[1]))
+    for _ in range(2):
+        time.sleep(0.03)
+        u.mouse_event(0x0002, 0, 0, 0, 0)
+        time.sleep(0.03)
+        u.mouse_event(0x0004, 0, 0, 0, 0)
 
 
 def os_drag(pid, pts):

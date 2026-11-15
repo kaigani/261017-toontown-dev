@@ -13,10 +13,10 @@ engines, each the headless binary opened on its own copy of the same saved proje
   mapping the window collected them under: the headless view has another size);
 - engine 3 receives the window's produced commands directly (`run_command`).
 
-Each row must give, on all three engines: the same commands with the same parameters (ids of new objects aside;
-numbers within 1e-6; a zoom anchor, a view pixel, compared as the drawing point under it on each engine), the same
-drawing content (ids and revisions aside: each engine draws ids from its own stream), and at most one undo step with
-the same label. Every row is undone on all three engines before the next. Receipts in <out dir>: `rows.json` (each
+Each row must give, on all three engines, exactly (ruling D-4: no tolerance, identities included; the engines open
+the same saved project, so they draw the same ids): the same commands with the same parameters (a zoom anchor, a view
+pixel of each engine's own view, compared as the drawing point under it), the same drawing content, and at most one
+undo step with the same label. Every row is undone on all three engines before the next. Receipts in <out dir>: `rows.json` (each
 row's record, commands and comparison), `transcript.json`, `manifest.json` (kind `toontown.c42.gesture-equivalence`).
 Exit 0 when every row holds.
 """
@@ -43,7 +43,6 @@ e2e = c42.e2e
 from mcp import ClientSession, StdioServerParameters, types  # noqa: E402
 from mcp.client.stdio import stdio_client  # noqa: E402
 
-TOLERANCE = 1e-6
 RECORD_BOUND_S = 30.0
 
 
@@ -52,15 +51,7 @@ def sc(r) -> dict:
 
 
 def close(a, b) -> bool:
-    """Equal values, numbers within `TOLERANCE`."""
-    if isinstance(a, bool) or isinstance(b, bool):
-        return a == b
-    if isinstance(a, (int, float)) and isinstance(b, (int, float)):
-        return abs(a - b) <= TOLERANCE
-    if isinstance(a, dict) and isinstance(b, dict):
-        return a.keys() == b.keys() and all(close(a[k], b[k]) for k in a)
-    if isinstance(a, list) and isinstance(b, list):
-        return len(a) == len(b) and all(close(x, y) for x, y in zip(a, b))
+    """Exactly equal values (ruling D-4)."""
     return a == b
 
 
@@ -72,15 +63,14 @@ def inverse(m: list) -> list:
 
 
 def normalised(cmds: list, view_to_drawing: list) -> list:
-    """Commands with new-object ids aside, without the tool's activation, and view-pixel anchors as the drawing point
-    under them."""
+    """Commands without the tool's activation, and view-pixel anchors as the drawing point under them."""
     out = []
     for cmd in cmds:
         # The tool's activation is not the gesture's command: an agent's `pointer` call carries it, the user chose
         # the tool beforehand.
         if cmd.get("commandId") == "tool.active.set":
             continue
-        params = c42.strip_ids(json.loads(json.dumps(cmd.get("params"))))
+        params = json.loads(json.dumps(cmd.get("params")))
         if cmd.get("commandId") == "view.zoom.set" and isinstance(params, dict) and isinstance(params.get("anchor"), dict):
             x, y = c42.apply(view_to_drawing, params["anchor"]["x"], params["anchor"]["y"])
             params["anchor"] = {"drawingX": x, "drawingY": y}
@@ -347,7 +337,7 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
         for cmd in rec.get("commands") or []:
             direct.append(await h3.run(cmd["commandId"], cmd.get("params") or {}))
         m3 = await h3.mapping()
-        contents = [c42.strip_ids(await engine.result("draw.drawing.get", {})) for engine in engines]
+        contents = [await engine.result("draw.drawing.get", {}) for engine in engines]
         labels = [await engine.labels_since(p) for engine, p in zip(engines, pos)]
         win_cmds = normalised(rec.get("commands") or [], m_app and inverse(m_app))
         h2_cmds = normalised(cmds2, m2.get("viewToDrawing") or [1, 0, 0, 1, 0, 0])
