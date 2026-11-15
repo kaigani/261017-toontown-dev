@@ -215,7 +215,7 @@ mod scene_tools {
     }
     #[test]
     fn click_short_drag_and_empty_click_are_nonundoable_selection() {
-        // 05:351: more than 3px starts drag. 05:395, §17: selection,
+        // 05:351: more than 3px starts drag. 05:395, Â§17: selection,
         // not a document mutation or an undo step.
         let (h, id) = ready();
         let before = ok(&h, "edit.history.get", json!({}));
@@ -244,5 +244,86 @@ mod scene_tools {
         ok(&h, "tool.active.set", json!({"toolId":"brush"}));
         assert_eq!(ok(&h, "anim.tool.get", json!({})), json!({"tool":"transform"}));
         assert_eq!(ok(&h, "edit.history.get", json!({})), hist);
+    }
+}
+
+mod part_b_composition {
+    use super::*;
+    fn ready() -> ExecutorHandle {
+        let h = fixture();
+        c33_support::clear(&h);
+        h
+    }
+    fn put(h: &ExecutorHandle, id: &str, x: f64, z: f64) {
+        ok(h, "anim.transform.set", json!({"nodeIds":[id],"target":"static","position":{"x":x,"y":0.,"z":z}}));
+    }
+    fn visible(h: &ExecutorHandle, id: &str, v: bool) {
+        ok(h, "element.visibility.set", json!({"elementIds":[id],"scope":"scene","visible":v}));
+    }
+    fn ids(s: &Value) -> Vec<String> {
+        s["entries"].as_array().unwrap().iter().map(|e| e["elementId"].as_str().unwrap().to_owned()).collect()
+    }
+    fn point(e: &Value, x: f64, y: f64) -> (f64, f64) {
+        let m: Vec<f64> = e["matrix"].as_array().unwrap().iter().map(|v| v.as_f64().unwrap()).collect();
+        ((m[0] * x + m[2] * y + m[4]) * 0.25, (m[1] * x + m[3] * y + m[5]) * 0.25)
+    }
+    fn colour_at(img: &c33_support::Img, p: (f64, f64), rgba: [u8; 4]) {
+        let (x, y) = (p.0.round() as i32, p.1.round() as i32);
+        assert!(
+            (-2..=2).any(|dx| (-2..=2).any(|dy| x + dx >= 0
+                && y + dy >= 0
+                && x + dx < (img.w as i32)
+                && y + dy < (img.h as i32)
+                && img.at((x + dx) as u32, (y + dy) as u32) == rgba)),
+            "missing {rgba:?} at {p:?}"
+        );
+    }
+    fn check(h: &ExecutorHandle, id: &str, rgba: [u8; 4]) -> Value {
+        let s = scene(h);
+        let e = s["entries"].as_array().unwrap().iter().find(|e| e["elementId"] == id).unwrap().clone();
+        assert_eq!(e["drawingId"], c33_support::drawing_at(h, id, 1));
+        assert_eq!(e["rev"], ok(h, "draw.drawing.get", json!({"drawingId":e["drawingId"]}))["rev"]);
+        let img = c33_support::render(h, json!({"composition":"camera","scale":0.25}));
+        colour_at(&img, point(&e, 0., 0.), rgba);
+        e
+    }
+    #[test]
+    fn case1_three_depths() {
+        // 05:263-265: smaller world Z first, front-most last; CV1 matrices.
+        let h = ready();
+        let cs = c33_support::solids(&h, 3);
+        let es: Vec<String> = (0..3).map(|i| c33_support::square(&h, &format!("Depth{i}"), 50., &cs[i].0)).collect();
+        for (i, e) in es.iter().enumerate() {
+            put(&h, e, 0., (i as f64 - 1.) * 4.);
+        }
+        assert_eq!(ids(&scene(&h)), es);
+        for (i, e) in es.iter().enumerate() {
+            for other in &es {
+                visible(&h, other, other == e);
+            }
+            check(&h, e, cs[i].1);
+        }
+        for e in &es {
+            visible(&h, e, true);
+        }
+        check(&h, &es[2], cs[2].1);
+    }
+    #[test]
+    fn case2_timeline_tie_reorder() {
+        // 05:263-267 ties follow Timeline; 04:467 above = front.
+        let h = ready();
+        let cs = c33_support::solids(&h, 2);
+        let a = c33_support::square(&h, "TieA", 50., &cs[0].0);
+        let b = c33_support::square(&h, "TieB", 50., &cs[1].0);
+        let root = ok(&h, "element.create", json!({"type":"peg","name":"TieRoot"}))["elementIds"][0].clone();
+        ok(&h, "element.parent.set", json!({"elementIds":[a,b],"parentId":root}));
+        for order in [[a.clone(), b.clone()], [b.clone(), a.clone()]] {
+            ok(&h, "element.order.set", json!({"order":"timeline","parentId":root,"elementIds":order}));
+            assert_eq!(ids(&scene(&h)), vec![order[1].clone(), order[0].clone()]);
+            check(&h, &order[0], if order[0] == a { cs[0].1 } else { cs[1].1 });
+            visible(&h, &order[0], false);
+            check(&h, &order[1], if order[1] == a { cs[0].1 } else { cs[1].1 });
+            visible(&h, &order[0], true);
+        }
     }
 }
