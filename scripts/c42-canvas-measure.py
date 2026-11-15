@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import importlib.util
 import json
 import platform
@@ -197,7 +198,8 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict) -> Non
                         meas = v.get("display.canvasBackendMeasured") or {}
                         if meas.get("fingerprint"):
                             record["ruleSet"] = {"selected": meas.get("selected"), "cells": json.loads(meas.get("cells") or "{}"),
-                                                 "fingerprint": meas.get("fingerprint")}
+                                                 # A digest only: receipts name the machine class, never models.
+                                                 "fingerprintSha256": hashlib.sha256(str(meas.get("fingerprint")).encode()).hexdigest()[:16]}
                             break
                         await asyncio.sleep(5.0)
                     run.check(isinstance(record.get("ruleSet"), dict), "the product measured the back ends on the rule set's scenes", record.get("ruleSet"))
@@ -282,8 +284,9 @@ def main() -> int:
     seed = {"agent.policy.defaults": {"policy": "autonomous", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048,
                                       "maxInlineBytes": 52428800, "askInApp": True, "letAgentMoveView": True, "highlightAgentChanges": True}}
     (user / "Settings" / "preferences.json").write_text(json.dumps({"format": "toontown-settings", "kind": "preferences", "formatVersion": "1.0", "data": seed}), encoding="utf-8")
-    record: dict = {"kind": "toontown.c42.canvas-measure", "platform": sys.platform, "machine": platform.platform(),
-                    "processor": platform.processor(), "boundsKind": a.bounds, "bounds": BOUNDS[a.bounds], "requestedBackend": a.backend,
+    # The machine class only (OS and architecture): receipts never carry hardware model strings.
+    record: dict = {"kind": "toontown.c42.canvas-measure", "platform": sys.platform, "machine": platform.system(),
+                    "architecture": platform.architecture()[0], "boundsKind": a.bounds, "bounds": BOUNDS[a.bounds], "requestedBackend": a.backend,
                     "experiments": a.experiments, "ruleSet": a.rule_set}
     discovery = out / "discovery.json"
     try:

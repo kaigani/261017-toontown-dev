@@ -1,8 +1,7 @@
 {
   "kind": "toontown.c42.canvas-measure",
   "platform": "win32",
-  "machine": "Windows-11-10.0.26200-SP0",
-  "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+  "machine": "Windows 11 workstation, discrete desktop GPU (machine class; model strings removed, C42B-R1 observation)",
   "boundsKind": "workstation",
   "bounds": {
     "frameMs": 17.5,

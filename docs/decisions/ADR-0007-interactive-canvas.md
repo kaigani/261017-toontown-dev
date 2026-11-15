@@ -193,7 +193,8 @@ and `reviews/M4-design-frame-loop.md`). The rule set above is unchanged.
    non-zero outlines and glyphs, pencil strokes as the non-zero union of segment quads and round caps and joins (a
    translucent stroke never blends twice); curves are flattened to 0.25 view pixels at the zoom bucket's top zoom.
 
-**The product format.** TTRD 1.0 (`crates/render/src/canvas.rs`, `desktop/src/canvas/format.ts`): an 80-byte header,
+**The product format.** TTRD 1.0, laid out normatively in `docs/canvas-format.md` (ruling D-18; the encoder
+`crates/render/src/canvas.rs`, the decoder `desktop/src/canvas/format.ts`): an 80-byte header,
 a colour table (one slot per colour id, so solid colour changes need no geometry, 06 §6.3), records in painter order
 (solid meshes, gradient meshes evaluated per fragment, bitmap references). One golden corpus checks the encoder byte
 for byte in `cargo test` and the decoder in Vitest, with one corrupt file per validation rule (V1-V10).
@@ -201,8 +202,12 @@ for byte in `cargo test` and the decoder in Vitest, with one corrupt file per va
 **The back ends.** WebGPU and WebGL2 have the same features. Which runs: the launch flag, else `display.canvasBackend`
 (the user's override), else this machine's measured selection (`display.canvasBackendMeasured`: fingerprint of GPU,
 driver and webview), else WebGL2; without one, the canvas measures both back ends on the rule set's three scenes
-(2 s per cell, SI-136) once it has been quiet for 30 s and step 1 selects (SI-140). On the workstation the product
-measurement selected WebGPU (worst scene 262 fps against WebGL2's 188).
+(2 s per cell after an untimed warm-up frame, SI-136) once it has been quiet for 30 s and step 1 selects (SI-140).
+On the workstation both back ends meet all three scenes by a wide margin, so the selection follows whichever measured
+the higher worst scene in that run: the builder's run selected WebGPU (262 fps against 188), the reviewer's run of
+round 1 WebGL2 (201 against 162). That is the rule set's intended outcome here: step 1 ranks scorable back ends by
+their worst scene and row 6 holds for both, so either selection is "go as written" and the user's override stays
+available.
 
 **The experiments** (receipts: `reviews/evidence/M4-C4.2b/`):
 
@@ -213,16 +218,39 @@ measurement selected WebGPU (worst scene 262 fps against WebGL2's 188).
   now share one pass.
 - **E-C2** (sustained edits: 20 edits of the 50,000-point drawing, each re-tessellated and re-uploaded). Workstation:
   the worst frame 17 ms on both back ends (criterion: none over 33 ms); each reload 34 ms. Met.
-- **E-C3** (GPU-less: the Windows runner's Microsoft Basic Render Driver, WebGPU unavailable). CI-WIN-NUMBERS
-- macOS runner (paravirtual GPU, WebGPU without an adapter): CI-MAC-NUMBERS
+- **E-C3** (GPU-less: the Windows runner's software adapter, WebGPU unavailable; CI run 43673359849, receipts
+  `desktop-gui-Windows/c42-measure`). The webview's software WebGL2 path draws the product's interactive frames: on
+  the 50,000-point drawing, frame time p95 15.7 ms idle and during a gesture (the static layers are cached, 06 §6.9),
+  input-to-ink p95 1.2 ms, each full reload of the drawing 104-123 ms (E-C2's twenty edits) with no frame over
+  15.8 ms. Every frame that redraws a stress scene in full misses 57 fps: the rule set's cells measured 11.3 fps
+  (paths100k), 22.0 (groups1k) and 15.3 (brush10k), and E-C1's frame p95 was 62.5 ms. **Against tiled host bitmaps:**
+  C0.3 measured the transfer and upload of one full 1904×757 frame alone at 36-44 ms, before any CPU raster; host
+  bitmaps therefore cannot exceed about 25 fps on that machine even for a drawing the webview draws within one frame
+  at the cached-static rate, and they would add the CPU raster of every changed frame. Decision: the software path
+  stays the webview's own software WebGL2 (decision 5's first candidate); host raster plus bitmap transfer is not
+  adopted. The runner's kernel is slow as well (a long stroke on the large drawing commits in 1.4 s there against
+  0.2 s on the workstation), so its commit figures measure the runner, not the design.
+- **macOS runner** (paravirtual GPU, WebGPU without an adapter; same run, `desktop-gui-macOS/c42-measure`): the rule
+  set's cells 118.9 fps (paths100k, met), 0.6 (groups1k, missed: a timed frame of 1,000 separate drawings took over
+  the 500 ms abort bound) and 109.6 (brush10k, met). The product's own 1,000-drawing scene (E-C1) runs at frame p95
+  34 ms there (about 29 fps: also below 57); the 50,000-point drawing at frame p95 19 ms idle and 20 ms during a
+  gesture; E-C2's worst frame 29 ms (met).
 
 **The back-end decision per machine class** (the rule set's output):
 
 | Machine | WebGPU | WebGL2 | Selected | Outcome |
 |---|---|---|---|---|
-| Workstation (RTX 4090, WebView2) | all three met | all three met | WebGPU (higher worst scene) | row 6: go as written |
-| Windows runner (software adapter) | unavailable | CI-WIN-CELLS | WebGL2 | CI-WIN-OUTCOME |
-| macOS runner (paravirtual GPU) | unavailable | CI-MAC-CELLS | WebGL2 | CI-MAC-OUTCOME |
+| Workstation (discrete desktop GPU, WebView2) | all three met | all three met | the higher worst scene of the run (WebGPU or WebGL2) | row 6: go as written |
+| Windows runner (software adapter, no GPU) | unavailable | missed, missed, missed (11.3 / 22.0 / 15.3 fps) | WebGL2 (the only scorable) | row 3 |
+| macOS runner (paravirtual GPU) | unavailable | met, missed, met (118.9 / 0.6 / 109.6 fps) | WebGL2 (the only scorable) | row 3 |
+
+**Row 3 on both runners, stated as the rule set gives it:** "no-go for the webview canvas as designed: a native-wgpu
+integration prototype becomes required M4 work", for the machine classes the runners represent (a GPU-less Windows
+machine; a virtualised Mac GPU), on the 1,000-group stress scene. What the same machines do with the product's own
+drawings is above (E-C3; the macOS runner): ordinary drawings stay interactive at the cached-static frame rate, and
+no back end of either machine reaches 57 fps on groups1k. Whether the rule set's row 3 applies to these classes (the
+software floor of decision 5 and a virtual machine) or only to real GPU hardware is a decision for the owner; it is
+raised in the C4.2b handoff and not decided here. Real Macs (E-C4) are unmeasured.
 
 The user's Mac (E-C4) and weaker GPUs remain to be measured with `docs/manual-tests/M0-C0.3-canvas-macos.md` and
 `reviews/manual/M4/C4.2-gpu-less.md`.
