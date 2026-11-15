@@ -1138,7 +1138,43 @@ pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<UiTreeResu
     if let Some(d) = p.depth {
         prune(&mut sub, d);
     }
+    // Ruling D-19: the canvas's record of the user's last gesture keeps its samples (positions, pressure, tilt,
+    // timing, modifiers, and the produced commands' parameters, which repeat them) for a session holding `input`;
+    // any other reader sees the summary (origin, tool, view, pointer kind, count, answer, command ids).
+    if !cx.origin().has_scope(tt_registry::Scope::Input) {
+        redact_gestures(&mut sub);
+    }
     Ok(UiTreeResult { source: source.to_owned(), target, root: sub, rendered_seq: seq, stale: None })
+}
+
+/// The members of a gesture record a reader without the `input` scope sees (ruling D-19).
+const GESTURE_SUMMARY: [&str; 7] = ["origin", "tool", "view", "pointerType", "eventCount", "status", "code"];
+
+/// Reduces every node value's `lastGesture` to its summary: the members of [`GESTURE_SUMMARY`] and the commands' ids.
+fn redact_gestures(n: &mut Value) {
+    if let Some(Value::String(text)) = n.get_mut("value")
+        && text.contains("\"lastGesture\"")
+        && let Ok(Value::Object(mut v)) = serde_json::from_str::<Value>(text)
+        && let Some(Value::Object(record)) = v.get("lastGesture")
+    {
+        let mut summary: serde_json::Map<String, Value> =
+            GESTURE_SUMMARY.iter().filter_map(|k| record.get(*k).map(|x| ((*k).to_owned(), x.clone()))).collect();
+        let ids: Vec<Value> = record
+            .get("commands")
+            .and_then(Value::as_array)
+            .map(|cs| {
+                cs.iter().map(|c| json!({ "commandId": c.get("commandId").cloned().unwrap_or(Value::Null) })).collect()
+            })
+            .unwrap_or_default();
+        summary.insert("commands".into(), Value::Array(ids));
+        v.insert("lastGesture".into(), Value::Object(summary));
+        if let Ok(t) = serde_json::to_string(&Value::Object(v)) {
+            *text = t;
+        }
+    }
+    if let Some(Value::Array(children)) = n.get_mut("children") {
+        children.iter_mut().for_each(redact_gestures);
+    }
 }
 
 /// `inspect.screenshot` parameters.

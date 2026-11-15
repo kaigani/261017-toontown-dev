@@ -134,3 +134,57 @@ fn s2_the_attached_caps_hold_before_and_after_the_capture() {
     h.set_attached_io(None);
     assert_eq!(ok(&h, "inspect.screenshot", json!({}))["source"], "virtual", "without the host: the virtual view");
 }
+
+/// Ruling D-19: the canvas's record of the user's last gesture is served through `inspect_ui` whole only to a session
+/// holding `input`; a session with `read` alone sees its summary (origin, tool, view, pointer kind, count, answer, the
+/// produced command ids) and none of the samples (positions, pressure, tilt, timing, modifiers) or the commands'
+/// parameters that repeat them.
+#[test]
+fn the_gesture_record_keeps_its_samples_for_the_input_scope() {
+    let h = ready();
+    let record = json!({
+        "origin": "user", "tool": "brush", "view": "drawingView", "pointerType": "pen",
+        "drawingToView": [1, 0, 0, -1, 400, 300], "eventCount": 2, "status": "ok", "code": null,
+        "events": [
+            { "type": "down", "x": 10.5, "y": 20.5, "pressure": 0.4, "tiltX": 12, "tiltY": 3, "modifiers": ["shift"], "dt": 0 },
+            { "type": "up", "x": 30.5, "y": 25.5, "pressure": 0.1, "tiltX": 11, "tiltY": 2, "modifiers": [], "dt": 16 }
+        ],
+        "commands": [{ "commandId": "draw.stroke.add", "params": { "points": [{ "x": -389.5, "y": 279.5, "pressure": 0.4 }] } }]
+    });
+    let value = json!({ "backend": "webgl2", "drawings": [], "lastGesture": record }).to_string();
+    h.report_shell(tt_executor::host::ShellReport { attached: Some(true), ..Default::default() });
+    let seq = h.events_broadcast();
+    h.report_shell(tt_executor::host::ShellReport {
+        ui_tree: Some(json!({ "role": "window", "id": "main", "children": [
+            { "role": "canvas", "id": "drawingView.canvas", "value": value }
+        ] })),
+        rendered_seq: Some(seq),
+        ..Default::default()
+    });
+    let read_as = |scopes: &[tt_registry::Scope]| -> Value {
+        let origin =
+            Origin::Agent { session: "s2".into(), name: "reader".into(), scopes: scopes.iter().copied().collect() };
+        let env = h.invoke(tt_executor::Invocation {
+            command: "inspect.ui.tree".into(),
+            params: json!({ "target": "drawingView.canvas" }),
+            options: tt_executor::InvokeOptions::default(),
+            origin,
+        });
+        assert!(env.is_ok(), "{env:?}");
+        let root = env.result.unwrap()["root"].clone();
+        serde_json::from_str::<Value>(root["value"].as_str().unwrap()).unwrap()["lastGesture"].clone()
+    };
+    let summary = read_as(&[tt_registry::Scope::Read]);
+    assert_eq!(
+        summary,
+        json!({ "origin": "user", "tool": "brush", "view": "drawingView", "pointerType": "pen", "eventCount": 2,
+                "status": "ok", "code": null, "commands": [{ "commandId": "draw.stroke.add" }] }),
+        "read alone: the summary, no samples"
+    );
+    let whole = read_as(&[tt_registry::Scope::Read, tt_registry::Scope::Input]);
+    assert_eq!(whole, record, "read and input: the record as the window reported it");
+    // The user (the GUI) is never redacted.
+    let t = ok(&h, "inspect.ui.tree", json!({ "target": "drawingView.canvas" }));
+    let user: Value = serde_json::from_str(t["root"]["value"].as_str().unwrap()).unwrap();
+    assert_eq!(user["lastGesture"], record);
+}

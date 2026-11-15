@@ -1688,5 +1688,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
      their pressure, tilt, time and modifiers, the commands produced, the answer) in the canvas's UI-tree value, which
      `inspect_ui` serves; the events are kept whole up to 4,096 and the record says how many there were (plan §5's
      equivalence through the real window needs what the window collected; a longer gesture is recorded by its count
-     and its commands by id, without their parameters, which carry every sample).
+     and its commands by id, without their parameters, which carry every sample). Who reads it (ruling D-19):
+     `inspect_ui` serves the samples (positions, pressure, tilt, timing, modifiers, the commands' parameters) only to
+     a session holding `input`; with `read` alone the record is its summary (origin, tool, view, pointer kind, count,
+     answer, command ids).
+  10. A multi-click gesture left open (a Polyline between its clicks) is the user's gesture in progress: the window
+      keeps reporting the modal state, so agent writes wait and answer `ui.busy` for as long as it stays open, as with
+      a dialog left open (11 §6.4; accepted in C4.2b round 2). No timeout closes it; Escape, a double click, a click on
+      the first anchor or another tool ends it. Question: should an open multi-click gesture time out, and after how
+      long?
 - **Question:** confirm each, or state the values in 02 and 11.
