@@ -147,7 +147,7 @@ mod part_b_scene {
             }
         }
         ok(&h, "drawAid.background.set", json!({"colour":"#102030FF"}));
-        assert_eq!(h.canvas_scene("drawingView").unwrap().background, [16,32,48,255]);
+        assert_eq!(h.canvas_scene("drawingView").unwrap().background, [16, 32, 48, 255]);
         let before = h.canvas_scene("drawingView").unwrap();
         for enabled in [true, false] {
             ok(&h, "drawAid.currentOnTop.set", json!({"enabled":enabled}));
@@ -159,7 +159,6 @@ mod part_b_scene {
         let payload = h.canvas_drawing(None, 1, 0, Default::default()).unwrap();
         assert_eq!(next.entries[0].rev, payload.rev);
         assert_eq!(next.entries[0].drawing_id, payload.drawing_id);
-
     }
 }
 
@@ -178,7 +177,7 @@ mod part_b_attached {
             self.requests.lock().unwrap().push(request.clone());
             self.answer.clone()
         }
-        fn capture(&self, _: &str, _: Option<[f64;4]>, _: u32, _: Duration) -> Result<CapturedPng, CommandError> {
+        fn capture(&self, _: &str, _: Option<[f64; 4]>, _: u32, _: Duration) -> Result<CapturedPng, CommandError> {
             Err(CommandError::new("view.notFound", "no shown view"))
         }
     }
@@ -187,25 +186,29 @@ mod part_b_attached {
         let h = ready();
         let request = json!({"view":"drawing", "events":[]});
         let answer = Envelope::ok(json!({"commands":[{"status":"ok","result":{"probe":7}}],"hover":null}), Some(19));
-        let io = Arc::new(Io {answer:Some(answer.clone()),requests:Mutex::default()});
+        let io = Arc::new(Io { answer: Some(answer.clone()), requests: Mutex::default() });
         h.set_attached_io(Some(io.clone()));
         let before = rev(&h);
-        let history = ok(&h,"edit.history.get",json!({}));
-        let selection = ok(&h,"draw.selection.get",json!({}));
+        let history = ok(&h, "edit.history.get", json!({}));
+        let selection = ok(&h, "draw.selection.get", json!({}));
         let all = agent(&tt_registry::Scope::ALL);
-        let got = h.pointer(all.clone(),request.clone());
-        assert_eq!(serde_json::to_value(got).unwrap(),serde_json::to_value(answer).unwrap());
-        assert_eq!(*io.requests.lock().unwrap(),vec![request.clone()]);
-        assert!(!h.pointer(agent(&[]),request.clone()).is_ok());
-        assert_eq!(io.requests.lock().unwrap().len(),1);
-        for code in ["ui.busy","command.timeout","render.failed"] {
-            let answer = Envelope::error(CommandError::with_details(code,"interrupted",json!({"reason":"userInput"})),None);
-            let io = Arc::new(Io {answer:Some(answer.clone()),requests:Mutex::default()});
+        let got = h.pointer(all.clone(), request.clone());
+        assert_eq!(serde_json::to_value(got).unwrap(), serde_json::to_value(answer).unwrap());
+        assert_eq!(*io.requests.lock().unwrap(), vec![request.clone()]);
+        assert!(!h.pointer(agent(&[]), request.clone()).is_ok());
+        assert_eq!(io.requests.lock().unwrap().len(), 1);
+        for code in ["ui.busy", "command.timeout", "render.failed"] {
+            let answer =
+                Envelope::error(CommandError::with_details(code, "interrupted", json!({"reason":"userInput"})), None);
+            let io = Arc::new(Io { answer: Some(answer.clone()), requests: Mutex::default() });
             h.set_attached_io(Some(io));
-            assert_eq!(serde_json::to_value(h.pointer(all.clone(),request.clone())).unwrap(),serde_json::to_value(answer).unwrap());
-            assert_eq!(rev(&h),before);
-            assert_eq!(ok(&h,"edit.history.get",json!({})),history);
-            assert_eq!(ok(&h,"draw.selection.get",json!({})),selection);
+            assert_eq!(
+                serde_json::to_value(h.pointer(all.clone(), request.clone())).unwrap(),
+                serde_json::to_value(answer).unwrap()
+            );
+            assert_eq!(rev(&h), before);
+            assert_eq!(ok(&h, "edit.history.get", json!({})), history);
+            assert_eq!(ok(&h, "draw.selection.get", json!({})), selection);
         }
         h.set_wait_for_user(Duration::from_millis(40));
         h.report_shell(serde_json::from_str(r#"{"modal":{"kind":"gesture","title":"drawing"}}"#).unwrap());
@@ -213,16 +216,26 @@ mod part_b_attached {
         assert_eq!(h.pointer(all.clone(), request.clone()).error.unwrap().code, "ui.busy");
         assert!(start.elapsed() >= Duration::from_millis(30));
         let start = std::time::Instant::now();
-        let e = h.invoke(tt_executor::Invocation { command:"drawAid.grid.set".into(), params:json!({"visible":true}), options:Default::default(), origin:all.clone() });
-        assert_eq!(e.error.unwrap().code,"ui.busy");
+        let e = h.invoke(tt_executor::Invocation {
+            command: "drawAid.grid.set".into(),
+            params: json!({"visible":true}),
+            options: Default::default(),
+            origin: all.clone(),
+        });
+        assert_eq!(e.error.unwrap().code, "ui.busy");
         assert!(start.elapsed() >= Duration::from_millis(30));
         let start = std::time::Instant::now();
-        let q = h.invoke(tt_executor::Invocation { command:"drawAid.state.get".into(), params:json!({}), options:Default::default(), origin:all.clone() });
+        let q = h.invoke(tt_executor::Invocation {
+            command: "drawAid.state.get".into(),
+            params: json!({}),
+            options: Default::default(),
+            origin: all.clone(),
+        });
         assert!(q.is_ok());
         assert!(start.elapsed() < Duration::from_secs(1));
         h.report_shell(serde_json::from_str(r#"{"modal":null}"#).unwrap());
-        let io = Arc::new(Io {answer:None,requests:Mutex::default()});
+        let io = Arc::new(Io { answer: None, requests: Mutex::default() });
         h.set_attached_io(Some(io));
-        assert!(h.pointer(all,request).is_ok());
+        assert!(h.pointer(all, request).is_ok());
     }
 }

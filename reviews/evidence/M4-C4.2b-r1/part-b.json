@@ -1,0 +1,33 @@
+{
+  "candidate": "a1500000",
+  "platform": "Windows",
+  "new_findings": 0,
+  "coverage_complete": false,
+  "case_verdicts": 26,
+  "tests": {
+    "executor_part_b": {
+      "passed": 2,
+      "failed": 0
+    },
+    "desktop_lib": {
+      "passed": 55,
+      "failed": 0
+    },
+    "desktop_integration": {
+      "passed": 1,
+      "failed": 0
+    },
+    "persist_lib": {
+      "passed": 22,
+      "failed": 0
+    }
+  },
+  "fmt": "pass",
+  "clippy": "pass",
+  "limitations": [
+    "No real AppHandle pending lifecycle reproduction",
+    "No macOS capture execution",
+    "Scene distinct/three-element/empty-exposure matrices incomplete",
+    "No routed request cancellation reproduction"
+  ]
+}
