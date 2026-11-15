@@ -4,6 +4,30 @@ use tt_render::canvas::{self, CanvasItem, Record};
 use tt_render::{El, Item, Paint, Scene};
 
 #[test]
+fn degenerate_and_limit_geometry_is_finite_and_repeatable() {
+    let paths = [
+        vec![El::MoveTo(0.0, 0.0), El::LineTo(0.0, 0.0)],
+        vec![El::MoveTo(-10_000_000.0, -10_000_000.0), El::LineTo(10_000_000.0, 10_000_000.0)],
+        std::iter::once(El::MoveTo(0.0, 0.0)).chain(std::iter::repeat_n(El::LineTo(0.0, 0.0), 99_999)).collect(),
+    ];
+    for path in paths {
+        let input = vec![CanvasItem {
+            item: Item::Stroke { path, width: 2.0, paint: Paint::Solid([255; 4]) },
+            slot: 0,
+            bitmap: None,
+        }];
+        let records = canvas::tessellate(&input, 0);
+        assert_eq!(records, canvas::tessellate(&input, 0));
+        for record in records {
+            if let Record::Solid { vertices, indices } = record {
+                assert!(vertices.iter().all(|v| v.x.is_finite() && v.y.is_finite() && v.slot == 0));
+                assert!(indices.iter().all(|i| (*i as usize) < vertices.len()));
+            }
+        }
+    }
+}
+
+#[test]
 fn anisotropic_layer_preserves_final_stroke_coverage() {
     let item = Item::Layer {
         transform: [3.0, 0.0, 0.0, 0.5, 0.0, 40.0],
@@ -25,7 +49,7 @@ fn anisotropic_layer_preserves_final_stroke_coverage() {
             let p = (x as f32 + 0.5, y as f32 + 0.5);
             let covered = records.iter().any(|r| {
                 let Record::Solid { vertices, indices } = r else { panic!("solid fixture") };
-                indices.chunks_exact(3).any(|t| {
+                indices.as_chunks::<3>().0.iter().any(|t| {
                     let cross = |a: usize, b: usize| {
                         let a = vertices[a];
                         let b = vertices[b];
