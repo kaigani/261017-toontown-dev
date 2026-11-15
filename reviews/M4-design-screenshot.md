@@ -62,6 +62,20 @@ A capture of what the user sees, through the host: Windows, `ICoreWebView2::Capt
 macOS, `WKWebView.takeSnapshot(with:)`; for a float window, that window's webview. It includes the canvas, the chrome,
 an open dialog and the gesture overlay. A test opens a dialog and holds a gesture overlay and finds both in the PNG.
 
+**Amendment after C4.2b review round 1.**
+
+- **The window is resolved at each call** (C42B-R1-05; 11 §7.5, §15.2): a view's target is the canvas rectangle of
+  the window showing the view now, among the windows that reported a canvas for it and are open and shown; a float of
+  the view wins over the main window. A float of a panel without a canvas is captured whole while it is shown. When a
+  window is destroyed or reloaded, what its canvases reported ends with it (the host's window teardown), so a docked
+  view is captured in the main window and `pointer` reaches it there too.
+- **Caps before encoding, and the intermediate image** (S2): the requested crop's long side is checked against the cap
+  before any capture is made (`render.inlineTooLarge`, nothing captured), and only the crop is encoded. The platform
+  snapshot itself is the webview's whole visible area, encoded by the platform: Windows' `CapturePreview` takes no
+  region (it writes the whole preview into the stream), and on macOS the snapshot is taken whole for the same code path.
+  That intermediate is bounded by the webview's own size (at most its window's client area, so at most the screen
+  in device pixels), its decode refuses a side over 16,384 pixels, and it lives for the duration of the call only.
+
 ## 3. Result and limits
 
 `{png (base64), width, height, sha256}`; `region {x, y, w, h}` in the target's view pixels crops before encoding. The

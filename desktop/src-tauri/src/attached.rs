@@ -197,11 +197,20 @@ impl WindowIo {
         self.presence.lock().unwrap_or_else(PoisonError::into_inner).remove(window);
     }
 
+    /// Whether window `label` is open and shown now (a closed float may be hidden before it is destroyed).
+    fn shown(&self, label: &str) -> bool {
+        self.app.get_webview_window(label).is_some_and(|w| w.is_visible().unwrap_or(false))
+    }
+
+    /// The window showing `view` at the time of the call (C42B-R1-05): among the windows whose canvas reported the view,
+    /// those open and shown now; a float of the view wins over the main window (a floating panel is not in the main
+    /// window).
     fn window_of(&self, view: &str) -> Option<(String, Presence)> {
-        let p = self.presence.lock().unwrap_or_else(PoisonError::into_inner);
-        // A float of the view wins over the main window (a floating panel is not in the main window).
-        let mut found: Vec<(String, Presence)> =
-            p.iter().filter_map(|(w, views)| views.get(view).map(|pr| (w.clone(), *pr))).collect();
+        let mut found: Vec<(String, Presence)> = {
+            let p = self.presence.lock().unwrap_or_else(PoisonError::into_inner);
+            p.iter().filter_map(|(w, views)| views.get(view).map(|pr| (w.clone(), *pr))).collect()
+        };
+        found.retain(|(w, _)| self.shown(w));
         found.sort_by_key(|(w, _)| !w.starts_with(crate::floats::PREFIX));
         found.into_iter().next()
     }
@@ -283,14 +292,15 @@ impl AttachedIo for WindowIo {
         max_side: u32,
         budget: Duration,
     ) -> Result<CapturedPng, CommandError> {
-        // The target: the whole main window, a float's whole window, or a view's canvas rectangle.
+        // The target, resolved from the windows open now (C42B-R1-05): the whole main window; a view's canvas rectangle in
+        // the window showing it (a float or the main window); a shown float's whole window for a panel without a canvas.
         let float = format!("{}{target}", crate::floats::PREFIX);
         let (window, rect, dpr, view_id) = if target == "window" {
             ("main".to_owned(), None, None, String::new())
-        } else if self.app.get_webview_window(&float).is_some() {
-            (float, None, None, target.to_owned())
         } else if let Some((w, p)) = self.window_of(target) {
             (w, Some(p.rect), Some(p.dpr), target.to_owned())
+        } else if self.shown(&float) {
+            (float, None, None, target.to_owned())
         } else {
             return Err(refusal(
                 "view.notFound",

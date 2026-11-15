@@ -397,8 +397,13 @@ impl Host {
     /// leaves the freshness quorum at once (a wait pending on it is released by the recomputed combination). The
     /// other windows' facts stay; the executor gets the new combination (ruling O-2).
     pub fn forget_window_reports(&self, label: &str) {
-        // An agent gesture routed to it answers at once, nothing committed (D-7a).
+        // An agent gesture routed to it answers at once, nothing committed (D-7a); what its canvases reported about the
+        // views they showed ends with it, so a later pointer or screenshot finds the window showing the view now
+        // (C42B-R1-05: a destroyed float kept the Drawing view's route).
         self.routed.window_gone(label, None);
+        if let Some(io) = self.attached() {
+            io.forget_window(label);
+        }
         let combined = {
             let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
             w.facts.remove(label);
