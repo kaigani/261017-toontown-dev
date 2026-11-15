@@ -215,7 +215,7 @@ mod scene_tools {
     }
     #[test]
     fn click_short_drag_and_empty_click_are_nonundoable_selection() {
-        // 05:351: more than 3px starts drag. 05:395, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§17: selection,
+        // 05:351: more than 3px starts drag. 05:395, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§17: selection,
         // not a document mutation or an undo step.
         let (h, id) = ready();
         let before = ok(&h, "edit.history.get", json!({}));
@@ -372,7 +372,7 @@ mod part_b_composition {
         visible(&h, peg.as_str().unwrap(), false);
         assert!(ids(&scene(&h)).is_empty());
         let img = c33_support::render(&h, json!({"composition":"camera","scale":0.25}));
-        assert!(!img.rgba.chunks_exact(4).any(|c| c == cs[0].1));
+        assert!(!img.rgba.as_chunks::<4>().0.iter().any(|c| *c == cs[0].1));
         visible(&h, peg.as_str().unwrap(), true);
         assert_eq!(ids(&scene(&h)), vec![a.clone()]);
         check(&h, &a, cs[0].1);
@@ -394,7 +394,7 @@ mod part_b_composition {
         assert_eq!(ids(&scene(&h)), vec![front.clone()]);
         check(&h, &front, cs[1].1);
         let img = c33_support::render(&h, json!({"composition":"camera","scale":0.25}));
-        assert!(!img.rgba.chunks_exact(4).any(|c| c == cs[0].1));
+        assert!(!img.rgba.as_chunks::<4>().0.iter().any(|c| *c == cs[0].1));
     }
     #[test]
     fn case6_nested_pegs_three_corners() {
@@ -441,5 +441,35 @@ mod part_b_composition {
             }
             assert!(edge, "no colour edge near {p:?}");
         }
+    }
+
+    #[test]
+    fn case7_shared_drawing_clone() {
+        // 04:429-431 shared drawing bank, independent timing/transformation;
+        // CV2 one geometry per drawing, CV1 one occurrence per visible placement.
+        let h = ready();
+        let cs = c33_support::solids(&h, 3);
+        let rgba = cs[2].1;
+        let a = c33_support::square(&h, "Shared", 50., &cs[2].0);
+        let b = ok(&h, "element.clone", json!({"elementId":a,"name":"SharedClone"}))["elementId"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        put(&h, &a, -1., 0.);
+        put(&h, &b, 1., 0.);
+        let s = scene(&h);
+        assert_eq!(ids(&s).len(), 2);
+        assert!(ids(&s).contains(&a) && ids(&s).contains(&b));
+        let ea = check(&h, &a, rgba);
+        let eb = check(&h, &b, rgba);
+        assert_eq!(ea["drawingId"], eb["drawingId"]);
+        assert_eq!(ea["rev"], eb["rev"]);
+        assert_ne!(ea["matrix"], eb["matrix"]);
+        // Then overlap at unequal depth, so same-colour geometry still has
+        // independently specified membership/order and shared drawing identity.
+        put(&h, &a, 0., -4.);
+        put(&h, &b, 0., 0.);
+        assert_eq!(ids(&scene(&h)), vec![a, b.clone()]);
+        check(&h, &b, rgba);
     }
 }
