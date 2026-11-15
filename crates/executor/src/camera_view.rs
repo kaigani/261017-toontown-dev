@@ -88,8 +88,6 @@ pub(crate) struct Chain {
     pub image_to_camera: Matrix,
     /// Output pixels per field (the Camera view's pixels per document unit at 100 %).
     pub pixels_per_field: f64,
-    /// Camera space → view pixels (the window's view transform).
-    pub camera_to_view: Matrix,
     /// Output pixels → view pixels.
     pub output_to_view: Matrix,
 }
@@ -137,18 +135,7 @@ pub(crate) fn chain(cx: &Cx, w: &ViewWindow) -> Result<Chain, CommandError> {
     let (image_to_camera, pixels_per_field) = image_to_camera(&view, width, height);
     let camera_to_view = shell::doc_to_view_matrix(&w.transform(), w.size, pixels_per_field);
     let output_to_view = compose(&camera_to_view, &image_to_camera);
-    Ok(Chain {
-        scene,
-        frame,
-        camera,
-        view,
-        width,
-        height,
-        image_to_camera,
-        pixels_per_field,
-        camera_to_view,
-        output_to_view,
-    })
+    Ok(Chain { scene, frame, camera, view, width, height, image_to_camera, pixels_per_field, output_to_view })
 }
 
 /// The Camera view's pixels per document unit for window `w`: the chain's output pixels per field, or the default
@@ -234,12 +221,6 @@ pub(crate) fn scene_to_output(chain: &Chain, p: [f64; 3]) -> Option<Point> {
 #[must_use]
 pub(crate) fn output_to_scene(chain: &Chain, p: Point, depth: f64) -> Option<[f64; 3]> {
     chain.view.unproject([p.x, p.y], depth)
-}
-
-/// The depth of a scene point in front of the camera.
-#[must_use]
-pub(crate) fn depth_of(chain: &Chain, p: [f64; 3]) -> f64 {
-    chain.view.project(p).depth
 }
 
 /// The view window a call's view-space points refer to: `view` names a view id or `drawing`; by default the active view

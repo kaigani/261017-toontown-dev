@@ -436,6 +436,10 @@ pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, Command
 /// `command.notImplemented` for the tools of SI-129; `arg.invalid` for a gesture without samples.
 pub fn to_command(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, CommandError> {
     let tool = g.tool.as_str();
+    // The scene tools in a Camera view (gestures note §7).
+    if tool == crate::scene_gesture::SCENE_SELECT || tool == crate::scene_gesture::SCENE_TRANSFORM {
+        return crate::scene_gesture::commands(cx, g);
+    }
     if !COVERED.contains(&tool) {
         return Err(not_built(tool));
     }
@@ -847,14 +851,6 @@ fn check(req: &PointerRequest) -> Result<(), CommandError> {
             return Err(invalid(&format!("/events/{i}/dt"), "dt is not negative"));
         }
     }
-    if matches!(req.space, InputSpace::Scene | InputSpace::Camera) {
-        // SI-125: scene and camera coordinates belong to the Camera view (M4 C4.3).
-        return Err(CommandError::with_details(
-            codes::ARG_INVALID,
-            "`pointer` in the Drawing view takes view or drawing coordinates",
-            json!({ "pointer": "/space", "space": req.space }),
-        ));
-    }
     Ok(())
 }
 
@@ -955,15 +951,22 @@ pub(crate) fn run(
         let s = core.session().ok_or_else(|| CommandError::internal("the session is unavailable"))?;
         let id = view_of(&s.ui, &req.view);
         let w = s.ui.shell().view(&id)?;
-        if w.ty != ViewType::Drawing {
-            return Err(CommandError::with_details(
-                codes::COMMAND_NOT_IMPLEMENTED,
-                format!("`pointer` gestures in the {} view arrive with that view (M4 C4.3)", w.ty.as_str()),
-                json!({ "viewId": id, "viewType": w.ty, "milestone": "M4 C4.3" }),
-            ));
+        match w.ty {
+            ViewType::Drawing if matches!(req.space, InputSpace::Scene | InputSpace::Camera) => {
+                // SI-125: scene and camera coordinates are the Camera view's.
+                return Err(CommandError::with_details(
+                    codes::ARG_INVALID,
+                    "`pointer` in the Drawing view takes view or drawing coordinates",
+                    json!({ "pointer": "/space", "space": req.space }),
+                ));
+            }
+            ViewType::Drawing | ViewType::Camera => {}
+            _ => return Err(crate::camera_view::staging_owner(w, "`pointer` gestures")),
         }
         id
     };
+    let camera =
+        core.session().and_then(|s| s.ui.shell().view(&view_id).ok()).is_some_and(|w| w.ty == ViewType::Camera);
     let invoke = |core: &mut crate::run::Core, command: &str, params: Value| -> Envelope {
         core.invoke(&Invocation {
             command: command.to_owned(),
@@ -974,10 +977,15 @@ pub(crate) fn run(
     };
     let mut out = PointerOutcome { commands: Vec::new(), hover: None };
     if let Some(t) = &req.tool {
-        let params = json!({ "toolId": t });
-        let env = invoke(core, "tool.active.set", params.clone());
+        // In a Camera view a scene tool id selects the scene tool (SI-148); otherwise the drawing tool.
+        let (command, params) = if camera && crate::commands::anim_tool::SCENE_TOOLS.contains(&t.as_str()) {
+            ("anim.tool.set", json!({ "tool": t }))
+        } else {
+            ("tool.active.set", json!({ "toolId": t }))
+        };
+        let env = invoke(core, command, params.clone());
         let ok = env.is_ok();
-        out.commands.push(Answered { command_id: "tool.active.set".into(), params, envelope: env });
+        out.commands.push(Answered { command_id: command.into(), params, envelope: env });
         if !ok {
             return Ok(out);
         }
@@ -990,7 +998,13 @@ pub(crate) fn run(
             .session()
             .and_then(|s| s.ui.shell().view(&view_id).ok().cloned())
             .ok_or_else(|| CommandError::internal("the view is gone"))?;
-        let vp = view_point(&w, req.space, e);
+        let vp = if camera {
+            let p = Point { x: e.x, y: e.y };
+            core.with_lent_session(|cx| crate::scene_gesture::view_point(cx, &w, req.space, p))
+                .unwrap_or_else(|| Err(CommandError::internal("the session is unavailable")))?
+        } else {
+            view_point(&w, req.space, e)
+        };
         let in_stroke = pending.as_ref().is_some_and(|p| p.1.is_some());
         match e.ty {
             EventType::Hover => {
@@ -1021,11 +1035,17 @@ pub(crate) fn run(
                     return Err(invalid(&format!("/events/{i}"), "a press while pressed (release first)"));
                 }
                 let mods = Mods::of(&e.modifiers);
-                // The mapping is taken at the press (02 §13.3) and kept for the gesture.
-                let matrix = crate::commands::view::view_to_drawing(&w);
+                // The mapping is taken at the press (02 §13.3) and kept for the gesture; a Camera view's is the current
+                // element's plane through the camera (02 line 61).
+                let matrix = if camera {
+                    core.with_lent_session(|cx| crate::scene_gesture::press_matrix(cx, &w))
+                        .unwrap_or([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+                } else {
+                    crate::commands::view::view_to_drawing(&w)
+                };
                 let sample = Sample {
                     v: vp,
-                    d: to_drawing(&w, vp),
+                    d: crate::shell::apply(&matrix, vp),
                     pressure: e.pressure.unwrap_or(1.0),
                     tilt: (e.tilt_x.unwrap_or(0.0), e.tilt_y.unwrap_or(0.0)),
                     t_ms: clock,
@@ -1039,7 +1059,18 @@ pub(crate) fn run(
                     }
                     _ => {
                         let active = core.session().map(|s| s.ui.drawing().active_tool.clone()).unwrap_or_default();
-                        let tool = effective_tool(&active, req.pointer_type, mods);
+                        let scene = core
+                            .session()
+                            .filter(|s| {
+                                camera && s.ui.shell().scene_family && req.pointer_type != PointerKind::PenEraser
+                            })
+                            .map(|s| s.ui.shell().scene_tool.clone());
+                        let tool = match scene.as_deref() {
+                            // 05 §5.0: the temporary-select modifier makes the Transform tool the Select tool.
+                            Some("transform") if !mods.temp_select => crate::scene_gesture::SCENE_TRANSFORM.to_owned(),
+                            Some(_) => crate::scene_gesture::SCENE_SELECT.to_owned(),
+                            None => effective_tool(&active, req.pointer_type, mods),
+                        };
                         let g = Gesture { tool, view_id: view_id.clone(), strokes: Vec::new(), double_click: false };
                         pending = Some((g, Some(stroke), Some(matrix)));
                     }
@@ -1108,7 +1139,13 @@ pub(crate) fn run(
         {
             return Ok(out);
         }
-        out.hover = Some(json!({ "viewId": view_id, "view": pt(vp), "drawing": pt(to_drawing(&w, vp)) }));
+        let hover_drawing = if camera {
+            core.with_lent_session(|cx| crate::shell::apply(&crate::scene_gesture::press_matrix(cx, &w), vp))
+                .unwrap_or(vp)
+        } else {
+            to_drawing(&w, vp)
+        };
+        out.hover = Some(json!({ "viewId": view_id, "view": pt(vp), "drawing": pt(hover_drawing) }));
     }
     // The final hover names the objects under the pointer as `inspect.hitTest` reports them (pointer note §1.3).
     if hover_objects

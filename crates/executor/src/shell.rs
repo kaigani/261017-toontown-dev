@@ -245,6 +245,12 @@ pub struct ShellState {
     pub context_help: bool,
     /// Sensor facts.
     pub sensors: Sensors,
+    /// The scene-planning tool (05 §5.0; `anim.tool.set`), independent of the drawing tool (05 lines 29-31). Session UI
+    /// state, not undoable (05 §17), not persisted.
+    pub scene_tool: String,
+    /// The tool family a Camera view runs: the one chosen last, `anim.tool.set` (scene) or `tool.active.set` (drawing)
+    /// (SI-148).
+    pub scene_family: bool,
 }
 
 impl Default for ShellState {
@@ -262,6 +268,8 @@ impl Default for ShellState {
             start_screen_by_default: true,
             context_help: false,
             sensors: Sensors::default(),
+            scene_tool: "select".to_owned(),
+            scene_family: true,
         }
     }
 }

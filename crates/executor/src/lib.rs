@@ -48,6 +48,7 @@ mod prechecks;
 mod prefs;
 mod rules;
 mod run;
+mod scene_gesture;
 mod session;
 pub mod shell;
 mod store;

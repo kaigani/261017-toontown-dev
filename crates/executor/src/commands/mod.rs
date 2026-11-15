@@ -11,7 +11,9 @@ pub(crate) mod anim_eval;
 pub(crate) mod anim_function;
 pub(crate) mod anim_key;
 pub(crate) mod anim_path;
+pub(crate) mod anim_tool;
 pub(crate) mod anim_transform;
+pub(crate) mod anim_view;
 pub(crate) mod app;
 pub(crate) mod bundle;
 pub(crate) mod cell;
@@ -458,6 +460,11 @@ pub(crate) static ALL: &[&Command] = &[
     &anim_camera::ANIM_CAMERA_CURRENT_CHANGED,
     &anim_eval::ANIM_EVALUATE,
     &anim_eval::ANIM_PROJECTION_GET,
+    // the Camera view's scene tools and coordinates (M4 C4.3, C4.3 plan answer 2)
+    &anim_tool::ANIM_TOOL_SET,
+    &anim_tool::ANIM_TOOL_GET,
+    &anim_tool::ANIM_TOOL_CHANGED,
+    &anim_view::ANIM_VIEW_COORDS_GET,
     &anim_eval::ANIM_PATH_SAMPLE,
     &anim_eval::ANIM_FUNCTION_SAMPLE,
     &xsheet::XSHEET_EXPOSURES_GET,

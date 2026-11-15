@@ -418,16 +418,26 @@ fn files_write(cx: &Cx, command: &str) -> Result<(), CommandError> {
 }
 
 fn unavailable(c: Composition) -> CommandError {
-    // `activeView` renders the Drawing view since M4 C4.2 (SI-107); the other view types and ranges of the active view
-    // arrive with the Camera view (M4 C4.3).
+    // `activeView` renders the Drawing view (M4 C4.2) and the Camera view (M4 C4.3a) (SI-107); Top and Side views are
+    // M6 C6.1's (C4.3 plan answer 1).
     let (name, owner) = match c {
         Composition::Xsheet => ("xsheet", "M5 C5.1"),
-        _ => ("activeView", "M4 C4.3"),
+        _ => ("activeView", "M6 C6.1"),
     };
     err(
         "render.compositionUnavailable",
         format!("the `{name}` composition arrives with {owner}"),
         json!({ "composition": name, "owner": owner }),
+    )
+}
+
+/// `render.range.run` renders the camera, exposure-sheet or element composition (09 line 1013); the active view is a
+/// frame's composition, not a range's (SI-107).
+fn not_a_range() -> CommandError {
+    err(
+        "render.compositionUnavailable",
+        "a range renders the camera, xsheet or element composition; the active view is rendered frame by frame",
+        json!({ "composition": "activeView", "reason": "range" }),
     )
 }
 
@@ -499,15 +509,18 @@ pub(crate) fn inline_side(cx: &Cx, width: u32, height: u32) -> Result<(), Comman
 )]
 pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResult, CommandError> {
     let started = std::time::Instant::now();
+    let active = cx.ui().active_view_type();
     if p.composition == Composition::Xsheet
-        || (p.composition == Composition::ActiveView && cx.ui().active_view_type() != crate::shell::ViewType::Drawing)
+        || (p.composition == Composition::ActiveView
+            && !matches!(active, crate::shell::ViewType::Drawing | crate::shell::ViewType::Camera))
     {
         return Err(unavailable(p.composition));
     }
     let scene = scene_param(cx, p.scene_id.as_deref())?;
     let frame = frame_param(cx, p.frame)?;
     let doc = cx.document()?.clone();
-    if p.composition == Composition::ActiveView {
+    // The Drawing view renders its current drawing (SI-107); the Camera view is the camera composition (C4.3a).
+    if p.composition == Composition::ActiveView && active == crate::shell::ViewType::Drawing {
         return active_view(cx, &p, &doc, frame);
     }
     if p.output == Output::File && p.path.is_none() {
@@ -1562,7 +1575,10 @@ fn encode_sequence(format: SequenceFormat, pixels: &[u8], w: u32, h: u32) -> Res
 )]
 pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manifest>, CommandError> {
     let _ = p.wait;
-    if p.composition == Composition::ActiveView || p.composition == Composition::Xsheet {
+    if p.composition == Composition::ActiveView {
+        return Err(not_a_range());
+    }
+    if p.composition == Composition::Xsheet {
         return Err(unavailable(p.composition));
     }
     let scene = scene_param(cx, p.scene_id.as_deref())?;

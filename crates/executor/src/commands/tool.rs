@@ -330,6 +330,8 @@ pub(crate) fn tool_active_set(cx: &mut Cx, p: ActiveParams) -> Result<ToolIdResu
     let tool = p.tool_id.name();
     tool_param(&tool)?;
     activate(cx, &tool);
+    // A Camera view now runs the drawing tools (SI-148).
+    cx.ui_mut().shell_mut().scene_family = false;
     Ok(ToolIdResult { tool_id: tool })
 }
 

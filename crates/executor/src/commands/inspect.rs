@@ -505,6 +505,13 @@ pub(crate) fn image_hits(
     Ok(hits)
 }
 
+impl HitOut {
+    /// The element hit.
+    pub(crate) fn element_id(&self) -> &str {
+        &self.element_id
+    }
+}
+
 /// Hits under a view point of the Drawing view (SI-109): the current drawing's objects, top-most first.
 fn view_hits(cx: &Cx, p: &HitParams) -> Result<Hits, CommandError> {
     if !(p.point.x.is_finite() && p.point.y.is_finite()) {
@@ -517,6 +524,10 @@ fn view_hits(cx: &Cx, p: &HitParams) -> Result<Hits, CommandError> {
 /// The objects of the Drawing view's current drawing under a view point, top-most first (`inspect.hitTest` in view
 /// space; the `pointer` tool's final hover).
 pub(crate) fn view_hit_list(cx: &Cx, view: Option<&str>, at: crate::shell::Point) -> Result<Vec<HitOut>, CommandError> {
+    if let Some((_, chain)) = camera_window(cx, view)? {
+        let pixel = view_to_output(&chain, at)?;
+        return image_hits(cx, Some(chain.scene.as_str()), Some(chain.frame), P::new(pixel.x, pixel.y), true);
+    }
     let w = super::view::drawing_view(cx, view)?;
     let q = super::view::to_drawing(w, at);
     let doc = cx.document()?;
@@ -1339,13 +1350,14 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult,
         )
         .hint("target window, drawing or a view id (inspect.ui.tree lists them)")
     })?;
-    if w.ty != crate::shell::ViewType::Drawing {
-        return Err(CommandError::with_details(
-            tt_registry::codes::COMMAND_NOT_IMPLEMENTED,
-            format!("headless screenshots of the {} view arrive with that view (M4 C4.3)", w.ty.as_str()),
-            json!({ "target": target, "viewType": w.ty, "milestone": "M4 C4.3" }),
-        ));
+    if matches!(w.ty, crate::shell::ViewType::Top | crate::shell::ViewType::Side) {
+        let mut e = crate::camera_view::staging_owner(w, "headless screenshots");
+        if let Some(d) = e.details.as_object_mut() {
+            d.insert("target".into(), json!(target));
+        }
+        return Err(e);
     }
+    let camera_view = w.ty == crate::shell::ViewType::Camera;
     let (vw, vh) = (w.size.width.round(), w.size.height.round());
     let region = match &p.region {
         Some(r) => {
@@ -1367,7 +1379,18 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult,
         return Err(inline_too_large(width, height, None, max_bytes));
     }
     let bg = &cx.ui().drawing().aids.background;
-    let colour = if bg.use_scene_colour {
+    let colour = if camera_view {
+        // The Camera view shows the scene's background (05 §3.2), as a render does.
+        cx.document()
+            .ok()
+            .and_then(|doc| {
+                crate::camera_view::current_scene(cx)
+                    .ok()
+                    .and_then(|s| doc.scene(&s))
+                    .map(|s| s.background_colour().to_string())
+            })
+            .unwrap_or_else(|| bg.colour.clone())
+    } else if bg.use_scene_colour {
         cx.document()
             .ok()
             .and_then(|doc| {
@@ -1384,8 +1407,31 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult,
     // The snapshot (design note 5 §1a; C42A-R1-02): the document by reference count, the drawing's id, the planar
     // cache's handle and the blob store; the rasterising and the encoding run on a job thread, never on this one.
     let doc = cx.document().ok().cloned();
-    let drawing_id = doc.as_ref().and_then(|d| cx.app().current_drawing(d));
+    // The Camera view (C4.3a): the final renderer's camera walk at the view's frame, drawn through the view transform
+    // (camera-view note §2); the list is built here, the items and pixels on the job thread.
+    let camera = if camera_view {
+        let chain = crate::camera_view::chain(cx, w)?;
+        let overrides = Overrides::default();
+        let req = render_list::Request {
+            scene: &chain.scene,
+            frame: chain.frame,
+            camera: None,
+            width: chain.width,
+            height: chain.height,
+            only: None,
+            overrides: &overrides,
+        };
+        let docr = cx.document()?;
+        let mut ev = super::anim_common::evaluator(docr, "capturing the Camera view");
+        let list = render_list::build(docr, &req, &mut ev)?;
+        let m = chain.output_to_view;
+        Some((list, [m[0], m[1], m[2], m[3], m[4] - region.0, m[5] - region.1]))
+    } else {
+        None
+    };
+    let drawing_id = if camera_view { None } else { doc.as_ref().and_then(|d| cx.app().current_drawing(d)) };
     let capture = Capture {
+        camera,
         doc,
         drawing_id: drawing_id.clone(),
         cache: cx.planar_cache(),
@@ -1410,10 +1456,15 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult,
         view_id: id,
         source: "virtual".into(),
         drawing_id: drawing_id.map(|d| d.as_str().to_owned()),
-        note:
+        note: if camera_view {
+            "headless: the camera composition through the Camera view's transform on the scene's background; overlays \
+               are drawn by the interactive renderer only (05 lines 283-284, 06 §6.10)"
+                .into()
+        } else {
             "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by \
                the interactive renderer only (06 §6.10)"
-                .into(),
+                .into()
+        },
         job_id: None,
     };
     if cx.dry_run() {
@@ -1449,6 +1500,8 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult,
 
 /// What a headless capture needs, taken on the document thread (C42A-R1-02).
 struct Capture {
+    /// The Camera view's render list and its output-pixels-to-capture matrix (C4.3a); `None` for the Drawing view.
+    camera: Option<(render_list::RenderList, [f64; 6])>,
     doc: Option<tt_model::document::Document>,
     drawing_id: Option<tt_model::Id>,
     cache: crate::planar::SharedCache,
@@ -1461,6 +1514,18 @@ impl Capture {
     /// Rasterises and encodes off the document thread: the PNG (base64) and its sha256.
     fn run(&self, stop: &dyn Fn() -> bool) -> Result<(String, String), CommandError> {
         let r = self.raster;
+        if let (Some((list, m)), Some(doc)) = (self.camera.as_ref(), self.doc.as_ref()) {
+            let work = u64::from(r.width) * u64::from(r.height) / 1024;
+            let (items, _, _) = render_list::items(doc, self.blobs.as_ref(), &self.cache, list, work)?;
+            let scene = tt_render::Scene {
+                width: r.width,
+                height: r.height,
+                background: r.background,
+                items: vec![tt_render::Item::Layer { transform: *m, items }],
+            };
+            let pixels = render::rasterise(&scene, stop)?;
+            return self.encode(&pixels);
+        }
         let drawing =
             self.doc.as_ref().zip(self.drawing_id.as_ref()).and_then(|(doc, id)| doc.drawing(id).map(|d| (doc, d)));
         let pixels = match drawing {
@@ -1478,7 +1543,13 @@ impl Capture {
         if stop() {
             return Err(CommandError::new("job.cancelled", "the capture was cancelled"));
         }
-        let png = tt_render::encode_png(&pixels, r.width, r.height)
+        self.encode(&pixels)
+    }
+
+    /// Encodes the pixels and checks the byte cap.
+    fn encode(&self, pixels: &[u8]) -> Result<(String, String), CommandError> {
+        let r = self.raster;
+        let png = tt_render::encode_png(pixels, r.width, r.height)
             .map_err(|e| CommandError::with_details("render.failed", e.to_string(), json!({})))?;
         // The byte cap is known only after encoding (design note 5 §3; ADR-0020 decision 8).
         if png.len() as u64 > self.max_bytes {

@@ -1450,8 +1450,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   not mention.
 - **Interim decision:** samples given in `drawing` space are converted to view pixels with the view mapping at the press
   and then handled as view samples (one path); `scene` and `camera` space in the Drawing view are refused
-  (`arg.invalid`: they belong to the Camera view of C4.3); tilt is carried by the input-source abstraction and recorded,
-  and changes no stroke (no tool option of 02 §6 to §7 uses it).
+  (`arg.invalid`); tilt is carried by the input-source abstraction and recorded, and changes no stroke (no tool option
+  of 02 §6 to §7 uses it). In a Camera view (C4.3a): `drawing` points go through the current element's plane, `camera`
+  points (SI-109: fields from the camera centre) through the camera's output pixels, and `scene` points are table-plane
+  points (Z = 0) projected through the camera; each becomes a view sample, as above.
 - **Question:** specify the spaces and tilt in 02 §13.3, or restrict `pointer`.
 
 ## SI-126 — the static light-table panel before the Exposure Sheet exists (found in M4 C4.2 planning; interim)
@@ -1795,3 +1797,34 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   the drawing tool.
 - **Question:** how should a request name the drawing Select in the Camera view, or should the families be one tool
   set?
+
+## SI-149 — what `anim.view.coords.get`'s `depth` means (found in M4 C4.3; interim)
+
+- **Sections:** 05 §19.3 line 1234 (`anim.view.coords.get`: `viewId; points; from: "scene"|"view"; depth?: number = 0`;
+  "Map points between scene space and view pixels (for pointer simulation)"), 05 lines 40-60 (scene space), §2.6.
+- **Problem:** a view pixel names a ray, not a scene point; `depth` is not defined.
+- **Interim decision:** `depth` is the scene Z of the plane a view point is unprojected onto (0: the table plane);
+  a scene point given without `z` takes that Z. With `from: "view"` the answer's points carry `z`. A plane at or
+  behind the camera's near plane, or a scene point there, answers `inspect.behindCamera`. Camera views only; Top and
+  Side views are M6 C6.1's; a Drawing view window answers `arg.invalid`.
+- **Question:** confirm, or define `depth` (a camera distance, or the scene Z).
+
+## SI-150 — the scene tools' furniture and what each handle does in the Camera view (found in M4 C4.3; interim)
+
+- **Sections:** 05 §3.5 lines 347-360 (3 px drag start, 4 px pick tolerance, pick priority, nudges), §5.0-§5.2 lines
+  393-420 (bounding box, corner and side scale handles, a rotation handle, side skew handles, the pivot marker), SI-141
+  (the Drawing view's Select furniture).
+- **Problem:** the spec names the handles but not where they are, what a drag does with several selected nodes of
+  different parents and depths, or about which point a handle scales or rotates.
+- **Interim decision:** the furniture sits on the selection's union box in view pixels. Corners and side midpoints are
+  scale handles (6 view pixels, as SI-141); skew handles sit 12 view pixels outside each side's midpoint; rotation is
+  outside the box within 18 view pixels of a corner (as SI-141); the Transform tool's pivot marker is the first
+  selected element's rotation pivot (6 view pixels). A press picks element content within 4 view pixels (the hit at
+  the press and at eight points 4 view pixels around it), front-most first, locked elements skipped; a click on
+  nothing clears the selection; a drag from empty space selects every element whose box touches its rectangle. A
+  drag of several nodes is one `anim.transform.set` for all of them: a move uses the first selected node's depth and
+  parent to turn the view delta into a parent-space delta; a scale handle's factor (about the opposite corner or
+  side, as in the Drawing view) and a rotation (about the box's centre) are applied relatively to each node about its
+  own pivots; a skew handle on a horizontal side skews by the angle whose tangent is its horizontal drag over half the
+  box's height (vertical sides: vertical drag over half the width).
+- **Question:** confirm the furniture and how a multi-node drag combines, or give them.

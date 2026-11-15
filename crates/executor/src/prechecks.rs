@@ -123,11 +123,12 @@ pub(crate) fn render_frame_run(cx: &Cx, v: &Value) -> Result<(), CommandError> {
         ));
     }
     if composition == "activeView" {
-        if cx.ui().active_view_type() != crate::shell::ViewType::Drawing {
+        // The Drawing view (C4.2) and the Camera view (C4.3a) render; Top and Side views are M6 C6.1's.
+        if matches!(cx.ui().active_view_type(), crate::shell::ViewType::Top | crate::shell::ViewType::Side) {
             return Err(CommandError::with_details(
                 "render.compositionUnavailable",
-                "the `activeView` composition of this view type arrives with M4 C4.3",
-                json!({ "composition": "activeView", "owner": "M4 C4.3" }),
+                "the `activeView` composition arrives with M6 C6.1",
+                json!({ "composition": "activeView", "owner": "M6 C6.1" }),
             ));
         }
         // The Drawing view renders its current drawing (SI-107; M4 C4.2).
