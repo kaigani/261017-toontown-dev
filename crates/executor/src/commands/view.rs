@@ -701,7 +701,7 @@ pub(crate) fn precheck_convert(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     scopes = [read],
     needs_project,
     example(title = "A Drawing-view pixel in drawing space", params = r#"{"viewId": "drawingView", "point": {"x": 960, "y": 540}, "from": "view", "to": "drawing"}"#),
-    gui = "the status bar's pointer position (02 §2.2); wired in M4 C4.2",
+    agent_only = "the status bar's pointer position is the kernel's own (its status-bar texts); agents convert points with this",
 )]
 pub(crate) fn view_coordinates_convert(cx: &mut Cx, p: ConvertParams) -> Result<PointResult, CommandError> {
     let point = finite(p.point, "/point")?;

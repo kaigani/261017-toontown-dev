@@ -820,7 +820,7 @@ pub(crate) struct ContentAddResult {
     undo = "Paste",
     needs_project,
     example(title = "Insert a pencil line and a text object", params = r#"{"elementId": "scene:#1/element:\"Bob\"", "frame": 1, "content": {"nodes": [{"type": "layer", "id": "l_1", "layerKind": "pencil", "strokes": [{"id": "s_1", "kind": "pencil", "closed": false, "bezier": [{"x": 0, "y": 0}, {"x": 10, "y": 5}, {"x": 20, "y": 5}, {"x": 30, "y": 0}], "colourId": null, "lineStyle": {"thickness": 2, "lineType": "solid"}}]}, {"type": "text", "id": "t_1", "text": "Hi", "transform": [1, 0, 0, 1, -50, 120], "widthMode": "auto", "width": null, "runs": [{"start": 0, "length": 2, "font": "sans-serif", "size": 36, "bold": false, "italic": false, "baseline": "normal", "kerning": 0, "autoKern": true, "colourId": null, "outlineColourId": null}], "paragraphs": [{"start": 0, "length": 2, "align": "left", "leftMargin": 0, "rightMargin": 0, "indent": 0, "lineSpacing": 0}]}]}, "offset": {"x": 10, "y": -10}}"#),
-    gui = "Drawing view: Edit › Paste (M4 C4.2)",
+    agent_only = "the GUI pastes with Edit › Paste (edit.paste); this command takes explicit content for agents",
 )]
 pub(crate) fn draw_content_add(cx: &mut Cx, p: ContentAddParams) -> Result<ContentAddResult, CommandError> {
     // The pipeline converted view-space points (crate::addressing).

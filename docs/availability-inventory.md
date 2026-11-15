@@ -416,11 +416,6 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `draw.centreLine.apply` | `drawing.nothingToDo` | precheck | nothing selected in the drawing | refuse: drawing · pass: drawing-selected |
 | `draw.centreLine.apply` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
 | `draw.centreLine.apply` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
-| `draw.content.add` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
-| `draw.content.add` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
-| `draw.content.add` | `drawing.noTarget` | precheck | no current drawing | refuse: blank-cell {"createDrawing": false} · pass: blank-cell {} |
-| `draw.content.add` | `drawing.notVectorElement` | precheck | the addressed element is not a drawing or annotation element | refuse: peg-current · pass: drawing |
-| `draw.content.add` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
 | `draw.cut.apply` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `draw.cut.apply` | `drawing.invalidGeometry` | parameter | the caller's geometry is degenerate or out of range |  |
 | `draw.cut.apply` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing {"rect": {"x": -1000, "y": -1000, "width": 2000, "height": 2000}} · pass: drawing {"rect": {"x": -1000, "y": -1000, "width": 2000, "height": 2000}} |
@@ -845,7 +840,6 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `element.visibility.set` | `element.notFound` | precheck | no element given, selected or current | untestable: a project always has a current element: a new project makes its first element current, another becomes current when it goes, and a scene's last camera cannot be deleted |
 | `job.cancel` | `job.notFound` | parameter | the job the caller names does not exist |  |
 | `keymap.export` | `fs.exists` | parameter | the file the caller names exists |  |
-| `keymap.get` | `arg.missing` | parameter | a parameter the call needs is missing |  |
 | `keymap.import` | `fs.notFound` | parameter | the file the caller names does not exist |  |
 | `keymap.import` | `keymap.invalidFile` | parameter | the file the caller names is not a keymap |  |
 | `keymap.reset` | `arg.missing` | parameter | a parameter the call needs is missing |  |
@@ -908,13 +902,6 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `ui.help.get` | `window.panelNotFound` | parameter | the panel the caller names does not exist |  |
 | `ui.preferences.open` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `ui.tips.set` | `ui.unknownMessage` | parameter | the message the caller names does not exist |  |
-| `view.coordinates.convert` | `anim.notFound` | parameter | scene space (the caller's `from` or `to`) evaluates the current element, which the evaluator does not know |  |
-| `view.coordinates.convert` | `anim.valueOutOfRange` | parameter | scene space (the caller's `from` or `to`) evaluates a transform out of range |  |
-| `view.coordinates.convert` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
-| `view.coordinates.convert` | `command.notImplemented` | precheck | the view window shows a Top or Side view (M6 C6.1; the Camera view converts since M4 C4.3a) | refuse: drawing+drawing-view-as-top {"viewId": "drawingView", "from": "view", "to": "drawing", "point": {"x": 960, "y": 540}} · pass: drawing {"viewId": "drawingView", "from": "view", "to": "drawing", "point": {"x": 960, "y": 540}} |
-| `view.coordinates.convert` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
-| `view.coordinates.convert` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
-| `view.coordinates.convert` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `view.pan.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `view.pan.set` | `arg.missing` | parameter | none of `centre`, `by` and `atPointer` is given |  |
 | `view.pan.set` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |

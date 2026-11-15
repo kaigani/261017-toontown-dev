@@ -185,7 +185,7 @@ pub(crate) struct GetResult {
     scopes = [read],
     example(title = "What Primary+S runs", params = r#"{"keys": "Primary+S"}"#),
     example(title = "Bindings of Save", params = r#"{"commandId": "project.save"}"#),
-    gui = "Preferences › Keyboard: details of the selected command (M4 C4.1)",
+    agent_only = "the shortcut editor shows every command's bindings from keymap.list; this answers one command or chord for agents",
 )]
 pub(crate) fn keymap_get(cx: &mut Cx, p: GetParams) -> Result<GetResult, CommandError> {
     let all = current(cx);

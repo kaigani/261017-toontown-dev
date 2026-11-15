@@ -1,8 +1,9 @@
 // Panel contents (01 §5.2). C4.1 implements the History panel and the view windows' chrome; every other panel is an
 // honest placeholder that names the checkpoint bringing its content, where a user would look for it.
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { CanvasView } from '../canvas/CanvasView';
+import { ViewChrome } from './ViewChrome';
 import { useActions } from '../shell/actionsApi';
 import { useShell, useSlice } from '../state/context';
 import type { History } from '../state/types';
@@ -105,6 +106,36 @@ export function ViewPanel({ panelId }: { panelId: string }) {
   // The Drawing and Camera view windows show the canvas, which reports its own size (M4 C4.2b, C4.3b; camera-view note
   // §6: it follows the scene answer's view type); the Top and Side windows keep the placeholder (M6 C6.1).
   const drawing = panelId === 'drawingView' || panelId === 'cameraView';
+  // The window's current type (`view.list`), shown on the type buttons (ruling D-30, group 1).
+  const [viewType, setViewType] = useState<string | null>(null);
+  useEffect(() => {
+    let stopped = false;
+    let off: (() => void) | null = null;
+    const read = () => {
+      void engine
+        .run('view.list', {})
+        .done.then((env) => {
+          const views =
+            (env.result as { views?: { viewId?: string; type?: string }[] } | undefined)?.views ?? [];
+          const mine = views.find((v) => v.viewId === panelId);
+          if (!stopped && mine?.type) setViewType(mine.type);
+        })
+        .catch(() => undefined);
+    };
+    read();
+    void engine
+      .onEvent((e) => {
+        if (e.name === 'shell.view' || e.name === 'project.opened') read();
+      })
+      .then((u) => {
+        if (stopped) u();
+        else off = u;
+      });
+    return () => {
+      stopped = true;
+      off?.();
+    };
+  }, [engine, panelId]);
   useEffect(() => {
     const el = canvas.current;
     if (drawing || !el || typeof ResizeObserver === 'undefined') return undefined;
@@ -133,12 +164,15 @@ export function ViewPanel({ panelId }: { panelId: string }) {
           <button
             key={v.type}
             type="button"
-            disabled
-            title="Switching a view window's type arrives with M4 C4.2 (view.type.set)"
+            aria-pressed={viewType === v.type}
+            title={`Show the ${v.label} view in this window (view.type.set)`}
             data-tt-role="button"
             data-tt-id={`${panelId}.type.${v.type}`}
             data-tt-command="view.type.set"
             data-tt-params={JSON.stringify({ viewId: panelId, type: v.type })}
+            onClick={() => {
+              void actions.run('view.type.set', { viewId: panelId, type: v.type });
+            }}
           >
             {v.label}
           </button>
@@ -156,6 +190,7 @@ export function ViewPanel({ panelId }: { panelId: string }) {
           Focus
         </button>
       </div>
+      {drawing && <ViewChrome viewId={panelId} />}
       {drawing ? (
         <CanvasView engine={engine} viewId={panelId} />
       ) : (

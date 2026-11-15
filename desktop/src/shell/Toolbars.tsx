@@ -3,9 +3,11 @@
 // drop-downs show their members. Whether an item is enabled, checked and how it is labelled comes from the kernel's
 // availability (ruling O-10), the source the native menu and the key dispatch use too; until it has answered, an
 // item is disabled. Items whose command belongs to a later checkpoint stay visible and disabled, with the reason.
+import { useEffect, useState } from 'react';
+
 import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { TOOL_PALETTES } from '../panels/catalogue';
-import { useSlice } from '../state/context';
+import { useShell, useSlice } from '../state/context';
 import type { Arrangement, Layout, WorkspaceEntry } from '../state/types';
 import { useActions } from './actionsApi';
 import { refKey, type Availability } from './availability';
@@ -99,7 +101,70 @@ function WorkspaceList() {
   );
 }
 
-/** The tool palettes, docked vertically on the left (binding convention). Their tools arrive with their owners. */
+/** The Drawing tools palette's tools (M4 C4.3b; ruling D-30, group 1; 02 §1.3): `tool.list`'s tools, each a button
+ *  that makes it the active tool (`tool.active.set`), the active one pressed. */
+function DrawingToolButtons() {
+  const { engine } = useShell();
+  const actions = useActions();
+  const [tools, setTools] = useState<{ toolId: string; group?: string }[]>([]);
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    let stopped = false;
+    let off: (() => void) | null = null;
+    const read = () => {
+      void engine
+        .run('tool.list', {})
+        .done.then((env) => {
+          const r = (env.result ?? {}) as {
+            tools?: { toolId: string; group?: string }[];
+            activeToolId?: string;
+          };
+          if (stopped) return;
+          setTools(r.tools ?? []);
+          setActive(r.activeToolId ?? null);
+        })
+        .catch(() => undefined);
+    };
+    read();
+    void engine
+      .onEvent((e) => {
+        if (e.name === 'tool.active.changed' || e.name === 'project.opened') read();
+      })
+      .then((u) => {
+        if (stopped) u();
+        else off = u;
+      });
+    return () => {
+      stopped = true;
+      off?.();
+    };
+  }, [engine]);
+  return (
+    <>
+      {tools.map((t) => (
+        <button
+          key={t.toolId}
+          type="button"
+          className="tool-button"
+          aria-pressed={active === t.toolId}
+          title={t.toolId}
+          data-tt-role="button"
+          data-tt-id={`drawingTools.${t.toolId}`}
+          data-tt-command="tool.active.set"
+          data-tt-params={JSON.stringify({ toolId: t.toolId })}
+          onClick={() => {
+            void actions.run('tool.active.set', { toolId: t.toolId });
+          }}
+        >
+          {t.toolId}
+        </button>
+      ))}
+    </>
+  );
+}
+
+/** The tool palettes, docked vertically on the left (binding convention). The Drawing tools palette holds the drawing
+ *  tools (M4 C4.3b); the other palettes' tools arrive with their owners. */
 export function ToolPaletteRail({ layout, fullScreen }: { layout: Layout | undefined; fullScreen: boolean }) {
   const a: Arrangement | undefined = layout ? (fullScreen ? layout.fullScreen : layout) : undefined;
   const visible = (a?.toolPalettes ?? []).filter((p) => p.visible && !p.floating);
@@ -127,6 +192,7 @@ export function ToolPaletteRail({ layout, fullScreen }: { layout: Layout | undef
             >
               {(info?.title ?? p.id).slice(0, 1)}
             </span>
+            {p.id === 'drawingTools' && <DrawingToolButtons />}
           </div>
         );
       })}

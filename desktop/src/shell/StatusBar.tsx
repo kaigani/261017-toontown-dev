@@ -42,8 +42,47 @@ export function StatusBar() {
       <span className="status-playback" data-tt-role="text" data-tt-id="status.playback">
         {texts?.playback ?? ''}
       </span>
+      <JobsIndicator />
       <AgentIndicator />
     </footer>
+  );
+}
+
+/** The progress area (01 §9.1; ruling D-30, group 1): the running jobs (`job.list`), read again when a job reports
+ *  progress or finishes. */
+function JobsIndicator() {
+  const { engine } = useShell();
+  const [running, setRunning] = useState(0);
+  useEffect(() => {
+    let stopped = false;
+    let off: (() => void) | null = null;
+    const read = () => {
+      void engine
+        .run('job.list', {})
+        .done.then((env) => {
+          const jobs = (env.result as { jobs?: { state?: string }[] } | undefined)?.jobs ?? [];
+          if (!stopped) setRunning(jobs.filter((j) => j.state === 'running' || j.state === 'queued').length);
+        })
+        .catch(() => undefined);
+    };
+    read();
+    void engine
+      .onEvent((e) => {
+        if (e.name === 'job.progress' || e.name === 'job.finished') read();
+      })
+      .then((u) => {
+        if (stopped) u();
+        else off = u;
+      });
+    return () => {
+      stopped = true;
+      off?.();
+    };
+  }, [engine]);
+  return (
+    <span className="status-jobs" data-tt-role="text" data-tt-id="status.jobs">
+      {running > 0 ? `${String(running)} job${running === 1 ? '' : 's'} running` : ''}
+    </span>
   );
 }
 
