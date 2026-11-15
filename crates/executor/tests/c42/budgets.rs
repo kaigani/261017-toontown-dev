@@ -196,3 +196,73 @@ fn long_stroke_split() {
         "10,000 samples: pointer Brush {pointer_total:?}; direct draw.stroke.add {direct_fit:?} (fit) / {direct_unfit:?} (no fit); dry run (handler, no commit) {dry_fit:?}; pointer Grabber (grouping and conversion, trivial command) {conversion:?}"
     );
 }
+
+/// The large drawing of plan §6: 50,000 points of brush strokes, built through commands (100 strokes of 500 points).
+fn large() -> tt_executor::ExecutorHandle {
+    let h = ready();
+    for k in 0..100 {
+        let points: Vec<serde_json::Value> = (0..500)
+            .map(|i| {
+                let x = -600.0 + f64::from(i) * 2.4;
+                let y = -400.0 + f64::from(k) * 8.0 + (f64::from(i) * 0.3).sin() * 6.0;
+                json!({ "x": x, "y": y, "pressure": 0.6 })
+            })
+            .collect();
+        ok(&h, "draw.stroke.add", json!({ "kind": "brush", "points": points, "fit": false, "layer": "top" }));
+    }
+    h
+}
+
+#[test]
+fn the_canvas_holds_the_document_thread_briefly_and_its_large_payload_fits() {
+    let h = std::sync::Arc::new(large());
+    // `canvas_scene` is one document-thread read: its round trip bounds its hold.
+    let mut scene = Vec::new();
+    for _ in 0..40 {
+        let t = Instant::now();
+        let _ = h.canvas_scene("drawingView").unwrap();
+        scene.push(t.elapsed());
+    }
+    let (p, max) = p95(scene);
+    eprintln!("canvas_scene on the large drawing: p95 {p:?}, max {max:?} (40 calls)");
+    assert!(p <= Duration::from_millis(20), "plan §6: the scene read holds the document thread at most 20 ms ({p:?})");
+    // The payload: built off the document thread. While it is built, a user query still answers within the hold bound
+    // (only the snapshot is taken on the document thread; design note 1 §6).
+    let t = Instant::now();
+    let builder = {
+        let h = h.clone();
+        std::thread::spawn(move || h.canvas_drawing(None, 1, 0, false))
+    };
+    let mut queries = Vec::new();
+    while !builder.is_finished() {
+        let q = Instant::now();
+        ok(&h, "app.state.get", json!({}));
+        queries.push(q.elapsed());
+    }
+    let payload = builder.join().unwrap().unwrap();
+    let produced = t.elapsed();
+    let (qp, qmax) = p95(queries.clone());
+    eprintln!(
+        "large payload: {} bytes in {produced:?}; {} user queries during it: p95 {qp:?}, max {qmax:?}",
+        payload.bytes.len(),
+        queries.len()
+    );
+    assert!(
+        payload.bytes.len() <= 64 << 20,
+        "plan §6: at most 64 MB for 50,000 points ({} bytes)",
+        payload.bytes.len()
+    );
+    assert!(qp <= Duration::from_millis(20), "plan §6: the payload's document-thread hold stays within 20 ms ({qp:?})");
+    let d = tt_render::canvas::decode(&payload.bytes).unwrap();
+    let vertices: usize = d
+        .records
+        .iter()
+        .map(|r| match r {
+            tt_render::canvas::Record::Solid { vertices, .. }
+            | tt_render::canvas::Record::Gradient { vertices, .. } => vertices.len(),
+            tt_render::canvas::Record::Bitmap { .. } => 4,
+        })
+        .sum();
+    eprintln!("large payload: {} records, {vertices} vertices", d.records.len());
+    assert!(vertices > 50_000, "the strokes are all there ({vertices} vertices)");
+}
