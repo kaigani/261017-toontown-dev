@@ -15,3 +15,7 @@ mod mapping;
 mod renders;
 #[path = "c43/scene_tools.rs"]
 mod scene_tools;
+#[path = "c43/spec_values.rs"]
+mod spec_values;
+#[path = "c43/budgets.rs"]
+mod budgets;

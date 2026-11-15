@@ -38,6 +38,8 @@ pub struct Evaluator<'d, E> {
     spend: Box<dyn FnMut(u64) -> Result<(), E> + 'd>,
     nodes: BTreeMap<Id, NodeData>,
     parents: BTreeMap<Id, BTreeMap<Id, Option<Id>>>,
+    /// Each scene's length, computed once (it reads every element of the scene).
+    lengths: BTreeMap<Id, u64>,
     memo_frame: f64,
     memo: BTreeMap<Id, Mat4>,
 }
@@ -50,6 +52,7 @@ impl<'d, E> Evaluator<'d, E> {
             spend: Box::new(spend),
             nodes: BTreeMap::new(),
             parents: BTreeMap::new(),
+            lengths: BTreeMap::new(),
             memo_frame: f64::NAN,
             memo: BTreeMap::new(),
         }
@@ -67,7 +70,9 @@ impl<'d, E> Evaluator<'d, E> {
             let scene =
                 self.doc.scene_of(id).and_then(|s| self.doc.scene(s)).ok_or_else(|| EvalError::NotFound(id.clone()))?;
             (self.spend)(NodeData::cost(e))?;
-            let data = NodeData::read(self.doc, scene.tree(), e, self.doc.scene_length(scene));
+            let doc = self.doc;
+            let length = *self.lengths.entry(scene.id().clone()).or_insert_with(|| doc.scene_length(scene));
+            let data = NodeData::read(self.doc, scene.tree(), e, length);
             self.nodes.insert(id.clone(), data);
         }
         self.nodes.get(id).ok_or_else(|| EvalError::NotFound(id.clone()))

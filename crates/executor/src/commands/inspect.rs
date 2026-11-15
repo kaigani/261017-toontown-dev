@@ -501,6 +501,13 @@ pub(crate) fn hits_in(
             continue;
         }
         let q = Affine(inv).apply(pixel);
+        // Hits are exact (tolerance 0); the slack only absorbs rounding at the extent's edge.
+        if en.extent.is_some_and(|r| {
+            let r = r.grown(1e-6 * (r.max_x - r.min_x).max(r.max_y - r.min_y).max(1.0));
+            q.x < r.min_x || q.x > r.max_x || q.y < r.min_y || q.y > r.max_y
+        }) {
+            continue;
+        }
         let zones = crate::planar::drawing_zones(&cache, d)?;
         for hit in super::colour::hits(d, &zones, q, 0.0, false)? {
             let kind = hit.kind.as_str();

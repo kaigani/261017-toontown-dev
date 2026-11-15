@@ -91,6 +91,9 @@ pub(crate) struct Entry {
     pub to_pixel: Option<Affine>,
     /// Drawing bounds (du).
     pub bounds: Option<Rect>,
+    /// Everything a hit test can reach in the drawing (du): its bounds counting invisible strokes, which bound fill
+    /// zones. A point outside it hits nothing, so a pick skips the drawing.
+    pub extent: Option<Rect>,
     /// Bounds in output pixels.
     pub pixel_box: Option<Rect>,
     pub verdict: Verdict,
@@ -156,9 +159,16 @@ fn displayed(nodes: &[TreeNode], out: &mut Vec<Id>) {
     }
 }
 
-/// Whether an element is hidden in its scene, itself or through an ancestor (as `anim.evaluate`, SI-100).
-pub(crate) fn hidden(doc: &Document, tree: &[TreeNode], e: &Element) -> bool {
-    !*e.visible_in_scene() || super::derived::ancestors_hidden(doc, tree, e.id())
+/// The elements hidden in their scene, themselves or through an ancestor (as `anim.evaluate`, SI-100), in one walk
+/// of the tree (a search per element is quadratic in the scene's size).
+fn hidden_subtrees(doc: &Document, nodes: &[TreeNode], inherited: bool, out: &mut BTreeSet<Id>) {
+    for n in nodes {
+        let x = inherited || doc.element(&n.id).is_some_and(|e| !*e.visible_in_scene());
+        if x {
+            out.insert(n.id.clone());
+        }
+        hidden_subtrees(doc, &n.children, x, out);
+    }
 }
 
 /// The drawing an element shows at a scene frame, with a background element's last exposure extended to the scene
@@ -265,6 +275,8 @@ pub(crate) fn build(
     if !req.overrides.exclude.is_empty() {
         excluded_subtrees(scene.tree(), &req.overrides.exclude, false, &mut excluded);
     }
+    let mut hidden = BTreeSet::new();
+    hidden_subtrees(doc, scene.tree(), false, &mut hidden);
     let mut entries = Vec::new();
     for (i, id) in order.iter().enumerate() {
         if req.only.is_some_and(|only| !only.contains(id)) {
@@ -277,8 +289,9 @@ pub(crate) fn build(
         }
         let world = ev.world(id, f).map_err(eval_error)?;
         let drawing = shown_drawing(doc, e, req.frame, length);
-        let bounds =
-            drawing.as_ref().and_then(|d| doc.drawing(d)).and_then(|d| tt_vector::drawing::drawing_bounds(d, false));
+        let shown = drawing.as_ref().and_then(|d| doc.drawing(d));
+        let bounds = shown.and_then(|d| tt_vector::drawing::drawing_bounds(d, false));
+        let extent = shown.and_then(|d| tt_vector::drawing::drawing_bounds(d, true));
         let to_pixel = plane_to_pixel(&view, &world);
         let pixel_box = match (&to_pixel, &bounds) {
             (Some(m), Some(b)) => Some(map_rect(m, b)),
@@ -287,7 +300,7 @@ pub(crate) fn build(
         let included = req.overrides.include.contains(id);
         let verdict = if excluded.contains(id) {
             Verdict::Excluded
-        } else if !included && hidden(doc, scene.tree(), e) {
+        } else if !included && hidden.contains(id) {
             Verdict::Hidden
         } else if !included && kind == ElementType::Annotation {
             Verdict::Annotation
@@ -318,6 +331,7 @@ pub(crate) fn build(
             rank: n - 1 - i,
             to_pixel,
             bounds,
+            extent,
             pixel_box,
             verdict,
         });
