@@ -1,0 +1,48 @@
+{
+  "run": 43667078837,
+  "head": "820a3d34b16a3b68ef0810013c04436c07a674fc",
+  "conclusion": "success",
+  "jobCount": 36,
+  "jobs": [
+    {
+      "name": "check (macos-latest)",
+      "seconds": 1687.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "check (windows-latest)",
+      "seconds": 2074.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "lint (macos-latest)",
+      "seconds": 315.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "drawing byte gate (windows-latest)",
+      "seconds": 49.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "desktop gui (macos-latest)",
+      "seconds": 378.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "desktop gui (windows-latest)",
+      "seconds": 592.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "drawing byte gate (macos-latest)",
+      "seconds": 39.0,
+      "conclusion": "success"
+    },
+    {
+      "name": "lint (windows-latest)",
+      "seconds": 1016.0,
+      "conclusion": "success"
+    }
+  ]
+}
