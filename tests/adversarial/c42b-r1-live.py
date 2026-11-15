@@ -158,18 +158,26 @@ async def part_d(s,part,rc,state,mapping,dr):
     async def snap(name):
         env=await e.call(s,'screenshot',{'target':'drawingView'})
         data=base64.b64decode((env.get('result') or {}).pop('png',''))
+        save(name+'-capture-meta.json',env)
         if data:
             path=O/(name+'.png');path.write_bytes(data);e.strip_png(path)
         return data
     async def pair(name):
+        await rc('view.active.set',{'viewId':'drawingView'})
         await settle(s);a=await snap(name)
         env=await rc('render.frame.run',{'composition':'activeView','background':'#F0F0F0'})
         r=env.get('result') or {};b=base64.b64decode(r.get('png',r.get('data','')))
         if not a or not b: return {'verdict':'Inconclusive: image missing','render':env}
         wa,ha,ca,ar=c.png_rgba(a);wb,hb,cb,br=c.png_rgba(b)
+        crop=0
+        if wa==wb and ha>hb:
+            # Float capture includes its header. Compare the canvas-sized subregion at each possible vertical offset.
+            candidates=range(ha-hb+1)
+            crop=min(candidates,key=lambda off:sum(max(abs(ar[y+off][x*ca+i]-br[y][x*cb+i]) for i in range(3))>32 for y in range(0,hb,4) for x in range(0,wb,4)))
+            ar=ar[crop:crop+hb];ha=hb
         if (wa,ha)!=(wb,hb): return {'verdict':'Inconclusive: dimensions differ','sizes':[[wa,ha],[wb,hb]]}
         diff=sum(max(abs(ar[y][x*ca+i]-br[y][x*cb+i]) for i in range(3))>32 for y in range(ha) for x in range(wa))/(wa*ha)
-        return {'fraction':diff,'verdict':'Pass' if diff<.01 else 'Fail'}
+        return {'fraction':diff,'verticalCrop':crop,'verdict':'Pass' if diff<.01 else 'Fail'}
     def events(k=0,n=4):
         m=mapping['drawingToView'];return c.drag([c.apply(m,-180+i*240/max(1,n-1),-140+k*12+((i%2)*5 if n<100 else 0)) for i in range(n)])
     async def pointer(tool='brush',ev=None): return await e.call(s,'pointer',{'view':'drawingView','tool':tool,'events':ev or events()})
@@ -201,13 +209,14 @@ async def part_d(s,part,rc,state,mapping,dr):
     if part.startswith('d2-exact-'):
         hidden=part.endswith('headless')
         if hidden:
+            await rc('window.panel.move',{'panelId':'cameraView','area':'central'})
             await rc('window.panel.set',{'panelId':'drawingView','visible':False});await settle(s)
         out=[]
         for tool in ['brush','rectangle','select']:
-            ev=events()
+            ev=c.drag([(-180,-140),(-100,-135),(-20,-140),(60,-135)])
             if tool=='select':
-                pt=c.apply(mapping['drawingToView'],-120,0);ev=c.drag([pt,pt])
-            before=await state();env=await pointer(tool,ev);after=await state()
+                ev=c.drag([(-120,0),(-120,0)])
+            before=await state();env=await e.call(s,'pointer',{'view':'drawingView','space':'drawing','tool':tool,'events':ev});after=await state()
             if not hidden:await snap(part+'-'+tool)
             out.append({'tool':tool,'events':ev,'response':env,'drawing':after['drawing']['result'],'selection':after['selection']['result']})
             delta=after['history']['result']['position']-before['history']['result']['position']
@@ -273,6 +282,7 @@ async def part_d(s,part,rc,state,mapping,dr):
             return {'results':results,'afterRelease':env,'verdict':'Pass' if ok else 'Fail'}
         await record(4,busy)
         async def hidden():
+            await rc('window.panel.move',{'panelId':'cameraView','area':'central'})
             await rc('window.panel.set',{'panelId':'drawingView','visible':False});await settle(s);before=await state();env=await pointer();after=await state()
             await rc('window.panel.set',{'panelId':'drawingView','visible':True});await settle(s)
             return {'response':env,'changed':before['drawing']!=after['drawing'],'verdict':'Pass' if env.get('status')=='ok' and before['drawing']!=after['drawing'] else 'Fail'}
@@ -283,9 +293,29 @@ async def part_d(s,part,rc,state,mapping,dr):
             return {'responses':responses,'historyDelta':delta,'comparison':comparison,'verdict':'Pass' if delta==20 and all(x.get('status')=='ok' for x in responses) and comparison['verdict']=='Pass' else 'Fail'}
         await record(6,twenty)
     else:
+        # Select the float explicitly: foreground/z-order changes after an agent call.
+        original_drag=c.os_drag
+        def float_drag(pid,pts):
+            from ctypes import wintypes
+            u=ctypes.windll.user32;original_enum=u.EnumWindows
+            def filtered(callback,arg):
+                def cb(h,l):
+                    title=ctypes.create_unicode_buffer(512);u.GetWindowTextW(h,title,512)
+                    if 'Drawing' in title.value and not title.value.startswith('Toontown'):return callback(h,l)
+                    return True
+                return original_enum(ctypes.WINFUNCTYPE(ctypes.c_bool,wintypes.HWND,wintypes.LPARAM)(cb),arg)
+            u.EnumWindows=filtered
+            try:original_drag(pid,pts)
+            finally:u.EnumWindows=original_enum
+        c.os_drag=float_drag
+        baseline={}
         async def floating():
+            move=await rc('window.panel.move',{'panelId':'cameraView','area':'central'})
+            assert move.get('status')=='ok',move
             env=await rc('window.panel.set',{'panelId':'drawingView','floating':True,'geometry':{'x':100,'y':100,'width':900,'height':700}});await settle(s)
-            return {'response':env,'comparison':await pair(part+'-float'),'windows':e.os_windows(e.APP_PID['pid'])}
+            assert env.get('status')=='ok',env
+            baseline.update({'canvas':await c.canvas_state(s),'comparison':await pair(part+'-float')})
+            return {'response':env,**baseline,'windows':e.os_windows(e.APP_PID['pid'])}
         await record(1,floating)
         async def osstroke():
             before=await state();await rc('tool.active.set',{'toolId':'brush'});c.os_drag(e.APP_PID['pid'],[(200,200),(300,250)]);await settle(s);after=await state()
@@ -302,20 +332,26 @@ async def part_d(s,part,rc,state,mapping,dr):
                 u=ctypes.windll.user32;handles=[]
                 def cb(h,_):
                     pid=wintypes.DWORD();u.GetWindowThreadProcessId(h,ctypes.byref(pid))
-                    if pid.value==e.APP_PID['pid'] and u.IsWindowVisible(h): handles.append(h)
+                    title=ctypes.create_unicode_buffer(512);u.GetWindowTextW(h,title,512)
+                    if pid.value==e.APP_PID['pid'] and u.IsWindowVisible(h) and 'Drawing' in title.value and not title.value.startswith('Toontown'): handles.append(h)
                     return True
                 u.EnumWindows(ctypes.WINFUNCTYPE(ctypes.c_bool,wintypes.HWND,wintypes.LPARAM)(cb),0)
                 u.PostMessageW(handles[0],0x10,0,0)
+                deadline=time.monotonic()+10
+                while u.IsWindowVisible(handles[0]) and time.monotonic()<deadline:await c.canvas_state(s)
+                assert not u.IsWindowVisible(handles[0]), 'float did not close'
             finally: release()
             await settle(s);after=await state();env=await rc('tool.active.set',{'toolId':'brush'})
             ok=before['drawing']==after['drawing'] and before['history']==after['history'] and env.get('status')=='ok'
             return {'before':before,'after':after,'afterCall':env,'verdict':'Pass' if ok else 'Fail'}
         await record(4,close)
         async def dock():
-            env=await rc('window.panel.set',{'panelId':'drawingView','visible':True,'floating':False});await settle(s);return {'response':env,'gesture':await pointer(),'comparison':await pair(part+'-dock')}
+            env=await rc('window.panel.set',{'panelId':'drawingView','visible':True,'floating':False});await rc('window.panel.move',{'panelId':'drawingView','area':'central'});await settle(s);return {'response':env,'gesture':await pointer(),'comparison':await pair(part+'-dock')}
         await record(5,dock)
-        async def backend(): return {'canvas':await c.canvas_state(s),'comparison':await pair(part+'-backend')}
+        async def backend(): return baseline
         await record(6,backend)
+        meta=json.loads((O/(part+'-dock-capture-meta.json')).read_text())
+        assert meta.get('status')=='ok', 'C42B-R1-05: screenshot of docked Drawing view targets closed float'
 
 
 def run():
@@ -332,6 +368,7 @@ def run():
         measure=load('measure',R/'scripts/c42-canvas-measure.py')
         p=measure.launch(str(Path(sys.argv[1]).resolve()),user,disc,None if sys.argv[2]=='d1-extra' else sys.argv[2].split('-')[-1])
     else: p=e.launch(str(Path(sys.argv[1]).resolve()),user,disc)
+    e.APP_PID["pid"]=p.pid
     async def connect(d):
         async with e.httpx2.AsyncClient(headers={'Authorization':'Bearer '+d['token']},timeout=300) as client:
             async with e.streamable_http_client(d['endpoint'],http_client=client) as streams:

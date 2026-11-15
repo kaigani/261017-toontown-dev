@@ -4,26 +4,26 @@
     "events": [
       {
         "type": "down",
-        "x": 270.5,
-        "y": 462.5,
+        "x": -180,
+        "y": -140,
         "dt": 0
       },
       {
         "type": "move",
-        "x": 350.5,
-        "y": 457.5,
+        "x": -100,
+        "y": -135,
         "dt": 16
       },
       {
         "type": "move",
-        "x": 430.5,
-        "y": 462.5,
+        "x": -20,
+        "y": -140,
         "dt": 16
       },
       {
         "type": "up",
-        "x": 510.5,
-        "y": 457.5,
+        "x": 60,
+        "y": -135,
         "dt": 16
       }
     ],
@@ -73,24 +73,24 @@
                 }
               ],
               "fit": true,
-              "penId": "pen_01M7EQEFZVBCXSZWX9GP7D4AQR",
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM",
+              "penId": "pen_01M7EQXQZBGNY7PXM7WQ7143ZA",
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH",
               "layer": "auto",
               "symmetry": true
             },
             "envelope": {
               "status": "ok",
               "result": {
-                "drawingId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
+                "drawingId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
                 "createdDrawing": false,
                 "strokeIds": [
-                  "st_01K7JJN800BCA2XQEEJ3PMDKD9"
+                  "st_01K7JJN8006H8YNCZQX2S2G8HA"
                 ],
                 "zoneIds": [],
-                "layerId": "nd_01K7JJN801ZVKNEX1BQ0QNXC8F",
+                "layerId": "nd_01K7JJN801FE8ER4M99BSXQGWB",
                 "createdIds": [
-                  "st_01K7JJN800BCA2XQEEJ3PMDKD9",
-                  "nd_01K7JJN801ZVKNEX1BQ0QNXC8F"
+                  "st_01K7JJN8006H8YNCZQX2S2G8HA",
+                  "nd_01K7JJN801FE8ER4M99BSXQGWB"
                 ],
                 "modifiedIds": [],
                 "removedIds": [],
@@ -99,23 +99,23 @@
               },
               "changes": [
                 {
-                  "id": "dr_01K7JJN8000R8VGBGBGGHEYEFX/st_01K7JJN800BCA2XQEEJ3PMDKD9",
+                  "id": "dr_01K7JJN8001YY4HJZR0ZRNK98G/st_01K7JJN8006H8YNCZQX2S2G8HA",
                   "type": "stroke",
                   "op": "created",
                   "rev": 5,
-                  "parentId": "dr_01K7JJN8000R8VGBGBGGHEYEFX/nd_01K7JJN801ZVKNEX1BQ0QNXC8F",
+                  "parentId": "dr_01K7JJN8001YY4HJZR0ZRNK98G/nd_01K7JJN801FE8ER4M99BSXQGWB",
                   "index": 0
                 },
                 {
-                  "id": "dr_01K7JJN8000R8VGBGBGGHEYEFX/nd_01K7JJN801ZVKNEX1BQ0QNXC8F",
+                  "id": "dr_01K7JJN8001YY4HJZR0ZRNK98G/nd_01K7JJN801FE8ER4M99BSXQGWB",
                   "type": "drawingNode",
                   "op": "created",
                   "rev": 5,
-                  "parentId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
+                  "parentId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
                   "index": 1
                 },
                 {
-                  "id": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
+                  "id": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
                   "type": "drawing",
                   "op": "modified",
                   "rev": 5,
@@ -124,7 +124,7 @@
                       "op": "add",
                       "path": "/nodes/1",
                       "value": {
-                        "id": "nd_01K7JJN801ZVKNEX1BQ0QNXC8F",
+                        "id": "nd_01K7JJN801FE8ER4M99BSXQGWB",
                         "type": "drawingNode"
                       }
                     }
@@ -152,12 +152,12 @@
           },
           "objects": [
             {
-              "elementId": "el_01K7JJN8005ERS314DW57YJ31M",
-              "drawingId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
-              "layerId": "nd_01K7JJN801ZVKNEX1BQ0QNXC8F",
-              "objectId": "st_01K7JJN800BCA2XQEEJ3PMDKD9",
+              "elementId": "el_01K7JJN800TS5B9JDCR697PPC0",
+              "drawingId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
+              "layerId": "nd_01K7JJN801FE8ER4M99BSXQGWB",
+              "objectId": "st_01K7JJN8006H8YNCZQX2S2G8HA",
               "kind": "brush",
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM"
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH"
             }
           ]
         }
@@ -167,8 +167,8 @@
       "documentRev": 5
     },
     "drawing": {
-      "drawingId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
-      "elementId": "el_01K7JJN8005ERS314DW57YJ31M",
+      "drawingId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
+      "elementId": "el_01K7JJN800TS5B9JDCR697PPC0",
       "name": "1",
       "rev": 5,
       "locked": false,
@@ -191,12 +191,12 @@
       "nodes": [
         {
           "type": "layer",
-          "id": "nd_01K7JJN801812VTCQQ8K2AAHV0",
+          "id": "nd_01K7JJN801Z4EB0KRCF93TQTYB",
           "layerKind": "pencil",
           "strokes": [
             {
               "type": "stroke",
-              "id": "st_01K7JJN800GZ4Z2X67NZ7E1RFT",
+              "id": "st_01K7JJN800PHWXFSX02QKZRMFP",
               "kind": "pencil",
               "closed": true,
               "bezier": [
@@ -249,7 +249,7 @@
                   "y": -80.0
                 }
               ],
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM",
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH",
               "lineStyle": {
                 "thickness": 8.0,
                 "lineType": "solid"
@@ -261,18 +261,18 @@
                 "width": 248.0,
                 "height": 168.0
               },
-              "leftZoneId": "zn_M19WKDMERWFRCFYZ85G117SNH1",
+              "leftZoneId": "zn_A4KCXEY4SZ80NK6KTPPRJH9FCM",
               "rightZoneId": null
             }
           ],
           "zones": [
             {
               "type": "zone",
-              "id": "zn_M19WKDMERWFRCFYZ85G117SNH1",
+              "id": "zn_A4KCXEY4SZ80NK6KTPPRJH9FCM",
               "colourId": null,
               "textureMatrix": null,
               "boundaryStrokeIds": [
-                "st_01K7JJN800GZ4Z2X67NZ7E1RFT"
+                "st_01K7JJN800PHWXFSX02QKZRMFP"
               ],
               "holes": [],
               "parentZoneId": null,
@@ -292,12 +292,12 @@
         },
         {
           "type": "layer",
-          "id": "nd_01K7JJN801ZVKNEX1BQ0QNXC8F",
+          "id": "nd_01K7JJN801FE8ER4M99BSXQGWB",
           "layerKind": "brush",
           "strokes": [
             {
               "type": "stroke",
-              "id": "st_01K7JJN800BCA2XQEEJ3PMDKD9",
+              "id": "st_01K7JJN8006H8YNCZQX2S2G8HA",
               "kind": "brush",
               "closed": false,
               "bezier": [
@@ -352,14 +352,14 @@
                   "p": 1.0
                 }
               ],
-              "penId": "pen_01M7EQEFZVBCXSZWX9GP7D4AQR",
+              "penId": "pen_01M7EQXQZBGNY7PXM7WQ7143ZA",
               "pen": {
                 "tipShape": "round",
                 "minSize": 2.0,
                 "maxSize": 8.0,
                 "tipAngle": 0.0
               },
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM",
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH",
               "textureMatrix": null,
               "outline": [
                 [
@@ -592,26 +592,26 @@
     "events": [
       {
         "type": "down",
-        "x": 270.5,
-        "y": 462.5,
+        "x": -180,
+        "y": -140,
         "dt": 0
       },
       {
         "type": "move",
-        "x": 350.5,
-        "y": 457.5,
+        "x": -100,
+        "y": -135,
         "dt": 16
       },
       {
         "type": "move",
-        "x": 430.5,
-        "y": 462.5,
+        "x": -20,
+        "y": -140,
         "dt": 16
       },
       {
         "type": "up",
-        "x": 510.5,
-        "y": 457.5,
+        "x": 60,
+        "y": -135,
         "dt": 16
       }
     ],
@@ -647,27 +647,27 @@
               },
               "square": false,
               "fromCentre": false,
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM",
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH",
               "thickness": 8.0,
-              "penId": "pen_01M7EQEFZVBCXSZWX9GP7D4AQR",
+              "penId": "pen_01M7EQXQZBGNY7PXM7WQ7143ZA",
               "layer": "auto",
               "symmetry": true
             },
             "envelope": {
               "status": "ok",
               "result": {
-                "drawingId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
+                "drawingId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
                 "strokeIds": [
-                  "st_01K7JJN80063FR60ABQ0NQB9Z8"
+                  "st_01K7JJN8005Q24TP7MJV6JN8WJ"
                 ],
                 "zoneIds": [
-                  "zn_PK5443SVTJS6B0ZR366BHAS5GJ"
+                  "zn_43VD7RPJGD5W8DF57HN00YNVDN"
                 ],
-                "layerId": "nd_01K7JJN8010138K9TR42DDZEWY",
+                "layerId": "nd_01K7JJN801AYNJA55ZD1R8VVAT",
                 "createdIds": [
-                  "st_01K7JJN80063FR60ABQ0NQB9Z8",
-                  "nd_01K7JJN8010138K9TR42DDZEWY",
-                  "zn_PK5443SVTJS6B0ZR366BHAS5GJ"
+                  "st_01K7JJN8005Q24TP7MJV6JN8WJ",
+                  "nd_01K7JJN801AYNJA55ZD1R8VVAT",
+                  "zn_43VD7RPJGD5W8DF57HN00YNVDN"
                 ],
                 "modifiedIds": [],
                 "removedIds": [],
@@ -675,23 +675,23 @@
               },
               "changes": [
                 {
-                  "id": "dr_01K7JJN8000R8VGBGBGGHEYEFX/st_01K7JJN80063FR60ABQ0NQB9Z8",
+                  "id": "dr_01K7JJN8001YY4HJZR0ZRNK98G/st_01K7JJN8005Q24TP7MJV6JN8WJ",
                   "type": "stroke",
                   "op": "created",
                   "rev": 7,
-                  "parentId": "dr_01K7JJN8000R8VGBGBGGHEYEFX/nd_01K7JJN8010138K9TR42DDZEWY",
+                  "parentId": "dr_01K7JJN8001YY4HJZR0ZRNK98G/nd_01K7JJN801AYNJA55ZD1R8VVAT",
                   "index": 0
                 },
                 {
-                  "id": "dr_01K7JJN8000R8VGBGBGGHEYEFX/nd_01K7JJN8010138K9TR42DDZEWY",
+                  "id": "dr_01K7JJN8001YY4HJZR0ZRNK98G/nd_01K7JJN801AYNJA55ZD1R8VVAT",
                   "type": "drawingNode",
                   "op": "created",
                   "rev": 7,
-                  "parentId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
+                  "parentId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
                   "index": 1
                 },
                 {
-                  "id": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
+                  "id": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
                   "type": "drawing",
                   "op": "modified",
                   "rev": 7,
@@ -700,7 +700,7 @@
                       "op": "add",
                       "path": "/nodes/1",
                       "value": {
-                        "id": "nd_01K7JJN8010138K9TR42DDZEWY",
+                        "id": "nd_01K7JJN801AYNJA55ZD1R8VVAT",
                         "type": "drawingNode"
                       }
                     }
@@ -728,12 +728,12 @@
           },
           "objects": [
             {
-              "elementId": "el_01K7JJN8005ERS314DW57YJ31M",
-              "drawingId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
-              "layerId": "nd_01K7JJN8010138K9TR42DDZEWY",
-              "objectId": "st_01K7JJN80063FR60ABQ0NQB9Z8",
+              "elementId": "el_01K7JJN800TS5B9JDCR697PPC0",
+              "drawingId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
+              "layerId": "nd_01K7JJN801AYNJA55ZD1R8VVAT",
+              "objectId": "st_01K7JJN8005Q24TP7MJV6JN8WJ",
               "kind": "pencil",
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM"
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH"
             }
           ]
         }
@@ -743,8 +743,8 @@
       "documentRev": 7
     },
     "drawing": {
-      "drawingId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
-      "elementId": "el_01K7JJN8005ERS314DW57YJ31M",
+      "drawingId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
+      "elementId": "el_01K7JJN800TS5B9JDCR697PPC0",
       "name": "1",
       "rev": 7,
       "locked": false,
@@ -767,12 +767,12 @@
       "nodes": [
         {
           "type": "layer",
-          "id": "nd_01K7JJN801812VTCQQ8K2AAHV0",
+          "id": "nd_01K7JJN801Z4EB0KRCF93TQTYB",
           "layerKind": "pencil",
           "strokes": [
             {
               "type": "stroke",
-              "id": "st_01K7JJN800GZ4Z2X67NZ7E1RFT",
+              "id": "st_01K7JJN800PHWXFSX02QKZRMFP",
               "kind": "pencil",
               "closed": true,
               "bezier": [
@@ -825,7 +825,7 @@
                   "y": -80.0
                 }
               ],
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM",
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH",
               "lineStyle": {
                 "thickness": 8.0,
                 "lineType": "solid"
@@ -837,18 +837,18 @@
                 "width": 248.0,
                 "height": 168.0
               },
-              "leftZoneId": "zn_M19WKDMERWFRCFYZ85G117SNH1",
+              "leftZoneId": "zn_A4KCXEY4SZ80NK6KTPPRJH9FCM",
               "rightZoneId": null
             }
           ],
           "zones": [
             {
               "type": "zone",
-              "id": "zn_M19WKDMERWFRCFYZ85G117SNH1",
+              "id": "zn_A4KCXEY4SZ80NK6KTPPRJH9FCM",
               "colourId": null,
               "textureMatrix": null,
               "boundaryStrokeIds": [
-                "st_01K7JJN800GZ4Z2X67NZ7E1RFT"
+                "st_01K7JJN800PHWXFSX02QKZRMFP"
               ],
               "holes": [],
               "parentZoneId": null,
@@ -868,12 +868,12 @@
         },
         {
           "type": "layer",
-          "id": "nd_01K7JJN8010138K9TR42DDZEWY",
+          "id": "nd_01K7JJN801AYNJA55ZD1R8VVAT",
           "layerKind": "pencil",
           "strokes": [
             {
               "type": "stroke",
-              "id": "st_01K7JJN80063FR60ABQ0NQB9Z8",
+              "id": "st_01K7JJN8005Q24TP7MJV6JN8WJ",
               "kind": "pencil",
               "closed": true,
               "bezier": [
@@ -926,7 +926,7 @@
                   "y": -140.0
                 }
               ],
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM",
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH",
               "lineStyle": {
                 "thickness": 8.0,
                 "lineType": "solid"
@@ -938,18 +938,18 @@
                 "width": 248.0,
                 "height": 13.0
               },
-              "leftZoneId": "zn_PK5443SVTJS6B0ZR366BHAS5GJ",
+              "leftZoneId": "zn_43VD7RPJGD5W8DF57HN00YNVDN",
               "rightZoneId": null
             }
           ],
           "zones": [
             {
               "type": "zone",
-              "id": "zn_PK5443SVTJS6B0ZR366BHAS5GJ",
+              "id": "zn_43VD7RPJGD5W8DF57HN00YNVDN",
               "colourId": null,
               "textureMatrix": null,
               "boundaryStrokeIds": [
-                "st_01K7JJN80063FR60ABQ0NQB9Z8"
+                "st_01K7JJN8005Q24TP7MJV6JN8WJ"
               ],
               "holes": [],
               "parentZoneId": null,
@@ -980,14 +980,14 @@
     "events": [
       {
         "type": "down",
-        "x": 330.5,
-        "y": 322.5,
+        "x": -120,
+        "y": 0,
         "dt": 0
       },
       {
         "type": "up",
-        "x": 330.5,
-        "y": 322.5,
+        "x": -120,
+        "y": 0,
         "dt": 16
       }
     ],
@@ -1024,7 +1024,7 @@
               "status": "ok",
               "result": {
                 "selectedIds": [
-                  "st_01K7JJN800GZ4Z2X67NZ7E1RFT"
+                  "st_01K7JJN800PHWXFSX02QKZRMFP"
                 ],
                 "bounds": {
                   "x": -124.0,
@@ -1051,12 +1051,12 @@
           },
           "objects": [
             {
-              "elementId": "el_01K7JJN8005ERS314DW57YJ31M",
-              "drawingId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
-              "layerId": "nd_01K7JJN801812VTCQQ8K2AAHV0",
-              "objectId": "st_01K7JJN800GZ4Z2X67NZ7E1RFT",
+              "elementId": "el_01K7JJN800TS5B9JDCR697PPC0",
+              "drawingId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
+              "layerId": "nd_01K7JJN801Z4EB0KRCF93TQTYB",
+              "objectId": "st_01K7JJN800PHWXFSX02QKZRMFP",
               "kind": "pencil",
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM"
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH"
             }
           ]
         }
@@ -1066,8 +1066,8 @@
       "documentRev": 8
     },
     "drawing": {
-      "drawingId": "dr_01K7JJN8000R8VGBGBGGHEYEFX",
-      "elementId": "el_01K7JJN8005ERS314DW57YJ31M",
+      "drawingId": "dr_01K7JJN8001YY4HJZR0ZRNK98G",
+      "elementId": "el_01K7JJN800TS5B9JDCR697PPC0",
       "name": "1",
       "rev": 8,
       "locked": false,
@@ -1090,12 +1090,12 @@
       "nodes": [
         {
           "type": "layer",
-          "id": "nd_01K7JJN801812VTCQQ8K2AAHV0",
+          "id": "nd_01K7JJN801Z4EB0KRCF93TQTYB",
           "layerKind": "pencil",
           "strokes": [
             {
               "type": "stroke",
-              "id": "st_01K7JJN800GZ4Z2X67NZ7E1RFT",
+              "id": "st_01K7JJN800PHWXFSX02QKZRMFP",
               "kind": "pencil",
               "closed": true,
               "bezier": [
@@ -1148,7 +1148,7 @@
                   "y": -80.0
                 }
               ],
-              "colourId": "col_01M7EQEFZTC743WBNGC9PSEQDM",
+              "colourId": "col_01M7EQXQZBGNY7PXM7WQ7143VH",
               "lineStyle": {
                 "thickness": 8.0,
                 "lineType": "solid"
@@ -1160,18 +1160,18 @@
                 "width": 248.0,
                 "height": 168.0
               },
-              "leftZoneId": "zn_M19WKDMERWFRCFYZ85G117SNH1",
+              "leftZoneId": "zn_A4KCXEY4SZ80NK6KTPPRJH9FCM",
               "rightZoneId": null
             }
           ],
           "zones": [
             {
               "type": "zone",
-              "id": "zn_M19WKDMERWFRCFYZ85G117SNH1",
+              "id": "zn_A4KCXEY4SZ80NK6KTPPRJH9FCM",
               "colourId": null,
               "textureMatrix": null,
               "boundaryStrokeIds": [
-                "st_01K7JJN800GZ4Z2X67NZ7E1RFT"
+                "st_01K7JJN800PHWXFSX02QKZRMFP"
               ],
               "holes": [],
               "parentZoneId": null,
@@ -1193,7 +1193,7 @@
     },
     "selection": {
       "selectedIds": [
-        "st_01K7JJN800GZ4Z2X67NZ7E1RFT"
+        "st_01K7JJN800PHWXFSX02QKZRMFP"
       ],
       "bounds": {
         "x": -124.0,
