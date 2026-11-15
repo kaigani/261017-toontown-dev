@@ -1,0 +1,38 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c43a-r1\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 43.11s
+     Running tests\c43a_r1_review.rs (target\debug\deps\c43a_r1_review-d5ee8c790f5cbb68.exe)
+
+running 8 tests
+test part_d_scene_tools::case4_locked_hidden ... ok
+test part_d_scene_tools::case3_pick_priority_tolerance ... ok
+System.Management.Automation.RemoteException
+thread 'part_d_scene_tools::case2_existing_new_static' (58052) panicked at crates\executor\tests\c43a_r1_review.rs:894:30:
+D-4: ["parameters: {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"key\",\"frame\":10,\"position\":{\"x\":0.1250000000000009,\"y\":0.12500000000000017},\"relative\":true} vs {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"key\",\"frame\":10,\"position\":{\"x\":0.125,\"y\":0.125},\"relative\":true}", "canonical bytes differ", "parameters: {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"key\",\"frame\":20,\"position\":{\"x\":0.12499999999999953,\"y\":0.12500000000000017},\"relative\":true} vs {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"key\",\"frame\":20,\"position\":{\"x\":0.125,\"y\":0.125},\"relative\":true}", "canonical bytes differ", "parameters: {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"static\",\"position\":{\"x\":0.1250000000000009,\"y\":0.12499999999999978},\"relative\":true} vs {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"static\",\"position\":{\"x\":0.125,\"y\":0.125},\"relative\":true}", "canonical bytes differ"]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test part_d_scene_tools::case2_existing_new_static ... FAILED
+System.Management.Automation.RemoteException
+thread 'part_d_scene_tools::case1_position_only' (57388) panicked at crates\executor\tests\c43a_r1_review.rs:894:30:
+D-4: ["parameters: {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"key\",\"frame\":10,\"position\":{\"x\":0.1250000000000009,\"y\":0.12500000000000017},\"relative\":true} vs {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"key\",\"position\":{\"x\":0.125,\"y\":0.125},\"relative\":true,\"frame\":10}", "canonical bytes differ", "parameters: {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"static\",\"position\":{\"x\":0.1250000000000009,\"y\":0.12500000000000017},\"relative\":true} vs {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"static\",\"position\":{\"x\":0.125,\"y\":0.125},\"relative\":true}", "canonical bytes differ"]
+test part_d_scene_tools::case1_position_only ... FAILED
+System.Management.Automation.RemoteException
+thread 'part_d_scene_tools::case6_select_handles_labels' (57924) panicked at crates\executor\tests\c43a_r1_review.rs:894:30:
+D-4: ["parameters: {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"static\",\"skew\":13.771599717082415,\"relative\":true} vs {\"skew\":13.771599717082418,\"relative\":true,\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"static\"}", "canonical bytes differ"]
+test part_d_scene_tools::case6_select_handles_labels ... FAILED
+System.Management.Automation.RemoteException
+thread 'part_d_scene_tools::case5_transform_handles' (54356) panicked at crates\executor\tests\c43a_r1_review.rs:894:30:
+D-4: ["parameters: {\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"key\",\"frame\":10,\"skew\":13.771599717082415,\"relative\":true} vs {\"skew\":13.771599717082418,\"relative\":true,\"nodeIds\":[\"el_01K7JJN800DDW44SJVC40KANBT\"],\"target\":\"key\",\"frame\":10}", "canonical bytes differ"]
+test part_d_scene_tools::case5_transform_handles ... FAILED
+test part_d_scene_tools::case8_screenshot ... ok
+test part_d_scene_tools::case7_active_view ... ok
+
+failures:
+
+failures:
+    part_d_scene_tools::case1_position_only
+    part_d_scene_tools::case2_existing_new_static
+    part_d_scene_tools::case5_transform_handles
+    part_d_scene_tools::case6_select_handles_labels
+
+test result: FAILED. 4 passed; 4 failed; 0 ignored; 0 measured; 22 filtered out; finished in 0.35s
+
+error: test failed, to rerun pass `-p tt-executor --test c43a_r1_review`
