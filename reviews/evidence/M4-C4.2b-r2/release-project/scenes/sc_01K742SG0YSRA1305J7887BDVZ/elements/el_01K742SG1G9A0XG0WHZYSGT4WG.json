@@ -1,0 +1,83 @@
+{
+  "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+  "type": "element",
+  "rev": 1,
+  "name": "Fade",
+  "elementType": "colourTransform",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "params": {
+    "multRed": 1,
+    "multGreen": 1,
+    "multBlue": 1,
+    "multAlpha": 0.5,
+    "addRed": 0,
+    "addGreen": 0,
+    "addBlue": 0,
+    "addAlpha": 0,
+    "flatten": true
+  },
+  "channels": {
+    "multAlpha": {
+      "id": "ch_01K742SG2A902410YTC6YNB8CP",
+      "type": "channel",
+      "rev": 1,
+      "name": "multAlpha",
+      "curveType": "spline",
+      "keys": [
+        {
+          "id": "ky_01K742SG2B0EFR540R9PQNAKNH",
+          "type": "key",
+          "rev": 1,
+          "frame": 1,
+          "value": 0,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": null
+        },
+        {
+          "id": "ky_01K742SG2CZK3CXVCMK8QF2AZC",
+          "type": "key",
+          "rev": 1,
+          "frame": 12,
+          "value": 1,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": null
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

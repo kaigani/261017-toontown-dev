@@ -1,0 +1,147 @@
+{
+  "id": "pal_01K742SG02PPWW6K8BZY81A0M0",
+  "type": "palette",
+  "rev": 1,
+  "name": "Main",
+  "styles": [
+    {
+      "id": "sty_01K742SG037JJRBSXV1W92F1BN",
+      "type": "paletteStyle",
+      "rev": 1,
+      "name": "Day"
+    },
+    {
+      "id": "sty_01K742SG047PMCPGTWHST62SWP",
+      "type": "paletteStyle",
+      "rev": 1,
+      "name": "Night"
+    }
+  ],
+  "swatches": [
+    {
+      "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+      "type": "swatch",
+      "rev": 1,
+      "name": "Skin",
+      "kind": "solid",
+      "deformable": false,
+      "values": {
+        "sty_01K742SG037JJRBSXV1W92F1BN": {
+          "rgba": "#F2D3B4FF"
+        },
+        "sty_01K742SG047PMCPGTWHST62SWP": {
+          "rgba": "#8C7A8AFF"
+        }
+      }
+    },
+    {
+      "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+      "type": "swatch",
+      "rev": 1,
+      "name": "Sky",
+      "kind": "linearGradient",
+      "deformable": false,
+      "values": {
+        "sty_01K742SG037JJRBSXV1W92F1BN": {
+          "stops": [
+            {
+              "position": 0,
+              "rgba": "#70C8F0FF"
+            },
+            {
+              "position": 1,
+              "rgba": "#FFFFFFFF"
+            }
+          ]
+        },
+        "sty_01K742SG047PMCPGTWHST62SWP": {
+          "stops": [
+            {
+              "position": 0,
+              "rgba": "#10084AFF"
+            },
+            {
+              "position": 1,
+              "rgba": "#300448FF"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "colourId": "col_01K742SG07AYM2NGPE2YJQJJHV",
+      "type": "swatch",
+      "rev": 1,
+      "name": "Glow",
+      "kind": "radialGradient",
+      "deformable": true,
+      "values": {
+        "sty_01K742SG037JJRBSXV1W92F1BN": {
+          "stops": [
+            {
+              "position": 0,
+              "rgba": "#FFFFFFFF"
+            },
+            {
+              "position": 0.5,
+              "rgba": "#FFF0A0C0"
+            },
+            {
+              "position": 1,
+              "rgba": "#FFF0A000"
+            }
+          ]
+        },
+        "sty_01K742SG047PMCPGTWHST62SWP": {
+          "stops": [
+            {
+              "position": 0,
+              "rgba": "#A0A0FFFF"
+            },
+            {
+              "position": 1,
+              "rgba": "#2020A000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "colourId": "col_01K742SG081DHX1EPGV9BJQAQH",
+      "type": "swatch",
+      "rev": 1,
+      "name": "Fabric",
+      "kind": "texture",
+      "deformable": true,
+      "values": {
+        "sty_01K742SG037JJRBSXV1W92F1BN": {
+          "image": "textures/fabric-day.png",
+          "tile": true,
+          "width": 64,
+          "height": 64
+        },
+        "sty_01K742SG047PMCPGTWHST62SWP": {
+          "image": "textures/fabric-night.png",
+          "tile": false
+        }
+      }
+    },
+    {
+      "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+      "type": "swatch",
+      "rev": 1,
+      "name": "Ink",
+      "kind": "solid",
+      "deformable": false,
+      "values": {
+        "sty_01K742SG037JJRBSXV1W92F1BN": {
+          "rgba": "#000000FF"
+        },
+        "sty_01K742SG047PMCPGTWHST62SWP": {
+          "rgba": "#101010FF"
+        }
+      }
+    }
+  ],
+  "hidden": false
+}

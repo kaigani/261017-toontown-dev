@@ -1,0 +1,2886 @@
+{
+  "id": "dr_01K742SG0M5J3BAJSW8241WA87",
+  "type": "drawing",
+  "rev": 294,
+  "name": "2",
+  "locked": false,
+  "pivot": {
+    "x": 0,
+    "y": 0
+  },
+  "mouthShape": "A",
+  "nodes": [
+    {
+      "id": "nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+      "type": "drawingNode",
+      "rev": 291,
+      "kind": "bitmap",
+      "transform": [2, 0, 0, 2, -10, -6],
+      "width": 32,
+      "height": 16,
+      "image": {
+        "entry": "banks/db_01K742SG0JW3TVZ32SQC03AMY1/dr_01K742SG0M5J3BAJSW8241WA87/nd_01K742SG0XC99E0A2JJ9D4VJ2J.png",
+        "mediaType": "image/png",
+        "size": 2048,
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      }
+    },
+    {
+      "id": "nd_01K7JJN8011RAW6N8N8R21KNC2",
+      "type": "drawingNode",
+      "rev": 18,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800P0ATHE13XV5VW2ZH",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [338, 78, 0, 0, 0, 0],
+            [358, 98, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN8007NMZSYQMZTW2KNT1",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [331.4375, 78.328125, 0.654642484909516, 1.7421360117537006, -0.28683954331631867, -0.7633380196451043],
+            [332.5625, 77.671875, -0.49310807068803797, -0.7085272961080165, 0.8206719186652549, 1.1791907090719036],
+            [334.7443181818182, 82.03551136363636, -0.6619189833584187, -1.3238379667168516, 1.8787878787879322, 3.7575757575757507],
+            [340.3806818181818, 93.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211755],
+            [342.1988636363636, 96.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.43927600962420854],
+            [342.328125, 98.5625, 0.6623253520779144, -0.36795852893219205, -0.1875, 0.1041666666666714],
+            [341.671875, 98.5625, 0.1875, 0.1041666666666714, -0.41343951924011435, -0.2296886218000651],
+            [339.4375, 94.328125, 0.3237830286499843, 0.6475660572999118, -1.8181818181818699, -3.636363636363612],
+            [333.98295454545456, 83.4190340909091, 1.8181818181818699, 3.636363636363612, -0.8329560425617046, -1.6659120851233666]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [332, 78, 0, 0, 0, 0],
+              [342, 98, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801CB2DMQ666CRRCY1J",
+      "type": "drawingNode",
+      "rev": 19,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8008VP03D8ZVDH2KWB7",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [415, 93, 0, -8.284271247461902, 0, 8.284271247461902],
+            [405, 108, 5.522847498307954, 0, -5.522847498307954, 0],
+            [395, 93, 0, 8.284271247461902, 0, -8.284271247461902],
+            [405, 78, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801VF3J60MJ8ZHTQ95J",
+      "type": "drawingNode",
+      "rev": 21,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800G24ZM6T126D4ZDQA",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [354, 94, 0, -8.284271247461902, 0, 8.284271247461902],
+            [344, 109, 5.522847498307954, 0, -5.522847498307954, 0],
+            [334, 94, 0, 8.284271247461902, 0, -8.284271247461902],
+            [344, 79, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801R8M9GC5NCVS6W40J",
+      "type": "drawingNode",
+      "rev": 23,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800D0GCDGAJPD8AJE4V",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [346, 79, 0, 0, 0, 0],
+            [366, 99, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800FT2RC7K85HPFY9QY",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [382.4375, 79.328125, 0.654642484909516, 1.7421360117537148, -0.28683954331631867, -0.7633380196450901],
+            [383.5625, 78.671875, -0.49310807068803797, -0.7085272961080165, 0.8206719186651981, 1.1791907090718041],
+            [385.7443181818182, 83.03551136363636, -0.6619189833583619, -1.3238379667167237, 1.8787878787879322, 3.7575757575757507],
+            [391.3806818181818, 94.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211755],
+            [393.1988636363636, 97.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.43927600962420854],
+            [393.328125, 99.5625, 0.6623253520779713, -0.36795852893220626, -0.1875, 0.1041666666666714],
+            [392.671875, 99.5625, 0.1875, 0.1041666666666714, -0.41343951924000066, -0.22968862180000826],
+            [390.4375, 95.328125, 0.3237830286499275, 0.6475660572998834, -1.8181818181818699, -3.636363636363612],
+            [384.98295454545456, 84.4190340909091, 1.818181818181813, 3.6363636363635976, -0.8329560425617046, -1.6659120851233524]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [383, 79, 0, 0, 0, 0],
+              [393, 99, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN80142V3J5QQKX5EH50B",
+      "type": "drawingNode",
+      "rev": 25,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800MR6FP3ANGTGEMJBD",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [404, 80, 0, 0, 0, 0],
+            [424, 80, 0, 0, 0, 0],
+            [424, 110, 0, 0, 0, 0],
+            [404, 110, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8019JKEH8D4A194HM2H",
+      "type": "drawingNode",
+      "rev": 29,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800BVC0QF7JR0P58T3T",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [351, 81, 0, 0, 0, 0],
+            [371, 81, 0, 0, 0, 0],
+            [371, 111, 0, 0, 0, 0],
+            [351, 111, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801CKZ3TC90KMZXYKT0",
+      "type": "drawingNode",
+      "rev": 45,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800VFK8E9M32BB8AD6W",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [376, 96, 0, -8.284271247461902, 0, 8.284271247461902],
+            [366, 111, 5.522847498307954, 0, -5.522847498307954, 0],
+            [356, 96, 0, 8.284271247461902, 0, -8.284271247461902],
+            [366, 81, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801RJR791SX8B831855",
+      "type": "drawingNode",
+      "rev": 47,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800ZB3DB794YTH8KMTK",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [371, 97, 0, -8.284271247461902, 0, 8.284271247461902],
+            [361, 112, 5.522847498307954, 0, -5.522847498307954, 0],
+            [351, 97, 0, 8.284271247461902, 0, -8.284271247461902],
+            [361, 82, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801EFEX757P7SVJY4C0",
+      "type": "drawingNode",
+      "rev": 48,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800XG6D8RQ4ERM5EY6Y",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [370, 82, 0, 0, 0, 0],
+            [390, 102, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8012W4GA3VX5QHDMFKC",
+      "type": "drawingNode",
+      "rev": 49,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800WMBFR7WS2V3C5S6S",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [373, 82, 0, 0, 0, 0],
+            [393, 102, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801K5RZEWSHZMQM7VW9",
+      "type": "drawingNode",
+      "rev": 52,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800H1BVSW0YXS5MRVZR",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [374, 82, 0, 0, 0, 0],
+            [394, 102, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801HVWF31EVBHSYE93D",
+      "type": "drawingNode",
+      "rev": 54,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN801ZES6SVA6F6PBS0WX",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [355.390625, 82, 0, 0, 0, 0],
+            [356.765625, 82, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN802PZFZ4FQ01A8WS6JM",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [356.765625, 82, 0, 0, 0, 0],
+            [358, 82, 0, 0, 0, 0],
+            [358, 84.4375, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN803P69XE1Z2QE3V26FE",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [358, 84.4375, 0, 0, 0, 0],
+            [358, 87.453125, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN804M33V1M281Z8JEYF6",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [358, 87.453125, 0, 0, 0, 0],
+            [358, 112, 0, 0, 0, 0],
+            [338, 112, 0, 0, 0, 0],
+            [338, 82, 0, 0, 0, 0],
+            [355.390625, 82, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800M6686T7GC6ZA956V",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [355.4375, 82.328125, 0.654642484909516, 1.7421360117536864, -0.28683954331631867, -0.7633380196451043],
+            [356.5625, 81.671875, -0.49310807068803797, -0.7085272961080165, 0.8206719186651981, 1.1791907090718325],
+            [358.7443181818182, 86.03551136363636, -0.6619189833583619, -1.323837966716738, 1.8787878787879322, 3.7575757575757365],
+            [364.3806818181818, 97.30823863636364, -1.8787878787879322, -3.757575757575708, 0.6060606060606233, 1.2121212121211755],
+            [366.1988636363636, 100.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.4392760096241801],
+            [366.328125, 102.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [365.671875, 102.5625, 0.1875, 0.1041666666666714, -0.4134395192400575, -0.22968862180003669],
+            [363.4375, 98.328125, 0.3237830286499275, 0.6475660572998407, -1.8181818181818699, -3.636363636363612],
+            [357.98295454545456, 87.4190340909091, 1.818181818181813, 3.6363636363635976, -0.8329560425617046, -1.6659120851233382]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [356, 82, 0, 0, 0, 0],
+              [366, 102, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801ZCQA3FG2VXTZHRWG",
+      "type": "drawingNode",
+      "rev": 74,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800HEHC7JZFKTVRMPGK",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [338, 82, 0, 0, 0, 0],
+            [358, 82, 0, 0, 0, 0],
+            [358, 112, 0, 0, 0, 0],
+            [338, 112, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801T4HY16VKFA6SQZ6B",
+      "type": "drawingNode",
+      "rev": 76,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8001DSQ193PMY2PD052",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [401, 83, 0, 0, 0, 0],
+            [421, 103, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801GZEDYSTFTMXH9WJJ",
+      "type": "drawingNode",
+      "rev": 80,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8000QX29RGARWEBBGMW",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [342, 86, 0, 0, 0, 0],
+            [362, 86, 0, 0, 0, 0],
+            [362, 116, 0, 0, 0, 0],
+            [342, 116, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801HPA5WH6HHDWMWDD6",
+      "type": "drawingNode",
+      "rev": 81,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800N8111JWZN14MSWTQ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [402, 86, 0, 0, 0, 0],
+            [422, 86, 0, 0, 0, 0],
+            [422, 116, 0, 0, 0, 0],
+            [402, 116, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8011DMR8XD63ZMFPK8H",
+      "type": "drawingNode",
+      "rev": 82,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800KKP2HMEC9WPN7BMP",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [363, 101, 0, -8.284271247461902, 0, 8.284271247461902],
+            [353, 116, 5.522847498307954, 0, -5.522847498307954, 0],
+            [343, 101, 0, 8.284271247461902, 0, -8.284271247461902],
+            [353, 86, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801PWY3SRXGPVHK9RCW",
+      "type": "drawingNode",
+      "rev": 83,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800R9VT6QHYVTRMZEXG",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [362, 86, 0, 0, 0, 0],
+            [382, 86, 0, 0, 0, 0],
+            [382, 116, 0, 0, 0, 0],
+            [362, 116, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801BJ4CDAFBAVAFD3S6",
+      "type": "drawingNode",
+      "rev": 84,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800GNVVFC6AEXGPRNAZ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [371, 101, 0, -8.284271247461902, 0, 8.284271247461902],
+            [361, 116, 5.522847498307954, 0, -5.522847498307954, 0],
+            [351, 101, 0, 8.284271247461902, 0, -8.284271247461902],
+            [361, 86, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801XNPHV9X14JZJXGJA",
+      "type": "drawingNode",
+      "rev": 102,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN801F2MFJQGTQ18RNHEV",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [366, 99.453125, 0, 0, 0, 0],
+            [366, 96.546875, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN802A3V7EXS15P885MCN",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [366, 96.546875, 0, 0, 0, 0],
+            [366, 86, 0, 0, 0, 0],
+            [386, 86, 0, 0, 0, 0],
+            [386, 116, 0, 0, 0, 0],
+            [366, 116, 0, 0, 0, 0],
+            [366, 99.453125, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN8004MSFXPVJ6BN4DRPK",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [359.4375, 86.328125, 0.654642484909516, 1.7421360117537148, -0.28683954331631867, -0.7633380196450759],
+            [360.5625, 85.671875, -0.49310807068803797, -0.7085272961080591, 0.8206719186652549, 1.1791907090718752],
+            [362.7443181818182, 90.03551136363636, -0.6619189833584187, -1.323837966716809, 1.8787878787879322, 3.7575757575757507],
+            [368.3806818181818, 101.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211897],
+            [370.1988636363636, 104.94460227272728, -0.6060606060606233, -1.2121212121212324, 0.21963800481211138, 0.43927600962419433],
+            [370.328125, 106.5625, 0.6623253520779144, -0.36795852893219205, -0.1875, 0.1041666666666714],
+            [369.671875, 106.5625, 0.1875, 0.1041666666666714, -0.4134395192400575, -0.22968862180003669],
+            [367.4375, 102.328125, 0.3237830286499275, 0.6475660572997981, -1.8181818181818699, -3.636363636363612],
+            [361.98295454545456, 91.4190340909091, 1.818181818181813, 3.636363636363612, -0.8329560425617046, -1.6659120851233666]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [360, 86, 0, 0, 0, 0],
+              [370, 106, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801VH8QNF60Q786QM2N",
+      "type": "drawingNode",
+      "rev": 113,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN801WM4QJ36DQ4QHWDNJ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [383.125, 88.90625, 0, 0, 0.39106686541651925, -0.32820509167189016],
+            [384.34375, 88.046875, -0.42122524748640444, 0.24830562262319233, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN8020WD1AQ9M8HAF29FV",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [384.34375, 88.046875, 0, 0, 1.132435114397424, -0.6675525929150439],
+            [388, 87, -1.290365593073716, 0, 5.522847498307954, 0],
+            [398, 102, 0, -8.284271247461902, 0, 8.284271247461902],
+            [388, 117, 5.522847498307954, 0, -5.522847498307954, 0],
+            [378, 102, 0, 8.284271247461902, 0, -5.6287682758447914],
+            [383.125, 88.90625, -3.0574494847379583, 2.5659818746130725, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800NHW2H69Y0TC0XPXJ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [398.4375, 87.328125, 0.654642484909516, 1.7421360117537148, -0.2868395433163755, -0.7633380196451327],
+            [399.5625, 86.671875, -0.4931080706879811, -0.708527296107988, 0.8206719186652549, 1.1791907090719178],
+            [401.7443181818182, 91.03551136363636, -0.6619189833584755, -1.3238379667168942, 1.8787878787879322, 3.7575757575757365],
+            [407.3806818181818, 102.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211897],
+            [409.1988636363636, 105.94460227272728, -0.6060606060606233, -1.2121212121212466, 0.21963800481211138, 0.43927600962420854],
+            [409.328125, 107.5625, 0.6623253520779713, -0.36795852893220626, -0.1875, 0.1041666666666714],
+            [408.671875, 107.5625, 0.1875, 0.1041666666666714, -0.4134395192399438, -0.22968862179997984],
+            [406.4375, 103.328125, 0.3237830286499275, 0.6475660572998123, -1.8181818181818699, -3.636363636363612],
+            [400.98295454545456, 92.4190340909091, 1.8181818181818699, 3.636363636363612, -0.8329560425617046, -1.6659120851233524]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [399, 87, 0, 0, 0, 0],
+              [409, 107, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN8000FT0AR68G4B6SR7R",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [382.4375, 87.328125, 0.654642484909516, 1.7421360117537006, -0.2868395433163755, -0.7633380196451327],
+            [383.5625, 86.671875, -0.4931080706879811, -0.708527296107988, 0.8206719186653686, 1.1791907090720315],
+            [385.7443181818182, 91.03551136363636, -0.6619189833584755, -1.3238379667169085, 1.8787878787879322, 3.757575757575765],
+            [391.3806818181818, 102.30823863636364, -1.8787878787879322, -3.7575757575757365, 0.6060606060606233, 1.2121212121211613],
+            [393.1988636363636, 105.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.4392760096241801],
+            [393.328125, 107.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [392.671875, 107.5625, 0.1875, 0.1041666666666714, -0.4134395192400575, -0.22968862180002247],
+            [390.4375, 103.328125, 0.3237830286499275, 0.6475660572998692, -1.8181818181818699, -3.636363636363612],
+            [384.98295454545456, 92.4190340909091, 1.818181818181813, 3.6363636363635976, -0.8329560425617046, -1.6659120851233382]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [383, 87, 0, 0, 0, 0],
+              [393, 107, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800NJNEVFNX0QVXHHW9",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [400.4375, 89.328125, 0.654642484909516, 1.7421360117537006, -0.2868395433163755, -0.7633380196451327],
+            [401.5625, 88.671875, -0.4931080706879811, -0.708527296107988, 0.8206719186651981, 1.1791907090718325],
+            [403.7443181818182, 93.03551136363636, -0.6619189833584187, -1.323837966716809, 1.8787878787879322, 3.757575757575765],
+            [409.3806818181818, 104.30823863636364, -1.8787878787879322, -3.7575757575757365, 0.6060606060606233, 1.2121212121211613],
+            [411.1988636363636, 107.94460227272728, -0.6060606060606233, -1.212121212121204, 0.21963800481211138, 0.4392760096241801],
+            [411.328125, 109.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [410.671875, 109.5625, 0.1875, 0.1041666666666714, -0.4134395192400575, -0.22968862180002247],
+            [408.4375, 105.328125, 0.3237830286499275, 0.6475660572997981, -1.8181818181818699, -3.636363636363626],
+            [402.98295454545456, 94.4190340909091, 1.8181818181818699, 3.636363636363626, -0.8329560425617046, -1.6659120851233524]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [401, 89, 0, 0, 0, 0],
+              [411, 109, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8011VK09KJX3AMPGR4A",
+      "type": "drawingNode",
+      "rev": 116,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8000Y3ZDWHJ59TEN20R",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [311, 89, 0, 0, 0, 0],
+            [331, 89, 0, 0, 0, 0],
+            [331, 119, 0, 0, 0, 0],
+            [311, 119, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": {
+              "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+              "matrix": null
+            },
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8011JFMM0B8V21GYKYR",
+      "type": "drawingNode",
+      "rev": 134,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8018M524TS159B0EPCT",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [357, 89, 0, 0, 0, 0],
+            [363.546875, 95.546875, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN802ZK5CYXZ57ZH7ZVJR",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [363.546875, 95.546875, 0, 0, 0, 0],
+            [366.453125, 98.453125, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN803P7P9VBM2ZT05JH0G",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [366.453125, 98.453125, 0, 0, 0, 0],
+            [377, 109, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800EX8TS3YNMEYES2PG",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [360.4375, 89.328125, 0.654642484909516, 1.7421360117537148, -0.2868395433163755, -0.7633380196451327],
+            [361.5625, 88.671875, -0.4931080706879811, -0.7085272961080165, 0.8206719186653118, 1.1791907090719889],
+            [363.7443181818182, 93.03551136363636, -0.6619189833584187, -1.3238379667168658, 1.8787878787879322, 3.7575757575757365],
+            [369.3806818181818, 104.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211613],
+            [371.1988636363636, 107.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.4392760096241801],
+            [371.328125, 109.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [370.671875, 109.5625, 0.1875, 0.1041666666666714, -0.413439519239887, -0.22968862179995142],
+            [368.4375, 105.328125, 0.3237830286499275, 0.6475660572997981, -1.8181818181818699, -3.636363636363626],
+            [362.98295454545456, 94.4190340909091, 1.8181818181818699, 3.636363636363626, -0.8329560425617046, -1.6659120851233666]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [361, 89, 0, 0, 0, 0],
+              [371, 109, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8018EPA1M0PXSFD0NPF",
+      "type": "drawingNode",
+      "rev": 135,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800GB0M9NQQPD13TTSJ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [359, 89, 0, 0, 0, 0],
+            [379, 109, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801GA7EQ53X7TQVBCD3",
+      "type": "drawingNode",
+      "rev": 136,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8003MP45J7EY3DKJVHZ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [420, 104, 0, -8.284271247461902, 0, 8.284271247461902],
+            [410, 119, 5.522847498307954, 0, -5.522847498307954, 0],
+            [400, 104, 0, 8.284271247461902, 0, -8.284271247461902],
+            [410, 89, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801E213VPH42QA75FPB",
+      "type": "drawingNode",
+      "rev": 138,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN80035SP0HNF32XYTNG0",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [363, 89, 0, 0, 0, 0],
+            [383, 109, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8015Y6YBJ04T2QK6H2K",
+      "type": "drawingNode",
+      "rev": 140,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800KRT10XGB2NG23BJQ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [364, 90, 0, 0, 0, 0],
+            [384, 110, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801AW9HF2ZC1HMM7D3R",
+      "type": "drawingNode",
+      "rev": 141,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800SQ4XH9HXXFM8ATKV",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [363, 105, 0, -8.284271247461902, 0, 8.284271247461902],
+            [353, 120, 5.522847498307954, 0, -5.522847498307954, 0],
+            [343, 105, 0, 8.284271247461902, 0, -8.284271247461902],
+            [353, 90, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801J92BH1N2HX862Q0D",
+      "type": "drawingNode",
+      "rev": 143,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800DCJSJ0KGHQ3AV6DC",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [385, 91, 0, 0, 0, 0],
+            [405, 91, 0, 0, 0, 0],
+            [405, 121, 0, 0, 0, 0],
+            [385, 121, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8017J2YM26JHSN2FAG8",
+      "type": "drawingNode",
+      "rev": 163,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800Z88J2N3ZFGAHK373",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [367, 91, 0, 0, 0, 0],
+            [387, 111, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800S3A0WSKCBPK2QYQF",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [365.4375, 92.328125, 0.654642484909516, 1.7421360117537148, -0.2868395433163755, -0.7633380196451327],
+            [366.5625, 91.671875, -0.4931080706879811, -0.7085272961080165, 0.8206719186652549, 1.1791907090719036],
+            [368.7443181818182, 96.03551136363636, -0.6619189833584187, -1.3238379667168516, 1.8787878787879322, 3.7575757575757365],
+            [374.3806818181818, 107.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211755],
+            [376.1988636363636, 110.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.4392760096241801],
+            [376.328125, 112.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [375.671875, 112.5625, 0.1875, 0.1041666666666714, -0.4134395192401712, -0.22968862180009353],
+            [373.4375, 108.328125, 0.3237830286499275, 0.647566057299855, -1.8181818181818699, -3.636363636363612],
+            [367.98295454545456, 97.4190340909091, 1.818181818181813, 3.636363636363612, -0.8329560425617046, -1.6659120851233666]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [366, 92, 0, 0, 0, 0],
+              [376, 112, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801WQPCPHY8SFZQ0ZNS",
+      "type": "drawingNode",
+      "rev": 164,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8004DC3RG2BR30T9YK0",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [376, 92, 0, 0, 0, 0],
+            [396, 92, 0, 0, 0, 0],
+            [396, 122, 0, 0, 0, 0],
+            [376, 122, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801AXNMZ63CWGQY4EV6",
+      "type": "drawingNode",
+      "rev": 165,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800AMX5889WYPW1H6A5",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [388, 92, 0, 0, 0, 0],
+            [408, 112, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801VAFQHAXBEFQAS80Z",
+      "type": "drawingNode",
+      "rev": 175,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800HT3E52GYM50GQ6TG",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [332, 108, 0, -8.284271247461902, 0, 8.284271247461902],
+            [322, 123, 5.522847498307954, 0, -5.522847498307954, 0],
+            [312, 108, 0, 8.284271247461902, 0, -8.284271247461902],
+            [322, 93, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": {
+              "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+              "matrix": null
+            },
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN8007D0GRW89840CN3HB",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [395.4375, 94.328125, 0.654642484909516, 1.7421360117537006, -0.2868395433163755, -0.7633380196451327],
+            [396.5625, 93.671875, -0.4931080706879811, -0.708527296107988, 0.8206719186651981, 1.1791907090718325],
+            [398.7443181818182, 98.03551136363636, -0.6619189833584187, -1.323837966716809, 1.8787878787879322, 3.757575757575765],
+            [404.3806818181818, 109.30823863636364, -1.8787878787879322, -3.7575757575757365, 0.6060606060606233, 1.2121212121211613],
+            [406.1988636363636, 112.94460227272728, -0.6060606060606233, -1.212121212121204, 0.21963800481211138, 0.4392760096241801],
+            [406.328125, 114.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [405.671875, 114.5625, 0.1875, 0.1041666666666714, -0.4134395192400575, -0.22968862180002247],
+            [403.4375, 110.328125, 0.3237830286499275, 0.6475660572997981, -1.8181818181818699, -3.636363636363626],
+            [397.98295454545456, 99.4190340909091, 1.8181818181818699, 3.636363636363626, -0.8329560425617046, -1.6659120851233524]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [396, 94, 0, 0, 0, 0],
+              [406, 114, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800Q7ZNRA68M77WDDDH",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [359.4375, 94.328125, 0.654642484909516, 1.7421360117537148, -0.28683954331631867, -0.7633380196450759],
+            [360.5625, 93.671875, -0.49310807068803797, -0.7085272961080591, 0.8206719186653118, 1.1791907090719747],
+            [362.7443181818182, 98.03551136363636, -0.6619189833584187, -1.3238379667168374, 1.8787878787879322, 3.757575757575765],
+            [368.3806818181818, 109.30823863636364, -1.8787878787879322, -3.7575757575757365, 0.6060606060606233, 1.212121212121204],
+            [370.1988636363636, 112.94460227272728, -0.6060606060606233, -1.2121212121212324, 0.21963800481211138, 0.4392760096241801],
+            [370.328125, 114.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [369.671875, 114.5625, 0.1875, 0.1041666666666714, -0.4134395192400575, -0.22968862180002247],
+            [367.4375, 110.328125, 0.3237830286499275, 0.6475660572998407, -1.8181818181818699, -3.636363636363612],
+            [361.98295454545456, 99.4190340909091, 1.8181818181818699, 3.636363636363612, -0.8329560425617046, -1.6659120851233666]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [360, 94, 0, 0, 0, 0],
+              [370, 114, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801GSG5QS2JQKR06XVX",
+      "type": "drawingNode",
+      "rev": 192,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8007RVX1Z80CDQH7SPQ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [346, 94, 0, 0, 0, 0],
+            [366, 94, 0, 0, 0, 0],
+            [366, 124, 0, 0, 0, 0],
+            [346, 124, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801D94TGPK261T7MVFM",
+      "type": "drawingNode",
+      "rev": 194,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800QBR96YT6KMW34X3Y",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [316, 94, 0, 0, 0, 0],
+            [336, 114, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN8001A65NVJV5D5BB810",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [399.4375, 94.328125, 0.654642484909516, 1.7421360117537006, -0.28683954331631867, -0.7633380196451043],
+            [400.5625, 93.671875, -0.49310807068803797, -0.7085272961080165, 0.8206719186653686, 1.17919070907206],
+            [402.7443181818182, 98.03551136363636, -0.6619189833584755, -1.3238379667169227, 1.8787878787879322, 3.7575757575757507],
+            [408.3806818181818, 109.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211755],
+            [410.1988636363636, 112.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.4392760096241801],
+            [410.328125, 114.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [409.671875, 114.5625, 0.1875, 0.1041666666666714, -0.41343951924000066, -0.22968862179999405],
+            [407.4375, 110.328125, 0.3237830286499275, 0.6475660572998265, -1.8181818181818699, -3.636363636363626],
+            [401.98295454545456, 99.4190340909091, 1.8181818181818699, 3.636363636363626, -0.8329560425617046, -1.6659120851233382]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [400, 94, 0, 0, 0, 0],
+              [410, 114, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801QFFF85T0XWWJB05V",
+      "type": "drawingNode",
+      "rev": 195,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800A10QA12RXTQJB9T4",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [310, 94, 0, 0, 0, 0],
+            [330, 94, 0, 0, 0, 0],
+            [330, 124, 0, 0, 0, 0],
+            [310, 124, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": {
+              "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+              "matrix": null
+            },
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8011ZQQPPX5DJWVY3Z4",
+      "type": "drawingNode",
+      "rev": 199,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800MPQT44ZBTEW3W6WH",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [399, 109, 0, -8.284271247461902, 0, 8.284271247461902],
+            [389, 124, 5.522847498307954, 0, -5.522847498307954, 0],
+            [379, 109, 0, 8.284271247461902, 0, -8.284271247461902],
+            [389, 94, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801DX4HKSWK82QEQBGK",
+      "type": "drawingNode",
+      "rev": 200,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800690CFWCASDD2Y79X",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [323, 94, 0, 0, 0, 0],
+            [343, 114, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801NEKJWT5KSBVEYVVM",
+      "type": "drawingNode",
+      "rev": 201,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800WRGM2GAJ5CYR4G0K",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [324, 94, 0, 0, 0, 0],
+            [344, 114, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801YJHF37P0C4EH60A7",
+      "type": "drawingNode",
+      "rev": 202,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN80063M4X7V2YCVC1GDE",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [339, 109, 0, -8.284271247461902, 0, 8.284271247461902],
+            [329, 124, 5.522847498307954, 0, -5.522847498307954, 0],
+            [319, 109, 0, 8.284271247461902, 0, -8.284271247461902],
+            [329, 94, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8011514JH81YB4S8EH8",
+      "type": "drawingNode",
+      "rev": 203,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8001SSJ49118VAD9WV5",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [379, 109, 0, -8.284271247461902, 0, 8.284271247461902],
+            [369, 124, 5.522847498307954, 0, -5.522847498307954, 0],
+            [359, 109, 0, 8.284271247461902, 0, -8.284271247461902],
+            [369, 94, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN80177P9HB75B132H8Q9",
+      "type": "drawingNode",
+      "rev": 206,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800FY0K9G2C74JD20YH",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [395, 109, 0, -8.284271247461902, 0, 8.284271247461902],
+            [385, 124, 5.522847498307954, 0, -5.522847498307954, 0],
+            [375, 109, 0, 8.284271247461902, 0, -8.284271247461902],
+            [385, 94, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801ZMBB4ENY61QNCY8T",
+      "type": "drawingNode",
+      "rev": 218,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800JNTSWEHADYW4Q8GG",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [346, 94, 0, 0, 0, 0],
+            [366, 114, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8013DDPGAVA7MRT8T95",
+      "type": "drawingNode",
+      "rev": 223,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800ZWZBN4FYNE4KADQB",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [350, 110, 0, -8.284271247461902, 0, 8.284271247461902],
+            [340, 125, 5.522847498307954, 0, -5.522847498307954, 0],
+            [330, 110, 0, 8.284271247461902, 0, -8.284271247461902],
+            [340, 95, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN8004P76PMTXF41SMDPQ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [374.4375, 95.328125, 0.654642484909516, 1.7421360117537006, -0.2868395433163755, -0.7633380196451327],
+            [375.5625, 94.671875, -0.4931080706879811, -0.708527296107988, 0.8206719186653686, 1.1791907090720315],
+            [377.7443181818182, 99.03551136363636, -0.6619189833584755, -1.3238379667169085, 1.8787878787879322, 3.757575757575765],
+            [383.3806818181818, 110.30823863636364, -1.8787878787879322, -3.7575757575757365, 0.6060606060606233, 1.2121212121211613],
+            [385.1988636363636, 113.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.4392760096241801],
+            [385.328125, 115.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [384.671875, 115.5625, 0.1875, 0.1041666666666714, -0.4134395192400575, -0.22968862180002247],
+            [382.4375, 111.328125, 0.3237830286499275, 0.6475660572998692, -1.8181818181818699, -3.636363636363612],
+            [376.98295454545456, 100.4190340909091, 1.818181818181813, 3.6363636363635976, -0.8329560425617046, -1.6659120851233382]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [375, 95, 0, 0, 0, 0],
+              [385, 115, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801GXNJ0YYFM4Z6S5YX",
+      "type": "drawingNode",
+      "rev": 224,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800SAZCNGY5Q9RMZJTD",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [351, 95, 0, 0, 0, 0],
+            [371, 115, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801VP6KFWM3BJ0109JZ",
+      "type": "drawingNode",
+      "rev": 226,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8006HY5WY36BCYH6QXT",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [332, 96, 0, 0, 0, 0],
+            [352, 96, 0, 0, 0, 0],
+            [352, 126, 0, 0, 0, 0],
+            [332, 126, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801BYM9H75BTTCADECP",
+      "type": "drawingNode",
+      "rev": 229,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800DM9HWQHFABDF3758",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [389, 111, 0, -8.284271247461902, 0, 8.284271247461902],
+            [379, 126, 5.522847498307954, 0, -5.522847498307954, 0],
+            [369, 111, 0, 8.284271247461902, 0, -8.284271247461902],
+            [379, 96, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801255HMK7AYZXXSSEN",
+      "type": "drawingNode",
+      "rev": 233,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800DTNFM96FN3ZB6RKF",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [328, 96, 0, 0, 0, 0],
+            [348, 96, 0, 0, 0, 0],
+            [348, 126, 0, 0, 0, 0],
+            [328, 126, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN8004S51YPKY0MX4KHSF",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [349.4375, 96.328125, 0.654642484909516, 1.7421360117537148, -0.28683954331631867, -0.7633380196450759],
+            [350.5625, 95.671875, -0.49310807068803797, -0.7085272961080591, 0.8206719186652549, 1.1791907090718752],
+            [352.7443181818182, 100.03551136363636, -0.6619189833584187, -1.323837966716809, 1.8787878787879322, 3.7575757575757507],
+            [358.3806818181818, 111.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211897],
+            [360.1988636363636, 114.94460227272728, -0.6060606060606233, -1.2121212121212324, 0.21963800481211138, 0.43927600962419433],
+            [360.328125, 116.5625, 0.6623253520779144, -0.36795852893219205, -0.1875, 0.1041666666666714],
+            [359.671875, 116.5625, 0.1875, 0.1041666666666714, -0.4134395192400575, -0.22968862180003669],
+            [357.4375, 112.328125, 0.3237830286499275, 0.6475660572997981, -1.8181818181818699, -3.636363636363612],
+            [351.98295454545456, 101.4190340909091, 1.818181818181813, 3.636363636363612, -0.8329560425617046, -1.6659120851233666]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [350, 96, 0, 0, 0, 0],
+              [360, 116, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801PVNKAY1869JTPKKA",
+      "type": "drawingNode",
+      "rev": 249,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8009REY2ZJ3DB44A7FM",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [379, 97, 0, 0, 0, 0],
+            [399, 97, 0, 0, 0, 0],
+            [399, 127, 0, 0, 0, 0],
+            [379, 127, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800QYQEKSMB2PZ52NZV",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [312.4375, 97.328125, 0.654642484909516, 1.7421360117537006, -0.28683954331631867, -0.7633380196451043],
+            [313.5625, 96.671875, -0.49310807068803797, -0.7085272961080165, 0.8206719186652549, 1.1791907090719036],
+            [315.7443181818182, 101.03551136363636, -0.6619189833584187, -1.3238379667168516, 1.8787878787879322, 3.7575757575757507],
+            [321.3806818181818, 112.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211755],
+            [323.1988636363636, 115.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.43927600962420854],
+            [323.328125, 117.5625, 0.6623253520779144, -0.36795852893219205, -0.1875, 0.1041666666666714],
+            [322.671875, 117.5625, 0.1875, 0.1041666666666714, -0.41343951924011435, -0.2296886218000651],
+            [320.4375, 113.328125, 0.3237830286499843, 0.6475660572999118, -1.8181818181818699, -3.636363636363612],
+            [314.98295454545456, 102.4190340909091, 1.8181818181818699, 3.636363636363612, -0.8329560425617046, -1.6659120851233666]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [313, 97, 0, 0, 0, 0],
+              [323, 117, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801G31XAADMXJWE02DC",
+      "type": "drawingNode",
+      "rev": 254,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800542N7S33VQYV2B86",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [368, 112, 0, -8.284271247461902, 0, 8.284271247461902],
+            [358, 127, 5.522847498307954, 0, -5.522847498307954, 0],
+            [348, 112, 0, 8.284271247461902, 0, -8.284271247461902],
+            [358, 97, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN80113GVP6YR4KCVVGX0",
+      "type": "drawingNode",
+      "rev": 256,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800N0WCXFS09V93F5KV",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [323, 113, 0, -8.284271247461902, 0, 8.284271247461902],
+            [313, 128, 5.522847498307954, 0, -5.522847498307954, 0],
+            [303, 113, 0, 8.284271247461902, 0, -8.284271247461902],
+            [313, 98, -5.522847498307954, 0, 5.522847498307954, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": {
+              "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+              "matrix": null
+            },
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801HV66RK4Q7C2CBYKM",
+      "type": "drawingNode",
+      "rev": 257,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800R0ZMM7T07S17EH13",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [385, 98, 0, 0, 0, 0],
+            [405, 118, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801N4XJRA742ADX0WPG",
+      "type": "drawingNode",
+      "rev": 258,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN8008YEANZD8WNQCQ78J",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [386, 98, 0, 0, 0, 0],
+            [406, 118, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN80110SHJ6EV2B5C2KA3",
+      "type": "drawingNode",
+      "rev": 283,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800D6XZ4ERJ07H3R2CQ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [305, 99, 0, 0, 0, 0],
+            [325, 119, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN8012HZ7VYNM3XF5A9Q1",
+      "type": "drawingNode",
+      "rev": 284,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800GHNDVWJKRV6R9HYF",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [337, 99, 0, 0, 0, 0],
+            [357, 99, 0, 0, 0, 0],
+            [357, 129, 0, 0, 0, 0],
+            [337, 129, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801Z7TJZDTX5Q7KBRRX",
+      "type": "drawingNode",
+      "rev": 287,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN801T2V7BCAR3DVRE7EQ",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [310, 99, 0, 0, 0, 0],
+            [310.515625, 99.515625, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN802FZD1JRE4HSSMZTTB",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [310.515625, 99.515625, 0, 0, 0, 0],
+            [313.46875, 102.46875, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN803B08B27XG7N2S41VG",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [313.46875, 102.46875, 0, 0, 0, 0],
+            [330, 119, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800T0EZ6GZFC760ZSR6",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [342.4375, 99.328125, 0.654642484909516, 1.7421360117537006, -0.2868395433163755, -0.7633380196451327],
+            [343.5625, 98.671875, -0.4931080706879811, -0.7085272961080165, 0.8206719186653118, 1.179190709072003],
+            [345.7443181818182, 103.03551136363636, -0.6619189833584755, -1.32383796671688, 1.8787878787879322, 3.7575757575757507],
+            [351.3806818181818, 114.30823863636364, -1.8787878787879322, -3.7575757575757365, 0.6060606060606233, 1.2121212121211613],
+            [353.1988636363636, 117.94460227272728, -0.6060606060606233, -1.212121212121204, 0.21963800481211138, 0.4392760096241801],
+            [353.328125, 119.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [352.671875, 119.5625, 0.1875, 0.1041666666666714, -0.4134395192399438, -0.22968862179996563],
+            [350.4375, 115.328125, 0.3237830286499275, 0.6475660572998265, -1.8181818181818699, -3.636363636363626],
+            [344.98295454545456, 104.4190340909091, 1.8181818181818699, 3.636363636363626, -0.8329560425617046, -1.6659120851233524]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [343, 99, 0, 0, 0, 0],
+              [353, 119, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800EANSAPF2V70AMC4F",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [310.4375, 99.328125, 0.654642484909516, 1.7421360117537006, -0.28683954331631867, -0.7633380196451043],
+            [311.5625, 98.671875, -0.49310807068803797, -0.7085272961080165, 0.8206719186652549, 1.1791907090719036],
+            [313.7443181818182, 103.03551136363636, -0.6619189833584187, -1.3238379667168516, 1.8787878787879322, 3.7575757575757507],
+            [319.3806818181818, 114.30823863636364, -1.8787878787879322, -3.7575757575757223, 0.6060606060606233, 1.2121212121211755],
+            [321.1988636363636, 117.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.43927600962420854],
+            [321.328125, 119.5625, 0.6623253520779144, -0.36795852893219205, -0.1875, 0.1041666666666714],
+            [320.671875, 119.5625, 0.1875, 0.1041666666666714, -0.41343951924011435, -0.2296886218000651],
+            [318.4375, 115.328125, 0.3237830286499843, 0.6475660572999118, -1.8181818181818699, -3.636363636363612],
+            [312.98295454545456, 104.4190340909091, 1.8181818181818699, 3.636363636363612, -0.8329560425617046, -1.6659120851233666]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [311, 99, 0, 0, 0, 0],
+              [321, 119, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801S5FEGB4J3X1X3QCP",
+      "type": "drawingNode",
+      "rev": 288,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800ND353C8Y02806D0Q",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [313, 99, 0, 0, 0, 0],
+            [333, 119, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801WFDSQ64QNA2CX0F5",
+      "type": "drawingNode",
+      "rev": 290,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800KD4B2DANH3RYMSPC",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "pencil",
+          "closed": true,
+          "points": [
+            [361, 99, 0, 0, 0, 0],
+            [381, 99, 0, 0, 0, 0],
+            [381, 129, 0, 0, 0, 0],
+            [361, 129, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        },
+        {
+          "id": "st_01K7JJN800PWY6B5A0NYHJ48P7",
+          "type": "stroke",
+          "rev": 291,
+          "kind": "brush",
+          "closed": true,
+          "points": [
+            [382.4375, 99.328125, 0.654642484909516, 1.7421360117537148, -0.28683954331631867, -0.7633380196450901],
+            [383.5625, 98.671875, -0.49310807068803797, -0.7085272961080165, 0.8206719186653118, 1.1791907090719604],
+            [385.7443181818182, 103.03551136363636, -0.6619189833584187, -1.3238379667168232, 1.8787878787879322, 3.757575757575765],
+            [391.3806818181818, 114.30823863636364, -1.8787878787879322, -3.7575757575757365, 0.6060606060606233, 1.2121212121211755],
+            [393.1988636363636, 117.94460227272728, -0.6060606060606233, -1.2121212121212182, 0.21963800481211138, 0.4392760096241801],
+            [393.328125, 119.5625, 0.6623253520779144, -0.36795852893217784, -0.1875, 0.1041666666666714],
+            [392.671875, 119.5625, 0.1875, 0.1041666666666714, -0.4134395192400575, -0.22968862180002247],
+            [390.4375, 115.328125, 0.3237830286499275, 0.6475660572998834, -1.8181818181818699, -3.636363636363612],
+            [384.98295454545456, 104.4190340909091, 1.818181818181813, 3.636363636363612, -0.8329560425617046, -1.6659120851233666]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": null,
+          "spine": {
+            "points": [
+              [383, 99, 0, 0, 0, 0],
+              [393, 119, 0, 0, 0, 0]
+            ],
+            "pressure": [
+              [0, 0.5],
+              [1, 0.5]
+            ],
+            "pen": {
+              "penId": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+              "tip": "round",
+              "minSize": 0.5,
+              "maxSize": 2
+            }
+          },
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "nd_01K7JJN801HDXBQJYPHDP6C5ET",
+      "type": "drawingNode",
+      "rev": 294,
+      "kind": "layer",
+      "hint": "pencil",
+      "strokes": [
+        {
+          "id": "st_01K7JJN800Y1GZPY6BQM1EQBPT",
+          "type": "stroke",
+          "rev": 294,
+          "kind": "pencil",
+          "closed": false,
+          "points": [
+            [317, 100, 0, 0, 0, 0],
+            [337, 120, 0, 0, 0, 0]
+          ],
+          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+          "fillMatrix": null,
+          "lineStyle": {
+            "thickness": 2,
+            "lineType": "solid"
+          },
+          "spine": null,
+          "sides": {
+            "left": null,
+            "right": null
+          }
+        }
+      ]
+    }
+  ],
+  "colourRecovery": [],
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}
