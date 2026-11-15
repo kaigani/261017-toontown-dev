@@ -7,7 +7,7 @@
 
 import { useEffect, useRef } from 'react';
 
-import type { EngineApi } from '../ipc';
+import type { AgentInput, EngineApi } from '../ipc';
 import { bucketOf } from './bucket';
 import { gridGeometry, IDENTITY, scaleOf, ViewTris, type Affine } from './geometry';
 import { ACCENT, GestureCollector, gestureOverlay, type DomSample, type OverlayStyle } from './input';
@@ -101,6 +101,20 @@ export function CanvasView({
         refreshStyle();
       });
     };
+    // Agent gestures routed to this window (design note 2 §6; P1, P2): one at a time, played through the overlay, then
+    // committed unchanged through gesture_commit with their request id; a user press aborts the one playing.
+    const agentQueue: AgentInput[] = [];
+    let playing: { input: AgentInput; shown: number; points: [number, number][] } | null = null;
+    const reportPresence = (present: boolean) => {
+      const r = canvas.getBoundingClientRect();
+      void engine
+        .canvasPresence(
+          viewId,
+          present ? { x: r.left, y: r.top, w: r.width, h: r.height } : null,
+          window.devicePixelRatio || 1,
+        )
+        .catch(() => undefined);
+    };
     const reportGesture = (on: boolean) => {
       void engine
         .report({ modal: on ? { kind: 'gesture', title: style.tool } : null })
@@ -150,6 +164,7 @@ export function CanvasView({
             canvas.width = Math.max(1, Math.round(r.width * dpr));
             canvas.height = Math.max(1, Math.round(r.height * dpr));
             viewVersion++;
+            reportPresence(true);
             void engine
               .report({ viewSizes: { [viewId]: { width: r.width, height: r.height } } })
               .then(refreshMapping, () => undefined);
@@ -191,6 +206,7 @@ export function CanvasView({
       if (!model || !renderer) return;
       model.frame();
       const scene = model.scene;
+      playAgent();
       if (
         clearOverlayAt &&
         (model.version > clearOverlayAt.version || performance.now() > clearOverlayAt.deadline)
@@ -278,7 +294,55 @@ export function CanvasView({
         if (env.status === 'error') overlay = null;
       });
     };
+    // Up to this many of an agent gesture's events are shown per frame (its simulated time is not waited for: P3).
+    const AGENT_EVENTS_PER_FRAME = 16;
+    const playAgent = () => {
+      if (!playing) {
+        if (collector.active) return;
+        const next = agentQueue.shift();
+        if (!next) return;
+        playing = { input: next, shown: 0, points: [] };
+        reportGesture(true);
+      }
+      const events = Array.isArray(playing.input.request['events'])
+        ? (playing.input.request['events'] as Record<string, unknown>[])
+        : [];
+      const end = Math.min(events.length, playing.shown + AGENT_EVENTS_PER_FRAME);
+      for (let i = playing.shown; i < end; i++) {
+        const e = events[i];
+        if (e && typeof e['x'] === 'number' && typeof e['y'] === 'number')
+          playing.points.push([e['x'], e['y']]);
+      }
+      playing.shown = end;
+      overlay = gestureOverlay(playing.points, style);
+      if (playing.shown < events.length) return;
+      const done = playing;
+      playing = null;
+      reportGesture(false);
+      const before = model?.version ?? 0;
+      void engine
+        .gestureCommit({
+          ...(done.input.request as { view: string; events: unknown[] }),
+          agentRequest: done.input.requestId,
+        })
+        .then((env) => {
+          lastGesture =
+            env.status === 'error'
+              ? { status: 'error', code: env.error?.code ?? 'error' }
+              : { status: env.status };
+          clearOverlayAt = {
+            version: before,
+            deadline: performance.now() + (env.status === 'error' ? 0 : 400),
+          };
+        });
+    };
     const onDown = (e: PointerEvent) => {
+      if (playing) {
+        // P2: the user's press wins; the agent's gesture is discarded before any command.
+        void engine.gestureAbort(playing.input.requestId).catch(() => undefined);
+        playing = null;
+        overlay = null;
+      }
       if (!collector.down(sample(e))) return;
       e.preventDefault();
       canvas.setPointerCapture(e.pointerId);
@@ -320,6 +384,15 @@ export function CanvasView({
     canvas.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('keydown', onKey, true);
     refreshTool();
+    let unlistenAgent: (() => void) | null = null;
+    void engine
+      .onAgentInput((input) => {
+        if (input.viewId === viewId) agentQueue.push(input);
+      })
+      .then((u) => {
+        if (stopped) u();
+        else unlistenAgent = u;
+      });
 
     onReady?.({
       setOverlay(t) {
@@ -332,8 +405,12 @@ export function CanvasView({
 
     return () => {
       stopped = true;
-      // A window closing mid-gesture commits nothing (D-7a).
+      // A window closing mid-gesture commits nothing (D-7a); an agent gesture it was playing is aborted.
       cancelGesture();
+      if (playing) void engine.gestureAbort(playing.input.requestId).catch(() => undefined);
+      for (const q of agentQueue.splice(0)) void engine.gestureAbort(q.requestId).catch(() => undefined);
+      unlistenAgent?.();
+      reportPresence(false);
       canvas.removeEventListener('pointerdown', onDown);
       canvas.removeEventListener('pointermove', onMove);
       canvas.removeEventListener('pointerup', onUp);

@@ -117,9 +117,27 @@ export interface EngineApi {
    *  host runs the headless `pointer` driver with the user's origin and answers its envelope. */
   gestureCommit(request: {
     view: string;
-    pointerType: 'mouse' | 'pen' | 'penEraser';
+    pointerType?: 'mouse' | 'pen' | 'penEraser';
     events: unknown[];
+    agentRequest?: number;
   }): Promise<Envelope>;
+  /** `gesture_abort` (P2; SI-135): a user press interrupted the agent gesture `agentRequest` the window was playing. */
+  gestureAbort(agentRequest: number): Promise<void>;
+  /** `canvas_presence`: this window's canvas for `viewId` is at `rect` (view pixels), or (`null`) went away. */
+  canvasPresence(
+    viewId: string,
+    rect: { x: number; y: number; w: number; h: number } | null,
+    dpr: number,
+  ): Promise<void>;
+  /** Agent gestures the host routes to this window (`agent-input`; design note 2 §6). */
+  onAgentInput(handler: (input: AgentInput) => void): Promise<Unlisten>;
+}
+
+/** An agent's `pointer` request routed to this window (attached mode). */
+export interface AgentInput {
+  requestId: number;
+  viewId: string;
+  request: Record<string, unknown>;
 }
 
 export const ENGINE_EVENT = 'engine-event';
@@ -271,6 +289,31 @@ export function createEngineApi(transport: HostTransport): EngineApi {
       } catch (error) {
         return failureOf(error);
       }
+    },
+    async gestureAbort(agentRequest) {
+      await invoke('gesture_abort', { agentRequest });
+    },
+    async canvasPresence(viewId, rect, dpr) {
+      await invoke('canvas_presence', { viewId, rect, dpr });
+    },
+    onAgentInput(handler) {
+      return transport.listen('agent-input', (payload) => {
+        try {
+          const v = decode(payload);
+          if (typeof v !== 'object' || v === null) return;
+          const o = v as Record<string, unknown>;
+          const req = o['request'];
+          if (typeof o['requestId'] !== 'number' || typeof o['viewId'] !== 'string') return;
+          if (typeof req !== 'object' || req === null) return;
+          handler({
+            requestId: o['requestId'],
+            viewId: o['viewId'],
+            request: req as Record<string, unknown>,
+          });
+        } catch {
+          // A malformed message can only come from a version mismatch; it is dropped (the agent's call times out).
+        }
+      });
     },
     async canvasLoad(drawingId, bucket) {
       if (!transport.invokeBinary) throw new Error('ipc.unsupported: this transport has no binary commands');

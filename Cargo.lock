@@ -4780,6 +4780,8 @@ dependencies = [
  "block2",
  "objc2",
  "objc2-app-kit",
+ "objc2-foundation",
+ "objc2-web-kit",
  "octotablet",
  "raw-window-handle",
  "serde",
@@ -4791,6 +4793,8 @@ dependencies = [
  "tt-engine",
  "tt-executor",
  "tt-mcp",
+ "tt-render",
+ "webview2-com",
  "windows 0.62.2",
 ]
 

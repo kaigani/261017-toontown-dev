@@ -12,6 +12,7 @@ export {
   isRestarted,
   localFailure,
   paramProblems,
+  type AgentInput,
   type CommandFailure,
   type EngineApi,
   type EngineEvent,

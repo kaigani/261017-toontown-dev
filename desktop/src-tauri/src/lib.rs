@@ -11,7 +11,9 @@
 //! **M0 diagnostics** (`--ipc-bench`, `--spike …` and their commands) exist only in builds with the Cargo feature
 //! `m0-diagnostics` (C0.4). The default build registers the product commands alone; [`COMMANDS`] lists them.
 
+pub mod attached;
 pub mod bindings;
+pub mod capture;
 pub mod diagnostics;
 pub mod floats;
 pub mod host;
@@ -56,6 +58,8 @@ command_registry![
     ipc::canvas_scene,
     ipc::canvas_load,
     ipc::gesture_commit,
+    ipc::gesture_abort,
+    ipc::canvas_presence,
 ];
 
 #[cfg(feature = "m0-diagnostics")]
@@ -73,6 +77,8 @@ command_registry![
     ipc::canvas_scene,
     ipc::canvas_load,
     ipc::gesture_commit,
+    ipc::gesture_abort,
+    ipc::canvas_presence,
     diagnostics::bench_plan,
     diagnostics::bench_report,
     spikes::tablet::spike_mode,
@@ -154,6 +160,9 @@ pub fn run() -> Result<(), DesktopError> {
                 use tauri::Manager;
                 if let Some(host) = webview.app_handle().try_state::<host::Host>() {
                     host.forget_window_reports(webview.label());
+                    if let Some(io) = host.attached() {
+                        io.forget_window(webview.label());
+                    }
                     // A float that reloads is still open: it stays in the freshness quorum (C41-R2-06).
                     if webview.label().starts_with(floats::PREFIX) {
                         host.expect_window(webview.label());
@@ -163,6 +172,9 @@ pub fn run() -> Result<(), DesktopError> {
         })
         .setup(move |app| {
             let handle = app.handle().clone();
+            // Attached mode's routes into the windows (M4 C4.2b): agent gestures and screenshots of what the user sees.
+            tauri::Manager::state::<host::Host>(&handle)
+                .install_attached(std::sync::Arc::new(attached::WindowIo::new(handle.clone())));
             shell::start_event_pump(&handle);
             shell::restore_window(&handle);
             // The floats of the restored workspace (ruling O-2).
@@ -252,7 +264,9 @@ mod tests {
                 "restart_engine",
                 "canvas_scene",
                 "canvas_load",
-                "gesture_commit"
+                "gesture_commit",
+                "gesture_abort",
+                "canvas_presence"
             ]
         );
         for path in COMMANDS {
@@ -266,7 +280,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..13],
+            &names[..15],
             [
                 "ping",
                 "app_info",
@@ -280,7 +294,9 @@ mod tests {
                 "restart_engine",
                 "canvas_scene",
                 "canvas_load",
-                "gesture_commit"
+                "gesture_commit",
+                "gesture_abort",
+                "canvas_presence"
             ]
         );
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));

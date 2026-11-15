@@ -346,10 +346,16 @@ pub async fn canvas_load(app: AppHandle, json: String) -> Result<Response, Strin
 /// The JSON text of `arg.invalid` for a request that is not JSON; every other refusal is the envelope's.
 #[tauri::command]
 pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, String> {
-    let request: Value = parse(&json)?;
+    let mut request: Value = parse(&json)?;
+    // An agent's gesture the window played (design note 2 §6) carries its request id: it runs with the agent's origin
+    // and answers the waiting agent call too.
+    let agent = request.as_object_mut().and_then(|m| m.remove("agentRequest")).and_then(|v| v.as_u64());
     let env = tauri::async_runtime::spawn_blocking(move || {
         let host = app.state::<Host>();
-        host.exec().pointer(tt_executor::Origin::User, request)
+        match (agent, host.attached()) {
+            (Some(id), Some(io)) => io.finish(id, request),
+            _ => host.exec().pointer(tt_executor::Origin::User, request),
+        }
     })
     .await
     .map_err(|e| internal(e.to_string()))?;
@@ -358,4 +364,65 @@ pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, St
 
 fn engine_error(e: &tt_executor::CommandError) -> tt_engine::ErrorInfo {
     tt_engine::ErrorInfo { code: e.code.clone(), message: e.message.clone(), details: (*e.details).clone() }
+}
+
+/// `gesture_abort` request.
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct GestureAbortRequest {
+    agent_request: u64,
+}
+
+/// A user press during an agent gesture the window was playing (P2; SI-135): the agent's call answers `ui.busy` with
+/// `reason: "userInput"`; nothing is committed.
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a malformed request.
+#[tauri::command]
+pub fn gesture_abort(host: State<'_, Host>, json: String) -> Result<Response, String> {
+    let req: GestureAbortRequest = parse(&json)?;
+    if let Some(io) = host.attached() {
+        io.abort(req.agent_request);
+    }
+    respond(&json!({}))
+}
+
+/// `canvas_presence` request.
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct CanvasPresenceRequest {
+    view_id: String,
+    /// The canvas's rectangle in the window's view pixels; `null` when the canvas went away.
+    rect: Option<PresenceRect>,
+    #[serde(default)]
+    dpr: Option<f64>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct PresenceRect {
+    x: f64,
+    y: f64,
+    w: f64,
+    h: f64,
+}
+
+/// A window's canvas for a view appeared, moved or went away (attached mode's routing and screenshot targets).
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a malformed request.
+#[tauri::command]
+pub fn canvas_presence(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
+    let req: CanvasPresenceRequest = parse(&json)?;
+    if let Some(io) = host.attached() {
+        let presence = req
+            .rect
+            .filter(|r| [r.x, r.y, r.w, r.h].iter().all(|v| v.is_finite()) && r.w >= 1.0 && r.h >= 1.0)
+            .map(|r| crate::attached::Presence {
+                rect: [r.x, r.y, r.w, r.h],
+                dpr: req.dpr.filter(|d| d.is_finite() && *d > 0.0).unwrap_or(1.0),
+            });
+        io.set_presence(window.label(), &req.view_id, presence);
+    }
+    respond(&json!({}))
 }

@@ -118,6 +118,9 @@
   "desktop/src-tauri/src/bindings.rs": {
     "clippy::large_enum_variant": 1
   },
+  "desktop/src-tauri/src/capture.rs": {
+    "unsafe_code": 1
+  },
   "desktop/src-tauri/src/spikes/canvas/renderlist.rs": {
     "missing_docs": 1
   },

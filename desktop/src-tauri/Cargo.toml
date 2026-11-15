@@ -32,6 +32,8 @@ tt-engine.workspace = true
 # mode over Streamable HTTP (ADR-0021, ADR-0022).
 tt-executor.workspace = true
 tt-mcp.workspace = true
+# M4 C4.2b: attached screenshots are cropped and re-encoded with the renderer's PNG codec.
+tt-render.workspace = true
 # Native Open / Save As / folder pickers (01 §3.2, §3.6; driven from Rust only, no front-end package).
 tauri-plugin-dialog = "2.8"
 serde.workspace = true
@@ -47,17 +49,23 @@ windows = { version = "0.62", features = [
     "Win32_Foundation",
     "Win32_Graphics_Gdi",
     "Win32_System_Com",
+    "Win32_System_Com_StructuredStorage",
     "Win32_System_LibraryLoader",
     "Win32_UI_Controls",
     "Win32_UI_Input",
     "Win32_UI_Input_Pointer",
     "Win32_UI_WindowsAndMessaging",
 ] }
+# M4 C4.2b, attached screenshots (ruling D-6): the window's own snapshot through WebView2's CapturePreview.
+webview2-com = "0.39"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 block2 = "0.6"
 objc2 = "0.6"
-objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "block2", "NSEvent"] }
+objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "block2", "NSEvent", "NSImage", "NSImageRep", "NSBitmapImageRep"] }
+# M4 C4.2b, attached screenshots (ruling D-6): WKWebView's snapshot, encoded as PNG.
+objc2-foundation = { version = "0.3", default-features = false, features = ["std", "NSData", "NSDictionary", "NSError"] }
+objc2-web-kit = { version = "0.3", default-features = false, features = ["std", "block2", "objc2-app-kit", "WKWebView", "WKSnapshotConfiguration"] }
 
 [lints]
 workspace = true

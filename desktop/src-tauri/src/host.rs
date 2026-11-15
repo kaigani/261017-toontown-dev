@@ -50,6 +50,8 @@ pub struct Host {
     restart_lock: Mutex<()>,
     /// Each window's sensor facts (ruling O-2, O-9), combined into the one report the executor sees.
     windows: Mutex<Windows>,
+    /// Attached mode's routes into the windows (M4 C4.2b), installed on every executor this host runs.
+    attached: Mutex<Option<Arc<crate::attached::WindowIo>>>,
 }
 
 /// The sensor facts of one window.
@@ -134,6 +136,17 @@ impl std::fmt::Debug for Host {
 }
 
 impl Host {
+    /// Installs attached mode's routes (M4 C4.2b) on the running executor and every later one.
+    pub fn install_attached(&self, io: Arc<crate::attached::WindowIo>) {
+        self.exec().set_attached_io(Some(io.clone()));
+        *self.attached.lock().unwrap_or_else(PoisonError::into_inner) = Some(io);
+    }
+
+    /// Attached mode's routes, once installed.
+    pub fn attached(&self) -> Option<Arc<crate::attached::WindowIo>> {
+        self.attached.lock().unwrap_or_else(PoisonError::into_inner).clone()
+    }
+
     /// Starts the executor over the user folders.
     ///
     /// # Errors
@@ -150,6 +163,7 @@ impl Host {
             pending_open: Mutex::new(options.open.clone()),
             restart_lock: Mutex::new(()),
             windows: Mutex::new(Windows::default()),
+            attached: Mutex::new(None),
             options,
             settings_dir,
         })
@@ -204,6 +218,10 @@ impl Host {
         self.stop_http();
         // The stuck executor's autosave becomes recoverable work for the new one.
         let _ = exec.release_recovery_of(&owner);
+        // The new engine gets the same routes into the windows (D-7b: the windows stay; the engine is new).
+        if let Some(io) = self.attached.lock().unwrap_or_else(PoisonError::into_inner).clone() {
+            exec.set_attached_io(Some(io));
+        }
         *self.exec.write().unwrap_or_else(PoisonError::into_inner) = exec;
         *self.watchdog.lock().unwrap_or_else(PoisonError::into_inner) = crate::watchdog::Watchdog::default();
         // The new generation numbers its events from 1; the old one's cancellation flags are dropped (ruling O-14).
