@@ -147,6 +147,30 @@ def canvas_offset(window_png: bytes, view_png: bytes):
     return None
 
 
+def on_screen(pid: int, pts) -> bool:
+    """Whether client points of the application's window are on the screen (Windows: a runner's display is small and
+    the window may extend below it, where the cursor cannot go)."""
+    import ctypes
+    from ctypes import wintypes
+    u = ctypes.windll.user32
+    hwnds = []
+
+    def cb(hw, _):
+        q = wintypes.DWORD()
+        u.GetWindowThreadProcessId(hw, ctypes.byref(q))
+        if q.value == pid and u.IsWindowVisible(hw):
+            hwnds.append(hw)
+        return True
+
+    u.EnumWindows(ctypes.WINFUNCTYPE(ctypes.c_bool, wintypes.HWND, wintypes.LPARAM)(cb), 0)
+    if not hwnds:
+        return False
+    origin = wintypes.POINT(0, 0)
+    u.ClientToScreen(hwnds[0], ctypes.byref(origin))
+    w, h = u.GetSystemMetrics(0), u.GetSystemMetrics(1)
+    return all(0 <= origin.x + x < w - 2 and 0 <= origin.y + y < h - 2 for x, y in pts)
+
+
 def os_double_click(pid: int, p) -> None:
     """Two quick left clicks at client point `p` (a real double click; Windows)."""
     import ctypes
@@ -225,11 +249,11 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
     out_c = (x1 + 8, y1 + 8)
     # name, tool, drawing points (a drag through them), modifiers, the selection set before it.
     rows = [
-        ("brush", "brush", [(-200, 160), (-160, 175), (-120, 190), (-80, 180), (-40, 170)], [], False),
-        ("pencil", "pencil", [(-200, -120), (-150, -135), (-100, -150), (-50, -135), (0, -120)], [], False),
-        ("rectangle", "rectangle", [(-60, -200), (-10, -170), (40, -140)], [], False),
-        ("ellipse", "ellipse", [(60, -200), (110, -170), (160, -140)], [], False),
-        ("line", "line", [(-200, 220), (0, 225), (200, 230)], [], False),
+        ("brush", "brush", [(-200, 140), (-160, 150), (-120, 160), (-80, 155), (-40, 150)], [], False),
+        ("pencil", "pencil", [(-200, -100), (-150, -115), (-100, -130), (-50, -115), (0, -100)], [], False),
+        ("rectangle", "rectangle", [(-60, -150), (-10, -125), (40, -100)], [], False),
+        ("ellipse", "ellipse", [(60, -150), (110, -125), (160, -100)], [], False),
+        ("line", "line", [(-200, 150), (0, 155), (200, 160)], [], False),
         ("polyline", "polyline", "polyline", [], False),
         ("select", "select", [(-170, -80), (-90, 0), (-10, 80)], [], False),
         ("eraser", "eraser", [(-160, 0), (-140, 5), (-120, 10), (-100, 5), (-80, 0)], [], False),
@@ -269,9 +293,11 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
             vpts = [v((170, 100)), v((220, 140))]
         else:
             vpts = [v(p) for p in pts]
-        # 1. The gesture in the window.
-        if os_input and offset is not None and not mods:
-            client = lambda q: (offset[0] + q[0] * ratio, offset[1] + q[1] * ratio)  # noqa: E731
+        # 1. The gesture in the window. OS input needs every point on the canvas (a runner's window is smaller).
+        size = (await app.mapping()).get("viewSize") or {}
+        on_canvas = all(4 <= q[0] <= size.get("width", 0) - 4 and 4 <= q[1] <= size.get("height", 0) - 4 for q in vpts)
+        client = lambda q: (offset[0] + q[0] * ratio, offset[1] + q[1] * ratio) if offset else q  # noqa: E731
+        if os_input and offset is not None and not mods and on_canvas and on_screen(e2e.APP_PID["pid"], [client(q) for q in vpts]):
             if pts == "polyline":
                 # One click, then a real double click at the second anchor (its two clicks and the double click end
                 # the gesture; a further click would start the next Polyline and hold the user's gesture open).
@@ -281,7 +307,8 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
                 c42.os_drag(e2e.APP_PID["pid"], [client(q) for q in vpts])
             how = "os"
         else:
-            # macOS, and a modifier the OS drag does not hold: the agent's pointer, played through the window.
+            # macOS, a modifier the OS drag does not hold, or points off a small canvas or screen: the agent's
+            # pointer, played through the window.
             if pts == "polyline":
                 events = c42.drag([vpts[0], vpts[0]]) + c42.drag([vpts[1], vpts[1]]) + [{"type": "doubleClick", "x": vpts[1][0], "y": vpts[1][1]}]
             else:
