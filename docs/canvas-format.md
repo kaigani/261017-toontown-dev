@@ -221,3 +221,94 @@ breaks, in the order below (the order fixes which rule a payload that breaks sev
 field, and one corrupt payload per rule V1-V10 (`corrupt.json` lists each file and the rule it must be refused
 under). `cargo test -p tt-render --test c42_canvas` encodes the valid ones byte for byte and refuses the corrupt ones;
 `desktop/src/canvas/format.test.ts` decodes the same files.
+
+## 11. The scene answer (`canvas_scene`), form 1.1 (M4 C4.3; ruling D-24)
+
+TTRD (§1-§10) is the format of one drawing's geometry and stays at 1.0: the Camera view draws the same payloads. What
+the Camera view adds is in the **scene answer**, the JSON the canvas pulls with `canvas_scene` (render-transport note
+§9): which drawings to draw, how, and where. This section is that answer's normative definition. The C4.2b answer of
+the Drawing view is form 1.0; form 1.1 adds the Camera view and the `sceneForm` member. Ruling D-24 asked for "TTRD
+1.1"; the occurrence table belongs here because the scene answer, not the payload, says where each drawing is drawn
+(camera-view note §2-§3).
+
+### 11.1 Conventions
+
+JSON, parsed losslessly (§6: `generation` and every `rev` are exact unsigned 64-bit integers). A point is `[x, y]`, a
+box `[minX, minY, maxX, maxY]`, a matrix `[a, b, c, d, e, f]` mapping `(x, y)` to `(a x + c y + e, b x + d y + f)`,
+colours straight-alpha RGBA8 `[r, g, b, a]` (integers 0-255). Drawing-view coordinates are drawing units (y up);
+Camera-view coordinates are camera output pixels (origin at the top-left of the camera frame, y down, 05 §2.6).
+
+### 11.2 Members
+
+The answer is `{generation, scene}`; `scene` has:
+
+| Member | Type | Form | Meaning |
+|---|---|---|---|
+| `sceneForm` | string `"1.1"` | 1.1 | Absent in form 1.0. A reader of form 1.x reads the members it knows and ignores others (R1). |
+| `viewId` | string | 1.0 | The view (`drawingView`, `cameraView`, or a float of either). |
+| `viewType` | `"drawing"` or `"camera"` | 1.1 | Absent: `"drawing"`. |
+| `background` | RGBA8 | 1.0 | 02 §10.7. |
+| `grid` | `{visible: bool, type: "normal"\|"field12"\|"field16", overlay: bool}` | 1.0 | 02 §10.1. |
+| `entries` | array, back to front | 1.0 | The drawings to draw (§11.3). |
+| `colours` | object: colour id → RGBA8 | 1.0 | Every solid colour slot's value. |
+| `paletteStamp` | number | 1.0 | Changes when a palette, style or swatch changes. |
+| `drawingPivot` | point or null | 1.0 | Drawing view: the current drawing's pivot (drawing units). Camera view: null. |
+| `selection` | object or null | 1.0 | Drawing view: the current drawing's selection (frame-loop note §7.1). Camera view: null. |
+| `frame` | integer ≥ 1 | 1.1 | Camera view: the scene frame shown. |
+| `camera` | object or null | 1.1 | Camera view: `{elementId: string, size: [width, height] (integers ≥ 1, output pixels), cameraToView: matrix}`; null when the scene has no current camera (SI-147). Absent in the Drawing view. |
+| `overlays` | object | 1.1 | Camera view (§11.4). Absent in the Drawing view. |
+
+### 11.3 Entries
+
+| Member | Type | Form | Meaning |
+|---|---|---|---|
+| `drawingId` | string | 1.0 | The drawing; its payload is `canvas_load`'s. |
+| `rev` | u64 | 1.0 | The revision the payload must have. |
+| `role` | `"current"\|"onion"\|"autoLight"\|"staticUnder"\|"staticOver"` | 1.0 | Drawing view: 02 §4.2 layers 3-7. Camera view: `"current"` for the current element's drawing, else `"staticUnder"` (no meaning beyond the overlay's highlighting, §11.4). |
+| `opacity` | number 0-1 | 1.0 | Coverage multiplier. |
+| `tint` | RGBA8 or null | 1.0 | Colour replacement keeping coverage (SI-139). |
+| `shade` | bool | 1.0 | 40 % opacity wash (SI-139). |
+| `outline` | bool | 1.0 | Outlines only (02 §10.2); the payload of the outline form. |
+| `elementId` | string | 1.1 | Camera view: the element this occurrence draws. |
+| `matrix` | matrix | 1.1 | Camera view: drawing units → camera output pixels, the final renderer's `to_pixel` for this element at `frame` (camera-view note §2). Absent in the Drawing view, where the view's own `drawingToView` applies. |
+
+In the Camera view the entries are the **occurrences**: one per drawn element in the final renderer's order, so a
+drawing may appear in several entries; the canvas loads it once (CV2).
+
+### 11.4 Overlays (Camera view)
+
+All in camera output pixels: `cameraFrame` (box, always `[0, 0, width, height]`), `pivots` (array of points: each
+selected node's pivot), `selectionBoxes` (array of boxes: each selected element's box), `selectionUnion` (box or null),
+`otherCameras` (array of four-point arrays: selected non-current cameras' frames on the table plane), `selectionDisplay`
+(`{outlineOnSelection: bool, boxHighlighting: bool, keepSelectionVisible: bool}`, 02 lines 959-961, as
+`drawAid.selectionDisplay.set` sets them), `currentOnTop` (bool, 02 line 946).
+
+### 11.5 Validation (the window's `parseSceneAnswer`)
+
+Form 1.0's checks (every member's type, the known enumerations) stay. Form 1.1 adds:
+
+- **R1** `sceneForm`, when present, is `"1.0"` or `"1.1"` or a later `"1.x"`; a major other than 1 is refused.
+- **R2** `viewType`, when present, is `"drawing"` or `"camera"`.
+- **R3** With `viewType: "camera"`: `frame` is an integer ≥ 1; `camera` is null or has a non-empty `elementId`, a
+  `size` of two integers ≥ 1 and a `cameraToView` of six finite numbers with a non-zero determinant `a d − b c`.
+- **R4** With `viewType: "camera"` and a camera: every entry has a non-empty `elementId` and a `matrix` of six finite
+  numbers with a non-zero determinant; with `camera: null`, `entries` is empty.
+- **R5** With `viewType: "camera"`: `overlays` is present; its boxes have `min ≤ max` on both axes and finite values;
+  its points and corners are finite; `selectionDisplay` has the three booleans.
+- **R6** With `viewType: "drawing"` (or absent): no entry has `matrix`, and `camera` and `overlays` are absent.
+
+A refused answer is not applied: the canvas keeps its previous picture and asks again (§8's rule for payloads).
+
+### 11.6 What a form 1.0 reader does with a 1.1 answer
+
+A Drawing view answer of form 1.1 differs from 1.0 only by `sceneForm` and `viewType: "drawing"`, which a 1.0 reader
+ignores: it draws the same picture. A Camera view answer is never sent to a 1.0 reader (the host and the window ship
+together, and the 1.0 window has no Camera view canvas); were it read, its entries would be drawn without their
+matrices, which R6 in a 1.1 reader refuses.
+
+### 11.7 Golden corpus
+
+`desktop/src/canvas/testdata/scene/`: valid answers (a Drawing view answer of each form; a Camera view answer with
+several occurrences of one drawing, a rolled camera, overlays; a Camera view without a camera) with what they decode
+to, and one corrupt answer per rule R1-R6. The Rust side writes the valid answers from the kernel's types
+(`crates/executor/tests/c43.rs`) and fails when they change; Vitest decodes every file.

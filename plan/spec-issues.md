@@ -1494,8 +1494,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   shapes).
 - **Problem:** these tools can be made active (`tool.active.set`), but their gestures are not in C4.2's scope and no
   checkpoint names them.
-- **Interim decision:** their gestures answer `command.notImplemented` with owner M4 C4.3; their structured commands
-  already work. Built in C4.2a after all: the invisible Stroke tool, whose gesture is the Brush's with
+- **Interim decision:** their gestures answer `command.notImplemented`; their structured commands already work. Owners
+  (C4.3 plan answer 5): Edit Texture, M7 C7.1 (its row names the edit-texture tool); the Contour Editor, Perspective,
+  Reposition All Drawings and Text are named by no milestone row: no owner, listed in M4's merge note §3 for the spec
+  owner to assign, and their refusals say so. Built in C4.2a after all: the invisible Stroke tool, whose gesture is the Brush's with
   `kind: "invisible"` (02 §13.3's table), so it needs nothing beyond the Brush gesture.
 - **Question:** the owner checkpoint of these gestures.
 
@@ -1723,6 +1725,73 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   already answers its `viewId`.
 - **Interim decision:** the result shape is unchanged. An agent that needs to know reads `app.state.get` (its
   `activeView`) and renders in one batch, which runs both against the same state; or it activates the view it means
-  first (`view.active.set`), as the e2e does.
+  first (`view.active.set`), as the e2e does. A press in a view window activates that view (C4.3 plan answer 4): through
+  `view.active.set` with the user's origin, UI state, no undo step; the same press acts as the tool's press.
 - **Question:** should `RenderResult` name the view for an `activeView` render (for example `viewId`), and should a
   click into a view window activate it (01 §12's GUI column for `view.active.set`)?
+
+## SI-143 — two commands for a view window's type (found in M4 C4.3; interim)
+
+- **Sections:** 01 §12.2 (`view.type.set`), 05 §19.3 line 1231 (`anim.view.type.set`), 05 §3.1 lines 300-309.
+- **Problem:** both commands switch a view window between Drawing, Camera, Top and Side: one state, two commands.
+- **Interim decision (ruling, C4.3 plan answer 2):** `view.type.set` is the command C4.1-C4.3 implement and the GUI
+  binds; `anim.view.type.set`, `anim.view.slot.select` and `anim.view.get` stay declared without a handler, owner M6.
+- **Question:** which command is canonical; should `anim.view.type.set` be an alias of `view.type.set` or be removed?
+
+## SI-144 — the undo labels of scene-tool drags and `anim.transform.set` (found in M4 C4.3; interim)
+
+- **Sections:** 05 §17 line 1135 ("Undo labels name the operation and the object kind (e.g. move peg, rotate bone,
+  change tension, add keyframe); wording is a UX-writing task"), §5.0-§5.2, §19.3 (`anim.transform.set`).
+- **Problem:** no literal labels are given, and `anim.transform.set` carried the fixed label "Transform".
+- **Interim decision:** the operation from the changed group (`Move` for position, `Rotate`, `Scale`, `Skew`, `Move
+  Pivot` for a pivot; `Transform` for several groups), then the node kind (`Element`, `Peg`, `Camera`, `Skeleton`),
+  plural for several nodes of one kind, `Nodes` for several kinds: "Move Element", "Rotate Peg", "Scale Elements",
+  "Transform Nodes". A scene-tool drag and the command sent directly with the same parameters carry the same label.
+- **Question:** confirm the wording, or give the labels.
+
+## SI-145 — the Camera view's plane mapping, the near plane and the tolerance (found in M4 C4.3; interim)
+
+- **Sections:** 05 §2.6 lines 234-252 (projection, rigid camera, near plane 0.1 field), §3.2, 06 §6.9-§6.10, ADR-0006
+  decision 7, ADR-0007.
+- **Problem:** the spec does not say how the interactive view maps a drawing's plane (a homography in general), what it
+  does with a plane crossing the near plane, or how finely it flattens a drawing shown at several scales.
+- **Interim decision:** the Camera view uses the final renderer's own plane mapping (`render_list::plane_to_pixel`, the
+  affine map through three projected points of the plane: exact for planes facing the camera, the renderer's
+  approximation otherwise), so no homography exists; a plane is drawn exactly when that mapping exists (its reference
+  points in front of the near plane), in renders and in the view alike. Curves are flattened in drawing units to the
+  view tolerance divided by the largest singular value of the full matrix (C42B-R1-01's rule); a drawing shown by
+  several occurrences is resident once, at the zoom bucket of its largest occurrence.
+- **Question:** should either consumer use the true projection for rotated planes, and how should a plane crossing the
+  near plane be clipped?
+
+## SI-146 — what a scene-space point addressed to a drawing means (found in M4 C4.3; interim)
+
+- **Sections:** 02 §13.1 item 5 lines 1151-1155 (`space: drawing|scene|view; view?; frame?`), 05 lines 40-60 (scene
+  space is three-dimensional), 11 §5.3.
+- **Problem:** a drawing command's point in scene space has two coordinates; the scene is three-dimensional.
+- **Interim decision:** the point of the addressed element's plane whose scene X and Y are the given ones, through the
+  element's world matrix at the frame (the command's `frame`, else the current frame); the Drawing view's existing
+  scene space (the current element's transform at the current frame) is the same rule.
+- **Question:** confirm, or define the plane or depth a scene point means.
+
+## SI-147 — a Camera view without a current camera (found in M4 C4.3; interim)
+
+- **Sections:** 05 §3.2, §12 (cameras), 09 (`render.noCamera`).
+- **Problem:** a scene may have no camera; the Camera view shows "through the current camera".
+- **Interim decision:** the Camera view answers no occurrences, the background and the grid, `camera: null`; its
+  scene-space conversions, renders and scene-tool gestures refuse `render.noCamera`, as renders do.
+- **Question:** confirm, or define what the view shows.
+
+## SI-148 — how a request names the scene tools in the Camera view (found in M4 C4.3; interim)
+
+- **Sections:** 11 §7.6 (`pointer` `tool?: toolId`; "`tool` selects the tool first, same as the corresponding select
+  command"), 05 §5.0 (the scene tools, including Select), 02 line 413 (every drawing tool works in the Camera view), 05
+  lines 29-31 (scene and drawing tools remembered separately).
+- **Problem:** `select` names both the drawing Select (`tool.active.set`) and the scene Select (`anim.tool.set`); in the
+  Camera view either family can act.
+- **Interim decision:** the Camera view runs the tool family chosen last: `anim.tool.set` makes it the scene tools,
+  `tool.active.set` the drawing tools. A `pointer` request's `tool` for a Camera view is passed to `anim.tool.set` when
+  it is one of its ids (`select` included), else to `tool.active.set`; the family follows. The Drawing view always runs
+  the drawing tool.
+- **Question:** how should a request name the drawing Select in the Camera view, or should the families be one tool
+  set?

@@ -71,3 +71,44 @@ and then answer `ui.busy` (C4.1's arbitration).
 - **V4** The headless Drawing view is SI-069's: 1920 × 1080, zoom 1, `drawingToView [1,0,0,-1,960,540]`.
 - **V5** Zoom stays within 6.25 %–6400 %; `steps` (the zoom keys and a Zoom-tool click) follow the 01 §6.5 table, the
   wheel follows the 02 §4.3 ladder (ruling D-15, SI-122).
+
+## 6. Amendment for C4.3: the Camera view (C4.3a; plan `reviews/M4-C4.3-plan.md` §3.3, answers 1 and 4)
+
+**The Camera view's document space is camera space** (SI-109: fields from the camera centre on the table plane, roll
+applied, y up). Its pixels per field at 100 % are the camera's output pixels per field, `1 / s` with `s` the scale of
+`render::image_to_camera` (`2 · depth · tan(fov / 2) / width`), so at 100 % one view pixel is one output pixel; for the
+default camera (16 fields, `tan(fov / 2) = 0.375`) that is `width / 12`, the value `shell::pixels_per_unit` already
+uses. The view transform (zoom, rotation, centre in camera space) and `doc_to_view_matrix` are unchanged.
+
+**The chain, one function per link** (V1 extended):
+- view pixels and camera space: `doc_to_view_matrix` / `view_to_doc_matrix` with the Camera view's pixels per field;
+- camera space and camera output pixels (`image` space, SI-109): `image_to_camera` and its inverse;
+- output pixels and a drawing's units: the element's `to_pixel` from the render list at the frame (camera-view note
+  §2) and its inverse;
+- scene space and output pixels: `CameraView::project` and, at a given depth, `CameraView::unproject`;
+- scene space and a drawing's units, for a point addressed to a drawing (02 §13.1 item 5): the element's world matrix
+  at the frame restricted to its plane, and its inverse: a scene point means the point of the element's plane with
+  those scene X and Y (SI-146). The Drawing view's `scene` space is unchanged: it was already the current element's
+  transform at the current frame.
+
+**Where it applies** (every declared use, ruling D-22): the addressing parameters of the `draw.*` and `colour.*`
+commands (`space: scene`, and `space: view` with a Camera view; `addressing.rs`), `view.coordinates.convert` (spaces
+`view`, `camera`, `image`, `scene`, `drawing`), `inspect.hitTest` (02 line 61: a view point maps back through the full
+scene transform), `pointer` (`space: view|drawing|scene|camera`, 11 line 354), `anim.view.coords.get` (05 line 1234:
+scene and view pixels with `depth`), `view.pan.set` centres in scene space for staging views (01 lines 1036-1041), and
+the canvas's matrices. Top and Side views keep their refusals, re-owned to M6 C6.1 (answer 1).
+
+**The active view** (answer 4): a press in a view window makes it active through `view.active.set` (user origin, UI
+state, no undo step) and the same press is the tool's press; SI-142 records it as the interim.
+
+**Invariants (C4.3, `tests/c43.rs`):**
+- **V6** The Camera view's chain round-trips view, camera, output pixels and drawing units, and view and scene at a
+  depth in front of the near plane, within 1e-9 relative, for random view transforms, cameras (position, roll, field of
+  view) and element transforms; the published matrices give the same points as the functions.
+- **V7** A drawing-space point mapped to view pixels by the Camera view's chain lands where the final renderer draws
+  it: `to_pixel` then `cameraToView` equals the chain, for the camera-view note's CV1 fixtures.
+- **V8** Every declared use takes scene and Camera-view spaces as a full table (command, space, view type): each
+  Camera-view cell succeeds and gives the chain's point; each Top/Side cell refuses `command.notImplemented` with owner
+  M6 C6.1; a cell that ignored the space would fail.
+- **V9** A press in an inactive view window activates it (the window, C4.3b) and acts as the tool's press;
+  `edit.history.get` shows no step for the activation.

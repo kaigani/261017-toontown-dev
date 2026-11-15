@@ -81,3 +81,51 @@ for geometry and pressure); it is cited here and not used: the tests assert exac
 - **`pointer` answers** every command's complete envelope (C42A-R1-22) and needs the `input` scope (C42A-R1-06).
 - **Busy** (ruling D-12): while the user is mid-gesture, agent commands that write document or session state wait, then
   answer `ui.busy`.
+
+## 7. Amendment for C4.3: scene tools and the Camera view (C4.3a; plan §3.4, rulings D-23, D-27)
+
+**Scene tool state.** `anim.tool.set`/`get` (05 lines 1217-1218) hold the current scene tool (`select`, `transform`;
+the others of 05 §5.0's table refuse `command.notImplemented` with owner M6), separate from the drawing tool (05 lines
+29-31): choosing one never changes the other. UI state, not undoable (05 §17).
+
+**Which gesture runs in the Camera view.** A `pointer` request whose `tool` is a scene tool id (`select` is shared:
+SI-148 settles how a request names the scene Select rather than the drawing Select, before the code) runs the scene
+tool; otherwise the drawing tool runs. A drawing tool's gesture in the Camera view is C4.2's gesture with its samples
+mapped through the current element's inverse full scene transform (views note §6): the same command, parameters and
+label as the equivalent gesture in the Drawing view (02 §7, line 61, line 413).
+
+**Scene-tool gestures** (05 §3.5, §5.0-§5.2), each ending in exactly one command or none:
+
+| Gesture (Camera view) | Select (05 §5.1) | Transform (05 §5.2) |
+|---|---|---|
+| click on element content (4 px tolerance, front-most, locked skipped; extend modifier toggles) | `edit.selection.set` | `edit.selection.set` |
+| drag in empty space past 3 px (rubber band: every pickable element touched) | `edit.selection.set` | `edit.selection.set` |
+| drag inside the selection box | `anim.transform.set {target: static, position, relative}` (parent space at the node's depth) | `anim.transform.set {target: key, frame: current, position, relative}` |
+| drag a corner or side handle (constrain: a corner keeps proportions) | `{target: static, scale}` | `{target: key, scale}` |
+| drag the rotation handle (constrain: 15° steps) | `{target: static, rotation}` | `{target: key, rotation}` |
+| drag a skew handle | `{target: static, skew}` | `{target: key, skew}` |
+| drag the pivot marker | (no pivot marker) | `{target: static, rotationPivot and scalePivot, or pivot}`: no key (05 line 418) |
+| Escape during a drag | nothing | nothing |
+
+A keyframing drag keys only the channels it changes (05 line 398; the result's `keyedChannels` is asserted). Arrow
+keys nudge by 1 view pixel converted at the node's depth (10 times with the coarse modifier) through the same command
+(the window sends them, C4.3b).
+
+**Undo labels** (05 §17 line 1135: "name the operation and the object kind; wording is a UX-writing task"; ruling D-23
+asks each test to state the spec's value, so the interim wording is recorded first, SI-144): one changed group gives
+`Move`, `Rotate`, `Scale`, `Skew` or `Move Pivot`, several give `Transform`; then the node kind (`Element`, `Peg`,
+`Camera`, `Skeleton`), plural for several nodes of one kind (`Elements`), `Nodes` when kinds differ: "Move Element",
+"Rotate Peg", "Scale Elements", "Transform Nodes". `anim.transform.set` sent directly carries the same label for the
+same parameters (C4.2's rule: the gesture's label is the command's); its earlier fixed label "Transform" is a declared
+behaviour change. `edit.selection.set` is not undoable (05 §17).
+
+**Invariants (`tests/c43.rs`; each table names the spec line and asserts the spec's value before comparing paths,
+ruling D-23):**
+- **G7** Every row of the table ends in the command it names with the parameters it names (target, channels keyed,
+  static against keyed) and the SI-144 label, through `pointer` headless; Escape ends in none.
+- **G8** For every row, the headless `pointer` path and the command sent directly give the same document, ids, one undo
+  step and the same label (the window path joins in C4.3b's three-way).
+- **G9** A keyframing drag keys only the channels it changed; Select never keys (05 lines 397-398).
+- **G10** Each drawing tool's gesture in the Camera view produces the command, parameters (in drawing space) and 02 §7
+  label of the same gesture in the Drawing view, as a full table over C4.2's tools.
+- **G11** `anim.tool.set` never changes `tool.active.get`, and `tool.active.set` never changes `anim.tool.get`.
