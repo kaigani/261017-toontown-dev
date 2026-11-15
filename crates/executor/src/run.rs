@@ -1095,8 +1095,11 @@ impl Core {
     }
 
     /// The Drawing view's composition for the canvas (M4 C4.2b; design note 1 §9).
-    pub(crate) fn canvas_scene(&self, view_id: &str) -> Result<crate::canvas::Scene, CommandError> {
-        crate::canvas::scene(self.session().ok_or_else(crate::cx::no_project)?, view_id)
+    pub(crate) fn canvas_scene(&mut self, view_id: &str) -> Result<crate::canvas::Scene, CommandError> {
+        let mut scene = crate::canvas::scene(self.session().ok_or_else(crate::cx::no_project)?, view_id)?;
+        // The selection walk needs a context: the session is lent to a read-only one (nothing staged or emitted).
+        scene.selection = self.with_lent_session(crate::canvas::selection).transpose()?.flatten();
+        Ok(scene)
     }
 
     /// The snapshot an interactive canvas payload is built from (M4 C4.2b; design note 1 §6): the document by

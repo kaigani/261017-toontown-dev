@@ -210,6 +210,25 @@ pub struct Scene {
     pub colours: std::collections::BTreeMap<String, [u8; 4]>,
     /// Changes when any palette, style or swatch changes: drawings with gradient or texture slots reload on it.
     pub palette_stamp: u64,
+    /// The current drawing's pivot in drawing units (02 §7.1.1: shown with the Select tool, draggable); `null` without
+    /// a current drawing.
+    pub drawing_pivot: Option<[f64; 2]>,
+    /// The current drawing's selection (frame-loop note §7.1); `null` when nothing is selected.
+    pub selection: Option<SceneSelection>,
+}
+
+/// The selection the Drawing view's overlay draws (layer 9; frame-loop note §7.1), in drawing units.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneSelection {
+    /// Each selected object's bounds, `[minX, minY, maxX, maxY]` (an object's outline in C4.2, SI-141).
+    pub objects: Vec<[f64; 4]>,
+    /// The selection's bounding box, as `draw.selection.get` answers it; `null` for a point selection alone.
+    pub bounds: Option<[f64; 4]>,
+    /// The transform pivot: the bounding box's centre (`draw.transform.apply`'s default pivot); `null` with `bounds`.
+    pub pivot: Option<[f64; 2]>,
+    /// The point selection's anchors (Contour Editor).
+    pub points: Vec<[f64; 2]>,
 }
 
 fn rgba(text: &str, fallback: [u8; 4]) -> [u8; 4] {
@@ -373,5 +392,25 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
         colours,
         // Within 2^53, so it crosses JSON as an exact number.
         palette_stamp: stamp & ((1 << 53) - 1),
+        drawing_pivot: current.as_ref().and_then(|id| doc.drawing(id)).map(|d| [d.pivot().x, d.pivot().y]),
+        // Filled by [`selection`] with a read-only context (the selection walk needs one).
+        selection: None,
     })
+}
+
+/// The current drawing's selection for the scene (frame-loop note §7.1): `draw.selection.get`'s geometry.
+///
+/// # Errors
+/// The selection walk's work-budget refusal.
+pub(crate) fn selection(cx: &crate::cx::Cx) -> Result<Option<SceneSelection>, CommandError> {
+    let Ok(doc) = cx.document() else { return Ok(None) };
+    let Some(id) = cx.app().current_drawing(doc) else { return Ok(None) };
+    let Some(d) = doc.drawing(&id) else { return Ok(None) };
+    let g = crate::commands::draw_select::selection_geometry(cx, d)?;
+    Ok(g.map(|g| SceneSelection {
+        pivot: g.bounds.map(|b| [(b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0]),
+        objects: g.objects,
+        bounds: g.bounds,
+        points: g.points,
+    }))
 }

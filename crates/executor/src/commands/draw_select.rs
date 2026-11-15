@@ -246,6 +246,51 @@ fn bounds_json(r: Option<Rect>) -> Option<Bounds> {
     r.map(Bounds::from)
 }
 
+/// The selection of `d` as the Drawing view's overlay draws it (frame-loop note §7.1), in drawing units: each selected
+/// object's bounds (the walk and bounds of `draw.selection.get`; a layer or group: its contents'), the selection's
+/// bounds (`draw.selection.get`'s `bounds`), and the point selection's anchors. `None` when nothing is selected.
+pub(crate) fn selection_geometry(cx: &Cx, d: &Drawing) -> Result<Option<SelectionGeometry>, CommandError> {
+    let ids = selected(cx, d);
+    let points: Vec<[f64; 2]> = point_refs(cx, d)
+        .iter()
+        .filter_map(|a| {
+            let l = tt_vector::drawing::locate(d, &a.stroke_id)?;
+            let s = tt_vector::drawing::stroke_at(d, &l.pointer)?;
+            s.points().get(a.anchor as usize).map(|p| [p[0], p[1]])
+        })
+        .collect();
+    if ids.is_empty() && points.is_empty() {
+        return Ok(None);
+    }
+    let all: std::collections::HashMap<String, Option<Rect>> =
+        selectables(cx, d, ids.iter().any(|i| i.starts_with("zn_")))?.into_iter().collect();
+    let mut objects = Vec::with_capacity(ids.len());
+    for id in &ids {
+        let b = all.get(id).copied().flatten().or_else(|| {
+            let l = tt_vector::drawing::locate(d, id)?;
+            matches!(l.kind, tt_vector::drawing::ObjectKind::Layer | tt_vector::drawing::ObjectKind::Group)
+                .then(|| tt_vector::drawing::node_at(d, &l.pointer).and_then(|n| tt_vector::drawing::node_bounds(n, false)))
+                .flatten()
+        });
+        if let Some(b) = b {
+            objects.push([b.min_x, b.min_y, b.max_x, b.max_y]);
+        }
+    }
+    let bounds = selection_bounds(cx, d, &ids)?.map(|b| [b.min_x, b.min_y, b.max_x, b.max_y]);
+    Ok(Some(SelectionGeometry { objects, bounds, points }))
+}
+
+/// [`selection_geometry`]'s answer.
+#[derive(Debug, Clone, PartialEq)]
+pub(crate) struct SelectionGeometry {
+    /// Each selected object's bounds, `[minX, minY, maxX, maxY]`, in selection order.
+    pub objects: Vec<[f64; 4]>,
+    /// The selection's bounds; `None` for a point selection alone.
+    pub bounds: Option<[f64; 4]>,
+    /// The selected anchors.
+    pub points: Vec<[f64; 2]>,
+}
+
 /// The local IDs of the drawing selection of `d`.
 pub(crate) fn selected(cx: &Cx, d: &Drawing) -> Vec<String> {
     super::draw::selection_ids(cx, d)

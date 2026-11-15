@@ -39,6 +39,15 @@ pub fn ladder_step(z: f64, dir: i32) -> f64 {
 /// The Select tool's drawing-pivot handle radius in view pixels (SI-131).
 pub const PIVOT_HANDLE_PX: f64 = 6.0;
 
+/// The hit radius of the Select tool's bounding-box handles in view pixels: the pivot's (frame-loop note §7.3).
+pub const HANDLE_PX: f64 = PIVOT_HANDLE_PX;
+
+/// How far outside a corner the rotation zone reaches, in view pixels (frame-loop note §7.3; SI-141).
+pub const ROTATE_PX: f64 = 3.0 * HANDLE_PX;
+
+/// The smallest scale factor magnitude a handle drag may produce (frame-loop note §7.3; SI-141).
+pub const MIN_SCALE: f64 = 0.001;
+
 // ----- the request ----------------------------------------------------------------------------------------------------
 
 /// The space of `pointer` coordinates (11 §7.6; SI-125).
@@ -564,6 +573,13 @@ fn select(cx: &Cx, g: &Gesture, st: &Stroke, p0: Sample, pn: Sample) -> Result<O
         if !st.is_click() && (pv.x - p0.v.x).hypot(pv.y - p0.v.y) <= PIVOT_HANDLE_PX {
             return Ok(Some(("draw.pivot.set".into(), json!({ "point": pt(pn.d) }))));
         }
+        // A drag that starts on a bounding-box handle scales; just outside a corner, rotates (02 §7.1.1).
+        if !st.is_click()
+            && let Some(b) = selection_box(cx, &d.0)
+            && let Some(h) = handle_at(w, &b, p0)
+        {
+            return handle_drag(h, &b, p0, pn, st.mods.constrain).map(Some);
+        }
         // A drag that starts on the selection moves it (alternate: a copy).
         if !st.is_click() && inside_selection(cx, &d.0, p0.d) {
             let by = Point { x: pn.d.x - p0.d.x, y: pn.d.y - p0.d.y };
@@ -599,6 +615,115 @@ fn current_drawing(cx: &Cx) -> Option<(tt_model::entities::drawing::Drawing, Poi
     let d = doc.drawing(&id)?.clone();
     let p = Point { x: d.pivot().x, y: d.pivot().y };
     Some((d, p))
+}
+
+/// The selection's bounding box in drawing units, when something is selected.
+fn selection_box(cx: &Cx, d: &tt_model::entities::drawing::Drawing) -> Option<tt_vector::geom::Rect> {
+    let ids = crate::commands::draw::selection_ids(cx, d);
+    if ids.is_empty() {
+        return None;
+    }
+    crate::commands::draw_select::selection_bounds(cx, d, &ids).ok().flatten()
+}
+
+/// A Select-tool handle (frame-loop note §7.3). Corners and sides count counter-clockwise from the bottom-left corner
+/// and the bottom side in drawing space (y up).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Handle {
+    Corner(usize),
+    Side(usize),
+    Rotate,
+}
+
+/// The box's corners, bottom-left first, counter-clockwise (drawing space).
+fn box_corners(b: &tt_vector::geom::Rect) -> [Point; 4] {
+    [
+        Point { x: b.min_x, y: b.min_y },
+        Point { x: b.max_x, y: b.min_y },
+        Point { x: b.max_x, y: b.max_y },
+        Point { x: b.min_x, y: b.max_y },
+    ]
+}
+
+/// The handle a drag starting at `p0` takes, tested in order: corners, sides (within [`HANDLE_PX`] of the handle's
+/// centre), then the rotation zone (outside the box, within [`ROTATE_PX`] of a corner).
+fn handle_at(w: &crate::shell::ViewWindow, b: &tt_vector::geom::Rect, p0: Sample) -> Option<Handle> {
+    let c = box_corners(b);
+    let view = |p: Point| crate::commands::view::to_view(w, p);
+    let dist = |p: Point| {
+        let q = view(p);
+        (q.x - p0.v.x).hypot(q.y - p0.v.y)
+    };
+    if let Some(i) = (0..4).find(|&i| dist(c[i]) <= HANDLE_PX) {
+        return Some(Handle::Corner(i));
+    }
+    let mid = |i: usize| {
+        let (a, z) = (c[i], c[(i + 1) % 4]);
+        Point { x: (a.x + z.x) / 2.0, y: (a.y + z.y) / 2.0 }
+    };
+    if let Some(i) = (0..4).find(|&i| dist(mid(i)) <= HANDLE_PX) {
+        return Some(Handle::Side(i));
+    }
+    let inside = p0.d.x >= b.min_x && p0.d.x <= b.max_x && p0.d.y >= b.min_y && p0.d.y <= b.max_y;
+    (!inside && c.iter().any(|&q| dist(q) <= ROTATE_PX)).then_some(Handle::Rotate)
+}
+
+/// The command of a handle drag from `p0` to `pn` on the box `b` (frame-loop note §7.3).
+fn handle_drag(
+    h: Handle,
+    b: &tt_vector::geom::Rect,
+    p0: Sample,
+    pn: Sample,
+    constrain: bool,
+) -> Result<(String, Value), CommandError> {
+    let c = box_corners(b);
+    // The factor along one axis about `pivot`: 1 when the press is on the pivot's line (a box without extent there).
+    let factor = |press: f64, release: f64, pivot: f64| {
+        let den = press - pivot;
+        if den.abs() < 1e-9 { 1.0 } else { (release - pivot) / den }
+    };
+    let (scale, pivot) = match h {
+        Handle::Rotate => {
+            let o = Point { x: (b.min_x + b.max_x) / 2.0, y: (b.min_y + b.max_y) / 2.0 };
+            let a0 = (p0.d.y - o.y).atan2(p0.d.x - o.x);
+            let a1 = (pn.d.y - o.y).atan2(pn.d.x - o.x);
+            let mut deg = (a1 - a0).to_degrees();
+            if deg > 180.0 {
+                deg -= 360.0;
+            } else if deg <= -180.0 {
+                deg += 360.0;
+            }
+            return Ok(("draw.transform.apply".into(), json!({ "rotate": deg, "pivot": pt(o) })));
+        }
+        Handle::Corner(i) => {
+            let o = c[(i + 2) % 4];
+            let (mut sx, mut sy) = (factor(p0.d.x, pn.d.x, o.x), factor(p0.d.y, pn.d.y, o.y));
+            if constrain {
+                let s = if sx.abs() >= sy.abs() { sx } else { sy };
+                (sx, sy) = (s, s);
+            }
+            ((sx, sy), o)
+        }
+        Handle::Side(i) => {
+            // Sides 0 and 2 (bottom, top) scale y about the opposite side; 1 and 3 (right, left) scale x.
+            let mid_x = (b.min_x + b.max_x) / 2.0;
+            let mid_y = (b.min_y + b.max_y) / 2.0;
+            match i {
+                0 => ((1.0, factor(p0.d.y, pn.d.y, b.max_y)), Point { x: mid_x, y: b.max_y }),
+                2 => ((1.0, factor(p0.d.y, pn.d.y, b.min_y)), Point { x: mid_x, y: b.min_y }),
+                1 => ((factor(p0.d.x, pn.d.x, b.min_x), 1.0), Point { x: b.min_x, y: mid_y }),
+                _ => ((factor(p0.d.x, pn.d.x, b.max_x), 1.0), Point { x: b.max_x, y: mid_y }),
+            }
+        }
+    };
+    if !(scale.0.abs() >= MIN_SCALE && scale.1.abs() >= MIN_SCALE && scale.0.is_finite() && scale.1.is_finite()) {
+        return Err(CommandError::with_details(
+            "arg.invalid",
+            format!("the handle drag would scale by {} x {}, below {MIN_SCALE}; nothing was committed", scale.0, scale.1),
+            json!({ "pointer": "/events", "scale": { "x": scale.0, "y": scale.1 } }),
+        ));
+    }
+    Ok(("draw.transform.apply".into(), json!({ "scale": { "x": scale.0, "y": scale.1 }, "pivot": pt(pivot) })))
 }
 
 fn inside_selection(cx: &Cx, d: &tt_model::entities::drawing::Drawing, p: Point) -> bool {

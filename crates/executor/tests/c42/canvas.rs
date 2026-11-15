@@ -242,3 +242,137 @@ fn the_fast_pencil_payload_drops_round_joins_and_says_so() {
     };
     assert!(count(&b) < count(&a), "fewer pieces without the joins ({} vs {})", count(&b), count(&a));
 }
+
+/// A rectangle drawn at `[x0, y0]`-`[x1, y1]` (drawing units) and selected; its selection bounds as `draw.selection.get`
+/// answers them, `[minX, minY, maxX, maxY]`.
+fn selected_rectangle(h: &tt_executor::ExecutorHandle, x0: f64, y0: f64, x1: f64, y1: f64) -> [f64; 4] {
+    let r = ok(h, "draw.rectangle.add", json!({ "from": { "x": x0, "y": y0 }, "to": { "x": x1, "y": y1 } }));
+    let ids = r["strokeIds"].clone();
+    ok(h, "draw.selection.set", json!({ "by": "ids", "ids": ids }));
+    let b = ok(h, "draw.selection.get", json!({}))["bounds"].clone();
+    let f = |k: &str| b[k].as_f64().unwrap();
+    [f("x"), f("y"), f("x") + f("width"), f("y") + f("height")]
+}
+
+/// The headless Drawing view's mapping at 100 % (SI-063): drawing unit to view pixel.
+fn v(x: f64, y: f64) -> (f64, f64) {
+    (x + 960.0, 540.0 - y)
+}
+
+/// Frame-loop note §7.1 (C42B-R1-22): the scene carries the current drawing's selection as the geometry of
+/// `draw.selection.get` (each object, the box, its centre as the pivot, the point selection) and the drawing pivot;
+/// `null` when nothing is selected.
+#[test]
+fn the_scene_carries_the_selection_and_the_drawing_pivot() {
+    let h = ready();
+    ok(&h, "draw.selection.set", json!({ "by": "none" }));
+    let s = h.canvas_scene("drawingView").unwrap();
+    assert_eq!(s.selection, None, "nothing selected");
+    let pivot = ok(&h, "draw.drawing.get", json!({}))["pivot"].clone();
+    assert_eq!(s.drawing_pivot, Some([pivot["x"].as_f64().unwrap(), pivot["y"].as_f64().unwrap()]));
+    // One object.
+    let a = selected_rectangle(&h, 300.0, 100.0, 400.0, 160.0);
+    let sel = h.canvas_scene("drawingView").unwrap().selection.expect("one object selected");
+    assert_eq!(sel.bounds, Some(a), "the box of draw.selection.get");
+    assert_eq!(sel.objects, vec![a], "one object, its own bounds");
+    assert_eq!(sel.pivot, Some([(a[0] + a[2]) / 2.0, (a[1] + a[3]) / 2.0]), "the centre of the box");
+    assert!(sel.points.is_empty());
+    // Two objects: each one's bounds, and the box around both.
+    let first = ok(&h, "draw.selection.get", json!({}))["selectedIds"].clone();
+    let b = selected_rectangle(&h, 300.0, -200.0, 360.0, -120.0);
+    let second = ok(&h, "draw.selection.get", json!({}))["selectedIds"].clone();
+    let both: Vec<Value> = first.as_array().unwrap().iter().chain(second.as_array().unwrap()).cloned().collect();
+    ok(&h, "draw.selection.set", json!({ "by": "ids", "ids": both }));
+    let sel = h.canvas_scene("drawingView").unwrap().selection.unwrap();
+    assert_eq!(sel.objects, vec![a, b]);
+    let get = ok(&h, "draw.selection.get", json!({}))["bounds"].clone();
+    let g = |k: &str| get[k].as_f64().unwrap();
+    assert_eq!(sel.bounds, Some([g("x"), g("y"), g("x") + g("width"), g("y") + g("height")]));
+    assert_eq!(sel.bounds, Some([a[0].min(b[0]), a[1].min(b[1]), a[2].max(b[2]), a[3].max(b[3])]));
+    // A point selection alone: its anchors, no box.
+    ok(&h, "draw.selection.set", json!({ "by": "none" }));
+    let stroke = first[0].as_str().unwrap().to_owned();
+    ok(&h, "draw.pointSelection.set", json!({ "points": [{ "strokeId": stroke, "anchor": 0 }] }));
+    let sel = h.canvas_scene("drawingView").unwrap().selection.expect("a point selection");
+    assert_eq!((sel.objects.len(), sel.bounds, sel.pivot, sel.points.len()), (0, None, None, 1));
+    ok(&h, "draw.pointSelection.set", json!({ "points": [] }));
+    assert_eq!(h.canvas_scene("drawingView").unwrap().selection, None, "cleared");
+}
+
+/// The command a Select-tool drag produces (frame-loop note §7.3), and its parameters.
+fn select_drag(h: &tt_executor::ExecutorHandle, events: Vec<Value>) -> Result<(String, Value), String> {
+    let env = pointer(h, "select", events);
+    if let Some(e) = env.error {
+        return Err(e.code);
+    }
+    let c = env.result.unwrap()["commands"][1].clone();
+    Ok((c["commandId"].as_str().unwrap().to_owned(), c["params"].clone()))
+}
+
+/// Frame-loop note §7.3 (C42B-R1-22): one case per row of the handle table, through the kernel's gesture code (the
+/// path of the window and of the headless `pointer` alike), with the factors, angle and pivot it defines; the order of
+/// the tests where handle areas overlap; the constrained corner; the degenerate scale.
+#[test]
+fn each_select_handle_produces_its_command() {
+    let h = ready();
+    let [x0, y0, x1, y1] = selected_rectangle(&h, 300.0, 100.0, 400.0, 160.0);
+    let (cx, cy) = ((x0 + x1) / 2.0, (y0 + y1) / 2.0);
+    let (w, hgt) = (x1 - x0, y1 - y0);
+    // A drag from drawing point a to drawing point b, in view pixels.
+    let d = |a: (f64, f64), b: (f64, f64)| {
+        let (p, q) = (v(a.0, a.1), v(b.0, b.1));
+        drag(&[p, ((p.0 + q.0) / 2.0, (p.1 + q.1) / 2.0), q])
+    };
+    let close = |got: &Value, want: Value| {
+        let num = |v: &Value, path: &[&str]| path.iter().fold(v, |v, k| &v[*k]).as_f64().unwrap_or(f64::NAN);
+        for path in [&["scale", "x"][..], &["scale", "y"], &["pivot", "x"], &["pivot", "y"], &["rotate"]] {
+            let (a, b) = (num(got, path), num(&want, path));
+            assert!(a.is_nan() && b.is_nan() || (a - b).abs() < 1e-9, "{path:?}: {got} against {want}");
+        }
+    };
+    // Top-right corner (corner 2) out by (20, 12): both axes about the bottom-left corner.
+    let (id, p) = select_drag(&h, d((x1, y1), (x1 + 20.0, y1 + 12.0))).unwrap();
+    assert_eq!(id, "draw.transform.apply");
+    close(&p, json!({ "scale": { "x": (w + 20.0) / w, "y": (hgt + 12.0) / hgt }, "pivot": { "x": x0, "y": y0 } }));
+    ok(&h, "edit.undo", json!({}));
+    // The same corner with the constrain modifier: the larger factor on both axes.
+    let mut ev = d((x1, y1), (x1 + 20.0, y1 + 12.0));
+    for e in &mut ev {
+        e["modifiers"] = json!(["shift"]);
+    }
+    let (_, p) = select_drag(&h, ev).unwrap();
+    let s = ((w + 20.0) / w).max((hgt + 12.0) / hgt);
+    close(&p, json!({ "scale": { "x": s, "y": s }, "pivot": { "x": x0, "y": y0 } }));
+    ok(&h, "edit.undo", json!({}));
+    // Right side (side 1): x only, about the midpoint of the left side.
+    let (_, p) = select_drag(&h, d((x1, cy), (x1 + 50.0, cy + 30.0))).unwrap();
+    close(&p, json!({ "scale": { "x": (w + 50.0) / w, "y": 1.0 }, "pivot": { "x": x0, "y": cy } }));
+    ok(&h, "edit.undo", json!({}));
+    // Bottom side (side 0): y only, about the midpoint of the top side.
+    let (_, p) = select_drag(&h, d((cx, y0), (cx + 9.0, y0 - 30.0))).unwrap();
+    close(&p, json!({ "scale": { "x": 1.0, "y": (hgt + 30.0) / hgt }, "pivot": { "x": cx, "y": y1 } }));
+    ok(&h, "edit.undo", json!({}));
+    // Just outside the top-right corner (about 11 view pixels out along the diagonal): rotate about the centre; a
+    // quarter turn counter-clockwise around the centre gives +90.
+    let out = (x1 + 8.0, y1 + 8.0);
+    let (ox, oy) = (out.0 - cx, out.1 - cy);
+    let (_, p) = select_drag(&h, d(out, (cx - oy, cy + ox))).unwrap();
+    close(&p, json!({ "rotate": 90.0, "pivot": { "x": cx, "y": cy } }));
+    ok(&h, "edit.undo", json!({}));
+    // Inside the box (away from the handles): a move, as built.
+    let (_, p) = select_drag(&h, d((cx + 10.0, cy + 5.0), (cx + 40.0, cy - 15.0))).unwrap();
+    assert_eq!(p["translate"], json!({ "x": 30.0, "y": -20.0 }), "{p}");
+    ok(&h, "edit.undo", json!({}));
+    // Far outside (beyond the rotation zone): a marquee.
+    let (id, _) = select_drag(&h, d((x1 + 60.0, y1 + 60.0), (x1 + 90.0, y1 + 90.0))).unwrap();
+    assert_eq!(id, "draw.selection.set");
+    let [x0, y0, x1, y1] = selected_rectangle(&h, 300.0, 100.0, 400.0, 160.0);
+    // A corner dragged onto its pivot: a degenerate scale, refused with nothing committed.
+    let rev = ok(&h, "draw.drawing.get", json!({}))["rev"].clone();
+    assert_eq!(select_drag(&h, d((x1, y1), (x0, y0))), Err("arg.invalid".to_owned()));
+    assert_eq!(ok(&h, "draw.drawing.get", json!({}))["rev"], rev, "nothing committed");
+    // The drawing pivot on a corner wins over the corner handle (the order of the tests).
+    ok(&h, "draw.pivot.set", json!({ "point": { "x": x1, "y": y1 } }));
+    let (id, _) = select_drag(&h, d((x1, y1), (x1 + 20.0, y1 + 20.0))).unwrap();
+    assert_eq!(id, "draw.pivot.set");
+}
