@@ -1,0 +1,13 @@
+{
+  "status": "error",
+  "changes": [],
+  "warnings": [],
+  "documentRev": null,
+  "error": {
+    "code": "view.notFound",
+    "message": "window `float-drawingView` is not open",
+    "details": {
+      "target": "drawingView"
+    }
+  }
+}

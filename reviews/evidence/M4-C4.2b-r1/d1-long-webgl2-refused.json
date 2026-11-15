@@ -1,0 +1,367 @@
+{
+  "before": {
+    "backend": "webgl2",
+    "generation": 0,
+    "drawings": [
+      {
+        "id": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+        "rev": 104,
+        "bucket": 0
+      }
+    ],
+    "failures": [],
+    "gesture": null,
+    "drawn": 1,
+    "residentDrawings": 1,
+    "residentBytes": 24116776,
+    "lastError": null,
+    "metrics": {
+      "frameMs": {
+        "n": 300,
+        "p50": 16.7,
+        "p95": 16.9,
+        "max": 16.9
+      },
+      "gestureFrameMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "workMs": {
+        "n": 300,
+        "p50": 0.1,
+        "p95": 0.6,
+        "max": 1.5
+      },
+      "inkMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "commitMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "sceneMs": {
+        "n": 163,
+        "p50": 20.7,
+        "p95": 96.7,
+        "max": 114
+      },
+      "commits": [],
+      "commitParts": [],
+      "loads": [
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 707404,
+          "ms": 39.3
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 716020,
+          "ms": 27.5
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 724636,
+          "ms": 29.5
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 733252,
+          "ms": 32.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 741868,
+          "ms": 30
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 750484,
+          "ms": 28.2
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 759100,
+          "ms": 26.6
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 767716,
+          "ms": 40.6
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 776332,
+          "ms": 36.8
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 784948,
+          "ms": 32.8
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 793564,
+          "ms": 41.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 802180,
+          "ms": 33.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 810796,
+          "ms": 43.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 819412,
+          "ms": 34.3
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 828028,
+          "ms": 36.7
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 836644,
+          "ms": 28.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 845260,
+          "ms": 36.5
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 853876,
+          "ms": 38.4
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 862492,
+          "ms": 36.1
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 871108,
+          "ms": 39.2
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": 104,
+    "error": {
+      "code": "limit.exceeded",
+      "message": "the brush stroke needs more than 100000 tip placements",
+      "details": {
+        "pointer": "/points",
+        "gesture": 1,
+        "gestureCommandId": "draw.stroke.add",
+        "completed": [
+          {
+            "commandId": "tool.active.set",
+            "params": {
+              "toolId": "brush"
+            },
+            "envelope": {
+              "status": "ok",
+              "result": {
+                "toolId": "brush"
+              },
+              "changes": [],
+              "warnings": [],
+              "documentRev": 104
+            }
+          }
+        ],
+        "hover": {
+          "viewId": "drawingView",
+          "view": {
+            "x": 510.47599279783935,
+            "y": 462.5
+          },
+          "drawing": {
+            "x": 59.97599279783935,
+            "y": -140.0
+          }
+        }
+      },
+      "hint": "give finite coordinates within \u00b110 000 000 du and complete B\u00e9zier lists (02 \u00a713.4)"
+    }
+  },
+  "after": {
+    "backend": "webgl2",
+    "generation": 0,
+    "drawings": [
+      {
+        "id": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+        "rev": 104,
+        "bucket": 0
+      }
+    ],
+    "failures": [],
+    "gesture": {
+      "status": "error",
+      "code": "limit.exceeded"
+    },
+    "drawn": 1,
+    "residentDrawings": 1,
+    "residentBytes": 35739676,
+    "lastError": null,
+    "metrics": {
+      "frameMs": {
+        "n": 300,
+        "p50": 16.7,
+        "p95": 16.9,
+        "max": 16.9
+      },
+      "gestureFrameMs": {
+        "n": 119,
+        "p50": 16.7,
+        "p95": 16.9,
+        "max": 17
+      },
+      "workMs": {
+        "n": 300,
+        "p50": 0.1,
+        "p95": 0.4,
+        "max": 9.8
+      },
+      "inkMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "commitMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "sceneMs": {
+        "n": 205,
+        "p50": 3.6,
+        "p95": 94,
+        "max": 114
+      },
+      "commits": [],
+      "commitParts": [],
+      "loads": [
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 707404,
+          "ms": 39.3
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 716020,
+          "ms": 27.5
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 724636,
+          "ms": 29.5
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 733252,
+          "ms": 32.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 741868,
+          "ms": 30
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 750484,
+          "ms": 28.2
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 759100,
+          "ms": 26.6
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 767716,
+          "ms": 40.6
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 776332,
+          "ms": 36.8
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 784948,
+          "ms": 32.8
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 793564,
+          "ms": 41.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 802180,
+          "ms": 33.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 810796,
+          "ms": 43.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 819412,
+          "ms": 34.3
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 828028,
+          "ms": 36.7
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 836644,
+          "ms": 28.9
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 845260,
+          "ms": 36.5
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 853876,
+          "ms": 38.4
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 862492,
+          "ms": 36.1
+        },
+        {
+          "key": "dr_01K7JJN8002B6JH2WGD9VABTJ5",
+          "bytes": 871108,
+          "ms": 39.2
+        }
+      ]
+    }
+  }
+}
