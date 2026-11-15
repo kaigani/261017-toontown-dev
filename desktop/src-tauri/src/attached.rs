@@ -8,6 +8,12 @@
 //!
 //! Which window shows which view is what the windows' canvases report (`canvas_presence`): a view without a mounted
 //! canvas keeps the headless path.
+//!
+//! A routed call waits in [`Routed`] (owned by the host, so it outlives an engine restart) with the engine generation
+//! it started on and the window it went to. It is answered at once, nothing committed, when its engine is replaced
+//! (D-7b: the SI-120 refusal, `command.timeout` with `reason: "engineRestarted"`), when its window is destroyed or
+//! reloaded, or when that window's canvas for the view goes away (D-7a: `ui.viewNotFound`, `reason: "windowClosed"`,
+//! SI-141).
 
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -31,11 +37,117 @@ pub struct Presence {
     pub dpr: f64,
 }
 
+/// One routed agent gesture waiting for its window.
 #[derive(Debug)]
-struct Pending {
-    origin: Origin,
-    view: String,
+pub struct Pending {
+    /// The agent's origin, for the commit.
+    pub origin: Origin,
+    /// The view it acts on.
+    pub view: String,
+    /// The window it was sent to.
+    pub window: String,
+    /// The engine generation its call started on.
+    pub generation: u64,
     tx: mpsc::Sender<Envelope>,
+}
+
+impl Pending {
+    /// Answers the waiting agent call.
+    pub fn answer(&self, env: Envelope) {
+        let _ = self.tx.send(env);
+    }
+}
+
+/// The routed calls waiting for their windows, by request id (ids are never reused, across restarts too).
+#[derive(Debug)]
+pub struct Routed {
+    pending: Mutex<HashMap<u64, Pending>>,
+    next: AtomicU64,
+}
+
+impl Default for Routed {
+    fn default() -> Self {
+        Self { pending: Mutex::new(HashMap::new()), next: AtomicU64::new(1) }
+    }
+}
+
+/// The SI-120 refusal of a routed call whose engine was replaced (ruling O-14, D-7b).
+fn restarted(started: u64, now: u64) -> Envelope {
+    Envelope::error(
+        refusal(
+            "command.timeout",
+            "the engine was restarted while the window played this gesture; nothing of it was committed",
+            json!({ "reason": "engineRestarted", "generation": started, "currentGeneration": now }),
+        ),
+        None,
+    )
+}
+
+/// The refusal of a routed call whose window or canvas went away (D-7a; SI-141).
+fn window_gone(view: &str) -> Envelope {
+    Envelope::error(
+        refusal(
+            "ui.viewNotFound",
+            format!("the window showing {view} closed before the gesture was committed; nothing was committed"),
+            json!({ "reason": "windowClosed", "viewId": view }),
+        ),
+        None,
+    )
+}
+
+impl Routed {
+    /// Registers a call for `view` sent to `window` on engine generation `generation`: its id and the receiver its
+    /// answer arrives on.
+    pub fn register(
+        &self,
+        origin: &Origin,
+        view: &str,
+        window: &str,
+        generation: u64,
+    ) -> (u64, mpsc::Receiver<Envelope>) {
+        let id = self.next.fetch_add(1, Ordering::AcqRel);
+        let (tx, rx) = mpsc::channel();
+        let p = Pending { origin: origin.clone(), view: view.to_owned(), window: window.to_owned(), generation, tx };
+        self.pending.lock().unwrap_or_else(PoisonError::into_inner).insert(id, p);
+        (id, rx)
+    }
+
+    /// Removes and returns call `id`.
+    pub fn take(&self, id: u64) -> Option<Pending> {
+        self.pending.lock().unwrap_or_else(PoisonError::into_inner).remove(&id)
+    }
+
+    /// Calls waiting now.
+    pub fn len(&self) -> usize {
+        self.pending.lock().unwrap_or_else(PoisonError::into_inner).len()
+    }
+
+    /// Whether no call waits.
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
+    fn drain(&self, mut gone: impl FnMut(&Pending) -> bool) -> Vec<Pending> {
+        let mut map = self.pending.lock().unwrap_or_else(PoisonError::into_inner);
+        let ids: Vec<u64> = map.iter().filter(|(_, p)| gone(p)).map(|(id, _)| *id).collect();
+        ids.into_iter().filter_map(|id| map.remove(&id)).collect()
+    }
+
+    /// The engine was replaced and generation `now` runs: every call of an earlier generation answers the SI-120
+    /// refusal at once (D-7b), nothing committed.
+    pub fn engine_restarted(&self, now: u64) {
+        for p in self.drain(|p| p.generation < now) {
+            p.answer(restarted(p.generation, now));
+        }
+    }
+
+    /// `window` was destroyed or reloaded (`view: None`), or its canvas for `view` went away: its calls answer
+    /// `ui.viewNotFound` at once (D-7a), nothing committed.
+    pub fn window_gone(&self, window: &str, view: Option<&str>) {
+        for p in self.drain(|p| p.window == window && view.is_none_or(|v| p.view == v)) {
+            p.answer(window_gone(&p.view));
+        }
+    }
 }
 
 /// The host's [`AttachedIo`].
@@ -44,8 +156,6 @@ pub struct WindowIo {
     app: AppHandle,
     /// Window label → view id → presence.
     presence: Mutex<HashMap<String, HashMap<String, Presence>>>,
-    pending: Mutex<HashMap<u64, Pending>>,
-    next: AtomicU64,
 }
 
 fn refusal(code: &str, message: impl Into<String>, details: Value) -> CommandError {
@@ -55,24 +165,34 @@ fn refusal(code: &str, message: impl Into<String>, details: Value) -> CommandErr
 impl WindowIo {
     /// Routes of the application `app`.
     pub fn new(app: AppHandle) -> Self {
-        Self { app, presence: Mutex::new(HashMap::new()), pending: Mutex::new(HashMap::new()), next: AtomicU64::new(1) }
+        Self { app, presence: Mutex::new(HashMap::new()) }
     }
 
-    /// A window's canvas for `view` appeared, moved, or (`None`) went away.
+    fn host(&self) -> tauri::State<'_, crate::host::Host> {
+        self.app.state::<crate::host::Host>()
+    }
+
+    /// A window's canvas for `view` appeared, moved, or (`None`) went away; a call routed to it then answers at once.
     pub fn set_presence(&self, window: &str, view: &str, presence: Option<Presence>) {
-        let mut p = self.presence.lock().unwrap_or_else(PoisonError::into_inner);
-        let views = p.entry(window.to_owned()).or_default();
-        match presence {
-            Some(v) => {
-                views.insert(view.to_owned(), v);
+        {
+            let mut p = self.presence.lock().unwrap_or_else(PoisonError::into_inner);
+            let views = p.entry(window.to_owned()).or_default();
+            match presence {
+                Some(v) => {
+                    views.insert(view.to_owned(), v);
+                }
+                None => {
+                    views.remove(view);
+                }
             }
-            None => {
-                views.remove(view);
-            }
+        }
+        if presence.is_none() {
+            self.host().routed().window_gone(window, Some(view));
         }
     }
 
-    /// Everything a closed or reloaded window reported is forgotten.
+    /// Everything a closed or reloaded window reported is forgotten (its routed calls are answered by
+    /// [`crate::host::Host::forget_window_reports`]).
     pub fn forget_window(&self, window: &str) {
         self.presence.lock().unwrap_or_else(PoisonError::into_inner).remove(window);
     }
@@ -86,33 +206,38 @@ impl WindowIo {
         found.into_iter().next()
     }
 
-    /// The window's commit of an agent gesture it played: runs it with the agent's origin, never routed again, and
-    /// answers both the window and the waiting agent call.
-    pub fn finish(&self, id: u64, request: Value) -> Envelope {
-        let pending = self.pending.lock().unwrap_or_else(PoisonError::into_inner).remove(&id);
-        let Some(p) = pending else {
+    /// The window's commit, made on engine generation `generation`, of an agent gesture it played: runs it with the
+    /// agent's origin, never routed again, and answers both the window and the waiting agent call. A commit of another
+    /// generation than its call's or the running engine's is refused with the SI-120 refusal (D-7b), nothing run.
+    pub fn finish(&self, id: u64, generation: u64, request: Value) -> Envelope {
+        let host = self.host();
+        let Some(p) = host.routed().take(id) else {
             return Envelope::error(
                 refusal("ref.notFound", format!("no agent gesture {id} is waiting"), json!({ "agentRequest": id })),
                 None,
             );
         };
-        let host = self.app.state::<crate::host::Host>();
-        let env = host.exec().pointer_in_window(p.origin, request);
-        let _ = p.tx.send(env.clone());
+        let now = host.generation();
+        if p.generation != now || generation != now {
+            let env = restarted(p.generation.min(generation), now);
+            p.answer(env.clone());
+            return env;
+        }
+        let env = host.exec().pointer_in_window(p.origin.clone(), request);
+        p.answer(env.clone());
         env
     }
 
     /// A user press during an agent gesture (P2): the agent's gesture is discarded and its call answers `ui.busy`
     /// with `reason: "userInput"` (SI-135); nothing is committed.
     pub fn abort(&self, id: u64) {
-        let pending = self.pending.lock().unwrap_or_else(PoisonError::into_inner).remove(&id);
-        if let Some(p) = pending {
+        if let Some(p) = self.host().routed().take(id) {
             let e = refusal(
                 "ui.busy",
                 "the user pressed in the view while the agent's gesture was being played; nothing was committed",
                 json!({ "reason": "userInput", "viewId": p.view }),
             );
-            let _ = p.tx.send(Envelope::error(e, None));
+            p.answer(Envelope::error(e, None));
         }
     }
 }
@@ -120,18 +245,16 @@ impl WindowIo {
 impl AttachedIo for WindowIo {
     fn route_pointer(&self, view: &str, origin: &Origin, request: &Value, budget: Duration) -> Option<Envelope> {
         let (window, _) = self.window_of(view)?;
-        let id = self.next.fetch_add(1, Ordering::AcqRel);
-        let (tx, rx) = mpsc::channel();
-        self.pending
-            .lock()
-            .unwrap_or_else(PoisonError::into_inner)
-            .insert(id, Pending { origin: origin.clone(), view: view.to_owned(), tx });
-        let payload = json!({ "requestId": id, "viewId": view, "request": request });
+        let host = self.host();
+        let generation = host.generation();
+        let (id, rx) = host.routed().register(origin, view, &window, generation);
+        // The window plays it only while it follows the generation it was sent on (D-7b).
+        let payload = json!({ "requestId": id, "viewId": view, "generation": generation, "request": request });
         let sent = tt_engine::wire::to_wire_json(&payload)
             .map_err(|e| e.message)
             .and_then(|text| self.app.emit_to(window.as_str(), AGENT_INPUT_EVENT, text).map_err(|e| e.to_string()));
         if let Err(e) = sent {
-            self.pending.lock().unwrap_or_else(PoisonError::into_inner).remove(&id);
+            host.routed().take(id);
             return Some(Envelope::error(
                 refusal("internal", format!("cannot reach the window showing {view}: {e}"), json!({ "viewId": view })),
                 None,
@@ -140,7 +263,7 @@ impl AttachedIo for WindowIo {
         match rx.recv_timeout(budget) {
             Ok(env) => Some(env),
             Err(_) => {
-                self.pending.lock().unwrap_or_else(PoisonError::into_inner).remove(&id);
+                host.routed().take(id);
                 Some(Envelope::error(
                     refusal(
                         "command.timeout",

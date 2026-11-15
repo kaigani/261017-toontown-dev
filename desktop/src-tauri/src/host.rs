@@ -56,6 +56,9 @@ pub struct Host {
     windows: Mutex<Windows>,
     /// Attached mode's routes into the windows (M4 C4.2b), installed on every executor this host runs.
     attached: Mutex<Option<Arc<crate::attached::WindowIo>>>,
+    /// Agent gestures routed to windows and waiting for them (D-7a, D-7b): kept by the host, so a restart and a
+    /// window that goes away answer them at once.
+    routed: crate::attached::Routed,
 }
 
 /// The sensor facts of one window.
@@ -146,6 +149,11 @@ impl Host {
         *self.attached.lock().unwrap_or_else(PoisonError::into_inner) = Some(io);
     }
 
+    /// The routed agent gestures waiting for their windows.
+    pub fn routed(&self) -> &crate::attached::Routed {
+        &self.routed
+    }
+
     /// Attached mode's routes, once installed.
     pub fn attached(&self) -> Option<Arc<crate::attached::WindowIo>> {
         self.attached.lock().unwrap_or_else(PoisonError::into_inner).clone()
@@ -168,6 +176,7 @@ impl Host {
             restart_lock: Mutex::new(()),
             windows: Mutex::new(Windows::default()),
             attached: Mutex::new(None),
+            routed: crate::attached::Routed::default(),
             options,
             settings_dir,
         })
@@ -239,6 +248,8 @@ impl Host {
             *w = Windows { expected, ..Windows::default() };
         }
         let generation = self.generation.fetch_add(1, Ordering::AcqRel) + 1;
+        // Agent gestures routed on the replaced engine are never committed to this one (D-7b): answered at once.
+        self.routed.engine_restarted(generation);
         if was_serving {
             let _ = self.start_http();
         }
@@ -386,6 +397,8 @@ impl Host {
     /// leaves the freshness quorum at once (a wait pending on it is released by the recomputed combination). The
     /// other windows' facts stay; the executor gets the new combination (ruling O-2).
     pub fn forget_window_reports(&self, label: &str) {
+        // An agent gesture routed to it answers at once, nothing committed (D-7a).
+        self.routed.window_gone(label, None);
         let combined = {
             let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
             w.facts.remove(label);
@@ -662,6 +675,61 @@ mod tests {
         drop(held);
         assert!(h.run("app.state.get", json!({}), false, Some("busy")).is_ok());
         assert!(h.cancels.lock().unwrap_or_else(PoisonError::into_inner).is_empty());
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    fn answer(rx: &std::sync::mpsc::Receiver<tt_executor::Envelope>) -> Option<(String, Value)> {
+        // Answered at once: the receiver already holds the envelope (no waiting, no timing).
+        rx.try_recv().ok().and_then(|e| e.error).map(|e| (e.code, (*e.details).clone()))
+    }
+
+    /// D-7b (C42B-R1-21): an agent gesture routed to a window on an engine that is then replaced answers the SI-120
+    /// refusal at once, through the real restart; a call routed on the new engine is untouched.
+    #[test]
+    fn a_restart_answers_every_routed_call_of_the_replaced_engine_at_once() {
+        let (h, dir) = host();
+        let agent =
+            tt_executor::Origin::Agent { session: "s1".into(), name: "probe".into(), scopes: Default::default() };
+        let (a, rx_a) = h.routed().register(&agent, "drawingView", "main", 0);
+        let (b, rx_b) = h.routed().register(&agent, "drawingView", "float-drawingView", 0);
+        assert!(answer(&rx_a).is_none(), "waiting before the restart");
+        assert_eq!(h.restart().map_err(|e| e.message), Ok((1, true)));
+        for rx in [&rx_a, &rx_b] {
+            assert_eq!(
+                answer(rx),
+                Some((
+                    "command.timeout".to_owned(),
+                    json!({ "reason": "engineRestarted", "generation": 0, "currentGeneration": 1 })
+                ))
+            );
+        }
+        assert!(h.routed().take(a).is_none() && h.routed().take(b).is_none(), "no longer waiting: never committed");
+        let (c, rx_c) = h.routed().register(&agent, "drawingView", "main", 1);
+        assert!(answer(&rx_c).is_none(), "the new engine's call waits for its window");
+        assert!(h.routed().take(c).is_some());
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    /// D-7a: a routed call answers `ui.viewNotFound` at once when its window is destroyed or reloaded (the host's
+    /// window teardown), or when that window's canvas for the view goes away; other windows' and views' calls wait.
+    #[test]
+    fn a_window_or_canvas_that_goes_away_answers_its_routed_calls_at_once() {
+        let (h, dir) = host();
+        let agent =
+            tt_executor::Origin::Agent { session: "s1".into(), name: "probe".into(), scopes: Default::default() };
+        let (_, rx_float) = h.routed().register(&agent, "drawingView", "float-drawingView", 0);
+        let (_, rx_main) = h.routed().register(&agent, "drawingView", "main", 0);
+        let (_, rx_other) = h.routed().register(&agent, "cameraView", "main", 0);
+        h.forget_window_reports("float-drawingView");
+        let gone =
+            |view: &str| Some(("ui.viewNotFound".to_owned(), json!({ "reason": "windowClosed", "viewId": view })));
+        assert_eq!(answer(&rx_float), gone("drawingView"));
+        assert!(answer(&rx_main).is_none() && answer(&rx_other).is_none(), "the main window's calls wait");
+        // The main window's canvas for the Drawing view goes away (`canvas_presence` with `rect: null`).
+        h.routed().window_gone("main", Some("drawingView"));
+        assert_eq!(answer(&rx_main), gone("drawingView"));
+        assert!(answer(&rx_other).is_none(), "another view of that window waits");
+        assert_eq!(h.routed().len(), 1);
         let _ = std::fs::remove_dir_all(dir);
     }
 

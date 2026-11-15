@@ -349,20 +349,25 @@ pub async fn canvas_load(app: AppHandle, json: String) -> Result<Response, Strin
 
 /// A gesture the user made in a Drawing view window (M4 C4.2b; design note 2 §6): the `pointer` request's events,
 /// run by the same gesture driver as the headless `pointer` tool, with the user's origin, so the window path and the
-/// headless path produce the same command (G2, ruling D-4). Answers the `pointer` envelope.
+/// headless path produce the same command (G2, ruling D-4). Answers the `pointer` envelope. The request names the
+/// engine generation the window made it on; a gesture of a replaced engine is refused with the SI-120 refusal and
+/// nothing runs (D-7b).
 ///
 /// # Errors
-/// The JSON text of `arg.invalid` for a request that is not JSON; every other refusal is the envelope's.
+/// The JSON text of `arg.invalid` for a request that is not JSON or lacks its generation; every other refusal is the
+/// envelope's.
 #[tauri::command]
 pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, String> {
     let mut request: Value = parse(&json)?;
     // An agent's gesture the window played (design note 2 §6) carries its request id: it runs with the agent's origin
     // and answers the waiting agent call too.
     let agent = agent_request_of(&mut request)?;
+    let generation = generation_of(&mut request)?;
     let env = tauri::async_runtime::spawn_blocking(move || {
         let host = app.state::<Host>();
         match (agent, host.attached()) {
-            (Some(id), Some(io)) => io.finish(id, request),
+            (Some(id), Some(io)) => io.finish(id, generation, request),
+            _ if generation != host.generation() => stale_gesture(generation, host.generation()),
             _ => host.exec().pointer(tt_executor::Origin::User, request),
         }
     })
@@ -427,6 +432,26 @@ pub fn canvas_presence(host: State<'_, Host>, window: tauri::Window, json: Strin
         io.set_presence(window.label(), &view, presence);
     }
     respond(&json!({}))
+}
+
+/// The SI-120 refusal of a user gesture made on a replaced engine (ruling O-14, D-7b): nothing runs.
+fn stale_gesture(made_on: u64, now: u64) -> tt_executor::Envelope {
+    tt_executor::Envelope::error(
+        tt_executor::CommandError::with_details(
+            "command.timeout",
+            "the engine was restarted while this gesture was made; nothing of it was committed",
+            json!({ "reason": "engineRestarted", "generation": made_on, "currentGeneration": now }),
+        ),
+        None,
+    )
+}
+
+/// The `generation` member of a `gesture_commit` request, removed from it (D-7e): required, the engine generation the
+/// window made the gesture on (a non-negative integer); absent, `null` or anything else is refused.
+fn generation_of(request: &mut Value) -> Result<u64, String> {
+    let what = "the engine generation the gesture was made on (a non-negative integer)";
+    let m = request.as_object_mut().ok_or_else(|| arg_invalid("", "an object"))?;
+    m.remove("generation").and_then(|v| v.as_u64()).ok_or_else(|| arg_invalid("/generation", what))
 }
 
 /// The `agentRequest` member of a `gesture_commit` request, removed from it (D-7e): absent, a user gesture; a request
@@ -540,6 +565,28 @@ mod tests {
         for bad in [json!({ "agentRequest": null }), json!({ "agentRequest": "3" }), json!({ "agentRequest": 1.5 })] {
             assert_eq!(code(&agent(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
         }
+
+        let generation = |mut j: Value| generation_of(&mut j).map(|g| (g, j));
+        let (g, rest) = generation(json!({ "view": "drawingView", "events": [], "generation": 4 })).unwrap();
+        assert_eq!((g, rest.get("generation").is_none()), (4, true), "the window's generation; the member is removed");
+        assert_eq!(generation(json!({ "generation": 0 })).map(|(g, _)| g), Ok(0), "zero: the first engine");
+        for bad in [
+            json!({ "view": "drawingView", "events": [] }),
+            json!({ "generation": null }),
+            json!({ "generation": -1 }),
+            json!({ "generation": "4" }),
+            json!({ "generation": 1.5 }),
+            json!([]),
+        ] {
+            assert_eq!(code(&generation(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
+        }
+        let stale = stale_gesture(2, 3);
+        let e = stale.error.as_ref().unwrap();
+        assert_eq!(
+            (e.code.as_str(), e.details["reason"].as_str(), e.details["generation"].as_u64()),
+            ("command.timeout", Some("engineRestarted"), Some(2)),
+            "SI-120"
+        );
 
         let presence = |j: Value| presence_of(&j.to_string());
         let rect = json!({ "x": 1, "y": 2, "w": 300, "h": 200 });
