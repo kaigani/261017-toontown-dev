@@ -893,14 +893,35 @@ mod part_d_scene_tools {
     fn finish() {
         DIFFERENCES.with(|d| assert!(d.borrow().is_empty(), "D-4: {:?}", d.borrow()));
     }
+    // D-28: independent geometry uses absolute tolerance 1e-9; structure stays exact.
+    fn independent_near(a: &Value, b: &Value) {
+        match (a, b) {
+            (Value::Number(x), Value::Number(y)) => {
+                assert!((x.as_f64().unwrap() - y.as_f64().unwrap()).abs() <= 1e-9, "{a} vs {b}");
+            }
+            (Value::Array(x), Value::Array(y)) => {
+                assert_eq!(x.len(), y.len());
+                for (a, b) in x.iter().zip(y) {
+                    independent_near(a, b);
+                }
+            }
+            (Value::Object(x), Value::Object(y)) => {
+                assert_eq!(x.len(), y.len());
+                assert!(x.keys().all(|k| y.contains_key(k)));
+                for (k, a) in x {
+                    independent_near(a, &y[k]);
+                }
+            }
+            _ => assert_eq!(a, b),
+        }
+    }
     fn compare(h: &ExecutorHandle, b: &ExecutorHandle, out: &Value, p: Value, label: &str) {
         let c = out["commands"].as_array().unwrap().last().unwrap();
         assert_eq!(c["commandId"], "anim.transform.set");
-        if c["params"] != p {
-            DIFFERENCES.with(|d| d.borrow_mut().push(format!("parameters: {} vs {}", c["params"], p)));
-        }
+        independent_near(&c["params"], &p);
         let n = position(b);
-        ok(b, "anim.transform.set", p);
+        // D-4: replay exactly the command produced, retaining exact saved-byte equality.
+        ok(b, "anim.transform.set", c["params"].clone());
         if content(h) != content(b) {
             DIFFERENCES.with(|d| d.borrow_mut().push("canonical bytes differ".into()));
         }
@@ -914,7 +935,6 @@ mod part_d_scene_tools {
     // 399 "one undoable step" and cancellation restores. 347-349 depth conversion.
     // 1135 operation + object kind; literal "Move Element" only SI-144.
     #[test]
-    #[ignore = "orchestrator ruling D-28: independent derivations agree within a tolerance; the reviewer rewrites these in round 2"]
     fn case1_position_only() {
         for tool in ["transform", "select"] {
             let (h, id) = ready();
@@ -949,7 +969,6 @@ mod part_d_scene_tools {
     // 05:397-398 current-frame keys; 98-112 "static offset + animated position";
     // 403-409 "static ... without creating keyframes"; row 1236 target static.
     #[test]
-    #[ignore = "orchestrator ruling D-28: independent derivations agree within a tolerance; the reviewer rewrites these in round 2"]
     fn case2_existing_new_static() {
         let (h, id) = ready();
         ok(&h, "anim.transform.set", json!({"nodeIds":[id],"target":"key","frame":10,"position":{"x":0.,"y":0.}}));
@@ -1140,7 +1159,6 @@ mod part_d_scene_tools {
     // "drag the pivot -> moves the static pivot (no key)" overrides the Rotate/Scale rule at 398.
     // 1135 operation and kind; literal labels are SI-144 only.
     #[test]
-    #[ignore = "orchestrator ruling D-28: independent derivations agree within a tolerance; the reviewer rewrites these in round 2"]
     fn case5_transform_handles() {
         handles("transform");
         let (h, id) = ready();
@@ -1157,7 +1175,6 @@ mod part_d_scene_tools {
     // 05:403-409 "static ... without creating keyframes", side skew handle;
     // 1135 operation + kind; literals Scale/Rotate/Skew Element only SI-144.
     #[test]
-    #[ignore = "orchestrator ruling D-28: independent derivations agree within a tolerance; the reviewer rewrites these in round 2"]
     fn case6_select_handles_labels() {
         handles("select");
         finish();

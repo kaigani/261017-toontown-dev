@@ -1,0 +1,11 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running tests\c42.rs (target\debug\deps\c42-298037a06752eabc.exe)
+
+running 2 tests
+27 of 27 run in front
+test addressing::c43a_r1_03_camera_points_on_an_unprojectable_plane_are_unavailable_and_refused ... ok
+264 cells
+test addressing::c43a_r1_02_every_point_taking_command_by_every_naming_in_scene_and_camera_view_space ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 78 filtered out; finished in 9.66s
+
