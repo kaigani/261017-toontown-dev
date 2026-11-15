@@ -23,6 +23,10 @@ pub struct HostOptions {
     pub discovery: Option<PathBuf>,
     /// Documents to open (command line or OS open-document requests before the window exists).
     pub open: Vec<PathBuf>,
+    /// `--canvas-metrics` (M4 C4.2b measurements).
+    pub canvas_metrics: bool,
+    /// `--canvas-backend` (M4 C4.2b measurements).
+    pub canvas_backend: Option<String>,
 }
 
 /// The engine connection, managed Tauri state.
@@ -612,7 +616,7 @@ mod tests {
 
     fn host() -> (Host, PathBuf) {
         let dir = std::env::temp_dir().join(format!("tt-host-test-{}", tt_executor::random_token(8)));
-        let options = HostOptions { user_dir: Some(dir.clone()), mcp_http: None, discovery: None, open: Vec::new() };
+        let options = HostOptions { user_dir: Some(dir.clone()), mcp_http: None, discovery: None, open: Vec::new(), canvas_metrics: false, canvas_backend: None };
         match Host::start(options) {
             Ok(h) => (h, dir),
             Err(e) => std::panic::resume_unwind(Box::new(e.message)),

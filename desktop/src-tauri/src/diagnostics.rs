@@ -89,6 +89,8 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     let mut mcp_http = None;
     let mut mcp_discovery = None;
     let mut open = Vec::new();
+    let mut canvas_metrics = false;
+    let mut canvas_backend = None;
     let mut it = args.into_iter();
     while let Some(arg) = it.next() {
         match arg.as_str() {
@@ -126,6 +128,14 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
             "--mcp-discovery" => {
                 mcp_discovery = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--mcp-discovery"))?));
             }
+            "--canvas-metrics" => canvas_metrics = true,
+            "--canvas-backend" => {
+                let v = it.next().ok_or(ArgsError::MissingValue("--canvas-backend"))?;
+                if v != "webgpu" && v != "webgl2" {
+                    return Err(ArgsError::Unknown(format!("--canvas-backend {v}")));
+                }
+                canvas_backend = Some(v);
+            }
             // macOS adds `-psn_…` when launched from Finder on older systems.
             other if other.starts_with("-psn_") => {}
             // A document to open (01 §1.1: command line and OS open-document requests).
@@ -154,6 +164,8 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
         mcp_http,
         mcp_discovery,
         open,
+        canvas_metrics,
+        canvas_backend,
     })
 }
 
@@ -187,6 +199,12 @@ pub struct LaunchOptions {
     pub mcp_discovery: Option<PathBuf>,
     /// Documents to open.
     pub open: Vec<PathBuf>,
+    /// `--canvas-metrics`: the interactive canvas publishes its frame, input and load timings in its UI-tree value
+    /// (M4 C4.2b measurements; plan §6, ruling D-5).
+    pub canvas_metrics: bool,
+    /// `--canvas-backend webgpu|webgl2`: the canvas's back end, overriding the selection (ADR-0007 rule set step 1's
+    /// user override, for measurements).
+    pub canvas_backend: Option<String>,
 }
 
 impl LaunchOptions {
@@ -293,6 +311,16 @@ mod tests {
     #[test]
     fn no_arguments_is_interactive() {
         assert_eq!(parse_args(args(&[])), Ok(LaunchOptions::default()));
+    }
+
+    #[test]
+    fn canvas_measurement_flags() {
+        let o = parse_args(args(&["--canvas-metrics", "--canvas-backend", "webgpu"])).unwrap();
+        assert!(o.canvas_metrics);
+        assert_eq!(o.canvas_backend.as_deref(), Some("webgpu"));
+        assert_eq!(o.requested_diagnostic(), None, "product flags, allowed in every build");
+        assert!(parse_args(args(&["--canvas-backend", "vulkan"])).is_err());
+        assert_eq!(parse_args(args(&["--canvas-backend"])), Err(ArgsError::MissingValue("--canvas-backend")));
     }
 
     #[test]

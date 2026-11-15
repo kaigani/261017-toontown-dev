@@ -11,9 +11,11 @@ import type { AgentInput, EngineApi } from '../ipc';
 import { bucketOf } from './bucket';
 import { gridGeometry, IDENTITY, scaleOf, ViewTris, type Affine } from './geometry';
 import { ACCENT, GestureCollector, gestureOverlay, type DomSample, type OverlayStyle } from './input';
+import { startingBackend, startRenderer } from './backend';
+import { canvasLaunch } from './launch';
+import { CanvasMetrics } from './metrics';
 import { CanvasModel } from './model';
 import type { Renderer } from './renderer';
-import { createRenderer } from './backend';
 
 export interface CanvasHandle {
   /** The overlay's triangles for the next frames (layer 9); `null` clears it. */
@@ -60,6 +62,11 @@ export function CanvasView({
     let summary = '';
     let raf = 0;
     let stopped = false;
+    // Measurements (`--canvas-metrics`; plan §6, D-5): published in the summary at most twice a second.
+    const launch = canvasLaunch();
+    const metrics = launch.metrics ? new CanvasMetrics() : null;
+    let metricsAt = 0;
+    let fallback: string | null = null;
     // Input (design note 2 §2 and §6): one gesture at a time; its overlay stays until the committed revision is drawn.
     const collector = new GestureCollector(viewId);
     let style: OverlayStyle = { tool: 'select', ink: ACCENT, width: 1 };
@@ -142,15 +149,30 @@ export function CanvasView({
         .catch(() => undefined);
     };
 
-    try {
-      renderer = createRenderer(canvas);
-    } catch (e) {
-      el.setAttribute('data-tt-value', JSON.stringify({ error: e instanceof Error ? e.message : String(e) }));
-    }
-    if (renderer) {
-      model = new CanvasModel(viewId, engine, renderer, { now: () => performance.now() });
-      model.setGeneration(engine.generation());
-    }
+    // The back end: the launch override, else WebGL2 until a measurement selects one (SI-136).
+    void startRenderer(canvas, startingBackend(launch.backend, null))
+      .then((started) => {
+        if (stopped) {
+          started.renderer.destroy();
+          return;
+        }
+        renderer = started.renderer;
+        fallback = started.fallback;
+        model = new CanvasModel(viewId, engine, started.renderer, { now: () => performance.now() });
+        model.setGeneration(engine.generation());
+        if (metrics) {
+          model.onLoaded = (key, bytes, ms) => {
+            metrics.load(key, bytes, ms);
+          };
+        }
+        model.setBucket(bucketOf(scaleOf(d2v)));
+      })
+      .catch((e: unknown) => {
+        el.setAttribute(
+          'data-tt-value',
+          JSON.stringify({ error: e instanceof Error ? e.message : String(e) }),
+        );
+      });
     refreshMapping();
 
     const ro =
@@ -204,6 +226,7 @@ export function CanvasView({
       if (stopped) return;
       raf = requestAnimationFrame(tick);
       if (!model || !renderer) return;
+      const began = performance.now();
       model.frame();
       const scene = model.scene;
       playAgent();
@@ -238,6 +261,14 @@ export function CanvasView({
         grid,
         overlay,
       });
+      if (metrics) {
+        const now = performance.now();
+        metrics.frame(began, now - began);
+        if (overlay) metrics.inkDrawn(now);
+        metrics.drawn(model.version, now);
+      }
+      const publish = metrics !== null && began - metricsAt >= 500;
+      if (publish) metricsAt = began;
       const next = JSON.stringify({
         backend: renderer.kind,
         generation: engine.generation(),
@@ -250,7 +281,11 @@ export function CanvasView({
           residentBytes,
           lastError,
         }))(renderer.stats()),
+        ...(fallback ? { fallback } : {}),
+        ...(metrics && publish ? { metrics: metrics.snapshot() } : {}),
       });
+      // Between metric publications the summary keeps its last metrics, so it changes only when something did.
+      if (metrics && !publish) return;
       if (next !== summary) {
         summary = next;
         el.setAttribute('data-tt-value', next);
@@ -352,6 +387,7 @@ export function CanvasView({
     };
     const onMove = (e: PointerEvent) => {
       if (!collector.active) return;
+      metrics?.sample(e.timeStamp);
       const list = typeof e.getCoalescedEvents === 'function' ? e.getCoalescedEvents() : [];
       collector.move((list.length > 0 ? list : [e]).map(sample));
       overlay = gestureOverlay(collector.points, style);
@@ -359,6 +395,7 @@ export function CanvasView({
     const onUp = (e: PointerEvent) => {
       if (!collector.active) return;
       const req = collector.up(sample(e));
+      metrics?.released(e.timeStamp, model?.version ?? 0);
       if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
       reportGesture(false);
       commit(req);

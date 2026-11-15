@@ -76,6 +76,9 @@ export class CanvasModel {
   peakInFlight = 0;
   /** Bumps whenever what the scene draws changed (a back end redraws its static layers then). */
   version = 0;
+  /** Called after each upload: the resident key, its bytes, and request-to-upload milliseconds (measurements). */
+  onLoaded: ((key: string, bytes: number, ms: number) => void) | null = null;
+  private readonly requestedAt = new Map<string, number>();
 
   constructor(viewId: string, host: CanvasHost, sink: ResidentSink, clock: Clock, budgetMs = 4) {
     this.viewId = viewId;
@@ -145,6 +148,7 @@ export class CanvasModel {
   private requestLoad(key: string, drawingId: string, outline: boolean): void {
     const bucket = this.bucket;
     this.loading.set(key, bucket);
+    this.requestedAt.set(key, this.clock.now());
     this.host.canvasLoad(drawingId, bucket, outline).then(
       (bytes) => this.inbox.push({ kind: 'load', key, drawingId, outline, bucket, bytes }),
       (e: unknown) => this.inbox.push({ kind: 'failed', what: `load ${key}`, error: e }),
@@ -209,6 +213,8 @@ export class CanvasModel {
         }
         const paletteBound = d.slots.some((s) => s.kind !== 'solid');
         this.sink.upload(item.key, d);
+        const asked = this.requestedAt.get(item.key);
+        if (asked !== undefined) this.onLoaded?.(item.key, d.byteLength, this.clock.now() - asked);
         this.resident.set(item.key, {
           rev: entry.rev,
           bucket: item.bucket,

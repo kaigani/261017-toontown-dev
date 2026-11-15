@@ -133,6 +133,8 @@ pub fn run() -> Result<(), DesktopError> {
     let options = host::HostOptions {
         user_dir: launch.user_dir.clone(),
         mcp_http: launch.mcp_http,
+        canvas_metrics: launch.canvas_metrics,
+        canvas_backend: launch.canvas_backend.clone(),
         discovery: launch.mcp_discovery.clone(),
         open: launch.open.clone(),
     };

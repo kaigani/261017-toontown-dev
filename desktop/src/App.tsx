@@ -28,6 +28,7 @@ import { ShellProvider } from './state/react';
 import { createStore } from './state/store';
 import type { AppState, Binding, Layout, PrefEntry, Theme, Tip } from './state/types';
 import { applyTheme, useAppliedTheme } from './theme/theme';
+import { setCanvasLaunch } from './canvas/launch';
 
 // M0 spike pages (C0.2 tablet, C0.3 canvas), loaded only when the host was started with --spike. They exist only in
 // the diagnostics build (src/m0Diagnostics.d.ts): the default bundle contains neither page nor its chunk (C0.4).
@@ -190,7 +191,8 @@ function Window() {
     if (startupDone.value) return;
     startupDone.value = true;
     void (async () => {
-      const { open } = await host.startup();
+      const { open, canvas } = await host.startup();
+      if (canvas) setCanvasLaunch(canvas);
       if (open.length > 0) {
         for (const path of open) await actions.perform('project.open', { path });
         return;

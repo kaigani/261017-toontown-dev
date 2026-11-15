@@ -261,7 +261,9 @@ pub async fn pick_path(app: AppHandle, json: String) -> Result<Response, String>
 #[tauri::command]
 pub fn startup(host: State<'_, Host>) -> Result<Response, String> {
     let open: Vec<String> = host.take_pending_open().iter().map(|p| p.to_string_lossy().into_owned()).collect();
-    respond(&json!({ "open": open }))
+    // The canvas's launch options (M4 C4.2b measurements): metrics published, a forced back end.
+    let canvas = json!({ "metrics": host.options.canvas_metrics, "backend": host.options.canvas_backend });
+    respond(&json!({ "open": open, "canvas": canvas }))
 }
 
 /// Restarts a stuck engine at the user's request (reviews/M4-design-engine-restart.md): a new executor over the same

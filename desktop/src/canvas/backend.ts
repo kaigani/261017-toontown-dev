@@ -61,11 +61,22 @@ export function startingBackend(override: BackendKind | null, selected: BackendK
 }
 
 /**
- * Creates the canvas back end. WebGPU needs an adapter obtained asynchronously, so a synchronous start always runs
- * WebGL2 and `upgradeToWebGPU` swaps when the selection is WebGPU and an adapter exists.
+ * Starts the canvas's back end on `canvas`: `want` (the override, else the selection, else WebGL2). WebGPU is tried
+ * first when wanted and falls back to WebGL2 when it is unavailable (its context is taken only once an adapter
+ * exists, so the canvas is still free for WebGL2). Answers the renderer and why the wanted one did not start.
  */
-export function createRenderer(canvas: HTMLCanvasElement): Renderer {
-  return createWebGL2(canvas);
+export async function startRenderer(
+  canvas: HTMLCanvasElement,
+  want: BackendKind,
+): Promise<{ renderer: Renderer; fallback: string | null }> {
+  if (want === 'webgpu') {
+    try {
+      return { renderer: await upgradeToWebGPU(canvas), fallback: null };
+    } catch (e) {
+      return { renderer: createWebGL2(canvas), fallback: e instanceof Error ? e.message : String(e) };
+    }
+  }
+  return { renderer: createWebGL2(canvas), fallback: null };
 }
 
 /** WebGPU on `canvas` when the API and an adapter exist; throws `BackendUnavailable` otherwise. */

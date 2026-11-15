@@ -43,7 +43,7 @@ export interface HostApi extends BenchApi {
   /** The engine: one entry point for every command, events, sensor reports, key dispatch (M4 C4.1). */
   readonly engine: EngineApi;
   /** Documents to open at start (01 §1.1 rule 8), taken once. */
-  startup(): Promise<{ open: string[] }>;
+  startup(): Promise<Startup>;
   /** The engine stopped answering or answers again (reviews/M4-design-engine-restart.md). */
   onEngineStatus(
     handler: (status: { notResponding: boolean; generation: number }) => void,
@@ -143,10 +143,24 @@ async function call<T>(
 
 const STARTUP_SCHEMA: Schema = {
   type: 'object',
-  properties: { open: { type: 'array', items: { type: 'string' } } },
+  properties: {
+    open: { type: 'array', items: { type: 'string' } },
+    canvas: {
+      type: 'object',
+      properties: { metrics: { type: 'boolean' }, backend: { enum: ['webgpu', 'webgl2', null] } },
+      required: ['metrics', 'backend'],
+      additionalProperties: false,
+    },
+  },
   required: ['open'],
   additionalProperties: false,
 };
+
+/** The host's startup answer: documents to open; the canvas's launch options (M4 C4.2b measurements). */
+export interface Startup {
+  open: string[];
+  canvas?: { metrics: boolean; backend: 'webgpu' | 'webgl2' | null };
+}
 
 /** A notice of the host: a message id with its help entry, the severity and the text. */
 export interface HostNotice {
@@ -204,7 +218,7 @@ function isGeneration(v: unknown): v is { generation: number } {
   );
 }
 
-function isStartup(v: unknown): v is { open: string[] } {
+function isStartup(v: unknown): v is Startup {
   return typeof v === 'object' && v !== null && Array.isArray((v as { open?: unknown }).open);
 }
 
