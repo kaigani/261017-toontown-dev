@@ -86,6 +86,19 @@ pub fn history(h: &ExecutorHandle) -> Vec<Value> {
 /// The gesture on one executor and the expected command on another, from the same state: equal parameters, equal
 /// canonical bytes, equal history with exactly one new step. Returns the gesture's command result.
 pub fn equivalent(setup: &dyn Fn(&ExecutorHandle), tool: &str, events: Vec<Value>, id: &str, params: Value) -> Value {
+    equivalent_as(setup, tool, events, id, params, None)
+}
+
+/// [`equivalent`] for a gesture whose tool reuses another tool's command: the same command, content and undo step,
+/// the step labelled `label`, the acting tool's (02 §5.2, §7; the alternate Scissor, 02 §7.4.3 line 654).
+pub fn equivalent_as(
+    setup: &dyn Fn(&ExecutorHandle),
+    tool: &str,
+    events: Vec<Value>,
+    id: &str,
+    params: Value,
+    label: Option<&str>,
+) -> Value {
     let a = ready();
     setup(&a);
     let steps = history(&a).len();
@@ -102,7 +115,10 @@ pub fn equivalent(setup: &dyn Fn(&ExecutorHandle), tool: &str, events: Vec<Value
     ok(&b, "tool.active.set", json!({ "toolId": tool }));
     ok(&b, id, params);
     assert_eq!(canonical(&a), canonical(&b), "the same canonical saved bytes and ids");
-    let (ha, hb) = (history(&a), history(&b));
+    let (ha, mut hb) = (history(&a), history(&b));
+    if let (Some(l), Some(last)) = (label, hb.last_mut()) {
+        last["label"] = json!(l);
+    }
     assert_eq!(ha, hb, "the same undo steps and labels");
     if !id.starts_with("view.") && id != "draw.selection.set" && id != "colour.pick" {
         assert_eq!(ha.len(), steps + 1, "one undo step (G4): {tool} {id}");
@@ -327,12 +343,14 @@ fn eraser_cutter_and_scissor_cut_with_the_mapped_path() {
         "draw.cut.apply",
         json!({ "rect": { "x": 330.0, "y": 290.0, "width": 20.0, "height": 100.0 } }),
     );
-    equivalent(
+    // The alternate Scissor: the Cutter's polygon cut, committed as the Scissor's step (C42B-R3-20).
+    equivalent_as(
         &painted_rect,
         "scissor",
         with_mods(drag(&lasso), &["alt"]),
         "draw.cut.apply",
         json!({ "polygon": poly }),
+        Some("Scissor Tool"),
     );
 }
 

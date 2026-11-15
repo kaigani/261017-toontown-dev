@@ -341,6 +341,11 @@ pub(crate) struct Core {
     /// When the running caller's request was enqueued: its caller's watchdog deadline is this plus `budget`, so waits on
     /// the document thread are bounded from here, not from when the request began.
     call_start: Option<std::time::Instant>,
+    /// The undo label the next staged invocation takes instead of its own: a gesture's command carries the label of
+    /// the tool that is acting (02 §5.2, §7) where that tool reuses another tool's command (the alternate Scissor's
+    /// polygon cut is the Scissor's, 02 §7.4.3). Set by the gesture driver around one invocation, taken by
+    /// [`Core::run_staged`].
+    label_override: Option<&'static str>,
 }
 
 fn unknown(id: &str, registry: &Registry) -> CommandError {
@@ -994,6 +999,11 @@ pub(crate) fn unsaved_changes(p: &OpenProject) -> CommandError {
 }
 
 impl Core {
+    /// Sets (or clears) the label the next staged invocation takes ([`Core::label_override`]'s field).
+    pub(crate) fn set_label_override(&mut self, label: Option<&'static str>) {
+        self.label_override = label;
+    }
+
     pub(crate) fn new(registry: &'static Registry, session: Session, budget: Duration) -> Self {
         Self {
             session: Some(session),
@@ -1003,6 +1013,7 @@ impl Core {
             budget,
             served_from_cache: false,
             call_start: None,
+            label_override: None,
         }
     }
 
@@ -1361,12 +1372,16 @@ impl Core {
         dry: bool,
         step: impl FnOnce(&mut Cx) -> Result<Value, CommandError>,
     ) -> Envelope {
+        let forced = self.label_override.take();
         let session = self.take_session();
         let before = observe(&session);
         let rollback = Rollback::take(&session);
         let mut cx = Cx::new(session, origin.clone(), id, dry);
         let outcome = step(&mut cx).and_then(|result| {
-            let label = cx.label().map(str::to_owned).unwrap_or_else(|| default_label.to_owned());
+            let label = forced
+                .map(str::to_owned)
+                .or_else(|| cx.label().map(str::to_owned))
+                .unwrap_or_else(|| default_label.to_owned());
             let mut txns = cx.take_txns();
             if let Some(t) = cx.finish_staged(label)? {
                 txns.push(t);

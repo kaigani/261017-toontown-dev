@@ -495,8 +495,13 @@ pub fn to_command(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, Comma
             ("draw.erase.apply", m)
         }
         "cutter" => ("draw.cut.apply", obj(json!({ "polygon": mapped }))),
-        "scissor" if st.mods.alternate => ("draw.cut.apply", obj(json!({ "polygon": mapped }))),
-        "scissor" => ("draw.cut.apply", obj(json!({ "rect": rect(p0.d, pn.d) }))),
+        // The Scissor cuts a rectangle, or with the alternate modifier a free-form section like the Cutter (02 §7.4.3);
+        // either way the step is the Scissor's ("Scissor Tool", [`acting_label`]).
+        "scissor" => {
+            let section =
+                if st.mods.alternate { json!({ "polygon": mapped }) } else { json!({ "rect": rect(p0.d, pn.d) }) };
+            ("draw.cut.apply", obj(section))
+        }
         "paint" | "unpaint" | "paintUnpainted" => {
             let click = st.is_click();
             let mut m = Map::new();
@@ -1139,6 +1144,15 @@ fn polyline_closed(core: &mut crate::run::Core, g: &Gesture) -> bool {
     (f.v.x - l.v.x).hypot(f.v.y - l.v.y) <= radius
 }
 
+/// The undo label of a gesture whose tool reuses another tool's command: the acting tool's (02 §5.2, §7). The
+/// alternate Scissor runs the Cutter's polygon cut and commits as "Scissor Tool" (02 §7.4.3 line 654). The other
+/// reuses already carry the acting tool's label: the temporary Select is the Select tool (its drags' labels, 02
+/// §7.1.1), the pen's eraser end is the Eraser ("Eraser Tool"), and the temporary Dropper commits no step
+/// (`colour.pick` is a query, `colour.current.set` is not undoable).
+fn acting_label(g: &Gesture, command: &str) -> Option<&'static str> {
+    (g.tool == "scissor" && command == "draw.cut.apply").then_some("Scissor Tool")
+}
+
 /// Builds and invokes a finished gesture's command; `false` when it was refused (the call ends).
 fn finish(core: &mut crate::run::Core, origin: &Origin, g: &Gesture, out: &mut PointerOutcome) -> bool {
     let built =
@@ -1146,12 +1160,14 @@ fn finish(core: &mut crate::run::Core, origin: &Origin, g: &Gesture, out: &mut P
     match built {
         Ok(commands) => {
             for (command, params) in commands {
+                core.set_label_override(acting_label(g, &command));
                 let env = core.invoke(&Invocation {
                     command: command.clone(),
                     params: params.clone(),
                     options: InvokeOptions::default(),
                     origin: origin.clone(),
                 });
+                core.set_label_override(None);
                 let ok = env.is_ok();
                 let picked = (command == "colour.pick")
                     .then(|| {

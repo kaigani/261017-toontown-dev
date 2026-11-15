@@ -445,6 +445,10 @@ fn every_tool_commits_under_its_specified_undo_label() {
     for ev in &mut free {
         ev["modifiers"] = json!(["alt"]);
     }
+    let mut temp_select = drag(&[p(-100.0, 10.0), p(-60.0, -20.0)]);
+    for ev in &mut temp_select {
+        ev["modifiers"] = json!(["ctrl"]);
+    }
     let mut copy = drag(&[p(-100.0, 10.0), p(-60.0, -20.0)]);
     for ev in &mut copy {
         ev["modifiers"] = json!(["alt"]);
@@ -471,15 +475,16 @@ fn every_tool_commits_under_its_specified_undo_label() {
             false,
         ),
         ("scissor", 654, "Scissor Tool", drag(&[p(-160.0, -20.0), p(-150.0, 0.0), p(-140.0, 20.0)]), false),
-        // The Scissor's free-form cut (alternate): 02 §7.4.3 says "Scissor Tool"; it runs a polygon cut, labelled
-        // "Cutter Tool" as a command, and the C4.2a reviewer test part_d_equivalence::scissor requires the gesture's
-        // label to equal the command's. Kept equal pending the ruling requested in the C4.2b response (SI-141 item 6).
-        ("scissor", 654, "Cutter Tool", free, false),
+        // The Scissor's free-form cut (alternate): the Cutter's polygon cut, committed as the Scissor's step (02 §7.4.3
+        // line 654: the acting tool's label, C42B-R3-20).
+        ("scissor", 654, "Scissor Tool", free, false),
         ("select", 440, "Move Object", drag(&[p(-100.0, 10.0), p(-60.0, -20.0)]), true),
         ("select", 440, "Copy Object", copy, true),
         ("select", 440, "Scale Object", drag(&[p(-30.0, 60.0), p(-10.0, 72.0)]), true),
         ("select", 440, "Rotate Object", drag(&[p(-22.0, 68.0), p(-158.0, 68.0)]), true),
         ("select", 437, "Change Drawing Pivot", drag(&[p(px, py), p(px + 30.0, py + 20.0)]), false),
+        // The temporary Select (02 §5.2 line 340): the Brush held with the temporary-select modifier is the Select tool.
+        ("brush", 340, "Move Object", temp_select, true),
     ];
     let mut table = Vec::new();
     for (tool, line, label, events, selected) in rows {
@@ -498,6 +503,33 @@ fn every_tool_commits_under_its_specified_undo_label() {
         ok(&h, "edit.undo", json!({}));
     }
     eprintln!("{}", table.join("\n"));
+    // The pen's eraser end (02 §5.2): the Eraser acts, whatever the active tool, and commits as "Eraser Tool".
+    ok(&h, "draw.selection.set", json!({ "by": "none" }));
+    let before = ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap();
+    let env = h.pointer(
+        tt_executor::Origin::User,
+        json!({ "view": "drawing", "tool": "brush", "pointerType": "penEraser",
+                "events": drag(&[p(-160.0, 0.0), p(-120.0, 10.0), p(-80.0, 0.0)]) }),
+    );
+    assert!(env.is_ok(), "{env:?}");
+    let hist = ok(&h, "edit.history.get", json!({}));
+    let position = hist["position"].as_u64().unwrap();
+    let got = hist["entries"][usize::try_from(position).unwrap() - 1]["label"].clone();
+    assert_eq!((position, got), (before + 1, json!("Eraser Tool")), "the pen's eraser end");
+    ok(&h, "edit.undo", json!({}));
+    // The temporary Dropper (02 §5.2 line 341; Brush, Pencil, Paint with the alternate modifier): `colour.pick` is a
+    // query and `colour.current.set` is not undoable, so no step is committed.
+    let before = ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap();
+    let mut pick = drag(&[p(-90.0, 0.0), p(-90.0, 0.0)]);
+    for ev in &mut pick {
+        ev["modifiers"] = json!(["alt"]);
+    }
+    let env = pointer(&h, "brush", pick);
+    assert!(env.is_ok(), "{env:?}");
+    let ids: Vec<Value> =
+        env.result.unwrap()["commands"].as_array().unwrap().iter().map(|c| c["commandId"].clone()).collect();
+    assert!(ids.contains(&json!("colour.pick")), "{ids:?}");
+    assert_eq!(ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap(), before, "the Dropper: no step");
     // Sent directly, each command carries its own label (02 §13): the Select tool's command differs from its gestures.
     select();
     let direct = [
