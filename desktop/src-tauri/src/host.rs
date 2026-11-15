@@ -154,6 +154,21 @@ impl Host {
         &self.routed
     }
 
+    /// An agent gesture routed to a window that names a tool: the tool is made active as the call arrives, before the
+    /// window plays it (11 §7.6: the tool, then the gestures; headless runs them in that order too), so the window
+    /// draws the agent's stroke with that tool and the commit's own `tool.active.set` changes nothing. A refusal is
+    /// the call's answer, as headless (the first refused command's envelope), and nothing is played.
+    pub fn activate_gesture_tool(&self, origin: &tt_executor::Origin, request: &Value) -> Option<Envelope> {
+        let tool = request.get("tool").and_then(Value::as_str)?;
+        let env = self.exec().invoke(Invocation {
+            command: "tool.active.set".into(),
+            params: json!({ "toolId": tool }),
+            options: InvokeOptions::default(),
+            origin: origin.clone(),
+        });
+        env.error.is_some().then_some(env)
+    }
+
     /// Attached mode's routes, once installed.
     pub fn attached(&self) -> Option<Arc<crate::attached::WindowIo>> {
         self.attached.lock().unwrap_or_else(PoisonError::into_inner).clone()
@@ -735,6 +750,32 @@ mod tests {
         assert_eq!(answer(&rx_main), gone("drawingView"));
         assert!(answer(&rx_other).is_none(), "another view of that window waits");
         assert_eq!(h.routed().len(), 1);
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    /// C42B-R2-01: a routed agent gesture's tool is active before its window plays it; a refused activation is the
+    /// call's answer; a gesture without a tool changes nothing.
+    #[test]
+    fn a_routed_gestures_tool_is_active_before_the_window_plays_it() {
+        let (h, dir) = host();
+        let created = h.run("project.create", json!({ "name": "Tools", "onUnsaved": "fail" }), false, None);
+        assert!(created.error.is_none(), "{created:?}");
+        let tool = |h: &Host| h.run("tool.active.get", json!({}), false, None).result.map(|r| r["toolId"].clone());
+        // The user's origin holds every scope; an agent without scopes is refused.
+        let all = tt_executor::Origin::User;
+        let before = tool(&h);
+        assert_eq!(h.activate_gesture_tool(&all, &json!({ "view": "drawingView", "events": [] })), None);
+        assert_eq!(tool(&h), before, "no tool named: nothing changes");
+        assert_eq!(
+            h.activate_gesture_tool(&all, &json!({ "view": "drawingView", "tool": "pencil", "events": [] })),
+            None
+        );
+        assert_eq!(tool(&h), Some(json!("pencil")), "the named tool is active before anything is played");
+        let none =
+            tt_executor::Origin::Agent { session: "s2".into(), name: "probe".into(), scopes: Default::default() };
+        let refused = h.activate_gesture_tool(&none, &json!({ "view": "drawingView", "tool": "brush", "events": [] }));
+        assert!(refused.as_ref().is_some_and(|e| e.error.is_some()), "{refused:?}");
+        assert_eq!(tool(&h), Some(json!("pencil")), "a refused activation changes nothing");
         let _ = std::fs::remove_dir_all(dir);
     }
 
