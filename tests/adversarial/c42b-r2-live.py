@@ -2,7 +2,8 @@
 
 Usage: c42b-r2-live.py APP MODE [HEADLESS]
 Modes: c2, d3-webgl2, d3-webgpu, d1-long-webgl2, d1-long-webgpu,
-gui, byte, regression, exact.
+gui, byte, regression, exact, exact-select, exact-tools, selection, observer,
+measure-webgl2, measure-webgpu.
 """
 import sys
 if len(sys.argv) < 2:
@@ -45,6 +46,9 @@ async def selection(m, s, part):
     eid = (await rc('element.create', {'type':'drawing','name':'Three'}))['result']['elementIds'][0]
     await rc('element.drawing.create', {'elementId':eid,'name':'1','exposeFrom':1,'exposeTo':1})
     await rc('app.context.set', {'elementId':eid,'frame':1})
+    sw=(await rc('doc.object.find',{'type':'swatch','name':'Colour 2'}))['result']
+    black=(sw.get('items') or sw.get('matches'))[0]
+    await rc('colour.current.set',{'colourId':black.get('id') or black.get('key')})
     for x in (-250, -70, 110):
         await rc('draw.rectangle.add', {'from':{'x':x,'y':-70},'to':{'x':x+100,'y':30}})
     await rc('tool.active.set', {'toolId':'select'})
@@ -145,6 +149,39 @@ async def selection(m, s, part):
     m.save('selection-cases.json',rows)
     assert all(r['verdict']!='FAIL' for r in rows), 'selection case failed; see selection-cases.json'
 
+async def observer(m,s,part):
+    c,e=m.c,m.e
+    rc=lambda cid,p={}:e.run_cmd(s,cid,p)
+    e.os_escape(e.APP_PID['pid'])
+    def key(vk):
+        ctypes.windll.user32.keybd_event(vk,0,0,0)
+        ctypes.windll.user32.keybd_event(vk,0,2,0)
+    key(0x75)  # F6, user shortcut opens the private fixture copy.
+    deadline=time.monotonic()+30
+    while time.monotonic()<deadline:
+        st=(await rc('app.state.get')).get('result') or {}
+        if st.get('project'):break
+    assert st.get('project'),st
+    key(0x76)  # F7, user shortcut selects Drawing workspace.
+    await m.settle(s)
+    key(0x78)  # F9, user shortcut chooses the fixture's exposed drawing.
+    deadline=time.monotonic()+15
+    while time.monotonic()<deadline:
+        state=await c.canvas_state(s)
+        if state.get('drawings'):break
+    assert state.get('drawings'),state
+    key(0x77)  # F8, user shortcut selects Brush.
+    await m.settle(s)
+    mapping=(await rc('draw.viewMapping.get',{'view':'drawingView'}))['result']['drawingToView']
+    pts=[c.apply(mapping,x,150) for x in (-100,-70,-40)]
+    c.os_drag(e.APP_PID['pid'],[(x+49,y+126) for x,y in pts])
+    await m.settle(s)
+    st=(await rc('app.state.get'))['result']
+    record=(await c.canvas_state(s)).get('lastGesture')
+    m.save('read-only-samples.json',{'agent':st.get('agent'),'lastGesture':record})
+    assert st['agent']['scopes']==['read'],st['agent']
+    assert record and record.get('events'),record
+
 def main():
     app, mode = str(Path(sys.argv[1]).resolve()), sys.argv[2]
     out = OUT / mode
@@ -173,9 +210,45 @@ def main():
                     source = source.replace('            await engine.run("colour.current.set", {"colourId": black})', '            await engine.run("tool.active.set", {"toolId": tool})\n            await engine.run("colour.current.set", {"colourId": black})')
                     # OS records omit the optional tool override; replay that request shape too.
                     source = source.replace('"tool": rec["tool"], ', '')
+                    if mode == 'exact-tools':
+                        source = source.replace('vpts = [v((170, 100)), v((220, 140))]', 'vpts = [v((170, 100)), v((220, 140)), v((260,100))]')
+                        source = source.replace('os_double_click(e2e.APP_PID["pid"], client(vpts[1]))', 'c42.os_drag(e2e.APP_PID["pid"], [client(vpts[2]), client(vpts[2])])\n                os_double_click(e2e.APP_PID["pid"], client(vpts[2]))')
+                        source = source.replace('        # 2. Engine 2:', '''        if tool == "polyline":
+            deadline = time.monotonic()+1
+            state = await app.result("app.state.get", {})
+            while state.get("modal") is not None and time.monotonic()<deadline:
+                state = await app.result("app.state.get", {})
+            row["afterDoubleClickModal"] = state.get("modal")
+            run.check(state.get("modal") is None, "Polyline double-click ends the gesture (02 7.2.5:535)", state.get("modal"))
+            if state.get("modal") is not None:
+                e2e.os_escape(e2e.APP_PID["pid"])
+                deadline = time.monotonic()+5
+                while time.monotonic()<deadline and (await app.result("app.state.get",{})).get("modal") is not None:
+                    pass
+        # 2. Engine 2:''')
+                        source = source.replace('        labels = [await engine.labels_since(p)', '        row["contents"] = contents\n        labels = [await engine.labels_since(p)')
                     condition = "name in ('select: corner scale','select: rotate','select: move')" if mode == 'exact-select' else "name in ('brush','pencil','rectangle','ellipse','line','polyline','eraser','paint')"
                     source = source.replace('for name, tool, pts, mods, selected in rows:',f'for name, tool, pts, mods, selected in [r for r in rows if (lambda name: {condition})(r[0])]:')
                     exec(compile(source,str(__file__),'exec'),m.__dict__)
+                    if mode == 'exact-tools':
+                        source = inspect.getsource(m.session_all)
+                        old = 'return await main(Engine("window", a), heads[0], heads[1], run, out, work, sys.platform == "win32")'
+                        new = '''rows = await main(Engine("window", a), heads[0], heads[1], run, out, work, sys.platform == "win32")
+            app = Engine("window", a)
+            defaults = (await app.result("prefs.get", {"keys":["agent.policy.defaults"]})).get("values",{}).get("agent.policy.defaults",{})
+            defaults["policy"] = "observe"
+            changed = await app.run("prefs.set", {"values":{"agent.policy.defaults":defaults}})
+            obs_streams = await stack.enter_async_context(e2e.streamable_http_client(d["endpoint"], http_client=client))
+            obs = await stack.enter_async_context(ClientSession(obs_streams[0],obs_streams[1]))
+            await obs.initialize()
+            observer = Engine("observer",obs)
+            state = await observer.tool("get_state", {})
+            tree = await observer.tool("inspect_ui", {"depth":20})
+            node = c42.find((tree.get("result") or {}).get("root") or {}, lambda n:n.get("id")=="drawingView.canvas") or {}
+            record = json.loads(node.get("value") or "{}").get("lastGesture")
+            run.save("observe-samples.json", {"prefsChange":changed,"state":state,"treeStatus":tree.get("status"),"lastGesture":record})
+            return rows'''
+                        exec(compile(source.replace(old,new),str(__file__),'exec'),m.__dict__)
             sys.argv = [file, app] + ([str(Path(sys.argv[3]).resolve())] if mode == 'byte' or mode.startswith('exact') else []) + [str(out)]
             code = (m.run_main() if mode.startswith('exact') else m.main()) or 0
         else:
@@ -183,6 +256,24 @@ def main():
             m.O = out
             if mode == 'selection':
                 m.main = lambda s, p: selection(m,s,p)
+            if mode == 'observer':
+                original_launch=m.e.launch
+                def read_launch(app,user,disc):
+                    import shutil
+                    prefs=user/'Settings/preferences.json'
+                    d=json.loads(prefs.read_text(encoding='utf-8'))
+                    d['data']['agent.policy.defaults']['policy']='observe'
+                    prefs.write_text(json.dumps(d),encoding='utf-8',newline='\n')
+                    fixture=user/'fixture.animpkg'
+                    shutil.copyfile(ROOT/'reviews/evidence/M3-C3.4-r1/ci-Windows/projects/E1-replay.animpkg',fixture)
+                    binds=[{'commandId':cid,'params':params,'keys':key,'context':'global'} for key,cid,params in [
+                        ('F6','project.open',{'path':str(fixture),'onUnsaved':'fail'}),
+                        ('F7','workspace.select',{'name':'Drawing'}),('F8','tool.active.set',{'toolId':'brush'}),
+                        ('F9','app.context.set',{'elementId':'el_01K7JJN800YHNMXD22AQ3X6TGN','frame':1})]]
+                    (user/'Settings/keymap.json').write_text(json.dumps({'format':'toontown-settings','kind':'keymap','formatVersion':'1.0','data':{'baseSet':'default','added':binds,'removed':[]}}),encoding='utf-8',newline='\n')
+                    return original_launch(app,user,disc)
+                m.e.launch=read_launch
+                m.main=lambda s,p:observer(m,s,p)
             if mode.startswith('d1-long-'):
                 # Same original probe body, 30 samples instead of five; no product mutation.
                 source = (ROOT / 'tests/adversarial/c42b-r1-live.py').read_text(encoding='utf-8')

@@ -5,7 +5,7 @@
     "observed": {
       "selection": {
         "selectedIds": [
-          "st_01K7JJN800P8C4ZT59818YZTBA"
+          "st_01K7JJN800CBASW7J1EGBFS2NN"
         ],
         "bounds": {
           "x": -254.0,
@@ -20,8 +20,8 @@
           901,
           645
         ],
-        "different": 889,
-        "fraction": 0.0015297387054865825
+        "different": 1001,
+        "fraction": 0.0017224616920045771
       },
       "handles": 8,
       "finalHandles": 0,
@@ -44,18 +44,18 @@
         ],
         [
           15,
-          9
+          8
         ],
         [
-          9,
+          8,
           15
         ],
         [
           15,
-          9
+          8
         ],
         [
-          9,
+          8,
           15
         ]
       ],
@@ -200,8 +200,8 @@
     "observed": {
       "selection": {
         "selectedIds": [
-          "st_01K7JJN800P8C4ZT59818YZTBA",
-          "st_01K7JJN8007G59VCK10QKM5BBW"
+          "st_01K7JJN800CBASW7J1EGBFS2NN",
+          "st_01K7JJN800XP83SCJVB33QJTWX"
         ],
         "bounds": {
           "x": -254.0,
@@ -216,8 +216,8 @@
           901,
           645
         ],
-        "different": 1463,
-        "fraction": 0.002517444011391305
+        "different": 1541,
+        "fraction": 0.00265166180557348
       },
       "handles": 8,
       "finalHandles": 0,
@@ -243,7 +243,7 @@
           9
         ],
         [
-          9,
+          8,
           15
         ],
         [
@@ -251,7 +251,7 @@
           9
         ],
         [
-          9,
+          8,
           15
         ]
       ],
@@ -355,7 +355,7 @@
             "modifiers": [
               "shift"
             ],
-            "dt": 31,
+            "dt": 46,
             "pressure": 1
           },
           {
@@ -365,7 +365,7 @@
             "modifiers": [
               "shift"
             ],
-            "dt": 50,
+            "dt": 36,
             "pressure": 1
           }
         ],
@@ -402,8 +402,8 @@
           901,
           645
         ],
-        "different": 81,
-        "fraction": 0.00013938001703533542
+        "different": 129,
+        "fraction": 0.00022197558268590456
       },
       "handles": 0,
       "finalHandles": 0,
@@ -438,7 +438,7 @@
             "x": 750,
             "y": 162,
             "modifiers": [],
-            "dt": 47,
+            "dt": 36,
             "pressure": 1
           },
           {
@@ -446,7 +446,7 @@
             "x": 750,
             "y": 162,
             "modifiers": [],
-            "dt": 35,
+            "dt": 45,
             "pressure": 1
           }
         ],
@@ -475,7 +475,7 @@
     "observed": {
       "selection": {
         "selectedIds": [
-          "st_01K7JJN8007G59VCK10QKM5BBW"
+          "st_01K7JJN800XP83SCJVB33QJTWX"
         ],
         "bounds": {
           "x": -74.0,
@@ -490,8 +490,8 @@
           901,
           645
         ],
-        "different": 1908,
-        "fraction": 0.003283173734610123
+        "different": 2256,
+        "fraction": 0.0038819915855767494
       },
       "handles": 8,
       "finalHandles": 0,
@@ -514,10 +514,10 @@
         ],
         [
           15,
-          10
+          9
         ],
         [
-          10,
+          9,
           15
         ],
         [
@@ -625,7 +625,7 @@
             "x": 380,
             "y": 342,
             "modifiers": [],
-            "dt": 34,
+            "dt": 46,
             "pressure": 1
           },
           {
@@ -633,7 +633,7 @@
             "x": 380,
             "y": 342,
             "modifiers": [],
-            "dt": 47,
+            "dt": 36,
             "pressure": 1
           }
         ],
@@ -662,7 +662,7 @@
     "observed": {
       "selection": {
         "selectedIds": [
-          "st_01K7JJN8007G59VCK10QKM5BBW"
+          "st_01K7JJN800XP83SCJVB33QJTWX"
         ],
         "bounds": {
           "x": -72.06763285024155,
@@ -677,8 +677,8 @@
           901,
           645
         ],
-        "different": 1351,
-        "fraction": 0.0023247210248733105
+        "different": 1464,
+        "fraction": 0.0025191647523423585
       },
       "handles": 8,
       "finalHandles": 0,
@@ -701,7 +701,7 @@
         ],
         [
           15,
-          9
+          8
         ],
         [
           8,
@@ -712,7 +712,7 @@
           8
         ],
         [
-          9,
+          8,
           15
         ]
       ],
@@ -812,7 +812,7 @@
             "x": 530,
             "y": 242,
             "modifiers": [],
-            "dt": 29,
+            "dt": 31,
             "pressure": 1
           },
           {
@@ -862,7 +862,7 @@
     "observed": {
       "selection": {
         "selectedIds": [
-          "st_01K7JJN8007G59VCK10QKM5BBW"
+          "st_01K7JJN800XP83SCJVB33QJTWX"
         ],
         "bounds": {
           "x": -74.40158686370299,
@@ -877,8 +877,8 @@
           901,
           645
         ],
-        "different": 1097,
-        "fraction": 0.0018876528233057153
+        "different": 1213,
+        "fraction": 0.002087258773627924
       },
       "handles": 8,
       "finalHandles": 0,
@@ -1012,7 +1012,7 @@
             "x": 368,
             "y": 280,
             "modifiers": [],
-            "dt": 39,
+            "dt": 38,
             "pressure": 1
           },
           {
@@ -1020,7 +1020,7 @@
             "x": 368,
             "y": 280,
             "modifiers": [],
-            "dt": 41,
+            "dt": 43,
             "pressure": 1
           }
         ],
@@ -1056,7 +1056,7 @@
     "observed": {
       "selection": {
         "selectedIds": [
-          "st_01K7JJN8007G59VCK10QKM5BBW"
+          "st_01K7JJN800XP83SCJVB33QJTWX"
         ],
         "bounds": {
           "x": -54.0,
@@ -1071,8 +1071,8 @@
           901,
           645
         ],
-        "different": 889,
-        "fraction": 0.0015297387054865825
+        "different": 1001,
+        "fraction": 0.0017224616920045771
       },
       "handles": 8,
       "finalHandles": 0,
@@ -1095,18 +1095,18 @@
         ],
         [
           15,
-          9
+          8
         ],
         [
-          9,
+          8,
           15
         ],
         [
           15,
-          9
+          8
         ],
         [
-          9,
+          8,
           15
         ]
       ],
@@ -1206,7 +1206,7 @@
             "x": 450,
             "y": 332,
             "modifiers": [],
-            "dt": 35,
+            "dt": 32,
             "pressure": 1
           },
           {
@@ -1214,7 +1214,7 @@
             "x": 450,
             "y": 332,
             "modifiers": [],
-            "dt": 46,
+            "dt": 48,
             "pressure": 1
           }
         ],
@@ -1247,12 +1247,118 @@
     "case": 8,
     "verdict": "PASS",
     "observed": {
-      "rows": [
+      "exactRows": [
         {
           "name": "select: corner scale",
-          "sameCommands": true,
-          "sameContent": true,
-          "sameLabels": true,
+          "tool": "select",
+          "input": "os",
+          "record": {
+            "origin": "user",
+            "tool": "select",
+            "view": "drawingView",
+            "pointerType": "mouse",
+            "drawingToView": [
+              1,
+              0,
+              0,
+              -1,
+              450.5,
+              322.5
+            ],
+            "events": [
+              {
+                "type": "down",
+                "x": 424,
+                "y": 258,
+                "modifiers": [],
+                "dt": 0,
+                "pressure": 1,
+                "button": "left"
+              },
+              {
+                "type": "move",
+                "x": 424,
+                "y": 258,
+                "modifiers": [],
+                "dt": 14,
+                "pressure": 1
+              },
+              {
+                "type": "move",
+                "x": 434,
+                "y": 252,
+                "modifiers": [],
+                "dt": 16,
+                "pressure": 1
+              },
+              {
+                "type": "move",
+                "x": 444,
+                "y": 246,
+                "modifiers": [],
+                "dt": 34,
+                "pressure": 1
+              },
+              {
+                "type": "up",
+                "x": 444,
+                "y": 246,
+                "modifiers": [],
+                "dt": 45,
+                "pressure": 1
+              }
+            ],
+            "eventCount": 5,
+            "status": "ok",
+            "code": null,
+            "commands": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "scale": {
+                    "x": 1.1568627450980393,
+                    "y": 1.093385214007782
+                  },
+                  "pivot": {
+                    "x": -154,
+                    "y": -64
+                  }
+                }
+              }
+            ]
+          },
+          "commands": {
+            "window": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "scale": {
+                    "x": 1.1568627450980393,
+                    "y": 1.093385214007782
+                  },
+                  "pivot": {
+                    "x": -154,
+                    "y": -64
+                  }
+                }
+              }
+            ],
+            "engine2": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "scale": {
+                    "x": 1.1568627450980393,
+                    "y": 1.093385214007782
+                  },
+                  "pivot": {
+                    "x": -154.0,
+                    "y": -64.0
+                  }
+                }
+              }
+            ]
+          },
           "labels": [
             [
               "Move/Scale/Rotate Object"
@@ -1263,13 +1369,128 @@
             [
               "Move/Scale/Rotate Object"
             ]
-          ]
+          ],
+          "statuses": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "sameCommands": true,
+          "sameContent": true,
+          "sameLabels": true,
+          "mappings": {
+            "window": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              450.5,
+              322.5
+            ],
+            "engine2": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ],
+            "engine3": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ]
+          }
         },
         {
           "name": "select: rotate",
-          "sameCommands": true,
-          "sameContent": true,
-          "sameLabels": true,
+          "tool": "select",
+          "input": "os",
+          "record": {
+            "origin": "user",
+            "tool": "select",
+            "view": "drawingView",
+            "pointerType": "mouse",
+            "drawingToView": [
+              1,
+              0,
+              0,
+              -1,
+              450.5,
+              322.5
+            ],
+            "events": [
+              {
+                "type": "down",
+                "x": 432,
+                "y": 250,
+                "modifiers": [],
+                "dt": 0,
+                "pressure": 1,
+                "button": "left"
+              },
+              {
+                "type": "move",
+                "x": 288,
+                "y": 250,
+                "modifiers": [],
+                "dt": 31,
+                "pressure": 1
+              },
+              {
+                "type": "up",
+                "x": 288,
+                "y": 250,
+                "modifiers": [],
+                "dt": 50,
+                "pressure": 1
+              }
+            ],
+            "eventCount": 3,
+            "status": "ok",
+            "code": null,
+            "commands": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "rotate": 89.6021190381654,
+                  "pivot": {
+                    "x": -90,
+                    "y": 0
+                  }
+                }
+              }
+            ]
+          },
+          "commands": {
+            "window": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "rotate": 89.6021190381654,
+                  "pivot": {
+                    "x": -90,
+                    "y": 0
+                  }
+                }
+              }
+            ],
+            "engine2": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "rotate": 89.6021190381654,
+                  "pivot": {
+                    "x": -90.0,
+                    "y": 0.0
+                  }
+                }
+              }
+            ]
+          },
           "labels": [
             [
               "Move/Scale/Rotate Object"
@@ -1280,13 +1501,128 @@
             [
               "Move/Scale/Rotate Object"
             ]
-          ]
+          ],
+          "statuses": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "sameCommands": true,
+          "sameContent": true,
+          "sameLabels": true,
+          "mappings": {
+            "window": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              450.5,
+              322.5
+            ],
+            "engine2": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ],
+            "engine3": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ]
+          }
         },
         {
           "name": "select: move",
-          "sameCommands": true,
-          "sameContent": true,
-          "sameLabels": true,
+          "tool": "select",
+          "input": "os",
+          "record": {
+            "origin": "user",
+            "tool": "select",
+            "view": "drawingView",
+            "pointerType": "mouse",
+            "drawingToView": [
+              1,
+              0,
+              0,
+              -1,
+              450.5,
+              322.5
+            ],
+            "events": [
+              {
+                "type": "down",
+                "x": 360,
+                "y": 322,
+                "modifiers": [],
+                "dt": 0,
+                "pressure": 1,
+                "button": "left"
+              },
+              {
+                "type": "move",
+                "x": 385,
+                "y": 337,
+                "modifiers": [],
+                "dt": 32,
+                "pressure": 1
+              },
+              {
+                "type": "up",
+                "x": 385,
+                "y": 337,
+                "modifiers": [],
+                "dt": 48,
+                "pressure": 1
+              }
+            ],
+            "eventCount": 3,
+            "status": "ok",
+            "code": null,
+            "commands": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "translate": {
+                    "x": 25,
+                    "y": -15
+                  },
+                  "copy": false
+                }
+              }
+            ]
+          },
+          "commands": {
+            "window": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "translate": {
+                    "x": 25,
+                    "y": -15
+                  },
+                  "copy": false
+                }
+              }
+            ],
+            "engine2": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "translate": {
+                    "x": 25.0,
+                    "y": -15.0
+                  },
+                  "copy": false
+                }
+              }
+            ]
+          },
           "labels": [
             [
               "Move/Scale/Rotate Object"
@@ -1297,7 +1633,41 @@
             [
               "Move/Scale/Rotate Object"
             ]
-          ]
+          ],
+          "statuses": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "sameCommands": true,
+          "sameContent": true,
+          "sameLabels": true,
+          "mappings": {
+            "window": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              450.5,
+              322.5
+            ],
+            "engine2": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ],
+            "engine3": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ]
+          }
         }
       ]
     }
