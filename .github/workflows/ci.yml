@@ -438,6 +438,18 @@ jobs:
           path: out/
           if-no-files-found: error
 
+      # M4 C4.2b part G: the release binary for the attached-versus-headless byte gate.
+      - name: Keep the headless release binary for the byte gate
+        run: |
+          mkdir -p headless-bin
+          if [ "$RUNNER_OS" = "Windows" ]; then cp target/release/toontown-headless.exe headless-bin/; else cp target/release/toontown-headless headless-bin/; fi
+      - uses: actions/upload-artifact@v7
+        with:
+          name: headless-bin-${{ runner.os }}
+          path: headless-bin/
+          if-no-files-found: error
+          retention-days: 3
+
   # The six C1.2-C1.4 10 000-operation history oracles in release (moved from `check` in M2 C2.3 round 1, split out of
   # `headless` in round 3: Windows `headless` passed its 55-minute budget in run 41363091264). Same assertions; each
   # oracle's output is kept as an artifact.
@@ -1031,6 +1043,46 @@ jobs:
         with:
           name: desktop-gui-${{ runner.os }}
           path: desktop-gui/
+
+  # M4 C4.2b part G (M3 merge note §8 item 2): the same saved fixture, revision and integer frames rendered through the
+  # running application and headless; PNG bytes and metadata compared (volatile fields named); receipts retained.
+  drawing-byte-gate:
+    name: drawing byte gate (${{ matrix.os }})
+    needs: [bundle, headless]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v7
+        with:
+          name: desktop-${{ runner.os }}
+          path: desktop-artifact
+      - uses: actions/download-artifact@v7
+        with:
+          name: headless-bin-${{ runner.os }}
+          path: headless-bin
+      - name: Attached versus headless frames
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+          $PY -m venv .venv-gate
+          if [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-gate/Scripts/python; else VPY=.venv-gate/bin/python; fi
+          $VPY -m pip install --quiet "mcp==2.0.0"
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; hl=headless-bin/toontown-headless.exe
+          else
+            tar -xzf desktop-artifact/default-build/Toontown-macos-arm64.app.tar.gz -C desktop-artifact
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; hl=headless-bin/toontown-headless; chmod +x "$hl"
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/c42-byte-gate.py "$app" "$hl" "byte-gate"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: drawing-byte-gate-${{ runner.os }}
+          path: byte-gate/
 
   # The strongest "no window system" evidence: Linux runners have no X/Wayland server at all.
   headless-no-display:
