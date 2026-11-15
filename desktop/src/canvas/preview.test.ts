@@ -14,6 +14,12 @@ import {
   type Box,
 } from './preview';
 
+/** A preview the case must have (a null one fails where it is read). */
+function must(v: Affine | null): Affine {
+  if (!v) throw new Error('no preview where the rule gives one');
+  return v;
+}
+
 const close = (got: readonly number[], want: readonly number[], what: string) => {
   for (let i = 0; i < want.length; i++) expect(got[i], `${what}[${String(i)}]`).toBeCloseTo(want[i] ?? 0, 9);
 };
@@ -25,24 +31,24 @@ describe('the Camera view preview (SI-150, SI-151)', () => {
 
   it('move: the translation by the drag (05 §5.1 line 405)', () => {
     const p = scenePreview(b, null, [300, 175], [340, 160], false);
-    close(p as Affine, [1, 0, 0, 1, 40, -15], 'move');
+    close(must(p), [1, 0, 0, 1, 40, -15], 'move');
   });
 
   it('a corner scales about the opposite corner; the dragged corner follows the pointer (constrain: equal factors)', () => {
     // Top-right (400, 100) dragged to (450, 80); the opposite corner is bottom-left (200, 250).
-    const p = scenePreview(b, null, [400, 100], [450, 80], false) as Affine;
+    const p = must(scenePreview(b, null, [400, 100], [450, 80], false));
     close(apply(p, 200, 250), [200, 250], 'the opposite corner stays');
     close(apply(p, 400, 100), [450, 80], 'the dragged corner is under the pointer');
-    const c = scenePreview(b, null, [400, 100], [450, 80], true) as Affine;
+    const c = must(scenePreview(b, null, [400, 100], [450, 80], true));
     // Factors (450-200)/(400-200) = 1.25 and (80-250)/(100-250) = 1.1333; constrained: the larger in magnitude.
     close([c[0], c[3]], [1.25, 1.25], 'constrained factors');
   });
 
   it('a side scales one axis about the opposite side (C43A-R1-22: one axis)', () => {
-    const right = scenePreview(b, null, [400, 175], [430, 190], false) as Affine;
+    const right = must(scenePreview(b, null, [400, 175], [430, 190], false));
     close([right[0], right[3]], [(430 - 200) / (400 - 200), 1], 'right side: x only');
     close(apply(right, 200, 175), [200, 175], 'the left side stays');
-    const top = scenePreview(b, null, [300, 100], [310, 70], false) as Affine;
+    const top = must(scenePreview(b, null, [300, 100], [310, 70], false));
     close([top[0], top[3]], [1, (70 - 250) / (100 - 250)], 'top side: y only');
     close(apply(top, 300, 250), [300, 250], 'the bottom side stays');
   });
@@ -53,10 +59,10 @@ describe('the Camera view preview (SI-150, SI-151)', () => {
     const r = Math.hypot(409 - centre[0], 91 - centre[1]);
     const a1 = a0 + (37 * Math.PI) / 180;
     const pn: [number, number] = [centre[0] + r * Math.cos(a1), centre[1] + r * Math.sin(a1)];
-    const p = scenePreview(b, null, [409, 91], pn, false) as Affine;
+    const p = must(scenePreview(b, null, [409, 91], pn, false));
     close(apply(p, centre[0], centre[1]), centre, 'the centre stays');
     close(apply(p, 409, 91), pn, 'the press point follows the pointer');
-    const s = scenePreview(b, null, [409, 91], pn, true) as Affine;
+    const s = must(scenePreview(b, null, [409, 91], pn, true));
     // 37° snapped to 30°: the press point turns by 30° about the centre.
     const want: [number, number] = [
       centre[0] + r * Math.cos(a0 + Math.PI / 6),
@@ -66,16 +72,16 @@ describe('the Camera view preview (SI-150, SI-151)', () => {
   });
 
   it('a top skew handle shears horizontally about the centre: the top moves by the drag, the bottom against it', () => {
-    const p = scenePreview(b, null, [300, 100 - SKEW_OUT_PX], [320, 100 - SKEW_OUT_PX], false) as Affine;
+    const p = must(scenePreview(b, null, [300, 100 - SKEW_OUT_PX], [320, 100 - SKEW_OUT_PX], false));
     close(apply(p, 300, 100), [320, 100], 'the top midpoint moves by 20');
     close(apply(p, 300, 250), [280, 250], 'the bottom midpoint by -20');
     close(apply(p, centre[0], centre[1]), centre, 'the centre stays');
   });
 
   it('the temporary Skew (SI-151): a top side shears horizontally, a right side vertically; elsewhere nothing', () => {
-    const top = scenePreview(b, null, [300, 100], [320, 100], false, true) as Affine;
+    const top = must(scenePreview(b, null, [300, 100], [320, 100], false, true));
     close(apply(top, 300, 100), [320, 100], 'top side: horizontal shear');
-    const right = scenePreview(b, null, [400, 175], [400, 155], false, true) as Affine;
+    const right = must(scenePreview(b, null, [400, 175], [400, 155], false, true));
     close(apply(right, 400, 175), [400, 155], 'the right midpoint moves up by 20');
     close(apply(right, 200, 175), [200, 195], 'the left midpoint down by 20');
     expect(scenePreview(b, null, [300, 175], [340, 175], false, true)).toBeNull();
@@ -99,14 +105,14 @@ describe('the Drawing view preview (SI-141)', () => {
 
   it('move: the drag in view pixels', () => {
     const p0 = v(50, 25);
-    const p = drawingPreview(bounds, null, d2v, p0, [p0[0] + 30, p0[1] - 10], false) as Affine;
+    const p = must(drawingPreview(bounds, null, d2v, p0, [p0[0] + 30, p0[1] - 10], false));
     close(apply(p, 0, 0), [30, -10], 'translation');
   });
 
   it('a corner scales about the opposite corner in drawing space; the dragged corner follows the pointer', () => {
     // The top-right corner (100, 50) is at view (1080, 560); the opposite, bottom-left (0, 0), at (880, 660).
     const pn: [number, number] = [1100, 540];
-    const p = drawingPreview(bounds, null, d2v, v(100, 50), pn, false) as Affine;
+    const p = must(drawingPreview(bounds, null, d2v, v(100, 50), pn, false));
     close(apply(p, ...v(0, 0)), v(0, 0), 'the opposite corner stays');
     close(apply(p, ...v(100, 50)), pn, 'the dragged corner is under the pointer');
   });
@@ -117,7 +123,7 @@ describe('the Drawing view preview (SI-141)', () => {
     const r = Math.hypot(p0[0] - o[0], p0[1] - o[1]);
     const a0 = Math.atan2(p0[1] - o[1], p0[0] - o[0]);
     const pn: [number, number] = [o[0] + r * Math.cos(a0 + 0.4), o[1] + r * Math.sin(a0 + 0.4)];
-    const p = drawingPreview(bounds, null, d2v, p0, pn, false) as Affine;
+    const p = must(drawingPreview(bounds, null, d2v, p0, pn, false));
     close(apply(p, o[0], o[1]), o, 'the centre stays');
     close(apply(p, p0[0], p0[1]), pn, 'the press point follows the pointer');
     expect(drawingPreview(bounds, [10, 10], d2v, v(10, 10), [900, 600], false)).toBeNull();
