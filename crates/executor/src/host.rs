@@ -771,8 +771,11 @@ impl ExecutorHandle {
                 return env;
             }
         }
+        // The user's own gesture committed by a window: its answer's hover needs no hit test (the window reads the
+        // commands; an agent's call, routed or not, still gets the objects under the pointer).
+        let hover_objects = route || !matches!(origin, crate::types::Origin::User);
         let run = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
-            let out = crate::gesture::run(core, &origin, &req);
+            let out = crate::gesture::run(core, &origin, &req, hover_objects);
             let rev = core.session().and_then(|s| s.project.as_ref()).map(|p| p.doc.document_rev());
             match out {
                 Ok(o) => o.envelope(rev),

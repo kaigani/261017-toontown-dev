@@ -936,11 +936,14 @@ impl PointerOutcome {
 }
 
 /// Runs a `pointer` request on the document thread as one request (design note 4 §1-2: gestures of different calls
-/// never interleave). Gestures run in order; the first refused gesture ends the call.
+/// never interleave). Gestures run in order; the first refused gesture ends the call. `hover_objects`: whether the
+/// final hover names the objects under the pointer (a hit test of the drawing); the user's own gestures committed by
+/// a window skip it, because the window draws its own hover feedback and reads only the commands.
 pub(crate) fn run(
     core: &mut crate::run::Core,
     origin: &Origin,
     req: &PointerRequest,
+    hover_objects: bool,
 ) -> Result<PointerOutcome, CommandError> {
     check(req)?;
     let view_id = {
@@ -1103,7 +1106,8 @@ pub(crate) fn run(
         out.hover = Some(json!({ "viewId": view_id, "view": pt(vp), "drawing": pt(to_drawing(&w, vp)) }));
     }
     // The final hover names the objects under the pointer as `inspect.hitTest` reports them (pointer note §1.3).
-    if let Some(Value::Object(m)) = out.hover.as_mut()
+    if hover_objects
+        && let Some(Value::Object(m)) = out.hover.as_mut()
         && let Some(v) = m.get("view").and_then(|v| serde_json::from_value::<Point>(v.clone()).ok())
     {
         let objects = core

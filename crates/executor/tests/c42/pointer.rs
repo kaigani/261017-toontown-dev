@@ -216,6 +216,27 @@ fn hover_names_the_objects_under_it_and_tilt_is_carried_but_changes_no_stroke() 
     assert_eq!(pointer(&h, "brush", e).error.unwrap().code, "arg.invalid");
 }
 
+/// The user's own gesture committed by a window skips the final hover's hit test (the window reads only the commands;
+/// C42B-R2-01); an agent's call, played by a window or headless, and the user's headless call still name the objects.
+#[test]
+fn a_window_played_user_gesture_answers_without_the_hover_objects() {
+    let h = ready();
+    crate::equivalence::painted_rect(&h);
+    let request = json!({ "view": "drawing", "events": [ev("hover", 1310.0, 210.0)] });
+    let objects = |env: tt_executor::Envelope| env.result.unwrap()["hover"].get("objects").cloned();
+    let user_window = objects(h.pointer_in_window(Origin::User, request.clone()));
+    assert_eq!(user_window, None, "the user's window gesture: no hit test");
+    let a = agent(&[Scope::Ui, Scope::Read, Scope::Edit, Scope::Input]);
+    for (who, env) in [
+        ("agent, window", h.pointer_in_window(a.clone(), request.clone())),
+        ("agent, headless", h.pointer(a, request.clone())),
+        ("user, headless", h.pointer(Origin::User, request.clone())),
+    ] {
+        let o = objects(env);
+        assert!(o.as_ref().and_then(Value::as_array).is_some_and(|o| !o.is_empty()), "{who}: {o:?}");
+    }
+}
+
 #[test]
 fn c42a_r1_06_pointer_needs_the_input_scope_before_anything_is_produced() {
     let h = ready();
