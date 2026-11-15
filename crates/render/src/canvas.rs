@@ -482,7 +482,9 @@ pub fn tessellate_with(items: &[CanvasItem], bucket: i16, joins: bool) -> Vec<Re
                 }
             }
             Item::Fill { path, rule, paint } => {
-                let rings: Vec<Vec<P>> = polylines(path, tol)
+                // Curves are flattened in the item's own coordinates, to the tolerance that maps to `tol` here.
+                let Some(local) = local_tolerance(&m, tol) else { continue };
+                let rings: Vec<Vec<P>> = polylines(path, local)
                     .into_iter()
                     .map(|(l, _)| l.into_iter().map(|p| apply(&m, p)).collect())
                     .collect();
@@ -491,16 +493,18 @@ pub fn tessellate_with(items: &[CanvasItem], bucket: i16, joins: bool) -> Vec<Re
                 });
             }
             Item::Stroke { path, width, paint } => {
-                // The width scales with the layer's transform (its geometric mean scale).
-                let s = (m[0] * m[3] - m[1] * m[2]).abs().sqrt();
-                let w = width * s;
-                if !(w.is_finite() && w > 0.0) {
+                // The final renderer strokes in the item's own coordinates and draws the affine image of that round
+                // stroke (C42B-R1-01): the pieces are built there, with the tolerance that maps to `tol`, and their
+                // outlines transformed. Under a non-uniform scale the round caps and joins become ellipses.
+                if !(width.is_finite() && *width > 0.0) {
                     continue;
                 }
+                let Some(local) = local_tolerance(&m, tol) else { continue };
                 let mut pieces = Vec::new();
-                for (line, closed) in polylines(path, tol) {
-                    let line: Vec<P> = line.into_iter().map(|p| apply(&m, p)).collect();
-                    pieces.extend(stroke_pieces(&line, closed, w, tol, joins));
+                for (line, closed) in polylines(path, local) {
+                    for piece in stroke_pieces(&line, closed, *width, local, joins) {
+                        pieces.push(piece.into_iter().map(|p| apply(&m, p)).collect());
+                    }
                 }
                 emit(&mut records, &mut solid, &mut flush, ci, paint, &m, |mesh| {
                     fill_rings(&pieces, Rule::NonZero, tol, ci.slot, VERTEX_STROKE, mesh)
@@ -513,6 +517,18 @@ pub fn tessellate_with(items: &[CanvasItem], bucket: i16, joins: bool) -> Vec<Re
 }
 
 const IDENTITY: [f64; 6] = [1.0, 0.0, 0.0, 1.0, 0.0, 0.0];
+
+/// The flattening tolerance in an item's own coordinates that keeps every chord within `tol` after `m`: `tol` divided by
+/// `m`'s largest singular value (its largest stretch; exactly 1 for the identity and for rotations), or `None` when `m`
+/// collapses the plane (nothing to draw).
+fn local_tolerance(m: &[f64; 6], tol: f64) -> Option<f64> {
+    let (a, b, c, d) = (m[0], m[1], m[2], m[3]);
+    let sum = a * a + b * b + c * c + d * d;
+    let det = a * d - b * c;
+    let stretch = ((sum + (sum * sum - 4.0 * det * det).max(0.0).sqrt()) / 2.0).sqrt();
+    let local = tol / stretch;
+    (det.is_finite() && det != 0.0 && local.is_finite() && local > 0.0).then_some(local)
+}
 
 /// Adds one item's triangles to the right record.
 fn emit(
