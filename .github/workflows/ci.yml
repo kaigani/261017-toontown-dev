@@ -965,7 +965,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
       - uses: actions/download-artifact@v7
@@ -986,6 +986,18 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/c41-gui-e2e.py "$app" "desktop-gui/e2e"
+      # M4 C4.2b: the interactive Drawing view in the running application: the canvas at the kernel's revision, every
+      # covered tool through the window equal to the headless path (D-4), captures of what the user sees (D-6), and on
+      # Windows OS-level input (a drag; a user press interrupting an agent gesture, P2).
+      - name: Interactive Drawing view end to end (C4.2b)
+        if: always()
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; VPY=.venv-gui/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/c42-gui-e2e.py "$app" "desktop-gui/c42-e2e"
       - name: MCP conformance over Streamable HTTP against the running application
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then
