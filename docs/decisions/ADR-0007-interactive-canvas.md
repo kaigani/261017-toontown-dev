@@ -207,7 +207,10 @@ On the workstation both back ends meet all three scenes by a wide margin, so the
 the higher worst scene in that run: the builder's run selected WebGPU (262 fps against 188), the reviewer's run of
 round 1 WebGL2 (201 against 162). That is the rule set's intended outcome here: step 1 ranks scorable back ends by
 their worst scene and row 6 holds for both, so either selection is "go as written" and the user's override stays
-available.
+available. The three scenes are static redraws: they exercise neither the tool overlay nor a commit. Review round 2
+found WebGL2 missing the long-stroke commit budget on the workstation (p95 218 ms) while WebGPU met it: WebGL2 uploaded
+and drew the whole overlay again on every frame. It now draws the overlay again only when it changed, and both back
+ends meet every plan §6 bound there (the C4.2b handoff §5), so either selection stays within plan §6.
 
 **The experiments** (receipts: `reviews/evidence/M4-C4.2b/`):
 

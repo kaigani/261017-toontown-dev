@@ -564,8 +564,9 @@ impl UiState {
             || (!self.floating_hidden && a.floating.iter().any(|f| f.panel_id == panel && f.visible))
     }
 
-    /// The active view window (01 §4, M4 C4.1): the view window the user focused last while it is shown, else the
-    /// central view.
+    /// The active view window (01 §4, M4 C4.1): the view window last activated (`view.active.set`, `app.mode.set`)
+    /// while it is shown, else the central view. Focus alone (a float's window taking the OS focus, `window.panel.set`
+    /// with `focus`) moves the focused panel, not the active view.
     #[must_use]
     pub fn active_view(&self) -> &str {
         match self.shell.active_view.as_deref() {
