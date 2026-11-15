@@ -1,3 +1,4 @@
 Cases 1-2: cargo test -p tt-executor --locked --features tt-persist/test-hooks --test c43a_r1_review part_b_composition -- --nocapture
 2 passed; 0 failed. Product unchanged from 3fb27030.
 Cases 3-4: same command, 4 passed; 0 failed.
+Cases 5-6: same command, 6 passed; 0 failed. Near-plane square half-size 5 du preserves a visible fill under the enlarged outline; clipped colour uses a non-background swatch.

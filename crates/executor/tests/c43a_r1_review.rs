@@ -215,7 +215,7 @@ mod scene_tools {
     }
     #[test]
     fn click_short_drag_and_empty_click_are_nonundoable_selection() {
-        // 05:351: more than 3px starts drag. 05:395, Ã‚Â§17: selection,
+        // 05:351: more than 3px starts drag. 05:395, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§17: selection,
         // not a document mutation or an undo step.
         let (h, id) = ready();
         let before = ok(&h, "edit.history.get", json!({}));
@@ -376,5 +376,70 @@ mod part_b_composition {
         visible(&h, peg.as_str().unwrap(), true);
         assert_eq!(ids(&scene(&h)), vec![a.clone()]);
         check(&h, &a, cs[0].1);
+    }
+
+    #[test]
+    fn case5_near_plane() {
+        // 05:240-241 d <=0.1 omitted; SI-149 depth argument is scene Z.
+        // Camera Z=16 looking -Z: Z=15.901 gives d=.099, Z=15.899 gives d=.101.
+        let h = ready();
+        let cs = {
+            let c = c33_support::solids(&h, 3);
+            vec![c[2].clone(), c[1].clone()]
+        };
+        let behind = c33_support::square(&h, "NearClipped", 5., &cs[0].0);
+        let front = c33_support::square(&h, "NearVisible", 5., &cs[1].0);
+        put(&h, &behind, -0.01, 15.901);
+        put(&h, &front, 0.01, 15.899);
+        assert_eq!(ids(&scene(&h)), vec![front.clone()]);
+        check(&h, &front, cs[1].1);
+        let img = c33_support::render(&h, json!({"composition":"camera","scale":0.25}));
+        assert!(!img.rgba.chunks_exact(4).any(|c| c == cs[0].1));
+    }
+    #[test]
+    fn case6_nested_pegs_three_corners() {
+        // 05:314 hierarchy transforms; 02:61 full chain; CV1 placement agrees.
+        let h = ready();
+        let cs = c33_support::solids(&h, 1);
+        let a = c33_support::square(&h, "Chain", 50., &cs[0].0);
+        let outer = ok(&h, "element.create", json!({"type":"peg","name":"Outer"}))["elementIds"][0].clone();
+        let inner = ok(&h, "element.create", json!({"type":"peg","name":"Inner"}))["elementIds"][0].clone();
+        ok(&h, "element.parent.set", json!({"elementIds":[inner],"parentId":outer}));
+        ok(&h, "element.parent.set", json!({"elementIds":[a],"parentId":inner}));
+        for (id, x, y, r, sx, sy) in [(outer, 0.4, 0.2, 23., 1.4, 0.8), (inner, 0.2, -0.3, -11., 0.7, 1.3)] {
+            ok(
+                &h,
+                "anim.transform.set",
+                json!({"nodeIds":[id],"target":"static","position":{"x":x,"y":y},"rotation":r,"scale":{"x":sx,"y":sy}}),
+            );
+        }
+        assert_eq!(ids(&scene(&h)), vec![a.clone()]);
+        let e = check(&h, &a, cs[0].1);
+        let img = c33_support::render(&h, json!({"composition":"camera","scale":0.25}));
+        let world = c33_support::Local::of(0.4, 0.2, 0., 23., 1.4, 0.8, 0.)
+            .then(&c33_support::Local::of(0.2, -0.3, 0., -11., 0.7, 1.3, 0.));
+        for (x, y) in [(-50., -50.), (50., -50.), (-50., 50.)] {
+            let p = point(&e, x, y);
+            let oracle = c33_support::du_to_pixel(&world, (x, y), 1920., 1080.);
+            assert!((p.0 - oracle.0 * 0.25).abs() < 1e-6 && (p.1 - oracle.1 * 0.25).abs() < 1e-6);
+            colour_at(&img, p, cs[0].1);
+            // An edge pixel of this colour must occur within two pixels of
+            // the predicted corner; interior-only proximity is insufficient.
+            let mut edge = false;
+            for dx in -2..=2 {
+                for dy in -2..=2 {
+                    let xx = (p.0.round() as i32 + dx) as u32;
+                    let yy = (p.1.round() as i32 + dy) as u32;
+                    if img.at(xx, yy) == cs[0].1
+                        && [(xx - 1, yy), (xx + 1, yy), (xx, yy - 1), (xx, yy + 1)]
+                            .iter()
+                            .any(|&(nx, ny)| img.at(nx, ny) != cs[0].1)
+                    {
+                        edge = true;
+                    }
+                }
+            }
+            assert!(edge, "no colour edge near {p:?}");
+        }
     }
 }
