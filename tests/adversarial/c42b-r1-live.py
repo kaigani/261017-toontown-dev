@@ -88,7 +88,7 @@ async def main(s,part):
     async def pair(name):
         await settle(s)
         a,meta=await shot(name+'-capture')
-        env=await rc('render.frame.run',{'composition':'activeView','background':'#404040'})
+        env=await rc('render.frame.run',{'composition':'activeView','background':'#F0F0F0'})
         rr=env.get('result') or {}; b=base64.b64decode(rr.pop('png',rr.pop('data','')))
         if b:
             p=O/(name+'-final.png');p.write_bytes(b);e.strip_png(p)
@@ -100,7 +100,7 @@ async def main(s,part):
                 save(name+'-comparison.json',{'size':[wa,ha],'threshold':32,'different':diff,'fraction':diff/(wa*ha)})
         return a,b
     for i,y in enumerate([-50,0,50]):
-        found=(await rc('doc.object.find',{'type':'swatch','name':'Colour '+str(i+2)}))['result']
+        found=(await rc('doc.object.find',{'type':'swatch','name':'Colour '+str(i+22)}))['result']
         its=found.get('items',found.get('matches',[]))
         if its: await rc('colour.current.set',{'colourId':its[0].get('id') or its[0].get('key')})
         result=await rc('draw.stroke.add',{'kind':'pencil','thickness':20,'points':[{'x':-160,'y':y,'pressure':1},{'x':160,'y':y+20,'pressure':1}],'fit':False})
@@ -127,7 +127,7 @@ async def main(s,part):
     hold([(x0+100,y0+100),(x0+220,y0+140)])
     try:
         await settle(s)
-        await shot('c3-6-held')
+        await pair('c3-6-held')
     finally: release()
     await pair('c3-6-after')
     await shot('c3-7-before','window')
@@ -140,6 +140,7 @@ async def main(s,part):
     cap=await e.call(s,'screenshot',{'target':'drawingView','region':{'x':0,'y':0,'w':2049,'h':10}})
     save('c3-8-cap.json',cap)
     save('c3-8-hash.json',{'reported':meta.get('sha256'),'actual':hashlib.sha256(full).hexdigest(),'meta':meta})
+    save('c3-8-display.json',{'os':e.os_windows(e.APP_PID['pid']),'mapping':mapping})
 
 def run():
     deadline=time.monotonic()+180

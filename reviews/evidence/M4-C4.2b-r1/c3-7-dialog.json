@@ -1,0 +1,16 @@
+{
+  "status": "ok",
+  "result": {
+    "width": 1280,
+    "height": 800,
+    "sha256": "3b3d36f092cb0e1eb9a274d29568fe91ffb3590b4222a464d2f90b23c3242198",
+    "target": "window",
+    "viewId": "",
+    "source": "gui",
+    "drawingId": null,
+    "note": "what the user sees: the window's own pixels, captured by the host (D-6)"
+  },
+  "changes": [],
+  "warnings": [],
+  "documentRev": null
+}
