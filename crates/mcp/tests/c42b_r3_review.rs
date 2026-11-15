@@ -5,6 +5,7 @@ use serde_json::{Value, json};
 use support::*;
 #[test]
 fn gesture_scope_on_both_mcp_surfaces() {
+    let mut baseline: Option<Value> = None;
     for input in [false, true] {
         let dir = tmp();
         let h = executor(&dir.join("user"));
@@ -26,6 +27,13 @@ fn gesture_scope_on_both_mcp_surfaces() {
             let r = c.call(tool, args);
             let s = &r["structuredContent"];
             assert_eq!(s["status"], "ok", "{r}");
+            let mut tree = s["result"]["root"].clone();
+            remove_record(&mut tree);
+            if let Some(ref expected) = baseline {
+                assert_eq!(&tree, expected);
+            } else {
+                baseline = Some(tree);
+            }
             let text = s.to_string();
             for word in ["pressure", "tiltX", "modifiers", "dt"] {
                 assert_eq!(text.contains(word), input, "{tool}: {text}");
@@ -36,5 +44,21 @@ fn gesture_scope_on_both_mcp_surfaces() {
         }
         drop(c);
         drop(h);
+    }
+}
+
+fn remove_record(v: &mut Value) {
+    if let Some(Value::String(s)) = v.get_mut("value")
+        && let Ok(mut decoded) = serde_json::from_str::<Value>(s)
+    {
+        if let Some(o) = decoded.as_object_mut() {
+            o.remove("lastGesture");
+        }
+        *s = decoded.to_string();
+    }
+    if let Some(Value::Array(children)) = v.get_mut("children") {
+        for child in children {
+            remove_record(child);
+        }
     }
 }

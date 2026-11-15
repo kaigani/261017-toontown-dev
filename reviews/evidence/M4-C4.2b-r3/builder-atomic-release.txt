@@ -1,0 +1,9 @@
+
+running 1 test
+test canvas::a_failure_after_fast_path_appends_discards_the_staged_commit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 77 filtered out; finished in 0.06s
+
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r3\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 4.83s
+     Running tests\c42.rs (target\release\deps\c42-b6daa2d6635304e2.exe)

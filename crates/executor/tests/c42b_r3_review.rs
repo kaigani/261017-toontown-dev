@@ -114,3 +114,79 @@ fn wire_gesture_refusals_are_atomic() {
     }
     assert!(serde_json::from_str::<Value>(r#"{"x":NaN}"#).is_err());
 }
+
+#[test]
+fn window_and_headless_commit_match_and_agent_keeps_hover() {
+    let a = ready();
+    let b = ready();
+    let q = json!({"view":"drawing","tool":"rectangle","events":[{"type":"down","x":1200,"y":400},{"type":"up","x":1250,"y":450}]});
+    let wa = a.pointer_in_window(tt_executor::Origin::User, q.clone());
+    let hb = b.pointer(tt_executor::Origin::User, q);
+    assert!(wa.is_ok() && hb.is_ok());
+    let wr = wa.result.unwrap();
+    let hr = hb.result.unwrap();
+    assert_eq!(wr["commands"], hr["commands"]);
+    assert_eq!(canonical(&a), canonical(&b));
+    assert!(wr["hover"].get("objects").is_none());
+    assert!(hr["hover"]["objects"].is_array());
+    let who =
+        agent(&[tt_registry::Scope::Read, tt_registry::Scope::Ui, tt_registry::Scope::Edit, tt_registry::Scope::Input]);
+    let e = a.pointer_in_window(who, json!({"view":"drawing","events":[{"type":"hover","x":1225,"y":425}]}));
+    assert!(e.is_ok());
+    assert!(e.result.unwrap()["hover"]["objects"].is_array());
+}
+
+#[test]
+fn serialized_field_absent_null_present_matrix() {
+    use tt_executor::gesture::{PointerEvent, PointerRequest};
+    let decode_event = |v: Value| serde_json::from_str::<PointerEvent>(&v.to_string());
+    let base = json!({"type":"hover","x":1,"y":2});
+    for (field, present) in [
+        ("pressure", json!(0.5)),
+        ("tiltX", json!(12.0)),
+        ("tiltY", json!(-3.0)),
+        ("button", json!("left")),
+        ("dt", json!(5.0)),
+        ("wheelDelta", json!(-1.0)),
+    ] {
+        let absent = serde_json::to_value(decode_event(base.clone()).unwrap()).unwrap();
+        let mut n = base.clone();
+        n[field] = Value::Null;
+        assert_eq!(absent, serde_json::to_value(decode_event(n).unwrap()).unwrap(), "{field}");
+        let mut v = base.clone();
+        v[field] = present.clone();
+        assert_eq!(serde_json::to_value(decode_event(v).unwrap()).unwrap()[field], present);
+    }
+    for field in ["type", "x", "y"] {
+        let mut v = base.clone();
+        v.as_object_mut().unwrap().remove(field);
+        assert!(decode_event(v.clone()).is_err());
+        let mut v = base.clone();
+        v[field] = Value::Null;
+        assert!(decode_event(v.clone()).is_err());
+    }
+    let mut v = base;
+    v["modifiers"] = Value::Null;
+    assert!(decode_event(v.clone()).is_err());
+    v["modifiers"] = json!(["shift"]);
+    assert!(decode_event(v).is_ok());
+    let base = json!({"view":"drawing","events":[]});
+    let decode = |v: Value| serde_json::from_str::<PointerRequest>(&v.to_string());
+    for (field, present) in [("space", json!("view")), ("pointerType", json!("pen")), ("tool", json!("brush"))] {
+        assert!(decode(base.clone()).is_ok());
+        let mut v = base.clone();
+        v[field] = Value::Null;
+        assert_eq!(decode(v).is_ok(), field == "tool");
+        let mut v = base.clone();
+        v[field] = present;
+        assert!(decode(v).is_ok());
+    }
+    for field in ["view", "events"] {
+        let mut v = base.clone();
+        v.as_object_mut().unwrap().remove(field);
+        assert!(decode(v).is_err());
+        let mut v = base.clone();
+        v[field] = Value::Null;
+        assert!(decode(v).is_err());
+    }
+}

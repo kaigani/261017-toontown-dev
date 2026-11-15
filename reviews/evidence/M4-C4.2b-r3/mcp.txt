@@ -1,0 +1,9 @@
+
+running 1 test
+test gesture_scope_on_both_mcp_surfaces ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.07s
+
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r3\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.55s
+     Running tests\c42b_r3_review.rs (target\debug\deps\c42b_r3_review-3121e686db889bdf.exe)
