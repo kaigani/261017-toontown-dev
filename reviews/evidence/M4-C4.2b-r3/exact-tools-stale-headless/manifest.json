@@ -1,0 +1,15 @@
+{
+  "kind": "toontown.c42.gesture-equivalence",
+  "platform": "win32",
+  "seconds": 9.8,
+  "rows": 8,
+  "input": [
+    "os"
+  ],
+  "failures": [
+    "three-way rectangle (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step: {\"sameCommands\": true, \"sameContent\": true, \"sameLabels\": false, \"statuses\": [\"ok\", \"ok\", \"ok\"], \"labels\": [[\"Rectangle Tool\"], [\"Pencil Tool\"], [\"Pencil Tool\"]]}",
+    "three-way ellipse (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step: {\"sameCommands\": true, \"sameContent\": true, \"sameLabels\": false, \"statuses\": [\"ok\", \"ok\", \"ok\"], \"labels\": [[\"Ellipse Tool\"], [\"Pencil Tool\"], [\"Pencil Tool\"]]}",
+    "three-way line (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step: {\"sameCommands\": true, \"sameContent\": true, \"sameLabels\": false, \"statuses\": [\"ok\", \"ok\", \"ok\"], \"labels\": [[\"Line Tool\"], [\"Pencil Tool\"], [\"Pencil Tool\"]]}",
+    "three-way polyline (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step: {\"sameCommands\": true, \"sameContent\": true, \"sameLabels\": false, \"statuses\": [\"ok\", \"ok\", \"ok\"], \"labels\": [[\"Polyline Tool\"], [\"Pencil Tool\"], [\"Pencil Tool\"]]}"
+  ]
+}
