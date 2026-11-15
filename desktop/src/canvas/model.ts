@@ -84,6 +84,8 @@ export class CanvasModel {
   onScene: ((ms: number) => void) | null = null;
   private sceneAskedAt = 0;
   private readonly requestedAt = new Map<string, number>();
+  /** The last applied scene, as text: an identical answer changes nothing (no redraw, no reload). */
+  private sceneText = '';
 
   constructor(viewId: string, host: CanvasHost, sink: ResidentSink, clock: Clock, budgetMs = 4) {
     this.viewId = viewId;
@@ -184,7 +186,11 @@ export class CanvasModel {
         if (this.generation !== generation) {
           this.generation = generation;
           this.dropAll();
+          this.sceneText = '';
         }
+        const text = JSON.stringify(scene);
+        if (text === this.sceneText && this.scene) return;
+        this.sceneText = text;
         this.scene = scene;
         const shown = new Set(scene.entries.map(residentKey));
         for (const id of [...this.resident.keys()]) {

@@ -207,6 +207,27 @@ describe('the canvas pull loop', () => {
     expect([...model.resident.keys()]).toEqual([id(1)]);
   });
 
+  it('an identical scene answer changes nothing (no version bump, so no redraw)', async () => {
+    const { host, model } = setup();
+    model.frame();
+    host.scenes[0]?.resolve(scene(1, [[0, 1]]));
+    await flush();
+    model.frame();
+    const v = model.version;
+    model.markDirty();
+    model.frame();
+    host.scenes[1]?.resolve(scene(1, [[0, 1]]));
+    await flush();
+    model.frame();
+    expect(model.version).toBe(v);
+    model.markDirty();
+    model.frame();
+    host.scenes[2]?.resolve(scene(1, [[0, 2]]));
+    await flush();
+    model.frame();
+    expect(model.version).toBe(v + 1);
+  });
+
   it('F1: a frame applies work within its budget and carries the rest; nothing is dropped', async () => {
     // Each upload costs 3 ms of the fake clock; the budget is 4 ms.
     const { host, sink, model } = setup((clock) => {
