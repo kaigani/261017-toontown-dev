@@ -269,7 +269,9 @@ pub(crate) fn selection_geometry(cx: &Cx, d: &Drawing) -> Result<Option<Selectio
         let b = all.get(id).copied().flatten().or_else(|| {
             let l = tt_vector::drawing::locate(d, id)?;
             matches!(l.kind, tt_vector::drawing::ObjectKind::Layer | tt_vector::drawing::ObjectKind::Group)
-                .then(|| tt_vector::drawing::node_at(d, &l.pointer).and_then(|n| tt_vector::drawing::node_bounds(n, false)))
+                .then(|| {
+                    tt_vector::drawing::node_at(d, &l.pointer).and_then(|n| tt_vector::drawing::node_bounds(n, false))
+                })
                 .flatten()
         });
         if let Some(b) = b {

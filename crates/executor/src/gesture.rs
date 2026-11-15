@@ -719,7 +719,10 @@ fn handle_drag(
     if !(scale.0.abs() >= MIN_SCALE && scale.1.abs() >= MIN_SCALE && scale.0.is_finite() && scale.1.is_finite()) {
         return Err(CommandError::with_details(
             "arg.invalid",
-            format!("the handle drag would scale by {} x {}, below {MIN_SCALE}; nothing was committed", scale.0, scale.1),
+            format!(
+                "the handle drag would scale by {} x {}, below {MIN_SCALE}; nothing was committed",
+                scale.0, scale.1
+            ),
             json!({ "pointer": "/events", "scale": { "x": scale.0, "y": scale.1 } }),
         ));
     }
