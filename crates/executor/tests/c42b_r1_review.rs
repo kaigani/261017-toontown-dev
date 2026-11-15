@@ -127,3 +127,38 @@ fn large_drawing_budget_receipt() {
         p.bytes.len()
     );
 }
+
+mod part_b_scene {
+    use super::*;
+    #[test]
+    fn defaults_grid_background_context_and_camera_only_top() {
+        let h = ready();
+        let s = h.canvas_scene("drawingView").unwrap();
+        assert_eq!(s.entries.len(), 1);
+        assert_eq!(s.entries[0].role, "current");
+        assert_eq!(s.background, [240, 240, 240, 255]);
+        assert!(!s.grid.visible);
+        for ty in ["normal", "field12", "field16"] {
+            for overlay in [false, true] {
+                ok(&h, "drawAid.grid.set", json!({"visible":true,"type":ty,"overlay":overlay}));
+                let s = h.canvas_scene("drawingView").unwrap();
+                assert_eq!(s.grid.ty, ty);
+                assert_eq!(s.grid.overlay, overlay);
+            }
+        }
+        ok(&h, "drawAid.background.set", json!({"colour":"#102030FF"}));
+        assert_eq!(h.canvas_scene("drawingView").unwrap().background, [16,32,48,255]);
+        let before = h.canvas_scene("drawingView").unwrap();
+        for enabled in [true, false] {
+            ok(&h, "drawAid.currentOnTop.set", json!({"enabled":enabled}));
+            assert_eq!(h.canvas_scene("drawingView").unwrap(), before);
+        }
+        ok(&h, "app.context.set", json!({"frame":10}));
+        let next = h.canvas_scene("drawingView").unwrap();
+        assert_ne!(next.entries[0].drawing_id, s.entries[0].drawing_id);
+        let payload = h.canvas_drawing(None, 1, 0, Default::default()).unwrap();
+        assert_eq!(next.entries[0].rev, payload.rev);
+        assert_eq!(next.entries[0].drawing_id, payload.drawing_id);
+
+    }
+}
