@@ -1,0 +1,9 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 21.34s
+     Running tests\c42b_r2_review.rs (target\debug\deps\c42b_r2_review-3b4f8de2b20fa2bc.exe)
+
+running 1 test
+test locally_valid_node_with_duplicate_id_discards_staged_drawing ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
