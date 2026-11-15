@@ -112,3 +112,102 @@ Where this section and §1 to §5 differ, this section holds.
     the selection untouched and the overlay empty.
   - F7 (D-7b): an engine restart mid-gesture discards the gesture, and the new generation reloads every resident
     drawing.
+
+## 7. Amendment after review round 1: the selection overlay (C42B-R1-22; before the code)
+
+02 §4.2 layer 9 starts with "selection outline and handles", and 02 §7.1.1 says "the selection shows a bounding box with
+handles". The round-1 build drew only the gesture in progress. This section is the design; where it and §1 to §6
+differ, it holds.
+
+### 7.1 Where the selection geometry comes from
+
+- **The kernel computes it**, in drawing space, as part of the `canvas_scene` answer (note 1 §9): a `selection` member,
+  `null` when the current drawing has no selection, else:
+  - `objects`: each selected object's bounds (`[minX, minY, maxX, maxY]`), from the same `selectables` walk and bounds
+    that `draw.selection.get` and the Select tool's own hit test use (`draw_select`);
+  - `bounds`: the selection's bounding box (`draw_select::selection_bounds`, the box `draw.selection.get` answers);
+  - `pivot`: the transform pivot, the bounding box's centre (02 §13.5: `draw.transform.apply`'s default pivot; 02 §8
+    line 828);
+  - `drawingPivot`: the current drawing's pivot (`draw.pivot.set`; 02 §7.1.1 "the drawing pivot is shown");
+  - `points`: the anchors of the point selection (`selectedPoints` of `draw.selection.get`), as drawing points.
+- **Announced** by what already makes the canvas pull its scene: every engine event marks the scene dirty (§1), and
+  `draw.selection.changed`, every document change and every undo or redo are events. Mapping changes need no new
+  answer: the window maps the drawing-space geometry through the mapping it already follows (`shell.view`,
+  `draw.viewMapping.get`), every frame the mapping changed.
+- **No static redraw for a selection change.** The model keeps the selection apart from the static composition: a scene
+  answer that differs only in its selection updates the overlay, not layers 1-8 (the cached static target is reused,
+  06 §6.9 overlay buffering).
+
+### 7.2 How the window draws it (layer 9, view space)
+
+- Built in view pixels from the drawing-space geometry and the current mapping, so it stays 1 view pixel wide at every
+  zoom and follows rotation (a rotated view shows the bounding box as a rotated rectangle):
+  - each selected object's bounds: a 1-pixel outline in the accent colour (SI-138; an object's outline is its bounds
+    box in C4.2, SI-141);
+  - the selection's bounding box: a 1-pixel accent outline;
+  - eight handles, four corners and four side midpoints: 8-pixel accent squares with a light centre (SI-138);
+  - the drawing pivot: an accent ring of the pivot hit radius (6 view pixels, SI-131) with a cross;
+  - selected anchors: 5-pixel accent squares.
+- **When it shows** (02 §1.3): with the Select tool active, everything above. With Contour Editor or Perspective active,
+  the objects' outlines and the selected anchors without the bounding-box handles (their own handles come with their
+  gestures, SI-129). With any other tool the selection is kept and nothing of it is drawn ("switching to a creation tool
+  keeps the selection but hides its handles").
+- It is drawn under the gesture in progress (the drag's own feedback is on top).
+- **Never in exported pixels** (06 §6.10): the overlay exists only in the window's renderer; `draw.drawing.render`,
+  `render.frame.run` and the headless screenshot never see it. The attached `inspect.screenshot` shows it because it is
+  the window's own capture (D-6), like the onion skin and the grid.
+- The selection display options of `drawAid.selectionDisplay.*` (02 §10.7: outline on selection, box highlighting,
+  selection always visible) are Camera View options; the Drawing view does not use them (C4.3).
+
+### 7.3 The handles and what dragging each does (02 §7.1.1)
+
+| Where the drag starts (view pixels) | Gesture | Command |
+|---|---|---|
+| within 6 px of the drawing pivot (SI-131 item 2) | move the drawing pivot | `draw.pivot.set {point}` (built) |
+| within 6 px of a corner handle | scale both axes about the opposite corner; the constrain modifier keeps proportions | `draw.transform.apply {scale: {x, y}, pivot}` |
+| within 6 px of a side handle | scale the one axis across that side about the opposite side | `draw.transform.apply {scale: {x, 1} or {1, y}, pivot}` |
+| outside the bounding box, 6 to 18 px from a corner ("just outside a corner") | rotate about the bounding box's centre | `draw.transform.apply {rotate, pivot}` |
+| inside the bounding box | move (alternate: a copy) | `draw.transform.apply {translate, copy}` (built) |
+| elsewhere | click selects, drag marquee, alternate-drag lasso | `draw.selection.set` (built) |
+
+- The tests are made in that order, so the pivot wins over a handle at the same place, and a handle over the box's
+  inside. All radii are view pixels, the convention of SI-131 item 2: a handle is hit like the pivot, by distance from
+  its centre, so one 6-pixel radius serves both and the 8-pixel square drawn lies inside the hit disc.
+- **Scale factors** are measured in drawing space along the bounding box's axes: `s = (release - pivot) / (press -
+  pivot)` per axis, from the press and release samples (the samples between only draw the overlay). With the constrain
+  modifier, a corner uses the factor of larger magnitude on both axes. A factor whose magnitude is under 0.001 is
+  refused by the gesture (`arg.invalid`, nothing committed): a degenerate scale would collapse the objects.
+- **Rotation angle:** the signed angle, counter-clockwise in drawing space (02 §2: y up), from the press to the release
+  about the box's centre, in degrees.
+- **Skew:** 02 §7.1.1 defines no skew handle; `draw.transform.apply {skew}` stays a numeric command and no gesture
+  produces it.
+- **Cursor feedback** ("the pointer indicates the resize direction in 15° steps"): the window sets the platform's resize
+  cursor of the nearest of its eight directions over a handle and a move cursor inside the box, from the same geometry;
+  platforms offer no 15° cursor set (SI-141).
+- **Undo labels:** the handle gestures produce `draw.transform.apply`, whose label 02 §13.5 gives as "Move/Scale/Rotate
+  Object" (and "Copy Object"), while 02 §7.1.1 lists "Move Object", "Scale Object", "Rotate Object": the registry's
+  label is kept and the conflict is recorded in SI-141.
+- **Built in C4.2 through the kernel's gesture code** (`gesture.rs`, `select`): the pivot drag, move and copy (already
+  built), corner and side scale, rotate. The hit test runs in the kernel, on the selection it computes, for the window
+  path and the headless `pointer` alike (G2, D-4); the window's own geometry only draws the handles and picks the
+  cursor.
+- **Recorded in SI-129 with owner C4.3:** Perspective's envelope handles (02 §7.1.3), Reposition All Drawings (§7.1.4),
+  the Contour Editor's anchors, handles and segment drags (§7.1.2), and the Text tool's frame.
+- **No live preview in C4.2:** while a handle is dragged the overlay shows the drag; the objects move when the committed
+  revision is drawn, like the Grabber (residual risk, owner C4.3).
+
+### 7.4 Tests
+
+- Kernel (`c42/canvas.rs`): the scene's `selection` for no selection, one object, several objects, a point selection,
+  and after undo; its bounds equal `draw.selection.get`'s.
+- Kernel (`c42/canvas.rs`): one case per row of §7.3's table (the command a drag starting there produces, with its
+  parameters), the constrained corner, the degenerate scale, and the order at overlapping places.
+- Front end (`selection.test.ts`): the overlay follows a selection change and a mapping change (zoom, pan, rotation),
+  shows handles only for the Select tool and nothing for a creation tool; a scene answer differing only in its
+  selection leaves the static version unchanged.
+- Running application (`scripts/c42-gui-e2e.py`, both OSes): selecting an object makes the overlay appear, asserted
+  through the canvas summary (the selection and its handle count) and through a real capture of the view in which the
+  handle squares are present at the handle positions and absent after deselecting.
+- Equivalence (D-4): one row per handle gesture built (corner scale, side scale, constrained corner, rotate, pivot) in
+  the e2e table: the window path, the headless `pointer` and the direct command produce equal parameters, equal content
+  and one undo step with the same label.

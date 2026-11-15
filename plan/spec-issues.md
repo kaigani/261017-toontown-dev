@@ -1659,3 +1659,33 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   cells), written by the canvas after a measurement and read at its next start. The launch flag `--canvas-backend`
   overrides both (measurements).
 - **Question:** add the keys to 01 §7.3, or name another home for the choice.
+
+## SI-141 — Drawing view feedback and window-routing details the spec leaves open (found in M4 C4.2b round 1; interim)
+
+- **Sections:** 02 §4.2 (layer 9: selection outline and handles), §7.1.1 (the Select tool's box, handles, rotation
+  "just outside a corner", the resize pointer "in 15° steps", the undo labels), §13.5 (`draw.transform.apply` and its
+  label), 11 §7.6 (`pointer`), 11 §10 (`ui.viewNotFound`), rulings D-7a and D-4, plan §5 (gesture equivalence through
+  the real window).
+- **Problem:** building the selection overlay and its handles, answering routed agent gestures whose window goes away,
+  playing agent gestures in a window, and exposing what the window collected need values the spec does not give.
+- **Interim decisions (frame-loop note §7; conservative choices, ruling D-10):**
+  1. A selected object's outline is its bounds box (02 §4.2 names a "selection outline" without its shape); the
+     selection's bounding box and handles are 02 §7.1.1's.
+  2. A handle is hit within 6 view pixels of its centre, the drawing pivot's radius (SI-131 item 2); the pivot is
+     tested first, then corners, sides, the rotation zone, the box's inside.
+  3. "Just outside a corner" is outside the box and within 18 view pixels (three hit radii) of a corner.
+  4. A corner scales about the opposite corner and a side about the opposite side; rotation turns about the box's
+     centre (02 §8 line 828's pivot); the constrain modifier gives a corner the factor of larger magnitude on both
+     axes; a factor below 0.001 in magnitude is refused (`arg.invalid`, nothing committed).
+  5. The resize pointer is the platform's cursor of the nearest of eight directions: no platform offers a 15° set.
+  6. The handle gestures produce `draw.transform.apply`, labelled "Move/Scale/Rotate Object" as 02 §13.5 says;
+     02 §7.1.1 lists "Move Object", "Scale Object" and "Rotate Object". The registry's label is kept.
+  7. A routed agent gesture whose window is destroyed or reloaded, or whose canvas reports `rect: null`, answers
+     `ui.viewNotFound` with `details: {reason: "windowClosed", viewId}` at once, nothing committed (D-7a).
+  8. An agent gesture is played in the window at no fewer than 16 events per frame and over at most 120 frames (about
+     two seconds at 60 Hz), so its simulated time is never waited for (P3).
+  9. The window keeps a record of its last committed gesture (tool, view, pointer kind, the events as committed with
+     their pressure, tilt, time and modifiers, the commands produced, the answer) in the canvas's UI-tree value, which
+     `inspect_ui` serves; the events are kept whole up to 4,096 and the record says how many there were (plan §5's
+     equivalence through the real window needs what the window collected; a longer gesture is recorded by count).
+- **Question:** confirm each, or state the values in 02 and 11.
