@@ -123,10 +123,19 @@ pub(crate) fn image_to_camera(view: &CameraView, w: u32, h: u32) -> (Matrix, f64
 /// # Errors
 /// `no.project`, `render.noScene`; `render.noCamera` without a current camera (SI-147); the evaluator's refusals.
 pub(crate) fn chain(cx: &Cx, w: &ViewWindow) -> Result<Chain, CommandError> {
+    chain_at(cx, w, cx.app().frame)
+}
+
+/// [`chain`] at scene frame `frame` (the camera and every element at that frame): the Camera view as it shows that
+/// frame, for a call that addresses it (SI-146).
+///
+/// # Errors
+/// As [`chain`].
+pub(crate) fn chain_at(cx: &Cx, w: &ViewWindow, frame: u32) -> Result<Chain, CommandError> {
     let doc = cx.document()?;
     let scene = current_scene(cx)?;
     let camera = doc.scene(&scene).and_then(|s| s.current_camera_id().clone()).ok_or_else(|| no_camera(&scene))?;
-    let frame = cx.app().frame.max(1);
+    let frame = frame.max(1);
     let (width, height) = crate::commands::render::output_size(doc, None, None, 1.0)?;
     let mut ev = evaluator(doc, "mapping the Camera view");
     let mut view = ev.camera(&camera, f64::from(frame)).map_err(eval_error)?;
@@ -269,8 +278,10 @@ pub(crate) fn scale_of(m: &Matrix) -> f64 {
 /// How a call's points reach drawing units (02 §13.1 item 5; views note §6): the matrix from the given space to the
 /// current drawing's units (`None` for drawing space) and the view pixels per drawing unit its view-pixel tolerances
 /// are divided by (1 without a view). `drawing`: as given; `view`: the Drawing view's mapping, or in a Camera view the
-/// current element's plane through the camera and the view transform; `scene`: the current element's plane at the
-/// frame (SI-146). Top and Side views refuse (M6 C6.1).
+/// addressed element's plane through the camera and the view transform at the addressed frame; `scene`: the addressed
+/// element's plane at that frame (SI-146). The addressed element and frame are the running command's
+/// ([`crate::addressing::target`]), else the current element at `frame` (else the current frame). Top and Side views
+/// refuse (M6 C6.1).
 ///
 /// # Errors
 /// `arg.invalid` for an unknown space or without a current element; `view.notFound`; `command.notImplemented` for a
@@ -281,6 +292,21 @@ pub(crate) fn addressing(
     view: Option<&str>,
     frame: Option<u32>,
 ) -> Result<(Option<Matrix>, f64), CommandError> {
+    addressing_for(cx, space, view, frame, cx.addressed())
+}
+
+/// [`addressing`] for an explicit addressed element and frame (`None`: the current element), as availability asks it
+/// of a reference before any call runs.
+///
+/// # Errors
+/// As [`addressing`].
+pub(crate) fn addressing_for(
+    cx: &Cx,
+    space: &str,
+    view: Option<&str>,
+    frame: Option<u32>,
+    target: Option<&(Id, u32)>,
+) -> Result<(Option<Matrix>, f64), CommandError> {
     let window_scale = |w: &ViewWindow| -> Result<(Option<Matrix>, f64), CommandError> {
         match w.ty {
             ViewType::Drawing => {
@@ -288,8 +314,13 @@ pub(crate) fn addressing(
                 Ok((Some(m), crate::commands::view::pixels_per_du(w)))
             }
             ViewType::Camera => {
-                let c = chain(cx, w)?;
-                let e = current_element(cx)?;
+                let (e, c) = match target {
+                    Some((e, f)) => (e.clone(), chain_at(cx, w, *f)?),
+                    None => {
+                        let c = chain(cx, w)?;
+                        (current_element(cx)?, c)
+                    }
+                };
                 let to_view = element_to_view(cx, &c, &e)?.ok_or_else(|| behind(&e))?;
                 let inv = invert(&to_view).ok_or_else(|| behind(&e))?;
                 Ok((Some(inv), scale_of(&to_view)))
@@ -304,8 +335,10 @@ pub(crate) fn addressing(
         },
         "view" => window_scale(resolve_view(cx, view)?),
         "scene" => {
-            let e = current_element(cx)?;
-            let f = frame.unwrap_or(cx.app().frame);
+            let (e, f) = match target {
+                Some((e, f)) => (e.clone(), *f),
+                None => (current_element(cx)?, frame.unwrap_or(cx.app().frame)),
+            };
             let m = plane_xy(cx, &e, f)?;
             let inv = invert(&m).ok_or_else(|| {
                 CommandError::with_details(

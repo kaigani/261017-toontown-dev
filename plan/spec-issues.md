@@ -1263,7 +1263,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   (unreachable through the scale and skew limits) would be `inspect.singularTransform`. Inspection frames are integers,
   as the registry rows bind them (`frame?: int`); a fractional frame is a typed `arg.invalid` (C3.3 round 1).
   `inspect.frame.describe` takes the same `include`/`exclude` as `render.frame.run` and describes that render (SI-107).
-- **Question:** none.
+- **`pointer` (M4 C4.3a round 1):** 11 line 354 gives `pointer` a `space: "camera"` without defining it, and 05 §1.3
+  lines 62-71 list "Camera output (render) space" (top-left origin, y down, output pixels) among the coordinate spaces.
+  `pointer` uses this issue's `camera` (fields from the camera centre on the table plane, y up, roll applied), the same
+  name and meaning as `inspect.coordinates.convert`; output pixels are `image` here. Pointer note item 4 states it.
+- **Question:** should `pointer`'s `camera` space mean camera output pixels (05 §1.3's render space) rather than this
+  issue's centred fields?
 
 ## SI-110 — generic `render_frame` default width (found in M3 C3.3 round 1; decided by ruling)
 
@@ -1760,7 +1765,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   approximation otherwise), so no homography exists; a plane is drawn exactly when that mapping exists (its reference
   points in front of the near plane), in renders and in the view alike. Curves are flattened in drawing units to the
   view tolerance divided by the largest singular value of the full matrix (C42B-R1-01's rule); a drawing shown by
-  several occurrences is resident once, at the zoom bucket of its largest occurrence.
+  several occurrences is resident once, at the zoom bucket of its largest occurrence. A drawing tool's gesture, and a
+  point-taking command's Camera-view points, on an element whose plane has no mapping refuse `inspect.behindCamera`
+  and create nothing; availability gives the same refusal (C4.3a round 1, C43A-R1-03). Scene points keep SI-146's rule,
+  which is defined there.
 - **Question:** should either consumer use the true projection for rotated planes, and how should a plane crossing the
   near plane be clipped?
 
@@ -1772,7 +1780,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Interim decision:** the point of the addressed element's plane whose scene X and Y are the given ones, through the
   element's world matrix at the frame (the command's `frame`, else the current frame); the Drawing view's existing
   scene space (the current element's transform at the current frame) is the same rule.
-- **Question:** confirm, or define the plane or depth a scene point means.
+- **Which element (C4.3a round 1, C43A-R1-02):** the element is resolved before any conversion, from the call's own
+  target (02 §13.1 item 4, the C4.2a ruling's order): with `drawingId`, the element showing that drawing (the
+  call's `elementId` if it shows it, else the current element if it does, else the first element of the drawing's
+  bank in canonical order); else with a qualified object id (`<drawingId>/<objectId>`), the same for that drawing;
+  else `elementId`; else the current element. The frame is the call's `frame`, else the current frame. The same
+  element and frame give a Camera view's view-space points (the element's plane through the camera, both at that
+  frame: the view as it shows that frame) and the view-pixel tolerances.
+- **Question:** confirm, or define the plane or depth a scene point means, and which element a `drawingId` shared by a
+  clone group means.
 
 ## SI-147 — a Camera view without a current camera (found in M4 C4.3; interim)
 
@@ -1822,7 +1838,45 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   nothing clears the selection; a drag from empty space selects every element whose box touches its rectangle. A
   drag of several nodes is one `anim.transform.set` for all of them: a move uses the first selected node's depth and
   parent to turn the view delta into a parent-space delta; a scale handle's factor (about the opposite corner or
-  side, as in the Drawing view) and a rotation (about the box's centre) are applied relatively to each node about its
-  own pivots; a skew handle on a horizontal side skews by the angle whose tangent is its horizontal drag over half the
+  side, as in the Drawing view; a side handle sends only the axis it changes, C4.3a round 1) and a rotation (about the
+  box's centre) are applied relatively to each node about its own pivots; a skew handle on a horizontal side skews by the angle whose tangent is its horizontal drag over half the
   box's height (vertical sides: vertical drag over half the width).
 - **Question:** confirm the furniture and how a multi-node drag combines, or give them.
+
+## SI-151 — the Transform tool's temporary Skew in the Camera view (found in M4 C4.3a round 1, C43A-R1-21; interim)
+
+- **Sections:** 05 §5.0 line 394 ("While the *alternate modifier* is held with the Transform tool active, the Skew tool
+  is active"), line 393 (temporary select, which lists Skew), line 398 (keyed channels), §5.4 (Skew: top/bottom side
+  handles apply horizontal shear, the `skew` channel; left/right side handles apply a vertical shear converted to
+  rotation + skew + scale by the §2.5 decomposition, keying those channels), §2.5, §17 line 1135.
+- **Problem:** §5.4 names the Skew tool's side handles but not where they sit, what a press elsewhere does, how the
+  vertical shear's decomposition applies to several nodes with different transforms, or which modifier wins when the
+  temporary-select and alternate modifiers are both held.
+- **Interim decision:** the modifiers are read at the press. The Transform tool with the alternate modifier runs the
+  Skew tool for that gesture; the stored scene tool stays Transform (`anim.tool.get` unchanged, no
+  `anim.tool.changed`). With the temporary-select modifier also held the Select tool wins (line 393 lists Skew among
+  the tools it overrides). The Skew tool's handles are the selection box's side midpoints and the skew handles outside
+  them (SI-150's positions); its corners, rotation zone and pivot marker do nothing. A drag from the top or bottom side
+  is a horizontal shear: a relative `skew`, keyed at the current frame, by the angle whose tangent is the horizontal
+  drag over half the box's height (as SI-150). A drag from the left or right side is a vertical shear y' = y + k·x in
+  the parent's axes, k the vertical drag over half the box's width (up is positive on the right side, down on the left):
+  the first selected node's local R(θ)·K(κ)·S(sx, sy) is premultiplied by the shear and decomposed by §2.5, and the
+  change is applied relatively to every selected node (rotation + Δθ, skew + Δκ, scale × the two ratios), keying only
+  the channels whose value changes. It is exact for one node; several nodes with different transforms each receive the
+  first node's change. A click selects as the Transform tool's click; a drag that starts anywhere else commits
+  nothing. The label follows SI-144 from the parameters: "Skew Element" for a horizontal shear, "Transform Element"
+  for a vertical shear (several groups change).
+- **Question:** confirm, or define the Skew tool's handles, how a vertical shear combines over several nodes, and its
+  label.
+
+## SI-152 — the scene tool and the tool family a new session starts with (found in M4 C4.3a round 1; interim)
+
+- **Sections:** 05 lines 29-31 (scene and drawing tools remembered separately), §5.0 ("Exactly one scene tool is
+  active"), 01 §4 (staging mode: the Camera view is its main view), A (`anim.tool.get`).
+- **Problem:** the spec does not say which scene tool is active in a new session, nor whether the Camera view starts
+  with the scene tools or the drawing tools (SI-148's family).
+- **Interim decision:** a new session's scene tool is Select (`anim.tool.get` answers `{tool: "select"}`) and the
+  Camera view runs the scene tools until a `tool.active.set` (SI-148): staging is the Camera view's main use (01 §4).
+  The drawing tool keeps its own default (`tool.active.get`, C4.1). Both are session UI state: neither is saved in the
+  project nor restored at the next start.
+- **Question:** confirm, or give the start-up tool and family (and whether they persist across sessions).

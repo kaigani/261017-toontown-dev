@@ -59,9 +59,10 @@ generation and colour table behave as in the Drawing view (C4.2b).
   outside the frame: the Camera view's occurrences are the renderer's drawn and out-of-frame entries, back to front,
   each matrix equal (to 1e-9) to the element's plane through the camera computed by `inspect.coordinates.convert`, a
   path apart from the render list. (Bit equality holds by construction: the answer copies `to_pixel`.)
-- **CV2** A drawing shown by several occurrences appears once among the payloads the canvas must load. (In this
-  model a drawing belongs to one element, so occurrences never share a drawing; the test checks the load set has no
-  duplicates.)
+- **CV2** A drawing shown by several occurrences appears once among the payloads the canvas must load. Elements made
+  by `element.clone` share a drawing bank (04 lines 429-431), so two occurrences can show one drawing, each through its
+  own matrix; the test builds that case and checks the load set names the drawing once. (The C4.3a note said a drawing
+  belongs to one element; that was wrong, round 1.)
 - **CV3** The canvas receives every matrix; no window code computes a projection (C4.3b: a source check; C4.3a:
   the scene answer carries the matrices and the decoder validates them, R3-R4).
 - **CV4** No overlay reaches a render: `render.frame.run` of a scene with a selection and pivots gives the same bytes

@@ -445,7 +445,9 @@ pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, Command
 pub fn to_command(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, CommandError> {
     let tool = g.tool.as_str();
     // The scene tools in a Camera view (gestures note §7).
-    if tool == crate::scene_gesture::SCENE_SELECT || tool == crate::scene_gesture::SCENE_TRANSFORM {
+    if [crate::scene_gesture::SCENE_SELECT, crate::scene_gesture::SCENE_TRANSFORM, crate::scene_gesture::SCENE_SKEW]
+        .contains(&tool)
+    {
         return crate::scene_gesture::commands(cx, g);
     }
     if !COVERED.contains(&tool) {
@@ -1045,11 +1047,46 @@ pub(crate) fn run(
                 let mods = Mods::of(&e.modifiers);
                 // The mapping is taken at the press (02 §13.3) and kept for the gesture; a Camera view's is the current
                 // element's plane through the camera (02 line 61).
-                let matrix = if camera {
+                // A drawing tool needs it: on an element whose plane the camera cannot project (at or behind the near
+                // plane) the press is refused and nothing is created (C43A-R1-03; SI-145). The scene tools and the
+                // navigation tools work in view pixels and never use it.
+                let press = if camera {
                     core.with_lent_session(|cx| crate::scene_gesture::press_matrix(cx, &w))
-                        .unwrap_or([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+                        .unwrap_or_else(|| Err(CommandError::internal("the session is unavailable")))
                 } else {
-                    crate::commands::view::view_to_drawing(&w)
+                    Ok(crate::commands::view::view_to_drawing(&w))
+                };
+                let unmapped = [1.0, 0.0, 0.0, 1.0, 0.0, 0.0];
+                let tool_now = match pending.as_ref() {
+                    Some(p) if p.0.tool == "polyline" => p.0.tool.clone(),
+                    _ => String::new(),
+                };
+                let new_tool = if tool_now.is_empty() {
+                    let active = core.session().map(|s| s.ui.drawing().active_tool.clone()).unwrap_or_default();
+                    let scene = core
+                        .session()
+                        .filter(|s| camera && s.ui.shell().scene_family && req.pointer_type != PointerKind::PenEraser)
+                        .map(|s| s.ui.shell().scene_tool.clone());
+                    let tool = match scene.as_deref() {
+                        // 05 §5.0 line 393: the temporary-select modifier makes the Transform tool the Select tool
+                        // (it also overrides the temporary Skew, which line 393 lists).
+                        Some("transform") if mods.temp_select => crate::scene_gesture::SCENE_SELECT.to_owned(),
+                        // 05 §5.0 line 394: the alternate modifier makes it the Skew tool for this gesture; the
+                        // stored scene tool stays Transform (SI-151).
+                        Some("transform") if mods.alternate => crate::scene_gesture::SCENE_SKEW.to_owned(),
+                        Some("transform") => crate::scene_gesture::SCENE_TRANSFORM.to_owned(),
+                        Some(_) => crate::scene_gesture::SCENE_SELECT.to_owned(),
+                        None => effective_tool(&active, req.pointer_type, mods),
+                    };
+                    Some(tool)
+                } else {
+                    None
+                };
+                let acting = new_tool.as_deref().unwrap_or(&tool_now);
+                let matrix = if acting.starts_with("scene:") || matches!(acting, "zoom" | "grabber") {
+                    press.unwrap_or(unmapped)
+                } else {
+                    press?
                 };
                 let sample = Sample {
                     v: vp,
@@ -1066,19 +1103,7 @@ pub(crate) fn run(
                         p.2 = Some(matrix);
                     }
                     _ => {
-                        let active = core.session().map(|s| s.ui.drawing().active_tool.clone()).unwrap_or_default();
-                        let scene = core
-                            .session()
-                            .filter(|s| {
-                                camera && s.ui.shell().scene_family && req.pointer_type != PointerKind::PenEraser
-                            })
-                            .map(|s| s.ui.shell().scene_tool.clone());
-                        let tool = match scene.as_deref() {
-                            // 05 §5.0: the temporary-select modifier makes the Transform tool the Select tool.
-                            Some("transform") if !mods.temp_select => crate::scene_gesture::SCENE_TRANSFORM.to_owned(),
-                            Some(_) => crate::scene_gesture::SCENE_SELECT.to_owned(),
-                            None => effective_tool(&active, req.pointer_type, mods),
-                        };
+                        let tool = new_tool.unwrap_or_default();
                         let g = Gesture { tool, view_id: view_id.clone(), strokes: Vec::new(), double_click: false };
                         pending = Some((g, Some(stroke), Some(matrix)));
                     }
@@ -1147,13 +1172,16 @@ pub(crate) fn run(
         {
             return Ok(out);
         }
+        // In a Camera view the pointer's drawing point is on the current element's plane; none when that plane cannot
+        // be projected (C43A-R1-03).
         let hover_drawing = if camera {
-            core.with_lent_session(|cx| crate::shell::apply(&crate::scene_gesture::press_matrix(cx, &w), vp))
-                .unwrap_or(vp)
+            core.with_lent_session(|cx| crate::scene_gesture::press_matrix(cx, &w).ok())
+                .flatten()
+                .map_or(Value::Null, |m| pt(crate::shell::apply(&m, vp)))
         } else {
-            to_drawing(&w, vp)
+            pt(to_drawing(&w, vp))
         };
-        out.hover = Some(json!({ "viewId": view_id, "view": pt(vp), "drawing": pt(hover_drawing) }));
+        out.hover = Some(json!({ "viewId": view_id, "view": pt(vp), "drawing": hover_drawing }));
     }
     // The final hover names the objects under the pointer as `inspect.hitTest` reports them (pointer note §1.3).
     if hover_objects

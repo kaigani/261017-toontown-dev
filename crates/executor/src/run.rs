@@ -403,6 +403,8 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
     validate_params(id, &entry.params_schema(), &params)?;
     // The common addressing parameters of the point-taking `draw.*` commands (02 §13.1 item 5): view-space points
     // become drawing-space points here, before the precheck and the handler.
+    let target = crate::addressing::target(&*cx, id, &params)?;
+    cx.set_addressed(target);
     let params = crate::addressing::normalise(&*cx, id, params)?;
     if let Some(c) = entry.command {
         if c.decl.needs_project && !cx.has_project() {

@@ -724,6 +724,30 @@ pub(crate) struct ViewSize {
     agent_only = "agents convert between view pixels and drawing units",
 )]
 pub(crate) fn draw_view_mapping_get(cx: &mut Cx, p: ViewMappingParams) -> Result<ViewMappingResult, CommandError> {
+    // A Camera view's mapping (02 lines 101-104; C43A-R1-01): the current drawing's plane through the element's full
+    // scene transform and the camera at the current frame, then the view transform: the matrices the scene answer,
+    // the gestures and the addressing parameters use (`crate::camera_view`).
+    if let Ok(w) = cx.ui().shell().view(&p.view)
+        && w.ty == crate::shell::ViewType::Camera
+    {
+        let w = w.clone();
+        let chain = crate::camera_view::chain(cx, &w)?;
+        let e = crate::camera_view::current_element(cx)?;
+        let to_view =
+            crate::camera_view::element_to_view(cx, &chain, &e)?.ok_or_else(|| crate::camera_view::behind(&e))?;
+        let to_drawing = crate::camera_view::invert(&to_view).ok_or_else(|| crate::camera_view::behind(&e))?;
+        let doc = cx.document()?;
+        let drawing_id = cx.app().current_drawing(doc).map(|d| d.as_str().to_owned());
+        let t = w.transform();
+        return Ok(ViewMappingResult {
+            drawing_id,
+            drawing_to_view: to_view,
+            view_to_drawing: to_drawing,
+            zoom: t.zoom,
+            rotation: t.rotation_degrees,
+            view_size: ViewSize { width: pixels(w.size.width), height: pixels(w.size.height) },
+        });
+    }
     // The one mapping of the Drawing view window (design note 6; M4 C4.2): `drawing` names the Drawing view, a view id
     // names that window. Headless, the Drawing view is 1920 x 1080 pixels at 100 % (SI-063, SI-069) until navigated.
     let w = super::view::drawing_view(cx, Some(p.view.as_str())).map_err(|e| {
@@ -742,15 +766,19 @@ pub(crate) fn draw_view_mapping_get(cx: &mut Cx, p: ViewMappingParams) -> Result
     } else {
         None
     };
-    let px = |v: f64| if v.is_finite() && v >= 0.0 && v <= f64::from(u32::MAX) { v.round() as u32 } else { 0 };
     Ok(ViewMappingResult {
         drawing_id,
         drawing_to_view: to_view,
         view_to_drawing: to_drawing,
         zoom: t.zoom,
         rotation: t.rotation_degrees,
-        view_size: ViewSize { width: px(size.width), height: px(size.height) },
+        view_size: ViewSize { width: pixels(size.width), height: pixels(size.height) },
     })
+}
+
+/// A view dimension in whole pixels (0 when not representable).
+fn pixels(v: f64) -> u32 {
+    if v.is_finite() && v >= 0.0 && v <= f64::from(u32::MAX) { v.round() as u32 } else { 0 }
 }
 
 // ----- draw.inspectorPreview.set ---------------------------------------------------------------------------------------

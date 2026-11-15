@@ -341,36 +341,113 @@ fn an_unreleased_scene_drag_commits_nothing() {
     assert_eq!(canonical(&h), before);
 }
 
-/// G10 (02 §7, line 61, line 413): each drawing tool's gesture in the Camera view produces the command, parameters (in
-/// drawing units) and 02 §7 label of the same gesture made in the Drawing view.
+/// How a G10 row's gesture is made from its drawing-unit points.
+#[derive(Clone, Copy)]
+enum Shape {
+    /// One press, moves through the points, a release.
+    Drag,
+    /// A click at the first point.
+    Click,
+    /// A click at each point, then a double click at the last (the Polyline, 02 §7.2.5).
+    Clicks,
+}
+
+fn gesture(shape: Shape, pts: &[(f64, f64)]) -> Vec<Value> {
+    match shape {
+        Shape::Drag => drag(pts, &[]),
+        Shape::Click => click(pts[0], &[]),
+        Shape::Clicks => {
+            let mut e: Vec<Value> = pts.iter().flat_map(|p| click(*p, &[])).collect();
+            let l = pts[pts.len() - 1];
+            e.push(json!({ "type": "doubleClick", "x": l.0, "y": l.1, "modifiers": [] }));
+            e
+        }
+    }
+}
+
+/// A rectangle of Bob's current drawing, unpainted (for the Paint tools).
+fn outlined(h: &ExecutorHandle) {
+    ok(
+        h,
+        "draw.rectangle.add",
+        json!({ "from": { "x": 300, "y": 300 }, "to": { "x": 400, "y": 360 }, "layer": "new" }),
+    );
+}
+
+/// The same rectangle painted (for Unpaint, the Dropper and the cuts).
+fn painted(h: &ExecutorHandle) {
+    outlined(h);
+    ok(h, "colour.paint.apply", json!({ "points": [{ "x": 350, "y": 330 }] }));
+}
+
+/// G10 (02 §7, line 61, line 413): every drawing tool's gesture in the Camera view (each C4.2 tool but the two
+/// navigation tools, which navigate the view they are used in) produces the command, the parameters (in drawing units)
+/// and the 02 §7 label of the same gesture made in the Drawing view.
 #[test]
 fn g10_drawing_tools_in_the_camera_view_equal_the_drawing_view() {
-    let tools = [
-        ("brush", "Brush Tool"),
-        ("pencil", "Pencil Tool"),
-        ("rectangle", "Rectangle Tool"),
-        ("ellipse", "Ellipse Tool"),
-        ("line", "Line Tool"),
+    let line = [(-60.0, 20.0), (-20.0, 45.0), (30.0, 10.0)];
+    // Across the painted rectangle (300..400 x 300..360), so a cut divides it.
+    let across = [(350.0, 380.0), (420.0, 380.0), (420.0, 280.0), (350.0, 280.0)];
+    let lasso = [(280.0, 380.0), (420.0, 380.0), (420.0, 280.0), (280.0, 280.0)];
+    let none: fn(&ExecutorHandle) = |_| {};
+    // Each row: the tool, its gesture, its drawing-unit points, a setup, and 02 §7's label with its line (`None`: not
+    // an undo step: the Dropper sets the current colour, a Select rubber band selects).
+    type G10Row = (&'static str, Shape, Vec<(f64, f64)>, fn(&ExecutorHandle), Option<&'static str>);
+    let rows: Vec<G10Row> = vec![
+        ("brush", Shape::Drag, line.to_vec(), none, Some("Brush Tool")), // 02 line 495
+        ("pencil", Shape::Drag, line.to_vec(), none, Some("Pencil Tool")), // line 504
+        ("rectangle", Shape::Drag, line.to_vec(), none, Some("Rectangle Tool")), // line 513
+        ("ellipse", Shape::Drag, line.to_vec(), none, Some("Ellipse Tool")), // line 520
+        ("line", Shape::Drag, line.to_vec(), none, Some("Line Tool")),   // line 543
+        ("polyline", Shape::Clicks, line.to_vec(), none, Some("Polyline Tool")), // line 537
+        ("stroke", Shape::Drag, line.to_vec(), none, Some("Stroke Tool")), // line 614
+        ("eraser", Shape::Drag, line.to_vec(), none, Some("Eraser Tool")), // line 639
+        ("cutter", Shape::Drag, across.to_vec(), painted, Some("Cutter Tool")), // line 647
+        ("scissor", Shape::Drag, vec![(350.0, 380.0), (420.0, 280.0)], painted, Some("Scissor Tool")), // line 654
+        ("paint", Shape::Click, vec![(350.0, 330.0)], outlined, Some("Paint")), // line 564
+        ("unpaint", Shape::Click, vec![(350.0, 330.0)], painted, Some("Unpaint")), // line 573
+        ("paintUnpainted", Shape::Drag, lasso.to_vec(), outlined, Some("Paint Unpainted")), // line 582
+        ("dropper", Shape::Click, vec![(350.0, 330.0)], painted, None),
+        // The fixture drawing's two stroke ends of the `colour.gap.close` example.
+        ("closeGap", Shape::Drag, vec![(-48.0, -50.0), (2.0, 2.0)], none, Some("Close Gap")), // line 603
+        ("select", Shape::Drag, vec![(-150.0, 150.0), (150.0, -150.0)], none, None),
     ];
-    let pts = [(-60.0, 20.0), (-20.0, 45.0), (30.0, 10.0)];
-    for (tool, label) in tools {
+    for (tool, shape, pts, setup, label) in rows {
         let (cam, drw) = (ready(), ready());
+        setup(&cam);
+        setup(&drw);
+        let (steps_a, steps_b) = (steps(&cam), steps(&drw));
         let m = bob_to_view(&cam);
         let view_pts: Vec<(f64, f64)> = pts.iter().map(|p| apply(&m, p.0, p.1)).collect();
-        let a = pointer(&cam, Some(tool), drag(&view_pts, &[]));
-        // The headless Drawing view's default mapping (SI-069): view = (x + 960, 540 − y).
+        // `select` names the scene Select in a Camera view (SI-148): the drawing Select is chosen first.
+        let a = if tool == "select" {
+            ok(&cam, "tool.active.set", json!({ "toolId": "select" }));
+            pointer(&cam, None, gesture(shape, &view_pts))
+        } else {
+            let a = pointer(&cam, Some(tool), gesture(shape, &view_pts));
+            assert_eq!(
+                a["commands"][0]["commandId"], "tool.active.set",
+                "{tool}: a drawing tool id selects the drawing tool"
+            );
+            a
+        };
+        // The headless Drawing view's default mapping (SI-069): view = (x + 960, 540 - y).
         let dv: Vec<(f64, f64)> = pts.iter().map(|p| (p.0 + 960.0, 540.0 - p.1)).collect();
-        let env = drw.pointer(Origin::User, json!({ "view": "drawingView", "tool": tool, "events": drag(&dv, &[]) }));
+        let env =
+            drw.pointer(Origin::User, json!({ "view": "drawingView", "tool": tool, "events": gesture(shape, &dv) }));
+        assert!(env.is_ok(), "{tool}: {env:?}");
         let b = env.result.unwrap();
         let (ca, cb) = (last(&a), last(&b));
-        assert_eq!(
-            a["commands"][0]["commandId"], "tool.active.set",
-            "{tool}: a drawing tool id selects the drawing tool"
-        );
         assert_eq!(ca["commandId"], cb["commandId"], "{tool}");
         assert!(params_close(&ca["params"], &cb["params"]), "{tool}: {} vs {}", ca["params"], cb["params"]);
-        assert_eq!(last_label(&cam), json!(label), "{tool}: 02 §7");
-        assert_eq!(last_label(&drw), json!(label), "{tool}");
+        match label {
+            Some(l) => {
+                assert_eq!(last_label(&cam), json!(l), "{tool}: 02 §7");
+                assert_eq!(last_label(&drw), json!(l), "{tool}");
+                assert_eq!((steps(&cam), steps(&drw)), (steps_a + 1, steps_b + 1), "{tool}: one undo step each");
+            }
+            None => assert_eq!((steps(&cam), steps(&drw)), (steps_a, steps_b), "{tool}: no undo step"),
+        }
     }
 }
 
@@ -379,8 +456,10 @@ fn params_close(a: &Value, b: &Value) -> bool {
     match (a, b) {
         (Value::Number(x), Value::Number(y)) => (x.as_f64().unwrap() - y.as_f64().unwrap()).abs() < 1e-6,
         (Value::Array(x), Value::Array(y)) => x.len() == y.len() && x.iter().zip(y).all(|(p, q)| params_close(p, q)),
+        // `view` names the view a gesture was made in (its tolerances), so it is the one member that differs.
         (Value::Object(x), Value::Object(y)) => {
-            x.len() == y.len() && x.iter().all(|(k, v)| k == "view" || y.get(k).is_some_and(|w| params_close(v, w)))
+            let keys = |o: &serde_json::Map<String, Value>| o.keys().filter(|k| *k != "view").count();
+            keys(x) == keys(y) && x.iter().all(|(k, v)| k == "view" || y.get(k).is_some_and(|w| params_close(v, w)))
         }
         _ => a == b,
     }

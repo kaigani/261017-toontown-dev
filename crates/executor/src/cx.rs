@@ -179,6 +179,9 @@ pub struct Cx {
     lineage: BTreeMap<String, Vec<String>>,
     /// Drawings an import created: taken as they are (no noding), as on load.
     verbatim: BTreeSet<Id>,
+    /// The element and frame the running command's scene and Camera-view points address (SI-146), resolved from its
+    /// own target before any conversion; `None` for other commands (the current element applies).
+    addressed: Option<(Id, u32)>,
 }
 
 /// Millisecond base of the ULID time part of transaction IDs (2025-10-15T00:00:00Z); the time part is a logical
@@ -235,6 +238,7 @@ impl Cx {
             settled_doc: None,
             lineage: BTreeMap::new(),
             verbatim: BTreeSet::new(),
+            addressed: None,
         }
     }
 
@@ -578,6 +582,16 @@ impl Cx {
 
     pub(crate) fn label(&self) -> Option<&str> {
         self.label.as_deref()
+    }
+
+    /// Sets the element and frame the running command's points address (SI-146; `None`: the current element).
+    pub(crate) fn set_addressed(&mut self, target: Option<(Id, u32)>) {
+        self.addressed = target;
+    }
+
+    /// The element and frame the running command's points address, when it named one.
+    pub(crate) fn addressed(&self) -> Option<&(Id, u32)> {
+        self.addressed.as_ref()
     }
 
     // ----- references ------------------------------------------------------------------------------------------

@@ -440,8 +440,9 @@ pub struct Availability {
 
 /// Why a command reference cannot run now (ruling O-23; reviews/M4-design-availability.md): the pipeline's static
 /// checks in their order (11 §8: registered, not an event, a project when it needs one, the declared enablement rule,
-/// implemented), then, for a complete reference (`precheck`), the command's declared precheck, the same function the
-/// pipeline runs before the handler. Nothing else of the pipeline runs; a panicking precheck is contained.
+/// implemented), then, for a complete reference, the common addressing check of the point-taking commands
+/// (`crate::addressing::check`, the conversion the pipeline makes first) and the command's declared precheck, the same
+/// function the pipeline runs before the handler. Nothing else of the pipeline runs; a panicking precheck is contained.
 fn unavailable(
     registry: &tt_registry::Registry,
     cx: &crate::cx::Cx,
@@ -464,6 +465,12 @@ fn unavailable(
     }
     if let tt_registry::Status::NotImplemented { owner } = entry.status() {
         return Some(format!("arrives with {owner}"));
+    }
+    // The common addressing check of the point-taking commands (C43A-R1-03): the conversion the call makes first.
+    if let Some(params) = params
+        && let Err(e) = crate::addressing::check(cx, command_id, params)
+    {
+        return Some(e.message);
     }
     let (Some(pre), Some(params)) = (entry.command.and_then(|c| c.decl.precheck), params) else { return None };
     let any: &dyn std::any::Any = cx;

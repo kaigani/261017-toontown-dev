@@ -129,3 +129,26 @@ ruling D-23):**
 - **G10** Each drawing tool's gesture in the Camera view produces the command, parameters (in drawing space) and 02 §7
   label of the same gesture in the Drawing view, as a full table over C4.2's tools.
 - **G11** `anim.tool.set` never changes `tool.active.get`, and `tool.active.set` never changes `anim.tool.get`.
+
+**Round 1 (C4.3a; `reviews/M4-C4.3a-r1-response.md`):**
+- **The temporary Skew** (05 §5.0 line 394; C43A-R1-21; SI-151): the Transform tool with the alternate modifier held at
+  the press runs the Skew tool for that gesture; the temporary-select modifier wins over it (line 393). A drag from the
+  top or bottom side is `{target: key, skew}`, from the left or right side the vertical shear of 05 §5.4 decomposed by
+  §2.5 (`rotation`, `skew`, `scale`, only the changed channels); any other drag commits nothing; a click selects. The
+  stored scene tool stays Transform.
+- **A side handle sends only its axis** (05 line 398; C43A-R1-22): a horizontal side `scale {x}`, a vertical side
+  `scale {y}`, a corner both. `anim.transform.set` keys every channel it is given (A row 613: "key animated values"), so
+  the gesture, not the command, omits the axis it did not change; the direct command keeps its meaning.
+- **A move's delta is a vector** (ruling D-28's note): the view-pixel delta goes through the linear parts of the chain
+  (view to output pixels, output pixels to camera space at the node's depth, camera to world, world to parent), never
+  as the difference of two converted points, so a round drag gives a round delta.
+- **A drawing tool on an element whose plane cannot be projected** (at or behind the near plane, or on the camera's
+  plane; C43A-R1-03, SI-145): the press refuses the `pointer` call with `inspect.behindCamera` and nothing is created;
+  the scene tools and the navigation tools, which work in view pixels, are not affected. The final hover's drawing
+  point is null there.
+- **`view` in a Camera-view gesture** (beside ruling D-16): D-16 states the view whenever the zoom is not exactly
+  100 %, because at 100 % in the Drawing view a view pixel is a drawing unit. In the Camera view a view pixel is never a
+  drawing unit (the camera projection and the element's transform are part of the mapping), so a Camera-view gesture
+  states `view` at every zoom, 100 % included, and its view-pixel tolerances are taken through that view.
+- **Start-up** (SI-152): a new session's scene tool is Select and the Camera view runs the scene tools until a
+  `tool.active.set`.

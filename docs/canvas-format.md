@@ -296,6 +296,13 @@ Form 1.0's checks (every member's type, the known enumerations) stay. Form 1.1 a
 - **R5** With `viewType: "camera"`: `overlays` is present; its boxes have `min ≤ max` on both axes and finite values;
   its points and corners are finite; `selectionDisplay` has the three booleans.
 - **R6** With `viewType: "drawing"` (or absent): no entry has `matrix`, and `camera` and `overlays` are absent.
+- **R7** Every member §11.2-§11.4 gives a domain is checked against it (C4.3a round 1, C43A-R1-20): an entry's
+  `opacity` is in 0-1; every RGBA8 (`background`, an entry's `tint`, each value of `colours`) has four integers 0-255;
+  `generation` and every `rev` are unsigned 64-bit integers; `grid.type` and an entry's `role` are from their
+  enumerations. With `viewType: "camera"`: a `role` is `"current"` or `"staticUnder"`; `drawingPivot` and `selection`
+  are null (or absent); with a camera, `overlays.cameraFrame` is `[0, 0, width, height]` of `camera.size`.
+
+`viewId`, `paletteStamp` and the booleans have a type and no narrower domain (a float window's id is any view id).
 
 A refused answer is not applied: the canvas keeps its previous picture and asks again (§8's rule for payloads).
 
@@ -310,5 +317,6 @@ matrices, which R6 in a 1.1 reader refuses.
 
 `desktop/src/canvas/testdata/scene/`: valid answers (a Drawing view answer of each form; a Camera view answer with
 several occurrences of one drawing, a rolled camera, overlays; a Camera view without a camera) with what they decode
-to, and one corrupt answer per rule R1-R6. The Rust side writes the valid answers from the kernel's types
+to, and one corrupt answer per rule R1-R6 and per member R7 names (and per R5 member: corners, boxes, the display
+flags); the test names the field each is refused for. The Rust side writes the valid answers from the kernel's types
 (`crates/executor/tests/c43.rs`) and fails when they change; Vitest decodes every file.

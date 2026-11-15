@@ -591,12 +591,32 @@ def commands(fns, files):
                     pre = next((f for f in fns if f.name == name and f.file == rel), None)
             out.append((cid.group(1), handler, pre))
             STATIC[cid.group(1)] = static_codes(attr, fns)
+            if cid.group(1) in addressing_commands():
+                STATIC[cid.group(1)] |= ADDRESSING_CODES
     return sorted(out, key=lambda c: c[0])
 
 
 #: The codes each command's static checks return (`needs_project`, its enablement rule): availability evaluates those
 #: checks for every reference, so a handler's refusal with one of these codes is answered before the handler runs.
 STATIC = {}
+#: The refusal of the common addressing check (crates/executor/src/addressing.rs `check`, C43A-R1-03) that availability
+#: evaluates for every reference of a point-taking command before its precheck: the addressed element's plane cannot be
+#: projected into the named Camera view. (Its other codes are the parameter refusals and the Top/Side owner, which
+#: keep their rows.)
+ADDRESSING_CODES = {"inspect.behindCamera"}
+
+
+def addressing_commands():
+    """The point-taking commands of addressing.rs's `FIELDS` and `COLOUR` tables."""
+    text = (SRC / "addressing.rs").read_text(encoding="utf-8")
+    ids = set()
+    for name in ("FIELDS", "COLOUR"):
+        m = re.search(r"const " + name + r":.*?\];", text, re.S)
+        if m:
+            ids |= set(re.findall(r'"((?:draw|colour)\.[A-Za-z.]+)"', m.group(0)))
+    return ids
+
+
 #: Enablement rules that refuse without an open project although their function does not return `project.none`
 #: (a current scene exists only in an open project).
 RULES_NEEDING_A_PROJECT = {"HAS_SCENE"}

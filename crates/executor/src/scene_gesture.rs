@@ -9,7 +9,7 @@ use tt_vector::geom::P;
 
 use crate::camera_view::{self, Chain, Matrix};
 use crate::commands::anim_common::{eval_error, evaluator};
-use crate::commands::render_list::{self, Overrides, Request, Verdict};
+use crate::commands::render_list::{self, Overrides, RenderList, Request, Verdict};
 use crate::cx::Cx;
 use crate::gesture::{Gesture, HANDLE_PX, InputSpace, ROTATE_PX, Sample};
 use crate::shell::Point;
@@ -17,6 +17,8 @@ use crate::shell::Point;
 /// The gesture tool name of a scene tool (distinct from the drawing tools': `select` is both, SI-148).
 pub(crate) const SCENE_SELECT: &str = "scene:select";
 pub(crate) const SCENE_TRANSFORM: &str = "scene:transform";
+/// The Transform tool's temporary Skew (05 §5.0 line 394; SI-151): a gesture tool, never a stored scene tool.
+pub(crate) const SCENE_SKEW: &str = "scene:skew";
 
 /// The pick tolerance in view pixels (05 §3.5).
 pub(crate) const PICK_PX: f64 = 4.0;
@@ -59,8 +61,9 @@ fn rect_of(m: &Matrix, r: &tt_vector::geom::Rect) -> [f64; 4] {
     [b0[0], b0[1], b1[0], b1[1]]
 }
 
-/// The elements the view shows (drawn or around the frame), front-most last, with their boxes in view pixels.
-fn shown(cx: &Cx, chain: &Chain) -> Result<Vec<Shown>, CommandError> {
+/// The frame's render list through the view's camera: built once per gesture and shared by the furniture and the
+/// pick (each node evaluated once).
+fn render_list(cx: &Cx, chain: &Chain) -> Result<RenderList, CommandError> {
     let doc = cx.document()?;
     let overrides = Overrides::default();
     let req = Request {
@@ -73,16 +76,19 @@ fn shown(cx: &Cx, chain: &Chain) -> Result<Vec<Shown>, CommandError> {
         overrides: &overrides,
     };
     let mut ev = evaluator(doc, "picking in the Camera view");
-    let list = render_list::build(doc, &req, &mut ev)?;
-    Ok(list
-        .entries
+    render_list::build(doc, &req, &mut ev)
+}
+
+/// The elements the view shows (drawn or around the frame), front-most last, with their boxes in view pixels.
+fn shown(chain: &Chain, list: &RenderList) -> Vec<Shown> {
+    list.entries
         .iter()
         .filter(|en| matches!(en.verdict, Verdict::Drawn | Verdict::OutOfFrame))
         .filter_map(|en| {
             let (m, b) = (en.to_pixel?, en.bounds?);
             Some(Shown { id: en.id.clone(), view_box: rect_of(&camera_view::compose(&chain.output_to_view, &m.0), &b) })
         })
-        .collect())
+        .collect()
 }
 
 fn selected(cx: &Cx) -> Vec<Id> {
@@ -95,29 +101,17 @@ fn locked(cx: &Cx, id: &Id) -> bool {
 
 /// The front-most unlocked element under view point `v` within [`PICK_PX`] (05 §3.5; SI-150), from one render list
 /// (each node evaluated once per gesture).
-fn pick(cx: &Cx, chain: &Chain, v: Point) -> Result<Option<Id>, CommandError> {
+fn pick(cx: &Cx, chain: &Chain, list: &RenderList, v: Point) -> Result<Option<Id>, CommandError> {
     let inv = camera_view::invert(&chain.output_to_view)
         .ok_or_else(|| crate::commands::common::invalid("/view", "the Camera view's transform is singular"))?;
     let doc = cx.document()?;
-    let overrides = Overrides::default();
-    let req = Request {
-        scene: &chain.scene,
-        frame: chain.frame,
-        camera: None,
-        width: chain.width,
-        height: chain.height,
-        only: None,
-        overrides: &overrides,
-    };
-    let mut ev = evaluator(doc, "picking in the Camera view");
-    let list = render_list::build(doc, &req, &mut ev)?;
     let ring = (0..8).map(|k| {
         let a = f64::from(k) * std::f64::consts::FRAC_PI_4;
         Point { x: v.x + PICK_PX * a.cos(), y: v.y + PICK_PX * a.sin() }
     });
     for q in std::iter::once(v).chain(ring) {
         let o = camera_view::apply(&inv, q);
-        for h in crate::commands::inspect::hits_in(cx, doc, &list, P::new(o.x, o.y), true)? {
+        for h in crate::commands::inspect::hits_in(cx, doc, list, P::new(o.x, o.y), true)? {
             if let Ok(id) = Id::parse(h.element_id())
                 && !locked(cx, &id)
             {
@@ -214,11 +208,19 @@ fn parent_delta(cx: &Cx, chain: &Chain, node: &Id, a: Point, b: Point) -> Result
     let f = f64::from(chain.frame);
     let world = ev.world(node, f).map_err(eval_error)?;
     let depth = chain.view.project(world.translation()).depth;
+    if depth <= tt_anim::camera::NEAR_PLANE {
+        return Err(camera_view::behind(node));
+    }
     let inv = camera_view::invert(&chain.output_to_view)
         .ok_or_else(|| crate::commands::common::invalid("/view", "the Camera view's transform is singular"))?;
-    let behind = || camera_view::behind(node);
-    let wa = camera_view::output_to_scene(chain, camera_view::apply(&inv, a), depth).ok_or_else(behind)?;
-    let wb = camera_view::output_to_scene(chain, camera_view::apply(&inv, b), depth).ok_or_else(behind)?;
+    // The delta is a vector: it goes through the linear parts only (view -> output pixels -> camera space at the
+    // node's depth, 05 §2.6 -> world -> parent), never as the difference of two converted points, so a round drag
+    // gives a round delta (ruling D-28's note).
+    let (dx, dy) = (b.x - a.x, b.y - a.y);
+    let out = (inv[0] * dx + inv[2] * dy, inv[1] * dx + inv[3] * dy);
+    let k = 2.0 * depth * tt_anim::num::tan_deg(chain.view.fov / 2.0) / chain.view.width;
+    let camera_delta = [out.0 * k, -out.1 * k, 0.0];
+    let to_world = chain.view.view.inverse().ok_or_else(|| camera_view::behind(node))?;
     let parent = ev.parent_world(node, f).map_err(eval_error)?.inverse().ok_or_else(|| {
         CommandError::with_details(
             "anim.valueOutOfRange",
@@ -226,8 +228,18 @@ fn parent_delta(cx: &Cx, chain: &Chain, node: &Id, a: Point, b: Point) -> Result
             json!({ "nodeId": node.as_str() }),
         )
     })?;
-    let (pa, pb) = (parent.apply(wa), parent.apply(wb));
-    Ok((pb[0] - pa[0], pb[1] - pa[1]))
+    let p = linear(&parent, linear(&to_world, camera_delta));
+    Ok((p[0], p[1]))
+}
+
+/// A 4 x 4 matrix's linear part applied to a vector (row-major, as `Mat4::apply` without the translation).
+fn linear(m: &tt_anim::matrix::Mat4, v: [f64; 3]) -> [f64; 3] {
+    let m = &m.0;
+    [
+        m[0] * v[0] + m[1] * v[1] + m[2] * v[2],
+        m[4] * v[0] + m[5] * v[1] + m[6] * v[2],
+        m[8] * v[0] + m[9] * v[1] + m[10] * v[2],
+    ]
 }
 
 /// The command of a scene-tool gesture in a Camera view (gestures note §7's table), or none.
@@ -235,16 +247,30 @@ fn parent_delta(cx: &Cx, chain: &Chain, node: &Id, a: Point, b: Point) -> Result
 /// # Errors
 /// The chain's and the evaluator's refusals; `inspect.behindCamera`.
 pub(crate) fn commands(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, CommandError> {
-    let transform_tool = g.tool == SCENE_TRANSFORM;
+    let skew_tool = g.tool == SCENE_SKEW;
+    // The Skew tool keys as the Transform tool does (05 §5.0 line 397: a keyframing tool).
+    let transform_tool = g.tool == SCENE_TRANSFORM || skew_tool;
     let Some(st) = g.strokes.first() else { return Ok(None) };
     let (Some(p0), Some(pn)) = (st.samples.first().copied(), st.samples.last().copied()) else { return Ok(None) };
     let w = cx.ui().shell().view(&g.view_id)?.clone();
     let chain = camera_view::chain(cx, &w)?;
     let sel = selected(cx);
-    let all = shown(cx, &chain)?;
+    let list = render_list(cx, &chain)?;
+    let all = shown(&chain, &list);
     let union = union(all.iter().filter(|s| sel.contains(&s.id)).map(|s| s.view_box));
     let is_click = st.is_click();
     let extend = st.mods.constrain;
+    // The Skew tool (SI-151): a drag from a side (its midpoint or the skew handle outside it) shears; any other drag
+    // commits nothing; a click selects as the Transform tool's click does.
+    if skew_tool && !is_click {
+        let Some(b) = union else { return Ok(None) };
+        let d = Drag { cx, chain: &chain, transform_tool, sel: &sel, b, p0, pn, constrain: st.mods.constrain };
+        return match handle_at(&b, None, p0.v) {
+            Some(Handle::Side(i) | Handle::Skew(i)) if i % 2 == 0 => Ok(Some(handle_drag(&d, Handle::Skew(i))?)),
+            Some(Handle::Side(i) | Handle::Skew(i)) => vertical_shear(&d, i),
+            _ => Ok(None),
+        };
+    }
     if !is_click && let Some(b) = union {
         let pivot = if transform_tool { pivot_marker(cx, &chain, &sel[0])? } else { None };
         if let Some(h) = handle_at(&b, pivot, p0.v) {
@@ -262,7 +288,7 @@ pub(crate) fn commands(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, 
         }
     }
     let ids: Vec<String> = if is_click {
-        pick(cx, &chain, p0.v)?.map(|id| vec![id.as_str().to_owned()]).unwrap_or_default()
+        pick(cx, &chain, &list, p0.v)?.map(|id| vec![id.as_str().to_owned()]).unwrap_or_default()
     } else {
         // A rubber band: every unlocked element whose box touches the rectangle (05 §5.0; SI-150).
         let r = [p0.v.x.min(pn.v.x), p0.v.y.min(pn.v.y), p0.v.x.max(pn.v.x), p0.v.y.max(pn.v.y)];
@@ -338,13 +364,16 @@ fn handle_drag(d: &Drag<'_>, h: Handle) -> Result<(String, Value), CommandError>
             Ok(transform(transform_tool, chain.frame, sel, json!({ "scale": { "x": sx, "y": sy }, "relative": true })))
         }
         Handle::Side(i) => {
-            let (sx, sy) = match i {
-                0 => (1.0, factor(p0.v.y, pn.v.y, b[3])),
-                2 => (1.0, factor(p0.v.y, pn.v.y, b[1])),
-                1 => (factor(p0.v.x, pn.v.x, b[0]), 1.0),
-                _ => (factor(p0.v.x, pn.v.x, b[2]), 1.0),
+            // A side changes one axis, and only that axis is sent: a keyframing drag keys only the channels it changes
+            // (05 §5.0 line 398, `scale.x`/`scale.y`; C43A-R1-22). `anim.transform.set` keys every channel it is
+            // given (A: "key animated values"), so the gesture omits the other axis.
+            let scale = match i {
+                0 => json!({ "y": factor(p0.v.y, pn.v.y, b[3]) }),
+                2 => json!({ "y": factor(p0.v.y, pn.v.y, b[1]) }),
+                1 => json!({ "x": factor(p0.v.x, pn.v.x, b[0]) }),
+                _ => json!({ "x": factor(p0.v.x, pn.v.x, b[2]) }),
             };
-            Ok(transform(transform_tool, chain.frame, sel, json!({ "scale": { "x": sx, "y": sy }, "relative": true })))
+            Ok(transform(transform_tool, chain.frame, sel, json!({ "scale": scale, "relative": true })))
         }
         Handle::Skew(i) => {
             let (half, d) = if i % 2 == 0 {
@@ -356,6 +385,67 @@ fn handle_drag(d: &Drag<'_>, h: Handle) -> Result<(String, Value), CommandError>
             Ok(transform(transform_tool, chain.frame, sel, json!({ "skew": deg, "relative": true })))
         }
     }
+}
+
+/// The Skew tool's vertical shear from the left (`i` = 3) or right (`i` = 1) side (05 §5.4; SI-151): y' = y + k·x in
+/// the parent's axes, k the vertical drag over half the box's width (up on the right side, down on the left, is
+/// positive). The first selected node's R(θ)·K(κ)·S(sx, sy) premultiplied by the shear is decomposed by 05 §2.5 and the
+/// change applied relatively to the selection, keying only the channels whose value changes; `None` when nothing
+/// changes.
+fn vertical_shear(d: &Drag<'_>, i: usize) -> Result<Option<(String, Value)>, CommandError> {
+    let Drag { cx, chain, transform_tool, sel, p0, pn, .. } = *d;
+    let b = &d.b;
+    let half = (b[2] - b[0]) / 2.0;
+    let dy = if i == 1 { p0.v.y - pn.v.y } else { pn.v.y - p0.v.y };
+    let k = if half > 1e-9 { dy / half } else { 0.0 };
+    let doc = cx.document()?;
+    let mut ev = evaluator(doc, "skewing in the Camera view");
+    let l = ev.local(&sel[0], f64::from(chain.frame)).map_err(eval_error)?;
+    let (cos, sin) = (l.rotation.to_radians().cos(), l.rotation.to_radians().sin());
+    let tan = l.skew.to_radians().tan();
+    let (sx, sy) = (l.scale[0], l.scale[1]);
+    // A = R(θ)·K(κ)·S(sx, sy) = [[a, c], [b, d]].
+    let (a, bb) = (cos * sx, sin * sx);
+    let (c, dd) = (cos * tan * sy - sin * sy, sin * tan * sy + cos * sy);
+    let before = decompose(a, bb, c, dd);
+    let after = decompose(a, bb + k * a, c, dd + k * c);
+    let mut turn = after.0 - before.0;
+    if turn > 180.0 {
+        turn -= 360.0;
+    } else if turn <= -180.0 {
+        turn += 360.0;
+    }
+    let mut fields = serde_json::Map::new();
+    if turn.abs() > 1e-9 {
+        fields.insert("rotation".into(), json!(turn));
+    }
+    if (after.1 - before.1).abs() > 1e-9 {
+        fields.insert("skew".into(), json!(after.1 - before.1));
+    }
+    let mut scale = serde_json::Map::new();
+    for (axis, ratio) in [("x", after.2 / before.2), ("y", after.3 / before.3)] {
+        if ratio.is_finite() && (ratio - 1.0).abs() > 1e-12 {
+            scale.insert(axis.into(), json!(ratio));
+        }
+    }
+    if !scale.is_empty() {
+        fields.insert("scale".into(), Value::Object(scale));
+    }
+    if fields.is_empty() {
+        return Ok(None);
+    }
+    fields.insert("relative".into(), json!(true));
+    Ok(Some(transform(transform_tool, chain.frame, sel, Value::Object(fields))))
+}
+
+/// 05 §2.5: [[a, c], [b, d]] = R(θ)·K(κ)·S(sx, sy) → (θ°, κ°, sx, sy).
+fn decompose(a: f64, b: f64, c: f64, d: f64) -> (f64, f64, f64, f64) {
+    let sx = a.hypot(b);
+    let theta = b.atan2(a);
+    let (cos, sin) = (theta.cos(), theta.sin());
+    let (c2, d2) = (cos * c + sin * d, -sin * c + cos * d);
+    let kappa = if d2 == 0.0 { 0.0 } else { (c2 / d2).atan().to_degrees() };
+    (theta.to_degrees(), kappa, sx, d2)
 }
 
 /// A `pointer` event's point in a Camera view, in view pixels (11 line 354; SI-125): `view` as given; `drawing` through
@@ -400,9 +490,9 @@ pub(crate) fn view_point(
 
 /// A Camera view's pixels → the current drawing's units at the press (02 line 61: through the current element's full
 /// scene transform); the identity without a current element in front of the camera (scene tools read view pixels).
-pub(crate) fn press_matrix(cx: &Cx, w: &crate::shell::ViewWindow) -> Matrix {
-    let id = [1.0, 0.0, 0.0, 1.0, 0.0, 0.0];
-    let Ok(chain) = camera_view::chain(cx, w) else { return id };
-    let Ok(e) = camera_view::current_element(cx) else { return id };
-    camera_view::element_to_view(cx, &chain, &e).ok().flatten().and_then(|m| camera_view::invert(&m)).unwrap_or(id)
+pub(crate) fn press_matrix(cx: &Cx, w: &crate::shell::ViewWindow) -> Result<Matrix, CommandError> {
+    let chain = camera_view::chain(cx, w)?;
+    let e = camera_view::current_element(cx)?;
+    let to_view = camera_view::element_to_view(cx, &chain, &e)?.ok_or_else(|| camera_view::behind(&e))?;
+    camera_view::invert(&to_view).ok_or_else(|| camera_view::behind(&e))
 }

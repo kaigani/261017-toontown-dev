@@ -8,6 +8,8 @@
 use serde_json::{Value, json};
 use tt_registry::{CommandError, codes};
 
+use tt_model::{Id, ObjectType};
+
 use crate::cx::Cx;
 
 /// How a field converts: a point (the whole affine), a vector or relative handle (its linear part), or an axis-aligned
@@ -55,6 +57,90 @@ const FIELDS: &[(&str, &[(&str, Kind)])] = &[
     ("draw.point.set", &[("/position", Kind::Point), ("/inHandle", Kind::Vector), ("/outHandle", Kind::Vector)]),
     ("draw.segment.move", &[("/delta", Kind::Vector)]),
 ];
+
+/// The point-taking `colour.*` commands: they convert their points themselves (`commands/colour.rs`), through the same
+/// addressed element.
+const COLOUR: &[&str] =
+    &["colour.paint.apply", "colour.paintUnpainted.apply", "colour.paint.remove", "colour.pick", "colour.gap.close"];
+
+/// The element and frame a point-taking command's scene points, Camera-view points and view-pixel tolerances address
+/// (02 §13.1 item 4; SI-146), resolved from the call's own target before any conversion: with `drawingId`, the element
+/// showing that drawing (the call's `elementId` if it shows it, else the current element if it does, else the first
+/// element of the drawing's bank); else with a qualified object id (`<drawingId>/<objectId>`), the same for that
+/// drawing; else `elementId`; else the current element. The frame is the call's `frame`, else the current frame.
+/// `None` for other commands, for drawing-space calls without a view, and without any element.
+///
+/// # Errors
+/// The reference errors of `drawingId` and `elementId` (the handler gives the same).
+pub(crate) fn target(cx: &Cx, id: &str, params: &Value) -> Result<Option<(Id, u32)>, CommandError> {
+    if !FIELDS.iter().any(|(c, _)| *c == id) && !COLOUR.contains(&id) {
+        return Ok(None);
+    }
+    let space = params.get("space").and_then(Value::as_str).unwrap_or("drawing");
+    if space == "drawing" && params.get("view").is_none_or(Value::is_null) {
+        return Ok(None);
+    }
+    let frame = params
+        .get("frame")
+        .and_then(Value::as_u64)
+        .and_then(|f| u32::try_from(f).ok())
+        .unwrap_or(cx.app().frame)
+        .max(1);
+    let named = params.get("elementId").and_then(Value::as_str);
+    let element = match named {
+        Some(r) => Some(Id::parse(&cx.resolve_as(r, ObjectType::Element)?)?),
+        None => None,
+    };
+    let drawing = match params.get("drawingId").and_then(Value::as_str) {
+        Some(d) => Some(Id::parse(&cx.resolve_as(d, ObjectType::Drawing)?)?),
+        None => qualified_drawing(params),
+    };
+    let current = cx.app().element.clone();
+    let chosen = match drawing {
+        Some(d) => {
+            let doc = cx.document()?;
+            let users = doc.bank_of(&d).map_or(&[][..], |b| doc.bank_users(b));
+            element
+                .filter(|e| users.contains(e))
+                .or_else(|| current.filter(|e| users.contains(e)))
+                .or_else(|| users.first().cloned())
+        }
+        None => element.or(current),
+    };
+    Ok(chosen.map(|e| (e, frame)))
+}
+
+/// The common addressing check (C43A-R1-03): whether a point-taking command's scene points, Camera-view points or
+/// view-pixel tolerances reach the addressed drawing: the conversion the call itself makes first
+/// ([`normalise`], the colour commands' frames), evaluated without running the call. Availability asks it of every
+/// reference of these commands (`host::unavailable`), so a Camera view whose addressed element's plane is at or behind
+/// the near plane makes them unavailable with the call's own refusal (`inspect.behindCamera`).
+///
+/// # Errors
+/// As [`target`] and [`crate::camera_view::addressing`].
+pub(crate) fn check(cx: &Cx, id: &str, params: &Value) -> Result<(), CommandError> {
+    if !FIELDS.iter().any(|(c, _)| *c == id) && !COLOUR.contains(&id) {
+        return Ok(());
+    }
+    let space = params.get("space").and_then(Value::as_str).unwrap_or("drawing");
+    let view = params.get("view").and_then(Value::as_str);
+    if space == "drawing" && view.is_none() {
+        return Ok(());
+    }
+    let t = target(cx, id, params)?;
+    crate::camera_view::addressing_for(cx, space, view, t.as_ref().map(|t| t.1), t.as_ref()).map(|_| ())
+}
+
+/// The drawing named by a qualified object id of the call (`strokeId`, `textId`, or the first of `points/*/strokeId`).
+fn qualified_drawing(params: &Value) -> Option<Id> {
+    let first = params.get("points").and_then(Value::as_array).and_then(|a| a.first()).and_then(|p| p.get("strokeId"));
+    ["strokeId", "textId"]
+        .iter()
+        .filter_map(|k| params.get(*k))
+        .chain(first)
+        .filter_map(Value::as_str)
+        .find_map(|s| s.rsplit_once('/').and_then(|(d, _)| Id::parse(d).ok()))
+}
 
 fn invalid(pointer: &str, message: impl Into<String>) -> CommandError {
     CommandError::with_details(codes::ARG_INVALID, message, json!({ "pointer": pointer }))

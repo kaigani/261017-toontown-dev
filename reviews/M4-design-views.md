@@ -99,6 +99,21 @@ scene transform), `pointer` (`space: view|drawing|scene|camera`, 11 line 354), `
 scene and view pixels with `depth`), `view.pan.set` centres in scene space for staging views (01 lines 1036-1041), and
 the canvas's matrices. Top and Side views keep their refusals, re-owned to M6 C6.1 (answer 1).
 
+**Which command for which question** (round 1): `view.coordinates.convert` (01 §12.2: `view`, `drawing`, `scene`;
+no depth) answers for the current drawing: a view pixel to the current element's drawing units through its plane, and
+a scene point as SI-146's point of that plane; it is what a drawing tool's points mean. `anim.view.coords.get` (05
+line 1234: `scene` and `view` with `depth`) answers for any scene point not tied to a drawing: a view pixel unprojected
+onto the plane Z = `depth` (SI-149) and back; it is what an agent simulating the scene tools uses to aim at an element
+or a pivot. `inspect.coordinates.convert` (SI-109) answers in the render's spaces (`image`, `camera`,
+`cameraNormalized`, `scene`, a named element's `drawing`, `local`, `parent`) at a given frame; it needs no view.
+`draw.viewMapping.get` publishes the current drawing's affine view mapping for any view window (02 lines 101-104), in
+the Camera view the matrices the scene answer, the gestures and the addressing parameters use (C43A-R1-01).
+
+**Round 1 (C4.3a):** the addressing parameters resolve the element and frame a call addresses before converting
+(SI-146's resolution order; C43A-R1-02), and availability evaluates the same conversion for every reference of the 27
+point-taking commands, so an unprojectable plane makes them unavailable with the call's refusal (C43A-R1-03; the
+availability inventory's header).
+
 **The active view** (answer 4): a press in a view window makes it active through `view.active.set` (user origin, UI
 state, no undo step) and the same press is the tool's press; SI-142 records it as the interim.
 

@@ -110,22 +110,33 @@ fn cv1_the_occurrences_are_the_renderers_elements_and_plane_matrices() {
     }
 }
 
-/// CV2: a drawing is resident once whatever its occurrence count. In this model a drawing belongs to one element and an
-/// element is one occurrence, so the entries never name a drawing twice; the canvas's load set is their drawings.
+/// CV2: a drawing is resident once whatever its occurrence count. `element.clone` shares a drawing bank (04 lines
+/// 429-431), so two elements show one drawing: the answer has two occurrences of it, each through its own matrix, and
+/// the canvas's load set (the distinct drawings of the entries) names it once.
 #[test]
 fn cv2_each_drawing_appears_once_among_the_loads() {
     let h = fixture();
     for (i, x) in [-4.0, -2.0, 0.0, 2.0, 4.0].iter().enumerate() {
         square(&h, &format!("S{i}"), (*x, 0.0, 0.0), 0.0);
     }
+    let a = square(&h, "Shared", (-1.0, 2.0, 0.0), 0.0);
+    let b = ok(&h, "element.clone", json!({ "elementId": a, "name": "SharedClone" }))["elementId"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    ok(&h, "anim.transform.set", json!({ "nodeIds": [b], "target": "static", "position": { "x": 1.0, "y": 2.0 } }));
     let s = scene(&h);
-    let mut drawings: Vec<&str> =
-        s["entries"].as_array().unwrap().iter().map(|e| e["drawingId"].as_str().unwrap()).collect();
-    let n = drawings.len();
-    drawings.sort_unstable();
-    drawings.dedup();
-    assert_eq!(drawings.len(), n);
-    assert!(n >= 6, "Bob and the five squares: {n}");
+    let entries = s["entries"].as_array().unwrap();
+    let of = |id: &str| entries.iter().find(|e| e["elementId"] == json!(id)).cloned().unwrap();
+    let (ea, eb) = (of(&a), of(&b));
+    assert_eq!((&ea["drawingId"], &ea["rev"]), (&eb["drawingId"], &eb["rev"]), "one drawing, two occurrences");
+    assert_ne!(ea["matrix"], eb["matrix"], "each through its own matrix");
+    let mut loads: Vec<&str> = entries.iter().map(|e| e["drawingId"].as_str().unwrap()).collect();
+    let occurrences = loads.len();
+    loads.sort_unstable();
+    loads.dedup();
+    assert_eq!(loads.len(), occurrences - 1, "the shared drawing is loaded once");
+    assert!(occurrences >= 8, "Bob, the five squares and the two shared occurrences: {occurrences}");
 }
 
 /// CV4: overlays never reach a render: the camera render is byte-identical with and without a selection, while the
@@ -187,6 +198,46 @@ fn m3_8_3_the_camera_view_agrees_with_the_renderer_on_roll_fov_and_hidden_ancest
     assert!(!hits["hits"].as_array().unwrap().iter().any(|h| h["elementId"] == json!(a)), "{hits}");
 }
 
+/// A pick skips a drawing when the point lies outside everything a hit can reach (the render list's `extent`, plan §6's
+/// hold), and that extent counts invisible strokes: a fill bounded by invisible strokes, outside the box of the
+/// drawing's visible strokes, is still hit through the Camera view (image space and view space alike).
+#[test]
+fn a_fill_bounded_by_invisible_strokes_is_hit_outside_the_visible_strokes_box() {
+    let h = fixture();
+    let id = ok(&h, "element.create", json!({ "type": "drawing", "name": "Veiled" }))["elementIds"][0]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    ok(&h, "element.drawing.create", json!({ "elementId": id, "name": "1", "exposeFrom": 1, "exposeTo": 1 }));
+    ok(&h, "app.context.set", json!({ "elementId": id, "frame": 1 }));
+    let corners = [(-50, -50), (50, -50), (50, 50), (-50, 50)];
+    let pts: Vec<Value> = corners.iter().map(|c| json!({ "x": c.0, "y": c.1 })).collect();
+    ok(&h, "draw.stroke.add", json!({ "kind": "invisible", "points": pts, "closed": true, "fit": false }));
+    // The only visible stroke: a short line in one corner, so the visible box is about 10 x 1 du.
+    ok(
+        &h,
+        "draw.stroke.add",
+        json!({ "kind": "pencil", "points": [{ "x": -45, "y": -45 }, { "x": -35, "y": -45 }], "fit": false }),
+    );
+    ok(&h, "colour.paint.apply", json!({ "points": [{ "x": 20, "y": 20 }] }));
+    ok(&h, "anim.transform.set", json!({ "nodeIds": [id], "target": "static", "position": { "x": 1.0, "y": 0.5 } }));
+    let s = scene(&h);
+    let e = s["entries"].as_array().unwrap().iter().find(|e| e["elementId"] == json!(id)).cloned();
+    let m = matrix(&e.unwrap_or_else(|| panic!("Veiled shown: {s}"))["matrix"]);
+    let (x, y) = apply(&m, 20.0, 20.0);
+    let hits = ok(&h, "inspect.hitTest", json!({ "space": "image", "point": { "x": x, "y": y } }));
+    assert!(hits["hits"].as_array().unwrap().iter().any(|h| h["elementId"] == json!(id)), "image space: {hits}");
+    let v = matrix(&s["camera"]["cameraToView"]);
+    let (vx, vy) = apply(&v, x, y);
+    let hits =
+        ok(&h, "inspect.hitTest", json!({ "space": "view", "view": "cameraView", "point": { "x": vx, "y": vy } }));
+    assert!(hits["hits"].as_array().unwrap().iter().any(|h| h["elementId"] == json!(id)), "view space: {hits}");
+    // Outside the invisible square nothing of the element is hit.
+    let (x, y) = apply(&m, 80.0, 80.0);
+    let hits = ok(&h, "inspect.hitTest", json!({ "space": "image", "point": { "x": x, "y": y } }));
+    assert!(!hits["hits"].as_array().unwrap().iter().any(|h| h["elementId"] == json!(id)), "outside: {hits}");
+}
+
 /// The members of a JSON object, sorted.
 fn keys(v: &Value) -> Vec<String> {
     let mut k: Vec<String> = v.as_object().map(|o| o.keys().cloned().collect()).unwrap_or_default();
@@ -214,4 +265,65 @@ fn the_kernels_scene_answers_have_the_corpus_members() {
     let want = read("drawing-1.1.json")["scene"].clone();
     assert_eq!(keys(&drw), keys(&want), "the Drawing view's scene members");
     assert_eq!(keys(&drw["entries"][0]), keys(&want["entries"][0]), "a Drawing view entry's members");
+}
+
+fn position(s: &Value, id: &str) -> usize {
+    s["entries"].as_array().unwrap().iter().position(|e| e["elementId"] == json!(id)).unwrap()
+}
+
+/// CV1's tie-break (05 §2.8 lines 263-267: smaller world Z first; Z within 1e-6 field ordered by the Timeline, the
+/// front-most layer drawn last): two overlapping squares at equal depth follow the Timeline both ways round, a Z
+/// difference below 1e-6 field is still a tie, and a larger one overrides the Timeline.
+#[test]
+fn cv1_equal_depth_follows_the_timeline_and_depth_overrides_it() {
+    let h = fixture();
+    let a = square(&h, "TieA", (0.2, 0.0, 0.0), 0.0);
+    let b = square(&h, "TieB", (0.4, 0.1, 0.0), 0.0);
+    ok(&h, "element.order.move", json!({ "elementIds": [b], "to": "front" }));
+    let s = scene(&h);
+    assert!(position(&s, &a) < position(&s, &b), "B front-most in the Timeline: drawn last");
+    ok(&h, "element.order.move", json!({ "elementIds": [a], "to": "front" }));
+    let s = scene(&h);
+    assert!(position(&s, &b) < position(&s, &a), "A front-most: drawn last");
+    ok(&h, "anim.transform.set", json!({ "nodeIds": [b], "target": "static", "position": { "z": 5e-7 } }));
+    let s = scene(&h);
+    assert!(position(&s, &b) < position(&s, &a), "5e-7 field is within the tie: the Timeline still decides");
+    ok(&h, "anim.transform.set", json!({ "nodeIds": [b], "target": "static", "position": { "z": 0.5 } }));
+    let s = scene(&h);
+    assert!(position(&s, &a) < position(&s, &b), "B nearer the camera: drawn after A whatever the Timeline");
+    ok(&h, "anim.transform.set", json!({ "nodeIds": [b], "target": "static", "position": { "z": -0.5 } }));
+    ok(&h, "element.order.move", json!({ "elementIds": [b], "to": "front" }));
+    let s = scene(&h);
+    assert!(position(&s, &b) < position(&s, &a), "B farther: drawn first though front-most in the Timeline");
+}
+
+/// CV3, kernel half (camera-view note §4; the window's source check is C4.3b's): in a plain, a rolled and a zoomed,
+/// rotated, panned Camera view every occurrence carries its element and a finite, invertible matrix, so the window has
+/// a matrix for every drawing it draws and computes none.
+#[test]
+fn cv3_every_occurrence_carries_its_element_and_matrix() {
+    let h = fixture();
+    square(&h, "Three", (1.0, -0.5, -2.0), 25.0);
+    let cam = ok(&h, "anim.camera.current.get", json!({}))["cameraId"].clone();
+    for step in [
+        json!(null),
+        json!(["anim.camera.set", { "cameraId": cam, "roll": 33.0 }]),
+        json!(["view.zoom.set", { "viewId": "cameraView", "zoom": 3.0 }]),
+        json!(["view.rotation.set", { "viewId": "cameraView", "degrees": -40 }]),
+        json!(["view.pan.set", { "viewId": "cameraView", "by": { "x": 70, "y": 20 } }]),
+    ] {
+        if !step.is_null() {
+            ok(&h, step[0].as_str().unwrap(), step[1].clone());
+        }
+        let s = scene(&h);
+        let entries = s["entries"].as_array().unwrap();
+        assert!(entries.len() >= 2, "{step}: several occurrences");
+        for e in entries {
+            assert!(e["elementId"].as_str().is_some_and(|x| !x.is_empty()), "{step}: {e}");
+            let m = matrix(&e["matrix"]);
+            assert!(m.iter().all(|x| x.is_finite()) && (m[0] * m[3] - m[1] * m[2]).abs() > 1e-12, "{step}: {e}");
+        }
+        let v = matrix(&s["camera"]["cameraToView"]);
+        assert!((v[0] * v[3] - v[1] * v[2]).abs() > 1e-12, "{step}");
+    }
 }

@@ -225,3 +225,138 @@ fn v8_scene_and_camera_view_points_in_every_declared_use() {
     );
     assert_eq!(e.error.unwrap().code, "arg.invalid");
 }
+
+/// C43A-R1-01 (02 lines 101-104: the Camera view's mapping "includes the camera projection at the current frame" and
+/// "MUST be queryable (`draw.viewMapping.get`)"): the published matrices map the current drawing's points as
+/// `view.coordinates.convert` does, for several view transforms and camera rolls and at another frame, are each
+/// other's inverse, equal the occurrence matrix through the view transform, and name the current drawing.
+#[test]
+fn c43a_r1_01_draw_view_mapping_get_publishes_the_camera_views_mapping() {
+    let h = ready();
+    let cam = ok(&h, "anim.camera.current.get", json!({}))["cameraId"].clone();
+    let states = [
+        json!([]),
+        json!([["view.zoom.set", { "viewId": "cameraView", "zoom": 2.5 }], ["view.rotation.set", { "viewId": "cameraView", "degrees": 30 }]]),
+        json!([["anim.camera.set", { "cameraId": cam, "roll": 12.0 }], ["view.pan.set", { "viewId": "cameraView", "by": { "x": 40, "y": -25 } }]]),
+        json!([["anim.transform.set", { "nodeIds": [BOB], "target": "static", "position": { "x": 1.5, "y": -0.5, "z": -3.0 }, "rotation": 20.0 }]]),
+    ];
+    // At a later frame where Bob exposes another drawing (the fixture's second exposure).
+    let later = (2..=48u64)
+        .find(|f| {
+            run(&h, "draw.drawing.get", json!({ "elementId": BOB, "frame": f })).result.is_some_and(|v| {
+                v["drawingId"] != ok(&h, "draw.drawing.get", json!({ "elementId": BOB, "frame": 1 }))["drawingId"]
+            })
+        })
+        .expect("Bob exposes another drawing later");
+    let states: Vec<Value> =
+        states.into_iter().chain([json!([["app.context.set", { "elementId": BOB, "frame": later }]])]).collect();
+    for (i, state) in states.iter().enumerate() {
+        for step in state.as_array().unwrap() {
+            ok(&h, step[0].as_str().unwrap(), step[1].clone());
+        }
+        let r = ok(&h, "draw.viewMapping.get", json!({ "view": "cameraView" }));
+        let to_view = matrix(&r["drawingToView"]);
+        let to_drawing = matrix(&r["viewToDrawing"]);
+        for p in [(0.0, 0.0), (37.0, -12.0), (-80.0, 64.0)] {
+            let v = apply(&to_view, p.0, p.1);
+            let c = convert(&h, p, "drawing", "view");
+            assert!((v.0 - c.0).abs() < 1e-6 && (v.1 - c.1).abs() < 1e-6, "state {i}: {v:?} vs {c:?}");
+            let back = apply(&to_drawing, v.0, v.1);
+            assert!((back.0 - p.0).abs() < 1e-6 && (back.1 - p.1).abs() < 1e-6, "state {i}: inverse");
+        }
+        let occ = bob_to_view(&h);
+        for k in 0..6 {
+            assert!((occ[k] - to_view[k]).abs() <= 1e-9 * (1.0 + occ[k].abs()), "state {i}: {occ:?} vs {to_view:?}");
+        }
+        let current = ok(&h, "draw.drawing.get", json!({}))["drawingId"].clone();
+        assert_eq!(r["drawingId"], current, "state {i}: the current drawing");
+        let t = ok(&h, "view.transform.get", json!({ "viewId": "cameraView" }));
+        assert_eq!(r["zoom"], t["zoom"], "state {i}");
+    }
+    // Top and Side views are M6 C6.1's.
+    let e = err(&h, "draw.viewMapping.get", json!({ "view": "topView" }));
+    assert_eq!((e.code.as_str(), &e.details["milestone"]), ("command.notImplemented", &json!("M6 C6.1")));
+}
+
+/// A deterministic generator (SplitMix64) for the seeded table below.
+struct Seeded(u64);
+
+impl Seeded {
+    fn next(&mut self) -> f64 {
+        self.0 = self.0.wrapping_add(0x9E37_79B9_7F4A_7C15);
+        let mut z = self.0;
+        z = (z ^ (z >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+        z = (z ^ (z >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+        ((z ^ (z >> 31)) >> 11) as f64 / (1u64 << 53) as f64
+    }
+
+    fn range(&mut self, lo: f64, hi: f64) -> f64 {
+        lo + (hi - lo) * self.next()
+    }
+}
+
+/// V6 over a seeded table (the round-1 observation that the round trips used a small fixed set): 40 states, each with
+/// its own camera (position, roll, field of view), element (position with depth, rotation, scale, skew) and view
+/// transform (zoom, rotation, pan). In each, drawing points go to the view and back through `view.coordinates.convert`
+/// within 1e-6 drawing units, land where `draw.viewMapping.get`'s matrix puts them, and scene points at a seeded depth
+/// round-trip through `anim.view.coords.get` within 1e-6 field.
+#[test]
+fn v6_round_trips_over_a_seeded_table_of_cameras_elements_and_views() {
+    let h = ready();
+    let cam = ok(&h, "anim.camera.current.get", json!({}))["cameraId"].clone();
+    let mut r = Seeded(0x00C4_3A01);
+    for i in 0..40 {
+        let steps = [
+            (
+                "anim.camera.set",
+                json!({ "cameraId": cam, "roll": r.range(-180.0, 180.0), "fov": r.range(20.0, 90.0),
+                "position": { "x": r.range(-2.0, 2.0), "y": r.range(-2.0, 2.0), "z": r.range(12.0, 24.0) } }),
+            ),
+            (
+                "anim.transform.set",
+                json!({ "nodeIds": [BOB], "target": "static",
+                "position": { "x": r.range(-3.0, 3.0), "y": r.range(-2.0, 2.0), "z": r.range(-6.0, 6.0) },
+                "rotation": r.range(-180.0, 180.0), "scale": { "x": r.range(0.3, 2.5), "y": r.range(0.3, 2.5) },
+                "skew": r.range(-40.0, 40.0) }),
+            ),
+            ("view.zoom.set", json!({ "viewId": "cameraView", "zoom": r.range(0.3, 6.0) })),
+            ("view.rotation.set", json!({ "viewId": "cameraView", "degrees": r.range(-180.0, 180.0) })),
+            (
+                "view.pan.set",
+                json!({ "viewId": "cameraView", "by": { "x": r.range(-200.0, 200.0), "y": r.range(-200.0, 200.0) } }),
+            ),
+        ];
+        for (id, p) in steps {
+            ok(&h, id, p);
+        }
+        let to_view = matrix(&ok(&h, "draw.viewMapping.get", json!({ "view": "cameraView" }))["drawingToView"]);
+        for _ in 0..3 {
+            let p = (r.range(-300.0, 300.0), r.range(-300.0, 300.0));
+            let v = convert(&h, p, "drawing", "view");
+            let m = apply(&to_view, p.0, p.1);
+            assert!(
+                (v.0 - m.0).abs() < 1e-6 * (1.0 + v.0.abs()) && (v.1 - m.1).abs() < 1e-6 * (1.0 + v.1.abs()),
+                "state {i}"
+            );
+            let back = convert(&h, v, "view", "drawing");
+            assert!(
+                (back.0 - p.0).abs() < 1e-6 && (back.1 - p.1).abs() < 1e-6,
+                "state {i}: {p:?} -> {v:?} -> {back:?}"
+            );
+        }
+        let depth = r.range(-6.0, 6.0);
+        let q = (r.range(-3.0, 3.0), r.range(-2.0, 2.0));
+        let f = ok(
+            &h,
+            "anim.view.coords.get",
+            json!({ "viewId": "cameraView", "points": [{ "x": q.0, "y": q.1 }], "from": "scene", "depth": depth }),
+        );
+        let b = ok(
+            &h,
+            "anim.view.coords.get",
+            json!({ "viewId": "cameraView", "points": f["points"], "from": "view", "depth": depth }),
+        );
+        let back = pt(&b["points"][0]);
+        assert!((back.0 - q.0).abs() < 1e-6 && (back.1 - q.1).abs() < 1e-6, "state {i}: scene {q:?} at depth {depth}");
+    }
+}

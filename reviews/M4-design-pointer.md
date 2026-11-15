@@ -18,7 +18,12 @@ command (11 maps `pointer` to the active tool's commands, §7.8).
    origin and scopes; the envelopes are returned in order, with the final hover information (view point, drawing point,
    the objects under it as `inspect.hitTest` reports them).
 4. `space` per SI-125: `drawing` samples are converted to view pixels at the press; `scene` and `camera` refuse in the
-   Drawing view.
+   Drawing view. In a Camera view (C4.3a) `scene` is a point of the table plane (Z = 0) projected through the camera,
+   and `camera` is SI-109's camera space: fields from the camera centre on the table plane, y up, the camera's roll
+   applied, as `inspect.coordinates.convert` names it. 11 line 354 lists `camera` without defining it; 05 §1.3 (lines
+   62-71) calls camera output pixels "Camera output (render) space", which SI-109 names `image`. An agent holding output
+   pixels converts them first (`inspect.coordinates.convert {from: "image", to: "camera"}`); SI-109 records the
+   convention and asks whether `pointer`'s `camera` should mean output pixels.
 5. `dt` adds to a simulated clock; nothing reads the wall clock.
 
 ## 2. Coexistence

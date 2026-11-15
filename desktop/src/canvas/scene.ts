@@ -1,6 +1,7 @@
 // A view's composition as `canvas_scene` answers it: the scene answer of docs/canvas-format.md §11, form 1.1 (the
 // Drawing view, M4 C4.2b; the Camera view, M4 C4.3; the Rust type is `tt_executor::canvas::Scene`). Validated here,
-// rules R1-R6 of §11.5 included: a malformed answer is refused, never half-applied.
+// rules R1-R7 of §11.5 included (R7: every member with a domain is checked against it): a malformed answer is refused,
+// never half-applied.
 //
 // 64-bit identities (the engine generation and drawing revisions, u64 in Rust) are carried exactly as `bigint`
 // (docs/canvas-format.md §6): the host's JSON is parsed losslessly (`parseWireJson`), and an integer the parser kept
@@ -87,6 +88,8 @@ export interface SceneAnswer {
 }
 
 const ROLES = new Set(['current', 'onion', 'autoLight', 'staticUnder', 'staticOver']);
+/** R7: the roles of a Camera view occurrence (§11.3). */
+const CAMERA_ROLES = new Set(['current', 'staticUnder']);
 const GRIDS = new Set(['normal', 'field12', 'field16']);
 
 const obj = (v: unknown): Record<string, unknown> | null =>
@@ -102,6 +105,13 @@ function rgba(v: unknown, where: string): Rgba {
 function num(v: unknown, where: string): number {
   if (typeof v === 'number' && Number.isFinite(v)) return v;
   throw new TypeError(`${where}: not a finite number`);
+}
+
+/** R7: a number in 0-1 (an opacity, §11.3). */
+function unit(v: unknown, where: string): number {
+  const n = num(v, where);
+  if (n < 0 || n > 1) throw new TypeError(`${where}: outside 0-1`);
+  return n;
 }
 
 const U64_MAX = (1n << 64n) - 1n;
@@ -243,6 +253,8 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
     if (!o) throw new TypeError(`entries/${String(i)}: not an object`);
     const role = str(o['role'], `entries/${String(i)}/role`);
     if (!ROLES.has(role)) throw new TypeError(`entries/${String(i)}/role: unknown ${role}`);
+    if (camera && !CAMERA_ROLES.has(role))
+      throw new TypeError(`entries/${String(i)}/role: ${role} is not a Camera view role`);
     const tint = o['tint'];
     const at = `entries/${String(i)}`;
     // R4 (Camera view: every occurrence names its element and matrix) and R6 (Drawing view: no matrix).
@@ -259,7 +271,7 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
       drawingId: str(o['drawingId'], `entries/${String(i)}/drawingId`),
       rev: u64(o['rev'], `entries/${String(i)}/rev`),
       role: role as SceneEntry['role'],
-      opacity: num(o['opacity'], `entries/${String(i)}/opacity`),
+      opacity: unit(o['opacity'], `entries/${String(i)}/opacity`),
       tint: tint === null ? null : rgba(tint, `entries/${String(i)}/tint`),
       shade: bool(o['shade'], `entries/${String(i)}/shade`),
       outline: bool(o['outline'], `entries/${String(i)}/outline`),
@@ -275,6 +287,12 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
     if (cam === null && entries.length > 0)
       throw new TypeError('entries: a Camera view without a camera has none');
     overlays = overlaysOf(s['overlays']);
+    // R7: the camera frame is the camera's output rectangle; the Drawing view's pivot and selection are absent.
+    const f = overlays.cameraFrame;
+    if (cam !== null && !(f[0] === 0 && f[1] === 0 && f[2] === cam.size[0] && f[3] === cam.size[1]))
+      throw new TypeError('overlays.cameraFrame: not [0, 0, width, height] of camera.size');
+    if (s['drawingPivot'] != null) throw new TypeError('drawingPivot: a Camera view answer has none');
+    if (s['selection'] != null) throw new TypeError('selection: a Camera view answer has none');
   } else if (s['camera'] !== undefined || s['overlays'] !== undefined) {
     throw new TypeError('camera: a Drawing view answer has no camera or overlays');
   }

@@ -1,7 +1,7 @@
 // @vitest-environment node
 /// <reference types="node" />
 // The scene answer's corpus (docs/canvas-format.md §11.7; M4 C4.3a): every valid answer decodes to its members, and
-// one corrupt answer per rule R1-R6 is refused with the field named.
+// one corrupt answer per rule R1-R7 (and per member R7 names) is refused for its field.
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
@@ -57,14 +57,53 @@ describe('the scene answer, form 1.1 (§11)', () => {
     expect(s.overlays?.selectionUnion).toBeNull();
   });
 
+  // Each corrupt answer and the field it must be refused for (a refusal for another reason would hide the rule).
+  const refusedFor: Record<string, string> = {
+    'R1-major.json': 'sceneForm',
+    'R2-view-type.json': 'viewType',
+    'R3-camera-singular.json': 'camera.cameraToView',
+    'R3-camera-size.json': 'camera.size',
+    'R3-frame.json': 'frame',
+    'R4-entry-element.json': '/elementId',
+    'R4-entry-matrix.json': '/matrix',
+    'R4-no-camera-entries.json': 'a Camera view without a camera',
+    'R5-box-order.json': 'min above max',
+    'R5-overlays.json': 'overlays',
+    'R5-selection-display.json': 'overlays.selectionDisplay',
+    'R5-pivot.json': 'overlays.pivots',
+    'R5-other-camera-corners.json': 'not four corners',
+    'R6-drawing-camera.json': 'a Drawing view answer has no camera',
+    'R6-drawing-matrix.json': 'a Drawing view entry has no matrix',
+    'R7-opacity-above.json': 'opacity: outside 0-1',
+    'R7-opacity-below.json': 'opacity: outside 0-1',
+    'R7-background.json': 'background: not an RGBA8',
+    'R7-tint.json': 'tint: not an RGBA8',
+    'R7-colour.json': 'colours/',
+    'R7-rev.json': '/rev: not an unsigned 64-bit integer',
+    'R7-generation.json': 'generation: not an unsigned 64-bit integer',
+    'R7-grid-type.json': 'grid.type: unknown',
+    'R7-role.json': 'role: unknown',
+    'R7-camera-role.json': 'is not a Camera view role',
+    'R7-camera-drawing-pivot.json': 'drawingPivot: a Camera view answer has none',
+    'R7-camera-selection.json': 'selection: a Camera view answer has none',
+    'R7-camera-frame.json': 'overlays.cameraFrame',
+  };
   const corrupt = readdirSync(dir('corrupt')).filter((n) => n.endsWith('.json'));
-  it('has a corrupt answer for each rule R1-R6', () => {
-    for (const r of ['R1', 'R2', 'R3', 'R4', 'R5', 'R6'])
+  it('has a corrupt answer for each rule R1-R7, each with the field it is refused for', () => {
+    for (const r of ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7'])
       expect(corrupt.some((n) => n.startsWith(r))).toBe(true);
+    expect([...corrupt].sort()).toEqual(Object.keys(refusedFor).sort());
   });
   for (const name of corrupt) {
-    it(`refuses ${name}`, () => {
-      expect(() => parseSceneAnswer(load('corrupt', name))).toThrow(TypeError);
+    it(`refuses ${name} for ${refusedFor[name] ?? '?'}`, () => {
+      let error: unknown = null;
+      try {
+        parseSceneAnswer(load('corrupt', name));
+      } catch (e) {
+        error = e;
+      }
+      expect(error).toBeInstanceOf(TypeError);
+      expect((error as TypeError).message).toContain(refusedFor[name] ?? '?');
     });
   }
 });
