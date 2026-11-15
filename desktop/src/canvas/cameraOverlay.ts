@@ -24,6 +24,10 @@ const FURNITURE_TOOLS = new Set(['select', 'transform']);
 
 export interface CameraOverlay {
   tris: ViewTris;
+  /** The selection's part of `tris` (boxes, pivots, furniture) on its own, for the live preview (preview note §3). */
+  selection: ViewTris;
+  /** The rest: the dimmed outside, the frame, the other cameras. */
+  frame: ViewTris;
   /** What it shows, for the canvas summary (`inspect_ui`). */
   shown: { frame: boolean; pivots: number; boxes: number; otherCameras: number; handles: number };
   /** The furniture handles' centres in view pixels (corners, side midpoints, skew handles), for the cursor. */
@@ -56,10 +60,11 @@ export function cameraOverlay(
   tool: string | null,
 ): CameraOverlay {
   const t = new ViewTris();
+  const sel = new ViewTris();
   const shown = { frame: false, pivots: 0, boxes: 0, otherCameras: 0, handles: 0 };
   const camera = scene.camera;
   const o = scene.overlays;
-  if (!camera || !o) return { tris: t, shown, handles: [] };
+  if (!camera || !o) return { tris: t, selection: sel, frame: t, shown, handles: [] };
   const v = camera.cameraToView;
   // A box's four corners in view pixels, top-left first, clockwise on screen (output pixels are y down).
   const ring = (b: readonly [number, number, number, number]): [Pt, Pt, Pt, Pt] => [
@@ -105,15 +110,15 @@ export function cameraOverlay(
   }
   if (o.selectionDisplay.boxHighlighting) {
     for (const b of o.selectionBoxes) {
-      t.polyline(ring(b), 1, SELECTION_ACCENT, true);
+      sel.polyline(ring(b), 1, SELECTION_ACCENT, true);
       shown.boxes++;
     }
   }
   for (const [x, y] of o.pivots) {
     const [px, py] = apply(v, x, y);
     const r = PIVOT_CROSS / 2;
-    t.line(px - r, py, px + r, py, 1, SELECTION_ACCENT);
-    t.line(px, py - r, px, py + r, 1, SELECTION_ACCENT);
+    sel.line(px - r, py, px + r, py, 1, SELECTION_ACCENT);
+    sel.line(px, py - r, px, py + r, 1, SELECTION_ACCENT);
     shown.pivots++;
   }
   const handles: Pt[] = [];
@@ -128,7 +133,7 @@ export function cameraOverlay(
       [box[2], box[3]],
       [box[0], box[3]],
     ];
-    t.polyline(corners, 1, SELECTION_ACCENT, true);
+    sel.polyline(corners, 1, SELECTION_ACCENT, true);
     const mx = (box[0] + box[2]) / 2;
     const my = (box[1] + box[3]) / 2;
     const mids: Pt[] = [
@@ -143,10 +148,13 @@ export function cameraOverlay(
       [mx, box[3] + SKEW_OUT],
       [box[0] - SKEW_OUT, my],
     ];
-    for (const [x, y] of [...corners, ...mids]) t.square(x, y, HANDLE_SIZE, HANDLE_FILL, SELECTION_ACCENT);
-    for (const [x, y] of skews) t.disc(x, y, HANDLE_SIZE / 2, SELECTION_ACCENT);
+    for (const [x, y] of [...corners, ...mids]) sel.square(x, y, HANDLE_SIZE, HANDLE_FILL, SELECTION_ACCENT);
+    for (const [x, y] of skews) sel.disc(x, y, HANDLE_SIZE / 2, SELECTION_ACCENT);
     handles.push(...corners, ...mids, ...skews);
     shown.handles = handles.length;
   }
-  return { tris: t, shown, handles };
+  const all = new ViewTris();
+  all.data.push(...t.data);
+  for (const x of sel.data) all.data.push(x);
+  return { tris: all, selection: sel, frame: t, shown, handles };
 }

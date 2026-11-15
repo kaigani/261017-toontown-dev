@@ -501,7 +501,7 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
           // A Camera-view occurrence through its own matrix (camera-view note §6); a Drawing-view entry through d2c.
           const m = e.matrix
             ? drawingToClip(
-                entryToView(e, input.cameraToView, input.drawingToView),
+                entryToView(e, input.cameraToView, input.drawingToView, input.preview),
                 input.width,
                 input.height,
               )

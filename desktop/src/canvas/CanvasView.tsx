@@ -12,7 +12,7 @@ import { useEffect, useRef } from 'react';
 import { GENERATION_EVENT, type AgentInput, type EngineApi } from '../ipc';
 import { stringifyWireJson } from '../ipc/wireJson';
 import { bucketOf } from './bucket';
-import { gridGeometry, IDENTITY, scaleOf, ViewTris, type Affine } from './geometry';
+import { apply, compose, gridGeometry, IDENTITY, mapTris, scaleOf, ViewTris, type Affine } from './geometry';
 import {
   ACCENT,
   GestureCollector,
@@ -29,6 +29,7 @@ import { createWebGL2 } from './webgl2';
 import { createWebGPU } from './webgpu';
 import { canvasLaunch } from './launch';
 import { cameraGridMatrix, cameraOverlay } from './cameraOverlay';
+import { drawingPreview, grabberPreview, scenePreview, type Box } from './preview';
 import { CanvasMetrics } from './metrics';
 import { CanvasModel } from './model';
 import { selectionCursor, selectionOverlay, type SelectionOverlay } from './selection';
@@ -99,6 +100,18 @@ export function CanvasView({
     let activeView: string | null = null;
     let mappedVersion = -1;
     let cameraShown: ReturnType<typeof cameraOverlay>['shown'] | null = null;
+    // The live transform preview (preview note 8): the drag's press, the kind of preview it takes, its view-pixel
+    // affine, and the selection's two overlay parts (only the selection moves with it). The staging selection's ids
+    // name the Camera-view occurrences that move.
+    let selectedIds: ReadonlySet<string> = new Set();
+    let press: { p: [number, number]; constrain: boolean; alternate: boolean; tempSelect: boolean } | null =
+      null;
+    let previewKind: 'scene' | 'drawing' | 'grab' | null = null;
+    let preview: Affine | null = null;
+    let overlayParts: { frame: ViewTris | null; selection: ViewTris | null } = {
+      frame: null,
+      selection: null,
+    };
     let summary = '';
     let raf = 0;
     let stopped = false;
@@ -197,11 +210,29 @@ export function CanvasView({
       const modal = on ? { kind: 'gesture' as const, title: style.tool } : null;
       reports = reports.then(() => engine.report({ modal })).catch(() => undefined);
     };
+    const endPreview = () => {
+      if (preview) viewVersion++;
+      preview = null;
+      previewKind = null;
+      press = null;
+    };
     const cancelGesture = () => {
       if (collector.cancel()) {
         overlay = null;
+        // Escape restores the state before the drag (05 line 399; PV1): the preview is dropped, nothing was sent.
+        endPreview();
         reportGesture(false);
       }
+    };
+    const refreshSelectedIds = () => {
+      void engine
+        .run('edit.selection.get', { context: 'staging' })
+        .done.then((env) => {
+          const ids = (env.result as Record<string, unknown> | undefined)?.['ids'];
+          if (Array.isArray(ids))
+            selectedIds = new Set(ids.filter((x): x is string => typeof x === 'string'));
+        })
+        .catch(() => undefined);
     };
     // D-7b: a new engine generation discards every gesture in progress, the user's and the agent's (playing or
     // queued), with nothing committed; the host has already answered the agent's calls (the SI-120 refusal). Run on
@@ -380,6 +411,11 @@ export function CanvasView({
           if (Array.isArray(keys) && keys.some((k) => DISPLAY_PREFS.includes(String(k))))
             refreshDisplayPrefs();
         }
+        if (event.name === 'edit.selection.changed') {
+          const p = event.payload as Record<string, unknown> | null;
+          if (p?.['context'] === 'staging' && Array.isArray(p['ids']))
+            selectedIds = new Set(p['ids'].filter((x): x is string => typeof x === 'string'));
+        }
         if (event.name === 'colour.current.changed') {
           const c = (event.payload as Record<string, unknown> | null)?.['colourId'];
           if (typeof c === 'string') currentColour = c;
@@ -427,6 +463,8 @@ export function CanvasView({
       ) {
         overlay = null;
         clearOverlayAt = null;
+        // The committed state is drawn (or the commit was refused): the preview gives way to it (preview note §4).
+        endPreview();
       }
       if (scene && scene.colours !== lastColours) {
         renderer.setColours(scene.colours);
@@ -450,6 +488,7 @@ export function CanvasView({
             shown: { objects: 0, handles: c.handles.length, points: 0, pivot: false },
             handles: c.handles,
           };
+          overlayParts = { frame: c.frame, selection: c.selection };
           cameraShown = c.shown;
         } else {
           selection = selectionOverlay(
@@ -458,6 +497,7 @@ export function CanvasView({
             style.tool,
             d2v,
           );
+          overlayParts = { frame: null, selection: selection.tris };
           cameraShown = null;
         }
       }
@@ -467,7 +507,9 @@ export function CanvasView({
         grid = null;
         if (scene?.grid.visible) {
           // The Camera view's field guide lies on the camera frame (SI-153).
-          const g = camera ? cameraGridMatrix(camera, scene.grid) : d2v;
+          const g0 = camera ? cameraGridMatrix(camera, scene.grid) : d2v;
+          // The Grabber's preview pans everything drawn, the grid included (preview note §3).
+          const g = g0 && previewKind === 'grab' && preview ? compose(preview, g0) : g0;
           if (g) {
             grid = new ViewTris();
             gridGeometry(scene.grid, g, size.width, size.height, grid);
@@ -476,17 +518,26 @@ export function CanvasView({
         drawnVersion = model.version;
         drawnView = viewVersion;
       }
+      // The preview (preview note §3): the Grabber pans both mappings; a scene-tool drag moves the selected
+      // occurrences; the selection's overlay moves with a scene or Select drag.
+      const grab = previewKind === 'grab' && preview ? preview : null;
+      const c2v = camera?.camera?.cameraToView ?? null;
+      let overlayNow = selection.tris;
+      if (preview && (previewKind === 'scene' || previewKind === 'drawing') && overlayParts.selection) {
+        overlayNow = combine(overlayParts.frame, mapTris(overlayParts.selection, preview));
+      }
       renderer.frame({
         scene,
-        drawingToView: d2v,
-        cameraToView: camera?.camera?.cameraToView ?? null,
+        drawingToView: grab ? compose(grab, d2v) : d2v,
+        cameraToView: grab && c2v ? compose(grab, c2v) : c2v,
+        preview: previewKind === 'scene' && preview ? { transform: preview, elements: selectedIds } : null,
         width: size.width,
         height: size.height,
         dpr,
         staticDirty,
         grid,
         // The selection under the gesture in progress (the drag's own feedback on top).
-        overlay: combine(selection.tris, overlay),
+        overlay: combine(overlayNow, overlay),
       });
       if (metrics) {
         const now = performance.now();
@@ -507,6 +558,8 @@ export function CanvasView({
         gesture: lastGesture,
         selection: selection.shown,
         viewType: scene?.viewType ?? null,
+        // The preview's affine and corners of the selection box under it, for the e2e (PV2).
+        ...(preview ? { preview: { kind: previewKind, transform: preview } } : {}),
         ...(cameraShown ? { camera: cameraShown } : {}),
         ...(({ drawn, residentDrawings, residentBytes, lastError }) => ({
           drawn,
@@ -632,6 +685,44 @@ export function CanvasView({
       clearOverlayAt = null;
       reportGesture(true);
       overlay = gestureOverlay(collector.points, style);
+      // Which preview this drag takes (preview note §3).
+      const s = sample(e);
+      endPreview();
+      press = {
+        p: [s.x, s.y],
+        constrain: e.shiftKey,
+        alternate: e.altKey,
+        tempSelect: e.ctrlKey || e.metaKey,
+      };
+      const inCamera = model?.scene?.viewType === 'camera';
+      if (inCamera && sceneFamily && (sceneTool === 'select' || sceneTool === 'transform'))
+        previewKind = 'scene';
+      else if (style.tool === 'grabber') previewKind = 'grab';
+      else if (!inCamera && style.tool === 'select') previewKind = 'drawing';
+    };
+    /** The preview's affine for the drag from the press to `now` (view pixels), or null. */
+    const previewAt = (now: [number, number]): Affine | null => {
+      const scene = model?.scene;
+      if (!press || !scene) return null;
+      if (previewKind === 'grab') return grabberPreview(press.p, now);
+      if (previewKind === 'drawing') {
+        const b = scene.selection?.bounds ?? null;
+        return drawingPreview(b, scene.drawingPivot, d2v, press.p, now, press.constrain);
+      }
+      if (previewKind !== 'scene' || !scene.camera || !scene.overlays?.selectionUnion) return null;
+      const v = scene.camera.cameraToView;
+      const u = scene.overlays.selectionUnion;
+      const c = [apply(v, u[0], u[1]), apply(v, u[2], u[1]), apply(v, u[2], u[3]), apply(v, u[0], u[3])];
+      const xs = c.map((q) => q[0]);
+      const ys = c.map((q) => q[1]);
+      const box: Box = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+      // 05 §5.0 lines 393-394: the temporary-select modifier gives Select; the alternate modifier with Transform the
+      // Skew tool (SI-151).
+      const tool = press.tempSelect ? 'select' : sceneTool;
+      const skew = tool === 'transform' && press.alternate;
+      const p0 = scene.overlays.pivots[0];
+      const pivot = tool === 'transform' && p0 ? apply(v, p0[0], p0[1]) : null;
+      return scenePreview(box, pivot, press.p, now, press.constrain, skew);
     };
     const onMove = (e: PointerEvent) => {
       if (!collector.active) {
@@ -646,6 +737,14 @@ export function CanvasView({
       const list = typeof e.getCoalescedEvents === 'function' ? e.getCoalescedEvents() : [];
       collector.move((list.length > 0 ? list : [e]).map(sample));
       overlay = gestureOverlay(collector.points, style);
+      if (previewKind) {
+        const s = sample(e);
+        const next = previewAt([s.x, s.y]);
+        if (next || preview) viewVersion++;
+        preview = next;
+        // A drag the preview shows needs no marquee or ink of its own.
+        if (preview && previewKind !== 'grab') overlay = null;
+      }
     };
     const onUp = (e: PointerEvent) => {
       if (!collector.pressed) return;
@@ -707,6 +806,7 @@ export function CanvasView({
     refreshTool();
     refreshSceneTool();
     refreshActiveView();
+    refreshSelectedIds();
     let unlistenAgent: (() => void) | null = null;
     void engine
       .onAgentInput((input) => {

@@ -35,6 +35,17 @@ export function compose(a: Affine, b: Affine): Affine {
   ];
 }
 
+/** `t`'s triangles mapped by `m` (view pixels to view pixels): the live preview's selection overlay. */
+export function mapTris(t: ViewTris, m: Affine): ViewTris {
+  const out = new ViewTris();
+  const d = t.data;
+  for (let i = 0; i + 5 < d.length; i += 6) {
+    const [x, y] = apply(m, d[i] ?? 0, d[i + 1] ?? 0);
+    out.data.push(x, y, d[i + 2] ?? 0, d[i + 3] ?? 0, d[i + 4] ?? 0, d[i + 5] ?? 0);
+  }
+  return out;
+}
+
 /** The view's linear scale (view pixels per drawing unit). */
 export function scaleOf(m: Affine): number {
   return Math.sqrt(Math.abs(m[0] * m[3] - m[1] * m[2]));

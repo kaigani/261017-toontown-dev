@@ -28,8 +28,15 @@ export const ROLE_RANK: Record<SceneEntry['role'], number> = {
 
 /** The matrix an entry is drawn through: its occurrence matrix through the Camera view's `cameraToView`, else the
  *  Drawing view's `drawingToView` (camera-view note §6; the canvas composes what it received, CV3). */
-export function entryToView(e: SceneEntry, cameraToView: Affine | null, drawingToView: Affine): Affine {
-  return e.matrix && cameraToView ? compose(cameraToView, e.matrix) : drawingToView;
+export function entryToView(
+  e: SceneEntry,
+  cameraToView: Affine | null,
+  drawingToView: Affine,
+  preview: { transform: Affine; elements: ReadonlySet<string> } | null = null,
+): Affine {
+  const m = e.matrix && cameraToView ? compose(cameraToView, e.matrix) : drawingToView;
+  // The live preview moves the selected occurrences (preview note §3).
+  return preview && e.elementId && preview.elements.has(e.elementId) ? compose(preview.transform, m) : m;
 }
 
 /** The Camera view's order (camera-view note §6; CV1): the kernel's back-to-front order; with `currentOnTop` (02

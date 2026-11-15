@@ -15,6 +15,9 @@ export interface FrameInput {
   /** Camera view: camera output pixels → view pixels (the answer's `cameraToView`); each entry is drawn through it
    *  composed with its own `matrix` (camera-view note §6). Null in the Drawing view. */
   cameraToView: Affine | null;
+  /** The live transform preview (preview note 8): the Camera-view occurrences of these elements are drawn through
+   *  `transform · cameraToView · matrix`. Null when no drag is previewing. */
+  preview: { transform: Affine; elements: ReadonlySet<string> } | null;
   /** The view's size in CSS pixels (= view pixels). */
   width: number;
   height: number;
