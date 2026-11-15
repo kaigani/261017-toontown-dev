@@ -8,6 +8,7 @@ import {
   gestureOverlay,
   gestureRecord,
   kindOf,
+  POLYLINE_CLOSE_PX,
   RECORD_EVENTS,
   type DomSample,
 } from './input';
@@ -210,5 +211,45 @@ describe('the record of the last committed gesture (C42B-R1-03; SI-141 item 9)',
       { status: 'ok' },
     );
     expect(whole.events.length).toBe(RECORD_EVENTS);
+  });
+});
+
+describe('the Polyline: its clicks are one gesture (02 §7.3.5; SI-131 item 10)', () => {
+  const click = (c: GestureCollector, x: number, y: number, t: number) => {
+    expect(c.down(s(x, y, t))).toBe(true);
+    return c.up(s(x, y, t + 5));
+  };
+
+  it('a double click commits the clicks with a doubleClick event, as the headless pointer receives them', () => {
+    const c = new GestureCollector('drawingView');
+    c.multi = true;
+    expect(click(c, 10, 10, 0)).toBeNull(); // pending
+    expect(c.active && !c.pressed).toBe(true);
+    expect(click(c, 60, 40, 100)).toBeNull();
+    const req = c.doubleClick(s(60, 40, 110));
+    expect(req?.events.map((e) => e.type)).toEqual(['down', 'up', 'down', 'up', 'doubleClick']);
+    expect(c.active).toBe(false);
+  });
+
+  it('a click back on the first click closes and commits it; a click-drag gives a handle (moves kept)', () => {
+    const c = new GestureCollector('drawingView');
+    c.multi = true;
+    click(c, 10, 10, 0);
+    c.down(s(60, 40, 100));
+    c.move([s(70, 45, 105)]);
+    expect(c.up(s(80, 50, 110))).toBeNull();
+    const req = click(c, 10 + POLYLINE_CLOSE_PX - 1, 10, 200);
+    expect(req?.events.map((e) => e.type)).toEqual(['down', 'up', 'down', 'move', 'up', 'down', 'up']);
+  });
+
+  it('a cancel between clicks discards it; outside multi-click mode a release commits at once', () => {
+    const c = new GestureCollector('drawingView');
+    c.multi = true;
+    click(c, 10, 10, 0);
+    expect(c.cancel()).toBe(true);
+    expect(c.active).toBe(false);
+    const single = new GestureCollector('drawingView');
+    expect(click(single, 10, 10, 0)?.events.map((e) => e.type)).toEqual(['down', 'up']);
+    expect(single.doubleClick(s(10, 10, 20))).toBeNull();
   });
 });

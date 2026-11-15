@@ -35,7 +35,7 @@ export interface DomSample {
 
 /** One event of the `pointer` request (the Rust `gesture::PointerEvent`). */
 export interface WireEvent {
-  type: 'down' | 'move' | 'up' | 'wheel';
+  type: 'down' | 'move' | 'up' | 'wheel' | 'doubleClick';
   x: number;
   y: number;
   pressure?: number;
@@ -72,9 +72,20 @@ const BUTTONS = ['left', 'middle', 'right'] as const;
 
 const clampTilt = (t: number) => Math.max(-90, Math.min(90, Number.isFinite(t) ? t : 0));
 
-/** Collects one gesture at a time. */
+/** A Polyline click this close to its first click (view pixels) closes it: the kernel's default snap radius (02 §7.3.5). */
+export const POLYLINE_CLOSE_PX = 8;
+
+/**
+ * Collects one gesture at a time. In multi-click mode (`multi`: the Polyline, 02 §7.3.5; SI-131 item 10) the clicks
+ * are one gesture: a release keeps it pending, and a double click, or a click back on the first click, commits it.
+ */
 export class GestureCollector {
   private events: WireEvent[] = [];
+  /** A button is down (between a press and its release). */
+  pressed = false;
+  /** Multi-click mode: the Polyline's clicks are one gesture. */
+  multi = false;
+  private clicks = 0;
   private kind: PointerKind = 'mouse';
   private last = 0;
   private button: 'left' | 'right' | 'middle' = 'left';
@@ -102,43 +113,76 @@ export class GestureCollector {
     return e;
   }
 
-  /** A press: starts a gesture (false when one is already in progress, or for a button no tool uses). */
+  /** A press: starts a gesture, or the next click of a pending multi-click one (false when a gesture is in progress,
+   *  or for a button no tool uses). */
   down(s: DomSample): boolean {
-    if (this.active) return false;
+    if (this.pressed || (this.active && !this.multi)) return false;
     const b = BUTTONS[s.button];
     if (!b) return false;
-    this.kind = kindOf(s);
-    this.button = b;
-    this.events = [this.event('down', s)];
-    this.points = [[s.x, s.y]];
+    if (!this.active) {
+      this.kind = kindOf(s);
+      this.button = b;
+      this.events = [];
+      this.points = [];
+      this.clicks = 0;
+    }
+    this.events.push(this.event('down', s));
+    this.points.push([s.x, s.y]);
+    this.pressed = true;
     return true;
   }
 
   /** Samples between the press and the release (coalesced ones included, in order). */
   move(samples: readonly DomSample[]): void {
-    if (!this.active) return;
+    if (!this.pressed) return;
     for (const s of samples) {
       this.events.push(this.event('move', s));
       this.points.push([s.x, s.y]);
     }
   }
 
-  /** The release: the gesture's request, and the collector is idle again. */
+  /** The release: the gesture's request, and the collector is idle again; in multi-click mode the gesture stays
+   *  pending (null) unless this click is back on the first one. */
   up(s: DomSample): GestureRequest | null {
-    if (!this.active) return null;
+    if (!this.pressed) return null;
     this.events.push(this.event('up', s));
     this.points.push([s.x, s.y]);
+    this.pressed = false;
+    this.clicks++;
+    if (this.multi) {
+      const first = this.points[0];
+      const closes =
+        this.clicks > 2 &&
+        first !== undefined &&
+        Math.hypot(s.x - first[0], s.y - first[1]) <= POLYLINE_CLOSE_PX;
+      if (!closes) return null;
+    }
+    return this.finish();
+  }
+
+  /** A double click: ends a pending multi-click gesture with a `doubleClick` event and commits it. */
+  doubleClick(s: DomSample): GestureRequest | null {
+    if (!this.multi || this.pressed || !this.active) return null;
+    this.events.push({ type: 'doubleClick', x: s.x, y: s.y, modifiers: modifiers(s), dt: 0 });
+    return this.finish();
+  }
+
+  private finish(): GestureRequest {
     const req: GestureRequest = { view: this.view, pointerType: this.kind, events: this.events };
     this.events = [];
     this.points = [];
+    this.pressed = false;
+    this.clicks = 0;
     return req;
   }
 
-  /** Escape, a lost capture, the window closing: nothing is sent (D-7c, F5, F6). */
+  /** Escape, a lost capture, the window closing, another tool: nothing is sent (D-7c, F5, F6). */
   cancel(): boolean {
     const was = this.active;
     this.events = [];
     this.points = [];
+    this.pressed = false;
+    this.clicks = 0;
     return was;
   }
 

@@ -122,7 +122,12 @@ export function CanvasView({
     const refreshTool = () => {
       void engine.run('tool.active.get', {}).done.then((env) => {
         const id = (env.result as Record<string, unknown> | undefined)?.['toolId'];
-        if (typeof id === 'string') style = { ...style, tool: id };
+        if (typeof id === 'string' && id !== style.tool) {
+          // Another tool discards a pending multi-click gesture (a Polyline between its clicks).
+          if (!collector.pressed) cancelGesture();
+          style = { ...style, tool: id };
+        }
+        collector.multi = style.tool === 'polyline';
         refreshStyle();
       });
       void engine.run('tool.pen.list', {}).done.then((env) => {
@@ -559,15 +564,24 @@ export function CanvasView({
       overlay = gestureOverlay(collector.points, style);
     };
     const onUp = (e: PointerEvent) => {
-      if (!collector.active) return;
+      if (!collector.pressed) return;
       const req = collector.up(sample(e));
-      metrics?.released(performance.now(), model?.version ?? 0);
       if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+      // A Polyline between its clicks stays one gesture in progress (the modal state stays reported).
+      if (!req) return;
+      metrics?.released(performance.now(), model?.version ?? 0);
+      reportGesture(false);
+      commit(req);
+    };
+    const onDouble = (e: MouseEvent) => {
+      const req = collector.doubleClick(sample(e as PointerEvent));
+      if (!req) return;
       reportGesture(false);
       commit(req);
     };
     const onCancel = () => {
-      cancelGesture();
+      // Only a pressed gesture loses anything to a lost capture: a Polyline between clicks holds no capture.
+      if (collector.pressed) cancelGesture();
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && collector.active) {
@@ -585,6 +599,7 @@ export function CanvasView({
     canvas.addEventListener('pointercancel', onCancel);
     canvas.addEventListener('lostpointercapture', onCancel);
     canvas.addEventListener('wheel', onWheel, { passive: false });
+    canvas.addEventListener('dblclick', onDouble);
     window.addEventListener('keydown', onKey, true);
     const onGeneration = (e: Event) => {
       const g = (e as CustomEvent<unknown>).detail;
@@ -627,6 +642,7 @@ export function CanvasView({
       canvas.removeEventListener('pointercancel', onCancel);
       canvas.removeEventListener('lostpointercapture', onCancel);
       canvas.removeEventListener('wheel', onWheel);
+      canvas.removeEventListener('dblclick', onDouble);
       window.removeEventListener('keydown', onKey, true);
       window.removeEventListener(GENERATION_EVENT, onGeneration);
       cancelAnimationFrame(raf);
