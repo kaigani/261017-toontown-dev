@@ -11,7 +11,15 @@ import { GENERATION_EVENT, type AgentInput, type EngineApi } from '../ipc';
 import { stringifyWireJson } from '../ipc/wireJson';
 import { bucketOf } from './bucket';
 import { gridGeometry, IDENTITY, scaleOf, ViewTris, type Affine } from './geometry';
-import { ACCENT, GestureCollector, gestureOverlay, type DomSample, type OverlayStyle } from './input';
+import {
+  ACCENT,
+  GestureCollector,
+  gestureOverlay,
+  gestureRecord,
+  type DomSample,
+  type OverlayStyle,
+  type WireEvent,
+} from './input';
 import { selectBackend, startingBackend, startRenderer } from './backend';
 import type { BackendKind } from './renderer';
 import { fingerprint, HEIGHT as MEASURE_H, measureBackends, WIDTH as MEASURE_W } from './selftest';
@@ -96,6 +104,9 @@ export function CanvasView({
     let currentColour: string | null = null;
     let clearOverlayAt: { version: number; deadline: number } | null = null;
     let lastGesture: { status: string; code?: string } | null = null;
+    // The last committed gesture's record (C42B-R1-03; SI-141 item 9), as JSON text: written once per commit and
+    // spliced into the summary, so a long gesture is not serialised again every frame.
+    let lastRecord = '';
     const refreshStyle = () => {
       const zoom = scaleOf(d2v);
       const tool = style.tool;
@@ -407,7 +418,7 @@ export function CanvasView({
       const publish = metrics !== null && began - metricsAt >= 500;
       if (publish) metricsAt = began;
       // Written losslessly: revisions are exact 64-bit integers (`bigint`).
-      const next = stringifyWireJson({
+      let next = stringifyWireJson({
         backend: renderer.kind,
         generation: engine.generation(),
         drawings: [...model.resident.entries()].map(([id, r]) => ({ id, rev: r.rev, bucket: r.bucket })),
@@ -425,6 +436,7 @@ export function CanvasView({
       });
       // Between metric publications the summary keeps its last metrics, so it changes only when something did.
       if (metrics && !publish) return;
+      if (lastRecord) next = `${next.slice(0, -1)},"lastGesture":${lastRecord}}`;
       if (next !== summary) {
         summary = next;
         el.setAttribute('data-tt-value', next);
@@ -455,7 +467,10 @@ export function CanvasView({
     const commit = (req: ReturnType<GestureCollector['up']>) => {
       if (!req) return;
       const before = model?.version ?? 0;
+      const tool = style.tool;
+      const mapping = d2v;
       void engine.gestureCommit(req).then((env) => {
+        lastRecord = stringifyWireJson(gestureRecord('user', tool, mapping, req, env));
         metrics?.answered(performance.now());
         lastGesture =
           env.status === 'error'
@@ -499,22 +514,21 @@ export function CanvasView({
       reportGesture(false);
       metrics?.released(performance.now(), model?.version ?? 0);
       const before = model?.version ?? 0;
-      void engine
-        .gestureCommit({
-          ...(done.input.request as { view: string; events: unknown[] }),
-          agentRequest: done.input.requestId,
-        })
-        .then((env) => {
-          metrics?.answered(performance.now());
-          lastGesture =
-            env.status === 'error'
-              ? { status: 'error', code: env.error?.code ?? 'error' }
-              : { status: env.status };
-          clearOverlayAt = {
-            version: before,
-            deadline: performance.now() + (env.status === 'error' ? 0 : 400),
-          };
-        });
+      const request = done.input.request as { view: string; events: WireEvent[]; tool?: unknown };
+      const mapping = d2v;
+      void engine.gestureCommit({ ...request, agentRequest: done.input.requestId }).then((env) => {
+        const tool = typeof request.tool === 'string' ? request.tool : style.tool;
+        lastRecord = stringifyWireJson(gestureRecord('agent', tool, mapping, request, env));
+        metrics?.answered(performance.now());
+        lastGesture =
+          env.status === 'error'
+            ? { status: 'error', code: env.error?.code ?? 'error' }
+            : { status: env.status };
+        clearOverlayAt = {
+          version: before,
+          deadline: performance.now() + (env.status === 'error' ? 0 : 400),
+        };
+      });
     };
     const onDown = (e: PointerEvent) => {
       if (playing) {

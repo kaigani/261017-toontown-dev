@@ -3,7 +3,14 @@
 // nothing), the event rules (dt, pressure, kinds, buttons, modifiers), and the overlay of every tool (02 §4.2 layer 9).
 import { describe, expect, it } from 'vitest';
 
-import { GestureCollector, gestureOverlay, kindOf, type DomSample } from './input';
+import {
+  GestureCollector,
+  gestureOverlay,
+  gestureRecord,
+  kindOf,
+  RECORD_EVENTS,
+  type DomSample,
+} from './input';
 
 const s = (x: number, y: number, t: number, more: Partial<DomSample> = {}): DomSample => ({
   x,
@@ -135,5 +142,73 @@ describe('the overlay of every tool (SI-138)', () => {
     const ink = gestureOverlay(drag, { tool: 'brush', ink: [255, 0, 0, 255], width: 6 });
     expect(ink?.data.slice(2, 6)).toEqual([1, 0, 0, 1]);
     expect(gestureOverlay([], { tool: 'brush', ink: [0, 0, 0, 255], width: 1 })).toBeNull();
+  });
+});
+
+describe('the record of the last committed gesture (C42B-R1-03; SI-141 item 9)', () => {
+  it('keeps the events as committed, the mapping, the tool and the commands the commit produced', () => {
+    const c = new GestureCollector('drawingView');
+    c.down(s(10, 20, 100, { pointerType: 'pen', pressure: 0.3, tiltX: 12, shiftKey: true }));
+    c.move([s(12, 22, 104, { pointerType: 'pen', pressure: 0.6 })]);
+    const req = c.up(s(14, 25, 109, { pointerType: 'pen', pressure: 0.2 }));
+    expect(req).not.toBeNull();
+    if (!req) return;
+    const env = {
+      status: 'ok',
+      result: {
+        commands: [
+          { commandId: 'tool.active.set', params: { toolId: 'brush' }, extra: 1 },
+          { commandId: 'draw.stroke.add', params: { kind: 'brush' } },
+        ],
+      },
+    };
+    const r = gestureRecord('user', 'brush', [1, 0, 0, -1, 400, 250], req, env);
+    expect(r.events).toEqual(req.events); // as committed: pressure, tilt, modifiers, dt
+    expect(r.events[0]?.pressure).toBe(0.3);
+    expect(r.events[0]?.modifiers).toEqual(['shift']);
+    expect([r.origin, r.tool, r.view, r.pointerType, r.eventCount, r.status, r.code]).toEqual([
+      'user',
+      'brush',
+      'drawingView',
+      'pen',
+      3,
+      'ok',
+      null,
+    ]);
+    expect(r.drawingToView).toEqual([1, 0, 0, -1, 400, 250]);
+    expect(r.commands).toEqual([
+      { commandId: 'tool.active.set', params: { toolId: 'brush' } },
+      { commandId: 'draw.stroke.add', params: { kind: 'brush' } },
+    ]);
+    const refused = gestureRecord('agent', 'paint', [1, 0, 0, 1, 0, 0], req, {
+      status: 'error',
+      error: { code: 'drawing.locked' },
+    });
+    expect([refused.origin, refused.status, refused.code, refused.commands]).toEqual([
+      'agent',
+      'error',
+      'drawing.locked',
+      [],
+    ]);
+  });
+
+  it('a gesture longer than the cap is recorded by its count', () => {
+    const events = Array.from({ length: RECORD_EVENTS + 1 }, (_, i) => ({
+      type: 'move' as const,
+      x: i,
+      y: 0,
+      modifiers: [],
+      dt: 1,
+    }));
+    const r = gestureRecord('user', 'brush', [1, 0, 0, 1, 0, 0], { view: 'v', events }, { status: 'ok' });
+    expect([r.events.length, r.eventCount]).toEqual([0, RECORD_EVENTS + 1]);
+    const whole = gestureRecord(
+      'user',
+      'brush',
+      [1, 0, 0, 1, 0, 0],
+      { view: 'v', events: events.slice(1) },
+      { status: 'ok' },
+    );
+    expect(whole.events.length).toBe(RECORD_EVENTS);
   });
 });

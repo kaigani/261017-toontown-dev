@@ -215,3 +215,55 @@ export function gestureOverlay(points: readonly [number, number][], style: Overl
   }
   return t.vertexCount > 0 ? t : null;
 }
+
+/** How many events a gesture record keeps whole (SI-141 item 9); a longer gesture is recorded by its count. */
+export const RECORD_EVENTS = 4096;
+
+/** The window's record of its last committed gesture (C42B-R1-03; SI-141 item 9), served in the canvas summary. */
+export interface GestureRecord {
+  /** `user` (the window's own input) or `agent` (a routed `pointer` call the window played). */
+  origin: 'user' | 'agent';
+  /** The active tool when it was committed. */
+  tool: string;
+  view: string;
+  pointerType: PointerKind;
+  /** The drawing → view mapping the events' view pixels were collected under. */
+  drawingToView: number[];
+  /** The events as committed (pressure, tilt, modifiers, dt), when there are at most `RECORD_EVENTS` of them. */
+  events: WireEvent[];
+  eventCount: number;
+  /** The commit's answer: its status, the error code, and the commands it produced (id and parameters). */
+  status: string;
+  code: string | null;
+  commands: { commandId: string; params: unknown }[];
+}
+
+/** The record of a committed gesture from its request and the `pointer` envelope it was answered with. */
+export function gestureRecord(
+  origin: GestureRecord['origin'],
+  tool: string,
+  drawingToView: readonly number[],
+  req: { view: string; pointerType?: PointerKind; events: WireEvent[] },
+  env: { status: string; result?: unknown; error?: { code?: string } | null },
+): GestureRecord {
+  const raw = (env.result as { commands?: unknown } | undefined)?.commands;
+  const commands = Array.isArray(raw)
+    ? raw.map((c: unknown) => {
+        const o = (c ?? {}) as Record<string, unknown>;
+        const id = o['commandId'];
+        return { commandId: typeof id === 'string' ? id : '', params: o['params'] ?? null };
+      })
+    : [];
+  return {
+    origin,
+    tool,
+    view: req.view,
+    pointerType: req.pointerType ?? 'mouse',
+    drawingToView: [...drawingToView],
+    events: req.events.length <= RECORD_EVENTS ? req.events : [],
+    eventCount: req.events.length,
+    status: env.status,
+    code: env.error?.code ?? null,
+    commands,
+  };
+}
