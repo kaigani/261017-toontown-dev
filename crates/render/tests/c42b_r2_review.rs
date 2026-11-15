@@ -63,7 +63,7 @@ impl Reader<'_> {
         if f32::from_bits(self.u32()?).is_finite() { Ok(()) } else { Err("V9") }
     }
 }
-fn decode(b: &[u8]) -> R<(u64, u64)> {
+pub(crate) fn decode(b: &[u8]) -> R<(u64, u64)> {
     if b.get(..4) != Some(b"TTRD") {
         return Err("V1");
     }
