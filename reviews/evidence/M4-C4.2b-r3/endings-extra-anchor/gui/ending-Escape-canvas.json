@@ -1,0 +1,202 @@
+{
+  "backend": "webgl2",
+  "generation": 0,
+  "drawings": [
+    {
+      "id": "dr_01K7JJN800G54X2GDQDK9WPFV1",
+      "rev": 88,
+      "bucket": 0
+    }
+  ],
+  "failures": [],
+  "gesture": {
+    "status": "ok"
+  },
+  "selection": {
+    "objects": 0,
+    "handles": 0,
+    "points": 0,
+    "pivot": false
+  },
+  "drawn": 1,
+  "residentDrawings": 1,
+  "residentBytes": 34933528,
+  "lastError": null,
+  "lastGesture": {
+    "origin": "user",
+    "tool": "polyline",
+    "view": "drawingView",
+    "pointerType": "mouse",
+    "drawingToView": [
+      1,
+      0,
+      0,
+      -1,
+      450.5,
+      322.5
+    ],
+    "events": [
+      {
+        "type": "down",
+        "x": 100,
+        "y": 260,
+        "modifiers": [],
+        "dt": 0,
+        "pressure": 1,
+        "button": "left"
+      },
+      {
+        "type": "move",
+        "x": 100,
+        "y": 260,
+        "modifiers": [],
+        "dt": 31,
+        "pressure": 1
+      },
+      {
+        "type": "up",
+        "x": 100,
+        "y": 260,
+        "modifiers": [],
+        "dt": 50,
+        "pressure": 1
+      },
+      {
+        "type": "down",
+        "x": 200,
+        "y": 240,
+        "modifiers": [],
+        "dt": 354,
+        "pressure": 1,
+        "button": "left"
+      },
+      {
+        "type": "move",
+        "x": 200,
+        "y": 240,
+        "modifiers": [],
+        "dt": 47,
+        "pressure": 1
+      },
+      {
+        "type": "up",
+        "x": 200,
+        "y": 240,
+        "modifiers": [],
+        "dt": 34,
+        "pressure": 1
+      },
+      {
+        "type": "down",
+        "x": 130,
+        "y": 300,
+        "modifiers": [],
+        "dt": 966,
+        "pressure": 1,
+        "button": "left"
+      },
+      {
+        "type": "move",
+        "x": 130,
+        "y": 300,
+        "modifiers": [],
+        "dt": 33,
+        "pressure": 1
+      },
+      {
+        "type": "up",
+        "x": 130,
+        "y": 300,
+        "modifiers": [],
+        "dt": 48,
+        "pressure": 1
+      },
+      {
+        "type": "down",
+        "x": 220,
+        "y": 300,
+        "modifiers": [],
+        "dt": 967,
+        "pressure": 1,
+        "button": "left"
+      },
+      {
+        "type": "move",
+        "x": 220,
+        "y": 300,
+        "modifiers": [],
+        "dt": 36,
+        "pressure": 1
+      },
+      {
+        "type": "up",
+        "x": 220,
+        "y": 300,
+        "modifiers": [],
+        "dt": 46,
+        "pressure": 1
+      },
+      {
+        "type": "down",
+        "x": 102,
+        "y": 261,
+        "modifiers": [],
+        "dt": 967,
+        "pressure": 1,
+        "button": "left"
+      },
+      {
+        "type": "move",
+        "x": 102,
+        "y": 261,
+        "modifiers": [],
+        "dt": 38,
+        "pressure": 1
+      },
+      {
+        "type": "up",
+        "x": 102,
+        "y": 261,
+        "modifiers": [],
+        "dt": 43,
+        "pressure": 1
+      }
+    ],
+    "eventCount": 15,
+    "status": "ok",
+    "code": null,
+    "commands": [
+      {
+        "commandId": "draw.polyline.add",
+        "params": {
+          "points": [
+            {
+              "x": -350.5,
+              "y": 62.5
+            },
+            {
+              "x": -250.5,
+              "y": 82.5
+            },
+            {
+              "x": -320.5,
+              "y": 22.5
+            },
+            {
+              "x": -230.5,
+              "y": 22.5
+            }
+          ],
+          "closed": true,
+          "snap": true,
+          "snapRadius": 8,
+          "colourId": "col_01M7FCA1BR64Y50ASETSZ96H2Q",
+          "thickness": 8,
+          "penId": "pen_01M7FCA1BS8878F8H4VY422EMA",
+          "layer": "auto",
+          "symmetry": true
+        }
+      }
+    ]
+  }
+}
