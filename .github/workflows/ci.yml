@@ -977,7 +977,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
       - uses: actions/download-artifact@v7
@@ -1020,7 +1020,7 @@ jobs:
           else
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
           fi
-          PYTHONIOENCODING=utf-8 $VPY scripts/c42-canvas-measure.py "$app" "desktop-gui/c42-measure" --bounds ci
+          PYTHONIOENCODING=utf-8 $VPY scripts/c42-canvas-measure.py "$app" "desktop-gui/c42-measure" --bounds ci --experiments --rule-set
       - name: MCP conformance over Streamable HTTP against the running application
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then

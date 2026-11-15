@@ -177,6 +177,21 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict) -> Non
                 def p95(x):
                     return (x or {}).get("p95")
 
+                if record.get("ruleSet"):
+                    # The product's own back-end measurement (ADR-0007 rule set step 1, SI-136): it runs once the canvas
+                    # has been quiet for 30 s, so nothing is called for 40 s; then the stored cells and selection are read.
+                    await asyncio.sleep(40.0)
+                    t0 = time.monotonic()
+                    while time.monotonic() - t0 < 180:
+                        v = ((await rc(session, "prefs.get", {"keys": ["display.canvasBackendMeasured"]})).get("result") or {}).get("values", {})
+                        meas = v.get("display.canvasBackendMeasured") or {}
+                        if meas.get("fingerprint"):
+                            record["ruleSet"] = {"selected": meas.get("selected"), "cells": json.loads(meas.get("cells") or "{}"),
+                                                 "fingerprint": meas.get("fingerprint")}
+                            break
+                        await asyncio.sleep(5.0)
+                    run.check(isinstance(record.get("ruleSet"), dict), "the product measured the back ends on the rule set's scenes", record.get("ruleSet"))
+
                 if record.get("experiments"):
                     # E-C2: sustained edits on the large drawing, each re-tessellated and uploaded (ADR-0007, plan §7):
                     # no frame over 33 ms.
@@ -245,6 +260,7 @@ def main() -> int:
     ap.add_argument("--backend", choices=["webgl2", "webgpu"])
     ap.add_argument("--bounds", choices=["workstation", "ci"], default="ci")
     ap.add_argument("--experiments", action="store_true", help="also run E-C1 and E-C2 (ADR-0007)")
+    ap.add_argument("--rule-set", action="store_true", help="also wait for the product's back-end measurement (SI-136)")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -256,7 +272,7 @@ def main() -> int:
     (user / "Settings" / "preferences.json").write_text(json.dumps({"format": "toontown-settings", "kind": "preferences", "formatVersion": "1.0", "data": seed}), encoding="utf-8")
     record: dict = {"kind": "toontown.c42.canvas-measure", "platform": sys.platform, "machine": platform.platform(),
                     "processor": platform.processor(), "boundsKind": a.bounds, "bounds": BOUNDS[a.bounds], "requestedBackend": a.backend,
-                    "experiments": a.experiments}
+                    "experiments": a.experiments, "ruleSet": a.rule_set}
     discovery = out / "discovery.json"
     try:
         proc = launch(a.app, user, discovery, a.backend)

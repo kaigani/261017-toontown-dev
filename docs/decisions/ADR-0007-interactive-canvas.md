@@ -163,3 +163,67 @@ canvas log maps to an outcome by the analyzer itself.
 - **E-C4** (pending user): `docs/manual-tests/M0-C0.3-canvas-macos.md` on the user's Mac. Its two logs (automatic,
   and forced WebGL2) are decided by the canvas rule set above, with no further analysis.
 - Retina, multiple displays, ProMotion and weaker GPUs remain unmeasured (r4 closure); E-C4 covers one Mac only.
+
+## Amendment (M4 C4.2b): the product canvas, the open questions and the experiments
+
+Status: the M4 product implementation of the decisions above (design notes 1 and 2, `reviews/M4-design-render-transport.md`
+and `reviews/M4-design-frame-loop.md`). The rule set above is unchanged.
+
+**The open protocol questions, decided:**
+
+1. **Identity.** Resident data is keyed by drawing id and form (`residentKey`: the filled drawing, or its outline-only
+   form, 02 §10.2); each entry is valid for one drawing revision (10 REV-02), so undo and redo need no special case.
+2. **Revision checks.** Every payload names its generation and revision; one that differs from the latest composition
+   is discarded and asked for again, never applied (T1, T6).
+3. **Backpressure.** Every message is a whole state, so nothing can be dropped or reordered (T2). The webview pulls:
+   `canvas_scene` answers the Drawing view's composition (the drawings shown with their revisions, roles, opacity,
+   tint and shade; the background, grid and solid colour values), and `canvas_load` one drawing's payload. At most one
+   scene request and one load per drawing are in flight (T3: the bound is 1). This replaces the pushed delta queue.
+4. **Resync.** A drawing is reloaded when its revision, zoom bucket or (for gradient and texture slots) palette stamp
+   changes; a new generation drops every resident drawing (D-7b). The large drawing (50,000 points, 0.86 MB) loads in
+   34-51 ms on the workstation (transfer, decode and upload), against C0.3's 135-200 ms for paths100k.
+5. **Eviction.** The resident set is the composition: a drawing that leaves it is dropped and rebuilt by `canvas_load`
+   when it returns (T5: rebuilt identically). Off-screen culling and a byte budget are not needed for the Drawing view
+   (SI-137).
+6. **Decode placement.** Tessellation runs in Rust, off the document thread (the document thread only takes the
+   snapshot), with `lyon_tessellation` triangulating polygons and the project's own curve flattening and round caps
+   and joins, so the bytes are the same on every platform; the webview decodes and uploads only. ADR-0001's
+   no-worker rule stands.
+7. **Painter order and strokes.** Records follow the final renderer's walk (`draw_render`): even-odd planar fills,
+   non-zero outlines and glyphs, pencil strokes as the non-zero union of segment quads and round caps and joins (a
+   translucent stroke never blends twice); curves are flattened to 0.25 view pixels at the zoom bucket's top zoom.
+
+**The product format.** TTRD 1.0 (`crates/render/src/canvas.rs`, `desktop/src/canvas/format.ts`): an 80-byte header,
+a colour table (one slot per colour id, so solid colour changes need no geometry, 06 §6.3), records in painter order
+(solid meshes, gradient meshes evaluated per fragment, bitmap references). One golden corpus checks the encoder byte
+for byte in `cargo test` and the decoder in Vitest, with one corrupt file per validation rule (V1-V10).
+
+**The back ends.** WebGPU and WebGL2 have the same features. Which runs: the launch flag, else `display.canvasBackend`
+(the user's override), else this machine's measured selection (`display.canvasBackendMeasured`: fingerprint of GPU,
+driver and webview), else WebGL2; without one, the canvas measures both back ends on the rule set's three scenes
+(2 s per cell, SI-136) once it has been quiet for 30 s and step 1 selects (SI-140). On the workstation the product
+measurement selected WebGPU (worst scene 262 fps against WebGL2's 188).
+
+**The experiments** (receipts: `reviews/evidence/M4-C4.2b/`):
+
+- **E-C1** (host-driven state on a groups1k-like scene: 1,000 drawing elements shown by the auto light table, the view
+  and the composition changing every frame for five seconds). Workstation: scene delivery p95 9.4 ms (WebGL2) and 7.9
+  ms (WebGPU), within one frame; frame time p95 16.8 ms on both (≥ 57 fps). Met. A shaded light table first drew one
+  offscreen pass per drawing (scene delivery p95 133 ms on WebGL2); consecutive drawings at the same reduced opacity
+  now share one pass.
+- **E-C2** (sustained edits: 20 edits of the 50,000-point drawing, each re-tessellated and re-uploaded). Workstation:
+  the worst frame 17 ms on both back ends (criterion: none over 33 ms); each reload 34 ms. Met.
+- **E-C3** (GPU-less: the Windows runner's Microsoft Basic Render Driver, WebGPU unavailable). CI-WIN-NUMBERS
+- macOS runner (paravirtual GPU, WebGPU without an adapter): CI-MAC-NUMBERS
+
+**The back-end decision per machine class** (the rule set's output):
+
+| Machine | WebGPU | WebGL2 | Selected | Outcome |
+|---|---|---|---|---|
+| Workstation (RTX 4090, WebView2) | all three met | all three met | WebGPU (higher worst scene) | row 6: go as written |
+| Windows runner (software adapter) | unavailable | CI-WIN-CELLS | WebGL2 | CI-WIN-OUTCOME |
+| macOS runner (paravirtual GPU) | unavailable | CI-MAC-CELLS | WebGL2 | CI-MAC-OUTCOME |
+
+The user's Mac (E-C4) and weaker GPUs remain to be measured with `docs/manual-tests/M0-C0.3-canvas-macos.md` and
+`reviews/manual/M4/C4.2-gpu-less.md`.
+
