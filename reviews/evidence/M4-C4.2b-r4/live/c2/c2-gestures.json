@@ -1,0 +1,34 @@
+[
+  {
+    "tool": "brush",
+    "verdict": "Equivalence unverifiable until collected samples exposed"
+  },
+  {
+    "tool": "pencil",
+    "verdict": "Equivalence unverifiable until collected samples exposed"
+  },
+  {
+    "tool": "rectangle",
+    "verdict": "Equivalence unverifiable until collected samples exposed"
+  },
+  {
+    "tool": "ellipse",
+    "verdict": "Equivalence unverifiable until collected samples exposed"
+  },
+  {
+    "tool": "line",
+    "verdict": "Equivalence unverifiable until collected samples exposed"
+  },
+  {
+    "tool": "select",
+    "verdict": "Equivalence unverifiable until collected samples exposed"
+  },
+  {
+    "tool": "eraser",
+    "verdict": "Equivalence unverifiable until collected samples exposed"
+  },
+  {
+    "tool": "paint",
+    "verdict": "Equivalence unverifiable until collected samples exposed"
+  }
+]

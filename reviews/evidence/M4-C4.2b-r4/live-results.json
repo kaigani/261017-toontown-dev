@@ -1,0 +1,92 @@
+[
+  {
+    "mode": "labels",
+    "code": 0,
+    "seconds": 24.446917599998415,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "fixed-webgl2",
+    "code": 0,
+    "seconds": 224.23769820004236,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "fixed-webgpu",
+    "code": 0,
+    "seconds": 219.19483370002126,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "gui",
+    "code": 0,
+    "seconds": 100.44877989997622,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "exact-tools",
+    "code": 0,
+    "seconds": 9.602613600029144,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "c2",
+    "code": 0,
+    "seconds": 17.69568409997737,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "d2",
+    "code": 0,
+    "seconds": 36.998142900003586,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "d2-exact-attached",
+    "code": 0,
+    "seconds": 3.2192050000303425,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "d2-exact-headless",
+    "code": 0,
+    "seconds": 3.8972450000001118,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "d3-webgl2",
+    "code": 0,
+    "seconds": 13.398346100002527,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "d3-webgpu",
+    "code": 0,
+    "seconds": 13.249804600025527,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "alternate",
+    "code": 0,
+    "seconds": 4.789674699946772,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "named",
+    "code": 0,
+    "seconds": 3.880815399985295,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "byte",
+    "code": 0,
+    "seconds": 4.688385400047991,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  },
+  {
+    "mode": "regression",
+    "code": 0,
+    "seconds": 33.01742479996756,
+    "processes": "INFO: No tasks are running which match the specified criteria."
+  }
+]

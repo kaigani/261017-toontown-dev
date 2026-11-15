@@ -1,0 +1,68 @@
+[
+  {
+    "tool": "brush"
+  },
+  {
+    "tool": "pencil"
+  },
+  {
+    "tool": "rectangle"
+  },
+  {
+    "tool": "ellipse"
+  },
+  {
+    "tool": "line"
+  },
+  {
+    "tool": "polyline"
+  },
+  {
+    "tool": "select"
+  },
+  {
+    "tool": "eraser"
+  },
+  {
+    "tool": "cutter"
+  },
+  {
+    "tool": "scissor"
+  },
+  {
+    "tool": "paint"
+  },
+  {
+    "tool": "unpaint"
+  },
+  {
+    "tool": "paintUnpainted"
+  },
+  {
+    "tool": "dropper"
+  },
+  {
+    "tool": "closeGap"
+  },
+  {
+    "tool": "zoom"
+  },
+  {
+    "tool": "grabber"
+  },
+  {
+    "tool": "select: corner scale"
+  },
+  {
+    "tool": "select: constrained corner"
+  },
+  {
+    "tool": "select: side scale"
+  },
+  {
+    "tool": "select: rotate"
+  },
+  {
+    "tool": "select: drawing pivot"
+  }
+]

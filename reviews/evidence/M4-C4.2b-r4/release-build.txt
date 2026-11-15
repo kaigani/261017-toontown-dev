@@ -1,0 +1,23 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\registry-macros)
+   Compiling clap_lex v1.1.1
+   Compiling anstyle v1.0.14
+   Compiling clap_derive v4.6.7
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\desktop\src-tauri)
+   Compiling clap_builder v4.6.7
+   Compiling clap v4.6.7
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\audio)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\lipsync)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 1m 25s

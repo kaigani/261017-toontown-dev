@@ -1,0 +1,140 @@
+{
+  "plain": {
+    "size": [
+      901,
+      645
+    ],
+    "different": 42,
+    "fraction": 7.227111994424799e-05
+  },
+  "zoomed": {
+    "size": [
+      901,
+      645
+    ],
+    "different": 56,
+    "fraction": 9.636149325899732e-05
+  },
+  "rotated": {
+    "size": [
+      901,
+      645
+    ],
+    "different": 352,
+    "fraction": 0.0006057008147708403
+  },
+  "gestures": {
+    "brush": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 150,
+      "fraction": 0.00025811114265802856
+    },
+    "pencil": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 217,
+      "fraction": 0.00037340078637861465
+    },
+    "rectangle": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 58,
+      "fraction": 9.980297516110438e-05
+    },
+    "ellipse": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 314,
+      "fraction": 0.0005403126586308064
+    },
+    "line": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 54,
+      "fraction": 9.292001135689028e-05
+    },
+    "polyline": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 50,
+      "fraction": 8.603704755267618e-05
+    },
+    "eraser": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 84,
+      "fraction": 0.00014454223988849598
+    },
+    "cutter": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 155,
+      "fraction": 0.00026671484741329615
+    },
+    "scissor": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 95,
+      "fraction": 0.00016347039035008475
+    },
+    "paint": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 38,
+      "fraction": 6.53881561400339e-05
+    },
+    "unpaint": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 46,
+      "fraction": 7.915408374846209e-05
+    },
+    "paintUnpainted": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 38,
+      "fraction": 6.53881561400339e-05
+    },
+    "dropper": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 42,
+      "fraction": 7.227111994424799e-05
+    },
+    "closeGap": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 42,
+      "fraction": 7.227111994424799e-05
+    }
+  }
+}

@@ -1,0 +1,179 @@
+[
+  {
+    "name": "rectangle",
+    "tool": "rectangle",
+    "input": "agent",
+    "record": {
+      "origin": "agent",
+      "tool": "rectangle",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        322.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 390.5,
+          "y": 472.5,
+          "dt": 0,
+          "modifiers": []
+        },
+        {
+          "type": "move",
+          "x": 440.5,
+          "y": 447.5,
+          "dt": 16,
+          "modifiers": []
+        },
+        {
+          "type": "up",
+          "x": 490.5,
+          "y": 422.5,
+          "dt": 16,
+          "modifiers": []
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "tool.active.set",
+          "params": {
+            "toolId": "rectangle"
+          }
+        },
+        {
+          "commandId": "draw.rectangle.add",
+          "params": {
+            "from": {
+              "x": -60,
+              "y": -150
+            },
+            "to": {
+              "x": 40,
+              "y": -100
+            },
+            "square": false,
+            "fromCentre": false,
+            "colourId": "col_01M7FHC295VCQ8QPGMVJMFH4VV",
+            "thickness": 8,
+            "penId": "pen_01M7FHC295VCQ8QPGMVJMFH4ZM",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.rectangle.add",
+          "params": {
+            "from": {
+              "x": -60,
+              "y": -150
+            },
+            "to": {
+              "x": 40,
+              "y": -100
+            },
+            "square": false,
+            "fromCentre": false,
+            "colourId": "col_01M7FHC295VCQ8QPGMVJMFH4VV",
+            "thickness": 8,
+            "penId": "pen_01M7FHC295VCQ8QPGMVJMFH4ZM",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.rectangle.add",
+          "params": {
+            "from": {
+              "x": -60.0,
+              "y": -150.0
+            },
+            "to": {
+              "x": 40.0,
+              "y": -100.0
+            },
+            "square": false,
+            "fromCentre": false,
+            "colourId": "col_01M7FHC295VCQ8QPGMVJMFH4VV",
+            "thickness": 8.0,
+            "penId": "pen_01M7FHC295VCQ8QPGMVJMFH4ZM",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        322.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Rectangle Tool",
+    "undoRedo": [
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ]
+    ],
+    "verdict": "PASS"
+  }
+]

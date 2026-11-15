@@ -1,0 +1,7 @@
+{
+  "kind": "toontown.c42.gui-e2e",
+  "platform": "win32",
+  "seconds": 120.0,
+  "failures": [],
+  "checks": 78
+}

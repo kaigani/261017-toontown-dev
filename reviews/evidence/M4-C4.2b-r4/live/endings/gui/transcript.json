@@ -1,0 +1,926 @@
+[
+  {
+    "check": "project.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the default palette's Colour 2 is found",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the view's mapping",
+    "ok": true,
+    "detail": [
+      1.0,
+      0.0,
+      0.0,
+      -1.0,
+      450.5,
+      322.5
+    ]
+  },
+  {
+    "check": "T1: the canvas holds the current drawing at the kernel's revision",
+    "ok": true,
+    "detail": {
+      "canvas": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800D0ES4J4EAXNDTFDD",
+            "rev": 8,
+            "bucket": 0
+          }
+        ],
+        "failures": [],
+        "gesture": null,
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": true
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 34889512,
+        "lastError": null
+      },
+      "rev": 8
+    }
+  },
+  {
+    "check": "a back end draws without errors",
+    "ok": true,
+    "detail": {
+      "backend": "webgl2",
+      "generation": 0,
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800D0ES4J4EAXNDTFDD",
+          "rev": 8,
+          "bucket": 0
+        }
+      ],
+      "failures": [],
+      "gesture": null,
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": true
+      },
+      "drawn": 1,
+      "residentDrawings": 1,
+      "residentBytes": 34889512,
+      "lastError": null
+    }
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: the plain view (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 42,
+      "fraction": 7.227111994424799e-05
+    }
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: zoomed 200 % and panned (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 56,
+      "fraction": 9.636149325899732e-05
+    }
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: zoomed, panned and rotated 30\u00b0 (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 352,
+      "fraction": 0.0006057008147708403
+    }
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the brush gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 150,
+      "fraction": 0.00025811114265802856
+    }
+  },
+  {
+    "check": "D-4 brush: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Brush Tool"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the pencil gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 217,
+      "fraction": 0.00037340078637861465
+    }
+  },
+  {
+    "check": "D-4 pencil: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Pencil Tool"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the rectangle gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 58,
+      "fraction": 9.980297516110438e-05
+    }
+  },
+  {
+    "check": "D-4 rectangle: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Rectangle Tool"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the ellipse gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 314,
+      "fraction": 0.0005403126586308064
+    }
+  },
+  {
+    "check": "D-4 ellipse: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Ellipse Tool"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the line gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 54,
+      "fraction": 9.292001135689028e-05
+    }
+  },
+  {
+    "check": "D-4 line: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Line Tool"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the polyline gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 50,
+      "fraction": 8.603704755267618e-05
+    }
+  },
+  {
+    "check": "D-4 polyline: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Polyline Tool"
+    ]
+  },
+  {
+    "check": "D-4 select: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the eraser gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 84,
+      "fraction": 0.00014454223988849598
+    }
+  },
+  {
+    "check": "D-4 eraser: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Eraser Tool"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the cutter gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 155,
+      "fraction": 0.00026671484741329615
+    }
+  },
+  {
+    "check": "D-4 cutter: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Cutter Tool"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the scissor gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 95,
+      "fraction": 0.00016347039035008475
+    }
+  },
+  {
+    "check": "D-4 scissor: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Scissor Tool"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the paint gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 38,
+      "fraction": 6.53881561400339e-05
+    }
+  },
+  {
+    "check": "D-4 paint: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Paint"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the unpaint gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 46,
+      "fraction": 7.915408374846209e-05
+    }
+  },
+  {
+    "check": "D-4 unpaint: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Unpaint"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the paintUnpainted gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 38,
+      "fraction": 6.53881561400339e-05
+    }
+  },
+  {
+    "check": "D-4 paintUnpainted: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Paint Unpainted"
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the dropper gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 42,
+      "fraction": 7.227111994424799e-05
+    }
+  },
+  {
+    "check": "D-4 dropper: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: after the closeGap gesture (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 42,
+      "fraction": 7.227111994424799e-05
+    }
+  },
+  {
+    "check": "D-4 closeGap: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Close Gap"
+    ]
+  },
+  {
+    "check": "D-4 zoom: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "D-4 grabber: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "D-4 select: corner scale: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Scale Object"
+    ]
+  },
+  {
+    "check": "D-4 select: constrained corner: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Scale Object"
+    ]
+  },
+  {
+    "check": "D-4 select: side scale: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Scale Object"
+    ]
+  },
+  {
+    "check": "D-4 select: rotate: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Rotate Object"
+    ]
+  },
+  {
+    "check": "D-4 select: drawing pivot: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Change Drawing Pivot"
+    ]
+  },
+  {
+    "check": "selecting an object shows the selection overlay: eight handles and the outlines (canvas summary)",
+    "ok": true,
+    "detail": {
+      "objects": 2,
+      "handles": 8,
+      "points": 0,
+      "pivot": true
+    }
+  },
+  {
+    "check": "a real capture shows the eight handle squares at the handle positions",
+    "ok": true,
+    "detail": {
+      "found": 8,
+      "centres": [
+        [
+          296.5,
+          386.5
+        ],
+        [
+          424.5,
+          386.5
+        ],
+        [
+          424.5,
+          258.5
+        ],
+        [
+          296.5,
+          258.5
+        ],
+        [
+          360.5,
+          386.5
+        ],
+        [
+          424.5,
+          322.5
+        ],
+        [
+          360.5,
+          258.5
+        ],
+        [
+          296.5,
+          322.5
+        ]
+      ]
+    }
+  },
+  {
+    "check": "deselecting removes the handles (summary and capture)",
+    "ok": true,
+    "detail": {
+      "found": 0,
+      "summary": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": true
+      }
+    }
+  },
+  {
+    "check": "D-6: inspect.screenshot window is the GUI capture",
+    "ok": true,
+    "detail": {
+      "source": "gui",
+      "width": 1280,
+      "height": 800,
+      "error": null
+    }
+  },
+  {
+    "check": "D-6: inspect.screenshot drawingView is the GUI capture",
+    "ok": true,
+    "detail": {
+      "source": "gui",
+      "width": 901,
+      "height": 645,
+      "error": null
+    }
+  },
+  {
+    "check": "the window capture is larger than the view's (chrome included)",
+    "ok": true,
+    "detail": {
+      "window": [
+        1280,
+        800
+      ],
+      "view": [
+        901,
+        645
+      ]
+    }
+  },
+  {
+    "check": "the view capture is the window capture's pixels at the canvas's place",
+    "ok": true,
+    "detail": [
+      49,
+      126
+    ]
+  },
+  {
+    "check": "D-6: the open dialog is in the window capture",
+    "ok": true,
+    "detail": {
+      "changedSamples": 58982
+    }
+  },
+  {
+    "check": "Escape pressed through the OS",
+    "ok": true,
+    "detail": {
+      "ok": true,
+      "stderr": ""
+    }
+  },
+  {
+    "check": "an OS mouse drag in the canvas commits one Brush Tool step, drawn at the new revision",
+    "ok": true,
+    "detail": {
+      "labels": [
+        "Brush Tool"
+      ],
+      "canvas": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800D0ES4J4EAXNDTFDD",
+            "rev": 81,
+            "bucket": 0
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "ok"
+        },
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 34890640,
+        "lastError": null,
+        "lastGesture": {
+          "origin": "user",
+          "tool": "brush",
+          "view": "drawingView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1,
+            0,
+            0,
+            -1,
+            450.5,
+            322.5
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 120,
+              "y": 120,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 200,
+              "y": 160,
+              "modifiers": [],
+              "dt": 33,
+              "pressure": 1
+            },
+            {
+              "type": "move",
+              "x": 280,
+              "y": 120,
+              "modifiers": [],
+              "dt": 33,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 280,
+              "y": 120,
+              "modifiers": [],
+              "dt": 45,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 4,
+          "status": "ok",
+          "code": null,
+          "commands": [
+            {
+              "commandId": "draw.stroke.add",
+              "params": {
+                "kind": "brush",
+                "points": [
+                  {
+                    "x": -330.5,
+                    "y": 202.5,
+                    "pressure": 1
+                  },
+                  {
+                    "x": -250.5,
+                    "y": 162.5,
+                    "pressure": 1
+                  },
+                  {
+                    "x": -170.5,
+                    "y": 202.5,
+                    "pressure": 1
+                  },
+                  {
+                    "x": -170.5,
+                    "y": 202.5,
+                    "pressure": 1
+                  }
+                ],
+                "fit": true,
+                "penId": "pen_01M7FGMBH3X7RHM7ZXR9DS4TVG",
+                "colourId": "col_01M7FGMBH3X7RHM7ZXR9DS4TQQ",
+                "layer": "auto",
+                "symmetry": true
+              }
+            }
+          ]
+        }
+      },
+      "rev": 81
+    }
+  },
+  {
+    "check": "P2: a user press during an agent gesture answers ui.busy, reason userInput (SI-135)",
+    "ok": true,
+    "detail": {
+      "code": "ui.busy",
+      "message": "the user pressed in the view while the agent's gesture was being played; nothing was committed",
+      "details": {
+        "reason": "userInput",
+        "viewId": "drawingView"
+      }
+    }
+  },
+  {
+    "check": "the user binds F8 to the Brush tool and F9 to closing the Drawing view",
+    "ok": true,
+    "detail": [
+      null,
+      null
+    ]
+  },
+  {
+    "check": "a Polyline ended by double click leaves 1 Polyline Tool step(s) and ends the gesture's modal state",
+    "ok": true,
+    "detail": {
+      "openedModal": {
+        "kind": "gesture",
+        "title": "polyline"
+      },
+      "modal": null,
+      "labels": [
+        "Polyline Tool"
+      ],
+      "canvasShown": true,
+      "write": null
+    }
+  },
+  {
+    "check": "rectangle write after double click",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "a Polyline ended by Enter leaves 1 Polyline Tool step(s) and ends the gesture's modal state",
+    "ok": true,
+    "detail": {
+      "openedModal": {
+        "kind": "gesture",
+        "title": "polyline"
+      },
+      "modal": null,
+      "labels": [
+        "Polyline Tool"
+      ],
+      "canvasShown": true,
+      "write": null
+    }
+  },
+  {
+    "check": "rectangle write after Enter",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "a Polyline ended by closing click leaves 1 Polyline Tool step(s) and ends the gesture's modal state",
+    "ok": true,
+    "detail": {
+      "openedModal": {
+        "kind": "gesture",
+        "title": "polyline"
+      },
+      "modal": null,
+      "labels": [
+        "Polyline Tool"
+      ],
+      "canvasShown": true,
+      "write": null
+    }
+  },
+  {
+    "check": "rectangle write after closing click",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "a Polyline ended by Escape leaves 0 Polyline Tool step(s) and ends the gesture's modal state",
+    "ok": true,
+    "detail": {
+      "openedModal": {
+        "kind": "gesture",
+        "title": "polyline"
+      },
+      "modal": null,
+      "labels": [],
+      "canvasShown": true,
+      "write": null
+    }
+  },
+  {
+    "check": "rectangle write after Escape",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "a Polyline ended by tool change leaves 0 Polyline Tool step(s) and ends the gesture's modal state",
+    "ok": true,
+    "detail": {
+      "openedModal": {
+        "kind": "gesture",
+        "title": "polyline"
+      },
+      "modal": null,
+      "labels": [],
+      "canvasShown": true,
+      "write": null
+    }
+  },
+  {
+    "check": "rectangle write after tool change",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "between-click query and delayed busy write",
+    "ok": true,
+    "detail": {
+      "queryMs": 7.626799982972443,
+      "busyMs": 10003.630899998825,
+      "busy": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201cpolyline\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "polyline"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    }
+  },
+  {
+    "check": "a Polyline ended by busy between clicks leaves 1 Polyline Tool step(s) and ends the gesture's modal state",
+    "ok": true,
+    "detail": {
+      "openedModal": {
+        "kind": "gesture",
+        "title": "polyline"
+      },
+      "modal": null,
+      "labels": [
+        "Polyline Tool"
+      ],
+      "canvasShown": true,
+      "write": null
+    }
+  },
+  {
+    "check": "rectangle write after busy between clicks",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the left-docked canvas is found in the window capture, on the screen",
+    "ok": true,
+    "detail": {
+      "canvas": [
+        49,
+        126,
+        410,
+        645
+      ],
+      "visible": [
+        57,
+        134,
+        451,
+        763
+      ]
+    }
+  },
+  {
+    "check": "a Polyline ended by view going away leaves 0 Polyline Tool step(s) and ends the gesture's modal state",
+    "ok": true,
+    "detail": {
+      "openedModal": {
+        "kind": "gesture",
+        "title": "polyline"
+      },
+      "modal": null,
+      "labels": [],
+      "canvasShown": false,
+      "write": null
+    }
+  },
+  {
+    "check": "rectangle write after view going away",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "F9 closed the Drawing view (its canvas is gone)",
+    "ok": true,
+    "detail": false
+  },
+  {
+    "check": "the Drawing view floats",
+    "ok": true,
+    "detail": [
+      null,
+      null
+    ]
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: the Drawing view in a float window (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        900,
+        644
+      ],
+      "different": 586,
+      "fraction": 0.0010110420979986198
+    }
+  },
+  {
+    "check": "after the float closed and the view docked, inspect.screenshot drawingView captures the docked view",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the canvas shows what the final renderer draws: the Drawing view docked again after its float closed (a real capture against the activeView render, under 1 % of pixels differ)",
+    "ok": true,
+    "detail": {
+      "size": [
+        901,
+        645
+      ],
+      "different": 679,
+      "fraction": 0.0011683831057653425
+    }
+  },
+  {
+    "check": "pointer reaches the docked view",
+    "ok": true,
+    "detail": null
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "case": 1,
+    "verdict": "Inconclusive: second-engine exact replay not exercised",
+    "observed": {
+      "results": [
+        {
+          "tool": "brush",
+          "contentEqualModuloIds": false
+        }
+      ]
+    }
+  },
+  {
+    "case": 2,
+    "verdict": "Inconclusive: second-engine exact replay not exercised",
+    "observed": {
+      "results": [
+        {
+          "tool": "rectangle",
+          "contentEqualModuloIds": false
+        },
+        {
+          "tool": "select",
+          "contentEqualModuloIds": true
+        }
+      ]
+    }
+  },
+  {
+    "case": 3,
+    "verdict": "Pass",
+    "observed": {
+      "response": {
+        "error": {
+          "code": "ui.busy"
+        }
+      }
+    }
+  },
+  {
+    "case": 4,
+    "verdict": "Pass",
+    "observed": {
+      "results": [
+        {
+          "name": "query",
+          "ms": 8.594500017352402
+        },
+        {
+          "name": "tool",
+          "ms": 10004.684099985752
+        },
+        {
+          "name": "pointer",
+          "ms": 10006.094300013501
+        }
+      ],
+      "afterRelease": {}
+    }
+  },
+  {
+    "case": 5,
+    "verdict": "Pass",
+    "observed": {
+      "response": {},
+      "changed": true
+    }
+  },
+  {
+    "case": 6,
+    "verdict": "Pass",
+    "observed": {
+      "historyDelta": 20,
+      "comparison": {
+        "verdict": "Pass"
+      }
+    }
+  }
+]
