@@ -1,0 +1,34 @@
+{
+  "run": 43677722406,
+  "jobs": 36,
+  "failed": [
+    {
+      "name": "lint (windows-latest)",
+      "conclusion": "failure",
+      "steps": [
+        "Front end: lint, type-check, test, format, licences"
+      ]
+    },
+    {
+      "name": "lint (macos-latest)",
+      "conclusion": "failure",
+      "steps": [
+        "Front end: lint, type-check, test, format, licences"
+      ]
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "failure",
+      "steps": [
+        "Reviewer Python suites (every tests/adversarial/*.py)"
+      ]
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "failure",
+      "steps": [
+        "Reviewer Python suites (every tests/adversarial/*.py)"
+      ]
+    }
+  ]
+}

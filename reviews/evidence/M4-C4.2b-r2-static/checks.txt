@@ -1,0 +1,11 @@
+Candidate: 308bf3465f75750316ecf86009428201b5645814
+No cargo executed.
+Frozen-lockfile install: PASS
+Vitest format reviewer, selection, model, input: 4 files / 66 tests PASS
+tsc --noEmit: PASS
+Round-1 static Python generation, selection, experiments: PASS
+check-product-allows: PASS (95 in 39 files)
+check-availability-inventory: PASS (277 commands)
+check-message-help: PASS (127/127)
+check-addressing-params: PASS (27)
+End fetch 2026-11-14T22:53:58-08:00: response and handoff absent.
