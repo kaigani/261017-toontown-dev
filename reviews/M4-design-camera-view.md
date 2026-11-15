@@ -75,3 +75,75 @@ generation and colour table behave as in the Drawing view (C4.2b).
 
 SI-145 (the plane mapping, the near plane, the tolerance and the bucket of a multi-occurrence drawing), SI-147 (a
 Camera view without a current camera). The others the Camera view needs are in the views and gestures notes.
+
+## 6. C4.3b: the window (before code; plan §3.2, §3.5; rulings D-22, D-24, D-25)
+
+**Which canvas a view window shows.** `ViewPanel` shows the canvas (`CanvasView`) for every view window whose type is
+Drawing or Camera (`drawingView`, `cameraView` and their floats); a Top or Side window keeps its placeholder, naming
+M6 C6.1. The canvas follows the scene answer's `viewType`, so a Drawing view window switched to the Camera type shows
+the Camera composition (the C4.2b residual "a Drawing view panel switched to another type keeps showing the drawing
+canvas", owner C4.3, closes here). One canvas, one model, one back end per window, as in C4.2b (D-7a).
+
+**What the kernel adds to the answer** (the members exist in form 1.1; the answer's form does not change). 05 §3.2
+lines 319-321 and 02 §10.7 make the selection display a property of the composition:
+- box highlighting off: every unselected occurrence carries a reduced `opacity` (SI-153), the "faded" display;
+- outline on selection (it requires box highlighting, 02 §10.7): after the occurrences, one more entry per selected
+  occurrence with `outline: true` and `tint` the highlight colour, "even where the element is hidden";
+- selection always visible: a selected element hidden in the scene is included as an occurrence.
+
+These entries are view-only. CV1 holds for the rest: they are the renderer's drawn and out-of-frame entries, and
+CV4 still holds: none of them reaches a render. The window does not decide any of it; it draws what it is given.
+
+**Drawing an occurrence.** Each back end draws a Camera-view entry through `cameraToView · matrix` (a per-draw matrix:
+a uniform per draw in WebGL2, a dynamic uniform offset in WebGPU); a Drawing-view entry through `drawingToView`, as
+before. The window composes two matrices it received; it computes no projection (CV3).
+
+**Order.** In the Camera view the canvas keeps the kernel's order (CV1: the renderer's back-to-front order); the
+Drawing view's role order of 02 §4.2 (`layers.ts`) does not apply to it. With `currentOnTop` (02 §10.5, Camera view
+only) the current drawing's occurrences are drawn after the others. The outline entries come last.
+
+**The grid** (05 §3.2: "the grid and overlay/underlay of section 02"). In the Camera view the field guide is drawn in
+camera output pixels, aligned with the camera frame: the 12-field guide has 12 cells across the frame's width (05
+§1.2: through the default camera the frame covers 12 fields), the 16-field guide 16, the normal grid as the 12-field
+one (SI-153); it goes through `cameraToView`, under or over the drawings as in the Drawing view.
+
+**Overlays (layer 9), all from the answer, in view pixels through `cameraToView`:**
+- the area outside the camera frame dimmed, and the frame's outline (05 §3.2 line 316);
+- each selected non-current camera's frame as a thin outline (05 §12.4 line 901);
+- each selected node's pivot as a cross (05 §3.2 line 317);
+- with box highlighting, each selected element's box in the highlight colour (05 lines 319-321);
+- the scene tool's furniture on the union box: the handles of SI-150, and the pivot marker with the Transform tool;
+- a drawing tool's gesture ink, marquee and selection outline as in the Drawing view (C4.2b), through the drawing
+  mapping below.
+
+Colours, widths and the dimming are SI-153's (SI-138 for what the Drawing view already shows).
+
+**Resident geometry and tolerance** (SI-145; CV2). A drawing is loaded once. Its zoom bucket is the bucket of its
+largest occurrence: the model takes, per drawing, the largest scale of `cameraToView · matrix` over its entries (in the
+Drawing view, the one `drawingToView` as before).
+
+**The drawing mapping for drawing tools.** `draw.viewMapping.get` for the Camera view (C43A-R1-01) gives the current
+drawing's mapping, which the canvas uses for gesture ink widths and for the drawing tools' overlays. The canvas asks
+again whenever the scene answer's revision, its frame or the current element changes, or the view moves (a camera move
+changes it).
+
+**Click to activate** (views note V9; SI-142; answer 4). A press in a view window that is not the active view sends
+`view.active.set {viewId}` first (user origin; UI state, no undo step), then the same press is the tool's press: one
+gesture, its commands after the activation. The canvas knows the active view from `app.state.get` and the `shell.view`
+events.
+
+**Captures and renders.** The attached `inspect.screenshot` of the Camera view is the window's capture (D-6, C4.2b),
+compared in the e2e with the `activeView` final render (< 1 % of pixels differ, ruling O-5): plain, zoomed, rolled,
+and after each scene gesture.
+
+**Invariants added in C4.3b (one test each):**
+- **CV1, window half**: with a recording back end, the canvas draws a Camera-view answer's entries in its order, each
+  through `cameraToView · matrix`; `currentOnTop` moves only the current drawing's entries (Vitest, `frame.test.ts`).
+- **CV2, window half**: a drawing shown by two occurrences is loaded once, at the bucket of the larger (Vitest).
+- **CV3, window half**: a source check over `desktop/src/canvas`: no field of view, camera position, `tan`, `atan` or
+  perspective division is read or computed there; every matrix comes from the scene answer or `draw.viewMapping.get`.
+- **CV5**: the selection display: box highlighting off fades exactly the unselected occurrences, outline on selection
+  adds one outline entry per selected occurrence, selection always visible includes a hidden selected element; none
+  changes a render's bytes (kernel, `c43`).
+- **V9**: a press in an inactive view window activates it and acts as the tool's press; `edit.history.get` shows no
+  step for the activation (e2e on Windows by OS input).

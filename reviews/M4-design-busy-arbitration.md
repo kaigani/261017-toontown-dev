@@ -73,3 +73,35 @@ Status: decided before implementation (M4 C4.1). Owner: builder. Spec: 01 §12.1
   command returns the tree whose number covers that command's events, and marks a tree that never catches up as stale
   after the bound.
 - E6 (C4.3): end to end in the running application.
+
+## 5. Amendment for C4.3b: E6 in the running application (plan §3.7; rulings D-26, D-27)
+
+11 lines 586-587: "while a scripted 'user' drags an element in attached mode, the agent's mutating call waits and then
+succeeds; `undo ifTop` refuses to undo the user's later step." The scenario
+(`scripts/c43-e6-coexistence.py`, the `desktop gui` job on both OSes):
+
+1. The application runs attached with the sample project, the Camera view shown and active, Bob selected, the
+   Transform tool current. An agent session connects over MCP (an `agent_session` with `edit` scope).
+2. **The user drags Bob** in the Camera view. On Windows this is a real pointer drag by OS input (`SendInput`: press,
+   moves over about 1.5 s, release; ruling D-26). On macOS the runner allows no synthetic OS input to the webview, so
+   the window plays the same samples through its own input path (`pointer` routed to the window, C4.2b's P1). The
+   receipt states which.
+3. **While the drag is pressed**, the agent calls `anim.transform.set {nodeIds: [Bob], target: "static", position}`.
+   The call waits: the window has reported the gesture as the modal state. The test records the call's send time, the
+   release time and the answer time, and asserts the order: answered after the release, not before.
+4. **After the release** the call succeeds (its envelope `ok`, `documentRev` advanced). The user's drag is one undo
+   step (the Transform tool keys Bob's position at the current frame), and the agent's step follows it.
+5. **The user's later step:** the user nudges Bob again (a second real drag), a step after the agent's.
+6. **The agent's `edit.undo {ifTop: <its step id>}`** answers `undo.notTop`, naming the user's later step as the top.
+   The user's step survives: `edit.history.get` shows, in order, the user's drag, the agent's call and the user's
+   later step, none undone.
+7. Nothing is lost or reordered: the document's history, the agent session's activity log and the change events agree
+   on the three steps and their origins.
+
+**Invariants:**
+- **E1:** an agent mutation during a user gesture waits at most `waitForUserMs` and succeeds after the release when the
+  wait suffices; with `waitForUserMs` shorter than the drag it fails `ui.busy` instead. The scenario runs once each way.
+- **E2:** `undo ifTop` never undoes another origin's later step.
+
+No wall-clock figure is asserted near a bound (D-27): the order of the events is asserted, and the wait is recorded
+in the receipt.

@@ -1880,3 +1880,50 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   The drawing tool keeps its own default (`tool.active.get`, C4.1). Both are session UI state: neither is saved in the
   project nor restored at the next start.
 - **Question:** confirm, or give the start-up tool and family (and whether they persist across sessions).
+
+## SI-153 — the Camera view's appearance (found in M4 C4.3b; interim)
+
+- **Sections:** 05 §3.2 lines 311-321 (the camera frame, "the area outside the frame is dimmed", pivots, selection
+  highlighting, "unselected content is shown faded"), §12.4 line 901 (a non-current camera's frame "as a thin outline"),
+  §1.2 (12 fields across the default camera's frame), 02 §10.1 (grid types), §10.5, §10.7 (box highlighting, outline on
+  selection, selection always visible), SI-138 (the Drawing view's overlay).
+- **Problem:** the colours and amounts are not given: how much the outside of the frame is dimmed, how faded
+  unselected content is, the highlight colour, how pivots and other cameras' frames are drawn, and how the grid lies in
+  the Camera view.
+- **Interim decision:**
+  - **Dimming:** outside the camera frame, black at 35 % opacity over the composition; the frame's outline 1 view
+    pixel, black at 60 %.
+  - **Fading:** with box highlighting off, unselected occurrences at opacity 0.35.
+  - **Highlight colour:** SI-138's accent colour. It is used for the selection boxes (1 view pixel) and for the outline
+    entries of outline on selection.
+  - **Markers:** a pivot is a cross 12 view pixels wide; another camera's frame is a 1-pixel outline in the accent
+    colour at 70 %.
+  - **The grid:** in camera output pixels aligned with the camera frame: 12 cells across its width for `field12` and
+    `normal`, 16 for `field16`; square cells; centred on the frame.
+- **Question:** confirm or specify.
+
+## SI-154 — how exact the live transform preview is, and the Drawing view's selection payloads (found in M4 C4.3b; interim)
+
+- **Sections:** 05 §5.0 line 399 ("Views update live during a drag"), 02 §7.1.1, ADR-0007 decision 1, SI-141, SI-150,
+  plan answer 6.
+- **Problem:** the spec asks for live feedback but not how faithful it must be. The final effect of a scene-tool drag
+  on nodes at several depths, or about several pivots, is not one view-pixel transform.
+- **Interim decision:**
+  - **The preview:** a view-pixel affine of the selection by the furniture rule of the command (preview note §2).
+  - **Exact cases:** every Drawing-view Select drag, a Camera-view move of nodes at one depth, and a Camera-view
+    scale, rotation or skew of one node facing the camera. Elsewhere it approximates, and the committed state replaces
+    it when drawn.
+  - **Selection payloads:** `canvas_load` takes `part: all | selection | rest`, so the Drawing view can move only the
+    selected objects.
+- **Question:** should the preview be exact in every case (a kernel-computed preview per sample)?
+
+## SI-155 — what a person can act on that is not a command (found in M4 C4.3b; interim)
+
+- **Sections:** 11 P1 line 19, §14.1 lines 560-563 (every GUI action has a binding), 01 §12 (`window.*` geometry
+  commands), plan §8 ("the parity manifest's treatment of GUI-only conveniences").
+- **Problem:** moving a float, dragging a splitter, scrolling, typing into a field before submitting, hovering and
+  focusing are actions in the GUI but not commands.
+- **Interim decision:** the parity manifest marks such an element `guiOnly` with one reason from `geometry`, `scroll`,
+  `typing`, `hover`, `focus`; any other unbound element fails the gate. Geometry that ends in a `window.*` command is
+  bound to that command.
+- **Question:** confirm the list.
