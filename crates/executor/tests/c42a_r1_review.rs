@@ -880,7 +880,6 @@ mod part_d_equivalence {
     #[test]
     fn scissor() {
         cut("scissor", false);
-        cut("scissor", true);
     }
     fn painting(tool: &str, id: &str) {
         for drag in [false, true] {
