@@ -34,6 +34,8 @@ export class CanvasMetrics {
   readonly work: number[] = [];
   readonly ink: number[] = [];
   readonly commit: number[] = [];
+  /** Scene pulls, request to apply (E-C1). */
+  readonly scenes: number[] = [];
   readonly loads: { key: string; bytes: number; ms: number }[] = [];
   private last: number | null = null;
   private pendingInk: number | null = null;
@@ -72,6 +74,10 @@ export class CanvasMetrics {
     }
   }
 
+  scene(ms: number): void {
+    ring(this.scenes, ms, 300);
+  }
+
   load(key: string, bytes: number, ms: number): void {
     ring(this.loads, { key, bytes, ms: Math.round(ms * 100) / 100 }, 20);
   }
@@ -82,6 +88,7 @@ export class CanvasMetrics {
     workMs: Stat;
     inkMs: Stat;
     commitMs: Stat;
+    sceneMs: Stat;
     loads: CanvasMetrics['loads'];
   } {
     return {
@@ -90,6 +97,7 @@ export class CanvasMetrics {
       workMs: stat(this.work),
       inkMs: stat(this.ink),
       commitMs: stat(this.commit),
+      sceneMs: stat(this.scenes),
       loads: [...this.loads],
     };
   }

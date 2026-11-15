@@ -164,6 +164,9 @@ export function CanvasView({
           model.onLoaded = (key, bytes, ms) => {
             metrics.load(key, bytes, ms);
           };
+          model.onScene = (ms) => {
+            metrics.scene(ms);
+          };
         }
         model.setBucket(bucketOf(scaleOf(d2v)));
       })

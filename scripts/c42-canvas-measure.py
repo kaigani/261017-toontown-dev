@@ -167,6 +167,53 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict) -> Non
                 def p95(x):
                     return (x or {}).get("p95")
 
+                if record.get("experiments"):
+                    # E-C2: sustained edits on the large drawing, each re-tessellated and uploaded (ADR-0007, plan §7):
+                    # no frame over 33 ms.
+                    for k in range(20):
+                        pts = [{"x": -500 + i * 4, "y": 300 + k * 3 + (i % 5), "pressure": 0.7} for i in range(50)]
+                        await rc(session, "draw.stroke.add", {"kind": "brush", "points": pts, "fit": False, "layer": "top"})
+                        await asyncio.sleep(0.15)
+                    await asyncio.sleep(1.0)
+                    mm = (await metrics_now(session)).get("metrics") or {}
+                    reloads = [l for l in mm.get("loads") or [] if l.get("key") == large.get("drawingId")]
+                    record["E-C2"] = {"frameMs": mm.get("frameMs"), "reloads": reloads[-10:]}
+                    run.check((mm.get("frameMs") or {}).get("max", 1e9) <= 33.0 if bounds is BOUNDS["workstation"] else True,
+                              "E-C2: no frame over 33 ms during sustained edits of the large drawing", mm.get("frameMs"))
+                    # E-C1: a groups1k-like scene: 1,000 drawing elements shown by the auto light table; the view and the
+                    # composition change every frame (a pan and a scene pull per step) for five seconds.
+                    for b in range(10):
+                        steps = []
+                        for i in range(100):
+                            n = b * 100 + i
+                            steps += [
+                                {"id": "element.create", "params": {"type": "drawing", "name": f"G{n}"}, "as": f"e{i}"},
+                                {"id": "element.drawing.create", "params": {"elementId": f"$e{i}.result.elementIds.0", "name": "1", "exposeFrom": 1, "exposeTo": 1}, "as": f"d{i}"},
+                                {"id": "draw.ellipse.add", "params": {"drawingId": f"$d{i}.result.drawingId", "from": {"x": -600 + (n % 40) * 30, "y": -400 + (n // 40) * 30}, "to": {"x": -580 + (n % 40) * 30, "y": -380 + (n // 40) * 30}}},
+                            ]
+                        env = await e2e.call(session, "batch", {"steps": steps, "label": "groups"})
+                        if env.get("status") not in ("ok", None):
+                            run.check(False, "E-C1: the 1,000 elements build", env.get("error"))
+                            break
+                    await rc(session, "app.context.set", {"elementId": eid, "frame": 1})
+                    await rc(session, "drawAid.autoLightTable.set", {"enabled": True})
+                    st = await wait_metrics(session, lambda s: len(s.get("drawings") or []) >= 1000, bound=180)
+                    record["E-C1"] = {"resident": len(st.get("drawings") or [])}
+                    t0 = time.monotonic()
+                    i = 0
+                    while time.monotonic() - t0 < 5.0:
+                        await rc(session, "view.pan.set", {"viewId": "drawingView", "by": {"x": 1 if i % 2 else -1, "y": 0}})
+                        await rc(session, "drawAid.lightTableShade.set", {"auto": i % 2 == 0})
+                        i += 1
+                    await asyncio.sleep(0.6)
+                    mm = (await metrics_now(session)).get("metrics") or {}
+                    record["E-C1"].update({"steps": i, "frameMs": mm.get("frameMs"), "sceneMs": mm.get("sceneMs")})
+                    if bounds is BOUNDS["workstation"]:
+                        run.check(p95(mm.get("sceneMs")) is not None and p95(mm.get("sceneMs")) <= 16.7,
+                                  "E-C1: a scene pull is delivered within one frame (p95)", mm.get("sceneMs"))
+                        run.check(p95(mm.get("frameMs")) is not None and p95(mm.get("frameMs")) <= 17.5,
+                                  "E-C1: >= 57 fps while the 1,000-drawing scene changes every frame", mm.get("frameMs"))
+
                 checks = [
                     ("frame time p95, idle, small", p95(record["small"]["idle"]), bounds["frameMs"]),
                     ("frame time p95, idle, large", p95(record["large"]["idle"]), bounds["frameMs"]),
@@ -187,6 +234,7 @@ def main() -> int:
     ap.add_argument("out")
     ap.add_argument("--backend", choices=["webgl2", "webgpu"])
     ap.add_argument("--bounds", choices=["workstation", "ci"], default="ci")
+    ap.add_argument("--experiments", action="store_true", help="also run E-C1 and E-C2 (ADR-0007)")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -197,7 +245,8 @@ def main() -> int:
                                       "maxInlineBytes": 52428800, "askInApp": True, "letAgentMoveView": True, "highlightAgentChanges": True}}
     (user / "Settings" / "preferences.json").write_text(json.dumps({"format": "toontown-settings", "kind": "preferences", "formatVersion": "1.0", "data": seed}), encoding="utf-8")
     record: dict = {"kind": "toontown.c42.canvas-measure", "platform": sys.platform, "machine": platform.platform(),
-                    "processor": platform.processor(), "boundsKind": a.bounds, "bounds": BOUNDS[a.bounds], "requestedBackend": a.backend}
+                    "processor": platform.processor(), "boundsKind": a.bounds, "bounds": BOUNDS[a.bounds], "requestedBackend": a.backend,
+                    "experiments": a.experiments}
     discovery = out / "discovery.json"
     try:
         proc = launch(a.app, user, discovery, a.backend)

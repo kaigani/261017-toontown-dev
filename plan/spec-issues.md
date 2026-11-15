@@ -1636,7 +1636,8 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   - Transparency multiplies coverage by 50/30/15 % for distances 1/2/3; without it, onion drawings are opaque.
   - Shade draws a drawing at 40 % opacity over the layers below.
   - The auto light table shows the other elements' drawings exposed at the current frame in their own drawing space
-    (identity placement, the Drawing view having no camera), back to front in the scene's layering order.
+    (identity placement, the Drawing view having no camera), back to front in the final renderer's order for equal
+    depths (the Timeline's bottom row first), leaving out elements hidden in the Exposure Sheet.
   - Outline only draws brush outlines and pencil centre lines one view pixel wide in the drawing's colours (or the
     tint).
 - **Question:** confirm or specify.
