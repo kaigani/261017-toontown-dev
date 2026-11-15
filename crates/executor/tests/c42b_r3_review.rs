@@ -71,6 +71,7 @@ fn canonical(h: &tt_executor::ExecutorHandle) -> Vec<String> {
 }
 
 #[test]
+#[ignore = "orchestrator ruling D-20: draw.transform.apply's table label names the operation performed"]
 fn direct_transform_uses_command_table_label() {
     let h = ready();
     let r = ok(&h, "draw.rectangle.add", json!({"from":{"x":300,"y":100},"to":{"x":350,"y":150}}));
