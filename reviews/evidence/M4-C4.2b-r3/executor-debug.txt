@@ -1,0 +1,39 @@
+
+running 8 tests
+test serialized_field_absent_null_present_matrix ... ok
+test two_step_atomic_refusal_restores_document ... ok
+test direct_transform_uses_command_table_label ... FAILED
+test alternate_scissor_label_is_scissor_tool ... FAILED
+test window_and_headless_commit_match_and_agent_keeps_hover ... ok
+test wire_gesture_refusals_are_atomic ... ok
+test shell_end_reports_release_kernel_modal_for_each_ending ... ok
+test six_gesture_and_command_labels ... ok
+
+failures:
+
+---- direct_transform_uses_command_table_label stdout ----
+
+thread 'direct_transform_uses_command_table_label' (58528) panicked at crates\executor\tests\c42b_r3_review.rs:79:5:
+assertion `left == right` failed: 02 section 13.5 line 1332; D-4 command label
+  left: String("Move Object")
+ right: "Move/Scale/Rotate Object"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- alternate_scissor_label_is_scissor_tool stdout ----
+
+thread 'alternate_scissor_label_is_scissor_tool' (50324) panicked at crates\executor\tests\c42b_r3_review.rs:51:5:
+assertion `left == right` failed: 02 section 7.4.3 line 654; D-4
+  left: String("Cutter Tool")
+ right: "Scissor Tool"
+
+
+failures:
+    alternate_scissor_label_is_scissor_tool
+    direct_transform_uses_command_table_label
+
+test result: FAILED. 6 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r3\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.41s
+     Running tests\c42b_r3_review.rs (target\debug\deps\c42b_r3_review-dd886751694d3eb4.exe)
+error: test failed, to rerun pass `-p tt-executor --test c42b_r3_review`

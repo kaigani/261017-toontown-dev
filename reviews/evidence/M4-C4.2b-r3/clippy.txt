@@ -1,0 +1,3 @@
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r3\crates\executor)
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r3\crates\mcp)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.03s
