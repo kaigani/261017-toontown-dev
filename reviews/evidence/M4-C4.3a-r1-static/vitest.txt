@@ -1,0 +1,31 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m4-c43a-r1s/desktop
+
+ ❯ src/test/c43a-r1s-scene.test.ts (12 tests | 2 failed) 10ms
+   ❯ C43A static adversarial scene validation (12)
+     × C43A-R1-20 refuses opacity -0.1 outside format range 2ms
+     × C43A-R1-20 refuses opacity 1.1 outside format range 0ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 10 passed (12)
+   Start at  07:57:53
+   Duration  394ms (setup 69%, transform 21%, import 5%, tests 3%, worker 1%)
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c43a-r1s-scene.test.ts > C43A static adversarial scene validation > C43A-R1-20 refuses opacity -0.1 outside format range
+ FAIL  src/test/c43a-r1s-scene.test.ts > C43A static adversarial scene validation > C43A-R1-20 refuses opacity 1.1 outside format range
+AssertionError: expected function to throw an error, but it didn't
+ ❯ src/test/c43a-r1s-scene.test.ts:94:41
+     92|       const w = fresh();
+     93|       entry(w)['opacity'] = opacity;
+     94|       expect(() => parseSceneAnswer(w)).toThrow(TypeError);
+       |                                         ^
+     95|     });
+     96|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
