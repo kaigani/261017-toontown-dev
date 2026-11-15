@@ -830,7 +830,7 @@ impl ExecutorHandle {
     }
 
     /// The interactive canvas's payload of one drawing (M4 C4.2b; design note 1): `drawing_id`, or the current drawing
-    /// when `None`, at `generation` and zoom `bucket`. The document thread only takes the snapshot; the walk, the
+    /// when `None`, at `generation` and zoom `bucket`; `outline` gives the outline-only form (02 §10.2). The document thread only takes the snapshot; the walk, the
     /// tessellation and the encoding run on the calling thread.
     ///
     /// # Errors
@@ -840,6 +840,7 @@ impl ExecutorHandle {
         drawing_id: Option<&str>,
         generation: u64,
         bucket: i16,
+        outline: bool,
     ) -> Result<canvas::CanvasPayload, CommandError> {
         let want = drawing_id.map(str::to_owned);
         let src = self.call("canvas", |r| {
@@ -847,7 +848,7 @@ impl ExecutorHandle {
                 let _ = r.send(core.canvas_source(want.as_deref()));
             }))
         })??;
-        canvas::payload(&src, generation, bucket)
+        canvas::payload(&src, generation, bucket, outline)
     }
 
     /// Subscribes to events (11 §9). Events are delivered after each call that produced them.

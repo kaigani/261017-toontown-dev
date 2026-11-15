@@ -77,6 +77,7 @@ pub(crate) fn build(
     src: &CanvasSource,
     generation: u64,
     bucket: i16,
+    outline: bool,
 ) -> Result<(CanvasDrawing, Vec<Value>), CommandError> {
     let d = src.doc.drawing(&src.drawing).ok_or_else(|| not_found(src.drawing.as_str()))?;
     let never = || false;
@@ -98,14 +99,17 @@ pub(crate) fn build(
             }
         };
         let Ok(slot) = u16::try_from(slot) else { continue };
-        out.push(CanvasItem { item, slot, bitmap });
+        let item = if outline { outline_of(item, bucket) } else { Some(item) };
+        if let Some(item) = item {
+            out.push(CanvasItem { item, slot, bitmap });
+        }
     }
     let records = canvas::tessellate(&out, bucket);
     let bounds = canvas::bounds(&records);
     let ulid = src.drawing.as_str().strip_prefix("dr_").unwrap_or(src.drawing.as_str()).to_owned();
     let drawing = CanvasDrawing {
         identity: Identity { generation, rev: *d.rev(), drawing_id: ulid, bucket },
-        flags: 0,
+        flags: if outline { FLAG_OUTLINE } else { 0 },
         slots,
         records,
         bounds,
@@ -113,12 +117,33 @@ pub(crate) fn build(
     Ok((drawing, warnings))
 }
 
+/// Header flag of an outline-only payload (02 §10.2; SI-139).
+pub const FLAG_OUTLINE: u16 = 1;
+
+/// The outline-only form of a walk item (02 §10.2: brush outlines and pencil centre lines, no fills; SI-139): one view
+/// pixel wide at the bucket's top zoom; planar fills are left out.
+fn outline_of(item: Item, bucket: i16) -> Option<Item> {
+    let width = canvas::tolerance(bucket) * 4.0;
+    match item {
+        Item::Fill { rule: tt_render::Rule::EvenOdd, .. } => None,
+        Item::Fill { path, paint, .. } | Item::Stroke { path, paint, .. } => Some(Item::Stroke { path, width, paint }),
+        Item::Layer { transform, items } => {
+            Some(Item::Layer { transform, items: items.into_iter().filter_map(|i| outline_of(i, bucket)).collect() })
+        }
+    }
+}
+
 /// [`build`] then [`canvas::encode`].
 ///
 /// # Errors
 /// As [`build`]; `internal` when the drawing does not fit the format.
-pub(crate) fn payload(src: &CanvasSource, generation: u64, bucket: i16) -> Result<CanvasPayload, CommandError> {
-    let (drawing, warnings) = build(src, generation, bucket)?;
+pub(crate) fn payload(
+    src: &CanvasSource,
+    generation: u64,
+    bucket: i16,
+    outline: bool,
+) -> Result<CanvasPayload, CommandError> {
+    let (drawing, warnings) = build(src, generation, bucket, outline)?;
     let bytes = canvas::encode(&drawing).map_err(|e| CommandError::internal(e.to_string()))?;
     Ok(CanvasPayload { drawing_id: src.drawing.as_str().to_owned(), rev: drawing.identity.rev, bytes, warnings })
 }
@@ -202,18 +227,104 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
         rgba(&aids.background.colour, [240, 240, 240, 255])
     };
     let mut entries = Vec::new();
-    if let Some(id) = s.app.current_drawing(doc)
-        && let Some(d) = doc.drawing(&id)
-    {
-        entries.push(SceneEntry {
+    let entry = |id: &Id, role: &str, opacity: f32, tint: Option<[u8; 4]>, shade: bool, outline: bool| {
+        doc.drawing(id).map(|d| SceneEntry {
             drawing_id: id.as_str().to_owned(),
             rev: *d.rev(),
-            role: "current".into(),
-            opacity: 1.0,
-            tint: None,
-            shade: false,
-            outline: false,
-        });
+            role: role.to_owned(),
+            opacity,
+            tint,
+            shade,
+            outline,
+        })
+    };
+    let current = s.app.current_drawing(doc);
+    // 02 §10.4: the scene's static light-table entries shown, under or over the current drawing; shade when on.
+    let statics: Vec<_> = s
+        .app
+        .scene
+        .as_ref()
+        .and_then(|sc| s.timeline.light_tables.get(sc.as_str()))
+        .map(|items| items.iter().filter(|i| i.visible).collect())
+        .unwrap_or_default();
+    for item in statics.iter().filter(|i| i.placement != "over") {
+        if let Ok(id) = Id::parse(&item.drawing_id) {
+            entries.extend(entry(&id, "staticUnder", 1.0, None, aids.light_table_shade.stat, false));
+        }
+    }
+    // 02 §10.3: the other drawing elements' drawings exposed at the current frame, back to front (the final renderer's
+    // order for equal depths: the Timeline's bottom row first), not those hidden in the Exposure Sheet; shade when on.
+    if aids.auto_light_table
+        && let Some(sc) = s.app.scene.as_ref().and_then(|sc| doc.scene(sc))
+    {
+        let mut order = Vec::new();
+        fn walk(nodes: &[tt_model::entities::scene::TreeNode], out: &mut Vec<Id>) {
+            for n in nodes {
+                out.push(n.id.clone());
+                walk(&n.children, out);
+            }
+        }
+        walk(sc.tree(), &mut order);
+        for el in order.iter().rev() {
+            if Some(el) == s.app.element.as_ref() {
+                continue;
+            }
+            let hidden = doc.element(el).is_some_and(|e| *e.visible_in_xsheet() == Some(false));
+            if hidden {
+                continue;
+            }
+            if let Some(d) = crate::app::AppContext::exposed_drawing(doc, el, s.app.frame) {
+                entries.extend(entry(&d, "autoLight", 1.0, None, aids.light_table_shade.auto, false));
+            }
+        }
+    }
+    // 02 §10.2: previous and next drawings of the current element, counted in distinct drawings of its exposure order,
+    // farther ones first (they are fainter: 50, 30, 15 % with transparency), tinted with colour shading (SI-139).
+    let os = &aids.onion_skin;
+    if os.enabled
+        && let (Some(el), Some(cur)) = (s.app.element.as_ref(), current.as_ref())
+    {
+        let style = &aids.onion_skin_style;
+        let runs: Vec<Id> = doc
+            .element(el)
+            .and_then(|e| e.exposure().clone())
+            .map(|r| r.into_iter().filter_map(|(d, _)| d).collect())
+            .unwrap_or_default();
+        let mut distinct: Vec<Id> = Vec::new();
+        for d in runs {
+            if distinct.last() != Some(&d) {
+                distinct.push(d);
+            }
+        }
+        // The current drawing's place: its first run at or before the current frame.
+        let at = distinct.iter().position(|d| d == cur);
+        let fade =
+            |k: usize| if style.transparency { [0.5f32, 0.3, 0.15].get(k - 1).copied().unwrap_or(0.15) } else { 1.0 };
+        let tint = |c: &str| style.colour_shading.then(|| rgba(c, [255, 0, 0, 255]));
+        if let Some(i) = at {
+            let take = |n: i64| usize::try_from(n.clamp(0, 3)).unwrap_or(0);
+            let prev: Vec<(usize, &Id)> =
+                (1..=take(os.previous)).filter_map(|k| i.checked_sub(k).map(|j| (k, &distinct[j]))).collect();
+            let next: Vec<(usize, &Id)> =
+                (1..=take(os.next)).filter_map(|k| distinct.get(i + k).map(|d| (k, d))).collect();
+            let mut onion: Vec<(usize, &Id, &str)> =
+                prev.iter().map(|(k, d)| (*k, *d, style.previous_colour.as_str())).collect();
+            onion.extend(next.iter().map(|(k, d)| (*k, *d, style.next_colour.as_str())));
+            onion.sort_by_key(|o| std::cmp::Reverse(o.0));
+            for (k, d, colour) in onion {
+                if d != cur {
+                    entries.extend(entry(d, "onion", fade(k), tint(colour), false, style.outline));
+                }
+            }
+        }
+    }
+    if let Some(id) = current.as_ref() {
+        entries.extend(entry(id, "current", 1.0, None, false, false));
+    }
+    for item in statics.iter().filter(|i| i.placement == "over") {
+        if let Ok(id) = Id::parse(&item.drawing_id) {
+            entries.extend(entry(&id, "staticOver", 1.0, None, aids.light_table_shade.stat, false));
+        }
     }
     let mut colours = std::collections::BTreeMap::new();
     let mut stamp: u64 = 0;

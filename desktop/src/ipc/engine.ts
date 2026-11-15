@@ -112,7 +112,7 @@ export interface EngineApi {
    *  (`canvas/scene.ts` validates it). Rejects with the host's error value. */
   canvasScene(viewId: string): Promise<unknown>;
   /** `canvas_load`: one drawing's TTRD payload (validated by `canvas/format.ts`). Rejects with the host's error value. */
-  canvasLoad(drawingId: string, bucket: number): Promise<ArrayBuffer>;
+  canvasLoad(drawingId: string, bucket: number, outline?: boolean): Promise<ArrayBuffer>;
   /** `gesture_commit` (M4 C4.2b; design note 2 §6): a gesture made in a view window, as `pointer` request fields; the
    *  host runs the headless `pointer` driver with the user's origin and answers its envelope. */
   gestureCommit(request: {
@@ -315,9 +315,11 @@ export function createEngineApi(transport: HostTransport): EngineApi {
         }
       });
     },
-    async canvasLoad(drawingId, bucket) {
+    async canvasLoad(drawingId, bucket, outline = false) {
       if (!transport.invokeBinary) throw new Error('ipc.unsupported: this transport has no binary commands');
-      return transport.invokeBinary('canvas_load', { json: stringifyWireJson({ drawingId, bucket }) });
+      return transport.invokeBinary('canvas_load', {
+        json: stringifyWireJson({ drawingId, bucket, outline }),
+      });
     },
     onEvent(handler) {
       return transport.listen(ENGINE_EVENT, (payload) => {

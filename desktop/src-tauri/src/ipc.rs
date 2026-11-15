@@ -317,6 +317,9 @@ pub async fn canvas_scene(app: AppHandle, json: String) -> Result<Response, Stri
 struct CanvasLoadRequest {
     drawing_id: String,
     bucket: i16,
+    /// The outline-only form (02 §10.2); absent: false.
+    #[serde(default)]
+    outline: bool,
 }
 
 /// One drawing's TTRD payload for the interactive canvas (M4 C4.2b; design note 1 §2, §8, §9), binary, at the
@@ -331,7 +334,7 @@ pub async fn canvas_load(app: AppHandle, json: String) -> Result<Response, Strin
     let answer = tauri::async_runtime::spawn_blocking(move || {
         let host = app.state::<Host>();
         let generation = host.generation();
-        host.exec().canvas_drawing(Some(&req.drawing_id), generation, req.bucket.clamp(-8, 8))
+        host.exec().canvas_drawing(Some(&req.drawing_id), generation, req.bucket.clamp(-8, 8), req.outline)
     })
     .await
     .map_err(|e| internal(e.to_string()))?;

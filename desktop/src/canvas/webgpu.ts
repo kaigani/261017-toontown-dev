@@ -5,7 +5,7 @@
 import { drawFrame, type LayerOps } from './layers';
 import { VERTEX_LEN, type DecodedDrawing, type Rgba as FormatRgba } from './format';
 import { BackendUnavailable, type BackendStats, type FrameInput, type Renderer } from './renderer';
-import type { SceneEntry } from './scene';
+import { residentKey, type SceneEntry } from './scene';
 import { drawingToClip, SHADE_OPACITY } from './webgl2';
 
 /** WebGPU's API, when the page has one. */
@@ -544,7 +544,7 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
           viewTris(gridData, gridAt);
         },
         drawing(e) {
-          const d = drawings.get(e.drawingId);
+          const d = drawings.get(residentKey(e));
           if (!d) return;
           counters.drawn++;
           const alpha = Math.max(0, Math.min(1, e.opacity)) * (e.shade ? SHADE_OPACITY : 1);

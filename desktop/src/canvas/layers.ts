@@ -1,7 +1,7 @@
 // One frame's layers in 02 §4.2's order (M4 C4.2b; design note 2 §1 step 2-3; invariant F3). The back ends implement
 // `LayerOps`; this module alone decides the order, and a recording implementation tests it.
 
-import type { Rgba, Scene, SceneEntry, SceneGrid } from './scene';
+import { residentKey, type Rgba, type Scene, type SceneEntry, type SceneGrid } from './scene';
 
 export interface LayerOps {
   /** Layer 1: the background. Starts the static layers. */
@@ -35,19 +35,19 @@ export function ordered(entries: readonly SceneEntry[]): SceneEntry[] {
 
 /**
  * Draws one frame. `staticLayers` false reuses the cached static layers (only the overlay changed); `isResident`
- * skips drawings whose geometry has not arrived yet.
+ * (by resident key) skips drawings whose geometry has not arrived yet.
  */
 export function drawFrame(
   scene: Scene | null,
   ops: LayerOps,
-  isResident: (drawingId: string) => boolean,
+  isResident: (key: string) => boolean,
   staticLayers: boolean,
 ): void {
   if (staticLayers) {
     ops.background(scene?.background ?? [240, 240, 240, 255]);
     if (scene) {
       if (scene.grid.visible && !scene.grid.overlay) ops.grid(scene.grid, 'under');
-      for (const e of ordered(scene.entries)) if (isResident(e.drawingId)) ops.drawing(e);
+      for (const e of ordered(scene.entries)) if (isResident(residentKey(e))) ops.drawing(e);
       if (scene.grid.visible && scene.grid.overlay) ops.grid(scene.grid, 'over');
     }
     ops.endStatic();

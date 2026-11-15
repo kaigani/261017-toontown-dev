@@ -11,7 +11,7 @@ import { drawFrame, type LayerOps } from './layers';
 import { VERTEX_LEN, type DecodedDrawing, type Rgba as FormatRgba } from './format';
 import type { Affine, ViewTris } from './geometry';
 import { BackendUnavailable, type BackendStats, type FrameInput, type Renderer } from './renderer';
-import type { SceneEntry } from './scene';
+import { residentKey, type SceneEntry } from './scene';
 
 const MESH_VS = `#version 300 es
 layout(location = 0) in vec2 a_pos;
@@ -460,7 +460,7 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
           viewTris(input.grid, input.width, input.height);
         },
         drawing(e) {
-          const d = drawings.get(e.drawingId);
+          const d = drawings.get(residentKey(e));
           if (!d) return;
           counters.drawn++;
           const alpha = Math.max(0, Math.min(1, e.opacity)) * (e.shade ? SHADE_OPACITY : 1);

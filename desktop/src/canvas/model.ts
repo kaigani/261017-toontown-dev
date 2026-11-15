@@ -8,17 +8,17 @@
 // latest scene's is discarded and asked for again (T1, T6).
 
 import { decodeDrawing, type DecodedDrawing, FormatError } from './format';
-import { parseSceneAnswer, type Scene, type SceneAnswer } from './scene';
+import { parseSceneAnswer, residentKey, type Scene, type SceneAnswer } from './scene';
 
 export interface CanvasHost {
   canvasScene(viewId: string): Promise<unknown>;
-  canvasLoad(drawingId: string, bucket: number): Promise<ArrayBuffer>;
+  canvasLoad(drawingId: string, bucket: number, outline: boolean): Promise<ArrayBuffer>;
 }
 
-/** Where decoded drawings go (a back end, or a recording double in tests). */
+/** Where decoded drawings go (a back end, or a recording double in tests), by resident key (`residentKey`). */
 export interface ResidentSink {
-  upload(drawingId: string, drawing: DecodedDrawing): void;
-  drop(drawingId: string): void;
+  upload(key: string, drawing: DecodedDrawing): void;
+  drop(key: string): void;
 }
 
 export interface Clock {
@@ -48,7 +48,7 @@ export interface FrameStats {
 
 type InboxItem =
   | { kind: 'scene'; answer: SceneAnswer }
-  | { kind: 'load'; drawingId: string; bucket: number; bytes: ArrayBuffer }
+  | { kind: 'load'; key: string; drawingId: string; outline: boolean; bucket: number; bytes: ArrayBuffer }
   | { kind: 'failed'; what: string; error: unknown };
 
 const DRAWING_PREFIX = 'dr_';
@@ -142,20 +142,20 @@ export class CanvasModel {
     );
   }
 
-  private requestLoad(drawingId: string): void {
+  private requestLoad(key: string, drawingId: string, outline: boolean): void {
     const bucket = this.bucket;
-    this.loading.set(drawingId, bucket);
-    this.host.canvasLoad(drawingId, bucket).then(
-      (bytes) => this.inbox.push({ kind: 'load', drawingId, bucket, bytes }),
-      (e: unknown) => this.inbox.push({ kind: 'failed', what: `load ${drawingId}`, error: e }),
+    this.loading.set(key, bucket);
+    this.host.canvasLoad(drawingId, bucket, outline).then(
+      (bytes) => this.inbox.push({ kind: 'load', key, drawingId, outline, bucket, bytes }),
+      (e: unknown) => this.inbox.push({ kind: 'failed', what: `load ${key}`, error: e }),
     );
   }
 
-  private wanted(drawingId: string): boolean {
+  private wanted(key: string): boolean {
     const s = this.scene;
-    const e = s?.entries.find((x) => x.drawingId === drawingId);
+    const e = s?.entries.find((x) => residentKey(x) === key);
     if (!s || !e) return false;
-    const r = this.resident.get(drawingId);
+    const r = this.resident.get(key);
     if (!r) return true;
     return r.rev !== e.rev || r.bucket !== this.bucket || (r.paletteBound && r.stamp !== s.paletteStamp);
   }
@@ -175,7 +175,7 @@ export class CanvasModel {
           this.dropAll();
         }
         this.scene = scene;
-        const shown = new Set(scene.entries.map((e) => e.drawingId));
+        const shown = new Set(scene.entries.map(residentKey));
         for (const id of [...this.resident.keys()]) {
           if (!shown.has(id)) {
             this.resident.delete(id);
@@ -186,17 +186,18 @@ export class CanvasModel {
         return;
       }
       case 'load': {
-        this.loading.delete(item.drawingId);
+        this.loading.delete(item.key);
         let d: DecodedDrawing;
         try {
           d = decodeDrawing(item.bytes);
         } catch (e) {
-          this.fail(`load ${item.drawingId}`, e instanceof FormatError ? e : new Error(String(e)));
+          this.fail(`load ${item.key}`, e instanceof FormatError ? e : new Error(String(e)));
           return;
         }
-        const entry = this.scene?.entries.find((x) => x.drawingId === item.drawingId);
+        const entry = this.scene?.entries.find((x) => residentKey(x) === item.key);
         const stale =
           !entry ||
+          ((d.flags & 1) === 1) !== item.outline ||
           Number(d.generation) !== this.generation ||
           Number(d.rev) !== entry.rev ||
           item.bucket !== this.bucket ||
@@ -207,8 +208,8 @@ export class CanvasModel {
           return;
         }
         const paletteBound = d.slots.some((s) => s.kind !== 'solid');
-        this.sink.upload(item.drawingId, d);
-        this.resident.set(item.drawingId, {
+        this.sink.upload(item.key, d);
+        this.resident.set(item.key, {
           rev: entry.rev,
           bucket: item.bucket,
           stamp: this.scene?.paletteStamp ?? 0,
@@ -244,8 +245,9 @@ export class CanvasModel {
     }
     if (this.scene) {
       for (const e of this.scene.entries) {
-        if (!this.loading.has(e.drawingId) && this.wanted(e.drawingId)) {
-          this.requestLoad(e.drawingId);
+        const key = residentKey(e);
+        if (!this.loading.has(key) && this.wanted(key)) {
+          this.requestLoad(key, e.drawingId, e.outline);
           requested++;
         }
       }

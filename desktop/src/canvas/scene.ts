@@ -113,3 +113,8 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
     },
   };
 }
+
+/** The resident key of an entry: the drawing, and its outline-only form apart (02 §10.2). */
+export function residentKey(e: Pick<SceneEntry, 'drawingId' | 'outline'>): string {
+  return e.outline ? `${e.drawingId}#outline` : e.drawingId;
+}

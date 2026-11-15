@@ -79,7 +79,7 @@ fn corpus(name: &str, bytes: &[u8]) {
 #[test]
 fn t4_a_drawing_built_by_gestures_encodes_to_the_committed_corpus_bytes() {
     let h = built();
-    let p = h.canvas_drawing(None, 5, 0).unwrap();
+    let p = h.canvas_drawing(None, 5, 0, false).unwrap();
     assert_eq!(p.drawing_id, D1, "the current drawing");
     let got = ok(&h, "draw.drawing.get", json!({ "drawingId": D1 }));
     assert_eq!(json!(p.rev), got["rev"], "the payload is at the drawing's revision");
@@ -108,15 +108,15 @@ fn t4_a_drawing_built_by_gestures_encodes_to_the_committed_corpus_bytes() {
 #[test]
 fn t5_the_same_revision_and_bucket_rebuild_identically_and_an_edit_changes_the_revision() {
     let h = built();
-    let a = h.canvas_drawing(Some(D1), 1, 0).unwrap();
-    let b = h.canvas_drawing(None, 1, 0).unwrap();
+    let a = h.canvas_drawing(Some(D1), 1, 0, false).unwrap();
+    let b = h.canvas_drawing(None, 1, 0, false).unwrap();
     assert_eq!(a, b, "an evicted drawing is rebuilt identically (same revision, same bucket)");
-    let finer = h.canvas_drawing(Some(D1), 1, 2).unwrap();
+    let finer = h.canvas_drawing(Some(D1), 1, 2, false).unwrap();
     assert_eq!(finer.rev, a.rev, "a bucket change is a reload at the same revision");
     assert!(finer.bytes.len() > a.bytes.len(), "a finer bucket flattens curves into more vertices");
     let e = pointer(&h, "pencil", drag(&[(700.0, 200.0), (720.0, 210.0)]));
     assert!(e.is_ok(), "{e:?}");
-    let c = h.canvas_drawing(None, 1, 0).unwrap();
+    let c = h.canvas_drawing(None, 1, 0, false).unwrap();
     assert!(c.rev > a.rev, "an edit moves the drawing's revision ({} -> {})", a.rev, c.rev);
     assert_eq!(decode(&c.bytes).unwrap().identity.rev, c.rev);
 }
@@ -124,11 +124,11 @@ fn t5_the_same_revision_and_bucket_rebuild_identically_and_an_edit_changes_the_r
 #[test]
 fn a_payload_names_its_refusals() {
     let h = ready();
-    let e = h.canvas_drawing(Some("dr_01K7ZZZZZZZZZZZZZZZZZZZZZZ"), 1, 0).unwrap_err();
+    let e = h.canvas_drawing(Some("dr_01K7ZZZZZZZZZZZZZZZZZZZZZZ"), 1, 0, false).unwrap_err();
     assert_eq!(e.code, "ref.notFound", "{e:?}");
     let h = fixture();
     ok(&h, "app.context.set", json!({ "elementId": null }));
-    let e = h.canvas_drawing(None, 1, 0).unwrap_err();
+    let e = h.canvas_drawing(None, 1, 0, false).unwrap_err();
     assert_eq!(e.code, "drawing.noTarget", "{e:?}");
 }
 
@@ -159,4 +159,59 @@ fn the_scene_lists_the_current_drawing_at_its_revision_with_the_aids_and_the_sol
     assert_eq!(t["grid"], json!({ "visible": true, "type": "field12", "overlay": true }));
     assert_eq!(t["background"], json!([16, 32, 48, 255]));
     assert_eq!(h.canvas_scene("cameraView").unwrap_err().code, "view.notFound");
+}
+
+#[test]
+fn the_scene_carries_onion_skin_light_tables_and_shade_in_layer_order() {
+    let h = ready();
+    ok(&h, "app.context.set", json!({ "elementId": crate::equivalence::BOB, "frame": 10 }));
+    let roles = |h: &tt_executor::ExecutorHandle| -> Vec<Value> {
+        serde_json::to_value(h.canvas_scene("drawingView").unwrap()).unwrap()["entries"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|e| json!([e["role"], e["drawingId"], e["opacity"], e["tint"], e["shade"], e["outline"]]))
+            .collect()
+    };
+    let cur = ok(&h, "draw.drawing.get", json!({}))["drawingId"].clone();
+    assert_ne!(cur, json!(D1), "frame 10 shows Bob's second drawing");
+    assert_eq!(roles(&h), vec![json!(["current", cur, 1.0, null, false, false])], "no aid: only the current drawing");
+    // Onion skin (02 §10.2): Bob's exposure order is d1, d2, d1 (distinct drawings); at d2 the previous and the next are
+    // d1, at 50 % (distance 1), tinted with the previous and next colours.
+    ok(&h, "drawAid.onionSkin.set", json!({ "enabled": true, "previous": 2, "next": 1 }));
+    ok(&h, "drawAid.onionSkinStyle.set", json!({ "outline": true }));
+    assert_eq!(
+        roles(&h),
+        vec![
+            json!(["onion", D1, 0.5, [255, 0, 0, 255], false, true]),
+            json!(["onion", D1, 0.5, [0, 192, 0, 255], false, true]),
+            json!(["current", cur, 1.0, null, false, false]),
+        ]
+    );
+    ok(&h, "drawAid.onionSkinStyle.set", json!({ "transparency": false, "colourShading": false, "outline": false }));
+    assert_eq!(roles(&h)[0], json!(["onion", D1, 1.0, null, false, false]), "opaque and untinted when both are off");
+    ok(&h, "drawAid.onionSkin.set", json!({ "enabled": false }));
+    // The auto light table (02 §10.3): the other elements' drawings at the current frame (the Background image's), not
+    // the Notes annotation (hidden in the Exposure Sheet); a static entry over the work (02 §10.4); both shaded.
+    ok(&h, "drawAid.autoLightTable.set", json!({ "enabled": true }));
+    ok(
+        &h,
+        "drawAid.staticLightTable.add",
+        json!({ "elementId": crate::equivalence::BOB, "frame": 1, "placement": "overlay" }),
+    );
+    let r = roles(&h);
+    let names: Vec<&str> = r.iter().map(|e| e[0].as_str().unwrap()).collect();
+    assert_eq!(names, ["autoLight", "current", "staticOver"], "{r:?}");
+    assert_eq!(r[2][1], json!(D1));
+    assert!(r[0][4].as_bool().unwrap() && r[2][4].as_bool().unwrap(), "light tables are shaded by default");
+    ok(&h, "drawAid.lightTableShade.set", json!({ "auto": false, "static": false }));
+    assert!(roles(&h).iter().all(|e| e[4] == json!(false)), "shade follows its settings");
+    // The outline-only payload (02 §10.2) is its own variant: no fills, stroke geometry, the outline flag.
+    let o = decode(&h.canvas_drawing(Some(D1), 1, 0, true).unwrap().bytes).unwrap();
+    assert_eq!(o.flags, 1);
+    assert!(
+        o.records.iter().all(|r| matches!(r, Record::Solid { vertices, .. } if vertices.iter().all(|v| v.flags == 1))
+            || matches!(r, Record::Gradient { .. })),
+        "outlines only"
+    );
 }

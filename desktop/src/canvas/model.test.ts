@@ -75,12 +75,12 @@ interface Pending<T> {
 
 class FakeHost implements CanvasHost {
   scenes: Pending<unknown>[] = [];
-  loads: (Pending<ArrayBuffer> & { drawingId: string; bucket: number })[] = [];
+  loads: (Pending<ArrayBuffer> & { drawingId: string; bucket: number; outline: boolean })[] = [];
   canvasScene(): Promise<unknown> {
     return new Promise((resolve, reject) => this.scenes.push({ resolve, reject }));
   }
-  canvasLoad(drawingId: string, bucket: number): Promise<ArrayBuffer> {
-    return new Promise((resolve, reject) => this.loads.push({ resolve, reject, drawingId, bucket }));
+  canvasLoad(drawingId: string, bucket: number, outline: boolean): Promise<ArrayBuffer> {
+    return new Promise((resolve, reject) => this.loads.push({ resolve, reject, drawingId, bucket, outline }));
   }
 }
 
@@ -284,6 +284,33 @@ describe('the canvas pull loop', () => {
     model.setBucket(2);
     model.frame();
     expect(host.loads[1]?.bucket).toBe(2);
+  });
+
+  it('an outline entry is its own resident form (02 §10.2): loaded with outline, a fill payload is not shown for it', async () => {
+    const { host, sink, model } = setup();
+    model.frame();
+    const both = scene(1, [[0, 1]]);
+    const first = both.scene.entries[0];
+    if (first) both.scene.entries.push({ ...first, outline: true, role: 'onion' });
+    host.scenes[0]?.resolve(both);
+    await flush();
+    model.frame();
+    expect(host.loads.map((l) => [l.drawingId, l.outline])).toEqual([
+      [id(0), false],
+      [id(0), true],
+    ]);
+    host.loads[0]?.resolve(payload(ULIDS[0] ?? '', 1, 1));
+    host.loads[1]?.resolve(payload(ULIDS[0] ?? '', 1, 1)); // no outline flag: not the outline form
+    await flush();
+    model.frame();
+    expect(sink.uploads.map((u) => u.id)).toEqual([id(0)]);
+    expect(model.discarded).toBe(1);
+    const outline = new Uint8Array(payload(ULIDS[0] ?? '', 1, 1));
+    new DataView(outline.buffer).setUint16(58, 1, true);
+    host.loads[2]?.resolve(outline.buffer);
+    await flush();
+    model.frame();
+    expect(sink.uploads.map((u) => u.id)).toEqual([id(0), `${id(0)}#outline`]);
   });
 
   it('a corrupt payload is refused and recorded, never uploaded', async () => {
