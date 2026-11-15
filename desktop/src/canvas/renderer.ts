@@ -45,6 +45,8 @@ export interface Renderer extends ResidentSink {
   setColours(colours: Record<string, [number, number, number, number]>): void;
   /** Draws one frame. */
   frame(input: FrameInput): void;
+  /** `display.antiAliasing` (01 §7.2, 06 §6.9; live): multisampled drawing layers on or off. */
+  setAntialias(on: boolean): void;
   stats(): BackendStats;
   destroy(): void;
 }

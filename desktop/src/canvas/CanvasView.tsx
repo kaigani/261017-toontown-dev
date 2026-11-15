@@ -134,6 +134,21 @@ export function CanvasView({
       }
     };
 
+    // `display.antiAliasing` (01 §7.2, 06 §6.9; live): the drawing layers multisampled or not.
+    const refreshDisplayPrefs = () => {
+      void engine
+        .run('prefs.get', { keys: ['display.antiAliasing'] })
+        .done.then((env) => {
+          const v = (env.result as { values?: Record<string, unknown> } | undefined)?.values?.[
+            'display.antiAliasing'
+          ];
+          if (typeof v === 'boolean' && renderer) {
+            renderer.setAntialias(v);
+            viewVersion++;
+          }
+        })
+        .catch(() => undefined);
+    };
     const refreshMapping = () => {
       void engine
         .run('draw.viewMapping.get', { view: viewId })
@@ -169,6 +184,7 @@ export function CanvasView({
           };
         }
         model.setBucket(bucketOf(scaleOf(d2v)));
+        refreshDisplayPrefs();
       })
       .catch((e: unknown) => {
         el.setAttribute(
@@ -202,6 +218,10 @@ export function CanvasView({
         if (typeof event.generation === 'number' && event.generation !== engine.generation()) cancelGesture();
         if (typeof event.generation === 'number') model?.setGeneration(event.generation);
         if (event.name === 'tool.active.changed' || event.name === 'tool.pen.changed') refreshTool();
+        if (event.name === 'prefs.changed') {
+          const keys = (event.payload as { keys?: unknown } | null)?.keys;
+          if (Array.isArray(keys) && keys.includes('display.antiAliasing')) refreshDisplayPrefs();
+        }
         if (event.name === 'colour.current.changed') {
           const c = (event.payload as Record<string, unknown> | null)?.['colourId'];
           if (typeof c === 'string') currentColour = c;

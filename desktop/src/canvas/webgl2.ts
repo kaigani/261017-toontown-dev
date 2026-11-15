@@ -123,9 +123,10 @@ class Target {
   tex: WebGLTexture;
   w = 0;
   h = 0;
+  private sized = 0;
   constructor(
     private readonly gl: WebGL2RenderingContext,
-    private readonly samples: number,
+    public samples: number,
   ) {
     const fb = gl.createFramebuffer();
     const resolveFb = gl.createFramebuffer();
@@ -135,7 +136,8 @@ class Target {
     this.tex = tex;
   }
   ensure(w: number, h: number) {
-    if (w === this.w && h === this.h) return;
+    if (w === this.w && h === this.h && this.sized === this.samples) return;
+    this.sized = this.samples;
     const gl = this.gl;
     this.w = w;
     this.h = h;
@@ -169,6 +171,9 @@ class Target {
   }
   bytes(): number {
     return this.w * this.h * 4 * (1 + this.samples);
+  }
+  sizedSamples(): number {
+    return this.sized;
   }
   destroy() {
     const gl = this.gl;
@@ -222,7 +227,8 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
     preserveDrawingBuffer: true,
   });
   if (!gl) throw new BackendUnavailable('webgl2', 'no WebGL2 context');
-  const samples = antialias ? Math.min(4, Number(gl.getParameter(gl.MAX_SAMPLES)) || 0) : 0;
+  const maxSamples = Math.min(4, Number(gl.getParameter(gl.MAX_SAMPLES)) || 0);
+  const samples = antialias ? maxSamples : 0;
   const meshProg = program(gl, MESH_VS, MESH_FS);
   const viewProg = program(gl, VIEW_VS, VIEW_FS);
   const compProg = program(gl, COMP_VS, COMP_FS);
@@ -434,6 +440,10 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
       colours = next;
       for (const d of drawings.values()) applyColours(d);
     },
+    setAntialias(on) {
+      scene.samples = on ? maxSamples : 0;
+      group.samples = on ? maxSamples : 0;
+    },
     frame(input: FrameInput) {
       const W = gl.drawingBufferWidth;
       const H = gl.drawingBufferHeight;
@@ -441,7 +451,7 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
       const d2c = drawingToClip(input.drawingToView, input.width, input.height);
-      const fresh = scene.w !== W || scene.h !== H;
+      const fresh = scene.w !== W || scene.h !== H || scene.samples !== scene.sizedSamples();
       scene.ensure(W, H);
       group.ensure(W, H);
       const ops: LayerOps = {

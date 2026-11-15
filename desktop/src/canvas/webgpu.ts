@@ -13,6 +13,7 @@ export function webgpuApi(): GPU | null {
   return typeof navigator !== 'undefined' && 'gpu' in navigator ? navigator.gpu : null;
 }
 
+/** Samples with `display.antiAliasing` on (off: 1). */
 const SAMPLES = 4;
 /** Bytes of one draw's uniforms, padded to the dynamic-offset alignment. */
 const DRAW_STRIDE = 512;
@@ -115,6 +116,8 @@ interface GpuDrawing {
 }
 
 class Target {
+  samples = SAMPLES;
+  private sized = 0;
   msaa: GPUTexture | null = null;
   resolve: GPUTexture | null = null;
   group: GPUBindGroup | null = null;
@@ -126,17 +129,21 @@ class Target {
     private readonly layout: GPUBindGroupLayout,
   ) {}
   ensure(w: number, h: number) {
-    if (w === this.w && h === this.h && this.resolve) return;
+    if (w === this.w && h === this.h && this.resolve && this.sized === this.samples) return;
+    this.sized = this.samples;
     this.msaa?.destroy();
     this.resolve?.destroy();
     this.w = w;
     this.h = h;
-    this.msaa = this.device.createTexture({
-      size: [w, h],
-      format: this.format,
-      sampleCount: SAMPLES,
-      usage: GPUTextureUsage.RENDER_ATTACHMENT,
-    });
+    this.msaa =
+      this.samples > 1
+        ? this.device.createTexture({
+            size: [w, h],
+            format: this.format,
+            sampleCount: this.samples,
+            usage: GPUTextureUsage.RENDER_ATTACHMENT,
+          })
+        : null;
     this.resolve = this.device.createTexture({
       size: [w, h],
       format: this.format,
@@ -148,7 +155,9 @@ class Target {
     });
   }
   attachment(load: 'clear' | 'load', clear: GPUColor = [0, 0, 0, 0]): GPURenderPassColorAttachment {
-    if (!this.msaa || !this.resolve) throw new Error('target not sized');
+    if (!this.resolve) throw new Error('target not sized');
+    if (!this.msaa)
+      return { view: this.resolve.createView(), loadOp: load, storeOp: 'store', clearValue: clear };
     return {
       view: this.msaa.createView(),
       resolveTarget: this.resolve.createView(),
@@ -158,7 +167,7 @@ class Target {
     };
   }
   bytes() {
-    return this.w * this.h * 4 * (1 + SAMPLES);
+    return this.w * this.h * 4 * (1 + (this.samples > 1 ? this.samples : 0));
   }
   destroy() {
     this.msaa?.destroy();
@@ -207,55 +216,73 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
   const meshModule = device.createShaderModule({ code: MESH_WGSL });
   const viewModule = device.createShaderModule({ code: VIEW_WGSL });
   const compModule = device.createShaderModule({ code: COMP_WGSL });
-  const meshPipeline = device.createRenderPipeline({
-    layout: device.createPipelineLayout({ bindGroupLayouts: [uniformLayout, textureLayout] }),
-    vertex: {
-      module: meshModule,
-      entryPoint: 'vs',
-      buffers: [
-        {
-          arrayStride: VERTEX_LEN,
-          attributes: [
-            { shaderLocation: 0, offset: 0, format: 'float32x2' },
-            { shaderLocation: 1, offset: 8, format: 'uint16x2' },
-          ],
-        },
-      ],
-    },
-    fragment: { module: meshModule, entryPoint: 'fs', targets: [{ format, blend: premul }] },
-    multisample: { count: SAMPLES },
-  });
-  const viewPipeline = device.createRenderPipeline({
-    layout: device.createPipelineLayout({ bindGroupLayouts: [uniformLayout] }),
-    vertex: {
-      module: viewModule,
-      entryPoint: 'vs',
-      buffers: [
-        {
-          arrayStride: 24,
-          attributes: [
-            { shaderLocation: 0, offset: 0, format: 'float32x2' },
-            { shaderLocation: 1, offset: 8, format: 'float32x4' },
-          ],
-        },
-      ],
-    },
-    fragment: { module: viewModule, entryPoint: 'fs', targets: [{ format, blend: premul }] },
-    multisample: { count: SAMPLES },
-  });
-  const compPipeline = (blend: boolean) =>
-    device.createRenderPipeline({
+  // Pipelines carry their sample count: one set per count (display.antiAliasing on: 4, off: 1), built when first used.
+  const pipelineSets = new Map<
+    number,
+    {
+      mesh: GPURenderPipeline;
+      view: GPURenderPipeline;
+      compBlend: GPURenderPipeline;
+      compCopy: GPURenderPipeline;
+    }
+  >();
+  const pipelines = (count: number) => {
+    const have = pipelineSets.get(count);
+    if (have) return have;
+    const meshPipeline = device.createRenderPipeline({
       layout: device.createPipelineLayout({ bindGroupLayouts: [uniformLayout, textureLayout] }),
-      vertex: { module: compModule, entryPoint: 'vs' },
-      fragment: {
-        module: compModule,
-        entryPoint: 'fs',
-        targets: blend ? [{ format, blend: premul }] : [{ format }],
+      vertex: {
+        module: meshModule,
+        entryPoint: 'vs',
+        buffers: [
+          {
+            arrayStride: VERTEX_LEN,
+            attributes: [
+              { shaderLocation: 0, offset: 0, format: 'float32x2' },
+              { shaderLocation: 1, offset: 8, format: 'uint16x2' },
+            ],
+          },
+        ],
       },
-      multisample: { count: SAMPLES },
+      fragment: { module: meshModule, entryPoint: 'fs', targets: [{ format, blend: premul }] },
+      multisample: { count },
     });
-  const compBlend = compPipeline(true);
-  const compCopy = compPipeline(false);
+    const viewPipeline = device.createRenderPipeline({
+      layout: device.createPipelineLayout({ bindGroupLayouts: [uniformLayout] }),
+      vertex: {
+        module: viewModule,
+        entryPoint: 'vs',
+        buffers: [
+          {
+            arrayStride: 24,
+            attributes: [
+              { shaderLocation: 0, offset: 0, format: 'float32x2' },
+              { shaderLocation: 1, offset: 8, format: 'float32x4' },
+            ],
+          },
+        ],
+      },
+      fragment: { module: viewModule, entryPoint: 'fs', targets: [{ format, blend: premul }] },
+      multisample: { count },
+    });
+    const compPipeline = (blend: boolean) =>
+      device.createRenderPipeline({
+        layout: device.createPipelineLayout({ bindGroupLayouts: [uniformLayout, textureLayout] }),
+        vertex: { module: compModule, entryPoint: 'vs' },
+        fragment: {
+          module: compModule,
+          entryPoint: 'fs',
+          targets: blend ? [{ format, blend: premul }] : [{ format }],
+        },
+        multisample: { count },
+      });
+    const compBlend = compPipeline(true);
+    const compCopy = compPipeline(false);
+    const set = { mesh: meshPipeline, view: viewPipeline, compBlend, compCopy };
+    pipelineSets.set(count, set);
+    return set;
+  };
+  let samples = SAMPLES;
 
   let uniforms = device.createBuffer({
     size: DRAW_STRIDE * 64,
@@ -415,18 +442,27 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
       colours = next;
       for (const d of drawings.values()) applyColours(d);
     },
+    setAntialias(on) {
+      samples = on ? SAMPLES : 1;
+    },
     frame(input: FrameInput) {
       const W = canvas.width;
       const H = canvas.height;
       if (W < 1 || H < 1 || input.width < 1 || input.height < 1) return;
+      scene.samples = samples;
+      group.samples = samples;
       scene.ensure(W, H);
       group.ensure(W, H);
-      if (canvasMsaa?.width !== W || canvasMsaa.height !== H) {
+      const pl = pipelines(samples);
+      if (
+        samples > 1 &&
+        (canvasMsaa?.width !== W || canvasMsaa.height !== H || canvasMsaa.sampleCount !== samples)
+      ) {
         canvasMsaa?.destroy();
         canvasMsaa = device.createTexture({
           size: [W, H],
           format,
-          sampleCount: SAMPLES,
+          sampleCount: samples,
           usage: GPUTextureUsage.RENDER_ATTACHMENT,
         });
       }
@@ -482,7 +518,7 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
           f[0] = input.width;
           f[1] = input.height;
         });
-        pass.setPipeline(viewPipeline);
+        pass.setPipeline(pl.view);
         pass.setBindGroup(0, uniformGroup, [u]);
         pass.setVertexBuffer(0, viewBuffer, offset, data.byteLength);
         pass.draw(data.length / 6);
@@ -492,14 +528,14 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
         const u = nextSlot((f) => {
           f[0] = alpha;
         });
-        pass.setPipeline(blend ? compBlend : compCopy);
+        pass.setPipeline(blend ? pl.compBlend : pl.compCopy);
         pass.setBindGroup(0, uniformGroup, [u]);
         pass.setBindGroup(1, t.group);
         pass.draw(3);
       };
       const drawMeshes = (d: GpuDrawing, tint: SceneEntry['tint']) => {
         if (!pass) return;
-        pass.setPipeline(meshPipeline);
+        pass.setPipeline(pl.mesh);
         pass.setBindGroup(1, d.slotGroup);
         for (const m of d.meshes) {
           const u = nextSlot((f) => {
@@ -562,14 +598,18 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
           pass = null;
         },
         overlay() {
-          if (!canvasMsaa) return;
-          begin({
-            view: canvasMsaa.createView(),
-            resolveTarget: context.getCurrentTexture().createView(),
-            loadOp: 'clear',
-            storeOp: 'store',
-            clearValue: [0, 0, 0, 1],
-          });
+          const current = context.getCurrentTexture().createView();
+          begin(
+            samples > 1 && canvasMsaa
+              ? {
+                  view: canvasMsaa.createView(),
+                  resolveTarget: current,
+                  loadOp: 'clear',
+                  storeOp: 'store',
+                  clearValue: [0, 0, 0, 1],
+                }
+              : { view: current, loadOp: 'clear', storeOp: 'store', clearValue: [0, 0, 0, 1] },
+          );
           composite(scene, 1, false);
           viewTris(overlayData, overlayAt);
         },
