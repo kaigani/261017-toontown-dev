@@ -1163,6 +1163,9 @@ pub(crate) const MAX_CAPTURES: usize = 2;
 /// The inline side limit of a screenshot (11 §6.5: 2048 px).
 pub(crate) const SCREENSHOT_MAX_SIDE: u32 = 2048;
 
+/// The inline byte limit of an attached screenshot (11 §6.5: 8 MB; tool definitions lines 249-250).
+pub(crate) const SCREENSHOT_MAX_BYTES: u64 = 8 * 1024 * 1024;
+
 fn inline_too_large(w: u32, h: u32, bytes: Option<usize>, max_bytes: u64) -> CommandError {
     CommandError::with_details(
         "render.inlineTooLarge",

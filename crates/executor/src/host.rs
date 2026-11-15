@@ -7,7 +7,7 @@
 
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::mpsc::Sender;
-use std::sync::{Mutex, PoisonError};
+use std::sync::{Arc, Mutex, PoisonError};
 use std::time::{Duration, Instant};
 
 use serde::{Deserialize, Serialize};
@@ -16,7 +16,7 @@ use tt_registry::{CommandError, Kind};
 
 use crate::session::Event;
 use crate::shell::{ModalReport, Screen, Size};
-use crate::{ExecutorHandle, Origin};
+use crate::{Envelope, ExecutorHandle, Origin};
 
 /// The event bus: subscribers and the number of events broadcast so far.
 #[derive(Debug, Default)]
@@ -43,8 +43,45 @@ pub(crate) struct ShellShared {
     floats: Mutex<Vec<String>>,
     /// Headless captures: (running, waiting) (design note 5 §1c).
     captures: Mutex<(usize, usize)>,
+    /// What the desktop host gives attached mode (M4 C4.2b): agent gestures into windows, captures of what the user sees.
+    attached_io: Mutex<Option<Arc<dyn AttachedIo>>>,
     /// Signalled when a capture slot frees.
     capture_freed: std::sync::Condvar,
+}
+
+/// What a desktop host gives the executor in attached mode (M4 C4.2b; design note 2 §6, design note 5 §2, D-6). Only
+/// the desktop host installs one ([`ExecutorHandle::set_attached_io`]); the headless binary never does.
+pub trait AttachedIo: Send + Sync + std::fmt::Debug {
+    /// Routes an agent's `pointer` request to the window showing `view` (P1, P2): `None` when no window shows it (the
+    /// headless path runs), else the envelope of the window's commit, or its refusal (a user press: `ui.busy` with
+    /// `reason: "userInput"`, SI-135), within `budget`.
+    fn route_pointer(&self, view: &str, origin: &Origin, request: &Value, budget: Duration) -> Option<Envelope>;
+    /// Captures what the user sees for `target` (`window`, a view id or a float's panel id), cropped to `region` (`x, y,
+    /// w, h` in the target's view pixels), refused before capturing when the result's long side would exceed
+    /// `max_side` (`render.inlineTooLarge`), within `budget`.
+    ///
+    /// # Errors
+    /// `render.inlineTooLarge`, `view.notFound`, `command.timeout`, `render.failed`.
+    fn capture(
+        &self,
+        target: &str,
+        region: Option<[f64; 4]>,
+        max_side: u32,
+        budget: Duration,
+    ) -> Result<CapturedPng, CommandError>;
+}
+
+/// One attached capture.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CapturedPng {
+    /// The PNG's bytes.
+    pub png: Vec<u8>,
+    /// Width in pixels.
+    pub width: u32,
+    /// Height in pixels.
+    pub height: u32,
+    /// The view window the target shows (`""` for the whole window).
+    pub view_id: String,
 }
 
 /// Callers that may wait for a capture slot at once; one more answers `limit.exceeded` (design note 5 §1c).
@@ -63,6 +100,11 @@ impl Drop for CaptureSlot<'_> {
 }
 
 impl ShellShared {
+    /// The attached-mode routes, when a desktop host installed them.
+    pub(crate) fn attached_io(&self) -> Option<Arc<dyn AttachedIo>> {
+        self.attached_io.lock().unwrap_or_else(PoisonError::into_inner).clone()
+    }
+
     /// Takes a capture slot on the caller's thread (never the document thread): at most `MAX_CAPTURES` captures run,
     /// at most `MAX_WAITING_CAPTURES` callers wait for one (each on its own thread, so no thread is added), bounded by
     /// `budget` and `cancelled`; beyond either bound the call answers `limit.exceeded` before anything starts.
@@ -129,6 +171,7 @@ impl Default for ShellShared {
             attached: std::sync::atomic::AtomicBool::new(false),
             floats: Mutex::new(Vec::new()),
             captures: Mutex::new((0, 0)),
+            attached_io: Mutex::new(None),
             capture_freed: std::sync::Condvar::new(),
         }
     }
@@ -672,6 +715,22 @@ impl ExecutorHandle {
     /// request. The answer is the first refused command's envelope, else `{commands, hover}`.
     #[must_use]
     pub fn pointer(&self, origin: crate::types::Origin, request: Value) -> crate::types::Envelope {
+        self.pointer_routed(origin, request, true)
+    }
+
+    /// [`ExecutorHandle::pointer`] for a gesture a window played (attached mode, design note 2 §6): never routed again.
+    #[must_use]
+    pub fn pointer_in_window(&self, origin: crate::types::Origin, request: Value) -> crate::types::Envelope {
+        self.pointer_routed(origin, request, false)
+    }
+
+    /// Installs (or removes) attached mode's routes (M4 C4.2b): only the desktop host calls this.
+    pub fn set_attached_io(&self, io: Option<Arc<dyn AttachedIo>>) {
+        *self.shell.attached_io.lock().unwrap_or_else(PoisonError::into_inner) = io;
+    }
+
+    fn pointer_routed(&self, origin: crate::types::Origin, request: Value, route: bool) -> crate::types::Envelope {
+        let raw = request.clone();
         let req: crate::gesture::PointerRequest = match serde_json::from_value(request) {
             Ok(r) => r,
             Err(e) => {
@@ -700,6 +759,17 @@ impl ExecutorHandle {
         // User priority (11 §6.4; ruling D-12): an agent's gestures wait for the user's dialog or gesture, then `ui.busy`.
         if let Err(e) = self.user_priority(&origin, "pointer", &|| false) {
             return crate::types::Envelope::error(e, None);
+        }
+        // Attached mode (M4 C4.2b; design note 2 §6): an agent's gesture on a view shown in a window goes through that
+        // window's input queue and comes back through `pointer_in_window`; a view no window shows keeps this path.
+        if route
+            && matches!(origin, crate::types::Origin::Agent { .. })
+            && let Some(io) = self.shell.attached_io()
+        {
+            let view = if req.view == "drawing" { "drawingView" } else { req.view.as_str() };
+            if let Some(env) = io.route_pointer(view, &origin, &raw, self.config.budget) {
+                return env;
+            }
         }
         let run = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
             let out = crate::gesture::run(core, &origin, &req);

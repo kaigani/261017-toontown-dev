@@ -67,6 +67,7 @@ pub use app::{AppState, Mode};
 pub use commands::agent::TOKEN_BYTES as AGENT_TOKEN_BYTES;
 pub use cx::Cx;
 pub use history::MAX_STEPS as MAX_UNDO_STEPS;
+pub use host::{AttachedIo, CapturedPng};
 pub use jobs::{JobNotifier, JobProgress, JobRecord, JobState, JobTable};
 pub use maintenance::Timings as MaintenanceTimings;
 pub use run::LoadGrant;
@@ -597,6 +598,11 @@ impl ExecutorHandle {
         } else {
             None
         };
+        // Attached mode (M4 C4.2b; D-6): what the user sees, captured by the host on this thread (never the document
+        // thread), in the headless answer's shape (S3).
+        if let Some(io) = _slot.as_ref().and_then(|_| self.shell.attached_io()) {
+            return (attached_screenshot(io.as_ref(), &params, self.config.budget), false);
+        }
         let called = match probe {
             None => self.call(&what, |r| Request::Invoke(inv, r)),
             Some(_) if query => self.call_with(&what, |r| Request::Invoke(inv, r), cancelled, Link::Notify),
@@ -1381,4 +1387,83 @@ fn wait_cancelled_error(job: &str) -> CommandError {
         serde_json::json!({ "jobId": job, "reason": "cancelled" }),
     )
     .hint("wait for it with job.wait, or cancel it with job.cancel")
+}
+
+/// `inspect.screenshot` in attached mode (M4 C4.2b; design note 5 §2, D-6): the host's capture of what the user sees,
+/// in the headless answer's shape (S3); the inline caps are checked before capturing (the long side, S2) and after
+/// encoding (the bytes).
+fn attached_screenshot(io: &dyn host::AttachedIo, params: &Value, budget: Duration) -> Envelope {
+    #[derive(serde::Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct P {
+        #[serde(default)]
+        target: Option<String>,
+        #[serde(default)]
+        region: Option<R>,
+    }
+    #[derive(serde::Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct R {
+        x: f64,
+        y: f64,
+        w: f64,
+        h: f64,
+    }
+    let p: P = match serde_json::from_value(params.clone()) {
+        Ok(p) => p,
+        Err(e) => {
+            return Envelope::error(
+                CommandError::with_details(codes::ARG_INVALID, e.to_string(), json!({ "pointer": "" })),
+                None,
+            );
+        }
+    };
+    let target = p.target.unwrap_or_else(|| "window".to_owned());
+    let region = p.region.map(|r| [r.x, r.y, r.w, r.h]);
+    if let Some(r) = region
+        && !(r.iter().all(|v| v.is_finite()) && r[2] >= 1.0 && r[3] >= 1.0)
+    {
+        return Envelope::error(
+            CommandError::with_details(
+                codes::ARG_INVALID,
+                "a region needs finite numbers and a width and height of at least 1",
+                json!({ "pointer": "/region" }),
+            ),
+            None,
+        );
+    }
+    let side = commands::inspect::SCREENSHOT_MAX_SIDE;
+    match io.capture(&target, region, side, budget) {
+        Ok(c) => {
+            let max_bytes = commands::inspect::SCREENSHOT_MAX_BYTES;
+            if c.png.len() as u64 > max_bytes {
+                return Envelope::error(
+                    CommandError::with_details(
+                        "render.inlineTooLarge",
+                        format!(
+                            "a {} x {} screenshot is over the inline limit of {max_bytes} bytes",
+                            c.width, c.height
+                        ),
+                        json!({ "width": c.width, "height": c.height, "bytes": c.png.len(), "maxInlineBytes": max_bytes, "maxInlinePixels": side }),
+                    ),
+                    None,
+                );
+            }
+            Envelope::ok(
+                json!({
+                    "png": tt_persist::b64::encode(&c.png),
+                    "width": c.width,
+                    "height": c.height,
+                    "sha256": tt_persist::fsx::sha256(&c.png),
+                    "target": target,
+                    "viewId": c.view_id,
+                    "source": "gui",
+                    "drawingId": null,
+                    "note": "what the user sees: the window's own pixels, captured by the host (D-6)",
+                }),
+                None,
+            )
+        }
+        Err(e) => Envelope::error(e, None),
+    }
 }
