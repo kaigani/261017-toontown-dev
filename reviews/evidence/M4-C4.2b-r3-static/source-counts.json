@@ -1,0 +1,25 @@
+{
+  "executor_c42_tests": 78,
+  "canvas_test_files": 7,
+  "canvas_it_calls": 57,
+  "canvas_by_file": {
+    "format.test.ts": 4,
+    "frame.test.ts": 11,
+    "input.test.ts": 12,
+    "metrics.test.ts": 6,
+    "model.test.ts": 14,
+    "selection.test.ts": 5,
+    "selftest.test.ts": 5
+  },
+  "gui_e2e_check_call_sites": 25,
+  "ttrd_files": {
+    "desktop/src/canvas/testdata": 23,
+    "desktop/src/canvas/testdata/corrupt": 14,
+    "desktop/src/canvas/testdata/fields": 7
+  },
+  "canvas_executed_tests": 96,
+  "canvas_test_result": "96 passed in 7 files",
+  "targeted_tests": "41 passed in input, selection, gestureJson",
+  "typecheck": "passed",
+  "corpus_total_ttrd": 44
+}
