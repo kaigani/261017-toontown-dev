@@ -11,6 +11,7 @@ import { BUSY_AFTER_MS, DISCARDING, isQuery, type ActionsApi, type Busy } from '
 import { NamePrompt } from './dialogs';
 import type { DialogsApi } from './dialogsApi';
 import type { MessagesApi } from './messagesApi';
+import { AboutDialog, BackupsDialog, CheckProjectDialog, ProjectInfoDialog } from './infoDialogs';
 import { JobProgress, NewProjectDialog, ProjectPropertiesDialog } from './projectForms';
 
 function jobIdOf(env: Envelope): string | null {
@@ -216,6 +217,49 @@ export function makeActions(
         }
         return run(command, p);
       }
+      // The result dialogs of the File and Help menus (ruling D-30, group 1): each reads its query when it opens.
+      case 'app.info.get':
+        await dialogs.open<null>('About Toontown', (close) => (
+          <AboutDialog
+            services={services}
+            close={() => {
+              close(null);
+            }}
+          />
+        ));
+        return null;
+      case 'project.info.get':
+        await dialogs.open<null>('Project Info', (close) => (
+          <ProjectInfoDialog
+            services={services}
+            close={() => {
+              close(null);
+            }}
+          />
+        ));
+        return null;
+      case 'doc.validate':
+        if (Object.keys(p).length > 0) return run(command, p);
+        await dialogs.open<null>('Check Project', (close) => (
+          <CheckProjectDialog
+            services={services}
+            close={() => {
+              close(null);
+            }}
+          />
+        ));
+        return null;
+      case 'project.backup.open':
+        if (p['backupId'] !== undefined) return run(command, p);
+        await dialogs.open<null>('Open Backup', (close) => (
+          <BackupsDialog
+            services={services}
+            close={() => {
+              close(null);
+            }}
+          />
+        ));
+        return null;
       case 'project.properties.set': {
         if (Object.keys(p).length === 0) {
           const chosen = await dialogs.open<Record<string, unknown>>('Project Properties', (close) => (

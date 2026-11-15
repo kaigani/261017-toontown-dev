@@ -126,6 +126,27 @@
           "dialog": "projectProperties"
         },
         {
+          "kind": "command",
+          "command": "project.info.get",
+          "label": "Project Info…",
+          "enabledWithoutProject": false,
+          "dialog": "projectInfo"
+        },
+        {
+          "kind": "command",
+          "command": "doc.validate",
+          "label": "Check Project…",
+          "enabledWithoutProject": false,
+          "dialog": "checkProject"
+        },
+        {
+          "kind": "command",
+          "command": "project.backup.open",
+          "label": "Open Backup…",
+          "enabledWithoutProject": true,
+          "dialog": "openBackup"
+        },
+        {
           "kind": "separator",
           "platforms": ["windows", "linux"]
         },
@@ -172,6 +193,12 @@
           "kind": "command",
           "command": "edit.cut",
           "label": "Cut",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "edit.cutSpecial",
+          "label": "Cut Special",
           "enabledWithoutProject": false
         },
         {
@@ -394,6 +421,181 @@
           "label": "Full Screen",
           "enabledWithoutProject": true,
           "check": "fullScreen"
+        }
+      ]
+    },
+    {
+      "id": "drawing",
+      "label": "Drawing",
+      "items": [
+        {
+          "kind": "command",
+          "command": "draw.flatten.apply",
+          "label": "Flatten",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.optimize.apply",
+          "label": "Optimize",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.smooth.apply",
+          "label": "Smooth",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.linesToBrush.apply",
+          "label": "Convert Lines to Brush",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.breakApart.apply",
+          "label": "Break Text Apart",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.centreLine.apply",
+          "label": "Extract Centre Line",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "separator"
+        },
+        {
+          "kind": "submenu",
+          "id": "arrange",
+          "label": "Arrange",
+          "items": [
+            {
+              "kind": "command",
+              "command": "draw.arrange.apply",
+              "label": "Bring to Front",
+              "params": {
+                "to": "front"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "draw.arrange.apply",
+              "label": "Bring Forward",
+              "params": {
+                "to": "forward"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "draw.arrange.apply",
+              "label": "Send Backward",
+              "params": {
+                "to": "backward"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "draw.arrange.apply",
+              "label": "Send to Back",
+              "params": {
+                "to": "back"
+              },
+              "enabledWithoutProject": false
+            }
+          ]
+        },
+        {
+          "kind": "command",
+          "command": "draw.flip.apply",
+          "label": "Flip Horizontal",
+          "params": {
+            "axis": "horizontal"
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.flip.apply",
+          "label": "Flip Vertical",
+          "params": {
+            "axis": "vertical"
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.rotate.apply",
+          "label": "Rotate 90° CW",
+          "params": {
+            "by": "90cw"
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.rotate.apply",
+          "label": "Rotate 90° CCW",
+          "params": {
+            "by": "90ccw"
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.rotate.apply",
+          "label": "Rotate 180°",
+          "params": {
+            "by": "180"
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "separator"
+        },
+        {
+          "kind": "command",
+          "command": "draw.group.create",
+          "label": "Group",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.group.delete",
+          "label": "Ungroup",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "separator"
+        },
+        {
+          "kind": "command",
+          "command": "draw.object.delete",
+          "label": "Delete Objects",
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.lock.set",
+          "label": "Lock Drawing",
+          "params": {
+            "locked": true
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "draw.lock.set",
+          "label": "Unlock Drawing",
+          "params": {
+            "locked": false
+          },
+          "enabledWithoutProject": false
         }
       ]
     },
@@ -843,6 +1045,16 @@
           "kind": "predefined",
           "item": "about",
           "platforms": ["windows", "linux"]
+        },
+        {
+          "kind": "separator"
+        },
+        {
+          "kind": "command",
+          "command": "app.info.get",
+          "label": "About Toontown…",
+          "enabledWithoutProject": true,
+          "dialog": "about"
         }
       ]
     }
