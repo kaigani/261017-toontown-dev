@@ -369,7 +369,8 @@ pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, St
         match (agent, host.attached()) {
             (Some(id), Some(io)) => io.finish(id, generation, request),
             _ if generation != host.generation() => stale_gesture(generation, host.generation()),
-            _ => host.exec().pointer(tt_executor::Origin::User, request),
+            // The user's own gesture, played by this window: never routed, and its answer needs no hover hit test.
+            _ => host.exec().pointer_in_window(tt_executor::Origin::User, request),
         }
     })
     .await
