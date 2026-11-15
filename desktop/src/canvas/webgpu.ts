@@ -571,12 +571,21 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
         }
       };
       const fresh = scene.w !== W || scene.h !== H;
+      // Consecutive drawings at the same reduced opacity share one offscreen pass and one composite (SI-139).
+      let groupAlpha: number | null = null;
+      const flushGroup = () => {
+        if (groupAlpha === null) return;
+        begin(scene.attachment('load'));
+        composite(group, groupAlpha, true);
+        groupAlpha = null;
+      };
       const ops: LayerOps = {
         background(c) {
           const a = c[3] / 255;
           begin(scene.attachment('clear', [(c[0] / 255) * a, (c[1] / 255) * a, (c[2] / 255) * a, a]));
         },
         grid() {
+          flushGroup();
           viewTris(gridData, gridAt);
         },
         drawing(e) {
@@ -585,15 +594,19 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
           counters.drawn++;
           const alpha = Math.max(0, Math.min(1, e.opacity)) * (e.shade ? SHADE_OPACITY : 1);
           if (alpha >= 1) {
+            flushGroup();
             drawMeshes(d, e.tint);
             return;
           }
-          begin(group.attachment('clear'));
+          if (groupAlpha !== alpha) {
+            flushGroup();
+            begin(group.attachment('clear'));
+            groupAlpha = alpha;
+          }
           drawMeshes(d, e.tint);
-          begin(scene.attachment('load'));
-          composite(group, alpha, true);
         },
         endStatic() {
+          flushGroup();
           pass?.end();
           pass = null;
         },

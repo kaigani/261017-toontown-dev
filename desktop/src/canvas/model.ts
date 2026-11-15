@@ -78,7 +78,7 @@ export class CanvasModel {
   version = 0;
   /** Called after each upload: the resident key, its bytes, and request-to-upload milliseconds (measurements). */
   onLoaded: ((key: string, bytes: number, ms: number) => void) | null = null;
-  /** Called after each scene is applied: request-to-apply milliseconds (measurements, E-C1). */
+  /** Called when each scene answer arrives: request-to-arrival milliseconds (measurements, E-C1: delivery). */
   onScene: ((ms: number) => void) | null = null;
   private sceneAskedAt = 0;
   private readonly requestedAt = new Map<string, number>();
@@ -139,6 +139,7 @@ export class CanvasModel {
     this.dirty = false;
     this.host.canvasScene(this.viewId).then(
       (v) => {
+        this.onScene?.(this.clock.now() - this.sceneAskedAt);
         try {
           this.inbox.push({ kind: 'scene', answer: parseSceneAnswer(v) });
         } catch (e) {
@@ -183,7 +184,6 @@ export class CanvasModel {
           this.dropAll();
         }
         this.scene = scene;
-        this.onScene?.(this.clock.now() - this.sceneAskedAt);
         const shown = new Set(scene.entries.map(residentKey));
         for (const id of [...this.resident.keys()]) {
           if (!shown.has(id)) {

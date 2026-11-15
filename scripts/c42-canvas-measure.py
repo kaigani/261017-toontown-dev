@@ -106,17 +106,27 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict) -> Non
                 record["small"] = {"idle": (st.get("metrics") or {}).get("frameMs")}
 
                 async def gesture(label: str):
-                    """One brush gesture of about two seconds: OS input on Windows, an agent gesture elsewhere."""
+                    """Five brush gestures of about two seconds each (OS input on Windows, agent gestures elsewhere):
+                    the metrics after them, with `commitMs` taken from these gestures' own commits."""
                     await rc(session, "tool.active.set", {"toolId": "brush"})
-                    if sys.platform == "win32" and record.get("canvasAt"):
-                        x0, y0 = record["canvasAt"]
-                        pts = [(x0 + 100 + i * 4, y0 + 200 + (i % 20) * 3) for i in range(120)]
-                        await asyncio.get_running_loop().run_in_executor(None, c42.os_drag, e2e.APP_PID["pid"], pts)
-                    else:
-                        events = c42.drag([v(-200 + i * 3, 150 + (i % 20) * 2) for i in range(120)])
-                        await e2e.call(session, "pointer", {"view": "drawingView", "tool": "brush", "events": events})
-                    await asyncio.sleep(2.0)
-                    return (await metrics_now(session)).get("metrics") or {}
+                    before = len(((await metrics_now(session)).get("metrics") or {}).get("commits") or [])
+                    for g in range(5):
+                        if sys.platform == "win32" and record.get("canvasAt"):
+                            x0, y0 = record["canvasAt"]
+                            pts = [(x0 + 100 + i * 4, y0 + 120 + g * 40 + (i % 20) * 2) for i in range(120)]
+                            await asyncio.get_running_loop().run_in_executor(None, c42.os_drag, e2e.APP_PID["pid"], pts)
+                        else:
+                            events = c42.drag([v(-200 + i * 3, 150 - g * 30 + (i % 20) * 2) for i in range(120)])
+                            await e2e.call(session, "pointer", {"view": "drawingView", "tool": "brush", "events": events})
+                        await asyncio.sleep(1.0)
+                    await asyncio.sleep(1.0)
+                    m = (await metrics_now(session)).get("metrics") or {}
+                    mine = (m.get("commits") or [])[before:]
+                    s = sorted(mine)
+                    m["commitMs"] = {"n": len(s), "p50": s[(len(s) - 1) // 2] if s else None,
+                                     "p95": s[max(0, -(-len(s) * 95 // 100) - 1)] if s else None, "max": s[-1] if s else None,
+                                     "samples": mine}
+                    return m
 
                 # The canvas's place in the window (Windows OS input): where the view capture sits in the window's.
                 if sys.platform == "win32":

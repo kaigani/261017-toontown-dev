@@ -245,7 +245,7 @@ export function CanvasView({
         else unlisten = u;
       });
 
-    const tick = () => {
+    const tick = (frameAt: number) => {
       if (stopped) return;
       raf = requestAnimationFrame(tick);
       if (!model || !renderer) return;
@@ -286,7 +286,8 @@ export function CanvasView({
       });
       if (metrics) {
         const now = performance.now();
-        metrics.frame(began, now - began, collector.active || playing !== null);
+        // The frame time is the interval between frames (the rAF timestamps); the work is this callback's.
+        metrics.frame(frameAt, now - began, collector.active || playing !== null);
         if (overlay) metrics.inkDrawn(now);
         metrics.drawn(model.version, now);
       }
@@ -411,7 +412,8 @@ export function CanvasView({
     };
     const onMove = (e: PointerEvent) => {
       if (!collector.active) return;
-      metrics?.sample(e.timeStamp);
+      // Input-to-ink counts from the sample's arrival at the page (plan §6: "sample received").
+      metrics?.sample(performance.now());
       const list = typeof e.getCoalescedEvents === 'function' ? e.getCoalescedEvents() : [];
       collector.move((list.length > 0 ? list : [e]).map(sample));
       overlay = gestureOverlay(collector.points, style);
@@ -419,7 +421,7 @@ export function CanvasView({
     const onUp = (e: PointerEvent) => {
       if (!collector.active) return;
       const req = collector.up(sample(e));
-      metrics?.released(e.timeStamp, model?.version ?? 0);
+      metrics?.released(performance.now(), model?.version ?? 0);
       if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
       reportGesture(false);
       commit(req);

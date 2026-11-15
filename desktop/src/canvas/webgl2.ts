@@ -454,6 +454,16 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
       const fresh = scene.w !== W || scene.h !== H || scene.samples !== scene.sizedSamples();
       scene.ensure(W, H);
       group.ensure(W, H);
+      // Consecutive drawings at the same reduced opacity (a shaded light table, SI-139) share one offscreen pass and
+      // one composite: fewer passes, and their overlaps do not darken each other.
+      let groupAlpha: number | null = null;
+      const flushGroup = () => {
+        if (groupAlpha === null) return;
+        group.resolve();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, scene.drawFb());
+        composite(group.tex, groupAlpha);
+        groupAlpha = null;
+      };
       const ops: LayerOps = {
         background(c) {
           gl.bindFramebuffer(gl.FRAMEBUFFER, scene.drawFb());
@@ -467,6 +477,7 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
           gl.clear(gl.COLOR_BUFFER_BIT);
         },
         grid() {
+          flushGroup();
           viewTris(input.grid, input.width, input.height);
         },
         drawing(e) {
@@ -475,18 +486,21 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
           counters.drawn++;
           const alpha = Math.max(0, Math.min(1, e.opacity)) * (e.shade ? SHADE_OPACITY : 1);
           if (alpha >= 1) {
+            flushGroup();
             drawMeshes(d, d2c, e.tint);
             return;
           }
-          gl.bindFramebuffer(gl.FRAMEBUFFER, group.drawFb());
-          gl.clearColor(0, 0, 0, 0);
-          gl.clear(gl.COLOR_BUFFER_BIT);
+          if (groupAlpha !== alpha) {
+            flushGroup();
+            gl.bindFramebuffer(gl.FRAMEBUFFER, group.drawFb());
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            groupAlpha = alpha;
+          }
           drawMeshes(d, d2c, e.tint);
-          group.resolve();
-          gl.bindFramebuffer(gl.FRAMEBUFFER, scene.drawFb());
-          composite(group.tex, alpha);
         },
         endStatic() {
+          flushGroup();
           scene.resolve();
         },
         overlay() {

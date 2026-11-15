@@ -89,6 +89,7 @@ export class CanvasMetrics {
     inkMs: Stat;
     commitMs: Stat;
     sceneMs: Stat;
+    commits: number[];
     loads: CanvasMetrics['loads'];
   } {
     return {
@@ -98,6 +99,7 @@ export class CanvasMetrics {
       inkMs: stat(this.ink),
       commitMs: stat(this.commit),
       sceneMs: stat(this.scenes),
+      commits: this.commit.map((v) => Math.round(v * 100) / 100),
       loads: [...this.loads],
     };
   }
