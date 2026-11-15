@@ -259,6 +259,10 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
   const group = new Target(gl, samples);
   // The tool overlay's own target (display.smoothToolOverlays), composited over the static layers.
   const overlayTarget = new Target(gl, maxSamples);
+  // The overlay last drawn into its target: an unchanged overlay (the same triangles, size and samples) is composited
+  // from the target without being uploaded or drawn again (C42B-R2-01: a committed long stroke's ink stays on screen
+  // until its reload is drawn, and re-uploading 10,000 segments every frame slowed exactly those frames).
+  let overlayDrawn: { tris: ViewTris; w: number; h: number; samples: number } | null = null;
   const drawings = new Map<string, GpuDrawing>();
   let colours: Record<string, FormatRgba> = {};
   const counters = { drawn: 0, staticRedraws: 0, staticReuses: 0 };
@@ -448,6 +452,7 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
     },
     setSmoothOverlays(on) {
       overlayTarget.samples = on ? maxSamples : 0;
+      overlayDrawn = null;
     },
     finish() {
       gl.finish();
@@ -515,12 +520,22 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
         overlay() {
           const tris = input.overlay && input.overlay.vertexCount > 0 ? input.overlay : null;
           if (tris) {
+            const same =
+              overlayDrawn?.tris === tris &&
+              overlayDrawn.w === W &&
+              overlayDrawn.h === H &&
+              overlayDrawn.samples === overlayTarget.samples;
             overlayTarget.ensure(W, H);
-            gl.bindFramebuffer(gl.FRAMEBUFFER, overlayTarget.drawFb());
-            gl.clearColor(0, 0, 0, 0);
-            gl.clear(gl.COLOR_BUFFER_BIT);
-            viewTris(tris, input.width, input.height);
-            overlayTarget.resolve();
+            if (!same) {
+              gl.bindFramebuffer(gl.FRAMEBUFFER, overlayTarget.drawFb());
+              gl.clearColor(0, 0, 0, 0);
+              gl.clear(gl.COLOR_BUFFER_BIT);
+              viewTris(tris, input.width, input.height);
+              overlayTarget.resolve();
+              overlayDrawn = { tris, w: W, h: H, samples: overlayTarget.samples };
+            }
+          } else {
+            overlayDrawn = null;
           }
           gl.bindFramebuffer(gl.FRAMEBUFFER, null);
           gl.viewport(0, 0, W, H);
