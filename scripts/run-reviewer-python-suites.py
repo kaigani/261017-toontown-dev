@@ -50,6 +50,13 @@ NOT_SUITES = {
     "job on Windows against the diagnostics build (receipt desktop-gui-Windows/c42b-r1-live); the budget modes "
     "d1-long-webgpu, d1-long-webgl2, d1-extra and d3-webgpu (a WebGPU adapter) are workstation receipts "
     "(reviews/evidence/M4-C4.2b/live/, copied from the probe's output folder)",
+    # M4 C4.2b round 2 (declared in reviews/M4-C4.2b-r1-response.md, round-2 section): the reviewer's live runner.
+    "c42b-r2-live.py": "Windows live runner of the running application: needs the release binary, a mode and for "
+    "some modes the headless binary; CI runs modes c2, d3-webgl2, gui, regression, selection and observer in the "
+    "`desktop gui` job and byte, exact, exact-select and exact-tools (which need the headless binary) in the "
+    "`drawing byte gate` job, both on Windows against the default build (receipts desktop-gui-Windows/c42b-r2-live, "
+    "drawing-byte-gate-Windows/c42b-r2-live); measure-webgl2, measure-webgpu, d1-long-webgl2, d1-long-webgpu and "
+    "d3-webgpu are workstation receipts (reviews/evidence/M4-C4.2b/live/, copied from the runner's output folder)",
     "c42b-r1-conformance.py": "attached-mode MCP conformance through the running application: needs the release "
     "binary; the same suite (scripts/mcp-conformance.py --http) runs in the `desktop gui` job on both OSes",
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"

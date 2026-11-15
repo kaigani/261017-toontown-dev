@@ -1063,6 +1063,20 @@ jobs:
           mkdir -p desktop-gui/c42b-r1-live
           cp -r reviews/evidence/M4-C4.2b-r1/. desktop-gui/c42b-r1-live/
           exit $status
+      # M4 C4.2b round 2: the reviewer's round-2 runner. Its modes that need only the application run here; byte and
+      # exact* need the headless binary too and run in the drawing byte gate job; measure-*, d1-long-* and d3-webgpu are
+      # workstation receipts (reviews/evidence/M4-C4.2b/live/).
+      - name: Reviewer round-2 Drawing view probes (C4.2b round 2; Windows only) against the running application
+        if: always() && runner.os == 'Windows'
+        run: |
+          status=0
+          for mode in c2 d3-webgl2 gui regression selection observer; do
+            echo "== c42b-r2-live.py $mode"
+            PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c42b-r2-live.py desktop-artifact/default-build/toontown.exe $mode || status=1
+          done
+          mkdir -p desktop-gui/c42b-r2-live
+          cp -r reviews/evidence/M4-C4.2b-r2/. desktop-gui/c42b-r2-live/
+          exit $status
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -1079,7 +1093,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 35
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v7
       - uses: actions/download-artifact@v7
@@ -1115,6 +1129,20 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; hl=headless-bin/toontown-headless; VPY=.venv-gate/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/c42-gesture-equivalence.py "$app" "$hl" "byte-gate/gesture-equivalence"
+      # M4 C4.2b round 2: the reviewer's round-2 runner's modes that need the headless binary as well as the application
+      # (the byte gate and the exact three-way comparison: all tools, the core tools with the reviewer's extra Polyline
+      # click, the Select handles).
+      - name: Reviewer round-2 byte and exact probes (C4.2b round 2; Windows only)
+        if: always() && runner.os == 'Windows'
+        run: |
+          status=0
+          for mode in byte exact exact-select exact-tools; do
+            echo "== c42b-r2-live.py $mode"
+            PYTHONIOENCODING=utf-8 .venv-gate/Scripts/python -I tests/adversarial/c42b-r2-live.py desktop-artifact/default-build/toontown.exe $mode headless-bin/toontown-headless.exe || status=1
+          done
+          mkdir -p byte-gate/c42b-r2-live
+          cp -r reviews/evidence/M4-C4.2b-r2/. byte-gate/c42b-r2-live/
+          exit $status
       - uses: actions/upload-artifact@v7
         if: always()
         with:
