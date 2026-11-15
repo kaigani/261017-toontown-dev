@@ -154,6 +154,7 @@ async def part_d(s,part,rc,state,mapping,dr):
                 nested=[v.get('verdict') for v in data.values() if isinstance(v,dict) and 'verdict' in v]
                 verdict=next((v for v in nested if v!='Pass'),'Pass')
         except Exception as ex: data={'error':repr(ex)};verdict='Inconclusive: probe error'
+        if case==5 and part.startswith('d3-') and (data.get('comparison') or {}).get('verdict')!='Pass': verdict='Fail C42B-R1-05 (canvas works; capture fails)'
         rows.append({'case':case,'verdict':verdict,'observed':data});save(part+'-cases.json',rows)
     async def snap(name):
         env=await e.call(s,'screenshot',{'target':'drawingView'})
