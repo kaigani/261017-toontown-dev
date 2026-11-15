@@ -354,7 +354,7 @@ pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, St
     let mut request: Value = parse(&json)?;
     // An agent's gesture the window played (design note 2 §6) carries its request id: it runs with the agent's origin
     // and answers the waiting agent call too.
-    let agent = request.as_object_mut().and_then(|m| m.remove("agentRequest")).and_then(|v| v.as_u64());
+    let agent = agent_request_of(&mut request)?;
     let env = tauri::async_runtime::spawn_blocking(move || {
         let host = app.state::<Host>();
         match (agent, host.attached()) {
@@ -418,16 +418,144 @@ struct PresenceRect {
 /// The JSON text of `arg.invalid` for a malformed request.
 #[tauri::command]
 pub fn canvas_presence(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
-    let req: CanvasPresenceRequest = parse(&json)?;
+    let (view, presence) = presence_of(&json)?;
     if let Some(io) = host.attached() {
-        let presence = req
-            .rect
-            .filter(|r| [r.x, r.y, r.w, r.h].iter().all(|v| v.is_finite()) && r.w >= 1.0 && r.h >= 1.0)
-            .map(|r| crate::attached::Presence {
-                rect: [r.x, r.y, r.w, r.h],
-                dpr: req.dpr.filter(|d| d.is_finite() && *d > 0.0).unwrap_or(1.0),
-            });
-        io.set_presence(window.label(), &req.view_id, presence);
+        io.set_presence(window.label(), &view, presence);
     }
     respond(&json!({}))
+}
+
+/// The `agentRequest` member of a `gesture_commit` request, removed from it (D-7e): absent, a user gesture; a request
+/// id, an agent gesture the window played; anything else (`null` included) is refused.
+fn agent_request_of(request: &mut Value) -> Result<Option<u64>, String> {
+    let Some(m) = request.as_object_mut() else { return Ok(None) };
+    match m.remove("agentRequest") {
+        None => Ok(None),
+        Some(v) => {
+            v.as_u64().map(Some).ok_or_else(|| arg_invalid("/agentRequest", "a request id (a non-negative integer)"))
+        }
+    }
+}
+
+/// A `canvas_presence` request (D-7e): `viewId` required; `rect` required, an object (the canvas's rectangle) or `null`
+/// (the canvas went away); `dpr` absent (1) or a positive number, never `null`.
+fn presence_of(json: &str) -> Result<(String, Option<crate::attached::Presence>), String> {
+    let v: Value = parse(json)?;
+    let o = v.as_object().ok_or_else(|| arg_invalid("", "an object"))?;
+    if !o.contains_key("rect") {
+        return Err(arg_invalid("/rect", "the canvas's rectangle, or null when it went away"));
+    }
+    if o.get("dpr").is_some_and(Value::is_null) {
+        return Err(arg_invalid("/dpr", "a positive number (absent: 1)"));
+    }
+    let req: CanvasPresenceRequest = parse(json)?;
+    let rect = match req.rect {
+        Some(r) if [r.x, r.y, r.w, r.h].iter().all(|v| v.is_finite()) && r.w >= 1.0 && r.h >= 1.0 => Some(r),
+        Some(_) => return Err(arg_invalid("/rect", "finite numbers with a width and height of at least 1")),
+        None => None,
+    };
+    let dpr = match req.dpr {
+        Some(d) if d.is_finite() && d > 0.0 => d,
+        Some(_) => return Err(arg_invalid("/dpr", "a positive number")),
+        None => 1.0,
+    };
+    Ok((req.view_id, rect.map(|r| crate::attached::Presence { rect: [r.x, r.y, r.w, r.h], dpr })))
+}
+
+fn arg_invalid(pointer: &str, what: &str) -> String {
+    error_json(&tt_engine::ErrorInfo {
+        code: "arg.invalid".into(),
+        message: format!("{pointer}: {what}"),
+        details: json!({ "pointer": pointer }),
+    })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn code(r: &Result<impl std::fmt::Debug, String>) -> Option<String> {
+        r.as_ref()
+            .err()
+            .and_then(|e| serde_json::from_str::<Value>(e).ok())
+            .and_then(|v| v["code"].as_str().map(str::to_owned))
+    }
+
+    /// D-7e: every field of every new message, in every state (absent, null, a value, an empty value), through the real
+    /// parsing: accepted with its meaning, or refused with `arg.invalid`.
+    #[test]
+    fn every_canvas_message_field_distinguishes_absent_null_and_values() {
+        let scene = |j: Value| parse::<CanvasSceneRequest>(&j.to_string()).map(|r| r.view_id);
+        assert_eq!(scene(json!({ "viewId": "drawingView" })), Ok("drawingView".into()));
+        assert_eq!(
+            scene(json!({ "viewId": "" })),
+            Ok(String::new()),
+            "empty: parsed, refused by the kernel (view.notFound)"
+        );
+        for bad in [json!({}), json!({ "viewId": null }), json!({ "viewId": 1 }), json!({ "viewId": "v", "x": 1 })] {
+            assert_eq!(code(&scene(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
+        }
+
+        let load = |j: Value| parse::<CanvasLoadRequest>(&j.to_string()).map(|r| (r.drawing_id, r.bucket, r.outline));
+        assert_eq!(
+            load(json!({ "drawingId": "dr_X", "bucket": 2 })),
+            Ok(("dr_X".into(), 2, false)),
+            "outline absent: the filled form"
+        );
+        assert_eq!(load(json!({ "drawingId": "dr_X", "bucket": -1, "outline": true })), Ok(("dr_X".into(), -1, true)));
+        for bad in [
+            json!({ "bucket": 0 }),
+            json!({ "drawingId": null, "bucket": 0 }),
+            json!({ "drawingId": "dr_X" }),
+            json!({ "drawingId": "dr_X", "bucket": null }),
+            json!({ "drawingId": "dr_X", "bucket": 0, "outline": null }),
+        ] {
+            assert_eq!(code(&load(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
+        }
+
+        let abort = |j: Value| parse::<GestureAbortRequest>(&j.to_string()).map(|r| r.agent_request);
+        assert_eq!(abort(json!({ "agentRequest": 7 })), Ok(7));
+        for bad in
+            [json!({}), json!({ "agentRequest": null }), json!({ "agentRequest": -1 }), json!({ "agentRequest": "7" })]
+        {
+            assert_eq!(code(&abort(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
+        }
+
+        let agent = |mut j: Value| agent_request_of(&mut j).map(|a| (a, j));
+        assert_eq!(
+            agent(json!({ "view": "drawingView", "events": [] })).map(|(a, _)| a),
+            Ok(None),
+            "absent: a user gesture"
+        );
+        let (a, rest) = agent(json!({ "view": "drawingView", "events": [], "agentRequest": 3 })).unwrap();
+        assert_eq!((a, rest.get("agentRequest").is_none()), (Some(3), true), "an agent gesture; the member is removed");
+        for bad in [json!({ "agentRequest": null }), json!({ "agentRequest": "3" }), json!({ "agentRequest": 1.5 })] {
+            assert_eq!(code(&agent(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
+        }
+
+        let presence = |j: Value| presence_of(&j.to_string());
+        let rect = json!({ "x": 1, "y": 2, "w": 300, "h": 200 });
+        let (v, p) = presence(json!({ "viewId": "drawingView", "rect": rect, "dpr": 2 })).unwrap();
+        assert_eq!((v.as_str(), p.map(|p| (p.rect, p.dpr))), ("drawingView", Some(([1.0, 2.0, 300.0, 200.0], 2.0))));
+        assert_eq!(
+            presence(json!({ "viewId": "v", "rect": rect })).unwrap().1.map(|p| p.dpr),
+            Some(1.0),
+            "dpr absent: 1"
+        );
+        assert_eq!(
+            presence(json!({ "viewId": "v", "rect": null })).unwrap().1,
+            None,
+            "rect null: the canvas went away"
+        );
+        for bad in [
+            json!({ "viewId": "v" }),
+            json!({ "rect": null }),
+            json!({ "viewId": "v", "rect": rect, "dpr": null }),
+            json!({ "viewId": "v", "rect": rect, "dpr": 0 }),
+            json!({ "viewId": "v", "rect": { "x": 0, "y": 0, "w": 0, "h": 5 } }),
+            json!({ "viewId": "v", "rect": {} }),
+        ] {
+            assert_eq!(code(&presence(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
+        }
+    }
 }
