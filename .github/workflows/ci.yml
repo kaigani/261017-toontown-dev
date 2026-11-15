@@ -1078,6 +1078,17 @@ jobs:
           mkdir -p desktop-gui/c42b-r2-live
           cp -r reviews/evidence/M4-C4.2b-r2/. desktop-gui/c42b-r2-live/
           exit $status
+      # M4 C4.2b round 3: the reviewer's round-3 runner. Its endings mode (the e2e with every Polyline ending, a third
+      # anchor and a write between clicks) runs here; labels (needs the headless binary) runs in the drawing byte gate
+      # job; fixed-webgl2 and fixed-webgpu are workstation receipts.
+      - name: Reviewer round-3 Polyline endings probe (C4.2b round 3; Windows only) against the running application
+        if: always() && runner.os == 'Windows'
+        run: |
+          status=0
+          PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c42b-r3-live.py desktop-artifact/default-build/toontown.exe endings || status=1
+          mkdir -p desktop-gui/c42b-r3-live
+          cp -r reviews/evidence/M4-C4.2b-r3/endings/. desktop-gui/c42b-r3-live/
+          exit $status
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -1143,6 +1154,16 @@ jobs:
           done
           mkdir -p byte-gate/c42b-r2-live
           cp -r reviews/evidence/M4-C4.2b-r2/. byte-gate/c42b-r2-live/
+          exit $status
+      # M4 C4.2b round 3: every specified undo label three ways (the window by OS input, the samples replayed headless,
+      # the commands sent directly), with undo and redo.
+      - name: Reviewer round-3 undo-label probe (C4.2b round 3; Windows only)
+        if: always() && runner.os == 'Windows'
+        run: |
+          status=0
+          PYTHONIOENCODING=utf-8 .venv-gate/Scripts/python -I tests/adversarial/c42b-r3-live.py desktop-artifact/default-build/toontown.exe labels headless-bin/toontown-headless.exe || status=1
+          mkdir -p byte-gate/c42b-r3-live
+          cp -r reviews/evidence/M4-C4.2b-r3/labels/. byte-gate/c42b-r3-live/
           exit $status
       - uses: actions/upload-artifact@v7
         if: always()

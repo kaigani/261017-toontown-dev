@@ -58,6 +58,12 @@ NOT_SUITES = {
     "drawing-byte-gate-Windows/c42b-r2-live); measure-webgl2, measure-webgpu, d1-long-webgl2, d1-long-webgpu and "
     "d3-webgpu are workstation receipts (reviews/evidence/M4-C4.2b/live/, copied from the runner's output folder); "
     "observer asserts that a read-only session sees the gesture samples, which ruling D-19 removed, so it is not run",
+    # M4 C4.2b round 3 (declared in reviews/M4-C4.2b-r1-response.md, round-3 section): the reviewer's live runner.
+    "c42b-r3-live.py": "Windows live runner of the running application (round 3; other modes pass through to the "
+    "round-2 runner): needs the release binary, a mode and for labels the headless binary; CI runs endings in the "
+    "`desktop gui` job and labels in the `drawing byte gate` job, both on Windows against the default release build "
+    "(receipts desktop-gui-Windows/c42b-r3-live, drawing-byte-gate-Windows/c42b-r3-live); fixed-webgl2 and "
+    "fixed-webgpu are workstation receipts",
     "c42b-r1-conformance.py": "attached-mode MCP conformance through the running application: needs the release "
     "binary; the same suite (scripts/mcp-conformance.py --http) runs in the `desktop gui` job on both OSes",
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
