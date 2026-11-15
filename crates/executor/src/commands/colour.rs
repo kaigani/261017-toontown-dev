@@ -18,7 +18,7 @@ use tt_model::document::{Document, EntryKey};
 use tt_model::entities::drawing::{Drawing, DrawingNode, NodeKind};
 use tt_model::entities::palette::SwatchKind;
 use tt_model::{Id, ObjectType};
-use tt_registry::{CommandError, codes, command};
+use tt_registry::{CommandError, command};
 use tt_vector::geom::{P, Rect};
 use tt_vector::planar::fill::Fill;
 use tt_vector::planar::gap;
@@ -113,39 +113,29 @@ fn gap_tolerance(cx: &Cx, choice: GapChoice) -> Option<f64> {
 /// points are used as given; `view` points go through the Drawing view's mapping (design note 6). A named `view`
 /// (or view-space points) sets the zoom tolerances are divided by (02 §13.3 "the view's zoom for tolerances").
 pub(crate) struct Frame {
-    view: Option<crate::shell::ViewWindow>,
+    /// The call's space → drawing units (`None`: drawing space).
+    to_drawing: Option<crate::camera_view::Matrix>,
     /// View pixels per drawing unit (1 without a view).
     scale: f64,
 }
 
 fn frame(cx: &Cx, space: Space, view: Option<&str>) -> Result<Frame, CommandError> {
-    match space {
-        Space::Drawing => match view {
-            Some(v) => {
-                Ok(Frame { view: None, scale: super::view::pixels_per_du(super::view::drawing_view(cx, Some(v))?) })
-            }
-            None => Ok(Frame { view: None, scale: 1.0 }),
-        },
-        Space::Scene => Err(err(
-            codes::ARG_INVALID,
-            "scene-space point targets need the scene transforms (M3 C3.2)",
-            json!({ "pointer": "/space", "space": "scene" }),
-        )
-        .hint("give points in drawing or view space")),
-        Space::View => {
-            let w = super::view::drawing_view(cx, view)?.clone();
-            Ok(Frame { scale: super::view::pixels_per_du(&w), view: Some(w) })
-        }
-    }
+    let name = match space {
+        Space::Drawing => "drawing",
+        Space::Scene => "scene",
+        Space::View => "view",
+    };
+    let (to_drawing, scale) = crate::camera_view::addressing(cx, name, view, None)?;
+    Ok(Frame { to_drawing, scale })
 }
 
 impl Frame {
     /// A point of the call in drawing space.
     fn point(&self, p: Point, pointer: &str) -> Result<P, CommandError> {
         let q = point(p, pointer)?;
-        Ok(match &self.view {
-            Some(w) => {
-                let d = super::view::to_drawing(w, crate::shell::Point { x: q.x, y: q.y });
+        Ok(match &self.to_drawing {
+            Some(m) => {
+                let d = crate::camera_view::apply(m, crate::shell::Point { x: q.x, y: q.y });
                 P::new(d.x, d.y)
             }
             None => q,

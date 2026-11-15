@@ -179,6 +179,57 @@ pub struct SceneEntry {
     pub shade: bool,
     /// Outlines only (02 §10.2).
     pub outline: bool,
+    /// Camera view: the element this occurrence draws (scene answer form 1.1, `docs/canvas-format.md` §11.3).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub element_id: Option<String>,
+    /// Camera view: drawing units → camera output pixels, the final renderer's plane matrix (camera-view note §2).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<[f64; 6]>,
+}
+
+/// The Camera view's camera (scene answer form 1.1, §11.2).
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneCamera {
+    /// The camera element.
+    pub element_id: String,
+    /// The output size in pixels, `[width, height]`.
+    pub size: [u32; 2],
+    /// Camera output pixels → view pixels (the view transform).
+    pub camera_to_view: [f64; 6],
+}
+
+/// The selection display options (02 lines 959-961), as `drawAid.selectionDisplay.set` sets them.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneSelectionDisplay {
+    /// Outline on selection.
+    pub outline_on_selection: bool,
+    /// Box highlighting.
+    pub box_highlighting: bool,
+    /// Keep the selection visible.
+    pub keep_selection_visible: bool,
+}
+
+/// The Camera view's overlays in camera output pixels (scene answer form 1.1, §11.4): never in a render (05 lines
+/// 283-284).
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneOverlays {
+    /// The camera frame, `[0, 0, width, height]`.
+    pub camera_frame: [f64; 4],
+    /// Each selected element's pivot.
+    pub pivots: Vec<[f64; 2]>,
+    /// Each selected element's box.
+    pub selection_boxes: Vec<[f64; 4]>,
+    /// The union of the selection's boxes; `null` without a selection.
+    pub selection_union: Option<[f64; 4]>,
+    /// Each selected non-current camera's frame on the table plane, four corners (05 line 901).
+    pub other_cameras: Vec<[[f64; 2]; 4]>,
+    /// 02 lines 959-961.
+    pub selection_display: SceneSelectionDisplay,
+    /// 02 line 946.
+    pub current_on_top: bool,
 }
 
 /// The grid settings the canvas draws (02 §10.1).
@@ -194,12 +245,17 @@ pub struct SceneGrid {
     pub overlay: bool,
 }
 
-/// The Drawing view's composition (design note 1 §9): what `canvas_scene` answers.
+/// A view's composition (design note 1 §9; camera-view note §3): what `canvas_scene` answers, the scene answer of
+/// `docs/canvas-format.md` §11.
 #[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Scene {
-    /// The view (`drawingView` or a float of it).
+    /// The scene answer's form (§11.2): `"1.1"`.
+    pub scene_form: String,
+    /// The view (`drawingView`, `cameraView`, or a float of either).
     pub view_id: String,
+    /// `drawing` or `camera`.
+    pub view_type: String,
     /// The background (02 §10.7), straight-alpha RGBA8.
     pub background: [u8; 4],
     /// The grid (02 §10.1).
@@ -215,7 +271,19 @@ pub struct Scene {
     pub drawing_pivot: Option<[f64; 2]>,
     /// The current drawing's selection (frame-loop note §7.1); `null` when nothing is selected.
     pub selection: Option<SceneSelection>,
+    /// Camera view: the scene frame shown.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub frame: Option<u32>,
+    /// Camera view: the camera, `null` without a current camera (SI-147); absent in the Drawing view.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub camera: Option<Option<SceneCamera>>,
+    /// Camera view: the overlays; absent in the Drawing view.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overlays: Option<SceneOverlays>,
 }
+
+/// The scene answer's form (`docs/canvas-format.md` §11.2).
+pub const SCENE_FORM: &str = "1.1";
 
 /// The selection the Drawing view's overlay draws (layer 9; frame-loop note §7.1), in drawing units.
 #[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
@@ -268,6 +336,8 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
             tint,
             shade,
             outline,
+            element_id: None,
+            matrix: None,
         })
     };
     let current = s.app.current_drawing(doc);
@@ -367,35 +437,186 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
             entries.extend(entry(&id, "staticOver", 1.0, None, aids.light_table_shade.stat, false));
         }
     }
+    let (colours, palette_stamp) = colours_of(doc, None);
+    Ok(Scene {
+        scene_form: SCENE_FORM.to_owned(),
+        view_id: view_id.to_owned(),
+        view_type: "drawing".to_owned(),
+        background,
+        grid: SceneGrid { visible: aids.grid.visible, ty: aids.grid.ty.clone(), overlay: aids.grid.overlay },
+        entries,
+        colours,
+        palette_stamp,
+        drawing_pivot: current.as_ref().and_then(|id| doc.drawing(id)).map(|d| [d.pivot().x, d.pivot().y]),
+        // Filled by [`selection`] with a read-only context (the selection walk needs one).
+        selection: None,
+        frame: None,
+        camera: None,
+        overlays: None,
+    })
+}
+
+/// Every solid colour id's value and the palette stamp. `styles` maps a palette to the style the scene uses (the final
+/// renderer's camera walk, `render_list::items`); a palette it does not name, and every palette without `styles` (the
+/// Drawing view), takes its first style.
+fn colours_of(
+    doc: &Document,
+    styles: Option<&std::collections::BTreeMap<Id, Id>>,
+) -> (std::collections::BTreeMap<String, [u8; 4]>, u64) {
     let mut colours = std::collections::BTreeMap::new();
     let mut stamp: u64 = 0;
     for pal in doc.palettes() {
         let first = pal.styles().first().map(|st| st.id().clone());
+        let style = styles.and_then(|m| m.get(pal.id()).cloned()).or(first);
         for st in pal.styles() {
             stamp = stamp.wrapping_mul(31).wrapping_add(*st.rev());
         }
         for sw in pal.swatches() {
             stamp = stamp.wrapping_mul(31).wrapping_add(*sw.rev());
             if let Some(tt_model::entities::palette::SwatchValue::Solid(c)) =
-                first.as_ref().and_then(|f| sw.values().get(f))
+                style.as_ref().and_then(|f| sw.values().get(f))
             {
                 colours.insert(sw.colour_id().as_str().to_owned(), c.rgba.channels());
             }
         }
         stamp = stamp.wrapping_mul(31).wrapping_add(pal.swatches().len() as u64);
     }
-    Ok(Scene {
+    // Within 2^53, so it crosses JSON as an exact number.
+    (colours, stamp & ((1 << 53) - 1))
+}
+
+/// The Camera view's composition (camera-view note §1-§3): the final renderer's camera walk at the view's frame and
+/// the camera's output size, each element with a plane matrix in front of the camera as an occurrence (drawn, or out
+/// of the frame: the view shows the table around it), in the walk's order; and the overlays.
+///
+/// # Errors
+/// `view.notFound`, `no.project`, `render.noScene`; the evaluator's refusals.
+pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, CommandError> {
+    use crate::commands::render_list::{self, Overrides, Request, Verdict};
+    let w = cx.ui().shell().view(view_id)?.clone();
+    let doc = cx.document()?;
+    let scene_id = crate::camera_view::current_scene(cx)?;
+    let sc = doc.scene(&scene_id);
+    let background =
+        sc.map_or([240, 240, 240, 255], |sc| rgba(&sc.background_colour().to_string(), [240, 240, 240, 255]));
+    let styles: Option<std::collections::BTreeMap<Id, Id>> =
+        sc.map(|s| s.palette_styles().iter().map(|(p, st)| (p.clone(), st.clone())).collect());
+    let (colours, palette_stamp) = colours_of(doc, styles.as_ref());
+    let aids = &cx.ui().drawing().aids;
+    let display = SceneSelectionDisplay {
+        outline_on_selection: aids.selection_display.outline_on_selection,
+        box_highlighting: aids.selection_display.box_highlighting,
+        keep_selection_visible: aids.selection_display.keep_selection_visible,
+    };
+    let mut out = Scene {
+        scene_form: SCENE_FORM.to_owned(),
         view_id: view_id.to_owned(),
+        view_type: "camera".to_owned(),
         background,
         grid: SceneGrid { visible: aids.grid.visible, ty: aids.grid.ty.clone(), overlay: aids.grid.overlay },
-        entries,
+        entries: Vec::new(),
         colours,
-        // Within 2^53, so it crosses JSON as an exact number.
-        palette_stamp: stamp & ((1 << 53) - 1),
-        drawing_pivot: current.as_ref().and_then(|id| doc.drawing(id)).map(|d| [d.pivot().x, d.pivot().y]),
-        // Filled by [`selection`] with a read-only context (the selection walk needs one).
+        palette_stamp,
+        drawing_pivot: None,
         selection: None,
-    })
+        frame: Some(cx.app().frame.max(1)),
+        camera: Some(None),
+        overlays: None,
+    };
+    let chain = match crate::camera_view::chain(cx, &w) {
+        Ok(c) => c,
+        Err(e) if e.code == "render.noCamera" => {
+            let (cw, ch) = crate::commands::render::output_size(doc, None, None, 1.0)?;
+            out.overlays = Some(SceneOverlays {
+                camera_frame: [0.0, 0.0, f64::from(cw), f64::from(ch)],
+                pivots: Vec::new(),
+                selection_boxes: Vec::new(),
+                selection_union: None,
+                other_cameras: Vec::new(),
+                selection_display: display,
+                current_on_top: aids.current_on_top,
+            });
+            return Ok(out);
+        }
+        Err(e) => return Err(e),
+    };
+    let overrides = Overrides::default();
+    let req = Request {
+        scene: &chain.scene,
+        frame: chain.frame,
+        camera: None,
+        width: chain.width,
+        height: chain.height,
+        only: None,
+        overrides: &overrides,
+    };
+    let mut ev = crate::commands::anim_common::evaluator(doc, "composing the Camera view");
+    let list = render_list::build(doc, &req, &mut ev)?;
+    let current = cx.app().element.clone();
+    for en in &list.entries {
+        let (Some(m), Some(d)) = (en.to_pixel, en.drawing.as_ref().and_then(|d| doc.drawing(d))) else { continue };
+        if !matches!(en.verdict, Verdict::Drawn | Verdict::OutOfFrame) {
+            continue;
+        }
+        out.entries.push(SceneEntry {
+            drawing_id: d.id().as_str().to_owned(),
+            rev: *d.rev(),
+            role: if current.as_ref() == Some(&en.id) { "current" } else { "staticUnder" }.to_owned(),
+            opacity: 1.0,
+            tint: None,
+            shade: false,
+            outline: false,
+            element_id: Some(en.id.as_str().to_owned()),
+            matrix: Some(m.0),
+        });
+    }
+    // The overlays: the selected elements' boxes and pivots, and the selected non-current cameras' frames.
+    let selected: Vec<Id> = cx.app().selection_list("staging").iter().filter_map(|k| Id::parse(k).ok()).collect();
+    let mut boxes = Vec::new();
+    let mut pivots = Vec::new();
+    let mut cameras = Vec::new();
+    for id in &selected {
+        if let Some(en) = list.entries.iter().find(|en| &en.id == id) {
+            if let Some(b) = en.pixel_box {
+                boxes.push([b.min_x, b.min_y, b.max_x, b.max_y]);
+            }
+            let pivot = doc
+                .element(id)
+                .and_then(|e| e.transform().as_ref().and_then(|t| t.rotation_pivot.as_ref()).map(|p| (p.x, p.y)))
+                .unwrap_or((0.0, 0.0));
+            if let Some(q) = crate::camera_view::scene_to_output(&chain, en.world.apply([pivot.0, pivot.1, 0.0])) {
+                pivots.push([q.x, q.y]);
+            }
+        } else if id != &chain.camera
+            && doc.element(id).is_some_and(|e| *e.element_type() == tt_model::entities::element::ElementType::Camera)
+        {
+            let cam = ev.camera(id, f64::from(chain.frame)).map_err(crate::commands::anim_common::eval_error)?;
+            if let Some(corners) = cam.frame_corners_at_z0() {
+                let projected: Vec<_> =
+                    corners.iter().filter_map(|c| crate::camera_view::scene_to_output(&chain, *c)).collect();
+                if let [a, b, c, d] = projected.as_slice() {
+                    cameras.push([[a.x, a.y], [b.x, b.y], [c.x, c.y], [d.x, d.y]]);
+                }
+            }
+        }
+    }
+    let union = boxes.iter().copied().reduce(|u, b| [u[0].min(b[0]), u[1].min(b[1]), u[2].max(b[2]), u[3].max(b[3])]);
+    out.overlays = Some(SceneOverlays {
+        camera_frame: [0.0, 0.0, f64::from(chain.width), f64::from(chain.height)],
+        pivots,
+        selection_boxes: boxes,
+        selection_union: union,
+        other_cameras: cameras,
+        selection_display: display,
+        current_on_top: aids.current_on_top,
+    });
+    out.frame = Some(chain.frame);
+    out.camera = Some(Some(SceneCamera {
+        element_id: chain.camera.as_str().to_owned(),
+        size: [chain.width, chain.height],
+        camera_to_view: chain.output_to_view,
+    }));
+    Ok(out)
 }
 
 /// The current drawing's selection for the scene (frame-loop note §7.1): `draw.selection.get`'s geometry.

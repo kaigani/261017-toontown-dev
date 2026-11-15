@@ -399,6 +399,16 @@ fn bitmap_opaque(cx: &Cx, d: &tt_model::entities::drawing::Drawing, node_id: &st
 )]
 pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, CommandError> {
     if p.space == Space::View {
+        // A Camera view's pixels reach the scene through the camera (views note §6): the image-space hit test at the
+        // output pixel under the view point, the table around the frame included (the view shows it).
+        if let Some((_, chain)) = camera_window(cx, p.view.as_deref())? {
+            if !(p.point.x.is_finite() && p.point.y.is_finite()) {
+                return Err(super::common::invalid("/point", "the point must be finite"));
+            }
+            let pixel = view_to_output(&chain, crate::shell::Point { x: p.point.x, y: p.point.y })?;
+            let hits = image_hits(cx, Some(chain.scene.as_str()), Some(chain.frame), P::new(pixel.x, pixel.y), true)?;
+            return Ok(Hits { hits });
+        }
         return view_hits(cx, &p);
     }
     if p.view.is_some() {
@@ -410,7 +420,7 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
     if !(p.point.x.is_finite() && p.point.y.is_finite()) {
         return Err(super::common::invalid("/point", "the point must be finite"));
     }
-    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None, &Overrides::NONE)?;
+    let (_, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None, &Overrides::NONE)?;
     let pixel = match p.space {
         Space::Image => P::new(p.point.x, p.point.y),
         Space::Camera => Affine(render::invert(render::image_to_camera(&list))).apply(P::new(p.point.x, p.point.y)),
@@ -419,9 +429,56 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
             None => return Err(behind_camera(&[0])),
         },
     };
+    let hits = image_hits(cx, p.scene_id.as_deref(), p.frame, pixel, false)?;
+    Ok(Hits { hits })
+}
+
+/// The view window `view` names when it shows the Camera view, with its chain; `None` for a Drawing view.
+///
+/// # Errors
+/// `view.notFound`; `command.notImplemented` for a Top or Side view (M6 C6.1); the chain's refusals.
+pub(crate) fn camera_window(
+    cx: &Cx,
+    view: Option<&str>,
+) -> Result<Option<(crate::shell::ViewWindow, crate::camera_view::Chain)>, CommandError> {
+    let w = crate::camera_view::resolve_view(cx, view)?.clone();
+    match w.ty {
+        crate::shell::ViewType::Drawing => Ok(None),
+        crate::shell::ViewType::Camera => {
+            let c = crate::camera_view::chain(cx, &w)?;
+            Ok(Some((w, c)))
+        }
+        _ => Err(crate::camera_view::staging_owner(&w, "view-space points")),
+    }
+}
+
+/// A Camera-view pixel → camera output pixels.
+fn view_to_output(
+    chain: &crate::camera_view::Chain,
+    v: crate::shell::Point,
+) -> Result<crate::shell::Point, CommandError> {
+    let inv = crate::camera_view::invert(&chain.output_to_view)
+        .ok_or_else(|| super::common::invalid("/view", "the Camera view's transform is singular"))?;
+    Ok(crate::camera_view::apply(&inv, v))
+}
+
+/// The objects under output pixel `pixel` of a frame, front-most first: each element's drawing at the point through
+/// its plane matrix. `around`: the elements outside the camera frame too (a Camera view shows the table around it).
+///
+/// # Errors
+/// `render.noScene`, `render.noCamera`, the evaluator's and the planar map's refusals.
+pub(crate) fn image_hits(
+    cx: &Cx,
+    scene_id: Option<&str>,
+    frame: Option<u32>,
+    pixel: P,
+    around: bool,
+) -> Result<Vec<HitOut>, CommandError> {
+    let (doc, list) = frame_list(cx, scene_id, frame, None, &Overrides::NONE)?;
     let cache = cx.planar_cache();
     let mut hits = Vec::new();
-    for en in list.entries.iter().rev().filter(|en| en.verdict == Verdict::Drawn) {
+    let shown = |v: Verdict| v == Verdict::Drawn || (around && v == Verdict::OutOfFrame);
+    for en in list.entries.iter().rev().filter(|en| shown(en.verdict)) {
         let (Some(m), Some(did)) = (en.to_pixel, en.drawing.as_ref()) else { continue };
         let Some(d) = doc.drawing(did) else { continue };
         let inv = render::invert(m.0);
@@ -445,7 +502,7 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
             });
         }
     }
-    Ok(Hits { hits })
+    Ok(hits)
 }
 
 /// Hits under a view point of the Drawing view (SI-109): the current drawing's objects, top-most first.
@@ -593,6 +650,50 @@ pub(crate) fn inspect_coordinates_convert(cx: &mut Cx, p: ConvertParams) -> Resu
     // View space is the Drawing view's pixels (SI-109; M4 C4.2): view points pass through drawing space with the one
     // mapping (design note 6), so `view` converts to and from every other space.
     let (vf, vt) = (p.from == "view", p.to == "view");
+    // A Camera view's pixels convert through the camera's output pixels (views note §6): view → image, then the image
+    // space's own conversions, and back.
+    if (vf || vt)
+        && let Some((_, chain)) = camera_window(cx, p.view.as_deref())?
+    {
+        if p.points.iter().any(|q| !(q.x.is_finite() && q.y.is_finite())) {
+            return Err(super::common::invalid("/points", "points must be finite"));
+        }
+        let pts: Vec<Point3> = if vf {
+            p.points
+                .iter()
+                .map(|q| {
+                    view_to_output(&chain, crate::shell::Point { x: q.x, y: q.y }).map(|o| Point3 {
+                        x: o.x,
+                        y: o.y,
+                        z: None,
+                    })
+                })
+                .collect::<Result<_, _>>()?
+        } else {
+            p.points.clone()
+        };
+        let (from, to) =
+            (if vf { "image".to_owned() } else { p.from.clone() }, if vt { "image".to_owned() } else { p.to.clone() });
+        let frame = p.frame.or(Some(chain.frame));
+        let inner = if from == to {
+            pts
+        } else {
+            let q = ConvertParams { from, to, points: pts, view: None, frame, ..p };
+            inspect_coordinates_convert(cx, q)?.points
+        };
+        let out = if vt {
+            inner
+                .iter()
+                .map(|q| {
+                    let v = crate::camera_view::apply(&chain.output_to_view, crate::shell::Point { x: q.x, y: q.y });
+                    Point3 { x: v.x, y: v.y, z: None }
+                })
+                .collect()
+        } else {
+            inner
+        };
+        return Ok(Points { points: out });
+    }
     if vf || vt {
         let w = super::view::drawing_view(cx, p.view.as_deref())?.clone();
         let pts: Vec<Point3> = if vf {

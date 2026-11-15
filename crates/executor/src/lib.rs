@@ -28,6 +28,7 @@ mod addressing;
 pub mod agents;
 mod align;
 mod app;
+mod camera_view;
 pub mod canvas;
 pub mod commands;
 mod cx;

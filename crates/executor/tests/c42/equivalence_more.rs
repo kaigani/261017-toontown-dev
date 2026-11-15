@@ -332,9 +332,19 @@ fn c42a_r2_01_view_space_points_and_view_tolerances_in_every_point_taking_draw_c
         json!({ "by": "rect", "rect": { "x": 0, "y": 0, "width": 10, "height": 10 }, "space": "view" }),
     );
     assert_eq!(e.error.unwrap().code, "arg.invalid");
-    assert_eq!(
-        run(&b, "draw.pivot.set", json!({ "point": { "x": 0, "y": 0 }, "space": "scene" })).error.unwrap().code,
-        "arg.invalid"
+    // Scene space (C4.3a, views note §6, SI-146): the current element's plane at the frame; the pivot lands where
+    // `view.coordinates.convert` puts that scene point in drawing space.
+    let want = ok(
+        &b,
+        "view.coordinates.convert",
+        json!({ "viewId": "drawingView", "point": { "x": 0.5, "y": -0.25 }, "from": "scene", "to": "drawing" }),
+    )["point"]
+        .clone();
+    let got = ok(&b, "draw.pivot.set", json!({ "point": { "x": 0.5, "y": -0.25 }, "space": "scene" }));
+    let (gx, gy) = (got["pivot"]["x"].as_f64().unwrap(), got["pivot"]["y"].as_f64().unwrap());
+    assert!(
+        (gx - want["x"].as_f64().unwrap()).abs() < 1e-9 && (gy - want["y"].as_f64().unwrap()).abs() < 1e-9,
+        "{got} {want}"
     );
     // The polyline snap radius is in view pixels: at zoom 2 a radius of 8 px is 4 du. An existing anchor 6 du away
     // snaps at 100 % (no view) but not through the zoomed view.

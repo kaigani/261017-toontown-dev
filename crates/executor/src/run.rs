@@ -1105,8 +1105,23 @@ impl Core {
         self.session.as_ref()
     }
 
-    /// The Drawing view's composition for the canvas (M4 C4.2b; design note 1 §9).
+    /// A view's composition for the canvas (M4 C4.2b, design note 1 §9; the Camera view, M4 C4.3a, camera-view note
+    /// §3): by the view window's type. Top and Side views are M6 C6.1's.
     pub(crate) fn canvas_scene(&mut self, view_id: &str) -> Result<crate::canvas::Scene, CommandError> {
+        let session = self.session().ok_or_else(crate::cx::no_project)?;
+        let ty = session.ui.shell().view(view_id).map(|w| (w.ty, w.clone()));
+        match ty {
+            Ok((crate::shell::ViewType::Camera, _)) => {
+                let view = view_id.to_owned();
+                return self
+                    .with_lent_session(move |cx| crate::canvas::camera_scene(cx, &view))
+                    .unwrap_or_else(|| Err(crate::cx::no_project()));
+            }
+            Ok((crate::shell::ViewType::Top | crate::shell::ViewType::Side, w)) => {
+                return Err(crate::camera_view::staging_owner(&w, "canvases"));
+            }
+            _ => {}
+        }
         let mut scene = crate::canvas::scene(self.session().ok_or_else(crate::cx::no_project)?, view_id)?;
         // The selection walk needs a context: the session is lent to a read-only one (nothing staged or emitted).
         scene.selection = self.with_lent_session(crate::canvas::selection).transpose()?.flatten();

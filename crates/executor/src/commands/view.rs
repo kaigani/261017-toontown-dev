@@ -59,14 +59,18 @@ pub(crate) fn drawing_view<'a>(cx: &'a Cx, view: Option<&str>) -> Result<&'a Vie
         Some(v) => v.to_owned(),
     };
     let w = shell.view(&id)?;
-    if w.ty != ViewType::Drawing {
-        return Err(CommandError::with_details(
-            codes::COMMAND_NOT_IMPLEMENTED,
-            format!("view space of the {} view arrives with that view (M4 C4.3)", w.ty.as_str()),
-            json!({ "viewId": id, "viewType": w.ty, "milestone": "M4 C4.3" }),
-        ));
+    match w.ty {
+        ViewType::Drawing => Ok(w),
+        // The Camera view maps each drawing through its element (views note §6): the commands that take Camera-view
+        // points convert them themselves (`crate::camera_view::addressing`); what reaches here needs the Drawing
+        // view's own mapping.
+        ViewType::Camera => Err(CommandError::with_details(
+            codes::ARG_INVALID,
+            "this needs the Drawing view's mapping; Camera-view points are converted through the current element",
+            json!({ "pointer": "/view", "viewId": id, "viewType": w.ty }),
+        )),
+        _ => Err(crate::camera_view::staging_owner(w, "view-space points")),
     }
-    Ok(w)
 }
 
 /// The Drawing view's zoom in view pixels per drawing unit (tolerances given in view pixels become `px / zoom` du).
@@ -119,15 +123,17 @@ fn announce(cx: &mut Cx, id: &str) {
     cx.emit("shell.view", state);
 }
 
-/// Changes a view window's transform (after the agent check) and announces it.
+/// Changes a view window's transform (after the agent check) and announces it. `f` gets the window, its transform and
+/// its pixels per document unit (the Drawing view's 1; the Camera view's output pixels per field, views note §6).
 fn change(
     cx: &mut Cx,
     id: &str,
-    f: impl FnOnce(&ViewWindow, ViewTransform) -> ViewTransform,
+    f: impl FnOnce(&ViewWindow, ViewTransform, f64) -> ViewTransform,
 ) -> Result<ViewTransform, CommandError> {
     agent_may_move(cx)?;
     let w = cx.ui().shell().view(id)?.clone();
-    let next = f(&w, w.transform());
+    let ppu = crate::camera_view::pixels_per_unit(cx, &w);
+    let next = f(&w, w.transform(), ppu);
     let next = ViewTransform {
         zoom: next.zoom.clamp(shell::ZOOM_MIN, shell::ZOOM_MAX),
         rotation_degrees: shell::normalise_degrees(next.rotation_degrees),
@@ -140,9 +146,8 @@ fn change(
     Ok(next)
 }
 
-/// The centre that keeps the drawing point under view point `anchor` fixed when `t` gets `zoom`.
-fn anchored(w: &ViewWindow, t: ViewTransform, zoom: f64, anchor: Point) -> Point {
-    let ppu = shell::pixels_per_unit(w.ty, 1920.0);
+/// The centre that keeps the document point under view point `anchor` fixed when `t` gets `zoom`.
+fn anchored(w: &ViewWindow, t: ViewTransform, zoom: f64, anchor: Point, ppu: f64) -> Point {
     let under = shell::view_to_doc(&t, w.size, ppu, anchor);
     let at_origin = ViewTransform { zoom, centre: Point { x: 0.0, y: 0.0 }, ..t };
     let off = shell::view_to_doc(&at_origin, w.size, ppu, anchor);
@@ -422,7 +427,7 @@ pub(crate) fn view_zoom_set(cx: &mut Cx, p: ZoomParams) -> Result<ViewTransform,
     exactly_one(&[("zoom", p.zoom.is_some()), ("steps", p.steps.is_some())])?;
     let anchor = p.anchor.map(|a| finite(a, "/anchor")).transpose()?;
     let id = view_id(cx, p.view_id.as_deref())?;
-    change(cx, &id, |w, t| {
+    change(cx, &id, |w, t, ppu| {
         let zoom = match (p.zoom, p.steps) {
             (Some(z), _) => z,
             (None, Some(n)) => shell::zoom_step(t.zoom, n),
@@ -430,7 +435,7 @@ pub(crate) fn view_zoom_set(cx: &mut Cx, p: ZoomParams) -> Result<ViewTransform,
         }
         .clamp(shell::ZOOM_MIN, shell::ZOOM_MAX);
         let centre = match anchor {
-            Some(a) => anchored(w, t, zoom, a),
+            Some(a) => anchored(w, t, zoom, a, ppu),
             None => t.centre,
         };
         ViewTransform { zoom, centre, ..t }
@@ -470,7 +475,7 @@ pub(crate) struct RotationParams {
 pub(crate) fn view_rotation_set(cx: &mut Cx, p: RotationParams) -> Result<ViewTransform, CommandError> {
     exactly_one(&[("degrees", p.degrees.is_some()), ("steps", p.steps.is_some())])?;
     let id = view_id(cx, p.view_id.as_deref())?;
-    change(cx, &id, |_, t| {
+    change(cx, &id, |_, t, _| {
         let rotation_degrees = match (p.degrees, p.steps) {
             (Some(d), _) => d,
             (None, Some(n)) => t.rotation_degrees + f64::from(i32::try_from(n).unwrap_or(0)) * shell::ROTATION_STEP,
@@ -524,15 +529,31 @@ pub(crate) fn view_pan_set(cx: &mut Cx, p: PanParams) -> Result<ViewTransform, C
             json!({ "pointer": "/atPointer", "viewId": id }),
         ));
     }
-    change(cx, &id, |w, t| {
+    // A staging view's `centre` is a scene point (01 §12.1 item 13): the Camera view centres on the table-plane point's
+    // place in camera space (views note §6).
+    let centre = match (centre, cx.ui().shell().view(&id)?.clone()) {
+        (Some(c), w) if w.ty == ViewType::Camera => {
+            let chain = crate::camera_view::chain(cx, &w)?;
+            let out = crate::camera_view::scene_to_output(&chain, [c.x, c.y, 0.0]).ok_or_else(|| {
+                CommandError::with_details(
+                    codes::ARG_INVALID,
+                    "the scene point is at or behind the camera's near plane",
+                    json!({ "pointer": "/centre" }),
+                )
+            })?;
+            Some(crate::camera_view::apply(&chain.image_to_camera, out))
+        }
+        (c, _) => c,
+    };
+    change(cx, &id, |w, t, ppu| {
         let c = match (centre, by, pointer) {
             (Some(c), _, _) => c,
             (None, Some(b), _) => {
-                // The content moves by `b`: the new centre is the drawing point now at (centre − b).
+                // The content moves by `b`: the new centre is the document point now at (centre − b).
                 let mid = Point { x: w.size.width / 2.0 - b.x, y: w.size.height / 2.0 - b.y };
-                to_drawing(w, mid)
+                shell::view_to_doc(&t, w.size, ppu, mid)
             }
-            (None, None, Some(at)) => to_drawing(w, at),
+            (None, None, Some(at)) => shell::view_to_doc(&t, w.size, ppu, at),
             (None, None, None) => t.centre,
         };
         ViewTransform { centre: c, ..t }
@@ -581,7 +602,7 @@ pub(crate) struct ResetParams {
 )]
 pub(crate) fn view_transform_reset(cx: &mut Cx, p: ResetParams) -> Result<ViewTransform, CommandError> {
     let id = view_id(cx, p.view_id.as_deref())?;
-    change(cx, &id, |_, t| ViewTransform {
+    change(cx, &id, |_, t, _| ViewTransform {
         zoom: if p.parts.contains(&Part::Zoom) { 1.0 } else { t.zoom },
         rotation_degrees: if p.parts.contains(&Part::Rotation) { 0.0 } else { t.rotation_degrees },
         centre: if p.parts.contains(&Part::Pan) { Point { x: 0.0, y: 0.0 } } else { t.centre },
@@ -652,15 +673,15 @@ fn scene_of(cx: &Cx, p: Point, into_scene: bool) -> Result<Point, CommandError> 
     }
 }
 
-/// Conversions in a view window showing a staging view arrive with the Camera view (M4 C4.3); the precheck and the
-/// handler give the same refusal (ruling O-24; C42A-R1-08).
+/// Conversions in a Top or Side view window arrive with those views (M6 C6.1; C4.3 plan answer 1); the precheck and
+/// the handler give the same refusal (ruling O-24; C42A-R1-08). The Drawing and Camera views convert.
 fn staging_refusal(w: &ViewWindow, converts: bool) -> Result<(), CommandError> {
-    if w.ty != ViewType::Drawing && converts {
-        return Err(CommandError::with_details(
-            codes::COMMAND_NOT_IMPLEMENTED,
-            format!("conversions in the {} view arrive with that view (M4 C4.3)", w.ty.as_str()),
-            json!({ "pointer": "/viewId", "viewId": w.view_id, "viewType": w.ty, "milestone": "M4 C4.3" }),
-        ));
+    if matches!(w.ty, ViewType::Top | ViewType::Side) && converts {
+        let mut e = crate::camera_view::staging_owner(w, "conversions");
+        if let Some(d) = e.details.as_object_mut() {
+            d.insert("pointer".into(), json!("/viewId"));
+        }
+        return Err(e);
     }
     Ok(())
 }
@@ -686,6 +707,9 @@ pub(crate) fn view_coordinates_convert(cx: &mut Cx, p: ConvertParams) -> Result<
     let point = finite(p.point, "/point")?;
     let w = cx.ui().shell().view(&p.view_id)?.clone();
     staging_refusal(&w, p.from != p.to)?;
+    if w.ty == ViewType::Camera && p.from != p.to {
+        return camera_convert(cx, &w, point, p.from, p.to);
+    }
     // Into drawing space, then out of it.
     let d = match p.from {
         Space::View => to_drawing(&w, point),
@@ -696,6 +720,27 @@ pub(crate) fn view_coordinates_convert(cx: &mut Cx, p: ConvertParams) -> Result<
         Space::View => to_view(&w, d),
         Space::Drawing => d,
         Space::Scene => scene_of(cx, d, true)?,
+    };
+    Ok(PointResult { point: out })
+}
+
+/// `view.coordinates.convert` in a Camera view (views note §6): view pixels and the current drawing's units meet
+/// through the current element's plane (its `to_pixel` and the view transform); scene points are that plane's points
+/// with the given scene X and Y (SI-146).
+fn camera_convert(cx: &Cx, w: &ViewWindow, point: Point, from: Space, to: Space) -> Result<PointResult, CommandError> {
+    let chain = crate::camera_view::chain(cx, w)?;
+    let e = crate::camera_view::current_element(cx)?;
+    let to_view = crate::camera_view::element_to_view(cx, &chain, &e)?.ok_or_else(|| crate::camera_view::behind(&e))?;
+    let from_view = crate::camera_view::invert(&to_view).ok_or_else(|| crate::camera_view::behind(&e))?;
+    let d = match from {
+        Space::View => crate::camera_view::apply(&from_view, point),
+        Space::Drawing => point,
+        Space::Scene => crate::camera_view::scene_to_drawing(cx, &e, chain.frame, point)?,
+    };
+    let out = match to {
+        Space::View => crate::camera_view::apply(&to_view, d),
+        Space::Drawing => d,
+        Space::Scene => crate::camera_view::drawing_to_scene(cx, &e, chain.frame, d)?,
     };
     Ok(PointResult { point: out })
 }

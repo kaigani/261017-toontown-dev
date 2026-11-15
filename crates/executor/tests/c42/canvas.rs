@@ -160,7 +160,8 @@ fn the_scene_lists_the_current_drawing_at_its_revision_with_the_aids_and_the_sol
     let t = serde_json::to_value(h.canvas_scene("drawingView").unwrap()).unwrap();
     assert_eq!(t["grid"], json!({ "visible": true, "type": "field12", "overlay": true }));
     assert_eq!(t["background"], json!([16, 32, 48, 255]));
-    assert_eq!(h.canvas_scene("cameraView").unwrap_err().code, "view.notFound");
+    // The Camera view answers its own composition (C4.3a, camera-view note §3).
+    assert_eq!(serde_json::to_value(h.canvas_scene("cameraView").unwrap()).unwrap()["viewType"], "camera");
 }
 
 #[test]
