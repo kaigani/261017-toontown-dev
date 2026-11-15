@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-11-15T10:03:52.502323+00:00",
+  "runs": [
+    {
+      "conclusion": "",
+      "databaseId": 43698460055,
+      "headSha": "0ca7f92206c1fddb2244ec6ab1891b11e654bfa8",
+      "status": "in_progress"
+    },
+    {
+      "conclusion": "failure",
+      "databaseId": 43690187580,
+      "headSha": "1f4e6bfaa0a769733565f682c7700947abf62983",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "databaseId": 43685400029,
+      "headSha": "308bf3465f75750316ecf86009428201b5645814",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "databaseId": 43677722406,
+      "headSha": "5d044f1d26e937a9f559634d6e1ca324f2bc45a8",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "databaseId": 43673359849,
+      "headSha": "a1500000a70ba7db106bf5464e9a10c98adbd4d2",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 43667078837,
+      "headSha": "820a3d34b16a3b68ef0810013c04436c07a674fc",
+      "status": "completed"
+    }
+  ],
+  "completedRun": 43690187580,
+  "jobs": 36,
+  "nonSuccess": [
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "failure",
+      "failingSteps": [
+        "Run cargo test --workspace --locked"
+      ]
+    }
+  ],
+  "failingTest": "sequential_wait_timeout_retains_job_identity (tt-executor --test c34_r1_contract)"
+}
