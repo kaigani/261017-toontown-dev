@@ -450,6 +450,9 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
     setSmoothOverlays(on) {
       overlaySamples = on ? SAMPLES : 1;
     },
+    finish() {
+      return device.queue.onSubmittedWorkDone();
+    },
     frame(input: FrameInput) {
       const W = canvas.width;
       const H = canvas.height;

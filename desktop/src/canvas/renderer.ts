@@ -49,6 +49,8 @@ export interface Renderer extends ResidentSink {
   setAntialias(on: boolean): void;
   /** `display.smoothToolOverlays` (01 §7.2, 06 §6.9; live): the tool overlay multisampled or not. */
   setSmoothOverlays(on: boolean): void;
+  /** Resolves when the GPU has finished the frames submitted so far (the back-end measurement, SI-136). */
+  finish(): Promise<void>;
   stats(): BackendStats;
   destroy(): void;
 }

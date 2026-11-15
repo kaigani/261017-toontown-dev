@@ -11,7 +11,11 @@ import type { AgentInput, EngineApi } from '../ipc';
 import { bucketOf } from './bucket';
 import { gridGeometry, IDENTITY, scaleOf, ViewTris, type Affine } from './geometry';
 import { ACCENT, GestureCollector, gestureOverlay, type DomSample, type OverlayStyle } from './input';
-import { startingBackend, startRenderer } from './backend';
+import { selectBackend, startingBackend, startRenderer } from './backend';
+import type { BackendKind } from './renderer';
+import { fingerprint, HEIGHT as MEASURE_H, measureBackends, WIDTH as MEASURE_W } from './selftest';
+import { createWebGL2 } from './webgl2';
+import { createWebGPU } from './webgpu';
 import { canvasLaunch } from './launch';
 import { CanvasMetrics } from './metrics';
 import { CanvasModel } from './model';
@@ -25,6 +29,9 @@ export interface CanvasHandle {
   renderer(): Renderer | null;
   model(): CanvasModel | null;
 }
+
+/** How long the canvas must be quiet (no gesture, no redraw) before the back ends are measured (SI-136). */
+const QUIET_MS = 30_000;
 
 function asAffine(v: unknown): Affine | null {
   return Array.isArray(v) && v.length === 6 && v.every((x) => typeof x === 'number' && Number.isFinite(x))
@@ -166,8 +173,61 @@ export function CanvasView({
         .catch(() => undefined);
     };
 
-    // The back end: the launch override, else WebGL2 until a measurement selects one (SI-136).
-    void startRenderer(canvas, startingBackend(launch.backend, null))
+    // The back end (ADR-0007 rule set step 1; SI-136, SI-140): the launch flag, else the user's override
+    // (`display.canvasBackend`), else this machine's measured selection, else WebGL2. Without an override or a
+    // measurement for this machine (GPU, driver, webview), both back ends are measured once the canvas has been quiet
+    // for a while, and the selection applies at the next start.
+    let lastActivity = performance.now();
+    let measureTimer: ReturnType<typeof setInterval> | null = null;
+    const scheduleMeasurement = (fp: string) => {
+      measureTimer = setInterval(() => {
+        if (stopped || document.hidden || performance.now() - lastActivity < QUIET_MS) return;
+        if (measureTimer) clearInterval(measureTimer);
+        measureTimer = null;
+        const start = async (kind: BackendKind) => {
+          const c = document.createElement('canvas');
+          c.width = MEASURE_W;
+          c.height = MEASURE_H;
+          return kind === 'webgpu' ? createWebGPU(c) : createWebGL2(c);
+        };
+        const env = {
+          now: () => performance.now(),
+          yieldFrame: () => new Promise<void>((r) => setTimeout(r, 0)),
+        };
+        void measureBackends(start, env).then((m) => {
+          const selected = selectBackend(m) ?? '';
+          const value = { fingerprint: fp, selected, cells: JSON.stringify(m) };
+          void engine
+            .run('prefs.set', { values: { 'display.canvasBackendMeasured': value } })
+            .done.catch(() => undefined);
+        });
+      }, 1000);
+    };
+    const decide = async (): Promise<{ want: BackendKind; measure: string | null }> => {
+      const env = await engine.run('prefs.get', {
+        keys: ['display.canvasBackend', 'display.canvasBackendMeasured'],
+      }).done;
+      const values = (env.result as { values?: Record<string, unknown> } | undefined)?.values ?? {};
+      const pref = values['display.canvasBackend'];
+      const measured = values['display.canvasBackendMeasured'] as Record<string, unknown> | undefined;
+      const fp = await fingerprint();
+      const override = launch.backend ?? (pref === 'webgpu' || pref === 'webgl2' ? pref : null);
+      const sameMachine = measured?.['fingerprint'] === fp;
+      const sel = measured?.['selected'];
+      const selected = sameMachine && (sel === 'webgpu' || sel === 'webgl2') ? sel : null;
+      // An inconclusive measurement of this machine is not repeated until it changes (SI-136).
+      return {
+        want: startingBackend(override, selected),
+        measure: override === null && !sameMachine ? fp : null,
+      };
+    };
+    void decide()
+      .catch(() => ({ want: startingBackend(launch.backend, null), measure: null }))
+      .then(async ({ want, measure }) => {
+        const started = await startRenderer(canvas, want);
+        if (measure !== null) scheduleMeasurement(measure);
+        return started;
+      })
       .then((started) => {
         if (stopped) {
           started.renderer.destroy();
@@ -279,6 +339,7 @@ export function CanvasView({
         lastColours = scene.colours;
       }
       const staticDirty = model.version !== drawnVersion || viewVersion !== drawnView;
+      if (staticDirty || collector.active || playing) lastActivity = performance.now();
       if (staticDirty) {
         grid = null;
         if (scene?.grid.visible) {
@@ -484,6 +545,7 @@ export function CanvasView({
       stopped = true;
       // A window closing mid-gesture commits nothing (D-7a); an agent gesture it was playing is aborted.
       cancelGesture();
+      if (measureTimer) clearInterval(measureTimer);
       if (playing) void engine.gestureAbort(playing.input.requestId).catch(() => undefined);
       for (const q of agentQueue.splice(0)) void engine.gestureAbort(q.requestId).catch(() => undefined);
       unlistenAgent?.();

@@ -1641,3 +1641,17 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   - Outline only draws brush outlines and pencil centre lines one view pixel wide in the drawing's colours (or the
     tint).
 - **Question:** confirm or specify.
+
+## SI-140 — where the canvas back-end choice and its measurement live (found in M4 C4.2b; interim)
+
+- **Sections:** ADR-0007 canvas rule set step 1 (both back ends measured at first launch and after a GPU, driver or
+  webview change; "the user can override the choice in preferences"), 01 §7.2-§7.3 (the preference catalogue: no such
+  key), ADR-0021 decision 13 and ruling D-7d (persisted settings go through the settings files' rules).
+- **Problem:** the rule set requires a persisted measurement and a user override, but the catalogue has no key for
+  either.
+- **Interim decision:** two Display keys in the catalogue: `display.canvasBackend` (`auto` | `webgpu` | `webgl2`,
+  default `auto`, applies at the next launch: the user override) and `display.canvasBackendMeasured` (an object of
+  strings: the machine fingerprint (GPU adapter, WebGL renderer, webview), the selected back end and the measured
+  cells), written by the canvas after a measurement and read at its next start. The launch flag `--canvas-backend`
+  overrides both (measurements).
+- **Question:** add the keys to 01 §7.3, or name another home for the choice.

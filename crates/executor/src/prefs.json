@@ -73,6 +73,8 @@
     { "key": "display.cacheMemoryPercent", "type": "int", "default": 30, "min": 5, "max": 80, "applies": "live", "category": "display", "description": "Share of system memory used for display caches." },
     { "key": "display.sceneBackground.drawingView", "type": "bool", "default": false, "applies": "live", "category": "display", "description": "Use the scene background colour in the Drawing view." },
     { "key": "display.sceneBackground.stagingViews", "type": "bool", "default": true, "applies": "live", "category": "display", "description": "Use the scene background colour in staging views." },
+    {"key": "display.canvasBackend", "type": "enum", "default": "auto", "values": ["auto", "webgpu", "webgl2"], "applies": "nextLaunch", "category": "display", "description": "The interactive canvas's graphics back end: automatic (the measured choice of ADR-0007's rule set), WebGPU or WebGL2 (SI-140)."},
+    {"key": "display.canvasBackendMeasured", "type": "object", "default": {"fingerprint": "", "selected": "", "cells": ""}, "objectOf": "string", "applies": "live", "category": "display", "description": "The last canvas back-end measurement, written by the canvas: the machine it was made on (GPU, driver and webview), the back end selected and the measured cells (SI-136, SI-140)."},
 
     { "key": "tablet.ignore", "type": "bool", "default": false, "applies": "live", "category": "tablet", "description": "Treat the tablet as a mouse (no pressure or tilt)." },
     { "key": "tablet.alternativeInput", "type": "bool", "default": false, "applies": "restart", "category": "tablet", "description": "Use the alternative operating-system tablet input interface." },

@@ -449,6 +449,10 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
     setSmoothOverlays(on) {
       overlayTarget.samples = on ? maxSamples : 0;
     },
+    finish() {
+      gl.finish();
+      return Promise.resolve();
+    },
     frame(input: FrameInput) {
       const W = gl.drawingBufferWidth;
       const H = gl.drawingBufferHeight;
