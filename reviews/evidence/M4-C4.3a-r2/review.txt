@@ -1,0 +1,22 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c43a-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.52s
+     Running tests\c43a_r2_review.rs (target\debug\deps\c43a_r2_review-347b471581965fc6.exe)
+
+running 6 tests
+test case7_wide_pencil_tolerance ... ok
+transform skew: keys {"keys":[{"frame":7.0,"channels":["skew"],"constant":[],"descendantKeyed":false}]}
+test case3_nested_mapping ... ok
+test case5_refusal_recovery ... ok
+transform horizontal: keys {"keys":[{"frame":7.0,"channels":["scale.x"],"constant":[],"descendantKeyed":false}]}
+transform vertical: keys {"keys":[{"frame":7.0,"channels":["scale.y"],"constant":[],"descendantKeyed":false}]}
+test case7_transformed_edge_and_fresh_extent ... ok
+transform corner: keys {"keys":[{"frame":7.0,"channels":["scale.x","scale.y"],"constant":[],"descendantKeyed":false}]}
+select skew: keys {"keys":[]}
+test case4_third_element_five_commands ... ok
+select horizontal: keys {"keys":[]}
+select vertical: keys {"keys":[]}
+select corner: keys {"keys":[]}
+test case6_channels_geometry_and_exact_replay ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+

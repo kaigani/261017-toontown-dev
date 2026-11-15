@@ -50,6 +50,14 @@ fn setup() -> (ExecutorHandle, String, String) {
 #[test]
 fn case3_nested_mapping() {
     let (h, c, _) = setup();
+    let outer = ok(&h, "element.create", json!({"type":"peg","name":"OuterReview"}))["elementIds"][0].clone();
+    ok(&h, "element.parent.set", json!({"elementIds":["scene:\"Intro\"/element:\"ReviewPeg\""],"parentId":outer}));
+    ok(
+        &h,
+        "anim.transform.set",
+        json!({"nodeIds":[outer],"target":"static","position":{"x":0.7,"y":-0.2},"rotation":-17.,"scale":{"x":0.8,"y":1.3}}),
+    );
+
     ok(&h, "app.context.set", json!({"elementId":c,"frame":1}));
     let cam = ok(&h, "anim.camera.current.get", json!({}))["cameraId"].clone();
     ok(&h, "anim.camera.set", json!({"cameraId":cam,"roll":23.,"position":{"x":0.3,"y":-0.4,"z":16.}}));
@@ -277,5 +285,34 @@ fn case6_channels_geometry_and_exact_replay() {
             );
             assert_eq!(ok(&h, "anim.tool.get", json!({}))["tool"], tool);
         }
+    }
+}
+
+// 05:352-355: wide pencil is visible beyond its centreline; picking tolerance 4px.
+#[test]
+fn case7_wide_pencil_tolerance() {
+    let h = fixture();
+    c33_support::clear(&h);
+    let id = ok(&h, "element.create", json!({"type":"drawing","name":"Wide"}))["elementIds"][0].clone();
+    ok(&h, "element.drawing.create", json!({"elementId":id,"name":"1","exposeFrom":1,"exposeTo":1}));
+    ok(&h, "app.context.set", json!({"elementId":id,"frame":1}));
+    h.canvas_scene("cameraView").unwrap();
+    ok(
+        &h,
+        "draw.stroke.add",
+        json!({"kind":"pencil","points":[{"x":-100.,"y":0.},{"x":100.,"y":0.}],"thickness":40.,"fit":false}),
+    );
+    let s = serde_json::to_value(h.canvas_scene("cameraView").unwrap()).unwrap();
+    let e = s["entries"].as_array().unwrap().iter().find(|v| v["elementId"] == id).unwrap();
+    let edge = apply(&e["matrix"], (0., 20.));
+    let edge = apply(&s["camera"]["cameraToView"], edge);
+    for (distance, expected) in [(-1., true), (3., true), (5., false)] {
+        ok(&h, "edit.selection.set", json!({"context":"staging","ids":[]}));
+        let y = edge.1 - distance;
+        let out=h.pointer(tt_executor::Origin::User,json!({"view":"cameraView","tool":"select","events":[{"type":"down","x":edge.0,"y":y},{"type":"up","x":edge.0,"y":y}]}));
+        assert!(out.is_ok(), "{out:?}");
+        let out = out.result.unwrap();
+        let cmd = out["commands"].as_array().unwrap().last().unwrap();
+        assert_eq!(cmd["params"]["ids"], if expected { json!([id]) } else { json!([]) }, "distance {distance}");
     }
 }
