@@ -1,0 +1,30 @@
+{
+  "candidate": "0ca7f922",
+  "machineClass": "Windows 11 64-bit desktop workstation, discrete GPU",
+  "C1": {
+    "cases": 5,
+    "pass": 5
+  },
+  "C2": {
+    "cases": 7,
+    "pass": 7,
+    "checks": 78
+  },
+  "C3": {
+    "cases": 8,
+    "pass": 8,
+    "checks": 18
+  },
+  "newFindings": 0,
+  "counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 2
+  },
+  "applicationProcessesLeft": 0,
+  "binaries": {
+    "target\\debug\\toontown.exe": "37553f02ae5af3c235eba857f42493bf5e06dfb674161f59c43c314cba79ecc7",
+    "target\\release\\toontown.exe": "6640aa64a3f1d223a487814417a15d7964d26ba0a9a611d79ef647a5f9fb75d6",
+    "target\\debug\\toontown-headless.exe": "4afc4e105a12e18f81a7681677181b6959c74fe0120605abb1771ca9a04570ad"
+  }
+}
