@@ -1,0 +1,25 @@
+{
+  "status": "ok",
+  "result": {
+    "mimeType": "image/png",
+    "width": 901,
+    "height": 645,
+    "bytes": 41361,
+    "sha256": "80834a37032cd8f81ddf42e4da9d868b515e036fdf086c1daa48e9b3956f0082",
+    "documentRevision": 8,
+    "frame": 1,
+    "renderMs": 0,
+    "imageToCamera": [
+      0.43301270189221935,
+      0.24999999999999997,
+      0.24999999999999997,
+      -0.43301270189221935,
+      -290.6972222024448,
+      37.021596360240764
+    ],
+    "warnings": []
+  },
+  "changes": [],
+  "warnings": [],
+  "documentRev": 8
+}
