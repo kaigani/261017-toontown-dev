@@ -376,3 +376,36 @@ fn each_select_handle_produces_its_command() {
     let (id, _) = select_drag(&h, d((x1, y1), (x1 + 20.0, y1 + 20.0))).unwrap();
     assert_eq!(id, "draw.pivot.set");
 }
+
+/// C42B-R1-04 (round 2): a failure in the middle of a transaction whose first step took the append fast path (a Brush
+/// stroke on the default layer: `add /nodes/-`, then a stroke appended into that layer: `add …/strokes/-`) discards the
+/// staged commit: the document, its revision and the history are exactly as before, and the next commit succeeds.
+#[test]
+fn a_failure_after_fast_path_appends_discards_the_staged_commit() {
+    let h = ready();
+    let before = crate::equivalence::canonical(&h);
+    let rev = h.snapshot().unwrap().unwrap().document_rev();
+    let position = ok(&h, "edit.history.get", json!({}))["position"].clone();
+    let stroke = |x: f64| {
+        json!({ "id": "draw.stroke.add", "params": { "kind": "brush", "fit": false,
+            "points": [{ "x": x, "y": 0.0, "pressure": 0.5 }, { "x": x + 40.0, "y": 20.0, "pressure": 0.5 }] } })
+    };
+    let mut into_layer = stroke(500.0);
+    into_layer["params"]["layer"] = json!("top");
+    // The third step fails (a stroke with no points): the batch is one transaction.
+    let failing = json!({ "id": "draw.stroke.add", "params": { "kind": "brush", "points": [] } });
+    let req: tt_executor::BatchRequest = serde_json::from_value(
+        json!({ "label": "injected", "atomic": true, "steps": [stroke(300.0), into_layer, failing] }),
+    )
+    .unwrap();
+    let env = h.batch(req, tt_executor::Origin::User);
+    assert!(!env.is_ok(), "the batch fails at its third step: {env:?}");
+    assert_eq!(crate::equivalence::canonical(&h), before, "the document exactly as before");
+    assert_eq!(h.snapshot().unwrap().unwrap().document_rev(), rev, "no revision consumed");
+    assert_eq!(ok(&h, "edit.history.get", json!({}))["position"], position, "no history step");
+    // The kernel is not left with anything staged: the same appends commit on their own.
+    let req: tt_executor::BatchRequest =
+        serde_json::from_value(json!({ "label": "after", "atomic": true, "steps": [stroke(300.0)] })).unwrap();
+    assert!(h.batch(req, tt_executor::Origin::User).is_ok());
+    assert_ne!(crate::equivalence::canonical(&h), before);
+}

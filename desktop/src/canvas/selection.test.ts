@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { apply, IDENTITY, type Affine } from './geometry';
 import {
   boxCorners,
+  HANDLE_SIZE,
   handlePoints,
   selectionCursor,
   selectionOverlay,
@@ -76,6 +77,33 @@ describe('the selection overlay', () => {
     const one = selectionOverlay(sel, null, 'select', mapping(1, 0, 0, 0)).tris?.vertexCount;
     const four = selectionOverlay(sel, null, 'select', mapping(4, 0, 0, 0)).tris?.vertexCount;
     expect(four).toBe(one);
+  });
+
+  it('keeps the handles a constant size in view pixels at zoom 1/4, 1 and 4 and under rotation', () => {
+    for (const zoom of [0.25, 1, 4]) {
+      for (const degrees of [0, 30, 90]) {
+        const o = selectionOverlay(sel, null, 'select', mapping(zoom, degrees, 640, 360));
+        const data = o.tris?.data ?? [];
+        expect(o.handles.length).toBe(8);
+        // Each handle's light centre (only handle squares are white) is two consecutive triangles: six vertices.
+        const white: [number, number][] = [];
+        for (let i = 0; i < data.length; i += 6) {
+          if (data[i + 2] === 1 && data[i + 3] === 1 && data[i + 4] === 1)
+            white.push([data[i] ?? 0, data[i + 1] ?? 0]);
+        }
+        expect(white.length).toBe(8 * 6);
+        o.handles.forEach(([hx, hy], k) => {
+          const square = white.slice(k * 6, k * 6 + 6);
+          const xs = square.map((v) => v[0]);
+          const ys = square.map((v) => v[1]);
+          // An 8-pixel square with a 1-pixel accent edge: a 6-pixel light centre, axis-aligned on the screen.
+          expect(Math.max(...xs) - Math.min(...xs)).toBeCloseTo(HANDLE_SIZE - 2, 9);
+          expect(Math.max(...ys) - Math.min(...ys)).toBeCloseTo(HANDLE_SIZE - 2, 9);
+          expect((Math.max(...xs) + Math.min(...xs)) / 2).toBeCloseTo(hx, 9);
+          expect((Math.max(...ys) + Math.min(...ys)) / 2).toBeCloseTo(hy, 9);
+        });
+      }
+    }
   });
 
   it('picks the resize cursor of the nearest direction over a handle, move inside, none outside', () => {
