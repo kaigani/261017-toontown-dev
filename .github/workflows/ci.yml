@@ -1010,6 +1010,18 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/c42-gui-e2e.py "$app" "desktop-gui/c42-e2e"
+      # M4 C4.3b E6 (rulings D-26, D-27): a user's drag in the Camera view and an agent's change during it; the agent
+      # waits for the release, then succeeds; undo ifTop refuses the user's later step. Windows: real OS input
+      # (SendInput), and a press held past waitForUserMs (ui.busy); macOS: the window plays the samples.
+      - name: Agent and user coexistence in the running application (C4.3b E6)
+        if: always()
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; VPY=.venv-gui/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/c43-e6-coexistence.py "$app" "desktop-gui/c43-e6"
       # M4 C4.2b (ruling D-5): the canvas's GPU and webview quantities, recorded on the runners with loose sanity bounds
       # (no GPU); the plan's numbers are asserted on the workstation with committed receipts.
       - name: Canvas measurements (C4.2b; loose bounds on CI)

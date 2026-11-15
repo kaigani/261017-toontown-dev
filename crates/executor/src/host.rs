@@ -764,7 +764,10 @@ impl ExecutorHandle {
             );
         }
         // User priority (11 §6.4; ruling D-12): an agent's gestures wait for the user's dialog or gesture, then `ui.busy`.
-        if let Err(e) = self.user_priority(&origin, "pointer", &|| false) {
+        // A window's commit (`route` false) is not arbitrated again: the user's own gesture never waits, and an agent's
+        // gesture the window played was arbitrated when it was routed; the window holds the modal state for it until
+        // this commit has answered (SI-157).
+        if route && let Err(e) = self.user_priority(&origin, "pointer", &|| false) {
             return crate::types::Envelope::error(e, None);
         }
         // Attached mode (M4 C4.2b; design note 2 §6): an agent's gesture on a view shown in a window goes through that

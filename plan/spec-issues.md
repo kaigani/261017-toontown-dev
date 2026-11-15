@@ -1952,3 +1952,19 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `si156_the_drawing_select_handles_in_the_camera_view_are_where_it_shows_them`, and the parity gate's battery; both
   fail with the mapping disabled.
 
+## SI-157 — a gesture's end and the agent change waiting on it (found in M4 C4.3b; defect fixed)
+
+- **Sections:** 11 §6.4 lines 236-238 (agent mutations wait while the user is mid-gesture), lines 586-587 (the agent's
+  call waits and then succeeds), 01 §12.1 rule 8.
+- **Problem:** a view window reported the end of a gesture's modal state and then sent the gesture's commit, two
+  messages the host handles independently. An agent change waiting on the gesture could run between them: its step
+  landed before the gesture's. E6 in the played mode found it (the agent's step before the played drag's); with real
+  input the commit usually won the race.
+- **Decision (a defect, not an interpretation):** the window sends a gesture's commit after its earlier reports and
+  reports the end of the modal state only once the commit has answered, so a waiting agent change runs after the
+  gesture's step. The window's commit of an agent gesture it played (already arbitrated when the host routed it to the
+  window) does not wait on the modal state the window holds for it. Behaviour change: the modal state lasts until the
+  gesture's commit has been applied; an agent change waiting on it is answered after the gesture's step, never before.
+- **Test:** `scripts/c43-e6-coexistence.py` (both modes: the history's order, the answer after the release);
+  `desktop/src/canvas/gestureOrder.test.ts` (the commit is sent before the end is reported).
+

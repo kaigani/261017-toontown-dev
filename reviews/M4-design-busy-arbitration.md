@@ -105,3 +105,29 @@ succeeds; `undo ifTop` refuses to undo the user's later step." The scenario
 
 No wall-clock figure is asserted near a bound (D-27): the order of the events is asserted, and the wait is recorded
 in the receipt.
+
+### 5.1 As built (C4.3b)
+
+- **Setup.** The script creates the project itself (`project.create`, the element Bob with a painted rectangle,
+  exposed on frames 1-24): the sample project is M9 C9.3's. The default workspace shows the Camera view central; the
+  script makes it active, selects Bob and chooses the Transform scene tool.
+- **The user's drags** start inside Bob's box away from his pivot (a press on the pivot drags the pivot, 05 line 418).
+  The points are Bob's drawing units mapped through `draw.viewMapping.get {view: cameraView}` (re-read before each
+  drag: Bob moves) and the canvas's place in the window capture, scaled to device pixels with `view.list`'s logical
+  size. The script is per-monitor DPI aware.
+- **OS input** (Windows) is `SendInput` for the button and `SetCursorPos` for the moves. No input is sent unless the
+  application's window is in front and is the root of the window under the press (the webview's own window belongs to
+  its browser process); the check is recorded.
+- **The played mode** (macOS; `TT_E6_MODE=played` runs it anywhere) plays the drags from a second MCP session through
+  the window's input path, so the agent's calls never queue behind it. Its steps are agent steps of the other session,
+  told apart by `agentSessionId`; they stand in for the user's. The played gesture's release is its commit's answer,
+  a large envelope whose arrival can trail the agent's small answer by milliseconds, so in this mode the causal order
+  is the history's (the stand-in's step, then the agent's) and the timing check is only "sent while playing". The
+  `ui.busy` case needs a press held past `waitForUserMs` (10 s); a played gesture lasts about two seconds, so it runs
+  on Windows only. The manifest names the input mode.
+- **Also checked:** the modal state names the acting tool (`transform`, not the drawing tool); the activity log records
+  the agent's change (ok) and the refused undo (error).
+- **Found and fixed:** SI-157. The window reported a gesture's end before sending its commit, and an agent change
+  waiting on the gesture could run between them. The window now reports the end once the commit has answered, and the
+  host does not arbitrate the window's commit of a played agent gesture again
+  (`crates/executor/tests/c43/order.rs`, `desktop/src/canvas/gestureOrder.test.ts`).

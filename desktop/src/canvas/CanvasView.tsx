@@ -30,6 +30,7 @@ import { createWebGPU } from './webgpu';
 import { canvasLaunch } from './launch';
 import { cameraGridMatrix, cameraOverlay } from './cameraOverlay';
 import { decodeDrawing } from './format';
+import { gestureOrder } from './gestureOrder';
 import { drawingPreview, grabberPreview, scenePreview, type Box } from './preview';
 import { CanvasMetrics } from './metrics';
 import { CanvasModel } from './model';
@@ -208,11 +209,13 @@ export function CanvasView({
         )
         .catch(() => undefined);
     };
-    // The modal state is reported in order: an end is never overtaken by the start before it (C42B-R2-03).
-    let reports: Promise<unknown> = Promise.resolve();
+    // The modal state and the commits go out in order: an end is never overtaken by the start before it
+    // (C42B-R2-03), and a gesture's end follows its commit's answer (SI-157).
+    const order = gestureOrder(engine);
     const reportGesture = (on: boolean) => {
-      const modal = on ? { kind: 'gesture' as const, title: style.tool } : null;
-      reports = reports.then(() => engine.report({ modal })).catch(() => undefined);
+      // The title names the tool that acts: in a Camera view running the scene family, the scene tool (05 §5.0).
+      const title = model?.scene?.viewType === 'camera' && sceneFamily ? sceneTool : style.tool;
+      order.report(on ? { kind: 'gesture', title } : null);
     };
     const dropParts = () => {
       if (parts && renderer) {
@@ -652,7 +655,7 @@ export function CanvasView({
       const before = model?.version ?? 0;
       const tool = style.tool;
       const mapping = d2v;
-      void engine.gestureCommit(req).then((env) => {
+      void order.commitThenEnd(req).then((env) => {
         lastRecord = stringifyWireJson(gestureRecord('user', tool, mapping, req, env));
         metrics?.answered(performance.now());
         lastGesture =
@@ -694,12 +697,11 @@ export function CanvasView({
       if (playing.shown < events.length) return;
       const done = playing;
       playing = null;
-      reportGesture(false);
       metrics?.released(performance.now(), model?.version ?? 0);
       const before = model?.version ?? 0;
       const request = done.input.request as { view: string; events: WireEvent[]; tool?: unknown };
       const mapping = d2v;
-      void engine.gestureCommit({ ...request, agentRequest: done.input.requestId }).then((env) => {
+      void order.commitThenEnd({ ...request, agentRequest: done.input.requestId }).then((env) => {
         const tool = typeof request.tool === 'string' ? request.tool : style.tool;
         lastRecord = stringifyWireJson(gestureRecord('agent', tool, mapping, request, env));
         metrics?.answered(performance.now());
@@ -803,13 +805,11 @@ export function CanvasView({
       // A Polyline between its clicks stays one gesture in progress (the modal state stays reported).
       if (!req) return;
       metrics?.released(performance.now(), model?.version ?? 0);
-      reportGesture(false);
       commit(req);
     };
     const onDouble = (e: MouseEvent) => {
       const req = collector.doubleClick(sample(e as PointerEvent));
       if (!req) return;
-      reportGesture(false);
       commit(req);
     };
     const onCancel = () => {
@@ -826,7 +826,6 @@ export function CanvasView({
         const req = collector.end();
         if (req) {
           e.preventDefault();
-          reportGesture(false);
           commit(req);
         }
       }

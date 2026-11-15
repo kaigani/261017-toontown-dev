@@ -13,6 +13,8 @@ mod camera;
 mod labels;
 #[path = "c43/mapping.rs"]
 mod mapping;
+#[path = "c43/order.rs"]
+mod order;
 #[path = "c43/parity.rs"]
 mod parity;
 #[path = "c43/preview.rs"]
