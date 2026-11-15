@@ -67,3 +67,73 @@ mod composition {
         }
     }
 }
+
+mod mapping {
+    use super::*;
+    #[test]
+    fn explicit_element_scene_point_uses_addressed_element() {
+        let h = fixture();
+        let (colour, _) = c33_support::solids(&h, 1)[0].clone();
+        let target = c33_support::square(&h, "Addressed", 50., &colour);
+        ok(&h, "anim.transform.set", json!({"nodeIds":[target],"target":"static","position":{"x":3.,"y":2.}}));
+        ok(&h, "app.context.set", json!({"elementId":c33_support::BOB,"frame":1}));
+        // spec/02_drawing.md:61, 1151-1155: explicit element addressing and
+        // scene points refer to the addressed drawing's full scene transform.
+        let r = ok(&h, "draw.pivot.set", json!({"elementId":target,"frame":1,"space":"scene","point":{"x":3.,"y":2.}}));
+        assert!(r["pivot"]["x"].as_f64().unwrap().abs() < 1e-6, "{r}");
+        assert!(r["pivot"]["y"].as_f64().unwrap().abs() < 1e-6, "{r}");
+    }
+    #[test]
+    fn camera_drawing_mapping_is_queryable() {
+        let h = fixture();
+        ok(&h, "app.context.set", json!({"elementId":c33_support::BOB,"frame":1}));
+        // spec/02_drawing.md:101-104 explicitly requires querying the Camera
+        // view's drawing-plane inverse with draw.viewMapping.get.
+        let result = ok(&h, "draw.viewMapping.get", json!({"view":"cameraView"}));
+        assert!(result["drawingToView"].is_array());
+        assert!(result["viewToDrawing"].is_array());
+    }
+
+    #[test]
+    fn scene_depth_projection_round_trips_and_refusals() {
+        let h = fixture();
+        ok(&h, "view.zoom.set", json!({"viewId":"cameraView","zoom":2.5}));
+        ok(&h, "view.pan.set", json!({"viewId":"cameraView","by":{"x":23,"y":-17}}));
+        let cam = ok(&h, "anim.camera.current.get", json!({}))["cameraId"].clone();
+        ok(&h, "anim.camera.set", json!({"cameraId":cam,"roll":30.,"position":{"x":1.,"y":-2.,"z":16.}}));
+        // SI-149: depth is scene Z. Negative Z and zero are valid here.
+        // V6: round trips; 05:240-249: inverse rigid camera and similar triangles.
+        for depth in [-4., 0., 10.] {
+            let points = json!([{"x":1.2,"y":-0.7}]);
+            let forward = ok(
+                &h,
+                "anim.view.coords.get",
+                json!({"viewId":"cameraView","points":points,"from":"scene","depth":depth}),
+            );
+            let back = ok(
+                &h,
+                "anim.view.coords.get",
+                json!({"viewId":"cameraView","points":forward["points"],"from":"view","depth":depth}),
+            );
+            for (axis, want) in [("x", 1.2), ("y", -0.7), ("z", depth)] {
+                assert!((back["points"][0][axis].as_f64().unwrap() - want).abs() < 1e-6);
+            }
+        }
+        for depth in [16., 17.] {
+            assert_eq!(
+                err(
+                    &h,
+                    "anim.view.coords.get",
+                    json!({"viewId":"cameraView","points":[{"x":0.,"y":0.}],"from":"view","depth":depth})
+                )
+                .code,
+                "inspect.behindCamera"
+            );
+        }
+        for view in ["topView", "sideView"] {
+            let e = err(&h, "anim.view.coords.get", json!({"viewId":view,"points":[{"x":0,"y":0}],"from":"view"}));
+            assert_eq!(e.code, "command.notImplemented");
+            assert!(e.message.contains("M6 C6.1"));
+        }
+    }
+}
