@@ -1,0 +1,13 @@
+{
+  "kind": "toontown.c42.gesture-equivalence",
+  "platform": "win32",
+  "seconds": 158.8,
+  "rows": 8,
+  "input": [
+    "os"
+  ],
+  "failures": [
+    "three-way eraser: the window committed and recorded the gesture: {\"name\": \"eraser\", \"tool\": \"eraser\", \"input\": \"os\", \"record\": null}",
+    "three-way paint (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step: {\"sameCommands\": true, \"sameContent\": false, \"sameLabels\": true, \"statuses\": [\"ok\", \"ok\", \"ok\"], \"labels\": [[\"Paint\"], [\"Paint\"], [\"Paint\"]]}"
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "prefsChange": {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": 22,
+    "error": {
+      "code": "permission.denied",
+      "message": "an agent cannot change `agent.policy.defaults`: agent access is the user's (01 \u00a77.3)",
+      "details": {
+        "missingScopes": [
+          "app"
+        ],
+        "key": "agent.policy.defaults"
+      }
+    }
+  },
+  "state": {
+    "status": "ok",
+    "result": {
+      "project": {
+        "id": "pr_01M7F29A5N64EFKSR4JZRK6M0S",
+        "name": "Equivalence",
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c42-equiv-h_ip82i_\\equivalence.animpkg",
+        "dirty": true,
+        "globalLibraryDirty": false,
+        "readOnly": false
+      },
+      "scene": {
+        "id": "sc_01M7F29A5P7TV2Y67GYQ2K8PTV",
+        "name": "Scene-1",
+        "frameCount": 1
+      },
+      "frame": 1,
+      "element": {
+        "id": "el_01K7JJN800YR9TPKK0H2NPEFCC",
+        "name": "Ink",
+        "type": "drawing"
+      },
+      "drawing": {
+        "id": "dr_01K7JJN800WGZ6X9ASMNTMBZEJ",
+        "name": "1"
+      },
+      "mode": "drawing",
+      "activeView": {
+        "viewId": "drawingView",
+        "panelId": "drawingView",
+        "type": "drawing"
+      },
+      "focusedPanel": "cameraView",
+      "activeTool": null,
+      "selection": {
+        "context": "drawing",
+        "ids": [],
+        "kinds": []
+      },
+      "workspace": {
+        "name": "Drawing",
+        "modified": false
+      },
+      "playback": {
+        "playing": false
+      },
+      "startScreenVisible": false,
+      "modal": null,
+      "agentSessions": [
+        {
+          "sessionId": "s1-84983b",
+          "name": "mcp",
+          "acting": false
+        },
+        {
+          "sessionId": "s3-9f76e8",
+          "name": "mcp",
+          "acting": false
+        }
+      ],
+      "fullScreen": false,
+      "agent": {
+        "sessionId": "s3-9f76e8",
+        "client": "mcp",
+        "policy": "autonomous",
+        "scopes": [
+          "read",
+          "edit",
+          "ui",
+          "input",
+          "files.read",
+          "files.write",
+          "prefs",
+          "library.global"
+        ],
+        "paused": false,
+        "limits": {
+          "policy": "autonomous",
+          "maxJobs": 2,
+          "maxBatchSteps": 1000,
+          "maxInlineImagePx": 2048,
+          "maxInlineBytes": 52428800,
+          "askInApp": true,
+          "letAgentMoveView": true,
+          "highlightAgentChanges": true
+        }
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": 22
+  },
+  "treeStatus": "ok",
+  "lastGesture": {
+    "origin": "user",
+    "tool": "paint",
+    "view": "drawingView",
+    "pointerType": "mouse",
+    "drawingToView": [
+      1,
+      0,
+      0,
+      -1,
+      450.5,
+      322.5
+    ],
+    "events": [
+      {
+        "type": "down",
+        "x": 540,
+        "y": 322,
+        "modifiers": [],
+        "dt": 0,
+        "pressure": 1,
+        "button": "left"
+      },
+      {
+        "type": "move",
+        "x": 540,
+        "y": 322,
+        "modifiers": [],
+        "dt": 31,
+        "pressure": 1
+      },
+      {
+        "type": "up",
+        "x": 540,
+        "y": 322,
+        "modifiers": [],
+        "dt": 49,
+        "pressure": 1
+      }
+    ],
+    "eventCount": 3,
+    "status": "ok",
+    "code": null,
+    "commands": [
+      {
+        "commandId": "colour.paint.apply",
+        "params": {
+          "points": [
+            {
+              "x": 89.5,
+              "y": 0.5
+            }
+          ],
+          "space": "drawing",
+          "view": "drawingView",
+          "colourId": "col_01M7F29A5N64EFKSR4JZRK6M0X",
+          "gapClosing": "off"
+        }
+      }
+    ]
+  }
+}

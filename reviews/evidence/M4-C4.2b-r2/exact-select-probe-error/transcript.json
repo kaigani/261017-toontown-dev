@@ -1,0 +1,140 @@
+[
+  {
+    "check": "the application saves the fixture project",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the canvas is located in the window (OS input)",
+    "ok": true,
+    "detail": [
+      49,
+      126
+    ]
+  },
+  {
+    "check": "three-way select: corner scale (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": false,
+    "detail": {
+      "sameCommands": false,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way select: constrained corner (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way select: side scale (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": false,
+    "detail": {
+      "sameCommands": false,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way select: rotate (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": false,
+    "detail": {
+      "sameCommands": false,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way select: move (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": false,
+    "detail": {
+      "sameCommands": false,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ],
+        [
+          "Move/Scale/Rotate Object"
+        ]
+      ]
+    }
+  }
+]

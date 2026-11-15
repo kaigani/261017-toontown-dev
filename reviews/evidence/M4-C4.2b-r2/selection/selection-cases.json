@@ -1,0 +1,1675 @@
+[
+  {
+    "case": 1,
+    "verdict": "PASS",
+    "observed": {
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800CBASW7J1EGBFS2NN"
+        ],
+        "bounds": {
+          "x": -254.0,
+          "y": -74.0,
+          "width": 108.0,
+          "height": 108.0
+        },
+        "selectedPoints": []
+      },
+      "difference": {
+        "size": [
+          901,
+          645
+        ],
+        "different": 1001,
+        "fraction": 0.0017224616920045771
+      },
+      "handles": 8,
+      "finalHandles": 0,
+      "handleExtents": [
+        [
+          12,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          8,
+          15
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          8,
+          15
+        ]
+      ],
+      "whiteCentreExtents": [
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "mappedHandles": [
+        [
+          196.5,
+          396.5
+        ],
+        [
+          304.5,
+          396.5
+        ],
+        [
+          304.5,
+          288.5
+        ],
+        [
+          196.5,
+          288.5
+        ],
+        [
+          250.5,
+          396.5
+        ],
+        [
+          304.5,
+          342.5
+        ],
+        [
+          250.5,
+          288.5
+        ],
+        [
+          196.5,
+          342.5
+        ]
+      ],
+      "record": {
+        "origin": "user",
+        "tool": "select",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          450.5,
+          322.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 200,
+            "y": 342,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 200,
+            "y": 342,
+            "modifiers": [],
+            "dt": 14,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 200,
+            "y": 342,
+            "modifiers": [],
+            "dt": 16,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 200,
+            "y": 342,
+            "modifiers": [],
+            "dt": 48,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.selection.set",
+            "params": {
+              "by": "point",
+              "point": {
+                "x": -250.5,
+                "y": -19.5
+              },
+              "mode": "replace"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "case": 2,
+    "verdict": "PASS",
+    "observed": {
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800CBASW7J1EGBFS2NN",
+          "st_01K7JJN800XP83SCJVB33QJTWX"
+        ],
+        "bounds": {
+          "x": -254.0,
+          "y": -74.0,
+          "width": 288.0,
+          "height": 108.0
+        },
+        "selectedPoints": []
+      },
+      "difference": {
+        "size": [
+          901,
+          645
+        ],
+        "different": 1541,
+        "fraction": 0.00265166180557348
+      },
+      "handles": 8,
+      "finalHandles": 0,
+      "handleExtents": [
+        [
+          12,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          15,
+          9
+        ],
+        [
+          8,
+          15
+        ],
+        [
+          15,
+          9
+        ],
+        [
+          8,
+          15
+        ]
+      ],
+      "whiteCentreExtents": [
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "mappedHandles": [
+        [
+          196.5,
+          396.5
+        ],
+        [
+          484.5,
+          396.5
+        ],
+        [
+          484.5,
+          288.5
+        ],
+        [
+          196.5,
+          288.5
+        ],
+        [
+          340.5,
+          396.5
+        ],
+        [
+          484.5,
+          342.5
+        ],
+        [
+          340.5,
+          288.5
+        ],
+        [
+          196.5,
+          342.5
+        ]
+      ],
+      "record": {
+        "origin": "user",
+        "tool": "select",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          450.5,
+          322.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 380,
+            "y": 342,
+            "modifiers": [
+              "shift"
+            ],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 380,
+            "y": 342,
+            "modifiers": [
+              "shift"
+            ],
+            "dt": 46,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 380,
+            "y": 342,
+            "modifiers": [
+              "shift"
+            ],
+            "dt": 36,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.selection.set",
+            "params": {
+              "by": "point",
+              "point": {
+                "x": -70.5,
+                "y": -19.5
+              },
+              "mode": "add"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "case": 3,
+    "verdict": "PASS",
+    "observed": {
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "difference": {
+        "size": [
+          901,
+          645
+        ],
+        "different": 129,
+        "fraction": 0.00022197558268590456
+      },
+      "handles": 0,
+      "finalHandles": 0,
+      "handleExtents": [],
+      "whiteCentreExtents": [],
+      "mappedHandles": [],
+      "record": {
+        "origin": "user",
+        "tool": "select",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          450.5,
+          322.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 750,
+            "y": 162,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 750,
+            "y": 162,
+            "modifiers": [],
+            "dt": 36,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 750,
+            "y": 162,
+            "modifiers": [],
+            "dt": 45,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.selection.set",
+            "params": {
+              "by": "point",
+              "point": {
+                "x": 299.5,
+                "y": 160.5
+              },
+              "mode": "replace"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "case": 4,
+    "verdict": "PASS",
+    "observed": {
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800XP83SCJVB33QJTWX"
+        ],
+        "bounds": {
+          "x": -74.0,
+          "y": -74.0,
+          "width": 108.0,
+          "height": 108.0
+        },
+        "selectedPoints": []
+      },
+      "difference": {
+        "size": [
+          901,
+          645
+        ],
+        "different": 2256,
+        "fraction": 0.0038819915855767494
+      },
+      "handles": 8,
+      "finalHandles": 0,
+      "handleExtents": [
+        [
+          12,
+          11
+        ],
+        [
+          12,
+          11
+        ],
+        [
+          12,
+          13
+        ],
+        [
+          13,
+          13
+        ],
+        [
+          15,
+          9
+        ],
+        [
+          9,
+          15
+        ],
+        [
+          15,
+          10
+        ],
+        [
+          10,
+          15
+        ]
+      ],
+      "whiteCentreExtents": [
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "mappedHandles": [
+        [
+          248.3282402399031,
+          376.67175976009696
+        ],
+        [
+          435.38972745734185,
+          484.67175976009696
+        ],
+        [
+          543.3897274573418,
+          297.61027254265815
+        ],
+        [
+          356.32824023990304,
+          189.61027254265818
+        ],
+        [
+          341.8589838486225,
+          430.67175976009696
+        ],
+        [
+          489.3897274573418,
+          391.1410161513776
+        ],
+        [
+          449.8589838486224,
+          243.61027254265815
+        ],
+        [
+          302.32824023990304,
+          283.1410161513776
+        ]
+      ],
+      "record": {
+        "origin": "user",
+        "tool": "select",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          450.5,
+          322.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 380,
+            "y": 342,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 380,
+            "y": 342,
+            "modifiers": [],
+            "dt": 46,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 380,
+            "y": 342,
+            "modifiers": [],
+            "dt": 36,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.selection.set",
+            "params": {
+              "by": "point",
+              "point": {
+                "x": -70.5,
+                "y": -19.5
+              },
+              "mode": "replace"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "case": 5,
+    "verdict": "PASS",
+    "observed": {
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800XP83SCJVB33QJTWX"
+        ],
+        "bounds": {
+          "x": -72.06763285024155,
+          "y": -72.08612440191388,
+          "width": 156.30917874396135,
+          "height": 155.8468899521531
+        },
+        "selectedPoints": []
+      },
+      "difference": {
+        "size": [
+          901,
+          645
+        ],
+        "different": 1464,
+        "fraction": 0.0025191647523423585
+      },
+      "handles": 8,
+      "finalHandles": 0,
+      "handleExtents": [
+        [
+          12,
+          11
+        ],
+        [
+          11,
+          11
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          8,
+          15
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          8,
+          15
+        ]
+      ],
+      "whiteCentreExtents": [
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "mappedHandles": [
+        [
+          378.4323671497584,
+          394.5861244019139
+        ],
+        [
+          534.7415458937198,
+          394.5861244019139
+        ],
+        [
+          534.7415458937198,
+          238.73923444976077
+        ],
+        [
+          378.4323671497584,
+          238.73923444976077
+        ],
+        [
+          456.5869565217391,
+          394.5861244019139
+        ],
+        [
+          534.7415458937198,
+          316.6626794258373
+        ],
+        [
+          456.5869565217391,
+          238.73923444976077
+        ],
+        [
+          378.4323671497584,
+          316.6626794258373
+        ]
+      ],
+      "record": {
+        "origin": "user",
+        "tool": "select",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          450.5,
+          322.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 480,
+            "y": 292,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 530,
+            "y": 242,
+            "modifiers": [],
+            "dt": 31,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 530,
+            "y": 242,
+            "modifiers": [],
+            "dt": 49,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.transform.apply",
+            "params": {
+              "scale": {
+                "x": 1.4830917874396135,
+                "y": 1.4784688995215312
+              },
+              "pivot": {
+                "x": -74,
+                "y": -74
+              }
+            }
+          }
+        ]
+      },
+      "historyDelta": 1,
+      "derivedParameters": {
+        "scale": {
+          "x": 1.4830917874396135,
+          "y": 1.4784688995215312
+        },
+        "pivot": {
+          "x": -74.0,
+          "y": -74.0
+        }
+      }
+    }
+  },
+  {
+    "case": 6,
+    "verdict": "PASS",
+    "observed": {
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800XP83SCJVB33QJTWX"
+        ],
+        "bounds": {
+          "x": -74.40158686370299,
+          "y": -74.40158686370299,
+          "width": 108.80317372740598,
+          "height": 108.80317372740598
+        },
+        "selectedPoints": []
+      },
+      "difference": {
+        "size": [
+          901,
+          645
+        ],
+        "different": 1213,
+        "fraction": 0.002087258773627924
+      },
+      "handles": 8,
+      "finalHandles": 0,
+      "handleExtents": [
+        [
+          12,
+          11
+        ],
+        [
+          11,
+          11
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          8,
+          15
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          8,
+          15
+        ]
+      ],
+      "whiteCentreExtents": [
+        [
+          6,
+          6
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "mappedHandles": [
+        [
+          376.09841313629704,
+          396.90158686370296
+        ],
+        [
+          484.90158686370296,
+          396.90158686370296
+        ],
+        [
+          484.90158686370296,
+          288.09841313629704
+        ],
+        [
+          376.09841313629704,
+          288.09841313629704
+        ],
+        [
+          430.5,
+          396.90158686370296
+        ],
+        [
+          484.90158686370296,
+          342.5
+        ],
+        [
+          430.5,
+          288.09841313629704
+        ],
+        [
+          376.09841313629704,
+          342.5
+        ]
+      ],
+      "record": {
+        "origin": "user",
+        "tool": "select",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          450.5,
+          322.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 492,
+            "y": 280,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 368,
+            "y": 280,
+            "modifiers": [],
+            "dt": 38,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 368,
+            "y": 280,
+            "modifiers": [],
+            "dt": 43,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.transform.apply",
+            "params": {
+              "rotate": 89.53794727856923,
+              "pivot": {
+                "x": -20,
+                "y": -20
+              }
+            }
+          }
+        ]
+      },
+      "historyDelta": 1,
+      "derivedParameters": {
+        "rotate": 89.53794727856923,
+        "pivot": {
+          "x": -20.0,
+          "y": -20.0
+        }
+      }
+    }
+  },
+  {
+    "case": 7,
+    "verdict": "PASS",
+    "observed": {
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800XP83SCJVB33QJTWX"
+        ],
+        "bounds": {
+          "x": -54.0,
+          "y": -64.0,
+          "width": 108.0,
+          "height": 108.0
+        },
+        "selectedPoints": []
+      },
+      "difference": {
+        "size": [
+          901,
+          645
+        ],
+        "different": 1001,
+        "fraction": 0.0017224616920045771
+      },
+      "handles": 8,
+      "finalHandles": 0,
+      "handleExtents": [
+        [
+          12,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          8,
+          15
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          8,
+          15
+        ]
+      ],
+      "whiteCentreExtents": [
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "mappedHandles": [
+        [
+          396.5,
+          386.5
+        ],
+        [
+          504.5,
+          386.5
+        ],
+        [
+          504.5,
+          278.5
+        ],
+        [
+          396.5,
+          278.5
+        ],
+        [
+          450.5,
+          386.5
+        ],
+        [
+          504.5,
+          332.5
+        ],
+        [
+          450.5,
+          278.5
+        ],
+        [
+          396.5,
+          332.5
+        ]
+      ],
+      "record": {
+        "origin": "user",
+        "tool": "select",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          450.5,
+          322.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 430,
+            "y": 342,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 450,
+            "y": 332,
+            "modifiers": [],
+            "dt": 32,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 450,
+            "y": 332,
+            "modifiers": [],
+            "dt": 48,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.transform.apply",
+            "params": {
+              "translate": {
+                "x": 20,
+                "y": 10
+              },
+              "copy": false
+            }
+          }
+        ]
+      },
+      "historyDelta": 1,
+      "derivedParameters": {
+        "translate": {
+          "x": 20.0,
+          "y": 10.0
+        }
+      }
+    }
+  },
+  {
+    "case": 8,
+    "verdict": "PASS",
+    "observed": {
+      "exactRows": [
+        {
+          "name": "select: corner scale",
+          "tool": "select",
+          "input": "os",
+          "record": {
+            "origin": "user",
+            "tool": "select",
+            "view": "drawingView",
+            "pointerType": "mouse",
+            "drawingToView": [
+              1,
+              0,
+              0,
+              -1,
+              450.5,
+              322.5
+            ],
+            "events": [
+              {
+                "type": "down",
+                "x": 424,
+                "y": 258,
+                "modifiers": [],
+                "dt": 0,
+                "pressure": 1,
+                "button": "left"
+              },
+              {
+                "type": "move",
+                "x": 424,
+                "y": 258,
+                "modifiers": [],
+                "dt": 14,
+                "pressure": 1
+              },
+              {
+                "type": "move",
+                "x": 434,
+                "y": 252,
+                "modifiers": [],
+                "dt": 16,
+                "pressure": 1
+              },
+              {
+                "type": "move",
+                "x": 444,
+                "y": 246,
+                "modifiers": [],
+                "dt": 34,
+                "pressure": 1
+              },
+              {
+                "type": "up",
+                "x": 444,
+                "y": 246,
+                "modifiers": [],
+                "dt": 45,
+                "pressure": 1
+              }
+            ],
+            "eventCount": 5,
+            "status": "ok",
+            "code": null,
+            "commands": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "scale": {
+                    "x": 1.1568627450980393,
+                    "y": 1.093385214007782
+                  },
+                  "pivot": {
+                    "x": -154,
+                    "y": -64
+                  }
+                }
+              }
+            ]
+          },
+          "commands": {
+            "window": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "scale": {
+                    "x": 1.1568627450980393,
+                    "y": 1.093385214007782
+                  },
+                  "pivot": {
+                    "x": -154,
+                    "y": -64
+                  }
+                }
+              }
+            ],
+            "engine2": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "scale": {
+                    "x": 1.1568627450980393,
+                    "y": 1.093385214007782
+                  },
+                  "pivot": {
+                    "x": -154.0,
+                    "y": -64.0
+                  }
+                }
+              }
+            ]
+          },
+          "labels": [
+            [
+              "Move/Scale/Rotate Object"
+            ],
+            [
+              "Move/Scale/Rotate Object"
+            ],
+            [
+              "Move/Scale/Rotate Object"
+            ]
+          ],
+          "statuses": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "sameCommands": true,
+          "sameContent": true,
+          "sameLabels": true,
+          "mappings": {
+            "window": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              450.5,
+              322.5
+            ],
+            "engine2": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ],
+            "engine3": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ]
+          }
+        },
+        {
+          "name": "select: rotate",
+          "tool": "select",
+          "input": "os",
+          "record": {
+            "origin": "user",
+            "tool": "select",
+            "view": "drawingView",
+            "pointerType": "mouse",
+            "drawingToView": [
+              1,
+              0,
+              0,
+              -1,
+              450.5,
+              322.5
+            ],
+            "events": [
+              {
+                "type": "down",
+                "x": 432,
+                "y": 250,
+                "modifiers": [],
+                "dt": 0,
+                "pressure": 1,
+                "button": "left"
+              },
+              {
+                "type": "move",
+                "x": 288,
+                "y": 250,
+                "modifiers": [],
+                "dt": 31,
+                "pressure": 1
+              },
+              {
+                "type": "up",
+                "x": 288,
+                "y": 250,
+                "modifiers": [],
+                "dt": 50,
+                "pressure": 1
+              }
+            ],
+            "eventCount": 3,
+            "status": "ok",
+            "code": null,
+            "commands": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "rotate": 89.6021190381654,
+                  "pivot": {
+                    "x": -90,
+                    "y": 0
+                  }
+                }
+              }
+            ]
+          },
+          "commands": {
+            "window": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "rotate": 89.6021190381654,
+                  "pivot": {
+                    "x": -90,
+                    "y": 0
+                  }
+                }
+              }
+            ],
+            "engine2": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "rotate": 89.6021190381654,
+                  "pivot": {
+                    "x": -90.0,
+                    "y": 0.0
+                  }
+                }
+              }
+            ]
+          },
+          "labels": [
+            [
+              "Move/Scale/Rotate Object"
+            ],
+            [
+              "Move/Scale/Rotate Object"
+            ],
+            [
+              "Move/Scale/Rotate Object"
+            ]
+          ],
+          "statuses": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "sameCommands": true,
+          "sameContent": true,
+          "sameLabels": true,
+          "mappings": {
+            "window": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              450.5,
+              322.5
+            ],
+            "engine2": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ],
+            "engine3": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ]
+          }
+        },
+        {
+          "name": "select: move",
+          "tool": "select",
+          "input": "os",
+          "record": {
+            "origin": "user",
+            "tool": "select",
+            "view": "drawingView",
+            "pointerType": "mouse",
+            "drawingToView": [
+              1,
+              0,
+              0,
+              -1,
+              450.5,
+              322.5
+            ],
+            "events": [
+              {
+                "type": "down",
+                "x": 360,
+                "y": 322,
+                "modifiers": [],
+                "dt": 0,
+                "pressure": 1,
+                "button": "left"
+              },
+              {
+                "type": "move",
+                "x": 385,
+                "y": 337,
+                "modifiers": [],
+                "dt": 32,
+                "pressure": 1
+              },
+              {
+                "type": "up",
+                "x": 385,
+                "y": 337,
+                "modifiers": [],
+                "dt": 48,
+                "pressure": 1
+              }
+            ],
+            "eventCount": 3,
+            "status": "ok",
+            "code": null,
+            "commands": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "translate": {
+                    "x": 25,
+                    "y": -15
+                  },
+                  "copy": false
+                }
+              }
+            ]
+          },
+          "commands": {
+            "window": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "translate": {
+                    "x": 25,
+                    "y": -15
+                  },
+                  "copy": false
+                }
+              }
+            ],
+            "engine2": [
+              {
+                "commandId": "draw.transform.apply",
+                "params": {
+                  "translate": {
+                    "x": 25.0,
+                    "y": -15.0
+                  },
+                  "copy": false
+                }
+              }
+            ]
+          },
+          "labels": [
+            [
+              "Move/Scale/Rotate Object"
+            ],
+            [
+              "Move/Scale/Rotate Object"
+            ],
+            [
+              "Move/Scale/Rotate Object"
+            ]
+          ],
+          "statuses": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "sameCommands": true,
+          "sameContent": true,
+          "sameLabels": true,
+          "mappings": {
+            "window": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              450.5,
+              322.5
+            ],
+            "engine2": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ],
+            "engine3": [
+              1.0,
+              0.0,
+              0.0,
+              -1.0,
+              960.0,
+              540.0
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "kind": "toontown.c42.gesture-equivalence",
+  "platform": "win32",
+  "seconds": 5.6,
+  "rows": 5,
+  "input": [
+    "agent",
+    "os"
+  ],
+  "failures": [
+    "three-way select: corner scale (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step: {\"sameCommands\": false, \"sameContent\": true, \"sameLabels\": true, \"statuses\": [\"ok\", \"ok\", \"ok\"], \"labels\": [[\"Move/Scale/Rotate Object\"], [\"Move/Scale/Rotate Object\"], [\"Move/Scale/Rotate Object\"]]}",
+    "three-way select: side scale (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step: {\"sameCommands\": false, \"sameContent\": true, \"sameLabels\": true, \"statuses\": [\"ok\", \"ok\", \"ok\"], \"labels\": [[\"Move/Scale/Rotate Object\"], [\"Move/Scale/Rotate Object\"], [\"Move/Scale/Rotate Object\"]]}",
+    "three-way select: rotate (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step: {\"sameCommands\": false, \"sameContent\": true, \"sameLabels\": true, \"statuses\": [\"ok\", \"ok\", \"ok\"], \"labels\": [[\"Move/Scale/Rotate Object\"], [\"Move/Scale/Rotate Object\"], [\"Move/Scale/Rotate Object\"]]}",
+    "three-way select: move (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step: {\"sameCommands\": false, \"sameContent\": true, \"sameLabels\": true, \"statuses\": [\"ok\", \"ok\", \"ok\"], \"labels\": [[\"Move/Scale/Rotate Object\"], [\"Move/Scale/Rotate Object\"], [\"Move/Scale/Rotate Object\"]]}"
+  ]
+}
