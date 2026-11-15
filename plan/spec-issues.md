@@ -1910,9 +1910,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   on nodes at several depths, or about several pivots, is not one view-pixel transform.
 - **Interim decision:**
   - **The preview:** a view-pixel affine of the selection by the furniture rule of the command (preview note §2).
-  - **Exact cases:** every Drawing-view Select drag, a Camera-view move of nodes at one depth, and a Camera-view
-    scale, rotation or skew of one node facing the camera. Elsewhere it approximates, and the committed state replaces
-    it when drawn.
+  - **Exact cases:** the selected objects of a Drawing-view Select drag (a painted zone that the kernel re-derives
+    from moved strokes is not among them: it stays until the commit), a Camera-view move of nodes at one depth, and a
+    Camera-view scale, rotation or skew of one node facing the camera. Elsewhere it approximates, and the committed
+    state replaces it when drawn.
   - **Selection payloads:** `canvas_load` takes `part: all | selection | rest`, so the Drawing view can move only the
     selected objects.
 - **Question:** should the preview be exact in every case (a kernel-computed preview per sample)?

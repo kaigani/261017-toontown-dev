@@ -50,8 +50,9 @@ note §7) and the Camera view's overlays (camera-view note §6).
 ## 4. Exactness (SI-154)
 
 The preview is exact where the command's result is the same view-pixel affine:
-- every Drawing-view Select drag, since a drawing's objects are transformed in drawing space and the view mapping is
-  affine;
+- the selected objects of every Drawing-view Select drag, since a drawing's objects are transformed in drawing space
+  and the view mapping is affine. A painted zone the kernel re-derives from moved strokes (02 §3.12) is not a selected
+  object: it stays where it was until the commit;
 - a Camera-view move of nodes at one depth;
 - a Camera-view scale, rotation or skew of one node whose plane faces the camera, about the same point.
 

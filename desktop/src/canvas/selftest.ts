@@ -150,6 +150,7 @@ function frameInput(scene: Scene, t: number): FrameInput {
     drawingToView: d2v,
     cameraToView: null,
     preview: null,
+    split: null,
     width: WIDTH,
     height: HEIGHT,
     dpr: 1,

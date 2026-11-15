@@ -117,6 +117,8 @@ export interface EngineApi {
     bucket: number,
     outline?: boolean,
     fastPencil?: boolean,
+    /** Which objects (M4 C4.3b, preview note §3): every object, the selected ones, or the rest. */
+    part?: 'all' | 'selection' | 'rest',
   ): Promise<ArrayBuffer>;
   /** `gesture_commit` (M4 C4.2b; design note 2 §6): a gesture made in a view window, as `pointer` request fields; the
    *  host runs the headless `pointer` driver with the user's origin and answers its envelope. The request names the
@@ -345,10 +347,10 @@ export function createEngineApi(transport: HostTransport): EngineApi {
         }
       });
     },
-    async canvasLoad(drawingId, bucket, outline = false, fastPencil = false) {
+    async canvasLoad(drawingId, bucket, outline = false, fastPencil = false, part = 'all') {
       if (!transport.invokeBinary) throw new Error('ipc.unsupported: this transport has no binary commands');
       return transport.invokeBinary('canvas_load', {
-        json: stringifyWireJson({ drawingId, bucket, outline, fastPencil }),
+        json: stringifyWireJson({ drawingId, bucket, outline, fastPencil, part }),
       });
     },
     onEvent(handler) {

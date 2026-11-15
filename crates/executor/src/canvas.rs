@@ -18,6 +18,8 @@ use tt_registry::CommandError;
 pub(crate) struct CanvasSource {
     pub doc: Document,
     pub drawing: Id,
+    /// The drawing's selected objects (local ids) when the source was taken: the selection parts' filter.
+    pub selection: Vec<String>,
     pub cache: crate::planar::SharedCache,
     pub blobs: Option<tt_persist::container::Blobs>,
 }
@@ -76,6 +78,20 @@ pub struct PayloadOptions {
     pub outline: bool,
     /// Approximate pencil strokes: no round joins (`display.fastPencilRendering`, 01 §7.2; header flag 2).
     pub fast_pencil: bool,
+    /// Which objects (M4 C4.3b, preview note §3): every object, only the selected ones, or the rest.
+    pub part: Part,
+}
+
+/// The objects a payload holds (preview note §3): the Drawing view's live preview draws the selected objects apart.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum Part {
+    /// Every object.
+    #[default]
+    All,
+    /// The drawing's selected objects only.
+    Selection,
+    /// Every object but the selected ones.
+    Rest,
 }
 
 /// Header flag of a payload with approximate pencil strokes.
@@ -95,7 +111,12 @@ pub(crate) fn build(
     let d = src.doc.drawing(&src.drawing).ok_or_else(|| not_found(src.drawing.as_str()))?;
     let never = || false;
     let sources = Sources { cache: &src.cache, blobs: src.blobs.as_ref(), selection: None, stop: &never };
-    let (items, tags, warnings) = canvas_items(&sources, &src.doc, d, None)?;
+    let only = match opts.part {
+        Part::All => None,
+        Part::Selection => Some((src.selection.iter().cloned().collect(), true)),
+        Part::Rest => Some((src.selection.iter().cloned().collect(), false)),
+    };
+    let (items, tags, warnings) = canvas_items(&sources, &src.doc, d, None, only)?;
     let mut slots: Vec<Slot> = Vec::new();
     let mut out = Vec::with_capacity(items.len());
     for (item, tag) in items.into_iter().zip(tags) {

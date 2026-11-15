@@ -13,6 +13,8 @@ mod camera;
 mod labels;
 #[path = "c43/mapping.rs"]
 mod mapping;
+#[path = "c43/preview.rs"]
+mod preview;
 #[path = "c43/renders.rs"]
 mod renders;
 #[path = "c43/scene_tools.rs"]

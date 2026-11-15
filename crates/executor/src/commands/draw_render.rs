@@ -183,6 +183,9 @@ pub(crate) struct Builder<'a> {
     work: u64,
     /// The interactive canvas's walk (M4 C4.2b, design note 1 §8): what each item's paint came from, beside `items`.
     pub(crate) tags: Option<Vec<Tag>>,
+    /// The interactive canvas's selection parts (M4 C4.3b, preview note §3): only the objects whose id is in the set
+    /// (`true`) or not in it (`false`); every object when `None`.
+    pub(crate) only: Option<(std::collections::BTreeSet<String>, bool)>,
 }
 
 /// What an item's paint came from, for the interactive canvas's colour slots (06 §6.3).
@@ -245,7 +248,13 @@ impl<'a> Builder<'a> {
             textures: BTreeMap::new(),
             work,
             tags: None,
+            only: None,
         }
+    }
+
+    /// Whether the object `id` is drawn by this walk (its selection part, preview note §3).
+    fn keeps(&self, id: &str) -> bool {
+        self.only.as_ref().is_none_or(|(set, inside)| set.contains(id) == *inside)
     }
 
     /// Pushes an item and, in the canvas walk, its tag.
@@ -356,6 +365,9 @@ impl<'a> Builder<'a> {
         let to_px = self.d2p.then_after(m);
         if let Some(lz) = zones {
             for (z, zone) in lz.map.zones.iter().enumerate() {
+                if !self.keeps(&zone.id) {
+                    continue;
+                }
                 let Some(fill) = lz.fills.get(z).and_then(Option::as_ref).filter(|f| f.painted()) else { continue };
                 let Some(colour) = fill.colour_id.clone() else { continue };
                 let rings = lz.map.zone_rings(z);
@@ -371,6 +383,9 @@ impl<'a> Builder<'a> {
         }
         let strokes = n.strokes().as_deref().unwrap_or_default();
         for s in strokes.iter().filter(|s| *s.kind() == StrokeKind::Brush) {
+            if !self.keeps(s.id().as_str()) {
+                continue;
+            }
             let Some(colour) = s.colour_id().as_ref().map(|c| c.as_str().to_owned()) else { continue };
             let path = Path::from_points(s.points(), true);
             self.spend(path.anchors.len())?;
@@ -379,6 +394,9 @@ impl<'a> Builder<'a> {
             }
         }
         for s in strokes.iter().filter(|s| *s.kind() == StrokeKind::Pencil) {
+            if !self.keeps(s.id().as_str()) {
+                continue;
+            }
             let Some(colour) = s.colour_id().as_ref().map(|c| c.as_str().to_owned()) else { continue };
             let width = s.line_style().as_ref().map_or(0.0, |l| l.thickness) * self.scale;
             if width <= 0.0 {
@@ -394,6 +412,9 @@ impl<'a> Builder<'a> {
     }
 
     fn text(&mut self, n: &DrawingNode) -> Result<(), CommandError> {
+        if !self.keeps(n.id().as_str()) {
+            return Ok(());
+        }
         let Some(content) = vd::text_content(n) else { return Ok(()) };
         let fixed = (n.width_mode().as_ref().map(|w| format!("{w:?}").to_lowercase()).as_deref() == Some("fixed"))
             .then(|| n.width().unwrap_or(0.0));
@@ -415,6 +436,9 @@ impl<'a> Builder<'a> {
     /// `transform`; the image covers its quad, sampled through the unit square (row 0 at unit y = 0, SI-074), clipped
     /// to the quad. A node whose pixels cannot be read is reported (`render.bitmapMissing`) and not drawn.
     fn bitmap(&mut self, n: &DrawingNode) -> Result<(), CommandError> {
+        if !self.keeps(n.id().as_str()) {
+            return Ok(());
+        }
         let (Some(w), Some(h), Some(image)) = (*n.width(), *n.height(), n.image().as_ref()) else {
             self.warn("render.bitmapMissing", n.id().as_str(), None);
             return Ok(());
@@ -695,6 +719,7 @@ pub(crate) fn rasterise_with(
         textures: BTreeMap::new(),
         work: u64::from(width) * u64::from(height) / 1024,
         tags: None,
+        only: None,
     };
     b.nodes(d.nodes(), &zones)?;
     if o.show_strokes {
@@ -763,12 +788,14 @@ pub(crate) fn canvas_items(
     doc: &Document,
     d: &Drawing,
     style: Option<(Id, Id)>,
+    only: Option<(std::collections::BTreeSet<String>, bool)>,
 ) -> Result<CanvasWalk, CommandError> {
     let zones: BTreeMap<String, crate::planar::LayerZones> =
         crate::planar::drawing_zones(src.cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
     let mut b = Builder::in_drawing_units(doc, src.blobs, None, 0);
     b.style = style;
     b.tags = Some(Vec::new());
+    b.only = only;
     b.nodes(d.nodes(), &zones)?;
     let tags = b.tags.take().unwrap_or_default();
     Ok((std::mem::take(&mut b.items), tags, std::mem::take(&mut b.warnings)))

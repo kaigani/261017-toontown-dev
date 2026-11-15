@@ -1141,9 +1141,18 @@ impl Core {
                 CommandError::with_details("drawing.noTarget", "there is no current drawing", serde_json::json!({}))
             })?,
         };
+        // The drawing's selected objects (local ids), for the selection parts (preview note §3).
+        let prefix = format!("{}/", id.as_str());
+        let selection = s
+            .app
+            .selection_of("drawing")
+            .into_iter()
+            .filter_map(|k| k.strip_prefix(&prefix).map(str::to_owned))
+            .collect();
         Ok(crate::canvas::CanvasSource {
             doc: p.doc.clone(),
             drawing: id,
+            selection,
             cache: s.planar.clone(),
             blobs: Some(p.store.blobs.clone()),
         })

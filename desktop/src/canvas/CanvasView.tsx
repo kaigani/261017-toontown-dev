@@ -29,6 +29,7 @@ import { createWebGL2 } from './webgl2';
 import { createWebGPU } from './webgpu';
 import { canvasLaunch } from './launch';
 import { cameraGridMatrix, cameraOverlay } from './cameraOverlay';
+import { decodeDrawing } from './format';
 import { drawingPreview, grabberPreview, scenePreview, type Box } from './preview';
 import { CanvasMetrics } from './metrics';
 import { CanvasModel } from './model';
@@ -112,6 +113,9 @@ export function CanvasView({
       frame: null,
       selection: null,
     };
+    // The Drawing view's Select preview draws the current drawing as its rest and its selected objects, two payloads
+    // loaded at the press (preview note §3); `ready` counts the parts resident.
+    let parts: { drawingId: string; rest: string; selection: string; ready: number } | null = null;
     let summary = '';
     let raf = 0;
     let stopped = false;
@@ -210,11 +214,50 @@ export function CanvasView({
       const modal = on ? { kind: 'gesture' as const, title: style.tool } : null;
       reports = reports.then(() => engine.report({ modal })).catch(() => undefined);
     };
+    const dropParts = () => {
+      if (parts && renderer) {
+        renderer.drop(parts.rest);
+        renderer.drop(parts.selection);
+      }
+      parts = null;
+    };
     const endPreview = () => {
       if (preview) viewVersion++;
       preview = null;
       previewKind = null;
       press = null;
+      dropParts();
+    };
+    /** Loads the current drawing's two parts at its scene revision (preview note §3). */
+    const loadParts = () => {
+      const m = model;
+      const e = m?.scene?.entries.find((x) => x.role === 'current' && !x.outline);
+      if (!m || !e || !m.scene?.selection?.bounds) return;
+      const mine = {
+        drawingId: e.drawingId,
+        rest: `${e.drawingId}#rest`,
+        selection: `${e.drawingId}#selection`,
+        ready: 0,
+      };
+      parts = mine;
+      const generation = BigInt(engine.generation());
+      for (const [part, key] of [
+        ['rest', mine.rest],
+        ['selection', mine.selection],
+      ] as const) {
+        void engine
+          .canvasLoad(e.drawingId, m.currentBucket, false, m.fastPencil, part)
+          .then((bytes) => {
+            // Only for the drag that asked, at the revision and generation shown (T1, T6).
+            if (parts !== mine || !renderer) return;
+            const d = decodeDrawing(bytes);
+            if (d.rev !== e.rev || d.generation !== generation) return;
+            renderer.upload(key, d);
+            mine.ready++;
+            viewVersion++;
+          })
+          .catch(() => undefined);
+      }
     };
     const cancelGesture = () => {
       if (collector.cancel()) {
@@ -531,6 +574,10 @@ export function CanvasView({
         drawingToView: grab ? compose(grab, d2v) : d2v,
         cameraToView: grab && c2v ? compose(grab, c2v) : c2v,
         preview: previewKind === 'scene' && preview ? { transform: preview, elements: selectedIds } : null,
+        split:
+          previewKind === 'drawing' && preview && parts?.ready === 2
+            ? { drawingId: parts.drawingId, rest: parts.rest, selection: parts.selection, transform: preview }
+            : null,
         width: size.width,
         height: size.height,
         dpr,
@@ -698,7 +745,10 @@ export function CanvasView({
       if (inCamera && sceneFamily && (sceneTool === 'select' || sceneTool === 'transform'))
         previewKind = 'scene';
       else if (style.tool === 'grabber') previewKind = 'grab';
-      else if (!inCamera && style.tool === 'select') previewKind = 'drawing';
+      else if (!inCamera && style.tool === 'select') {
+        previewKind = 'drawing';
+        loadParts();
+      }
     };
     /** The preview's affine for the drag from the press to `now` (view pixels), or null. */
     const previewAt = (now: [number, number]): Affine | null => {

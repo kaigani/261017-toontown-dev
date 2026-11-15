@@ -2,6 +2,7 @@
 // decoded (12-byte vertices; the slot is the first half of a uint16x2), per-drawing slot textures (06 §6.3), gradients
 // per fragment, group opacity through an offscreen target (SI-139), cached static layers (06 §6.9), 4× MSAA.
 
+import { compose } from './geometry';
 import { drawFrame, entryToView, type LayerOps } from './layers';
 import { VERTEX_LEN, type DecodedDrawing, type Rgba as FormatRgba } from './format';
 import { BackendUnavailable, type BackendStats, type FrameInput, type Renderer } from './renderer';
@@ -597,6 +598,21 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
           viewTris(gridData, gridAt);
         },
         drawing(e) {
+          // The Drawing view's Select preview: the drawing as its rest and its moving selection (preview note §3).
+          const split = input.split;
+          const rest = split?.drawingId === e.drawingId && !e.outline ? drawings.get(split.rest) : undefined;
+          const moving = split && rest ? drawings.get(split.selection) : undefined;
+          if (split && rest && moving) {
+            counters.drawn++;
+            flushGroup();
+            drawMeshes(rest, d2c, e.tint);
+            drawMeshes(
+              moving,
+              drawingToClip(compose(split.transform, input.drawingToView), input.width, input.height),
+              e.tint,
+            );
+            return;
+          }
           const d = drawings.get(residentKey(e));
           if (!d) return;
           counters.drawn++;

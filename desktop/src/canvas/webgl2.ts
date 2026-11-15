@@ -9,7 +9,7 @@
 
 import { drawFrame, entryToView, type LayerOps } from './layers';
 import { VERTEX_LEN, type DecodedDrawing, type Rgba as FormatRgba } from './format';
-import type { Affine, ViewTris } from './geometry';
+import { compose, type Affine, type ViewTris } from './geometry';
 import { BackendUnavailable, type BackendStats, type FrameInput, type Renderer } from './renderer';
 import { residentKey, type SceneEntry } from './scene';
 
@@ -495,6 +495,21 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
           viewTris(input.grid, input.width, input.height);
         },
         drawing(e) {
+          // The Drawing view's Select preview: the drawing as its rest and its moving selection (preview note §3).
+          const split = input.split;
+          const rest = split?.drawingId === e.drawingId && !e.outline ? drawings.get(split.rest) : undefined;
+          const moving = split && rest ? drawings.get(split.selection) : undefined;
+          if (split && rest && moving) {
+            counters.drawn++;
+            flushGroup();
+            drawMeshes(rest, d2c, e.tint);
+            drawMeshes(
+              moving,
+              drawingToClip(compose(split.transform, input.drawingToView), input.width, input.height),
+              e.tint,
+            );
+            return;
+          }
           const d = drawings.get(residentKey(e));
           if (!d) return;
           counters.drawn++;

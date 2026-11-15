@@ -325,6 +325,9 @@ struct CanvasLoadRequest {
     /// Approximate pencil strokes (`display.fastPencilRendering`); absent: false.
     #[serde(default)]
     fast_pencil: bool,
+    /// Which objects (M4 C4.3b, preview note §3): `all` (absent), `selection` or `rest`.
+    #[serde(default)]
+    part: Option<String>,
 }
 
 /// One drawing's TTRD payload for the interactive canvas (M4 C4.2b; design note 1 §2, §8, §9), binary, at the
@@ -336,10 +339,23 @@ struct CanvasLoadRequest {
 #[tauri::command]
 pub async fn canvas_load(app: AppHandle, json: String) -> Result<Response, String> {
     let req: CanvasLoadRequest = parse(&json)?;
+    // Which objects (M4 C4.3b, preview note §3).
+    let part = match req.part.as_deref() {
+        None | Some("all") => tt_executor::canvas::Part::All,
+        Some("selection") => tt_executor::canvas::Part::Selection,
+        Some("rest") => tt_executor::canvas::Part::Rest,
+        Some(other) => {
+            return Err(error_json(&tt_engine::ErrorInfo {
+                code: "arg.invalid".into(),
+                message: format!("unknown part `{other}` (all, selection, rest)"),
+                details: json!({ "pointer": "/part" }),
+            }));
+        }
+    };
     let answer = tauri::async_runtime::spawn_blocking(move || {
         let host = app.state::<Host>();
         let generation = host.generation();
-        let opts = tt_executor::canvas::PayloadOptions { outline: req.outline, fast_pencil: req.fast_pencil };
+        let opts = tt_executor::canvas::PayloadOptions { outline: req.outline, fast_pencil: req.fast_pencil, part };
         host.exec().canvas_drawing(Some(&req.drawing_id), generation, req.bucket.clamp(-8, 8), opts)
     })
     .await

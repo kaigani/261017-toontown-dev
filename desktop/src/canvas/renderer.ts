@@ -18,6 +18,9 @@ export interface FrameInput {
   /** The live transform preview (preview note 8): the Camera-view occurrences of these elements are drawn through
    *  `transform · cameraToView · matrix`. Null when no drag is previewing. */
   preview: { transform: Affine; elements: ReadonlySet<string> } | null;
+  /** The Drawing view's Select preview (preview note §3): the entry of `drawingId` is drawn as its two resident parts,
+   *  `rest` through `drawingToView` and `selection` through `transform · drawingToView`, when both are resident. */
+  split: { drawingId: string; rest: string; selection: string; transform: Affine } | null;
   /** The view's size in CSS pixels (= view pixels). */
   width: number;
   height: number;
