@@ -159,6 +159,7 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
     ("ui.unknownMessage", "There is no message with that id."),
     ("scene.noTarget", "There is no current scene and no scene was given."),
     ("render.noCamera", "The scene has no camera to render through; add a camera or name one."),
+    ("render.noScene", "The project has no scene to show or render; add a scene."),
     ("command.timeout", "The command did not answer in time and was cancelled unless it had already committed."),
     ("project.mediaMissing", "Some media referenced by the project are missing; placeholders are shown."),
 ];
@@ -202,7 +203,7 @@ pub(crate) fn command(id: &str, bindings: &[Binding]) -> Result<(String, String)
 #[must_use]
 pub fn panel_owner(id: &str) -> Option<&'static str> {
     Some(match id {
-        "cameraView" | "drawingView" => "M4 C4.2 (canvas), M4 C4.3 (Camera view tools)",
+        "cameraView" | "drawingView" => "M4 C4.2 (Drawing view), M4 C4.3 (Camera view)",
         "topView" | "sideView" | "functionEditor" | "motionRecording" => "M6",
         "timeline" => "M5 C5.1",
         "xsheet" | "cells" => "M5 C5.2",

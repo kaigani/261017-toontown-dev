@@ -420,7 +420,7 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
     if !(p.point.x.is_finite() && p.point.y.is_finite()) {
         return Err(super::common::invalid("/point", "the point must be finite"));
     }
-    let (_, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None, &Overrides::NONE)?;
+    let (doc, list) = frame_list(cx, p.scene_id.as_deref(), p.frame, None, &Overrides::NONE)?;
     let pixel = match p.space {
         Space::Image => P::new(p.point.x, p.point.y),
         Space::Camera => Affine(render::invert(render::image_to_camera(&list))).apply(P::new(p.point.x, p.point.y)),
@@ -429,7 +429,8 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
             None => return Err(behind_camera(&[0])),
         },
     };
-    let hits = image_hits(cx, p.scene_id.as_deref(), p.frame, pixel, false)?;
+    // One render list per query (each node evaluated once per frame, C33-R1).
+    let hits = hits_in(cx, &doc, &list, pixel, false)?;
     Ok(Hits { hits })
 }
 
@@ -475,6 +476,20 @@ pub(crate) fn image_hits(
     around: bool,
 ) -> Result<Vec<HitOut>, CommandError> {
     let (doc, list) = frame_list(cx, scene_id, frame, None, &Overrides::NONE)?;
+    hits_in(cx, &doc, &list, pixel, around)
+}
+
+/// The objects under output pixel `pixel` of a built render list, front-most first (see [`image_hits`]).
+///
+/// # Errors
+/// The planar map's refusals.
+pub(crate) fn hits_in(
+    cx: &Cx,
+    doc: &tt_model::document::Document,
+    list: &RenderList,
+    pixel: P,
+    around: bool,
+) -> Result<Vec<HitOut>, CommandError> {
     let cache = cx.planar_cache();
     let mut hits = Vec::new();
     let shown = |v: Verdict| v == Verdict::Drawn || (around && v == Verdict::OutOfFrame);

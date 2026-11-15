@@ -40,8 +40,8 @@ pub(crate) fn to_view(w: &ViewWindow, d: Point) -> Point {
 }
 
 /// The Drawing view window view-space points refer to (SI-065, SI-109): `view` names a view id or `drawing`; by
-/// default the active view window when it shows the Drawing view, else `drawingView`. View space of the other view
-/// types arrives with them (M4 C4.3).
+/// default the active view window when it shows the Drawing view, else `drawingView`. A Camera view's points are
+/// converted through the current element (`crate::camera_view::addressing`); Top and Side views are M6 C6.1's.
 ///
 /// # Errors
 /// `view.notFound`; `command.notImplemented` for a view window that does not show the Drawing view.

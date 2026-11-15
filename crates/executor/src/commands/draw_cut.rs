@@ -270,7 +270,7 @@ pub(crate) struct CutParams {
     /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
     #[serde(default)]
     view: Option<String>,
-    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
     #[serde(default)]
     frame: Option<u32>,
     /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
@@ -460,7 +460,7 @@ pub(crate) struct EraseParams {
     /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
     #[serde(default)]
     view: Option<String>,
-    /// The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
     #[serde(default)]
     frame: Option<u32>,
     /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).

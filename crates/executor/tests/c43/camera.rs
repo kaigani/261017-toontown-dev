@@ -186,3 +186,32 @@ fn m3_8_3_the_camera_view_agrees_with_the_renderer_on_roll_fov_and_hidden_ancest
     let hits = ok(&h, "inspect.hitTest", json!({ "space": "image", "point": { "x": x, "y": y } }));
     assert!(!hits["hits"].as_array().unwrap().iter().any(|h| h["elementId"] == json!(a)), "{hits}");
 }
+
+/// The members of a JSON object, sorted.
+fn keys(v: &Value) -> Vec<String> {
+    let mut k: Vec<String> = v.as_object().map(|o| o.keys().cloned().collect()).unwrap_or_default();
+    k.sort();
+    k
+}
+
+/// `docs/canvas-format.md` §11.7: the kernel's answers carry exactly the members of the corpus's valid answers (the
+/// window's decoder is tested against those files in Vitest), in the scene, an entry, the camera and the overlays.
+#[test]
+fn the_kernels_scene_answers_have_the_corpus_members() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../desktop/src/canvas/testdata/scene/valid");
+    let read = |n: &str| -> Value { serde_json::from_str(&std::fs::read_to_string(root.join(n)).unwrap()).unwrap() };
+    let h = fixture();
+    ok(&h, "app.context.set", json!({ "elementId": BOB, "frame": 1 }));
+    ok(&h, "edit.selection.set", json!({ "context": "staging", "ids": [BOB] }));
+    let cam = scene(&h);
+    let want = read("camera.json")["scene"].clone();
+    assert_eq!(keys(&cam), keys(&want), "the Camera view's scene members");
+    assert_eq!(keys(&cam["entries"][0]), keys(&want["entries"][0]), "an occurrence's members");
+    assert_eq!(keys(&cam["camera"]), keys(&want["camera"]), "the camera's members");
+    assert_eq!(keys(&cam["overlays"]), keys(&want["overlays"]), "the overlays' members");
+    assert_eq!(keys(&cam["overlays"]["selectionDisplay"]), keys(&want["overlays"]["selectionDisplay"]));
+    let drw = serde_json::to_value(h.canvas_scene("drawingView").unwrap()).unwrap();
+    let want = read("drawing-1.1.json")["scene"].clone();
+    assert_eq!(keys(&drw), keys(&want), "the Drawing view's scene members");
+    assert_eq!(keys(&drw["entries"][0]), keys(&want["entries"][0]), "a Drawing view entry's members");
+}

@@ -162,9 +162,11 @@ fn view_space_reaches_colour_pick_hit_test_and_the_active_view_render() {
         ok(&h, "inspect.hitTest", json!({ "space": "view", "point": { "x": vx, "y": vy }, "view": "drawingView" }));
     assert!(!hits["hits"].as_array().unwrap().is_empty(), "{hits}");
     assert_eq!(hits["hits"][0]["drawingId"], D1);
-    // The `activeView` composition renders the Drawing view once it is active (SI-107).
-    let camera = err(&h, "render.frame.run", json!({ "composition": "activeView" }));
-    assert_eq!((camera.code.as_str(), &camera.details["owner"]), ("render.compositionUnavailable", &json!("M4 C4.3")));
+    // The `activeView` composition renders the Drawing view once it is active (SI-107); a Top view waits for M6 C6.1
+    // (the Camera view renders since M4 C4.3a).
+    ok(&h, "view.active.set", json!({ "viewId": "topView" }));
+    let top = err(&h, "render.frame.run", json!({ "composition": "activeView" }));
+    assert_eq!((top.code.as_str(), &top.details["owner"]), ("render.compositionUnavailable", &json!("M6 C6.1")));
     ok(&h, "view.active.set", json!({ "viewId": "drawingView" }));
     let r = ok(&h, "render.frame.run", json!({ "composition": "activeView", "scale": 0.25 }));
     assert_eq!((r["width"].as_u64(), r["height"].as_u64()), (Some(480), Some(270)), "{r}");

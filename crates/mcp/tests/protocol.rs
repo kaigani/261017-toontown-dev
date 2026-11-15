@@ -120,9 +120,10 @@ fn tools_list_schemas_and_structured_content_validate() {
         assert_eq!(r["isError"], sc["status"] == "error", "{tool}: {r}");
         assert!(r["content"][0]["text"].as_str().unwrap().starts_with(tool), "{tool}: {r}");
     }
-    let pointer = c.call("pointer", json!({ "view": "camera", "events": [{ "type": "down", "x": 1, "y": 1 }] }));
+    // The Camera view takes gestures since M4 C4.3a; the Top and Side views wait for M6 C6.1.
+    let pointer = c.call("pointer", json!({ "view": "top", "events": [{ "type": "down", "x": 1, "y": 1 }] }));
     assert_eq!(pointer["structuredContent"]["error"]["code"], "command.notImplemented");
-    assert_eq!(pointer["structuredContent"]["error"]["details"]["milestone"], "M4 C4.3", "{pointer}");
+    assert_eq!(pointer["structuredContent"]["error"]["details"]["milestone"], "M6 C6.1", "{pointer}");
     let state = c.call("get_state", json!({ "include": ["agent", "project"] }))["structuredContent"]["result"].clone();
     assert_eq!(state["agent"]["policy"], "assist", "{state}");
     assert!(state.get("selection").is_none(), "include projects the state: {state}");

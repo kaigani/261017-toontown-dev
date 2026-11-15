@@ -1142,6 +1142,24 @@
       "varies": []
     }
   ],
+  "anim.tool.get": [
+    {
+      "title": "The scene-planning tool",
+      "result": {
+        "tool": "select"
+      },
+      "varies": []
+    }
+  ],
+  "anim.tool.set": [
+    {
+      "title": "The Transform tool",
+      "result": {
+        "tool": "transform"
+      },
+      "varies": []
+    }
+  ],
   "anim.transform.set": [
     {
       "title": "Offset Bob statically",
@@ -1177,6 +1195,20 @@
           "position"
         ],
         "warnings": []
+      },
+      "varies": []
+    }
+  ],
+  "anim.view.coords.get": [
+    {
+      "title": "The table-plane origin in the Camera view",
+      "result": {
+        "points": [
+          {
+            "x": 480.0,
+            "y": 270.0
+          }
+        ]
       },
       "varies": []
     }

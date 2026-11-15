@@ -92,8 +92,9 @@ uses. The view transform (zoom, rotation, centre in camera space) and `doc_to_vi
   transform at the current frame.
 
 **Where it applies** (every declared use, ruling D-22): the addressing parameters of the `draw.*` and `colour.*`
-commands (`space: scene`, and `space: view` with a Camera view; `addressing.rs`), `view.coordinates.convert` (spaces
-`view`, `camera`, `image`, `scene`, `drawing`), `inspect.hitTest` (02 line 61: a view point maps back through the full
+commands (`space: scene`, and `space: view` with a Camera view; `addressing.rs`), `view.coordinates.convert` (its spaces
+`view`, `drawing`, `scene`, 01 §12.2), `inspect.coordinates.convert` (`view` with a Camera view, through the `image`
+space), `inspect.hitTest` (02 line 61: a view point maps back through the full
 scene transform), `pointer` (`space: view|drawing|scene|camera`, 11 line 354), `anim.view.coords.get` (05 line 1234:
 scene and view pixels with `depth`), `view.pan.set` centres in scene space for staging views (01 lines 1036-1041), and
 the canvas's matrices. Top and Side views keep their refusals, re-owned to M6 C6.1 (answer 1).

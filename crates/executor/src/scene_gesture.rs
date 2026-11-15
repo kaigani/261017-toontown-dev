@@ -93,24 +93,31 @@ fn locked(cx: &Cx, id: &Id) -> bool {
     cx.document().ok().and_then(|d| d.element(id)).is_some_and(|e| *e.locked())
 }
 
-/// The front-most unlocked element under view point `v` within [`PICK_PX`] (05 §3.5; SI-150).
+/// The front-most unlocked element under view point `v` within [`PICK_PX`] (05 §3.5; SI-150), from one render list
+/// (each node evaluated once per gesture).
 fn pick(cx: &Cx, chain: &Chain, v: Point) -> Result<Option<Id>, CommandError> {
     let inv = camera_view::invert(&chain.output_to_view)
         .ok_or_else(|| crate::commands::common::invalid("/view", "the Camera view's transform is singular"))?;
+    let doc = cx.document()?;
+    let overrides = Overrides::default();
+    let req = Request {
+        scene: &chain.scene,
+        frame: chain.frame,
+        camera: None,
+        width: chain.width,
+        height: chain.height,
+        only: None,
+        overrides: &overrides,
+    };
+    let mut ev = evaluator(doc, "picking in the Camera view");
+    let list = render_list::build(doc, &req, &mut ev)?;
     let ring = (0..8).map(|k| {
         let a = f64::from(k) * std::f64::consts::FRAC_PI_4;
         Point { x: v.x + PICK_PX * a.cos(), y: v.y + PICK_PX * a.sin() }
     });
     for q in std::iter::once(v).chain(ring) {
         let o = camera_view::apply(&inv, q);
-        let hits = crate::commands::inspect::image_hits(
-            cx,
-            Some(chain.scene.as_str()),
-            Some(chain.frame),
-            P::new(o.x, o.y),
-            true,
-        )?;
-        for h in hits {
+        for h in crate::commands::inspect::hits_in(cx, doc, &list, P::new(o.x, o.y), true)? {
             if let Ok(id) = Id::parse(h.element_id())
                 && !locked(cx, &id)
             {

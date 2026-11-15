@@ -23,7 +23,9 @@ projection of three points of the plane). `composite_order` sorts it back to fro
 world Z grouped from an anchor within 1e-6 field, ties by Timeline order).
 
 The Camera view's scene answer is built from **the same call** at the view's frame and the camera output size, and
-each drawn entry becomes an **occurrence**: element id, drawing id, revision, form, opacity, and `to_pixel` itself. The
+each entry with a plane matrix that is drawn, or lies outside the camera frame (the view shows the table around the
+frame, 05 line 316; a render leaves those out), becomes an **occurrence**: element id, drawing id, revision, form,
+opacity, and `to_pixel` itself. Inside the frame the view and a render draw the same entries. The
 canvas draws the occurrences in the list's order, each through its matrix composed with the view transform. So the
 Camera view and a render cannot differ in what is drawn, in what order or where (CV1). Its colour slots, outlines,
 gradients and the stroke construction are C4.2b's (TTRD 1.0, unchanged).
@@ -47,18 +49,21 @@ occurrences is resident once (CV2), at the zoom bucket of its largest occurrence
 `[0, 0, width, height]` in output pixels), `pivots` (each selected node's pivot in output pixels), `selectionBoxes`
 (each selected element's box in output pixels; the selection's union box), `otherCameras` (a selected non-current
 camera's frame outline, four output-pixel corners), `selectionDisplay` (02 line 960's mode), `currentOnTop`. A Camera
-view with no current camera answers `camera: null`, no entries, the background and the grid (SI-147). The revisions,
+view with no current camera answers `camera: null`, no entries, the background and the grid (SI-147; no command can
+reach that state today: `anim.camera.delete` refuses the last camera). The revisions,
 generation and colour table behave as in the Drawing view (C4.2b).
 
 ## 4. Invariants (one builder test each, `crates/executor/tests/c43.rs`)
 
-- **CV1** For fixtures with depth ties, roll, a non-default camera, hidden elements and hidden ancestors, elements
-  behind and across the near plane, and several elements showing one drawing: the Camera view's occurrences equal the
-  drawn entries of `render_list::build` for the same scene, frame and size, element for element, in order, matrix for
-  matrix (bit equal).
-- **CV2** A drawing shown by several occurrences appears once among the payloads the canvas must load.
-- **CV3** The canvas receives every matrix; no window code computes a projection (a source check plus the Vitest
-  decoder test of the answer).
+- **CV1** For fixtures with depth, rotation, hidden elements and hidden ancestors, elements behind the camera and
+  outside the frame: the Camera view's occurrences are the renderer's drawn and out-of-frame entries, back to front,
+  each matrix equal (to 1e-9) to the element's plane through the camera computed by `inspect.coordinates.convert`, a
+  path apart from the render list. (Bit equality holds by construction: the answer copies `to_pixel`.)
+- **CV2** A drawing shown by several occurrences appears once among the payloads the canvas must load. (In this
+  model a drawing belongs to one element, so occurrences never share a drawing; the test checks the load set has no
+  duplicates.)
+- **CV3** The canvas receives every matrix; no window code computes a projection (C4.3b: a source check; C4.3a:
+  the scene answer carries the matrices and the decoder validates them, R3-R4).
 - **CV4** No overlay reaches a render: `render.frame.run` of a scene with a selection and pivots gives the same bytes
   with and without the selection.
 - **M3 merge note §8 item 3, camera half (answer 7):** three agreement tests between the Camera view's mapping and the

@@ -160,12 +160,14 @@ fn compositions_and_formats() {
     let c = solids(&h, 2)[1].clone();
     let other = square(&h, "Other", 50.0, &c.0);
     ok(&h, "anim.transform.set", json!({ "nodeIds": [other], "target": "static", "position": { "x": 4 } }));
-    // `activeView` renders the Drawing view since M4 C4.2 (SI-107); with the Camera view active it waits for M4 C4.3.
-    ok(&h, "view.type.set", json!({ "type": "camera" }));
-    for (comp, owner) in [("xsheet", "M5 C5.1"), ("activeView", "M4 C4.3")] {
+    // `activeView` renders the Drawing view since M4 C4.2 and the Camera view since M4 C4.3a (SI-107); with a Top view
+    // active it waits for M6 C6.1.
+    ok(&h, "view.type.set", json!({ "type": "top" }));
+    for (comp, owner) in [("xsheet", "M5 C5.1"), ("activeView", "M6 C6.1")] {
         let e = err(&h, "render.frame.run", json!({ "composition": comp }));
         assert_eq!((e.code.as_str(), e.details["owner"].as_str()), ("render.compositionUnavailable", Some(owner)));
     }
+    ok(&h, "view.type.set", json!({ "type": "camera" }));
     // `element`: only the given elements, through the camera.
     let only = render(&h, json!({ "frame": 1, "scale": 0.25, "composition": "element", "elementIds": [other] }));
     assert_eq!(only.at(240, 135), [255, 255, 255, 255], "the square is not in the composition");

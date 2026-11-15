@@ -1517,39 +1517,36 @@ export const COMMAND_INDEX = {
   },
   "anim.tool.changed": {
     kind: "event",
-    label: "Scene-planning tool changed",
+    label: "Scene tool changed",
     summary: "Scene-planning tool changed",
     params: "anim.tool.changed.params",
     result: "anim.tool.changed.result",
     examples: [
       {},
     ],
-    milestone: "M6 C6.1",
     event: true,
   },
   "anim.tool.get": {
     kind: "query",
-    label: "Current scene-planning tool",
+    label: "Get the scene tool",
     summary: "Current scene-planning tool",
     params: "anim.tool.get.params",
     result: "anim.tool.get.result",
     examples: [
       {},
     ],
-    milestone: "M6 C6.1",
   },
   "anim.tool.set": {
     kind: "ui",
-    label: "Select the active scene-planning tool",
+    label: "Select a scene tool",
     summary: "Select the active scene-planning tool (independent of the drawing tool)",
     params: "anim.tool.set.params",
     result: "anim.tool.set.result",
     examples: [
       {
-        tool: "select",
+        tool: "transform",
       },
     ],
-    milestone: "M6 C6.1",
   },
   "anim.transform.set": {
     kind: "action",
@@ -1592,18 +1589,22 @@ export const COMMAND_INDEX = {
   },
   "anim.view.coords.get": {
     kind: "query",
-    label: "Map points between scene space and view pixels",
+    label: "Map scene and view coordinates",
     summary: "Map points between scene space and view pixels (for pointer simulation)",
     params: "anim.view.coords.get.params",
     result: "anim.view.coords.get.result",
     examples: [
       {
-        viewId: "scene:#1",
-        points: [],
+        viewId: "cameraView",
+        points: [
+          {
+            x: 0,
+            y: 0,
+          },
+        ],
         from: "scene",
       },
     ],
-    milestone: "M6 C6.1",
   },
   "anim.view.get": {
     kind: "query",
@@ -18937,64 +18938,51 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "anim.tool.changed.params": {
-    title: "anim.tool.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "anim.tool.changed.result": {
-    title: "anim.tool.changed result",
+    title: "ToolChanged",
+    description: "`anim.tool.changed` payload.",
     type: "object",
     properties: {
       tool: {
+        description: "The scene-planning tool now.",
         type: "string",
       },
     },
     required: [
       "tool",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{tool}`",
-    additionalProperties: false,
   },
   "anim.tool.get.params": {
-    title: "anim.tool.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "anim.tool.get.result": {
-    title: "anim.tool.get result",
+    title: "ToolResult",
+    description: "`{tool}`.",
     type: "object",
     properties: {
       tool: {
+        description: "The scene-planning tool.",
         type: "string",
       },
     },
     required: [
       "tool",
     ],
-    "x-spec": "`{tool}`",
-    additionalProperties: false,
   },
-  "anim.tool.set.params": {
-    title: "anim.tool.set parameters",
-    type: "object",
-    properties: {
-      tool: {
+  "anim.tool.set.SceneTool": {
+    description: "A scene-planning tool (05 line 1217).",
+    oneOf: [
+      {
         type: "string",
         enum: [
-          "select",
-          "transform",
-          "record",
-          "rotate",
-          "skew",
-          "scale",
-          "motion",
-          "boneCreate",
           "boneSetup",
           "boneManipulate",
           "boneInverse",
@@ -19003,30 +18991,81 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "boneParent",
         ],
       },
+      {
+        description: "Select (05 §5.1): static values.",
+        type: "string",
+        const: "select",
+      },
+      {
+        description: "Transform (05 §5.2): keyed at the current frame.",
+        type: "string",
+        const: "transform",
+      },
+      {
+        description: "Motion recording.",
+        type: "string",
+        const: "record",
+      },
+      {
+        description: "Rotate.",
+        type: "string",
+        const: "rotate",
+      },
+      {
+        description: "Skew.",
+        type: "string",
+        const: "skew",
+      },
+      {
+        description: "Scale.",
+        type: "string",
+        const: "scale",
+      },
+      {
+        description: "Motion.",
+        type: "string",
+        const: "motion",
+      },
+      {
+        description: "Bone tools (§13.4).",
+        type: "string",
+        const: "boneCreate",
+      },
+    ],
+  },
+  "anim.tool.set.params": {
+    title: "ToolParams",
+    description: "`anim.tool.set` parameters.",
+    type: "object",
+    properties: {
+      tool: {
+        description: "The tool.",
+        $ref: "#/$defs/anim.tool.set.SceneTool",
+      },
       cycleRotate: {
+        description: "Cycle between Rotate and Skew (05 §5.0's *cycle rotate tools*).",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "tool",
     ],
-    additionalProperties: false,
-    "x-spec": "`tool: enum \"select\"|\"transform\"|\"record\"|\"rotate\"|\"skew\"|\"scale\"|\"motion\"|\"boneCreate\"|\"boneSetup\"|\"boneManipulate\"|\"boneInverse\"|\"boneForward\"|\"boneInfluence\"|\"boneParent\"; cycleRotate?: bool = false`",
   },
   "anim.tool.set.result": {
-    title: "anim.tool.set result",
+    title: "ToolResult",
+    description: "`{tool}`.",
     type: "object",
     properties: {
       tool: {
+        description: "The scene-planning tool.",
         type: "string",
       },
     },
     required: [
       "tool",
     ],
-    "x-spec": "`{tool}`",
-    additionalProperties: false,
   },
   "anim.transform.set.Target": {
     description: "What `anim.transform.set` writes.",
@@ -19256,70 +19295,98 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "warnings",
     ],
   },
+  "anim.view.coords.get.Pt": {
+    description: "A point of `anim.view.coords.get`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: "number",
+      },
+      y: {
+        description: "Y.",
+        type: "number",
+      },
+      z: {
+        description: "Scene Z (scene points; a view point's answer carries it).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "anim.view.coords.get.From": {
+    description: "The space of `points`.",
+    oneOf: [
+      {
+        description: "Scene points (fields).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "View pixels.",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "anim.view.coords.get.params": {
-    title: "anim.view.coords.get parameters",
+    title: "CoordsParams",
+    description: "`anim.view.coords.get` parameters.",
     type: "object",
     properties: {
       viewId: {
+        description: "A Camera view window.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       points: {
+        description: "The points.",
         type: "array",
         items: {
-          type: "object",
-          properties: {},
-          additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specIssue": "SI-023",
+          $ref: "#/$defs/anim.view.coords.get.Pt",
         },
+        minItems: 1,
         maxItems: 100000,
       },
       from: {
-        type: "string",
-        enum: [
-          "scene",
-          "view",
-        ],
+        description: "Their space.",
+        $ref: "#/$defs/anim.view.coords.get.From",
       },
       depth: {
+        description: "The scene Z of the plane view points are unprojected onto, and of scene points given without `z` (SI-149).",
         type: "number",
         default: 0,
       },
     },
+    additionalProperties: false,
     required: [
       "viewId",
       "points",
       "from",
     ],
-    additionalProperties: false,
-    "x-spec": "`viewId: id; points: [object]; from: enum \"scene\"|\"view\"; depth?: number = 0`",
   },
   "anim.view.coords.get.result": {
-    title: "anim.view.coords.get result",
+    title: "CoordsResult",
+    description: "`{points}`.",
     type: "object",
     properties: {
       points: {
+        description: "The converted points.",
         type: "array",
         items: {
-          type: "object",
-          properties: {},
-          additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specIssue": "SI-023",
+          $ref: "#/$defs/anim.view.coords.get.Pt",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "points",
     ],
-    "x-spec": "`{points: [object]}`",
-    additionalProperties: false,
   },
   "anim.view.get.params": {
     title: "anim.view.get parameters",
@@ -34859,7 +34926,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -36515,7 +36582,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -36778,7 +36845,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -38393,7 +38460,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -38675,7 +38742,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -38877,7 +38944,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -39103,7 +39170,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -39769,7 +39836,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -39983,7 +40050,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -40447,7 +40514,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -42542,7 +42609,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       frame: {
-        description: "The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3).",
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
         type: [
           "integer",
           "null",
@@ -88557,26 +88624,38 @@ export interface anim_stretch_apply_result {
   mergedKeys: string[];
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type anim_tool_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `anim.tool.changed` payload. */
 export interface anim_tool_changed_result {
+  /** The scene-planning tool now. */
   tool: string;
 }
 
+/** No parameters. */
 export type anim_tool_get_params = Record<string, unknown>;
 
+/** `{tool}`. */
 export interface anim_tool_get_result {
+  /** The scene-planning tool. */
   tool: string;
 }
 
+/** A scene-planning tool (05 line 1217). */
+export type anim_tool_set_SceneTool = 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent' | 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate';
+
+/** `anim.tool.set` parameters. */
 export interface anim_tool_set_params {
-  tool: 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate' | 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent';
+  /** The tool. */
+  tool: anim_tool_set_SceneTool;
+  /** Cycle between Rotate and Skew (05 §5.0's *cycle rotate tools*). */
   cycleRotate?: boolean;
 }
 
+/** `{tool}`. */
 export interface anim_tool_set_result {
+  /** The scene-planning tool. */
   tool: string;
 }
 
@@ -88640,16 +88719,35 @@ export interface anim_transform_set_result {
   warnings: string[];
 }
 
+/** A point of `anim.view.coords.get`. */
+export interface anim_view_coords_get_Pt {
+  /** X. */
+  x: number;
+  /** Y. */
+  y: number;
+  /** Scene Z (scene points; a view point's answer carries it). */
+  z?: number | null;
+}
+
+/** The space of `points`. */
+export type anim_view_coords_get_From = 'scene' | 'view';
+
+/** `anim.view.coords.get` parameters. */
 export interface anim_view_coords_get_params {
-  /** object ID or path reference (10 §3) */
+  /** A Camera view window. */
   viewId: string;
-  points: (Record<string, unknown>)[];
-  from: 'scene' | 'view';
+  /** The points. */
+  points: anim_view_coords_get_Pt[];
+  /** Their space. */
+  from: anim_view_coords_get_From;
+  /** The scene Z of the plane view points are unprojected onto, and of scene points given without `z` (SI-149). */
   depth?: number;
 }
 
+/** `{points}`. */
 export interface anim_view_coords_get_result {
-  points: (Record<string, unknown>)[];
+  /** The converted points. */
+  points: anim_view_coords_get_Pt[];
 }
 
 export interface anim_view_get_params {
@@ -93224,7 +93322,7 @@ export interface draw_cut_apply_params {
   space?: draw_cut_apply_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
   elementId?: string | null;
@@ -93643,7 +93741,7 @@ export interface draw_envelope_apply_params {
   space?: draw_envelope_apply_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
   elementId?: string | null;
@@ -93718,7 +93816,7 @@ export interface draw_erase_apply_params {
   space?: draw_erase_apply_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
   elementId?: string | null;
@@ -94188,7 +94286,7 @@ export interface draw_point_add_params {
   space?: draw_point_add_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified with its drawing (`<drawingId>/<strokeId>`) names the drawing itself. */
   drawingId?: string | null;
@@ -94275,7 +94373,7 @@ export interface draw_point_move_params {
   space?: draw_point_move_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
   elementId?: string | null;
@@ -94327,7 +94425,7 @@ export interface draw_point_set_params {
   space?: draw_point_set_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified with its drawing (`<drawingId>/<strokeId>`) names the drawing itself. */
   drawingId?: string | null;
@@ -94389,7 +94487,7 @@ export interface draw_pointSelection_set_params {
   space?: draw_pointSelection_set_Space;
   /** The view of `view` coordinates (default: the Drawing view). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
   elementId?: string | null;
@@ -94582,7 +94680,7 @@ export interface draw_repositionAll_apply_params {
   space?: draw_repositionAll_apply_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
 }
 
@@ -94646,7 +94744,7 @@ export interface draw_segment_move_params {
   space?: draw_segment_move_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified with its drawing (`<drawingId>/<strokeId>`) names the drawing itself. */
   drawingId?: string | null;
@@ -94779,7 +94877,7 @@ export interface draw_selection_set_params {
   space?: draw_selection_set_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
   elementId?: string | null;
@@ -95352,7 +95450,7 @@ export interface draw_transform_apply_params {
   space?: draw_transform_apply_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
   view?: string | null;
-  /** The frame of scene-space points (02 §13.1 item 5; scene space arrives with the Camera view, M4 C4.3). */
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
   frame?: number | null;
   /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
   elementId?: string | null;

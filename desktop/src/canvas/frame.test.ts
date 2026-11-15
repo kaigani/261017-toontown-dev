@@ -30,6 +30,11 @@ function scene(grid: Scene['grid'], entries: SceneEntry[]): Scene {
     paletteStamp: 0,
     drawingPivot: null,
     selection: null,
+    sceneForm: '1.1',
+    viewType: 'drawing',
+    frame: null,
+    camera: null,
+    overlays: null,
   };
 }
 

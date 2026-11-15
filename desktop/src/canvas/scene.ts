@@ -1,5 +1,6 @@
-// The Drawing view's composition as `canvas_scene` answers it (M4 C4.2b; design note 1 §9; the Rust type is
-// `tt_executor::canvas::Scene`). Validated here: a malformed answer is refused, never half-applied.
+// A view's composition as `canvas_scene` answers it: the scene answer of docs/canvas-format.md §11, form 1.1 (the
+// Drawing view, M4 C4.2b; the Camera view, M4 C4.3; the Rust type is `tt_executor::canvas::Scene`). Validated here,
+// rules R1-R6 of §11.5 included: a malformed answer is refused, never half-applied.
 //
 // 64-bit identities (the engine generation and drawing revisions, u64 in Rust) are carried exactly as `bigint`
 // (docs/canvas-format.md §6): the host's JSON is parsed losslessly (`parseWireJson`), and an integer the parser kept
@@ -20,6 +21,33 @@ export interface SceneEntry {
   tint: Rgba | null;
   shade: boolean;
   outline: boolean;
+  /** Camera view: the element this occurrence draws (§11.3). */
+  elementId?: string;
+  /** Camera view: drawing units → camera output pixels, the final renderer's plane matrix (§11.3). */
+  matrix?: Matrix;
+}
+
+/** An affine `[a, b, c, d, e, f]`: `(x, y) → (a x + c y + e, b x + d y + f)`. */
+export type Matrix = [number, number, number, number, number, number];
+
+/** The Camera view's camera (§11.2). */
+export interface SceneCamera {
+  elementId: string;
+  /** Output size in pixels. */
+  size: [number, number];
+  /** Camera output pixels → view pixels. */
+  cameraToView: Matrix;
+}
+
+/** The Camera view's overlays, in camera output pixels (§11.4). */
+export interface SceneOverlays {
+  cameraFrame: Box;
+  pivots: Pt[];
+  selectionBoxes: Box[];
+  selectionUnion: Box | null;
+  otherCameras: [Pt, Pt, Pt, Pt][];
+  selectionDisplay: { outlineOnSelection: boolean; boxHighlighting: boolean; keepSelectionVisible: boolean };
+  currentOnTop: boolean;
 }
 
 export interface SceneGrid {
@@ -40,6 +68,16 @@ export interface Scene {
   drawingPivot: Pt | null;
   /** The current drawing's selection, or null (frame-loop note §7.1). */
   selection: SceneSelection | null;
+  /** The answer's form (§11.2): `1.0` when absent. */
+  sceneForm: string;
+  /** `drawing` (absent) or `camera`. */
+  viewType: 'drawing' | 'camera';
+  /** Camera view: the scene frame shown. */
+  frame: number | null;
+  /** Camera view: the camera, `null` without a current camera (SI-147); `null` in the Drawing view too. */
+  camera: SceneCamera | null;
+  /** Camera view: the overlays; `null` in the Drawing view. */
+  overlays: SceneOverlays | null;
 }
 
 export interface SceneAnswer {
@@ -114,6 +152,70 @@ function str(v: unknown, where: string): string {
   throw new TypeError(`${where}: not a string`);
 }
 
+function matrixOf(v: unknown, where: string): Matrix {
+  if (Array.isArray(v) && v.length === 6) {
+    const m = v.map((x: unknown, i) => num(x, `${where}/${String(i)}`)) as Matrix;
+    if (m[0] * m[3] - m[1] * m[2] === 0) throw new TypeError(`${where}: a singular matrix`);
+    return m;
+  }
+  throw new TypeError(`${where}: not a matrix`);
+}
+
+function orderedBox(v: unknown, where: string): Box {
+  const b = box(v, where);
+  if (!(b[0] <= b[2] && b[1] <= b[3])) throw new TypeError(`${where}: min above max`);
+  return b;
+}
+
+function positiveInt(v: unknown, where: string): number {
+  const n = num(v, where);
+  if (!Number.isInteger(n) || n < 1) throw new TypeError(`${where}: not an integer of at least 1`);
+  return n;
+}
+
+/** R3: the camera member of a Camera view answer. */
+function cameraOf(v: unknown): SceneCamera | null {
+  if (v === null) return null;
+  const o = obj(v);
+  if (!o) throw new TypeError('camera: not an object or null');
+  const id = str(o['elementId'], 'camera.elementId');
+  if (id === '') throw new TypeError('camera.elementId: empty');
+  const size = o['size'];
+  if (!Array.isArray(size) || size.length !== 2) throw new TypeError('camera.size: not two integers');
+  return {
+    elementId: id,
+    size: [positiveInt(size[0], 'camera.size/0'), positiveInt(size[1], 'camera.size/1')],
+    cameraToView: matrixOf(o['cameraToView'], 'camera.cameraToView'),
+  };
+}
+
+/** R5: the overlays of a Camera view answer. */
+function overlaysOf(v: unknown): SceneOverlays {
+  const o = obj(v);
+  if (!o) throw new TypeError('overlays: not an object');
+  const d = obj(o['selectionDisplay']);
+  if (!d) throw new TypeError('overlays.selectionDisplay: not an object');
+  const corners = (x: unknown, w: string): [Pt, Pt, Pt, Pt] => {
+    const pts = list(x, w, point);
+    if (pts.length !== 4) throw new TypeError(`${w}: not four corners`);
+    return pts as [Pt, Pt, Pt, Pt];
+  };
+  return {
+    cameraFrame: orderedBox(o['cameraFrame'], 'overlays.cameraFrame'),
+    pivots: list(o['pivots'], 'overlays.pivots', point),
+    selectionBoxes: list(o['selectionBoxes'], 'overlays.selectionBoxes', orderedBox),
+    selectionUnion:
+      o['selectionUnion'] == null ? null : orderedBox(o['selectionUnion'], 'overlays.selectionUnion'),
+    otherCameras: list(o['otherCameras'], 'overlays.otherCameras', corners),
+    selectionDisplay: {
+      outlineOnSelection: bool(d['outlineOnSelection'], 'overlays.selectionDisplay.outlineOnSelection'),
+      boxHighlighting: bool(d['boxHighlighting'], 'overlays.selectionDisplay.boxHighlighting'),
+      keepSelectionVisible: bool(d['keepSelectionVisible'], 'overlays.selectionDisplay.keepSelectionVisible'),
+    },
+    currentOnTop: bool(o['currentOnTop'], 'overlays.currentOnTop'),
+  };
+}
+
 /** Validates a `canvas_scene` answer; throws a TypeError naming the first malformed field. */
 export function parseSceneAnswer(v: unknown): SceneAnswer {
   const a = obj(v);
@@ -125,6 +227,15 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
   if (!g) throw new TypeError('grid: not an object');
   const gridType = str(g['type'], 'grid.type');
   if (!GRIDS.has(gridType)) throw new TypeError(`grid.type: unknown ${gridType}`);
+  // R1: the form's major version is 1.
+  const formRaw = s['sceneForm'];
+  const sceneForm = formRaw === undefined ? '1.0' : str(formRaw, 'sceneForm');
+  if (!/^1\.\d+$/.test(sceneForm)) throw new TypeError(`sceneForm: unknown ${sceneForm}`);
+  // R2.
+  const viewTypeRaw = s['viewType'] === undefined ? 'drawing' : str(s['viewType'], 'viewType');
+  if (viewTypeRaw !== 'drawing' && viewTypeRaw !== 'camera')
+    throw new TypeError(`viewType: unknown ${viewTypeRaw}`);
+  const camera = viewTypeRaw === 'camera';
   const entriesRaw = s['entries'];
   if (!Array.isArray(entriesRaw)) throw new TypeError('entries: not an array');
   const entries = entriesRaw.map((e: unknown, i): SceneEntry => {
@@ -133,7 +244,18 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
     const role = str(o['role'], `entries/${String(i)}/role`);
     if (!ROLES.has(role)) throw new TypeError(`entries/${String(i)}/role: unknown ${role}`);
     const tint = o['tint'];
+    const at = `entries/${String(i)}`;
+    // R4 (Camera view: every occurrence names its element and matrix) and R6 (Drawing view: no matrix).
+    let occurrence: { elementId?: string; matrix?: Matrix } = {};
+    if (camera) {
+      const id = str(o['elementId'], `${at}/elementId`);
+      if (id === '') throw new TypeError(`${at}/elementId: empty`);
+      occurrence = { elementId: id, matrix: matrixOf(o['matrix'], `${at}/matrix`) };
+    } else if (o['matrix'] !== undefined) {
+      throw new TypeError(`${at}/matrix: a Drawing view entry has no matrix`);
+    }
     return {
+      ...occurrence,
       drawingId: str(o['drawingId'], `entries/${String(i)}/drawingId`),
       rev: u64(o['rev'], `entries/${String(i)}/rev`),
       role: role as SceneEntry['role'],
@@ -143,6 +265,19 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
       outline: bool(o['outline'], `entries/${String(i)}/outline`),
     };
   });
+  // R3, R4, R5, R6: the Camera view's members.
+  let frame: number | null = null;
+  let cam: SceneCamera | null = null;
+  let overlays: SceneOverlays | null = null;
+  if (camera) {
+    frame = positiveInt(s['frame'], 'frame');
+    cam = cameraOf(s['camera']);
+    if (cam === null && entries.length > 0)
+      throw new TypeError('entries: a Camera view without a camera has none');
+    overlays = overlaysOf(s['overlays']);
+  } else if (s['camera'] !== undefined || s['overlays'] !== undefined) {
+    throw new TypeError('camera: a Drawing view answer has no camera or overlays');
+  }
   const coloursRaw = obj(s['colours']);
   if (!coloursRaw) throw new TypeError('colours: not an object');
   const colours: Record<string, Rgba> = {};
@@ -163,6 +298,11 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
       // D-7e: absent and `null` both mean no current drawing (no pivot to show).
       drawingPivot: s['drawingPivot'] == null ? null : point(s['drawingPivot'], 'drawingPivot'),
       selection: selectionOf(s['selection']),
+      sceneForm,
+      viewType: viewTypeRaw,
+      frame,
+      camera: cam,
+      overlays,
     },
   };
 }

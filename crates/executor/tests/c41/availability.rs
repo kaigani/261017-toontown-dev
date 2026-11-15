@@ -470,6 +470,9 @@ fn apply_state(h: &ExecutorHandle, part: &str, vars: &mut BTreeMap<&'static str,
         "drawing-view" => ok(h, "view.active.set", json!({ "viewId": "drawingView" })),
         // C42A-R1-08: the Drawing view window switched to the Camera view type.
         "drawing-view-as-camera" => ok(h, "view.type.set", json!({ "viewId": "drawingView", "type": "camera" })),
+        // M4 C4.3a: the Top view (M6 C6.1's) active, and the Drawing view window switched to the Top view type.
+        "top-view" => ok(h, "view.active.set", json!({ "viewId": "topView" })),
+        "drawing-view-as-top" => ok(h, "view.type.set", json!({ "viewId": "drawingView", "type": "top" })),
         "peg-selected" => {
             let peg = created_id(h, "peg");
             select_rows(h, &[&peg]);

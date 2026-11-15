@@ -319,11 +319,19 @@ fn pt(p: Point) -> Value {
     json!({ "x": p.x, "y": p.y })
 }
 
+/// A tool whose gestures are not built (SI-129; C4.3 plan answer 5): Edit Texture's are M7 C7.1's (its row names the
+/// edit-texture tool); no milestone row names the Contour Editor, Perspective, Reposition All Drawings or Text tools,
+/// so they have no owner and M4's merge note lists them for the spec owner to assign.
 fn not_built(tool: &str) -> CommandError {
+    let owner = if tool == "editTexture" { Some("M7 C7.1") } else { None };
+    let why = owner.map_or_else(
+        || "no milestone names them yet: listed in M4's merge note for the spec owner".to_owned(),
+        |o| format!("owner {o}"),
+    );
     CommandError::with_details(
         codes::COMMAND_NOT_IMPLEMENTED,
-        format!("gestures of the {tool} tool are not built yet (owner M4 C4.3, SI-129); use its structured command"),
-        json!({ "toolId": tool, "owner": "M4 C4.3" }),
+        format!("gestures of the {tool} tool are not built ({why}; SI-129); use its structured command"),
+        json!({ "toolId": tool, "owner": owner }),
     )
 }
 

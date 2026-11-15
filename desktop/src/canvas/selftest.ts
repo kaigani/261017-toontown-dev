@@ -125,6 +125,11 @@ export function measureScene(name: SceneName): { drawings: Map<string, DecodedDr
       paletteStamp: 0,
       drawingPivot: null,
       selection: null,
+      sceneForm: '1.1',
+      viewType: 'drawing',
+      frame: null,
+      camera: null,
+      overlays: null,
     },
   };
 }

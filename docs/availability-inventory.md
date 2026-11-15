@@ -45,7 +45,8 @@ copied); `clipboard-cells` (Bob's frame-1 cell copied, Bob current); `clipboard-
 the Camera view focused); `frame-3` (Bob current at frame 3); `no-project` (no project open); `drawing-view` (the
 Drawing view window made active, M4 C4.2); `painted-zone-selected` (a closed rectangle on a new layer, its zone
 painted and selected, no brush stroke; M4 C4.2); `drawing-view-as-camera` (the Drawing view window switched to the
-Camera view type; M4 C4.2). A JSON object after a state name gives the reference's parameters in that state.
+Camera view type; M4 C4.2); `top-view` (the Top view window made active; M4 C4.3a); `drawing-view-as-top` (the
+Drawing view window switched to the Top view type; M4 C4.3a). A JSON object after a state name gives the reference's parameters in that state.
 
 ## Every command
 
@@ -162,6 +163,7 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `anim.segment.uniform.apply` | `anim.frameInvalid` | parameter | a frame value is outside 1-100000 |  |
 | `anim.segment.uniform.apply` | `anim.frameNotInteger` | parameter | a key frame must be an integer |  |
 | `anim.segment.uniform.apply` | `anim.notFound` | parameter | the function the caller names does not exist |  |
+| `anim.tool.set` | `command.notImplemented` | parameter | the caller's `tool` or `cycleRotate`: the scene tools other than Select and Transform, and cycle rotate, are M6's (C4.3 plan answer 2) |  |
 | `anim.transform.set` | `anim.channelUnsupported` | parameter | the channel the caller names does not apply to the node |  |
 | `anim.transform.set` | `anim.frameInvalid` | parameter | a frame value is outside 1-100000 |  |
 | `anim.transform.set` | `anim.frameNotInteger` | parameter | a key frame must be an integer |  |
@@ -299,47 +301,72 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `colour.fillMapping.set` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
 | `colour.gap.close` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `colour.gap.close` | `colour.noGapFound` | parameter | no stroke ends near both ends of the drag the caller gives |  |
-| `colour.gap.close` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
+| `colour.gap.close` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (the Camera view converts since M4 C4.3a; Top and Side views: M6 C6.1) |  |
 | `colour.gap.close` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `colour.gap.close` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `colour.gap.close` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `colour.gap.close` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
+| `colour.gap.close` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |
+| `colour.gap.close` | `anim.valueOutOfRange` | parameter | only for points the caller gives in scene space or a Camera view's pixels: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `colour.gap.close` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
+| `colour.gap.close` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `colour.gap.close` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `colour.missing.list` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
 | `colour.paint.apply` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `colour.paint.apply` | `colour.noCurrentColour` | precheck | the project has no colour to paint with | untestable: no implemented command removes palette colours, and a project is created with the default palette |
 | `colour.paint.apply` | `colour.noTarget` | parameter | the given targets cover nothing to paint |  |
 | `colour.paint.apply` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
 | `colour.paint.apply` | `colour.staleZoneId` | parameter | a zone ID the caller names no longer exists |  |
-| `colour.paint.apply` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
+| `colour.paint.apply` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (the Camera view converts since M4 C4.3a; Top and Side views: M6 C6.1) |  |
 | `colour.paint.apply` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `colour.paint.apply` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `colour.paint.apply` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
 | `colour.paint.apply` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `colour.paint.apply` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
+| `colour.paint.apply` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |
+| `colour.paint.apply` | `anim.valueOutOfRange` | parameter | only for points the caller gives in scene space or a Camera view's pixels: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `colour.paint.apply` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
+| `colour.paint.apply` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `colour.paint.apply` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `colour.paint.remove` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `colour.paint.remove` | `colour.noTarget` | parameter | the given targets cover nothing to paint |  |
 | `colour.paint.remove` | `colour.staleZoneId` | parameter | a zone ID the caller names no longer exists |  |
-| `colour.paint.remove` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
+| `colour.paint.remove` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (the Camera view converts since M4 C4.3a; Top and Side views: M6 C6.1) |  |
 | `colour.paint.remove` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `colour.paint.remove` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `colour.paint.remove` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
 | `colour.paint.remove` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `colour.paint.remove` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
+| `colour.paint.remove` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |
+| `colour.paint.remove` | `anim.valueOutOfRange` | parameter | only for points the caller gives in scene space or a Camera view's pixels: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `colour.paint.remove` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
+| `colour.paint.remove` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `colour.paint.remove` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `colour.paintUnpainted.apply` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `colour.paintUnpainted.apply` | `colour.noCurrentColour` | precheck | the project has no colour to paint with | untestable: no implemented command removes palette colours, and a project is created with the default palette |
 | `colour.paintUnpainted.apply` | `colour.noTarget` | parameter | the given targets cover nothing to paint |  |
 | `colour.paintUnpainted.apply` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
 | `colour.paintUnpainted.apply` | `colour.staleZoneId` | parameter | a zone ID the caller names no longer exists |  |
-| `colour.paintUnpainted.apply` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
+| `colour.paintUnpainted.apply` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (the Camera view converts since M4 C4.3a; Top and Side views: M6 C6.1) |  |
 | `colour.paintUnpainted.apply` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `colour.paintUnpainted.apply` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `colour.paintUnpainted.apply` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
 | `colour.paintUnpainted.apply` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `colour.paintUnpainted.apply` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
+| `colour.paintUnpainted.apply` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |
+| `colour.paintUnpainted.apply` | `anim.valueOutOfRange` | parameter | only for points the caller gives in scene space or a Camera view's pixels: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `colour.paintUnpainted.apply` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
+| `colour.paintUnpainted.apply` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `colour.paintUnpainted.apply` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `colour.pick` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
-| `colour.pick` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (M4 C4.3 builds the other types) |  |
+| `colour.pick` | `command.notImplemented` | parameter | view space of a view window that does not show the Drawing view: the caller's `space: "view"` or `view` (the Camera view converts since M4 C4.3a; Top and Side views: M6 C6.1) |  |
 | `colour.pick` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing {"point": {"x": 0, "y": 0}, "space": "drawing"} · pass: drawing {"point": {"x": 0, "y": 0}, "space": "drawing"} |
 | `colour.pick` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
+| `colour.pick` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |
+| `colour.pick` | `anim.valueOutOfRange` | parameter | only for points the caller gives in scene space or a Camera view's pixels: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `colour.pick` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
+| `colour.pick` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `colour.pick` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `colour.recolour.apply` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `colour.recolour.apply` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
 | `colour.recolour.apply` | `colour.protected` | parameter | the colour the caller names is protected |  |
@@ -525,13 +552,19 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `draw.point.delete` | `drawing.nothingToDo` | precheck | nothing selected in the drawing | refuse: drawing · pass: anchors-selected |
 | `draw.point.delete` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
 | `draw.point.delete` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
-| `draw.point.move` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (M4 C4.3 builds the other types) |  |
+| `draw.point.move` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (the Camera view converts since M4 C4.3a; Top and Side views: M6 C6.1) |  |
 | `draw.point.move` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `draw.point.move` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
 | `draw.point.move` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `draw.point.move` | `drawing.nothingToDo` | precheck | nothing selected in the drawing | refuse: drawing · pass: anchors-selected |
 | `draw.point.move` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
 | `draw.point.move` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
+| `draw.point.move` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |
+| `draw.point.move` | `anim.valueOutOfRange` | parameter | only for points the caller gives in scene space or a Camera view's pixels: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `draw.point.move` | `arg.invalid` | parameter | a parameter value or combination is invalid (scene-space points without a current element, or an element plane edge-on in scene X and Y, SI-146) |  |
+| `draw.point.move` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
+| `draw.point.move` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `draw.point.move` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `draw.point.set` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-stroke {"strokeId": "$stroke"} · pass: stroke {"strokeId": "$stroke"} |
 | `draw.point.set` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing {"strokeId": "s_local"} · pass: stroke {"strokeId": "$stroke"} |
 | `draw.point.set` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
@@ -543,13 +576,18 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `draw.polyline.add` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `draw.polyline.add` | `arg.missing` | parameter | a parameter the call needs is missing |  |
 | `draw.polyline.add` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
-| `draw.polyline.add` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (M4 C4.3 builds the other types) |  |
+| `draw.polyline.add` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (the Camera view converts since M4 C4.3a; Top and Side views: M6 C6.1) |  |
 | `draw.polyline.add` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `draw.polyline.add` | `drawing.noTarget` | precheck | no current drawing | refuse: blank-cell {"createDrawing": false} · pass: blank-cell {} |
 | `draw.polyline.add` | `drawing.notVectorElement` | precheck | the addressed element is not a drawing or annotation element | refuse: peg-current · pass: drawing |
 | `draw.polyline.add` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
 | `draw.polyline.add` | `pen.notFound` | parameter | the pen the caller names does not exist |  |
 | `draw.polyline.add` | `tool.valueOutOfRange` | parameter | a tool value is out of range |  |
+| `draw.polyline.add` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |
+| `draw.polyline.add` | `anim.valueOutOfRange` | parameter | only for points the caller gives in scene space or a Camera view's pixels: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `draw.polyline.add` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
+| `draw.polyline.add` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `draw.polyline.add` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `draw.rectangle.add` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `draw.rectangle.add` | `arg.missing` | parameter | a parameter the call needs is missing |  |
 | `draw.rectangle.add` | `colour.notFound` | parameter | a colour the caller names is not in any palette |  |
@@ -579,10 +617,15 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `draw.segment.move` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
 | `draw.segment.move` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
 | `draw.selection.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
-| `draw.selection.set` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (M4 C4.3 builds the other types) |  |
+| `draw.selection.set` | `command.notImplemented` | parameter | the caller's `view` (or `space: "view"`) names a view window that does not show the Drawing view (the Camera view converts since M4 C4.3a; Top and Side views: M6 C6.1) |  |
 | `draw.selection.set` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing {"by": "all"} · pass: drawing {"by": "all"} |
 | `draw.selection.set` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `draw.selection.set` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
+| `draw.selection.set` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |
+| `draw.selection.set` | `anim.valueOutOfRange` | parameter | only for points the caller gives in scene space or a Camera view's pixels: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `draw.selection.set` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
+| `draw.selection.set` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `draw.selection.set` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `draw.smooth.apply` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `draw.smooth.apply` | `colour.staleZoneId` | parameter | a zone ID the caller names no longer exists |  |
 | `draw.smooth.apply` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
@@ -834,7 +877,7 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `render.frame.run` | `command.notImplemented` | unreachable | `active_view` runs only while the active view window shows the Drawing view, the window `drawing_view(None)` then returns |  |
 | `render.frame.run` | `drawing.noTarget` | precheck | `composition: "activeView"` with the Drawing view active and no current drawing | refuse: no-drawing+drawing-view {"composition": "activeView"} · pass: drawing+drawing-view {"composition": "activeView"} |
 | `render.frame.run` | `export.fileExists` | parameter | the output file the caller names exists |  |
-| `render.frame.run` | `render.compositionUnavailable` | precheck | `xsheet` (M5 C5.1), or `activeView` while the active view window is not the Drawing view (M4 C4.3) | refuse: drawing {"composition": "activeView"} · pass: drawing+drawing-view {"composition": "activeView"} |
+| `render.frame.run` | `render.compositionUnavailable` | precheck | `xsheet` (M5 C5.1), or `activeView` while the active view window is a Top or Side view (M6 C6.1; the Drawing view renders since M4 C4.2 and the Camera view since M4 C4.3a) | refuse: drawing+top-view {"composition": "activeView"} · pass: drawing+drawing-view {"composition": "activeView"} |
 | `render.frame.run` | `render.emptyDrawing` | parameter | the drawing the caller names is empty |  |
 | `render.frame.run` | `render.frameInvalid` | parameter | a frame value is outside 1-100000 |  |
 | `render.frame.run` | `render.inlineTooLarge` | parameter | the inline image the caller asks for is too large |  |
@@ -871,9 +914,16 @@ Camera view type; M4 C4.2). A JSON object after a state name gives the reference
 | `view.coordinates.convert` | `anim.notFound` | parameter | scene space (the caller's `from` or `to`) evaluates the current element, which the evaluator does not know |  |
 | `view.coordinates.convert` | `anim.valueOutOfRange` | parameter | scene space (the caller's `from` or `to`) evaluates a transform out of range |  |
 | `view.coordinates.convert` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
-| `view.coordinates.convert` | `command.notImplemented` | precheck | the view window shows a staging view (Camera, Top or Side: M4 C4.3) | refuse: drawing+drawing-view-as-camera {"viewId": "drawingView", "from": "view", "to": "drawing", "point": {"x": 960, "y": 540}} · pass: drawing {"viewId": "drawingView", "from": "view", "to": "drawing", "point": {"x": 960, "y": 540}} |
+| `view.coordinates.convert` | `command.notImplemented` | precheck | the view window shows a Top or Side view (M6 C6.1; the Camera view converts since M4 C4.3a) | refuse: drawing+drawing-view-as-top {"viewId": "drawingView", "from": "view", "to": "drawing", "point": {"x": 960, "y": 540}} · pass: drawing {"viewId": "drawingView", "from": "view", "to": "drawing", "point": {"x": 960, "y": 540}} |
+| `view.coordinates.convert` | `inspect.behindCamera` | parameter | only for points the caller gives in a Camera view's pixels: the current element's plane is at or behind the camera's near plane, so they do not reach its drawing (views note §6) |  |
+| `view.coordinates.convert` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `view.coordinates.convert` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `view.pan.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `view.pan.set` | `arg.missing` | parameter | none of `centre`, `by` and `atPointer` is given |  |
+| `view.pan.set` | `anim.notFound` | parameter | only for points the caller gives in scene space or a Camera view's pixels (`space`, `view`; M4 C4.3a): the transform evaluation of the element or the camera they pass through |  |
+| `view.pan.set` | `anim.valueOutOfRange` | parameter | only for points the caller gives in scene space or a Camera view's pixels: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `view.pan.set` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `view.pan.set` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `view.rotation.set` | `arg.invalid` | parameter | both `degrees` and `steps` are given, or a value is not finite |  |
 | `view.rotation.set` | `arg.missing` | parameter | neither `degrees` nor `steps` is given |  |
 | `view.zoom.set` | `arg.invalid` | parameter | both `zoom` and `steps` are given, or a value is not finite |  |

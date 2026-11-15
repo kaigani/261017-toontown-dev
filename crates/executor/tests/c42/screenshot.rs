@@ -53,8 +53,9 @@ fn s2_the_caps_are_checked_before_rendering() {
     let e = err(&h, "inspect.screenshot", json!({ "region": { "x": 0, "y": 0, "w": 2049, "h": 10 } }));
     assert_eq!((e.code.as_str(), e.details["maxInlinePixels"].as_u64()), ("render.inlineTooLarge", Some(2048)));
     assert_eq!(err(&h, "inspect.screenshot", json!({ "target": "dialogs" })).code, "view.notFound");
-    let e = err(&h, "inspect.screenshot", json!({ "target": "cameraView" }));
-    assert_eq!((e.code.as_str(), &e.details["milestone"]), ("command.notImplemented", &json!("M4 C4.3")));
+    // The Camera view is captured headless since M4 C4.3a; the Top and Side views wait for M6 C6.1.
+    let e = err(&h, "inspect.screenshot", json!({ "target": "topView" }));
+    assert_eq!((e.code.as_str(), &e.details["milestone"]), ("command.notImplemented", &json!("M6 C6.1")));
 }
 
 #[test]
