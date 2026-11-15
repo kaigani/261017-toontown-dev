@@ -16,6 +16,15 @@ Before the code (plan reviews/M4-C4.2-plan.md §4, ruling D-3: C4.2a). Requireme
   canvas size comes from the host each launch.
 - Headless and before the host reports a size: the Drawing view is the SI-069 virtual view, 1920 × 1080 px; the other
   views keep 960 × 540.
+- **The active view** (01 §4; amended in C4.2b round 3). The active view window is the one last *activated* while it
+  is shown, else the central view. A view is activated by `view.active.set` (its GUI path, 01 §12: a click into the
+  view window, not wired in the window yet, SI-142) and by `app.mode.set`, which activates a view of the requested type;
+  a view that is hidden or closed stops being active and the central view is used until another is activated. Focus
+  does not activate a view: a float's window taking the OS focus, or `window.panel.set {focus: true}`, moves
+  `focusedPanel` only. The active view's type decides the mode (01 §4) and is what `render.frame.run {composition:
+  "activeView"}` draws; its result does not name the view (SI-142: read `app.state.get` in the same batch).
+  `inspect.screenshot` names the view it captured. A canvas and its gestures address their own view id, so a floated
+  Drawing view draws and commits whether or not it is the active view. (`ui.rs` `active_view`.)
 
 ## 2. The mapping (one function)
 

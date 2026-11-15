@@ -1684,10 +1684,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
      with one operation (translate, scale or rotate alone, or `copy`) carries that operation's label, the same as the
      gesture; a call combining operations, or carrying `skew` or `matrix`, carries "Move/Scale/Rotate Object". The
      shape commands carry their tools' labels ("Rectangle Tool", "Ellipse Tool", "Line Tool", "Polyline Tool") and
-     `draw.cut.apply` with `rect` carries "Scissor Tool", with `polygon` "Cutter Tool". One case remains open: the
-     Scissor's free-form cut (alternate, 02 §7.4.3: "Scissor Tool") runs a polygon cut and keeps "Cutter Tool", because
-     the C4.2a reviewer test `part_d_equivalence::scissor` requires the gesture's label to equal the command's.
-     Question: should the free-form Scissor commit as "Scissor Tool"?
+     `draw.cut.apply` with `rect` carries "Scissor Tool", with `polygon` "Cutter Tool". A gesture whose tool reuses
+     another tool's command commits under the acting tool's label (02 §5.2, §7; C42B-R3-20): the Scissor's free-form
+     cut (alternate) runs the polygon cut and commits as "Scissor Tool"; the temporary Select is the Select tool; the
+     pen's eraser end is the Eraser; the temporary Dropper commits no step. The reading of §13.5 is confirmed by
+     ruling D-20 (C4.2b round 3); a combined call's "Move/Scale/Rotate Object" stays the interim. Question: the label
+     of a combined `draw.transform.apply` call, or one with `skew` or `matrix`.
   7. A routed agent gesture whose window is destroyed or reloaded, or whose canvas reports `rect: null`, answers
      `ui.viewNotFound` with `details: {reason: "windowClosed", viewId}` at once, nothing committed (D-7a).
   8. An agent gesture is played in the window at no fewer than 16 events per frame and over at most 120 frames (about
@@ -1709,3 +1711,18 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
       click) continues that double click and opens nothing: a pointer press carries no click count, so the window
       counts for itself. Question: should an open multi-click gesture time out, and after how long?
 - **Question:** confirm each, or state the values in 02 and 11.
+
+## SI-142 — which view an `activeView` render used (found in M4 C4.2b round 3; interim)
+
+- **Sections:** 09 §11.4 (`RenderResult`), 11 §7.5 (`render`, `screenshot`), A (`render.frame.run`), 01 §4 (the
+  active view), the views note §1.
+- **Problem:** `render.frame.run {composition: "activeView"}` renders the active view, which is the view last
+  activated while shown, else the central view; focus alone does not move it (a float's window taking the focus
+  moves `focusedPanel` only). Its result (09 §11.4's `RenderResult`, with 11 §7.5's additions) has no member naming
+  the view, so an agent working with floats cannot tell from the result which view was drawn. `inspect.screenshot`
+  already answers its `viewId`.
+- **Interim decision:** the result shape is unchanged. An agent that needs to know reads `app.state.get` (its
+  `activeView`) and renders in one batch, which runs both against the same state; or it activates the view it means
+  first (`view.active.set`), as the e2e does.
+- **Question:** should `RenderResult` name the view for an `activeView` render (for example `viewId`), and should a
+  click into a view window activate it (01 §12's GUI column for `view.active.set`)?
