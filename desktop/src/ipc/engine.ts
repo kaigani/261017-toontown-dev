@@ -225,6 +225,26 @@ function failureOf(error: unknown): Envelope {
 
 let nextToken = 1;
 
+/**
+ * The JSON text of a `gesture_commit` request (C42B-R1-04): the native writer when every value is what the wire writer
+ * would write the same way (finite numbers below 2^53, ASCII strings, no `bigint`): the collector's events always
+ * are, and a 10,000-sample gesture then costs about 1 ms instead of 18; anything else goes through the wire writer.
+ */
+export function gestureJson(request: Record<string, unknown>): string {
+  const plain = (v: unknown, depth: number): boolean => {
+    if (depth > 8) return false;
+    if (v === null || typeof v === 'boolean') return true;
+    if (typeof v === 'number') return Number.isFinite(v) && Math.abs(v) < 2 ** 53;
+    if (typeof v === 'string') return /^[\x20-\x7e]*$/.test(v);
+    if (Array.isArray(v)) return v.every((x) => plain(x, depth + 1));
+    if (typeof v === 'object' && Object.getPrototypeOf(v) === Object.prototype) {
+      return Object.values(v).every((x) => x === undefined || plain(x, depth + 1));
+    }
+    return false;
+  };
+  return plain(request, 1) ? JSON.stringify(request) : stringifyWireJson(request);
+}
+
 export function createEngineApi(transport: HostTransport): EngineApi {
   const invoke = async (command: string, args: unknown): Promise<unknown> =>
     transport.invoke(command, { json: stringifyWireJson(args) });
@@ -289,7 +309,7 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     },
     async gestureCommit(request) {
       try {
-        const v = await invoke('gesture_commit', { ...request, generation });
+        const v = await transport.invoke('gesture_commit', { json: gestureJson({ ...request, generation }) });
         return (
           asEnvelope(v) ??
           localFailure('ipc.invalidResponse', 'the answer to a gesture is not a command envelope')

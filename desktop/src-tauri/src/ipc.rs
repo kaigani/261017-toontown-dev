@@ -363,6 +363,7 @@ pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, St
     // and answers the waiting agent call too.
     let agent = agent_request_of(&mut request)?;
     let generation = generation_of(&mut request)?;
+    let events = request.get("events").and_then(Value::as_array).map_or(0, Vec::len);
     let env = tauri::async_runtime::spawn_blocking(move || {
         let host = app.state::<Host>();
         match (agent, host.attached()) {
@@ -373,7 +374,26 @@ pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, St
     })
     .await
     .map_err(|e| internal(e.to_string()))?;
-    respond(&env)
+    respond(&for_window(env, events))
+}
+
+/// The window keeps a record of a gesture of more than this many events by count, its commands by id (SI-141 item 9);
+/// the canvas's `RECORD_EVENTS`.
+const RECORD_EVENTS: usize = 4096;
+
+/// The answer the window gets for a gesture of `events` events: the envelope as it is, except that a gesture over
+/// [`RECORD_EVENTS`] answers its commands without their parameters, which repeat every sample and which the window
+/// does not keep (C42B-R1-04: parsing them cost the window about 20 ms per 10,000 samples). An agent's routed call is
+/// answered with the whole envelope by [`crate::attached::WindowIo::finish`].
+fn for_window(mut env: tt_executor::Envelope, events: usize) -> tt_executor::Envelope {
+    if events > RECORD_EVENTS
+        && let Some(commands) = env.result.as_mut().and_then(|r| r.get_mut("commands")).and_then(Value::as_array_mut)
+    {
+        for c in commands.iter_mut().filter_map(Value::as_object_mut) {
+            c.remove("params");
+        }
+    }
+    env
 }
 
 fn engine_error(e: &tt_executor::CommandError) -> tt_engine::ErrorInfo {
@@ -580,6 +600,17 @@ mod tests {
         ] {
             assert_eq!(code(&generation(bad.clone())).as_deref(), Some("arg.invalid"), "{bad}");
         }
+        // The window's answer to a gesture over the record's cap carries its commands without their parameters.
+        let env = |n: usize| {
+            let e = tt_executor::Envelope::ok(
+                json!({ "commands": [{ "commandId": "draw.stroke.add", "params": { "points": [] }, "envelope": {} }] }),
+                None,
+            );
+            for_window(e, n).result.unwrap()["commands"][0].clone()
+        };
+        assert_eq!(env(RECORD_EVENTS)["params"], json!({ "points": [] }), "within the cap: as it is");
+        assert!(env(RECORD_EVENTS + 1).get("params").is_none(), "over the cap: no parameters");
+        assert_eq!(env(RECORD_EVENTS + 1)["commandId"], "draw.stroke.add");
         let stale = stale_gesture(2, 3);
         let e = stale.error.as_ref().unwrap();
         assert_eq!(
