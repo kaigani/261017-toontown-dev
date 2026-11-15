@@ -215,7 +215,7 @@ mod scene_tools {
     }
     #[test]
     fn click_short_drag_and_empty_click_are_nonundoable_selection() {
-        // 05:351: more than 3px starts drag. 05:395, §17: selection,
+        // 05:351: more than 3px starts drag. 05:395, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§17: selection,
         // not a document mutation or an undo step.
         let (h, id) = ready();
         let before = ok(&h, "edit.history.get", json!({}));
@@ -244,5 +244,584 @@ mod scene_tools {
         ok(&h, "tool.active.set", json!({"toolId":"brush"}));
         assert_eq!(ok(&h, "anim.tool.get", json!({})), json!({"tool":"transform"}));
         assert_eq!(ok(&h, "edit.history.get", json!({})), hist);
+    }
+}
+
+mod part_b_composition {
+    use super::*;
+    fn ready() -> ExecutorHandle {
+        let h = fixture();
+        c33_support::clear(&h);
+        h
+    }
+    fn put(h: &ExecutorHandle, id: &str, x: f64, z: f64) {
+        ok(h, "anim.transform.set", json!({"nodeIds":[id],"target":"static","position":{"x":x,"y":0.,"z":z}}));
+    }
+    fn visible(h: &ExecutorHandle, id: &str, v: bool) {
+        ok(h, "element.visibility.set", json!({"elementIds":[id],"scope":"scene","visible":v}));
+    }
+    fn ids(s: &Value) -> Vec<String> {
+        s["entries"].as_array().unwrap().iter().map(|e| e["elementId"].as_str().unwrap().to_owned()).collect()
+    }
+    fn point(e: &Value, x: f64, y: f64) -> (f64, f64) {
+        let m: Vec<f64> = e["matrix"].as_array().unwrap().iter().map(|v| v.as_f64().unwrap()).collect();
+        ((m[0] * x + m[2] * y + m[4]) * 0.25, (m[1] * x + m[3] * y + m[5]) * 0.25)
+    }
+    fn colour_at(img: &c33_support::Img, p: (f64, f64), rgba: [u8; 4]) {
+        let (x, y) = (p.0.round() as i32, p.1.round() as i32);
+        assert!(
+            (-2..=2).any(|dx| (-2..=2).any(|dy| x + dx >= 0
+                && y + dy >= 0
+                && x + dx < (img.w as i32)
+                && y + dy < (img.h as i32)
+                && img.at((x + dx) as u32, (y + dy) as u32) == rgba)),
+            "missing {rgba:?} at {p:?}"
+        );
+    }
+    fn check(h: &ExecutorHandle, id: &str, rgba: [u8; 4]) -> Value {
+        let s = scene(h);
+        let e = s["entries"].as_array().unwrap().iter().find(|e| e["elementId"] == id).unwrap().clone();
+        assert_eq!(e["drawingId"], c33_support::drawing_at(h, id, 1));
+        assert_eq!(e["rev"], ok(h, "draw.drawing.get", json!({"drawingId":e["drawingId"]}))["rev"]);
+        let img = c33_support::render(h, json!({"composition":"camera","scale":0.25}));
+        colour_at(&img, point(&e, 0., 0.), rgba);
+        e
+    }
+    #[test]
+    fn case1_three_depths() {
+        // 05:263-265: smaller world Z first, front-most last; CV1 matrices.
+        let h = ready();
+        let cs = c33_support::solids(&h, 3);
+        let es: Vec<String> = (0..3).map(|i| c33_support::square(&h, &format!("Depth{i}"), 50., &cs[i].0)).collect();
+        for (i, e) in es.iter().enumerate() {
+            put(&h, e, 0., (i as f64 - 1.) * 4.);
+        }
+        assert_eq!(ids(&scene(&h)), es);
+        for (i, e) in es.iter().enumerate() {
+            for other in &es {
+                visible(&h, other, other == e);
+            }
+            check(&h, e, cs[i].1);
+        }
+        for e in &es {
+            visible(&h, e, true);
+        }
+        check(&h, &es[2], cs[2].1);
+    }
+    #[test]
+    fn case2_timeline_tie_reorder() {
+        // 05:263-267 ties follow Timeline; 04:467 above = front.
+        let h = ready();
+        let cs = c33_support::solids(&h, 2);
+        let a = c33_support::square(&h, "TieA", 50., &cs[0].0);
+        let b = c33_support::square(&h, "TieB", 50., &cs[1].0);
+        let root = ok(&h, "element.create", json!({"type":"peg","name":"TieRoot"}))["elementIds"][0].clone();
+        ok(&h, "element.parent.set", json!({"elementIds":[a,b],"parentId":root}));
+        for order in [[a.clone(), b.clone()], [b.clone(), a.clone()]] {
+            ok(&h, "element.order.set", json!({"order":"timeline","parentId":root,"elementIds":order}));
+            assert_eq!(ids(&scene(&h)), vec![order[1].clone(), order[0].clone()]);
+            check(&h, &order[0], if order[0] == a { cs[0].1 } else { cs[1].1 });
+            visible(&h, &order[0], false);
+            check(&h, &order[1], if order[1] == a { cs[0].1 } else { cs[1].1 });
+            visible(&h, &order[0], true);
+        }
+    }
+
+    #[test]
+    fn case3_two_cameras() {
+        // 05:236-247 inverse rigid view; 313 current camera; 901-902 outline only.
+        let h = ready();
+        let cs = c33_support::solids(&h, 1);
+        let a = c33_support::square(&h, "CameraMarker", 30., &cs[0].0);
+        put(&h, &a, 1., 0.);
+        let first = ok(&h, "anim.camera.current.get", json!({}))["cameraId"].clone();
+        let second = ok(
+            &h,
+            "anim.camera.create",
+            json!({"name":"Other","position":{"x":-1.,"y":0.5,"z":16.},"makeCurrent":false}),
+        )["cameraId"]
+            .clone();
+        ok(&h, "anim.camera.set", json!({"cameraId":second,"roll":30.}));
+        let mut matrices = Vec::new();
+        let mut images = Vec::new();
+        for (cam, x, y, roll) in [(first, 0., 0., 0_f64), (second, -1., 0.5, 30.)] {
+            ok(&h, "anim.camera.current.set", json!({"cameraId":cam}));
+            assert_eq!(ids(&scene(&h)), vec![a.clone()]);
+            let e = check(&h, &a, cs[0].1);
+            let p = point(&e, 0., 0.);
+            let (sn, co) = roll.to_radians().sin_cos();
+            // Default focal 2560, depth 16; output 1920x1080, render scale 1/4.
+            assert!((p.0 - (960. + 160. * (co * (1. - x) + sn * (-y))) * 0.25).abs() < 1e-6);
+            assert!((p.1 - (540. - 160. * (-sn * (1. - x) + co * (-y))) * 0.25).abs() < 1e-6);
+            matrices.push(e["matrix"].clone());
+            images.push(c33_support::render(&h, json!({"composition":"camera","scale":0.25})).rgba);
+        }
+        assert_ne!(matrices[0], matrices[1]);
+        assert_ne!(images[0], images[1]);
+    }
+    #[test]
+    fn case4_hidden_ancestor() {
+        // CV1 hidden ancestors absent in both; 05:314 all visible hierarchy content.
+        let h = ready();
+        let cs = c33_support::solids(&h, 1);
+        let a = c33_support::square(&h, "Child", 30., &cs[0].0);
+        let peg = ok(&h, "element.create", json!({"type":"peg","name":"Parent"}))["elementIds"][0].clone();
+        ok(&h, "element.parent.set", json!({"elementIds":[a],"parentId":peg}));
+        visible(&h, &a, true);
+        check(&h, &a, cs[0].1);
+        visible(&h, peg.as_str().unwrap(), false);
+        assert!(ids(&scene(&h)).is_empty());
+        let img = c33_support::render(&h, json!({"composition":"camera","scale":0.25}));
+        assert!(!img.rgba.as_chunks::<4>().0.iter().any(|c| *c == cs[0].1));
+        visible(&h, peg.as_str().unwrap(), true);
+        assert_eq!(ids(&scene(&h)), vec![a.clone()]);
+        check(&h, &a, cs[0].1);
+    }
+
+    #[test]
+    fn case5_near_plane() {
+        // 05:240-241 d <=0.1 omitted; SI-149 depth argument is scene Z.
+        // Camera Z=16 looking -Z: Z=15.901 gives d=.099, Z=15.899 gives d=.101.
+        let h = ready();
+        let cs = {
+            let c = c33_support::solids(&h, 3);
+            vec![c[2].clone(), c[1].clone()]
+        };
+        let behind = c33_support::square(&h, "NearClipped", 5., &cs[0].0);
+        let front = c33_support::square(&h, "NearVisible", 5., &cs[1].0);
+        put(&h, &behind, -0.01, 15.901);
+        put(&h, &front, 0.01, 15.899);
+        assert_eq!(ids(&scene(&h)), vec![front.clone()]);
+        check(&h, &front, cs[1].1);
+        let img = c33_support::render(&h, json!({"composition":"camera","scale":0.25}));
+        assert!(!img.rgba.as_chunks::<4>().0.iter().any(|c| *c == cs[0].1));
+    }
+    #[test]
+    fn case6_nested_pegs_three_corners() {
+        // 05:314 hierarchy transforms; 02:61 full chain; CV1 placement agrees.
+        let h = ready();
+        let cs = c33_support::solids(&h, 1);
+        let a = c33_support::square(&h, "Chain", 50., &cs[0].0);
+        let outer = ok(&h, "element.create", json!({"type":"peg","name":"Outer"}))["elementIds"][0].clone();
+        let inner = ok(&h, "element.create", json!({"type":"peg","name":"Inner"}))["elementIds"][0].clone();
+        ok(&h, "element.parent.set", json!({"elementIds":[inner],"parentId":outer}));
+        ok(&h, "element.parent.set", json!({"elementIds":[a],"parentId":inner}));
+        for (id, x, y, r, sx, sy) in [(outer, 0.4, 0.2, 23., 1.4, 0.8), (inner, 0.2, -0.3, -11., 0.7, 1.3)] {
+            ok(
+                &h,
+                "anim.transform.set",
+                json!({"nodeIds":[id],"target":"static","position":{"x":x,"y":y},"rotation":r,"scale":{"x":sx,"y":sy}}),
+            );
+        }
+        assert_eq!(ids(&scene(&h)), vec![a.clone()]);
+        let e = check(&h, &a, cs[0].1);
+        let img = c33_support::render(&h, json!({"composition":"camera","scale":0.25}));
+        let world = c33_support::Local::of(0.4, 0.2, 0., 23., 1.4, 0.8, 0.)
+            .then(&c33_support::Local::of(0.2, -0.3, 0., -11., 0.7, 1.3, 0.));
+        for (x, y) in [(-50., -50.), (50., -50.), (-50., 50.)] {
+            let p = point(&e, x, y);
+            let oracle = c33_support::du_to_pixel(&world, (x, y), 1920., 1080.);
+            assert!((p.0 - oracle.0 * 0.25).abs() < 1e-6 && (p.1 - oracle.1 * 0.25).abs() < 1e-6);
+            colour_at(&img, p, cs[0].1);
+            // An edge pixel of this colour must occur within two pixels of
+            // the predicted corner; interior-only proximity is insufficient.
+            let mut edge = false;
+            for dx in -2..=2 {
+                for dy in -2..=2 {
+                    let xx = (p.0.round() as i32 + dx) as u32;
+                    let yy = (p.1.round() as i32 + dy) as u32;
+                    if img.at(xx, yy) == cs[0].1
+                        && [(xx - 1, yy), (xx + 1, yy), (xx, yy - 1), (xx, yy + 1)]
+                            .iter()
+                            .any(|&(nx, ny)| img.at(nx, ny) != cs[0].1)
+                    {
+                        edge = true;
+                    }
+                }
+            }
+            assert!(edge, "no colour edge near {p:?}");
+        }
+    }
+
+    #[test]
+    fn case7_shared_drawing_clone() {
+        // 04:429-431 shared drawing bank, independent timing/transformation;
+        // CV2 one geometry per drawing, CV1 one occurrence per visible placement.
+        let h = ready();
+        let cs = c33_support::solids(&h, 3);
+        let rgba = cs[2].1;
+        let a = c33_support::square(&h, "Shared", 50., &cs[2].0);
+        let b = ok(&h, "element.clone", json!({"elementId":a,"name":"SharedClone"}))["elementId"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        put(&h, &a, -1., 0.);
+        put(&h, &b, 1., 0.);
+        let s = scene(&h);
+        assert_eq!(ids(&s).len(), 2);
+        assert!(ids(&s).contains(&a) && ids(&s).contains(&b));
+        let ea = check(&h, &a, rgba);
+        let eb = check(&h, &b, rgba);
+        assert_eq!(ea["drawingId"], eb["drawingId"]);
+        assert_eq!(ea["rev"], eb["rev"]);
+        assert_ne!(ea["matrix"], eb["matrix"]);
+        // Then overlap at unequal depth, so same-colour geometry still has
+        // independently specified membership/order and shared drawing identity.
+        put(&h, &a, 0., -4.);
+        put(&h, &b, 0., 0.);
+        assert_eq!(ids(&scene(&h)), vec![a, b.clone()]);
+        check(&h, &b, rgba);
+    }
+}
+
+mod part_c_mapping {
+    use super::*;
+    fn ready() -> (ExecutorHandle, String) {
+        let h = fixture();
+        c33_support::clear(&h);
+        let col = c33_support::solids(&h, 1)[0].0.clone();
+        let id = c33_support::square(&h, "Mapping", 50., &col);
+        ok(&h, "app.context.set", json!({"elementId":id,"frame":1}));
+        (h, id)
+    }
+    fn near(a: f64, b: f64) {
+        assert!((a - b).abs() < 1e-6, "{a} != {b}");
+    }
+    fn get(h: &ExecutorHandle, id: &str) -> Value {
+        ok(h, "draw.drawing.get", json!({"elementId":id,"frame":1}))
+    }
+    fn geometry(v: &Value) -> Value {
+        match v {
+            Value::Object(o) => Value::Object(
+                o.iter()
+                    .filter(|(k, _)| {
+                        !matches!(k.as_str(), "id" | "rev" | "drawingId" | "name")
+                            && !k.ends_with("Ids")
+                            && !k.ends_with("Id")
+                    })
+                    .map(|(k, v)| (k.clone(), geometry(v)))
+                    .collect(),
+            ),
+            Value::Array(a) => Value::Array(a.iter().map(geometry).collect()),
+            _ => v.clone(),
+        }
+    }
+    fn same(a: &Value, b: &Value) {
+        match (a, b) {
+            (Value::Number(x), Value::Number(y)) => near(x.as_f64().unwrap(), y.as_f64().unwrap()),
+            (Value::Array(x), Value::Array(y)) => {
+                assert_eq!(x.len(), y.len());
+                for (a, b) in x.iter().zip(y) {
+                    same(a, b);
+                }
+            }
+            (Value::Object(x), Value::Object(y)) => {
+                assert_eq!(x.len(), y.len(), "{a} vs {b}");
+                for (k, a) in x {
+                    same(a, &y[k]);
+                }
+            }
+            _ => assert_eq!(a, b),
+        }
+    }
+    #[test]
+    fn case1_scene_rectangle_nested_pegs() {
+        // 02:61, 1151-1155; SI-146: invert T_outer R_outer S_outer T_inner R_inner S_inner,
+        // then fields*100 = drawing units (02:86-89). Camera depth does not affect scene XY.
+        let (h, id) = ready();
+        let outer = ok(&h, "element.create", json!({"type":"peg","name":"Outer"}))["elementIds"][0].clone();
+        let inner = ok(&h, "element.create", json!({"type":"peg","name":"Inner"}))["elementIds"][0].clone();
+        ok(&h, "element.parent.set", json!({"elementIds":[inner],"parentId":outer}));
+        ok(&h, "element.parent.set", json!({"elementIds":[id],"parentId":inner}));
+        for (node, x, y, r, sx, sy) in [(outer, 0.4, 0.2, 23., 1.4, 0.8), (inner, 0.2, -0.3, -11., 0.7, 1.3)] {
+            ok(
+                &h,
+                "anim.transform.set",
+                json!({"nodeIds":[node],"target":"static","position":{"x":x,"y":y},"rotation":r,"scale":{"x":sx,"y":sy}}),
+            );
+        }
+        ok(&h, "anim.transform.set", json!({"nodeIds":[id],"target":"static","position":{"z":2.}}));
+        let inverse = |mut x: f64, mut y: f64| {
+            for (tx, ty, r, sx, sy) in [(0.4, 0.2, 23_f64, 1.4, 0.8), (0.2, -0.3, -11., 0.7, 1.3)] {
+                x -= tx;
+                y -= ty;
+                let (s, c) = r.to_radians().sin_cos();
+                (x, y) = ((c * x + s * y) / sx, (-s * x + c * y) / sy);
+            }
+            json!({"x":100.*x,"y":100.*y})
+        };
+        ok(&h, "app.context.set", json!({"elementId":id,"frame":1}));
+        let before = get(&h, &id);
+        ok(
+            &h,
+            "draw.rectangle.add",
+            json!({"space":"scene","from":{"x":1.,"y":1.},"to":{"x":2.,"y":3.},"layer":"new"}),
+        );
+        let got = geometry(&get(&h, &id));
+        ok(&h, "edit.undo", json!({}));
+        same(&geometry(&get(&h, &id)), &geometry(&before));
+        ok(&h, "draw.rectangle.add", json!({"from":inverse(1.,1.),"to":inverse(2.,3.),"layer":"new"}));
+        same(&got, &geometry(&get(&h, &id)));
+    }
+    #[test]
+    fn case2_view_four_shapes() {
+        // 02:61,103,1151-1155; 05:240-249. focal=1920/(2*.375)=2560;
+        // output=(960+f*R^-1(scene-camera).x/d,540-f*R^-1(...).y/d).
+        // At zoom 2, pan by (23,-17): view = (480,270)+2*(output-outputCentre)+(23,-17).
+        let (h, id) = ready();
+        let cam = ok(&h, "anim.camera.current.get", json!({}))["cameraId"].clone();
+        ok(&h, "anim.camera.set", json!({"cameraId":cam,"roll":30.,"position":{"x":1.,"y":-2.,"z":16.}}));
+        ok(&h, "view.zoom.set", json!({"viewId":"cameraView","zoom":2.}));
+        ok(&h, "view.pan.set", json!({"viewId":"cameraView","by":{"x":23.,"y":-17.}}));
+        let view = |x: f64, y: f64| {
+            let (s, c) = 30_f64.to_radians().sin_cos();
+            json!({"x":503.+320.*(c*(x/100.-1.)+s*(y/100.+2.)),"y":253.-320.*(-s*(x/100.-1.)+c*(y/100.+2.))})
+        };
+        for command in ["draw.stroke.add", "draw.selection.set", "draw.hitTest.get", "colour.paint.apply"] {
+            let mut args = match command {
+                "draw.stroke.add" => json!({"points":[{"x":10.,"y":10.},{"x":20.,"y":20.}],"fit":false}),
+                "draw.selection.set" => json!({"by":"point","point":{"x":0.,"y":0.}}),
+                "draw.hitTest.get" => json!({"point":{"x":0.,"y":0.}}),
+                _ => json!({"points":[{"x":0.,"y":0.}],"colourId":c33_support::solids(&h,2)[1].0}),
+            };
+            let direct = args.clone();
+            if let Some(points) = args.get_mut("points") {
+                for p in points.as_array_mut().unwrap() {
+                    *p = view(p["x"].as_f64().unwrap(), p["y"].as_f64().unwrap());
+                }
+            }
+            if args.get("point").is_some() {
+                args["point"] = view(0., 0.);
+            }
+            args["space"] = json!("view");
+            args["view"] = json!("cameraView");
+            let before = get(&h, &id);
+            let a = ok(&h, command, args);
+            let ga = geometry(&get(&h, &id));
+            if get(&h, &id) != before {
+                ok(&h, "edit.undo", json!({}));
+            }
+            let b = ok(&h, command, direct);
+            same(&geometry(&a), &geometry(&b));
+            same(&ga, &geometry(&get(&h, &id)));
+        }
+    }
+
+    #[test]
+    fn case3_brush_three_spaces() {
+        // 11:354, 02:61; 05:240-249. Identity element at Z=0:
+        // SI-109/SI-125 camera means centred fields (not output pixels).
+        // du=100*sceneXY, output=(960+160*x,540-160*y), view=output-(480,270).
+        let (h, id) = ready();
+        let mut results = Vec::new();
+        for (space, a, b) in [
+            ("view", (496., 238.), (528., 222.)),
+            ("scene", (0.1, 0.2), (0.3, 0.3)),
+            ("camera", (0.1, 0.2), (0.3, 0.3)),
+        ] {
+            let out=h.pointer(tt_executor::Origin::User,json!({"view":"cameraView","space":space,"tool":"brush","events":[{"type":"down","x":a.0,"y":a.1},{"type":"move","x":b.0,"y":b.1},{"type":"up","x":b.0,"y":b.1}]}));
+            assert!(out.is_ok(), "{out:?}");
+            let out = out.result.unwrap();
+            let cmd = out["commands"].as_array().unwrap().iter().find(|c| c["commandId"] == "draw.stroke.add").unwrap();
+            let pts = cmd["params"]["points"].as_array().unwrap();
+            near(pts[0]["x"].as_f64().unwrap(), 10.);
+            near(pts[0]["y"].as_f64().unwrap(), 20.);
+            near(pts.last().unwrap()["x"].as_f64().unwrap(), 30.);
+            near(pts.last().unwrap()["y"].as_f64().unwrap(), 30.);
+            results.push(geometry(&get(&h, &id)));
+            ok(&h, "edit.undo", json!({}));
+        }
+        same(&results[0], &results[1]);
+        same(&results[0], &results[2]);
+    }
+    #[test]
+    fn case4_unmappable_planes() {
+        // SI-145: no projection at d<=.1; SI-146: scene XY inverse is defined even there.
+        // Identity XY inverse = 100*XY (02:86-89); 11:354 pointer projects through camera.
+        let (h, id) = ready();
+        let mut failures = Vec::new();
+        for z in [15.95, 16.] {
+            ok(&h, "anim.transform.set", json!({"nodeIds":[id],"target":"static","position":{"z":z}}));
+            let before = geometry(&get(&h, &id));
+            let e = err(
+                &h,
+                "draw.stroke.add",
+                json!({"space":"view","view":"cameraView","points":[{"x":480.,"y":270.},{"x":490.,"y":280.}]}),
+            );
+            assert_eq!(e.code, "inspect.behindCamera");
+            for space in ["view", "scene"] {
+                let out=h.pointer(tt_executor::Origin::User,json!({"view":"cameraView","space":space,"tool":"brush","events":[{"type":"down","x":0.,"y":0.},{"type":"up","x":1.,"y":1.}]}));
+                if out.error.as_ref().is_none_or(|e| e.code != "inspect.behindCamera") {
+                    failures.push(format!("z={z} {space}: {out:?}"));
+                }
+                if geometry(&get(&h, &id)) != before {
+                    ok(&h, "edit.undo", json!({}));
+                }
+            }
+            same(&before, &geometry(&get(&h, &id)));
+            let pivot = ok(&h, "draw.pivot.set", json!({"space":"scene","point":{"x":0.1,"y":0.2}}));
+            near(pivot["pivot"]["x"].as_f64().unwrap(), 10.);
+            near(pivot["pivot"]["y"].as_f64().unwrap(), 20.);
+            ok(&h, "edit.undo", json!({}));
+            same(&before, &geometry(&get(&h, &id)));
+        }
+        assert!(failures.is_empty(), "{}", failures.join("\n"));
+    }
+
+    #[test]
+    fn case5_top_side_refuse() {
+        // V8: each Top/Side cell refuses command.notImplemented, owner M6 C6.1.
+        let (h, id) = ready();
+        for ty in ["top", "side"] {
+            ok(&h, "view.type.set", json!({"viewId":"cameraView","type":ty}));
+            let before = get(&h, &id);
+            let hist = ok(&h, "edit.history.get", json!({}));
+            for (cmd, p) in [
+                (
+                    "view.coordinates.convert",
+                    json!({"viewId":"cameraView","point":{"x":1.,"y":2.},"from":"view","to":"scene"}),
+                ),
+                ("anim.view.coords.get", json!({"viewId":"cameraView","points":[{"x":1.,"y":2.}],"from":"view"})),
+                ("draw.pivot.set", json!({"space":"view","view":"cameraView","point":{"x":1.,"y":2.}})),
+            ] {
+                let e = err(&h, cmd, p);
+                assert_eq!(e.code, "command.notImplemented");
+                assert!(e.message.contains("M6 C6.1"), "{e:?}");
+            }
+            let e = h
+                .pointer(
+                    tt_executor::Origin::User,
+                    json!({"view":"cameraView","events":[{"type":"down","x":1.,"y":2.},{"type":"up","x":1.,"y":2.}]}),
+                )
+                .error
+                .unwrap();
+            assert_eq!(e.code, "command.notImplemented");
+            assert!(e.message.contains("M6 C6.1"));
+            assert_eq!(before, get(&h, &id));
+            assert_eq!(hist, ok(&h, "edit.history.get", json!({})));
+        }
+    }
+    #[test]
+    fn case6_no_camera_not_constructible() {
+        // 05:872: a scene always contains a camera; last deletion refuses anim.lastCamera.
+        // SI-147 and camera-view note section 3: camera:null is unreachable by commands today.
+        let (h, _) = ready();
+        let cam = ok(&h, "anim.camera.current.get", json!({}))["cameraId"].clone();
+        for (cmd, args) in
+            [("anim.camera.delete", json!({"cameraId":cam})), ("element.delete", json!({"elementIds":[cam]}))]
+        {
+            let e = err(&h, cmd, args);
+            assert_eq!(e.code, "anim.lastCamera");
+        }
+        assert!(run(&h, "anim.camera.current.set", json!({"cameraId":null})).error.is_some());
+        assert_eq!(ok(&h, "anim.camera.current.get", json!({}))["cameraId"], cam);
+        assert!(!scene(&h)["camera"].is_null());
+    }
+
+    #[test]
+    fn case7_extreme_coordinates() {
+        // SI-149 depth is Z; d=16-Z must exceed .1 (05:240-241).
+        // Implementation plan 3.2: external input yields typed errors, never panic.
+        // Valid identity projection: scene=(view-(480,270))*(16-Z)/2560, Y negated.
+        let (h, _) = ready();
+        for depth in [15.9, 15.900001, 1e100, -0.0] {
+            for cmd in ["view.coordinates.convert", "anim.view.coords.get"] {
+                let p = if cmd == "view.coordinates.convert" {
+                    json!({"viewId":"cameraView","point":{"x":480.,"y":270.},"from":"view","to":"scene","depth":depth})
+                } else {
+                    json!({"viewId":"cameraView","points":[{"x":480.,"y":270.}],"from":"view","depth":depth})
+                };
+                let r = run(&h, cmd, p);
+                if depth > 15.8 || cmd == "view.coordinates.convert" {
+                    assert!(r.error.is_some(), "{cmd}: {r:?}");
+                } else {
+                    assert!(r.is_ok(), "{r:?}");
+                }
+            }
+        }
+        for cmd in ["view.coordinates.convert", "anim.view.coords.get"] {
+            let base = if cmd == "view.coordinates.convert" {
+                json!({"viewId":"cameraView","point":{"x":1.,"y":2.},"from":"view","to":"scene"})
+            } else {
+                json!({"viewId":"cameraView","points":[{"x":1.,"y":2.}],"from":"view"})
+            };
+            for (key, value) in [
+                ("depth", json!("NaN")),
+                ("depth", Value::Null),
+                ("depth", json!(true)),
+                ("viewId", json!("missingView")),
+                ("from", json!("unknownSpace")),
+            ] {
+                let mut p = base.clone();
+                p[key] = value;
+                let r = run(&h, cmd, p.clone());
+                // Optional null depth has the declared default; all other malformed cases refuse.
+                let e = r.error.unwrap();
+                assert!(!e.code.is_empty());
+                assert!(!e.message.is_empty());
+            }
+            for value in [json!("NaN"), Value::Null, json!(true), json!(1e100), json!(-1e7), json!(1e7), json!(-0.0)] {
+                let mut p = base.clone();
+                if cmd == "view.coordinates.convert" {
+                    p["point"]["x"] = value.clone();
+                } else {
+                    p["points"][0]["x"] = value.clone();
+                }
+                let r = run(&h, cmd, p);
+                if let Some(e) = r.error {
+                    assert!(!e.code.is_empty());
+                } else {
+                    let r = r.result.unwrap();
+                    let pt = if cmd == "view.coordinates.convert" { &r["point"] } else { &r["points"][0] };
+                    let x = pt["x"].as_f64().unwrap();
+                    assert!(x.is_finite());
+                    assert!(pt["y"].as_f64().unwrap().is_finite());
+                    near(x, (value.as_f64().unwrap() - 480.) / 160.);
+                }
+            }
+        }
+    }
+    #[test]
+    fn case8_tolerances_and_replay() {
+        // 05:352: pick tolerance 4 view pixels. Identity at Z=0, focal=2560:
+        // 1 view px=16/(2560*zoom) fields. Square stroked edge 51du=.51 field (1du half-thickness).
+        // 02:1153-1155; D-16: drawing hit gestures carry view unless zoom=1.
+        let (h, id) = ready();
+        for zoom in [2., 0.5] {
+            ok(&h, "view.zoom.set", json!({"viewId":"cameraView","zoom":zoom}));
+            for (offset, pick) in [(3., true), (6., false)] {
+                let scene_distance = offset * 16. / (2560. * zoom);
+                let x = 480. + 2560. * zoom * (0.51 + scene_distance) / 16.;
+                let out=h.pointer(tt_executor::Origin::User,json!({"view":"cameraView","tool":"select","events":[{"type":"down","x":x,"y":270.},{"type":"up","x":x,"y":270.}]}));
+                assert!(out.is_ok(), "{out:?}");
+                let out = out.result.unwrap();
+                let cmd = out["commands"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .find(|c| c["commandId"] == "edit.selection.set")
+                    .unwrap();
+                assert_eq!(
+                    cmd["params"]["ids"],
+                    if pick { json!([id]) } else { json!([]) },
+                    "zoom {zoom} offset {offset}"
+                );
+            }
+        }
+        for zoom in [2., 0.5, 1.] {
+            ok(&h, "view.zoom.set", json!({"viewId":"cameraView","zoom":zoom}));
+            ok(&h, "tool.active.set", json!({"toolId":"select"}));
+            let out=h.pointer(tt_executor::Origin::User,json!({"view":"cameraView","events":[{"type":"down","x":480.,"y":270.},{"type":"up","x":480.,"y":270.}]}));
+            assert!(out.is_ok(), "{out:?}");
+            let out = out.result.unwrap();
+            let cmd =
+                out["commands"].as_array().unwrap().iter().find(|c| c["commandId"] == "draw.selection.set").unwrap();
+            if zoom != 1. {
+                assert_eq!(cmd["params"]["view"], "cameraView");
+            }
+            // At 100% Camera still reports view; D-16 requires it off 100%, not omission at 100%.
+            let replay = ok(&h, "draw.selection.set", cmd["params"].clone());
+            assert_eq!(replay, cmd["envelope"]["result"]);
+        }
     }
 }
