@@ -10,39 +10,11 @@
 //! arithmetic only. A stroke is the non-zero union of its segment quads and its round caps and joins, so a translucent
 //! stroke never blends twice where its pieces overlap (ADR-0007 question 7).
 //!
-//! # Layout (little endian, every section 4-byte aligned)
+//! # Layout
 //!
-//! Header, [`HEADER_LEN`] bytes:
-//!
-//! | Offset | Field | Type |
-//! |---|---|---|
-//! | 0 | magic `TTRD` | 4 bytes |
-//! | 4 | major (1) | u16 |
-//! | 6 | minor (0) | u16 |
-//! | 8 | header length (80) | u16 |
-//! | 10 | zoom bucket (log2 of the bucket's top zoom) | i16 |
-//! | 12 | colour slot count | u32 |
-//! | 16 | engine generation | u64 |
-//! | 24 | drawing revision | u64 |
-//! | 32 | drawing id (26 Crockford base-32 characters) | 26 bytes |
-//! | 58 | flags (0) | u16 |
-//! | 60 | record count | u32 |
-//! | 64 | bounds min x, min y, max x, max y (drawing units) | 4 × f32 |
-//!
-//! Colour table, one entry per slot: id length (u16), kind (u8: 0 solid, 1 gradient, 2 texture or bitmap), reserved
-//! (u8), RGBA (4 × u8; a texture's mean colour), then the id's UTF-8 bytes padded with zeros to 4.
-//!
-//! Records, in painter order, each `kind (u16), flags (u16), byte length (u32, the whole record)` then:
-//! - **1, solid mesh:** vertex count (u32), index count (u32), vertices (`x, y` f32, slot u16, flags u16: 12 bytes),
-//!   indices (u32);
-//! - **2, gradient mesh:** gradient kind (u8: 0 linear, 1 radial), stop count (u8), reserved (u16), drawing → unit
-//!   space (6 × f32, `x' = a x + c y + e`, `y' = b x + d y + f`), stops (position f32, RGBA 4 × u8), then the solid
-//!   mesh body;
-//! - **3, bitmap reference:** width (u16), height (u16), the quad's four corners (8 × f32), image id length (u16),
-//!   reserved (u16), the id's bytes padded to 4; drawn with its slot's mean colour until bitmap transport exists
-//!   (SI-137).
-//!
-//! The payload length equals the header, the colour table and the records exactly.
+//! The byte layout, the validation rules V1-V10 (and the order a decoder applies them in), the version rule and the
+//! numeric rules are `docs/canvas-format.md` (ruling D-18), the single source this encoder and [`decode`] follow; the
+//! TypeScript decoder (`desktop/src/canvas/format.ts`) follows it too.
 
 use lyon_tessellation::geometry_builder::{BuffersBuilder, VertexBuffers};
 use lyon_tessellation::math::point;
@@ -855,6 +827,9 @@ pub fn decode(b: &[u8]) -> Result<CanvasDrawing, FormatError> {
             if need != Some(rr.end - rr.at) {
                 return Err(bad("V4", format!("record {n}: {vc} vertices and {ic} indices do not fill its length")));
             }
+            if !ic.is_multiple_of(3) {
+                return Err(bad("V4", format!("record {n}: {ic} indices are not whole triangles")));
+            }
             let mut vs = Vec::with_capacity(vc);
             for _ in 0..vc {
                 let x = rr.f32("vertex x")?;
@@ -879,7 +854,11 @@ pub fn decode(b: &[u8]) -> Result<CanvasDrawing, FormatError> {
                 Record::Solid { vertices, indices }
             }
             KIND_GRADIENT => {
-                let radial = rr.u8("gradient kind")? == 1;
+                let radial = match rr.u8("gradient kind")? {
+                    0 => false,
+                    1 => true,
+                    other => return Err(bad("V8", format!("record {n}: unknown gradient kind {other}"))),
+                };
                 let stop_count = usize::from(rr.u8("stop count")?);
                 let _ = rr.u16("reserved")?;
                 let mut m = [0f32; 6];

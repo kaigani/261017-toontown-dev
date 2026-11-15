@@ -1,5 +1,6 @@
-// The interactive canvas's render-list product format, TTRD 1.0: the decoder (M4 C4.2b; design note 1 §2 and §8;
-// ADR-0007 decision 4). The encoder is Rust's `tt_render::canvas::encode`; the layout table is in its module docs.
+// The interactive canvas's render-list product format, TTRD 1.0: the decoder (M4 C4.2b; ADR-0007 decision 4). The
+// layout, the validation rules V1-V10 and the order they are applied in, the version rule and the numeric rules are
+// `docs/canvas-format.md` (ruling D-18), the single source this decoder and Rust's `tt_render::canvas` follow.
 // Both are held to one golden corpus (`testdata/`): `cargo test` encodes it byte for byte and `format.test.ts` decodes
 // it, including one corrupt file per validation rule (V1 to V10), each refused before any geometry is built.
 //
@@ -203,6 +204,8 @@ export function decodeDrawing(payload: ArrayBuffer | Uint8Array): DecodedDrawing
           `record ${n}: ${vertexCount} vertices and ${indexCount} indices do not fill its length`,
         );
       }
+      if (indexCount % 3 !== 0)
+        throw new FormatError('V4', `record ${n}: ${indexCount} indices are not whole triangles`);
       const vAt = rr.at;
       for (let i = 0; i < vertexCount; i++) {
         rr.f32('vertex x');
@@ -226,7 +229,9 @@ export function decodeDrawing(payload: ArrayBuffer | Uint8Array): DecodedDrawing
     if (kind === KIND_SOLID) {
       records.push({ kind: 'solid', ...mesh() });
     } else if (kind === KIND_GRADIENT) {
-      const radial = rr.u8('gradient kind') === 1;
+      const gradientKind = rr.u8('gradient kind');
+      if (gradientKind > 1) throw new FormatError('V8', `record ${n}: unknown gradient kind ${gradientKind}`);
+      const radial = gradientKind === 1;
       const stopCount = rr.u8('stop count');
       rr.u16('reserved');
       const drawingToUnit: number[] = [];

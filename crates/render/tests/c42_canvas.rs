@@ -237,6 +237,8 @@ fn every_header_field_is_carried_through_encode_and_decode() {
 /// Offsets of the first solid record's parts in the synthetic payload.
 struct Layout {
     record: usize,
+    /// The first gradient record.
+    gradient: usize,
     first_vertex: usize,
     first_index: usize,
     vertex_count: u32,
@@ -250,8 +252,13 @@ fn layout(b: &[u8], d: &CanvasDrawing) -> Layout {
     let record = at;
     let vertex_count = u32::from_le_bytes(b[at + 8..at + 12].try_into().unwrap());
     let first_vertex = at + 16;
+    let mut gradient = at;
+    while u16::from_le_bytes(b[gradient..gradient + 2].try_into().unwrap()) != 2 {
+        gradient += u32::from_le_bytes(b[gradient + 4..gradient + 8].try_into().unwrap()) as usize;
+    }
     Layout {
         record,
+        gradient,
         first_vertex,
         first_index: first_vertex + vertex_count as usize * canvas::VERTEX_LEN,
         vertex_count,
@@ -272,6 +279,20 @@ fn every_validation_rule_refuses_its_corrupt_file_and_the_unmodified_file_decode
         ("V3", "short-header", Box::new(|b| b.truncate(40))),
         ("V4", "vertex-count", Box::new(move |b| set(b, l.record + 8, &(l.vertex_count - 1).to_le_bytes()))),
         (
+            // One more index (in range), with the record length and index count kept consistent: only the rule that
+            // indices come in whole triangles refuses it (docs/canvas-format.md §4.1).
+            "V4",
+            "index-count-not-triangles",
+            Box::new(move |b| {
+                let len = u32::from_le_bytes(b[l.record + 4..l.record + 8].try_into().unwrap());
+                let ic = u32::from_le_bytes(b[l.record + 12..l.record + 16].try_into().unwrap());
+                let end = l.record + len as usize;
+                b.splice(end..end, 0u32.to_le_bytes());
+                set(b, l.record + 4, &(len + 4).to_le_bytes());
+                set(b, l.record + 12, &(ic + 1).to_le_bytes());
+            }),
+        ),
+        (
             "V5",
             "truncated",
             Box::new(|b| {
@@ -283,6 +304,7 @@ fn every_validation_rule_refuses_its_corrupt_file_and_the_unmodified_file_decode
         ("V6", "index", Box::new(move |b| set(b, l.first_index, &l.vertex_count.to_le_bytes()))),
         ("V7", "slot", Box::new(move |b| set(b, l.first_vertex + 8, &6u16.to_le_bytes()))),
         ("V8", "record-kind", Box::new(move |b| set(b, l.record, &9u16.to_le_bytes()))),
+        ("V8", "gradient-kind", Box::new(move |b| b[l.gradient + 8] = 2)),
         ("V9", "non-finite", Box::new(move |b| set(b, l.first_vertex, &f32::NAN.to_le_bytes()))),
         ("V10", "drawing-id", Box::new(|b| b[32] = b'U')),
     ];

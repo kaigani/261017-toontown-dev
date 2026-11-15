@@ -22,11 +22,18 @@ answers with `canvas.ack {generation, seq}` and, when it finds a mismatch or los
 
 ## 2. The product format (replaces the spike's TTRL v1)
 
-- **Header** (fixed 64 bytes, little endian): magic `TTRD`, `major`, `minor`, `generation` (u64, the engine generation,
-  D-7b), `drawingId` (26-byte ULID text), `rev` (u64, the drawing's revision, REV-02), counts (layers, stroke vertices,
-  fill vertices, fill indices, colour slots), the bounds, and the byte length of each section. The decoder validates
-  the header against its schema, checks every section length against its counts and the total against the payload
-  length, and refuses an unknown major version (ADR-0007 decision 4).
+**The normative layout is `docs/canvas-format.md` (ruling D-18).** Its header is 80 bytes; the first draft of this
+section described a 64-byte header with per-section counts, which the built format replaced with a colour table and
+self-sized records (§8). The bullets below are this section's original design intent; where they differ from the format
+document, the document holds.
+
+- **Header** (80 bytes, little endian; `docs/canvas-format.md` §2): magic `TTRD`, `major`, `minor`, header length,
+  zoom bucket, colour slot count, `generation` (u64, the engine generation, D-7b), `rev` (u64, the drawing's revision,
+  REV-02), `drawingId` (26-byte ULID text), flags, record count, the bounds. The decoder checks every record's length
+  against its counts and the total against the payload length, and refuses an unknown major version (ADR-0007
+  decision 4). A newer minor version is accepted on purpose: within major 1 a minor version may only give a meaning to
+  fields and bits 1.0 reserves (zero meaning 1.0's behaviour), so a 1.0 reader ignores them and draws the 1.0 picture;
+  1.x has no trailing fields to skip (bytes after the last record are refused, V5; format §7).
 - **Sections**, in painter order of the drawing's render-list entries (06 §6.1; question 7): per layer a record of its
   fill triangles (vertex: x, y as f32 in drawing units, colour slot u16, flags u16) and indices (u32), then its stroke
   outlines, already triangulated (stroke outlines are tessellated with real caps and joins in Rust; question 6), then

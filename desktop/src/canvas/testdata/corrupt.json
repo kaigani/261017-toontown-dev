@@ -24,6 +24,10 @@
     "rule": "V4"
   },
   {
+    "file": "corrupt/V4-index-count-not-triangles.ttrd",
+    "rule": "V4"
+  },
+  {
     "file": "corrupt/V5-truncated.ttrd",
     "rule": "V5"
   },
@@ -41,6 +45,10 @@
   },
   {
     "file": "corrupt/V8-record-kind.ttrd",
+    "rule": "V8"
+  },
+  {
+    "file": "corrupt/V8-gradient-kind.ttrd",
     "rule": "V8"
   },
   {
