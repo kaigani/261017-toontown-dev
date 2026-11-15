@@ -9527,6 +9527,8 @@
           "display.antiAliasing",
           "display.bitmapPreviewMaxSize",
           "display.cacheMemoryPercent",
+          "display.canvasBackend",
+          "display.canvasBackendMeasured",
           "display.fastPencilRendering",
           "display.sceneBackground.drawingView",
           "display.sceneBackground.stagingViews",
