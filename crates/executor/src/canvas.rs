@@ -298,19 +298,28 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
         && let (Some(el), Some(cur)) = (s.app.element.as_ref(), current.as_ref())
     {
         let style = &aids.onion_skin_style;
-        let runs: Vec<Id> = doc
-            .element(el)
-            .and_then(|e| e.exposure().clone())
-            .map(|r| r.into_iter().filter_map(|(d, _)| d).collect())
-            .unwrap_or_default();
+        // The distinct drawings in exposure order (blanks skipped, repeats of one drawing merged), each with the first
+        // frame of its occurrence (frames count from 1, as `AppContext::exposed_drawing`).
         let mut distinct: Vec<Id> = Vec::new();
-        for d in runs {
-            if distinct.last() != Some(&d) {
+        let mut starts: Vec<u64> = Vec::new();
+        let mut frame = 1u64;
+        for (d, count) in doc.element(el).and_then(|e| e.exposure().clone()).unwrap_or_default() {
+            if let Some(d) = d
+                && distinct.last() != Some(&d)
+            {
                 distinct.push(d);
+                starts.push(frame);
             }
+            frame += u64::from(count);
         }
-        // The current drawing's place: its first run at or before the current frame.
-        let at = distinct.iter().position(|d| d == cur);
+        // The current drawing's place is its occurrence at the current frame: the last occurrence starting at or before
+        // it (a drawing exposed again later in the element is a later occurrence, C42B-R1-02); an explicit current
+        // drawing not exposed by then takes its first occurrence.
+        let now = u64::from(s.app.frame);
+        let at = (0..distinct.len())
+            .rev()
+            .find(|&i| distinct[i] == *cur && starts[i] <= now)
+            .or_else(|| distinct.iter().position(|d| d == cur));
         let fade =
             |k: usize| if style.transparency { [0.5f32, 0.3, 0.15].get(k - 1).copied().unwrap_or(0.15) } else { 1.0 };
         let tint = |c: &str| style.colour_shading.then(|| rgba(c, [255, 0, 0, 255]));
