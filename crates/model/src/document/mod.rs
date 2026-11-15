@@ -120,6 +120,9 @@ pub struct DocumentParts {
     pub library: Library,
 }
 
+/// A staged commit: the next document and the undo and redo patches of each entry it changed.
+type StagedCommit = Result<(Document, Vec<EntryCommit>), Vec<ModelError>>;
+
 /// The undo and redo patches of one entry changed by [`Document::with_patched_entries`].
 #[derive(Debug, Clone, PartialEq)]
 pub struct EntryCommit {
@@ -576,7 +579,120 @@ impl Document {
         &self,
         changes: &[(EntryKey, Vec<crate::change::PatchOp>)],
     ) -> Result<(Document, Vec<EntryCommit>), Vec<ModelError>> {
+        if let Some(fast) = self.appended_strokes(changes) {
+            // Debug builds run the general path too and require the same document and commits, so every test that
+            // appends strokes checks the fast path against it (C42B-R1-04).
+            #[cfg(debug_assertions)]
+            {
+                let slow = self.staged_commit(changes, false);
+                let same = match (&slow, &fast, changes.first().map(|c| &c.0)) {
+                    (Ok((sd, sc)), Ok((fd, fc)), Some(EntryKey::Drawing(id))) => {
+                        sd.drawing(id) == fd.drawing(id) && sc == fc
+                    }
+                    _ => false,
+                };
+                debug_assert!(same, "the append fast path differs from the general path: {slow:?} / {fast:?}");
+            }
+            return fast;
+        }
         self.staged_commit(changes, false)
+    }
+
+    /// The fast path of the commonest edit (C42B-R1-04: a stroke committed to a 50,000-point drawing spent most of its
+    /// time serialising, patching, re-parsing and diffing the whole drawing): one drawing entry whose patch only
+    /// appends strokes to one layer (`add …/strokes/-`). The new strokes pass the full object input path on their own
+    /// (`from_json`: depth, normalisation, schema, checks), the typed drawing is extended and checked as a whole
+    /// (`Check`: unique ids, finite values), and the undo patch is the general path's for an append: one `remove` per
+    /// new stroke, last first, carrying its canonical JSON. `None` when the patch has any other shape or anything
+    /// would be refused: the general path then runs and reports exactly.
+    fn appended_strokes(&self, changes: &[(EntryKey, Vec<crate::change::PatchOp>)]) -> Option<StagedCommit> {
+        use crate::entities::drawing::{DrawingNode, Stroke};
+        let [(key @ EntryKey::Drawing(id), ops)] = changes else { return None };
+        let first = ops.first()?;
+        // The container the patch appends to: the drawing's top-level nodes (`/nodes/-`: a new layer, the Brush and
+        // Pencil tools' usual commit), or one layer's strokes (`/nodes/<i>[/children/<j>…]/strokes/-`).
+        let (container, node_path) = if first.path == "/nodes/-" {
+            ("/nodes".to_owned(), None)
+        } else {
+            let layer = first.path.strip_suffix("/strokes/-")?;
+            let tokens: Vec<&str> = layer.strip_prefix('/')?.split('/').collect();
+            if !tokens.len().is_multiple_of(2) {
+                return None;
+            }
+            let mut path = Vec::new();
+            for (k, pair) in tokens.chunks(2).enumerate() {
+                let expected = if k == 0 { "nodes" } else { "children" };
+                if pair[0] != expected || pair[1].is_empty() || !pair[1].bytes().all(|b| b.is_ascii_digit()) {
+                    return None;
+                }
+                path.push(pair[1].parse::<usize>().ok()?);
+            }
+            (format!("{layer}/strokes"), Some(path))
+        };
+        // The whole entry's depth limit: an appended value sits under the drawing and its container's path.
+        let above = container.split('/').count();
+        let limit = crate::input::MAX_MODEL_DEPTH;
+        let mut values = Vec::with_capacity(ops.len());
+        for op in ops {
+            if op.op != "add" || op.path != first.path || op.from.is_some() || op.range.is_some() {
+                return None;
+            }
+            let value = op.value.as_ref().filter(|v| v.is_object())?;
+            if above + crate::input::depth(value, limit) > limit {
+                return None;
+            }
+            values.push(value);
+        }
+        let mut drawing: Drawing = (**self.drawings.get(id)?).clone();
+        // Each appended object passes the full object input path on its own; its canonical JSON is the undo's old
+        // value (what the general path's diff of the committed entry carries).
+        let olds: Vec<serde_json::Value>;
+        let at;
+        match &node_path {
+            None => {
+                let nodes: Vec<DrawingNode> =
+                    values.iter().map(|v| crate::object::from_json::<DrawingNode>(v).ok()).collect::<Option<_>>()?;
+                olds = nodes.iter().map(|n| crate::object::to_json(n).ok()).collect::<Option<_>>()?;
+                let list = drawing.nodes_mut();
+                at = list.len();
+                list.extend(nodes);
+            }
+            Some(path) => {
+                let strokes: Vec<Stroke> =
+                    values.iter().map(|v| crate::object::from_json::<Stroke>(v).ok()).collect::<Option<_>>()?;
+                olds = strokes.iter().map(|n| crate::object::to_json(n).ok()).collect::<Option<_>>()?;
+                let list = drawing.layer_strokes_mut(path)?;
+                at = list.len();
+                list.extend(strokes);
+            }
+        }
+        let undo: Vec<crate::change::PatchOp> = olds
+            .into_iter()
+            .enumerate()
+            .rev()
+            .map(|(j, old)| crate::change::PatchOp {
+                op: "remove",
+                from: None,
+                path: format!("{container}/{}", at + j),
+                range: None,
+                value: None,
+                old_value: Some(old),
+                elided: false,
+            })
+            .collect();
+        let mut issues = Issues::new(crate::object::MAX_ERRORS);
+        drawing.check("", &mut issues);
+        if !issues.is_empty() {
+            return None;
+        }
+        let mut next = self.clone();
+        next.drawings.insert(id.clone(), Arc::new(drawing));
+        next.mark_validated(key);
+        next.rebuild_derived();
+        if next.issues().iter().any(|i| i.severity == Severity::Error) {
+            return None;
+        }
+        Some(Ok((next, vec![EntryCommit { key: key.clone(), undo, redo: Vec::new() }])))
     }
 
     fn staged_commit(

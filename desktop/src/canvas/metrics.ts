@@ -4,7 +4,8 @@
 //
 // - frame time: the interval between consecutive frames (≥ 57 fps means ≤ 17.5 ms p95), and the work of each frame;
 // - input-to-ink: from the oldest pointer sample not yet drawn to the frame that draws the overlay with it;
-// - release-to-committed: from the pointer-up to the frame that draws the committed drawing (a newer model version);
+// - release-to-committed: from the pointer-up to the frame that draws the committed drawing (a newer settled model
+//   version: every drawing resident at its scene revision, the committed stroke included);
 // - loads: each drawing's request-to-upload time (transfer, decode and upload) with its bytes.
 
 const ring = <T>(a: T[], v: T, n: number) => {

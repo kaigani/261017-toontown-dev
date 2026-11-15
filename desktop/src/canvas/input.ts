@@ -291,11 +291,13 @@ export function gestureRecord(
   env: { status: string; result?: unknown; error?: { code?: string } | null },
 ): GestureRecord {
   const raw = (env.result as { commands?: unknown } | undefined)?.commands;
+  // A gesture over the cap is recorded by count: its commands by id (their parameters carry every sample).
+  const whole = req.events.length <= RECORD_EVENTS;
   const commands = Array.isArray(raw)
     ? raw.map((c: unknown) => {
         const o = (c ?? {}) as Record<string, unknown>;
         const id = o['commandId'];
-        return { commandId: typeof id === 'string' ? id : '', params: o['params'] ?? null };
+        return { commandId: typeof id === 'string' ? id : '', params: whole ? (o['params'] ?? null) : null };
       })
     : [];
   return {
@@ -304,7 +306,7 @@ export function gestureRecord(
     view: req.view,
     pointerType: req.pointerType ?? 'mouse',
     drawingToView: [...drawingToView],
-    events: req.events.length <= RECORD_EVENTS ? req.events : [],
+    events: whole ? req.events : [],
     eventCount: req.events.length,
     status: env.status,
     code: env.error?.code ?? null,

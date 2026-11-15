@@ -185,6 +185,35 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict) -> Non
                 g = await gesture("large")
                 record["large"].update({"gesture": g.get("gestureFrameMs"), "commit": g.get("commitMs")})
 
+                # The long stroke on the large drawing (D-13; C42B-R1-04): the reviewer's 9,998-event Brush gesture
+                # through the window (an agent gesture played by the window), `--long-samples` times, each undone so
+                # every sample commits to the same 50,000-point drawing; release-to-committed is the canvas's own
+                # (release to the frame showing every drawing at its new revision).
+                m_large = ((await rc(session, "draw.viewMapping.get", {"view": "drawingView"})).get("result") or {}).get("drawingToView") or m
+                stroke = c42.drag([c42.apply(m_large, -180 + i * 240 / 9997, -140) for i in range(9_998)])
+                long_commits = []
+                for _ in range(int(record.get("longSamples") or 5)):
+                    before = len(((await metrics_now(session)).get("metrics") or {}).get("commits") or [])
+                    env = await e2e.call(session, "pointer", {"view": "drawingView", "tool": "brush", "events": stroke})
+                    t1 = time.monotonic()
+                    got = []
+                    while time.monotonic() - t1 < 20:
+                        got = (((await metrics_now(session)).get("metrics") or {}).get("commits") or [])[before:]
+                        if got:
+                            break
+                        await asyncio.sleep(0.25)
+                    if env.get("status") == "ok" and got:
+                        long_commits.append(got[0])
+                    await rc(session, "edit.undo", {})
+                    await asyncio.sleep(0.75)
+                ordered = sorted(long_commits)
+                record["largeLongStroke"] = {
+                    "events": 9_998, "samples": len(long_commits), "commitMs": long_commits,
+                    "p50": ordered[len(ordered) // 2] if ordered else None,
+                    "p95": ordered[max(0, -(-len(ordered) * 95 // 100) - 1)] if ordered else None,
+                    "max": ordered[-1] if ordered else None,
+                }
+
                 def p95(x):
                     return (x or {}).get("p95")
 
@@ -263,6 +292,8 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict) -> Non
                     checks.append(("input-to-ink p95, small", p95(record["small"]["ink"]), bounds["inkMs"]))
                 long_commit = (record.get("longStroke") or {}).get("commitMs") or []
                 checks.append(("release-to-committed of a 10,000-sample stroke", long_commit[-1] if long_commit else None, bounds["commitLargeMs"]))
+                checks.append(("release-to-committed p95 of a 9,998-event stroke on the large drawing",
+                               (record.get("largeLongStroke") or {}).get("p95"), bounds["commitLargeMs"]))
                 for name, value, bound in checks:
                     run.check(value is not None and value <= bound, f"{name} <= {bound} ms", value)
 
@@ -275,7 +306,11 @@ def main() -> int:
     ap.add_argument("--bounds", choices=["workstation", "ci"], default="ci")
     ap.add_argument("--experiments", action="store_true", help="also run E-C1 and E-C2 (ADR-0007)")
     ap.add_argument("--rule-set", action="store_true", help="also wait for the product's back-end measurement (SI-136)")
+    ap.add_argument("--long-samples", type=int, default=None,
+                    help="9,998-event strokes on the large drawing (default: 30 with workstation bounds, 5 on CI)")
     a = ap.parse_args()
+    if a.long_samples is None:
+        a.long_samples = 30 if a.bounds == "workstation" else 5
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     run = e2e.Run(out)
@@ -287,7 +322,7 @@ def main() -> int:
     # The machine class only (OS and architecture): receipts never carry hardware model strings.
     record: dict = {"kind": "toontown.c42.canvas-measure", "platform": sys.platform, "machine": platform.system(),
                     "architecture": platform.architecture()[0], "boundsKind": a.bounds, "bounds": BOUNDS[a.bounds], "requestedBackend": a.backend,
-                    "experiments": a.experiments, "ruleSet": a.rule_set}
+                    "experiments": a.experiments, "ruleSet": a.rule_set, "longSamples": a.long_samples}
     discovery = out / "discovery.json"
     try:
         proc = launch(a.app, user, discovery, a.backend)

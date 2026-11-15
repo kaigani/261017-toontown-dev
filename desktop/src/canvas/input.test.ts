@@ -201,8 +201,13 @@ describe('the record of the last committed gesture (C42B-R1-03; SI-141 item 9)',
       modifiers: [],
       dt: 1,
     }));
-    const r = gestureRecord('user', 'brush', [1, 0, 0, 1, 0, 0], { view: 'v', events }, { status: 'ok' });
+    const env = {
+      status: 'ok',
+      result: { commands: [{ commandId: 'draw.stroke.add', params: { points: [] } }] },
+    };
+    const r = gestureRecord('user', 'brush', [1, 0, 0, 1, 0, 0], { view: 'v', events }, env);
     expect([r.events.length, r.eventCount]).toEqual([0, RECORD_EVENTS + 1]);
+    expect(r.commands).toEqual([{ commandId: 'draw.stroke.add', params: null }]);
     const whole = gestureRecord(
       'user',
       'brush',

@@ -152,6 +152,31 @@ describe('the canvas pull loop', () => {
     expect(model.peakInFlight).toBeLessThanOrEqual(2);
   });
 
+  it('settledVersion follows only when every drawing is resident at its scene revision (C42B-R1-04)', async () => {
+    const { host, model } = setup();
+    model.frame();
+    host.scenes[0]?.resolve(scene(5, [[0, 10]]));
+    await flush();
+    model.frame();
+    host.loads[0]?.resolve(payload(ULIDS[0] ?? '', 5, 10));
+    await flush();
+    model.frame();
+    const settled = model.settledVersion;
+    expect(settled).toBe(model.version);
+    // A commit: the new revision's scene arrives first; the old geometry is still the one drawn.
+    model.markDirty();
+    host.scenes[1]?.resolve(scene(5, [[0, 11]]));
+    await flush();
+    model.frame();
+    expect(model.version).toBeGreaterThan(settled);
+    expect(model.settledVersion).toBe(settled); // not the committed state yet
+    host.loads[1]?.resolve(payload(ULIDS[0] ?? '', 5, 11));
+    await flush();
+    model.frame();
+    expect(model.settledVersion).toBe(model.version); // the committed drawing is resident
+    expect(model.settledVersion).toBeGreaterThan(settled);
+  });
+
   it('a scene differing only in its selection rebuilds the overlay, not the static layers (frame-loop note §7.1)', async () => {
     const { host, model } = setup();
     model.frame();

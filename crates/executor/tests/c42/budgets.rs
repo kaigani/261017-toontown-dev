@@ -197,6 +197,63 @@ fn long_stroke_split() {
     );
 }
 
+/// C42B-R1-04's kernel half (plan §6 release-to-committed, large; release profile): on the reviewer's `d1-long` fixture
+/// (100 brush strokes of 500 points through `draw.stroke.add` with the default layer), thirty samples each, every one
+/// undone so all commit to the same 50,000-point drawing: the reviewer's 9,998-event Brush gesture, a short Brush
+/// gesture and a short Pencil gesture (the window's gestures); and, on the reviewer's receipt fixture (the same strokes
+/// all in one layer, `layer: "top"`), a 2-point brush stroke appended to that layer through `draw.stroke.add`. Each
+/// sample is the commit and the canvas's part (`canvas_scene` and `canvas_drawing`, the reload). Prints the
+/// percentiles; asserts nothing about time.
+#[test]
+#[ignore = "measurement receipt for C42B-R1-04 (release profile); prints the percentiles, asserts nothing about time"]
+fn strokes_on_the_large_drawing() {
+    let fixture = |layer: Option<&str>| {
+        let h = ready();
+        for k in 0..100 {
+            let points: Vec<serde_json::Value> = (0..500)
+                .map(|i| json!({ "x": -600.0 + f64::from(i) * 2.4, "y": -400.0 + f64::from(k) * 8.0 + f64::from(i % 20) * 0.3, "pressure": 0.6 }))
+                .collect();
+            let mut p = json!({ "kind": "brush", "points": points, "fit": false });
+            if let Some(l) = layer {
+                p["layer"] = json!(l);
+            }
+            ok(&h, "draw.stroke.add", p);
+        }
+        h
+    };
+    let pct = |mut v: Vec<Duration>| {
+        v.sort();
+        (v[v.len() / 2], v[(v.len() * 95).div_ceil(100) - 1], v[v.len() - 1])
+    };
+    let measure = |h: &tt_executor::ExecutorHandle, label: &str, commit_once: &dyn Fn() -> bool| {
+        let (mut commit, mut total) = (Vec::new(), Vec::new());
+        for _ in 0..30 {
+            let t = Instant::now();
+            assert!(commit_once(), "{label}");
+            commit.push(t.elapsed());
+            h.canvas_scene("drawingView").unwrap();
+            h.canvas_drawing(None, 1, 0, Default::default()).unwrap();
+            total.push(t.elapsed());
+            ok(h, "edit.undo", json!({}));
+        }
+        eprintln!("{label}, 30 samples (p50, p95, max): commit {:?}; through the reload {:?}", pct(commit), pct(total));
+    };
+    let h = fixture(None);
+    let n = 9_998u32;
+    let long: Vec<(f64, f64)> =
+        (0..n).map(|i| (960.0 - 180.0 + f64::from(i) * 240.0 / f64::from(n - 1), 540.0 + 140.0)).collect();
+    measure(&h, "9,998-event Brush gesture on the 50,000-point drawing", &|| pointer(&h, "brush", drag(&long)).is_ok());
+    let short: Vec<(f64, f64)> = (0..20).map(|i| (700.0 + f64::from(i) * 4.0, 300.0 + f64::from(i % 5))).collect();
+    measure(&h, "20-event Brush gesture on the 50,000-point drawing", &|| pointer(&h, "brush", drag(&short)).is_ok());
+    measure(&h, "20-event Pencil gesture on the 50,000-point drawing", &|| pointer(&h, "pencil", drag(&short)).is_ok());
+    let top = fixture(Some("top"));
+    let small =
+        json!({ "kind": "brush", "points": [{ "x": 0, "y": 0 }, { "x": 10, "y": 1 }], "fit": false, "layer": "top" });
+    measure(&top, "2-point draw.stroke.add into the one 50,000-point layer (layer: top)", &|| {
+        top.invoke(tt_executor::Invocation::user("draw.stroke.add", small.clone())).is_ok()
+    });
+}
+
 /// The large drawing of plan §6: 50,000 points of brush strokes, built through commands (100 strokes of 500 points).
 fn large() -> tt_executor::ExecutorHandle {
     let h = ready();

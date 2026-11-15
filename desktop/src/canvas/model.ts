@@ -78,6 +78,14 @@ export class CanvasModel {
   peakInFlight = 0;
   /** Bumps whenever what the scene draws changed (a back end redraws its static layers then). */
   version = 0;
+  /**
+   * The latest `version` at which every drawing of the scene was resident at the scene's revision and the current
+   * bucket: what the window shows is then the committed state. A new scene revision bumps `version` at once (the
+   * old geometry stays drawn until its reload arrives, T1); `settledVersion` follows only when the reload is drawn,
+   * so the gesture overlay is kept and release-to-committed is timed until then (C42B-R1-04: no frame without the
+   * committed stroke).
+   */
+  settledVersion = 0;
   /** Bumps whenever the selection or the drawing pivot changed (only the overlay is rebuilt then; note 2 §7.1). */
   selectionVersion = 0;
   private selectionText = '';
@@ -306,6 +314,7 @@ export class CanvasModel {
       }
     }
     this.peakInFlight = Math.max(this.peakInFlight, this.inFlight);
+    if (this.scene?.entries.every((e) => !this.wanted(residentKey(e)))) this.settledVersion = this.version;
     return { applied, carried: this.inbox.length, spentMs, requested };
   }
 

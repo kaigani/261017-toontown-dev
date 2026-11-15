@@ -377,7 +377,7 @@ export function CanvasView({
       playAgent();
       if (
         clearOverlayAt &&
-        (model.version > clearOverlayAt.version || performance.now() > clearOverlayAt.deadline)
+        (model.settledVersion > clearOverlayAt.version || performance.now() > clearOverlayAt.deadline)
       ) {
         overlay = null;
         clearOverlayAt = null;
@@ -418,7 +418,8 @@ export function CanvasView({
         // The frame time is the interval between frames (the rAF timestamps); the work is this callback's.
         metrics.frame(frameAt, now - began, collector.active || playing !== null);
         if (overlay) metrics.inkDrawn(now);
-        metrics.drawn(model.version, now);
+        // Committed when the window shows the committed state: every drawing resident at its scene revision.
+        metrics.drawn(model.settledVersion, now);
       }
       const publish = metrics !== null && began - metricsAt >= 500;
       if (publish) metricsAt = began;

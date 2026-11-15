@@ -322,6 +322,62 @@ pub fn own_objects(doc: &Document, entry: &EntryKey) -> Result<Vec<OwnObject>, M
 /// # Errors
 /// `internal` if serialisation fails.
 pub fn diff(before: &Document, after: &Document) -> Result<Vec<(OwnChange, OwnObject)>, ModelError> {
+    if let Some(fast) = appended_nodes_diff(before, after)? {
+        // Debug builds compute the general diff too and require the same result (C42B-R1-04).
+        #[cfg(debug_assertions)]
+        debug_assert_eq!(fast, general_diff(before, after)?, "the appended-nodes diff equals the general diff");
+        return Ok(fast);
+    }
+    general_diff(before, after)
+}
+
+/// The change records of the commonest edit without serialising the whole drawing (C42B-R1-04): the snapshots differ
+/// in one drawing entry only, which kept its other fields and its first nodes and appended nodes after them. The
+/// general diff then finds exactly: each appended node's objects created (its own views, children first), then the
+/// drawing modified (its own view's node stubs). `None` for any other change.
+fn appended_nodes_diff(before: &Document, after: &Document) -> Result<Option<Vec<(OwnChange, OwnObject)>>, ModelError> {
+    let keys: Vec<EntryKey> = after.entry_keys();
+    if keys != before.entry_keys() {
+        return Ok(None);
+    }
+    let mut changed = keys.iter().filter(|k| !before.same_entry(after, k));
+    let (Some(EntryKey::Drawing(id)), None) = (changed.next(), changed.next()) else { return Ok(None) };
+    let (Some(b), Some(a)) = (before.drawing(id), after.drawing(id)) else { return Ok(None) };
+    let n = b.nodes.len();
+    if a.nodes.len() <= n || a.nodes[..n] != b.nodes[..] || a.without_nodes() != b.without_nodes() {
+        return Ok(None);
+    }
+    let key = id.as_str().to_owned();
+    let mut out = Vec::new();
+    for (i, node) in a.nodes.iter().enumerate().skip(n) {
+        let mut objects = Vec::new();
+        collect(crate::object::to_json(node)?, ObjectType::DrawingNode, Some(&key), i, (&key, ""), &mut objects);
+        out.extend(objects.into_iter().map(|o| (OwnChange::Created, o)));
+    }
+    // The drawing's own view on each side: its fields with the nodes' stubs.
+    let own = |d: &crate::entities::drawing::Drawing| -> Result<Value, ModelError> {
+        let mut v = crate::object::to_json(&d.without_nodes())?;
+        if let Value::Object(m) = &mut v {
+            m.shift_remove("rev");
+            let stubs =
+                d.nodes.iter().map(|x| json!({ "id": x.id.as_str(), "type": ObjectType::DrawingNode.as_str() }));
+            m.insert("nodes".into(), Value::Array(stubs.collect()));
+        }
+        Ok(v)
+    };
+    let (prev, next) = (own(b)?, own(a)?);
+    let patch = diff_json(&prev, &next, "", ObjectType::Drawing);
+    let parent = after.bank_of(id).map(|x| x.as_str().to_owned());
+    let index = after
+        .bank_of(id)
+        .and_then(|x| after.bank(x))
+        .and_then(|x| x.drawings().ids().iter().position(|d| d == id))
+        .unwrap_or(0);
+    out.push((OwnChange::Modified(patch), OwnObject { key, ty: ObjectType::Drawing, parent, index, json: next }));
+    Ok(Some(out))
+}
+
+fn general_diff(before: &Document, after: &Document) -> Result<Vec<(OwnChange, OwnObject)>, ModelError> {
     let keys_before: Vec<EntryKey> = before.entry_keys();
     let keys_after: Vec<EntryKey> = after.entry_keys();
     let mut changed: Vec<EntryKey> = Vec::new();

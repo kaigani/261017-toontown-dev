@@ -1687,5 +1687,6 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   9. The window keeps a record of its last committed gesture (tool, view, pointer kind, the events as committed with
      their pressure, tilt, time and modifiers, the commands produced, the answer) in the canvas's UI-tree value, which
      `inspect_ui` serves; the events are kept whole up to 4,096 and the record says how many there were (plan §5's
-     equivalence through the real window needs what the window collected; a longer gesture is recorded by count).
+     equivalence through the real window needs what the window collected; a longer gesture is recorded by its count
+     and its commands by id, without their parameters, which carry every sample).
 - **Question:** confirm each, or state the values in 02 and 11.
