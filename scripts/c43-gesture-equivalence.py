@@ -10,9 +10,12 @@ agent's `pointer` call the window plays. The window's record of what it committe
 the samples and the commands they produced. Then, on two further engines, each the headless binary opened on its own
 copy of the same saved project, with the Camera view active:
 
-- engine 2 replays the recorded samples through `pointer` in a space that does not depend on the view's size: a scene
-  tool's samples in camera space (the window's view pixels converted by `inspect.coordinates.convert`), a drawing
-  tool's in drawing units (through the mapping the window collected them under);
+- engine 2 replays the recorded samples through `pointer`. Ruling D-32: the headless engines start with the window's
+  Camera view size (`--view-size cameraView=WxH`, the size the window reported) and every row resets the view's
+  transform on all three engines, so engine 2's view has the window's geometry and replays the window's view pixels as
+  they were collected, compared exactly. Only if the size cannot be matched does engine 2 replay in a size-independent
+  space (a scene tool's samples in camera units, a drawing tool's in drawing units), compared within 1e-9 relative
+  (SI-158), each row recording its difference;
 - engine 3 receives the window's produced commands directly (`run_command`).
 
 Each row must give, on all three engines, exactly (ruling D-4): the same commands with the same parameters, the same
@@ -104,7 +107,7 @@ async def camera_state(engine: Engine) -> dict:
         return {}
 
 
-async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, os_input: bool) -> list:
+async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: bool) -> list:
     rc = app.run
     await rc("project.create", {"name": "CameraEquivalence", "onUnsaved": "fail"})
     found = await app.result("doc.object.find", {"type": "swatch", "name": "Colour 2"})
@@ -127,9 +130,21 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
     saved = work / "camera-equivalence.animpkg"
     env = await eq.job(app, await rc("project.saveAs", {"path": str(saved), "onExists": "overwrite"}))
     run.check(env.get("status") == "ok", "the application saves the fixture project", env.get("error"))
+    # D-32: the headless engines take the window's Camera view size (read once the window shows the project).
+    await rc("view.active.set", {"viewId": "cameraView"})
+    await asyncio.sleep(1.0)
+    listed = await app.result("view.list", {})
+    views = listed.get("views") or [] if isinstance(listed, dict) else listed
+    window_size = next((v.get("size") for v in views if v.get("viewId") == "cameraView"), None) or {}
+    h2, h3 = await start_heads(window_size)
     for engine, copy in ((h2, work / "engine2.animpkg"), (h3, work / "engine3.animpkg")):
         shutil.copyfile(saved, copy)
         await eq.open_project(engine, copy)
+    listed = await h2.result("view.list", {})
+    views = listed.get("views") or [] if isinstance(listed, dict) else listed
+    head_size = next((v.get("size") for v in views if v.get("viewId") == "cameraView"), None) or {}
+    same_geometry = bool(window_size) and head_size == window_size
+    run.check(same_geometry, "D-32: engine 2's Camera view has the window's size", {"window": window_size, "engine2": head_size})
     engines = (app, h2, h3)
     for engine in engines:
         await engine.run("app.context.set", {"elementId": ids["Bob"], "frame": 1})
@@ -217,7 +232,7 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
             req = {"view": "cameraView", "events": c42.drag(vpts)}
             if not (family == "drawing" and tool == "select"):
                 req["tool"] = tool
-            await app.tool("pointer", req)
+            played = await app.tool("pointer", req)
             how = "agent"
         start = time.monotonic()
         rec = None
@@ -228,14 +243,23 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
                 break
             await asyncio.sleep(0.25)
         row = {"name": name, "family": family, "tool": tool, "input": how, "record": rec}
+        if how == "agent":
+            row["played"] = {"status": played.get("status"), "error": played.get("error")}
         if rec is None or not rec.get("events"):
             run.check(False, f"three-way {name}: the window committed and recorded the gesture", row)
             results.append(row)
             run.save("rows.json", results)
             continue
-        # 2. Engine 2: the recorded samples in a size-independent space.
+        # 2. Engine 2: the recorded samples, as collected when its view has the window's geometry (D-32), else in a
+        # size-independent space.
         events = [dict(ev) for ev in rec["events"]]
-        if family == "scene":
+        if same_geometry:
+            req2 = {"view": "cameraView", "space": "view", "pointerType": rec.get("pointerType", "mouse"), "events": events}
+            if family == "drawing" and tool == "select":
+                await h2.run("tool.active.set", {"toolId": "select"})
+            else:
+                req2["tool"] = rec.get("tool") or tool
+        elif family == "scene":
             conv = await app.result("inspect.coordinates.convert", {"from": "view", "to": "camera", "view": "cameraView",
                                                                    "points": [{"x": ev["x"], "y": ev["y"]} for ev in events]})
             for ev, p in zip(events, conv.get("points") or []):
@@ -263,6 +287,9 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
         statuses = [rec.get("status"), env2.get("status"), "ok" if all(d.get("status") == "ok" for d in direct) else "error"]
         cmds_ok, cmds_exact, cmds_diff = replay_agrees(win_cmds, h2_cmds)
         content_ok, content_exact, content_diff = replay_agrees(contents[0], contents[1])
+        # D-32: with the window's geometry the replay is exact, no tolerance.
+        if same_geometry:
+            cmds_ok, content_ok = cmds_exact, content_exact
         # The window and the commands sent directly: exactly.
         same_cmds = cmds_ok
         same_content = content_ok and contents[0] == contents[2]
@@ -306,15 +333,19 @@ async def session_all(app_bin: str, headless: str, run, out: Path, work: Path) -
             a = await stack.enter_async_context(ClientSession(streams[0], streams[1], list_roots_callback=roots))
             await a.initialize()
             await e2e.gui_tree(a, run, lambda r: e2e.by_id(r, "startScreen") is not None, "the attached GUI is up")
-            heads = []
-            for k in (2, 3):
-                params = StdioServerParameters(command=headless, args=["--headless", "--mcp-stdio", "--user-dir", str(work / f"user-h{k}"), "--policy", "autonomous"])
-                r, w = await stack.enter_async_context(stdio_client(params))
-                hs = await stack.enter_async_context(ClientSession(r, w, list_roots_callback=roots))
-                await hs.initialize()
-                heads.append(Engine(f"engine{k}", hs))
+            async def start_heads(size: dict):
+                heads = []
+                extra = ["--view-size", f"cameraView={size['width']}x{size['height']}"] if size.get("width") else []
+                for k in (2, 3):
+                    params = StdioServerParameters(command=headless, args=["--headless", "--mcp-stdio", "--user-dir", str(work / f"user-h{k}"), "--policy", "autonomous", *extra])
+                    r, w = await stack.enter_async_context(stdio_client(params))
+                    hs = await stack.enter_async_context(ClientSession(r, w, list_roots_callback=roots))
+                    await hs.initialize()
+                    heads.append(Engine(f"engine{k}", hs))
+                return heads[0], heads[1]
+
             os_input = (os.environ.get("TT_E2E_INPUT") or ("os" if sys.platform == "win32" else "played")) == "os"
-            return await main(Engine("window", a), heads[0], heads[1], run, out, work, os_input)
+            return await main(Engine("window", a), start_heads, run, out, work, os_input)
     finally:
         e2e.stop(proc)
 

@@ -1,6 +1,8 @@
 """M4 C4.3b: the Camera view in the running application (camera note §6; plan §5; rulings D-22, D-24, O-5).
 
-Usage: python scripts/c43-camera-e2e.py <toontown binary> <out dir>
+Usage: python scripts/c43-camera-e2e.py <toontown binary> <out dir> [--backend webgl2|webgpu]
+
+`--backend` starts the canvas on that back end (`--canvas-backend`); without it the product chooses (the rule set).
 
 Drives the product binary over attached mode (Streamable HTTP, the official MCP SDK), like scripts/c42-gui-e2e.py,
 and checks:
@@ -58,6 +60,8 @@ RENDER_DELTA = 32
 FRAME_BAND = 3.0
 #: The comparison must cover at least this share of the capture (a check that compares nothing fails).
 MIN_COVERED = 0.25
+#: The back end asked for on the command line (None: the product's choice).
+REQUESTED = {"backend": None}
 
 
 def affine_of(p0, p1, p2) -> list:
@@ -182,6 +186,9 @@ async def session_run(url: str, token: str, run, out: Path, os_input: bool) -> N
                   "the Camera view's canvas draws the camera composition with a back end and no errors", st)
         run.check(len(st.get("drawings") or []) >= 2 and (st.get("camera") or {}).get("frame") is True,
                   "both elements' drawings are resident and the frame overlay is drawn", st)
+        if REQUESTED["backend"]:
+            run.check(st.get("backend") == REQUESTED["backend"] and not st.get("fallback"),
+                      f"the canvas runs on the requested back end, {REQUESTED['backend']}, with no fallback", st)
 
         # 1. Captures against renders.
         await compare_camera(session, run, out, "plain", "the plain view")
@@ -198,6 +205,8 @@ async def session_run(url: str, token: str, run, out: Path, os_input: bool) -> N
         env = await e2e.call(session, "pointer", {"view": "cameraView", "tool": "select",
                                                   "events": c42.drag([c42.apply(m, 60, 40), c42.apply(m, 100, 60)])})
         run.check(env.get("status") == "ok", "a scene drag through the window", env.get("error"))
+        # The comparison is of the composition: the drag's selection (its box, pivot and handles, an overlay) is cleared.
+        await rc(session, "edit.selection.set", {"context": "staging", "ids": []})
         await compare_camera(session, run, out, "after-drag", "after a scene drag")
 
         # 3. V9: click to activate (Windows, OS input).
@@ -341,14 +350,6 @@ async def preview_rows(session, run, ids) -> None:
     await row("scene corner scale", "cameraView", await scene_setup("transform"),
               lambda b: [(b[2], b[1]), (b[2] + 20, b[1] - 12), (b[2] + 30, b[1] - 18)])
 
-    async def drawing_setup():
-        await rc(session, "window.panel.set", {"panelId": "drawingView", "visible": True})
-        await rc(session, "app.context.set", {"elementId": ids["Bob"], "frame": 1})
-        await rc(session, "tool.active.set", {"toolId": "select"})
-        await rc(session, "draw.selection.set", {"by": "all"})
-    await row("drawing select move", "drawingView", drawing_setup,
-              lambda b: [((b[0] + b[2]) / 2 + 10, (b[1] + b[3]) / 2 + 10), ((b[0] + b[2]) / 2 + 40, (b[1] + b[3]) / 2 + 25)])
-
     # PV1, Escape: a scene drag cancelled by Escape while held sends nothing and the preview ends.
     await (await scene_setup("select"))()
     await asyncio.sleep(0.8)
@@ -360,13 +361,30 @@ async def preview_rows(session, run, ids) -> None:
                   "PV1 Escape: a drag cancelled by Escape sends nothing and its preview ends",
                   {k: r.get(k) for k in ("pos0", "after", "held", "previewAfter")})
 
+    async def drawing_setup():
+        # The Drawing workspace: the Drawing view central and large, as scripts/c42-gui-e2e.py uses it (a docked
+        # extra panel on a runner's small screen is small and changes the Camera view's place).
+        await rc(session, "workspace.select", {"name": "Drawing"})
+        await rc(session, "app.context.set", {"elementId": ids["Bob"], "frame": 1})
+        await rc(session, "tool.active.set", {"toolId": "select"})
+        await rc(session, "draw.selection.set", {"by": "all"})
+    await row("drawing select move", "drawingView", drawing_setup,
+              lambda b: [((b[0] + b[2]) / 2 + 10, (b[1] + b[3]) / 2 + 10), ((b[0] + b[2]) / 2 + 40, (b[1] + b[3]) / 2 + 25)])
+
 
 def main() -> int:
     e6.dpi_aware()
-    if len(sys.argv) != 3:
+    args = sys.argv[1:]
+    backend = None
+    if "--backend" in args:
+        i = args.index("--backend")
+        backend = args[i + 1] if i + 1 < len(args) else None
+        del args[i:i + 2]
+    if len(args) != 2 or backend not in (None, "webgl2", "webgpu"):
         print(__doc__)
         return 2
-    app, out = sys.argv[1], Path(sys.argv[2])
+    app, out = args[0], Path(args[1])
+    REQUESTED["backend"] = backend
     out.mkdir(parents=True, exist_ok=True)
     run = e2e.Run(out)
     os_input = (os.environ.get("TT_E2E_INPUT") or ("os" if sys.platform == "win32" else "played")) == "os"
@@ -379,7 +397,18 @@ def main() -> int:
     discovery = out / "discovery.json"
     started = time.monotonic()
     try:
-        proc = e2e.launch(app, user, discovery)
+        if backend:
+            # The back end alone (`--canvas-backend`): with `--canvas-metrics` the summary is published only every
+            # 500 ms, and the held preview would be read stale.
+            import subprocess
+            if discovery.exists():
+                discovery.unlink()
+            log = open(discovery.with_suffix(".log"), "ab")
+            proc = subprocess.Popen([app, "--user-dir", str(user), "--mcp-http", "127.0.0.1:0", "--mcp-discovery", str(discovery),
+                                     "--canvas-backend", backend], stdout=log, stderr=subprocess.STDOUT)
+            e2e.APP_PID["pid"] = proc.pid
+        else:
+            proc = e2e.launch(app, user, discovery)
         try:
             d = e2e.wait_discovery(discovery, proc)
             asyncio.run(session_run(d["endpoint"], d["token"], run, out, os_input))
@@ -390,6 +419,7 @@ def main() -> int:
     finally:
         shutil.rmtree(user, ignore_errors=True)
     manifest = {"kind": "toontown.c43.camera-e2e", "platform": sys.platform, "input": "os" if os_input else "played",
+                "requestedBackend": backend,
                 "seconds": round(time.monotonic() - started, 1), "failures": run.failures, "checks": len(run.transcript)}
     run.save("transcript.json", run.transcript)
     run.save("manifest.json", manifest)

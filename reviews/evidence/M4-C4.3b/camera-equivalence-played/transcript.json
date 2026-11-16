@@ -1,0 +1,395 @@
+[
+  {
+    "check": "the default palette's Colour 2 and Colour 3 are found",
+    "ok": true,
+    "detail": [
+      "col_01M7H092GFAJC3TY0HHZKBJ4ZM",
+      "col_01M7H092GFAJC3TY0HHZKBJ4ZN"
+    ]
+  },
+  {
+    "check": "the application saves the fixture project",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "D-32: engine 2's Camera view has the window's size",
+    "ok": true,
+    "detail": {
+      "window": {
+        "width": 914.0,
+        "height": 465.0
+      },
+      "engine2": {
+        "width": 914.0,
+        "height": 465.0
+      }
+    }
+  },
+  {
+    "check": "three-way scene select: click (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [],
+        [],
+        []
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way scene select: move (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way scene transform: move (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way scene transform: corner scale (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way scene transform: skew (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way scene transform: pivot (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move Pivot Element"
+        ],
+        [
+          "Move Pivot Element"
+        ],
+        [
+          "Move Pivot Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way brush (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Brush Tool"
+        ],
+        [
+          "Brush Tool"
+        ],
+        [
+          "Brush Tool"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way rectangle (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Rectangle Tool"
+        ],
+        [
+          "Rectangle Tool"
+        ],
+        [
+          "Rectangle Tool"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way ellipse (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Ellipse Tool"
+        ],
+        [
+          "Ellipse Tool"
+        ],
+        [
+          "Ellipse Tool"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way line (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Line Tool"
+        ],
+        [
+          "Line Tool"
+        ],
+        [
+          "Line Tool"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way eraser (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Eraser Tool"
+        ],
+        [
+          "Eraser Tool"
+        ],
+        [
+          "Eraser Tool"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way cutter (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Cutter Tool"
+        ],
+        [
+          "Cutter Tool"
+        ],
+        [
+          "Cutter Tool"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way paint (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Paint"
+        ],
+        [
+          "Paint"
+        ],
+        [
+          "Paint"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "three-way select (drawing) (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [],
+        [],
+        []
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  }
+]

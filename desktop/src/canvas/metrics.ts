@@ -104,6 +104,9 @@ export class CanvasMetrics {
     commitMs: Stat;
     sceneMs: Stat;
     commits: number[];
+    /** The raw intervals of the last frames, idle and in a gesture (ruling D-33: the share of long intervals). */
+    frameIntervals: number[];
+    gestureIntervals: number[];
     commitParts: CanvasMetrics['commitParts'];
     loads: CanvasMetrics['loads'];
   } {
@@ -115,6 +118,8 @@ export class CanvasMetrics {
       commitMs: stat(this.commit),
       sceneMs: stat(this.scenes),
       commits: this.commit.map((v) => Math.round(v * 100) / 100),
+      frameIntervals: this.frames.map((v) => Math.round(v * 100) / 100),
+      gestureIntervals: this.gestureFrames.map((v) => Math.round(v * 100) / 100),
       commitParts: [...this.commitParts],
       loads: [...this.loads],
     };

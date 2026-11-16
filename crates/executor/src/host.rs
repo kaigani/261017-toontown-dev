@@ -725,6 +725,21 @@ impl ExecutorHandle {
         self.pointer_routed(origin, request, true)
     }
 
+    /// The command and parameters a `pointer` request's `tool` runs first in `view` (SI-148): a scene tool id in a Camera
+    /// view selects the scene tool (`anim.tool.set`), any other id the drawing tool (`tool.active.set`). The desktop host
+    /// runs it before it routes an agent's gesture to the window showing the view, as the gesture driver does.
+    ///
+    /// # Errors
+    /// `command.timeout` when the document thread does not answer within the budget.
+    pub fn gesture_tool_choice(&self, view: &str, tool: &str) -> Result<(String, Value), CommandError> {
+        let (view, tool) = (view.to_owned(), tool.to_owned());
+        crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
+            let s = core.session().ok_or_else(|| CommandError::internal("the session is unavailable"))?;
+            let (command, params) = crate::gesture::tool_choice_in(&s.ui, &view, &tool);
+            Ok((command.to_owned(), params))
+        })?
+    }
+
     /// [`ExecutorHandle::pointer`] for a gesture a window played (attached mode, design note 2 §6): never routed again.
     #[must_use]
     pub fn pointer_in_window(&self, origin: crate::types::Origin, request: Value) -> crate::types::Envelope {

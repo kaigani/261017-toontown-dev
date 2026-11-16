@@ -27,3 +27,6 @@ Build to use: the `desktop-<OS>` artifact of the CI run named in the handoff (`o
 | [C4.2-navigation.md](C4.2-navigation.md) | both | C4.2b |
 | [C4.2-display-scaling.md](C4.2-display-scaling.md) | both | C4.2b |
 | [C4.2-gpu-less.md](C4.2-gpu-less.md) | both | C4.2b |
+| [C4.3-camera-view.md](C4.3-camera-view.md) | both | C4.3b |
+| [C4.3-scene-tools.md](C4.3-scene-tools.md) | both | C4.3b |
+| [C4.3-coexistence.md](C4.3-coexistence.md) | both | C4.3b |

@@ -2648,6 +2648,7 @@
     {
       "command": "anim.tool.get",
       "files": [
+        "desktop/src-tauri/src/host.rs",
         "desktop/src/canvas/CanvasView.tsx"
       ]
     },
@@ -3250,6 +3251,12 @@
       ]
     },
     {
+      "command": "metrics.cadence",
+      "files": [
+        "desktop/src/canvas/CadenceProbe.tsx"
+      ]
+    },
+    {
       "command": "o.json",
       "files": [
         "desktop/src-tauri/src/diagnostics.rs"
@@ -3802,7 +3809,6 @@
     {
       "command": "tool.active.set",
       "files": [
-        "desktop/src-tauri/src/host.rs",
         "desktop/src/shell/Toolbars.tsx"
       ]
     },

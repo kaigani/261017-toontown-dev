@@ -877,6 +877,23 @@ fn check(req: &PointerRequest) -> Result<(), CommandError> {
 
 /// The view window a request names (11 §7.6 `viewName | viewId`): a view id, or a view type name (`drawing`,
 /// `camera`, `top`, `side`) naming the active view window when it has that type, else the first window of that type.
+/// The command a `pointer` request's `tool` runs first: in a Camera view a scene tool id selects the scene tool
+/// (`anim.tool.set`, SI-148); otherwise the drawing tool (`tool.active.set`). The gesture driver and the desktop host
+/// (before it routes an agent's gesture to a window) both use it.
+pub(crate) fn tool_choice(camera: bool, tool: &str) -> (&'static str, Value) {
+    if camera && crate::commands::anim_tool::SCENE_TOOLS.contains(&tool) {
+        ("anim.tool.set", json!({ "tool": tool }))
+    } else {
+        ("tool.active.set", json!({ "toolId": tool }))
+    }
+}
+
+/// [`tool_choice`] for a named view of the session: whether it shows the Camera view.
+pub(crate) fn tool_choice_in(ui: &crate::ui::UiState, view: &str, tool: &str) -> (&'static str, Value) {
+    let camera = ui.shell().view(&view_of(ui, view)).is_ok_and(|w| w.ty == ViewType::Camera);
+    tool_choice(camera, tool)
+}
+
 fn view_of(ui: &crate::ui::UiState, name: &str) -> String {
     let views = &ui.shell().views;
     if views.iter().any(|v| v.view_id == name) {
@@ -998,12 +1015,7 @@ pub(crate) fn run(
     };
     let mut out = PointerOutcome { commands: Vec::new(), hover: None };
     if let Some(t) = &req.tool {
-        // In a Camera view a scene tool id selects the scene tool (SI-148); otherwise the drawing tool.
-        let (command, params) = if camera && crate::commands::anim_tool::SCENE_TOOLS.contains(&t.as_str()) {
-            ("anim.tool.set", json!({ "tool": t }))
-        } else {
-            ("tool.active.set", json!({ "toolId": t }))
-        };
+        let (command, params) = tool_choice(camera, t);
         let env = invoke(core, command, params.clone());
         let ok = env.is_ok();
         out.commands.push(Answered { command_id: command.into(), params, envelope: env });

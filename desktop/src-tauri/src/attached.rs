@@ -255,7 +255,7 @@ impl AttachedIo for WindowIo {
     fn route_pointer(&self, view: &str, origin: &Origin, request: &Value, budget: Duration) -> Option<Envelope> {
         let (window, _) = self.window_of(view)?;
         let host = self.host();
-        if let Some(refused) = host.activate_gesture_tool(origin, request) {
+        if let Some(refused) = host.activate_gesture_tool(origin, view, request) {
             return Some(refused);
         }
         let generation = host.generation();

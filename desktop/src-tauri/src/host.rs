@@ -156,13 +156,19 @@ impl Host {
 
     /// An agent gesture routed to a window that names a tool: the tool is made active as the call arrives, before the
     /// window plays it (11 §7.6: the tool, then the gestures; headless runs them in that order too), so the window
-    /// draws the agent's stroke with that tool and the commit's own `tool.active.set` changes nothing. A refusal is
+    /// draws the agent's stroke with that tool and the commit's own tool choice changes nothing. In a Camera view a scene
+    /// tool id selects the scene tool (`anim.tool.set`, SI-148), by the kernel's rule (`gesture_tool_choice`). A refusal is
     /// the call's answer, as headless (the first refused command's envelope), and nothing is played.
-    pub fn activate_gesture_tool(&self, origin: &tt_executor::Origin, request: &Value) -> Option<Envelope> {
+    pub fn activate_gesture_tool(&self, origin: &tt_executor::Origin, view: &str, request: &Value) -> Option<Envelope> {
         let tool = request.get("tool").and_then(Value::as_str)?;
+        // The kernel's rule (SI-148): a scene tool id in a Camera view selects the scene tool, as the driver does.
+        let (command, params) = match self.exec().gesture_tool_choice(view, tool) {
+            Ok(c) => c,
+            Err(e) => return Some(Envelope::error(e, None)),
+        };
         let env = self.exec().invoke(Invocation {
-            command: "tool.active.set".into(),
-            params: json!({ "toolId": tool }),
+            command,
+            params,
             options: InvokeOptions::default(),
             origin: origin.clone(),
         });
@@ -764,18 +770,38 @@ mod tests {
         // The user's origin holds every scope; an agent without scopes is refused.
         let all = tt_executor::Origin::User;
         let before = tool(&h);
-        assert_eq!(h.activate_gesture_tool(&all, &json!({ "view": "drawingView", "events": [] })), None);
+        assert_eq!(h.activate_gesture_tool(&all, "drawingView", &json!({ "view": "drawingView", "events": [] })), None);
         assert_eq!(tool(&h), before, "no tool named: nothing changes");
         assert_eq!(
-            h.activate_gesture_tool(&all, &json!({ "view": "drawingView", "tool": "pencil", "events": [] })),
+            h.activate_gesture_tool(
+                &all,
+                "drawingView",
+                &json!({ "view": "drawingView", "tool": "pencil", "events": [] })
+            ),
             None
         );
         assert_eq!(tool(&h), Some(json!("pencil")), "the named tool is active before anything is played");
         let none =
             tt_executor::Origin::Agent { session: "s2".into(), name: "probe".into(), scopes: Default::default() };
-        let refused = h.activate_gesture_tool(&none, &json!({ "view": "drawingView", "tool": "brush", "events": [] }));
+        let refused = h.activate_gesture_tool(
+            &none,
+            "drawingView",
+            &json!({ "view": "drawingView", "tool": "brush", "events": [] }),
+        );
         assert!(refused.as_ref().is_some_and(|e| e.error.is_some()), "{refused:?}");
         assert_eq!(tool(&h), Some(json!("pencil")), "a refused activation changes nothing");
+        // In a Camera view a scene tool id selects the scene tool (SI-148), as the gesture driver does.
+        assert_eq!(
+            h.activate_gesture_tool(
+                &all,
+                "cameraView",
+                &json!({ "view": "cameraView", "tool": "transform", "events": [] })
+            ),
+            None
+        );
+        let scene = h.run("anim.tool.get", json!({}), false, None).result.map(|r| r["tool"].clone());
+        assert_eq!(scene, Some(json!("transform")), "the scene tool is the one named");
+        assert_eq!(tool(&h), Some(json!("pencil")), "the drawing tool is untouched");
         let _ = std::fs::remove_dir_all(dir);
     }
 

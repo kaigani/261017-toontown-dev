@@ -1,0 +1,9 @@
+{
+  "kind": "toontown.c43.e6",
+  "platform": "win32",
+  "input": "os (SendInput)",
+  "waitForUserMs": 10000,
+  "seconds": 24.1,
+  "failures": [],
+  "checks": 20
+}

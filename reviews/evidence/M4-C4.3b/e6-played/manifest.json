@@ -1,0 +1,9 @@
+{
+  "kind": "toontown.c43.e6",
+  "platform": "win32",
+  "input": "played by the window (pointer, C4.2b P1)",
+  "waitForUserMs": 10000,
+  "seconds": 8.2,
+  "failures": [],
+  "checks": 14
+}

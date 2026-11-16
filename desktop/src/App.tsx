@@ -28,6 +28,7 @@ import { ShellProvider } from './state/react';
 import { createStore } from './state/store';
 import type { AppState, Binding, Layout, PrefEntry, Theme, Tip } from './state/types';
 import { applyTheme, useAppliedTheme } from './theme/theme';
+import { CadenceProbe } from './canvas/CadenceProbe';
 import { setCanvasLaunch } from './canvas/launch';
 
 // M0 spike pages (C0.2 tablet, C0.3 canvas), loaded only when the host was started with --spike. They exist only in
@@ -165,6 +166,8 @@ function FloatWindow({ panelId }: { panelId: string }) {
 function Window() {
   const services = useShell();
   const host = useHost();
+  // `--canvas-metrics`: the cadence control of ruling D-33 runs.
+  const [measuring, setMeasuring] = useState(false);
   const actions = useActions();
   const dialogs = useDialogs();
   const messages = useMessages();
@@ -192,7 +195,10 @@ function Window() {
     startupDone.value = true;
     void (async () => {
       const { open, canvas } = await host.startup();
-      if (canvas) setCanvasLaunch(canvas);
+      if (canvas) {
+        setCanvasLaunch(canvas);
+        setMeasuring(canvas.metrics);
+      }
       if (open.length > 0) {
         for (const path of open) await actions.perform('project.open', { path });
         return;
@@ -372,6 +378,7 @@ function Window() {
       {appState?.startScreenVisible && <StartScreen />}
       <EngineBanner />
       <RefreshErrors errors={state.errors} />
+      <CadenceProbe enabled={measuring} />
     </div>
   );
 }

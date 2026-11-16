@@ -11,7 +11,7 @@ import { bucketOf } from './bucket';
 import { decodeDrawing, type DecodedDrawing, FormatError } from './format';
 import { compose, scaleOf } from './geometry';
 import { stringifyWireJson } from '../ipc/wireJson';
-import { parseSceneAnswer, residentKey, type Scene, type SceneAnswer } from './scene';
+import { parseSceneAnswer, residentKey, type Scene, type SceneAnswer, type SceneEntry } from './scene';
 
 export interface CanvasHost {
   canvasScene(viewId: string): Promise<unknown>;
@@ -72,6 +72,8 @@ export class CanvasModel {
   private bucket = 0;
   scene: Scene | null = null;
   readonly resident = new Map<string, Resident>();
+  /** Bumped whenever `resident` changes (the window's summary is rebuilt only then). */
+  residentVersion = 0;
   /** Failures seen (decode refusals, host errors), newest last, at most 20. */
   readonly failures: string[] = [];
   /** Payloads discarded for a stale generation or revision. */
@@ -142,15 +144,36 @@ export class CanvasModel {
    * view, the view's bucket (`setBucket`).
    */
   bucketIn(s: Scene | null, key: string): number {
-    const camera = s?.viewType === 'camera' ? s.camera : null;
-    if (!s || !camera) return this.bucket;
-    let best: number | null = null;
+    if (!s) return this.bucket;
+    return this.indexOf(s).buckets.get(key) ?? this.bucket;
+  }
+
+  /** A scene's entries by resident key, and each key's bucket (the largest occurrence's, Camera view), computed once
+   *  per scene and view bucket: the frame asks for every entry, and a search per entry made a 1,000-element scene's
+   *  idle frame quadratic (C4.3b, ruling D-33's measurement). */
+  private index: {
+    scene: Scene;
+    bucket: number;
+    entries: Map<string, SceneEntry>;
+    buckets: Map<string, number>;
+  } | null = null;
+
+  private indexOf(s: Scene): { entries: Map<string, SceneEntry>; buckets: Map<string, number> } {
+    if (this.index?.scene === s && this.index.bucket === this.bucket) return this.index;
+    const entries = new Map<string, SceneEntry>();
+    const buckets = new Map<string, number>();
+    const camera = s.viewType === 'camera' ? s.camera : null;
     for (const e of s.entries) {
-      if (residentKey(e) !== key || !e.matrix) continue;
-      const b = bucketOf(scaleOf(compose(camera.cameraToView, e.matrix)));
-      best = best === null ? b : Math.max(best, b);
+      const key = residentKey(e);
+      if (!entries.has(key)) entries.set(key, e);
+      if (camera && e.matrix) {
+        const b = bucketOf(scaleOf(compose(camera.cameraToView, e.matrix)));
+        const best = buckets.get(key);
+        buckets.set(key, best === undefined ? b : Math.max(best, b));
+      }
     }
-    return best ?? this.bucket;
+    this.index = { scene: s, bucket: this.bucket, entries, buckets };
+    return this.index;
   }
 
   /** Requests in flight (T3). */
@@ -161,6 +184,7 @@ export class CanvasModel {
   private dropAll(): void {
     for (const id of this.resident.keys()) this.sink.drop(id);
     this.resident.clear();
+    this.residentVersion++;
     this.scene = null;
     this.version++;
   }
@@ -215,7 +239,7 @@ export class CanvasModel {
   }
 
   private wantedIn(s: Scene | null, key: string): boolean {
-    const e = s?.entries.find((x) => residentKey(x) === key);
+    const e = s ? this.indexOf(s).entries.get(key) : undefined;
     if (!s || !e) return false;
     const r = this.resident.get(key);
     if (!r) return true;
@@ -259,6 +283,7 @@ export class CanvasModel {
         for (const id of [...this.resident.keys()]) {
           if (!shown.has(id)) {
             this.resident.delete(id);
+            this.residentVersion++;
             this.sink.drop(id);
           }
         }
@@ -291,6 +316,7 @@ export class CanvasModel {
         this.sink.upload(item.key, d);
         const asked = this.requestedAt.get(item.key);
         if (asked !== undefined) this.onLoaded?.(item.key, d.byteLength, this.clock.now() - asked);
+        this.residentVersion++;
         this.resident.set(item.key, {
           rev: entry.rev,
           bucket: item.bucket,

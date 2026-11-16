@@ -1,0 +1,113 @@
+[
+  {
+    "check": "D-33 control: 300 frames of the webview's cadence on the start screen",
+    "ok": true,
+    "detail": {
+      "frameMs": {
+        "n": 300,
+        "p50": 17.5,
+        "p95": 18.2,
+        "max": 18.6
+      },
+      "canvases": 1,
+      "startScreen": true
+    }
+  },
+  {
+    "check": "sample: work per frame p95 idle <= 8 ms (D-33)",
+    "ok": true,
+    "detail": {
+      "n": 300,
+      "p50": 0.1,
+      "p95": 0.2,
+      "max": 0.3
+    }
+  },
+  {
+    "check": "sample: at most 1 % of frame intervals idle longer than 35.0 ms (twice the control median; D-33)",
+    "ok": true,
+    "detail": {
+      "share": 0.0,
+      "intervals": 300
+    }
+  },
+  {
+    "check": "sample: work per frame p95 during scene drags <= 8 ms (D-33)",
+    "ok": true,
+    "detail": {
+      "n": 300,
+      "p50": 0.1,
+      "p95": 0.2,
+      "max": 0.5
+    }
+  },
+  {
+    "check": "sample: at most 1 % of frame intervals during scene drags longer than 35.0 ms (twice the control median; D-33)",
+    "ok": true,
+    "detail": {
+      "share": 0.0,
+      "intervals": 300
+    }
+  },
+  {
+    "check": "sample: release-to-committed p95 of a scene drag <= 50.0 ms",
+    "ok": true,
+    "detail": 32.9
+  },
+  {
+    "check": "sample: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms",
+    "ok": true,
+    "detail": 0.5
+  },
+  {
+    "check": "sample: at least 30 release-to-committed samples",
+    "ok": true,
+    "detail": 30
+  },
+  {
+    "check": "groups1k: work per frame p95 idle <= 8 ms (D-33)",
+    "ok": true,
+    "detail": {
+      "n": 300,
+      "p50": 0.4,
+      "p95": 0.6,
+      "max": 0.8
+    }
+  },
+  {
+    "check": "groups1k: at most 1 % of frame intervals idle longer than 35.0 ms (twice the control median; D-33)",
+    "ok": true,
+    "detail": {
+      "share": 0.0,
+      "intervals": 300
+    }
+  },
+  {
+    "check": "groups1k: work per frame p95 during scene drags <= 8 ms (D-33)",
+    "ok": true,
+    "detail": {
+      "n": 300,
+      "p50": 0.5,
+      "p95": 1.8,
+      "max": 3.4
+    }
+  },
+  {
+    "check": "groups1k: at most 1 % of frame intervals during scene drags longer than 35.0 ms (twice the control median; D-33)",
+    "ok": true,
+    "detail": {
+      "share": 0.0,
+      "intervals": 300
+    }
+  },
+  {
+    "check": "groups1k: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms",
+    "ok": true,
+    "detail": 2.1
+  },
+  {
+    "check": "groups1k: at least 30 release-to-committed samples",
+    "ok": true,
+    "detail": 30
+  }
+]

@@ -755,3 +755,18 @@ fn si156_the_drawing_select_handles_in_the_camera_view_are_where_it_shows_them()
     let out = pointer(&h, None, drag(&[(p.0 + 1.0, p.1 + 1.0), (p.0 + 30.0, p.1 + 20.0)], &[]));
     assert_eq!(last(&out)["commandId"], "draw.pivot.set", "{out}");
 }
+
+/// SI-148: the tool a `pointer` request names is chosen by one rule for the gesture driver and for the desktop host
+/// (which activates it before routing an agent's gesture to a window): in a Camera view a scene tool id selects the
+/// scene tool, any other id the drawing tool; in the Drawing view always the drawing tool. Without the shared rule the
+/// host chose `tool.active.set` in a Camera view: `transform` was refused and `select` chose the drawing Select.
+#[test]
+fn si148_a_pointer_requests_tool_is_chosen_by_the_views_family_for_the_host_too() {
+    let h = ready();
+    let choice = |view: &str, tool: &str| h.gesture_tool_choice(view, tool).unwrap();
+    assert_eq!(choice("cameraView", "transform"), ("anim.tool.set".to_owned(), json!({ "tool": "transform" })));
+    assert_eq!(choice("cameraView", "select"), ("anim.tool.set".to_owned(), json!({ "tool": "select" })));
+    assert_eq!(choice("cameraView", "brush"), ("tool.active.set".to_owned(), json!({ "toolId": "brush" })));
+    assert_eq!(choice("drawingView", "select"), ("tool.active.set".to_owned(), json!({ "toolId": "select" })));
+    assert_eq!(choice("drawing", "select"), ("tool.active.set".to_owned(), json!({ "toolId": "select" })));
+}

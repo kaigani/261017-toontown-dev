@@ -119,6 +119,9 @@ export function CanvasView({
     // loaded at the press (preview note §3); `ready` counts the parts resident.
     let parts: { drawingId: string; rest: string; selection: string; ready: number } | null = null;
     let summary = '';
+    // What the summary was built from: it is rebuilt only when one of these changed (a 1,000-drawing summary
+    // stringified every frame cost milliseconds per frame).
+    let summaryKey = '';
     let raf = 0;
     let stopped = false;
     // Measurements (`--canvas-metrics`; plan §6, D-5): published in the summary at most twice a second.
@@ -593,12 +596,35 @@ export function CanvasView({
         const now = performance.now();
         // The frame time is the interval between frames (the rAF timestamps); the work is this callback's.
         metrics.frame(frameAt, now - began, collector.active || playing !== null);
-        if (overlay) metrics.inkDrawn(now);
+        // Input-to-ink, and for a previewed drag its feedback: the frame that draws the samples so far (plan §6).
+        if (overlay || preview) metrics.inkDrawn(now);
         // Committed when the window shows the committed state: every drawing resident at its scene revision.
         metrics.drawn(model.settledVersion, now);
       }
       const publish = metrics !== null && began - metricsAt >= 500;
       if (publish) metricsAt = began;
+      const stats = renderer.stats();
+      const inputs = JSON.stringify([
+        renderer.kind,
+        engine.generation(),
+        model.residentVersion,
+        model.failures.length,
+        model.failures[model.failures.length - 1] ?? null,
+        lastGesture,
+        selection.shown,
+        scene?.viewType ?? null,
+        previewKind,
+        preview,
+        cameraShown,
+        stats.drawn,
+        stats.residentDrawings,
+        stats.residentBytes,
+        stats.lastError,
+        fallback ?? null,
+        lastRecord.length,
+      ]);
+      if (!publish && inputs === summaryKey) return;
+      summaryKey = inputs;
       // Written losslessly: revisions are exact 64-bit integers (`bigint`).
       let next = stringifyWireJson({
         backend: renderer.kind,
@@ -616,7 +642,7 @@ export function CanvasView({
           residentDrawings,
           residentBytes,
           lastError,
-        }))(renderer.stats()),
+        }))(stats),
         ...(fallback ? { fallback } : {}),
         ...(metrics && publish ? { metrics: metrics.snapshot() } : {}),
       });

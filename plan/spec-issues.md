@@ -1912,7 +1912,8 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   - **The preview:** a view-pixel affine of the selection by the furniture rule of the command (preview note §2).
   - **Exact cases:** the selected objects of a Drawing-view Select drag (a painted zone that the kernel re-derives
     from moved strokes is not among them: it stays until the commit), a Camera-view move of nodes at one depth, and a
-    Camera-view scale, rotation or skew of one node facing the camera. Elsewhere it approximates, and the committed
+    Camera-view scale, rotation or skew of one node facing the camera (its factor, angle or shear from the box rule,
+    re-anchored at that node's pivot as the kernel applies it, SI-150). Elsewhere it approximates, and the committed
     state replaces it when drawn.
   - **Selection payloads:** `canvas_load` takes `part: all | selection | rest`, so the Drawing view can move only the
     selected objects.
@@ -1980,12 +1981,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   through the view's geometry (view pixels at the element's depth), so the replay can differ from the window in the
   last bits (measured: 3.6e-16 and 1.1e-14 relative). The window and the third engine (the window's commands sent
   directly) agree exactly.
-- **Interim decision:** the window and the third engine are compared exactly; the second engine exactly where it is
-  (the clicks, corner scale, pivot and every drawing tool in the Camera view), else within 1e-9 relative, and each row's
-  receipt says whether it was exact and gives the largest difference (`scripts/c43-gesture-equivalence.py`,
-  `replayNotExact` in its manifest).
-- **Question:** accept the tolerance for those rows, or give headless engines a way to take a view's size (a
-  test-only option of the headless binary, or a `view.size.set` command) so the replay sees the window's geometry.
+- **Ruled (D-32):** the window and the third engine agree exactly. Where the headless replay can be given the window's
+  own view size and transform it is, and that row is compared exactly; the tolerance (1e-9 relative, each row recording
+  its difference) stays only where it cannot. Built: the headless binary takes `--view-size VIEW=WIDTHxHEIGHT`
+  (applied through the same sensor report a desktop window sends), the three-way starts its headless engines with the
+  window's Camera view size, every row resets the view's transform on all three engines, and engine 2 replays the
+  window's view pixels as collected, compared exactly. The size-independent replay with the tolerance remains only as
+  the fallback when the sizes cannot be matched (the receipt's `D-32` check fails then).
 
 ## SI-159 — click to activate never fired (found in M4 C4.3b; defect fixed)
 
