@@ -204,35 +204,61 @@ fn passes_stay_constant_on_a_large_project() {
         let holds = h.availability_holds(refs.clone()).unwrap();
         (holds.iter().sum::<Duration>(), holds.iter().copied().max().unwrap_or_default())
     };
+    // Ruling D-34: the change is made three times and the first pass after each measured; the minimum of the three is
+    // asserted, so one preempted sample on a shared runner does not decide it, while a real cost rise raises all three.
+    let first_of_three = |h: &ExecutorHandle, change: &dyn Fn(usize)| {
+        let samples: Vec<(Duration, Duration)> = (0..3)
+            .map(|k| {
+                change(k);
+                first(h)
+            })
+            .collect();
+        eprintln!("  the three first passes' longest requests: {:?}", samples.iter().map(|x| x.1).collect::<Vec<_>>());
+        samples.into_iter().fold((Duration::MAX, Duration::MAX), |(t, m), (t2, m2)| (t.min(t2), m.min(m2)))
+    };
     let ids: Vec<Value> =
         elements["elements"].as_array().unwrap().iter().filter_map(|x| x.get("id").cloned()).collect();
     let mut steady = Vec::new();
-    ok(&large, "edit.selection.set", json!({ "context": "timeline", "ids": ids }));
-    ok(&large, "edit.selection.set", json!({ "context": "staging", "ids": ids }));
-    steady.push(("10,101 selected elements", first(&large), best(&large)));
-    ok(&large, "edit.copy", json!({ "context": "staging" }));
-    steady.push(("10,101 copied elements", first(&large), best(&large)));
+    let select = |_: usize| {
+        for context in ["timeline", "staging"] {
+            ok(&large, "edit.selection.set", json!({ "context": context, "ids": [] }));
+            ok(&large, "edit.selection.set", json!({ "context": context, "ids": ids }));
+        }
+    };
+    steady.push(("10,101 selected elements", first_of_three(&large, &select), best(&large)));
+    let copy = |_: usize| ok(&large, "edit.copy", json!({ "context": "staging" }));
+    steady.push(("10,101 copied elements", first_of_three(&large, &copy), best(&large)));
     ok(&large, "edit.selection.set", json!({ "context": "timeline", "ids": [] }));
     ok(&large, "edit.selection.set", json!({ "context": "staging", "ids": [] }));
     let made =
         large.invoke(Invocation::user("element.create", json!({ "type": "drawing", "name": "Long" }))).result.unwrap();
     let long = made["elementIds"][0].as_str().unwrap().to_owned();
-    let runs: Vec<Value> =
-        (1..=10_000u32).map(|f| json!({ "drawing": if f % 2 == 0 { "2" } else { "1" }, "from": f, "to": f })).collect();
-    ok(
-        &large,
-        "xsheet.exposures.set",
-        json!({ "columns": [{ "elementId": long, "from": 1, "to": 10_000, "exposures": runs }], "createMissingDrawings": true }),
-    );
-    ok(&large, "app.context.set", json!({ "elementId": long, "frame": 5_000 }));
-    steady.push(("a current column of 10,000 runs", first(&large), best(&large)));
+    // Each repetition is a real change: the runs alternate their drawings in another phase (10,000 runs each time).
+    let column = |k: usize| {
+        let runs: Vec<Value> = (1..=10_000u32)
+            .map(|f| json!({ "drawing": if (f as usize + k).is_multiple_of(2) { "2" } else { "1" }, "from": f, "to": f }))
+            .collect();
+        ok(
+            &large,
+            "xsheet.exposures.set",
+            json!({ "columns": [{ "elementId": long, "from": 1, "to": 10_000, "exposures": runs }], "createMissingDrawings": true }),
+        );
+        ok(&large, "app.context.set", json!({ "elementId": long, "frame": 5_000 }));
+    };
+    steady.push(("a current column of 10,000 runs", first_of_three(&large, &column), best(&large)));
     for _ in 0..10 {
         ok(&large, "element.create", json!({ "type": "camera", "count": 99 }));
     }
     let cams = large.invoke(Invocation::user("anim.camera.list", json!({}))).result.unwrap();
-    let camera = cams["cameras"][0]["id"].as_str().unwrap().to_owned();
-    ok(&large, "app.context.set", json!({ "elementId": camera, "frame": 1 }));
-    steady.push(("991 cameras, one current", first(&large), best(&large)));
+    // Each repetition is a real change: after the first, one more camera is added before another becomes current.
+    let current = |k: usize| {
+        if k > 0 {
+            ok(&large, "element.create", json!({ "type": "camera", "count": 1 }));
+        }
+        let camera = cams["cameras"][k]["id"].as_str().unwrap().to_owned();
+        ok(&large, "app.context.set", json!({ "elementId": camera, "frame": 1 }));
+    };
+    steady.push(("991 cameras, one current", first_of_three(&large, &current), best(&large)));
     for (what, (after_change, hold), pass) in &steady {
         eprintln!("{what}: first pass after the change {after_change:?} (longest request {hold:?}), then {pass:?}");
         assert!(
