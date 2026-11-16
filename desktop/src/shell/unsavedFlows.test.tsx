@@ -12,6 +12,12 @@ import { createScriptedHost, NO_PROJECT_STATE, ok } from '../test-support/script
 
 afterEach(cleanup);
 
+/** The element, or a failure naming what is absent. */
+function must<T>(v: T | null | undefined, what = 'element'): T {
+  if (v === null || v === undefined) throw new Error(`absent: ${what}`);
+  return v;
+}
+
 const DIRTY = {
   ...NO_PROJECT_STATE,
   project: {
@@ -42,14 +48,14 @@ const FLOWS: {
     params: {},
     complete: async () => {
       const dialog = await screen.findByRole('dialog', { name: 'New Project' });
-      const name = dialog.querySelector('[data-tt-id="newProject.name"]') as Element;
+      const name = must(dialog.querySelector('[data-tt-id="newProject.name"]'));
       fireEvent.change(name, { target: { value: 'Fresh' } });
       await waitFor(() => {
         expect(dialog.querySelector<HTMLButtonElement>('[data-tt-id="newProject.create"]')?.disabled).toBe(
           false,
         );
       });
-      fireEvent.click(dialog.querySelector('[data-tt-id="newProject.create"]') as Element);
+      fireEvent.click(must(dialog.querySelector('[data-tt-id="newProject.create"]')));
     },
     sends: { name: 'Fresh' },
   },
@@ -69,7 +75,7 @@ const FLOWS: {
       await waitFor(() => {
         expect(dialog.querySelector('[data-tt-id="openBackup.open.0"]')).not.toBeNull();
       });
-      fireEvent.click(dialog.querySelector('[data-tt-id="openBackup.open.0"]') as Element);
+      fireEvent.click(must(dialog.querySelector('[data-tt-id="openBackup.open.0"]')));
     },
     sends: { backupId: 'b1' },
   },
@@ -112,7 +118,7 @@ describe('the unsaved-changes question in front of every discarding command (D-4
         expect(Array.from(box.querySelectorAll('button')).map((b) => b.textContent)).toEqual(
           expect.arrayContaining(['Save', "Don't Save", 'Cancel']),
         );
-        fireEvent.click(box.querySelector(`[data-tt-id="message.${choice}"]`) as Element);
+        fireEvent.click(must(box.querySelector(`[data-tt-id="message.${choice}"]`)));
         if (choice !== 'cancel') await flow.complete?.();
         const relevant = () =>
           h

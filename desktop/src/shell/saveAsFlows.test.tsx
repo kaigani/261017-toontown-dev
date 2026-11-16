@@ -10,6 +10,12 @@ import { createScriptedHost, fail, NO_PROJECT_STATE, ok } from '../test-support/
 
 afterEach(cleanup);
 
+/** The element, or a failure naming what is absent. */
+function must<T>(v: T | null | undefined, what = 'element'): T {
+  if (v === null || v === undefined) throw new Error(`absent: ${what}`);
+  return v;
+}
+
 const OPEN = {
   ...NO_PROJECT_STATE,
   project: {
@@ -53,7 +59,7 @@ describe('Save As onto an existing file (D-44)', () => {
         'Replace',
         'Cancel',
       ]);
-      fireEvent.click(box.querySelector(`[data-tt-id="message.${choice}"]`) as Element);
+      fireEvent.click(must(box.querySelector(`[data-tt-id="message.${choice}"]`)));
       await waitFor(() => {
         expect(screen.queryByRole('alertdialog')).toBeNull();
       });

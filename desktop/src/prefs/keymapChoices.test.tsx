@@ -10,6 +10,12 @@ import { createScriptedHost, type ScriptedHost } from '../test-support/scriptedH
 
 afterEach(cleanup);
 
+/** The element, or a failure naming what is absent. */
+function must<T>(v: T | null | undefined, what = 'element'): T {
+  if (v === null || v === undefined) throw new Error(`absent: ${what}`);
+  return v;
+}
+
 async function keyboardPage(): Promise<{ h: ScriptedHost; prefs: HTMLElement }> {
   const h = createScriptedHost();
   h.picked = '/p/keys.json';
@@ -43,13 +49,13 @@ describe('the shortcut editor asks with the application message box (C43B-R2-08,
   ] as const) {
     it(`Import › ${choice}`, async () => {
       const { h, prefs } = await keyboardPage();
-      fireEvent.click(prefs.querySelector('[data-tt-id="keymap.import"]') as Element);
+      fireEvent.click(must(prefs.querySelector('[data-tt-id="keymap.import"]')));
       const box = await screen.findByRole('alertdialog');
       expect(box.getAttribute('data-tt-id')).toBe('message.keymap.importMode');
       expect(Array.from(box.querySelectorAll('button')).map((b) => b.textContent)).toEqual(
         expect.arrayContaining(['Merge', 'Replace', 'Cancel']),
       );
-      fireEvent.click(box.querySelector(`[data-tt-id="message.${choice}"]`) as Element);
+      fireEvent.click(must(box.querySelector(`[data-tt-id="message.${choice}"]`)));
       await waitFor(() => {
         expect(screen.queryByRole('alertdialog')).toBeNull();
       });
@@ -58,7 +64,7 @@ describe('the shortcut editor asks with the application message box (C43B-R2-08,
           expect(prefs.querySelector('[data-tt-id="keymap.notice"]')?.textContent).toContain(`(${choice})`);
         });
       }
-      fireEvent.click(prefs.querySelector('[data-tt-id="preferences.submit"]') as Element);
+      fireEvent.click(must(prefs.querySelector('[data-tt-id="preferences.submit"]')));
       await waitFor(() => {
         expect(screen.queryByRole('dialog', { name: 'Preferences' })).toBeNull();
       });
@@ -72,14 +78,14 @@ describe('the shortcut editor asks with the application message box (C43B-R2-08,
   ] as const) {
     it(`Reset all › ${choice}`, async () => {
       const { h, prefs } = await keyboardPage();
-      fireEvent.click(prefs.querySelector('[data-tt-id="keymap.resetAll"]') as Element);
+      fireEvent.click(must(prefs.querySelector('[data-tt-id="keymap.resetAll"]')));
       const box = await screen.findByRole('alertdialog');
       expect(box.getAttribute('data-tt-id')).toBe('message.keymap.resetAll');
-      fireEvent.click(box.querySelector(`[data-tt-id="message.${choice}"]`) as Element);
+      fireEvent.click(must(box.querySelector(`[data-tt-id="message.${choice}"]`)));
       await waitFor(() => {
         expect(screen.queryByRole('alertdialog')).toBeNull();
       });
-      fireEvent.click(prefs.querySelector('[data-tt-id="preferences.submit"]') as Element);
+      fireEvent.click(must(prefs.querySelector('[data-tt-id="preferences.submit"]')));
       await waitFor(() => {
         expect(screen.queryByRole('dialog', { name: 'Preferences' })).toBeNull();
       });

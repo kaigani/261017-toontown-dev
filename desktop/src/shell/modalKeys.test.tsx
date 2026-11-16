@@ -10,6 +10,12 @@ import { createScriptedHost, fail, NO_PROJECT_STATE, ok } from '../test-support/
 
 afterEach(cleanup);
 
+/** The element, or a failure naming what is absent. */
+function must<T>(v: T | null | undefined, what = 'element'): T {
+  if (v === null || v === undefined) throw new Error(`absent: ${what}`);
+  return v;
+}
+
 const OPEN = {
   ...NO_PROJECT_STATE,
   project: {
@@ -55,7 +61,7 @@ describe('keys inside a modal question are the question’s', () => {
     // The real window focuses the default button (seen in the D-39 diagnostic); here it is focused by hand.
     replace?.focus();
     // On the focused button the key keeps its default (the button's activation).
-    expect(fireEvent.keyDown(replace as HTMLButtonElement, { key: 'Enter', code: 'Enter' })).toBe(true);
-    expect(fireEvent.keyDown(replace as HTMLButtonElement, { key: ' ', code: 'Space' })).toBe(true);
+    expect(fireEvent.keyDown(must(replace), { key: 'Enter', code: 'Enter' })).toBe(true);
+    expect(fireEvent.keyDown(must(replace), { key: ' ', code: 'Space' })).toBe(true);
   });
 });
