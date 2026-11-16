@@ -163,26 +163,138 @@ fn asking_every_handler_stays_cheap() {
     }
 }
 
-/// Ruling O-23 budgets on a project of 10,000 command-created elements: a full pass costs no more than on an empty
-/// project plus a small constant and stays under 50 ms; no availability request holds the document thread for more
-/// than 20 ms; a user command submitted during continuous passes completes within 100 ms.
+/// A project of `batches` × 99 command-created peg elements (and the project's own), with its element ids.
+fn project_of(batches: usize) -> (ExecutorHandle, Vec<Value>) {
+    let h = ExecutorHandle::spawn(Default::default()).unwrap();
+    ok(&h, "project.create", json!({ "name": "Availability" }));
+    for _ in 0..batches {
+        ok(&h, "element.create", json!({ "type": "peg", "count": 99 }));
+    }
+    let elements = h.invoke(Invocation::user("element.list", json!({}))).result.unwrap_or_default();
+    let ids = elements["elements"].as_array().unwrap().iter().filter_map(|x| x.get("id").cloned()).collect();
+    (h, ids)
+}
+
+/// One case of ruling O-24 measured on a project: the longest request of the first availability pass after each real
+/// repetition of the change, and the best of five steady passes after them.
+struct Case {
+    what: &'static str,
+    holds: Vec<std::time::Duration>,
+    steady: std::time::Duration,
+}
+
+/// The four cases of ruling O-24 on `h` (whose elements are `ids`): the selections of every element, a copy of them, a
+/// current exposure column of `runs` runs, and a scene of `cameras` cameras with one current; each change is made
+/// `reps` times, each repetition a real change (ruling D-34: the selections cleared and set again, another copy, the
+/// column's runs in another phase, one more camera and another current one).
+fn o24_cases(h: &ExecutorHandle, ids: &[Value], runs: u32, cameras: usize, reps: usize) -> Vec<Case> {
+    use std::time::{Duration, Instant};
+    let refs = gui_refs();
+    let best = || {
+        (0..5)
+            .map(|_| {
+                let t = Instant::now();
+                h.availability(refs.clone()).unwrap();
+                t.elapsed()
+            })
+            .min()
+            .unwrap()
+    };
+    let first = || h.availability_holds(refs.clone()).unwrap().into_iter().max().unwrap_or_default();
+    let measure = |what: &'static str, change: &dyn Fn(usize)| -> Case {
+        let holds: Vec<Duration> = (0..reps)
+            .map(|k| {
+                change(k);
+                first()
+            })
+            .collect();
+        Case { what, holds, steady: best() }
+    };
+    let mut out = Vec::new();
+    let select = |_: usize| {
+        for context in ["timeline", "staging"] {
+            ok(h, "edit.selection.set", json!({ "context": context, "ids": [] }));
+            ok(h, "edit.selection.set", json!({ "context": context, "ids": ids }));
+        }
+    };
+    out.push(measure("selected elements", &select));
+    let copy = |_: usize| ok(h, "edit.copy", json!({ "context": "staging" }));
+    out.push(measure("copied elements", &copy));
+    ok(h, "edit.selection.set", json!({ "context": "timeline", "ids": [] }));
+    ok(h, "edit.selection.set", json!({ "context": "staging", "ids": [] }));
+    let made =
+        h.invoke(Invocation::user("element.create", json!({ "type": "drawing", "name": "Long" }))).result.unwrap();
+    let long = made["elementIds"][0].as_str().unwrap().to_owned();
+    let column = |k: usize| {
+        let list: Vec<Value> = (1..=runs)
+            .map(|f| json!({ "drawing": if (f as usize + k).is_multiple_of(2) { "2" } else { "1" }, "from": f, "to": f }))
+            .collect();
+        ok(
+            h,
+            "xsheet.exposures.set",
+            json!({ "columns": [{ "elementId": long, "from": 1, "to": runs, "exposures": list }], "createMissingDrawings": true }),
+        );
+        ok(h, "app.context.set", json!({ "elementId": long, "frame": runs / 2 }));
+    };
+    out.push(measure("a current exposure column", &column));
+    let mut left = cameras;
+    while left > 0 {
+        let n = left.min(99);
+        ok(h, "element.create", json!({ "type": "camera", "count": n }));
+        left -= n;
+    }
+    let cams = h.invoke(Invocation::user("anim.camera.list", json!({}))).result.unwrap();
+    let current = |k: usize| {
+        if k > 0 {
+            ok(h, "element.create", json!({ "type": "camera", "count": 1 }));
+        }
+        let camera = cams["cameras"][k]["id"].as_str().unwrap().to_owned();
+        ok(h, "app.context.set", json!({ "elementId": camera, "frame": 1 }));
+    };
+    out.push(measure("cameras, one current", &current));
+    out
+}
+
+/// The longest request any chunk of a pass holds the document thread, the worst of the chunks.
+fn worst_chunk(h: &ExecutorHandle) -> std::time::Duration {
+    gui_refs().chunks(32).map(|c| h.availability_chunk_hold(c.to_vec()).unwrap()).max().unwrap_or_default()
+}
+
+/// The CI form of a large project's figure against the same figure on a small project, measured in the same process
+/// (ruling D-41): at most `RATIO` times the small project's, the small one taken at least `FLOOR` (a figure of a few
+/// tenths of a millisecond is the timer's, not the work's), and never above the absolute `CEILING`, which only catches a
+/// gross regression. The figures of ruling O-23's 20 ms budget are a workstation receipt
+/// (`o23_budget_receipt`, release and debug, 30 samples).
+/// Measured on the workstation (debug, the minimum of three): 9.0 for the selection case (the first pass reads the
+/// 10,101-id selection once after the change, ruling O-24's memo, against 100 ids), 1.1 to 2.6 for the others, about 1
+/// for the steady passes and the worst chunk.
+const RATIO: u32 = 20;
+const FLOOR: std::time::Duration = std::time::Duration::from_millis(1);
+const CEILING: std::time::Duration = std::time::Duration::from_millis(40);
+
+fn within(large: std::time::Duration, small: std::time::Duration) -> bool {
+    large <= small.max(FLOOR) * RATIO && large <= CEILING
+}
+
+/// Ruling O-23's passes stay constant on a large project (ruling D-41's CI form): a project of 10,000 command-created
+/// elements against a project of 100, in the same process. Each figure of the large project (a full pass; for each
+/// case of ruling O-24, the first pass's longest request after the change as the minimum of three real repetitions, and
+/// the steady pass after it; the worst chunk) is within a stated multiple of the same figure on the small project and
+/// under an absolute ceiling of 40 ms. A user command submitted during continuous passes completes within 100 ms.
 #[test]
 fn passes_stay_constant_on_a_large_project() {
     use std::time::{Duration, Instant};
     let refs = gui_refs();
-    let empty = ExecutorHandle::spawn(Default::default()).unwrap();
-    ok(&empty, "project.create", json!({ "name": "Empty" }));
-    let large = ExecutorHandle::spawn(Default::default()).unwrap();
-    ok(&large, "project.create", json!({ "name": "Large" }));
     let built = Instant::now();
-    for _ in 0..102 {
-        ok(&large, "element.create", json!({ "type": "peg", "count": 99 }));
-    }
-    let elements = large.invoke(Invocation::user("element.list", json!({}))).result.unwrap_or_default();
-    let n = elements["elements"].as_array().map_or(0, Vec::len);
-    eprintln!("fixture: {n} elements built through commands in {:?}", built.elapsed());
-    assert!(n >= 10_000, "{n}");
-    // The best of five passes of each, so a scheduling hiccup of the runner does not decide the comparison.
+    let (large, ids) = project_of(102);
+    let (small, small_ids) = project_of(1);
+    eprintln!(
+        "fixture: {} and {} elements built through commands in {:?}",
+        ids.len(),
+        small_ids.len(),
+        built.elapsed()
+    );
+    assert!(ids.len() >= 10_000, "{}", ids.len());
     let best = |h: &ExecutorHandle| {
         (0..5)
             .map(|_| {
@@ -193,87 +305,28 @@ fn passes_stay_constant_on_a_large_project() {
             .min()
             .unwrap()
     };
-    let (e, l) = (best(&empty), best(&large));
-    eprintln!("full pass over {} references: empty project {e:?}, 10,000 elements {l:?}", refs.len());
-    assert!(l <= e + Duration::from_millis(20), "large {l:?} vs empty {e:?}");
-    assert!(l < Duration::from_millis(50), "{l:?}");
-    // Ruling O-24: the large selections and clipboard, a long exposure column and a scene with many cameras. A
-    // precheck reads such a value once after it changes (`memo`); the passes after that read nothing of it.
-    // The first pass after a change: its total and the longest any of its requests held the document thread.
-    let first = |h: &ExecutorHandle| {
-        let holds = h.availability_holds(refs.clone()).unwrap();
-        (holds.iter().sum::<Duration>(), holds.iter().copied().max().unwrap_or_default())
-    };
-    // Ruling D-34: the change is made three times and the first pass after each measured; the minimum of the three is
-    // asserted, so one preempted sample on a shared runner does not decide it, while a real cost rise raises all three.
-    let first_of_three = |h: &ExecutorHandle, change: &dyn Fn(usize)| {
-        let samples: Vec<(Duration, Duration)> = (0..3)
-            .map(|k| {
-                change(k);
-                first(h)
-            })
-            .collect();
-        eprintln!("  the three first passes' longest requests: {:?}", samples.iter().map(|x| x.1).collect::<Vec<_>>());
-        samples.into_iter().fold((Duration::MAX, Duration::MAX), |(t, m), (t2, m2)| (t.min(t2), m.min(m2)))
-    };
-    let ids: Vec<Value> =
-        elements["elements"].as_array().unwrap().iter().filter_map(|x| x.get("id").cloned()).collect();
-    let mut steady = Vec::new();
-    let select = |_: usize| {
-        for context in ["timeline", "staging"] {
-            ok(&large, "edit.selection.set", json!({ "context": context, "ids": [] }));
-            ok(&large, "edit.selection.set", json!({ "context": context, "ids": ids }));
-        }
-    };
-    steady.push(("10,101 selected elements", first_of_three(&large, &select), best(&large)));
-    let copy = |_: usize| ok(&large, "edit.copy", json!({ "context": "staging" }));
-    steady.push(("10,101 copied elements", first_of_three(&large, &copy), best(&large)));
-    ok(&large, "edit.selection.set", json!({ "context": "timeline", "ids": [] }));
-    ok(&large, "edit.selection.set", json!({ "context": "staging", "ids": [] }));
-    let made =
-        large.invoke(Invocation::user("element.create", json!({ "type": "drawing", "name": "Long" }))).result.unwrap();
-    let long = made["elementIds"][0].as_str().unwrap().to_owned();
-    // Each repetition is a real change: the runs alternate their drawings in another phase (10,000 runs each time).
-    let column = |k: usize| {
-        let runs: Vec<Value> = (1..=10_000u32)
-            .map(|f| json!({ "drawing": if (f as usize + k).is_multiple_of(2) { "2" } else { "1" }, "from": f, "to": f }))
-            .collect();
-        ok(
-            &large,
-            "xsheet.exposures.set",
-            json!({ "columns": [{ "elementId": long, "from": 1, "to": 10_000, "exposures": runs }], "createMissingDrawings": true }),
+    let (s, l) = (best(&small), best(&large));
+    eprintln!("full pass over {} references: 100 elements {s:?}, 10,000 elements {l:?}", refs.len());
+    assert!(within(l, s), "full pass: large {l:?} vs small {s:?}");
+    let cases_l = o24_cases(&large, &ids, 10_000, 991, 3);
+    let cases_s = o24_cases(&small, &small_ids, 100, 10, 3);
+    for (cl, cs) in cases_l.iter().zip(&cases_s) {
+        let (hl, hs) = (cl.holds.iter().min().copied().unwrap(), cs.holds.iter().min().copied().unwrap());
+        eprintln!(
+            "{}: first pass's longest request {hl:?} (samples {:?}) vs small {hs:?} (samples {:?}), ratio {:.1}; steady {:?} vs {:?}",
+            cl.what,
+            cl.holds,
+            cs.holds,
+            hl.as_secs_f64() / hs.max(FLOOR).as_secs_f64(),
+            cl.steady,
+            cs.steady
         );
-        ok(&large, "app.context.set", json!({ "elementId": long, "frame": 5_000 }));
-    };
-    steady.push(("a current column of 10,000 runs", first_of_three(&large, &column), best(&large)));
-    for _ in 0..10 {
-        ok(&large, "element.create", json!({ "type": "camera", "count": 99 }));
+        assert!(within(hl, hs), "{}: the first pass's longest request {hl:?} vs small {hs:?}", cl.what);
+        assert!(within(cl.steady, cs.steady), "{}: steady pass {:?} vs small {:?}", cl.what, cl.steady, cs.steady);
     }
-    let cams = large.invoke(Invocation::user("anim.camera.list", json!({}))).result.unwrap();
-    // Each repetition is a real change: after the first, one more camera is added before another becomes current.
-    let current = |k: usize| {
-        if k > 0 {
-            ok(&large, "element.create", json!({ "type": "camera", "count": 1 }));
-        }
-        let camera = cams["cameras"][k]["id"].as_str().unwrap().to_owned();
-        ok(&large, "app.context.set", json!({ "elementId": camera, "frame": 1 }));
-    };
-    steady.push(("991 cameras, one current", first_of_three(&large, &current), best(&large)));
-    for (what, (after_change, hold), pass) in &steady {
-        eprintln!("{what}: first pass after the change {after_change:?} (longest request {hold:?}), then {pass:?}");
-        assert!(
-            *pass <= e + Duration::from_millis(20) && *pass < Duration::from_millis(50),
-            "{what}: {pass:?} vs empty {e:?}"
-        );
-        assert!(*hold <= Duration::from_millis(20), "{what}: a request of the first pass held the thread {hold:?}");
-    }
-    // Each request on the document thread is one chunk of at most 32 references.
-    let mut worst = Duration::ZERO;
-    for chunk in refs.chunks(32) {
-        worst = worst.max(large.availability_chunk_hold(chunk.to_vec()).unwrap());
-    }
-    eprintln!("longest chunk on the document thread: {worst:?}");
-    assert!(worst <= Duration::from_millis(20), "{worst:?}");
+    let (wl, ws) = (worst_chunk(&large), worst_chunk(&small));
+    eprintln!("longest chunk on the document thread: {wl:?} vs small {ws:?}");
+    assert!(within(wl, ws), "worst chunk: large {wl:?} vs small {ws:?}");
     // A user command during continuous availability passes. The probe is a command that only changes session state
     // (the current frame): a command that writes a file (a preference) measures the disk, not the document thread.
     let user = |_: u64| {
@@ -296,6 +349,52 @@ fn passes_stay_constant_on_a_large_project() {
     worker.join().unwrap();
     eprintln!("slowest user command: {quiet:?} without passes, {slowest:?} during continuous passes");
     assert!(slowest < Duration::from_millis(100), "{slowest:?}");
+}
+
+/// Ruling O-23's 20 ms budget where the figure means something (ruling D-41): a workstation receipt, run in release
+/// and debug at each handoff that touches availability, committed under `reviews/evidence/`. For each case of ruling
+/// O-24 on the 10,000-element project, 30 real repetitions of the change, the first pass's longest request each time;
+/// and 30 samples of the worst chunk. Every sample is at most 20 ms. The receipt (median, p95, max and the samples) is
+/// written to `TT_AVAILABILITY_RECEIPT` when set.
+///
+/// `cargo test -p tt-executor --test c41 o23_budget_receipt -- --ignored` (and with `--release`).
+#[test]
+#[ignore = "a workstation receipt (ruling D-41): 30 samples, release and debug; not a CI assertion"]
+fn o23_budget_receipt() {
+    use std::time::Duration;
+    let (large, ids) = project_of(102);
+    let cases = o24_cases(&large, &ids, 10_000, 991, 30);
+    let chunks: Vec<Duration> = (0..30).map(|_| worst_chunk(&large)).collect();
+    let stats = |samples: &[Duration]| {
+        let mut ms: Vec<f64> = samples.iter().map(|d| d.as_secs_f64() * 1000.0).collect();
+        ms.sort_by(f64::total_cmp);
+        let at = |q: f64| ms[((q * ms.len() as f64).ceil() as usize).saturating_sub(1).min(ms.len() - 1)];
+        let r2 = |v: f64| (v * 100.0).round() / 100.0;
+        json!({ "n": ms.len(), "median": r2(at(0.5)), "p95": r2(at(0.95)), "max": r2(at(1.0)),
+                "samples": ms.iter().map(|v| r2(*v)).collect::<Vec<_>>() })
+    };
+    let mut rows = Map::new();
+    for c in &cases {
+        rows.insert(format!("10,000 elements: {}", c.what), stats(&c.holds));
+    }
+    rows.insert("worst chunk".into(), stats(&chunks));
+    let receipt = json!({
+        "kind": "toontown.c41.o23-budget",
+        "profile": if cfg!(debug_assertions) { "debug" } else { "release" },
+        "budgetMs": 20,
+        "figures": rows,
+    });
+    eprintln!("{}", serde_json::to_string_pretty(&receipt).unwrap());
+    if let Ok(path) = std::env::var("TT_AVAILABILITY_RECEIPT") {
+        std::fs::write(&path, serde_json::to_string_pretty(&receipt).unwrap() + "\n").unwrap();
+    }
+    let budget = Duration::from_millis(20);
+    for c in &cases {
+        let worst = c.holds.iter().max().copied().unwrap();
+        assert!(worst <= budget, "10,000 elements, {}: a first pass's request held the thread {worst:?}", c.what);
+    }
+    let worst = chunks.iter().max().copied().unwrap();
+    assert!(worst <= budget, "worst chunk {worst:?}");
 }
 
 fn boom_precheck(_cx: &tt_executor::Cx, _v: &Value) -> Result<(), tt_registry::CommandError> {

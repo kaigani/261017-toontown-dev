@@ -271,7 +271,14 @@ async def preview_rows(session, run, ids) -> None:
     async def held_drag(view: str, pts_view: list, escape: bool = False) -> dict:
         """An OS drag in `view` through view points, held 1.2 s at its end: the summary and the history while held."""
         await rc(session, "view.active.set", {"viewId": view})
-        place = await e6.locate_view(session, rc, view)
+        # The view is found in the window capture once the layout has settled (a workspace switched just before; a slow
+        # runner had not drawn it 0.8 s later, runs 43837502373 and 43847318713): looked for again for up to 5 s.
+        place = None
+        for _ in range(10):
+            place = await e6.locate_view(session, rc, view)
+            if place:
+                break
+            await asyncio.sleep(0.5)
         out: dict = {"place": place}
         if not place:
             return out

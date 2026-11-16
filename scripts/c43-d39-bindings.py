@@ -659,11 +659,16 @@ class McpTable(Table):
         show = r.get("shows")
         if not show:
             return None
-        await asyncio.sleep(0.5)
-        n = self.node(await self.tree(), show[0])
-        if n is None:
-            return False
-        return show[1](n, after)
+        # The window reports its tree after it has rendered the kernel's event: read again for up to 3 s (a slower
+        # runner took longer than 0.5 s once, run 43847318713); a state never shown stays False.
+        deadline = time.monotonic() + 3.0
+        while True:
+            await asyncio.sleep(0.25)
+            n = self.node(await self.tree(), show[0])
+            if n is not None and show[1](n, after):
+                return True
+            if time.monotonic() > deadline:
+                return False
 
     async def activity(self) -> list:
         res = (await e2e.run_cmd(self.s, "agent.activity.list", {"limit": 50})).get("result")
