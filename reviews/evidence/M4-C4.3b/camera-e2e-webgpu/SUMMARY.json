@@ -1,0 +1,397 @@
+{
+ "receipt": "reviews/evidence/M4-C4.3b/camera-e2e-webgpu",
+ "verdict": "pass",
+ "regenerate": "python scripts/c43-camera-e2e.py <toontown release binary> <out> --backend webgpu",
+ "rawAt": "e04565e9",
+ "manifest": {
+  "kind": "toontown.c43.camera-e2e",
+  "platform": "win32",
+  "input": "os",
+  "requestedBackend": "webgpu",
+  "seconds": 46.0,
+  "failures": [],
+  "checks": 29
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "project.create",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "the default palette's Colour 2 is found",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "the Camera view's canvas draws the camera composition with a back end and no errors"
+  },
+  {
+   "ok": true,
+   "check": "both elements' drawings are resident and the frame overlay is drawn"
+  },
+  {
+   "ok": true,
+   "check": "the canvas runs on the requested back end, webgpu, with no fallback"
+  },
+  {
+   "ok": true,
+   "check": "the Camera view shows what the final renderer draws: the plain view (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+   "detail": {
+    "capture": [
+     914,
+     465
+    ],
+    "render": [
+     1920,
+     1080
+    ],
+    "compared": 425010,
+    "covered": 1.0,
+    "different": 1423,
+    "fraction": 0.0033481565139643773
+   }
+  },
+  {
+   "ok": true,
+   "check": "the Camera view shows what the final renderer draws: zoomed out to 25 % (the frame and the dimmed outside in view) (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+   "detail": {
+    "capture": [
+     914,
+     465
+    ],
+    "render": [
+     1920,
+     1080
+    ],
+    "compared": 125136,
+    "covered": 0.2944307192771935,
+    "different": 168,
+    "fraction": 0.0013425393172228615
+   }
+  },
+  {
+   "ok": true,
+   "check": "the Camera view shows what the final renderer draws: zoomed in to 200 % (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+   "detail": {
+    "capture": [
+     914,
+     465
+    ],
+    "render": [
+     1920,
+     1080
+    ],
+    "compared": 425010,
+    "covered": 1.0,
+    "different": 1351,
+    "fraction": 0.0031787487353238746
+   }
+  },
+  {
+   "ok": true,
+   "check": "the Camera view shows what the final renderer draws: at 50 % rolled 20 degrees (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+   "detail": {
+    "capture": [
+     914,
+     465
+    ],
+    "render": [
+     1920,
+     1080
+    ],
+    "compared": 385684,
+    "covered": 0.9074704124608832,
+    "different": 305,
+    "fraction": 0.0007908028334076601
+   }
+  },
+  {
+   "ok": true,
+   "check": "a scene drag through the window",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "the Camera view shows what the final renderer draws: after a scene drag (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+   "detail": {
+    "capture": [
+     914,
+     465
+    ],
+    "render": [
+     1920,
+     1080
+    ],
+    "compared": 425010,
+    "covered": 1.0,
+    "different": 1423,
+    "fraction": 0.0033481565139643773
+   }
+  },
+  {
+   "ok": true,
+   "check": "V9: the Camera view is located in the window",
+   "detail": [
+    49,
+    136,
+    901,
+    445
+   ]
+  },
+  {
+   "ok": true,
+   "check": "V9: the OS click lands in the application window",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "V9: a click in the inactive Camera view makes it the active view",
+   "detail": {
+    "viewId": "cameraView",
+    "panelId": "cameraView",
+    "type": "camera"
+   }
+  },
+  {
+   "ok": true,
+   "check": "V9: the same click is the Select tool's click: Bob is selected",
+   "detail": [
+    "el_01K7JJN800NEREMY9R2GCNB7WN"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "V9: the activation is no undo step",
+   "detail": 9
+  },
+  {
+   "ok": true,
+   "check": "PV scene move: the OS drag lands in the cameraView",
+   "detail": {
+    "press": 411165.2101598,
+    "release": 411166.9106295
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV1 scene move: no command while the drag is held, one step after its release",
+   "detail": {
+    "pos0": 9,
+    "heldPosition": 9,
+    "after": 10
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV2 scene move: the held preview takes the box's corners to the committed box's, within 1 view pixel",
+   "detail": {
+    "before": [
+     252.10000000000002,
+     72.10000000000002,
+     648.9,
+     372.9
+    ],
+    "after": [
+     282.1,
+     87.09999999999997,
+     678.9,
+     387.90000000000003
+    ],
+    "previewed": [
+     282.1,
+     87.10000000000002,
+     678.9,
+     387.9
+    ],
+    "transform": [
+     1,
+     0,
+     0,
+     1,
+     30,
+     15
+    ],
+    "previewKind": "scene",
+    "error": 5.684341886080802e-14
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV scene rotation: the OS drag lands in the cameraView",
+   "detail": {
+    "press": 411170.6819709,
+    "release": 411172.3835502
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV1 scene rotation: no command while the drag is held, one step after its release",
+   "detail": {
+    "pos0": 9,
+    "heldPosition": 9,
+    "after": 10
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV2 scene rotation: the held preview takes the box's corners to the committed box's, within 1 view pixel"
+  },
+  {
+   "ok": true,
+   "check": "PV scene corner scale: the OS drag lands in the cameraView",
+   "detail": {
+    "press": 411176.1879672,
+    "release": 411177.8885183
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV1 scene corner scale: no command while the drag is held, one step after its release",
+   "detail": {
+    "pos0": 9,
+    "heldPosition": 9,
+    "after": 10
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV2 scene corner scale: the held preview takes the box's corners to the committed box's, within 1 view pixel"
+  },
+  {
+   "ok": true,
+   "check": "PV1 Escape: a drag cancelled by Escape sends nothing and its preview ends",
+   "detail": {
+    "pos0": 9,
+    "after": 9,
+    "held": {
+     "kind": "scene",
+     "transform": [
+      1,
+      0,
+      0,
+      1,
+      40,
+      25
+     ]
+    },
+    "previewAfter": null
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV drawing select move: the OS drag lands in the drawingView",
+   "detail": {
+    "press": 411187.0740571,
+    "release": 411188.7747225
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV1 drawing select move: no command while the drag is held, one step after its release",
+   "detail": {
+    "pos0": 9,
+    "heldPosition": 9,
+    "after": 10
+   }
+  },
+  {
+   "ok": true,
+   "check": "PV2 drawing select move: the held preview takes the box's corners to the committed box's, within 1 view pixel",
+   "detail": {
+    "before": [
+     326.5,
+     223.5,
+     574.5,
+     411.5
+    ],
+    "after": [
+     356.5,
+     238.5,
+     604.5,
+     426.5
+    ],
+    "previewed": [
+     356.5,
+     238.5,
+     604.5,
+     426.5
+    ],
+    "transform": [
+     1,
+     0,
+     0,
+     1,
+     30,
+     15
+    ],
+    "previewKind": "drawing",
+    "error": 0.0
+   }
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "camera-after-drag-capture.png",
+   "bytes": 4841,
+   "sha256": "611776e8dbd557f8d4dd942576f65c51c3cfbffa3fed2febddacedc4b83fd9b9"
+  },
+  {
+   "file": "camera-after-drag-final.png",
+   "bytes": 14821,
+   "sha256": "7a7db36e75ec2713f254ceb8ef1cdedb3962d93f3336164aa592b4df661a05b4"
+  },
+  {
+   "file": "camera-plain-capture.png",
+   "bytes": 4841,
+   "sha256": "611776e8dbd557f8d4dd942576f65c51c3cfbffa3fed2febddacedc4b83fd9b9"
+  },
+  {
+   "file": "camera-plain-final.png",
+   "bytes": 14821,
+   "sha256": "7a7db36e75ec2713f254ceb8ef1cdedb3962d93f3336164aa592b4df661a05b4"
+  },
+  {
+   "file": "camera-rolled-capture.png",
+   "bytes": 7405,
+   "sha256": "1f35f48f80ae2b137aedfe7376d6a570187b2668a370a656fbc9647d95c4e23e"
+  },
+  {
+   "file": "camera-rolled-final.png",
+   "bytes": 14821,
+   "sha256": "7a7db36e75ec2713f254ceb8ef1cdedb3962d93f3336164aa592b4df661a05b4"
+  },
+  {
+   "file": "camera-zoomed-in-capture.png",
+   "bytes": 2905,
+   "sha256": "ef749b43f21be7fef3e0a02c5fd8f091925742a430304c17efb4b3d8adb564ea"
+  },
+  {
+   "file": "camera-zoomed-in-final.png",
+   "bytes": 14821,
+   "sha256": "7a7db36e75ec2713f254ceb8ef1cdedb3962d93f3336164aa592b4df661a05b4"
+  },
+  {
+   "file": "camera-zoomed-out-capture.png",
+   "bytes": 3346,
+   "sha256": "a582a22099a9d2bb9fe83fd159ce71769129372b05e271f75b320b231102c819"
+  },
+  {
+   "file": "camera-zoomed-out-final.png",
+   "bytes": 14821,
+   "sha256": "7a7db36e75ec2713f254ceb8ef1cdedb3962d93f3336164aa592b4df661a05b4"
+  },
+  {
+   "file": "manifest.json",
+   "bytes": 172,
+   "sha256": "2a982bf984282d9c91fb7945c825f531546393ee476a798bef88ed9c2576ac3e"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 11767,
+   "sha256": "7611ae6d9eddd0d2764f55478a7974311a45da91d0f729058e7166144678d899"
+  }
+ ]
+}

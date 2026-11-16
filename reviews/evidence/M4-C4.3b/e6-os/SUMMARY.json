@@ -1,0 +1,268 @@
+{
+ "receipt": "reviews/evidence/M4-C4.3b/e6-os",
+ "verdict": "pass",
+ "regenerate": "python scripts/c43-e6-coexistence.py <toontown release binary> <out>   (Windows: real OS input)",
+ "rawAt": "e04565e9",
+ "manifest": {
+  "kind": "toontown.c43.e6",
+  "platform": "win32",
+  "input": "os (SendInput)",
+  "waitForUserMs": 10000,
+  "seconds": 24.1,
+  "failures": [],
+  "checks": 20
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "project.create",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "the Camera view's mapping of Bob's drawing",
+   "detail": [
+    1.5999999999999999,
+    0.0,
+    0.0,
+    -1.5999999999999999,
+    457.0,
+    232.5
+   ]
+  },
+  {
+   "ok": true,
+   "check": "the Camera view's canvas is found in the window capture",
+   "detail": [
+    49,
+    136,
+    914,
+    465
+   ]
+  },
+  {
+   "ok": true,
+   "check": "the agent session's id is known",
+   "detail": {
+    "mode": "os",
+    "agent": "s1-231001"
+   }
+  },
+  {
+   "ok": true,
+   "check": "the OS drag lands in the application window",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "while the user's drag is pressed the window reports the gesture as the modal state",
+   "detail": {
+    "kind": "gesture",
+    "title": "transform"
+   }
+  },
+  {
+   "ok": true,
+   "check": "the modal state names the acting tool, the Transform scene tool",
+   "detail": {
+    "kind": "gesture",
+    "title": "transform"
+   }
+  },
+  {
+   "ok": true,
+   "check": "E1: the agent's change during the user's drag succeeds",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "E1: the agent's change was sent while pressed and answered after the release",
+   "detail": {
+    "press": 411000.7517244,
+    "send": 411001.1829561,
+    "release": 411002.2521741,
+    "answer": 411002.2798439
+   }
+  },
+  {
+   "ok": true,
+   "check": "the agent's change advanced the document",
+   "detail": {
+    "before": 5,
+    "after": 7
+   }
+  },
+  {
+   "ok": true,
+   "check": "the user's drag is one undo step and the agent's step follows it",
+   "detail": [
+    [
+     "u-5",
+     "Move Element",
+     "user",
+     null
+    ],
+    [
+     "u-6",
+     "Move Element",
+     "agent",
+     "s1-231001"
+    ]
+   ]
+  },
+  {
+   "ok": true,
+   "check": "the OS drag lands in the application window",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "the user's later drag is a step after the agent's",
+   "detail": [
+    [
+     "u-5",
+     "Move Element",
+     "user",
+     null
+    ],
+    [
+     "u-6",
+     "Move Element",
+     "agent",
+     "s1-231001"
+    ],
+    [
+     "u-7",
+     "Move Element",
+     "user",
+     null
+    ]
+   ]
+  },
+  {
+   "ok": true,
+   "check": "E2: undo ifTop answers undo.notTop naming the user's later step",
+   "detail": {
+    "code": "undo.notTop",
+    "message": "step `u-6` is not the most recent step",
+    "details": {
+     "ifTop": "u-6",
+     "top": {
+      "stepId": "u-7",
+      "label": "Move Element",
+      "origin": "user"
+     }
+    }
+   }
+  },
+  {
+   "ok": true,
+   "check": "the user's later step survives: the three steps in order, none undone",
+   "detail": [
+    [
+     "u-5",
+     "Move Element",
+     "user",
+     null
+    ],
+    [
+     "u-6",
+     "Move Element",
+     "agent",
+     "s1-231001"
+    ],
+    [
+     "u-7",
+     "Move Element",
+     "user",
+     null
+    ]
+   ]
+  },
+  {
+   "ok": true,
+   "check": "the activity log records the agent's change (ok) and the refused undo (error)"
+  },
+  {
+   "ok": true,
+   "check": "the OS drag lands in the application window",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "E1: held past waitForUserMs, the agent's change fails ui.busy",
+   "detail": {
+    "code": "ui.busy",
+    "message": "the user is busy (gesture “transform”); the agent's change waited and gave up",
+    "details": {
+     "blockedBy": {
+      "kind": "gesture",
+      "title": "transform"
+     },
+     "waitedMs": 10000
+    },
+    "hint": "retry when the user is done; app.state.get reports `modal`"
+   }
+  },
+  {
+   "ok": true,
+   "check": "E1: the ui.busy answer comes while the user still holds the press",
+   "detail": {
+    "press": 411006.0521776,
+    "send": 411006.4976063,
+    "answer": 411016.5029319,
+    "release": 411019.5527836
+   }
+  },
+  {
+   "ok": true,
+   "check": "the user's long drag commits its one step",
+   "detail": [
+    [
+     "u-8",
+     "Move Element",
+     "user",
+     null
+    ]
+   ]
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "activity.json",
+   "bytes": 11816,
+   "sha256": "a1756b856a4a64556f9f28d1aae500c1929fd4e4f6fc62dc0a07f107e21c00a8"
+  },
+  {
+   "file": "e1-busy-times.json",
+   "bytes": 191,
+   "sha256": "41ec84549b5aae38a2d50eb450817471b8fed2b39ba8f9b0ab52cee7509681a5"
+  },
+  {
+   "file": "e1-times.json",
+   "bytes": 191,
+   "sha256": "82c0754aa02ee67e4eed196232edb82b2929322e3d0156103c84550536b8a739"
+  },
+  {
+   "file": "history.json",
+   "bytes": 1681,
+   "sha256": "41ddd8d2005992215d2af69619a3e4d1e0c3ede88dc99795c89aea5ea06a1eb5"
+  },
+  {
+   "file": "manifest.json",
+   "bytes": 170,
+   "sha256": "aff47a2c2ce5f8a9096874adb6d90240896bc2c0a2ca198d7717daa15acc0b7d"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 5698,
+   "sha256": "0d316fd94d23756eeefdd3bb66c128f771f9b55140db561edab855fccd719d17"
+  },
+  {
+   "file": "while-pressed.png",
+   "bytes": 51395,
+   "sha256": "7215f562a95c49543be5b456a0e8d79362c4ae578d68107e132fa7d9427a0741"
+  }
+ ]
+}

@@ -1,0 +1,210 @@
+{
+ "receipt": "reviews/evidence/M4-C4.3b/e6-played",
+ "verdict": "pass",
+ "regenerate": "TT_E6_MODE=played python scripts/c43-e6-coexistence.py <toontown release binary> <out>",
+ "rawAt": "e04565e9",
+ "manifest": {
+  "kind": "toontown.c43.e6",
+  "platform": "win32",
+  "input": "played by the window (pointer, C4.2b P1)",
+  "waitForUserMs": 10000,
+  "seconds": 8.2,
+  "failures": [],
+  "checks": 14
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "project.create",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "the Camera view's mapping of Bob's drawing",
+   "detail": [
+    1.5999999999999999,
+    0.0,
+    0.0,
+    -1.5999999999999999,
+    457.0,
+    232.5
+   ]
+  },
+  {
+   "ok": true,
+   "check": "the Camera view's canvas is found in the window capture",
+   "detail": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "ok": true,
+   "check": "the agent session's id is known",
+   "detail": {
+    "mode": "played",
+    "agent": "s1-c907ff"
+   }
+  },
+  {
+   "ok": true,
+   "check": "while the user's drag is pressed the window reports the gesture as the modal state",
+   "detail": {
+    "kind": "gesture",
+    "title": "transform"
+   }
+  },
+  {
+   "ok": true,
+   "check": "the modal state names the acting tool, the Transform scene tool",
+   "detail": {
+    "kind": "gesture",
+    "title": "transform"
+   }
+  },
+  {
+   "ok": true,
+   "check": "E1: the agent's change during the user's drag succeeds",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "E1: the agent's change was sent while the window played the gesture",
+   "detail": {
+    "press": 411024.2935081,
+    "send": 411024.701957,
+    "release": 411025.9084006,
+    "answer": 411025.9011785
+   }
+  },
+  {
+   "ok": true,
+   "check": "the agent's change advanced the document",
+   "detail": {
+    "before": 5,
+    "after": 7
+   }
+  },
+  {
+   "ok": true,
+   "check": "the user's drag is one undo step and the agent's step follows it",
+   "detail": [
+    [
+     "u-5",
+     "Move Element",
+     "agent",
+     "s2-ea9719"
+    ],
+    [
+     "u-6",
+     "Move Element",
+     "agent",
+     "s1-c907ff"
+    ]
+   ]
+  },
+  {
+   "ok": true,
+   "check": "the user's later drag is a step after the agent's",
+   "detail": [
+    [
+     "u-5",
+     "Move Element",
+     "agent",
+     "s2-ea9719"
+    ],
+    [
+     "u-6",
+     "Move Element",
+     "agent",
+     "s1-c907ff"
+    ],
+    [
+     "u-7",
+     "Move Element",
+     "agent",
+     "s2-ea9719"
+    ]
+   ]
+  },
+  {
+   "ok": true,
+   "check": "E2: undo ifTop answers undo.notTop naming the user's later step",
+   "detail": {
+    "code": "undo.notTop",
+    "message": "step `u-6` is not the most recent step",
+    "details": {
+     "ifTop": "u-6",
+     "top": {
+      "stepId": "u-7",
+      "label": "Move Element",
+      "origin": "agent:mcp"
+     }
+    }
+   }
+  },
+  {
+   "ok": true,
+   "check": "the user's later step survives: the three steps in order, none undone",
+   "detail": [
+    [
+     "u-5",
+     "Move Element",
+     "agent",
+     "s2-ea9719"
+    ],
+    [
+     "u-6",
+     "Move Element",
+     "agent",
+     "s1-c907ff"
+    ],
+    [
+     "u-7",
+     "Move Element",
+     "agent",
+     "s2-ea9719"
+    ]
+   ]
+  },
+  {
+   "ok": true,
+   "check": "the activity log records the agent's change (ok) and the refused undo (error)"
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "activity.json",
+   "bytes": 450904,
+   "sha256": "0e2af99d309ce0174ba4c4b1ce2f23ab95e1aa121c9353cdb8180141a78ce7b3"
+  },
+  {
+   "file": "e1-times.json",
+   "bytes": 209,
+   "sha256": "220ea9483f763d7e160381d7cc819bdb99bd5f8800a15599cc0f622a0abf7149"
+  },
+  {
+   "file": "history.json",
+   "bytes": 1813,
+   "sha256": "b0f87a95a87c29abc4159f0deb760bc969b12e962df15b802e266a3e16633db3"
+  },
+  {
+   "file": "manifest.json",
+   "bytes": 195,
+   "sha256": "a2ded3b805a7876223f3158370eabed7c58a54e13a02db2227fd820888a2cf7f"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 513578,
+   "sha256": "76213b5332fdc02db006bad961d1cce49d97299ee48300cabdf34713a7b7c88a"
+  },
+  {
+   "file": "while-pressed.png",
+   "bytes": 51489,
+   "sha256": "edfc71a3084c14f5a659a7c450c60ec038ad93cef861340292cbb876e6afdadf"
+  }
+ ]
+}

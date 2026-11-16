@@ -20,7 +20,8 @@ file dialog), and the row records
   menu and in the window tree (ruling D-38).
 
 A toggle's row clicks twice: the second click must send the opposite value and restore the state. Every row states its
-spec lines. Receipts: `rows.json`, `transcript.json`, `manifest.json` (kind `toontown.c43b.d39-bindings`). Exit 0 when
+spec lines. Output: `rows.json`, `transcript.json`, `manifest.json` (kind `toontown.c43b.d39-bindings`); the committed
+receipt is their summary (ruling D-42: `scripts/receipt-summary.py <out> --command ... --delete`). Exit 0 when
 every row holds.
 
 The webview's debugging port is opened for this run only (`WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS`); the script carries

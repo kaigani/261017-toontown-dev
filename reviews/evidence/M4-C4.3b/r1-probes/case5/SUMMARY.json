@@ -1,0 +1,710 @@
+{
+ "receipt": "reviews/evidence/M4-C4.3b/r1-probes/case5",
+ "verdict": "pass",
+ "regenerate": "python tests/adversarial/c43b-r1-live.py <toontown release binary> case5   (the reviewer's probe, unchanged; case 8 on a direct cargo release build)",
+ "rawAt": "e04565e9",
+ "manifest": {
+  "kind": "toontown.c43.camera-e2e",
+  "platform": "win32",
+  "input": "os",
+  "requestedBackend": "webgl2",
+  "seconds": 99.5,
+  "failures": [],
+  "checks": 104
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "project.create",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "the default palette's Colour 2 is found",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "the Camera view's canvas draws the camera composition with a back end and no errors"
+  },
+  {
+   "ok": true,
+   "check": "both elements' drawings are resident and the frame overlay is drawn"
+  },
+  {
+   "ok": true,
+   "check": "the canvas runs on the requested back end, webgl2, with no fallback"
+  },
+  {
+   "ok": true,
+   "check": "V9: the Camera view is located in the window",
+   "detail": [
+    49,
+    138,
+    901,
+    443
+   ]
+  },
+  {
+   "ok": true,
+   "check": "V9: the OS click lands in the application window",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "V9: a click in the inactive Camera view makes it the active view",
+   "detail": {
+    "viewId": "cameraView",
+    "panelId": "cameraView",
+    "type": "camera"
+   }
+  },
+  {
+   "ok": true,
+   "check": "V9: the same click is the Select tool's click: Bob is selected",
+   "detail": [
+    "el_01K7JJN800SNJZC74AS3FZYGNK"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "V9: the activation is no undo step",
+   "detail": 9
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read workspace.select",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read view.active.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read app.context.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read view.zoom.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read anim.tool.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.selection.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "located cameraView",
+   "detail": [
+    49,
+    138,
+    901,
+    443
+   ]
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "05:400 PV1 held revision and history unchanged cameraView commit"
+  },
+  {
+   "ok": true,
+   "check": "preview visible cameraView commit",
+   "detail": {
+    "kind": "scene",
+    "transform": [
+     1,
+     0,
+     0,
+     1,
+     32,
+     17
+    ]
+   }
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "SI-154 exact-class capture agrees cameraView",
+   "detail": {
+    "fraction": 0.0,
+    "RGBThreshold": 32,
+    "bound": 0.01
+   }
+  },
+  {
+   "ok": true,
+   "check": "one commit step cameraView",
+   "detail": 1
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.undo",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "located cameraView",
+   "detail": [
+    49,
+    138,
+    901,
+    443
+   ]
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "05:400 PV1 held revision and history unchanged cameraView escape"
+  },
+  {
+   "ok": true,
+   "check": "preview visible cameraView escape",
+   "detail": {
+    "kind": "scene",
+    "transform": [
+     1,
+     0,
+     0,
+     1,
+     32,
+     17
+    ]
+   }
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "Escape document unchanged cameraView",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "Escape clears preview next capture cameraView",
+   "detail": {
+    "fraction": 0.0
+   }
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read element.create",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read element.drawing.create",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read app.context.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read draw.rectangle.add",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read workspace.select",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read view.active.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read app.context.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read view.zoom.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read tool.active.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read draw.selection.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "located drawingView",
+   "detail": [
+    49,
+    138,
+    901,
+    633
+   ]
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "05:400 PV1 held revision and history unchanged drawingView commit"
+  },
+  {
+   "ok": true,
+   "check": "preview visible drawingView commit",
+   "detail": {
+    "kind": "drawing",
+    "transform": [
+     1,
+     0,
+     0,
+     1,
+     32,
+     16.999999999999943
+    ]
+   }
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "SI-154 exact-class capture agrees drawingView",
+   "detail": {
+    "fraction": 0.0002840445844795935,
+    "RGBThreshold": 32,
+    "bound": 0.01
+   }
+  },
+  {
+   "ok": true,
+   "check": "one commit step drawingView",
+   "detail": 1
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.undo",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "located drawingView",
+   "detail": [
+    49,
+    138,
+    901,
+    633
+   ]
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "05:400 PV1 held revision and history unchanged drawingView escape"
+  },
+  {
+   "ok": true,
+   "check": "preview visible drawingView escape",
+   "detail": {
+    "kind": "drawing",
+    "transform": [
+     1,
+     0,
+     0,
+     1,
+     32,
+     16.999999999999943
+    ]
+   }
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read doc.state.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "Escape document unchanged drawingView",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "Escape clears preview next capture drawingView",
+   "detail": {
+    "fraction": 0.0
+   }
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read workspace.select",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read view.active.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read app.context.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read anim.transform.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read view.zoom.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read anim.tool.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.selection.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.history.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "refused commit leaves no preview"
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read app.context.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read anim.tool.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read edit.undo",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "preview setup/read view.zoom.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 0"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 1"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 2"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 3"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 4"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 5"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 6"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 7"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 8"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 9"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 10"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 11"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 12"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 13"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 14"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 15"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 16"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 17"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 18"
+  },
+  {
+   "ok": true,
+   "check": "PV1 consecutive drags preserve second preview and two steps 19"
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "cameraView-commit-after.png",
+   "bytes": 4911,
+   "sha256": "5c6fda968c6d759bfdecb915280e1e47b9fae91290f7f154edfb81999b562026"
+  },
+  {
+   "file": "cameraView-commit-before.png",
+   "bytes": 4704,
+   "sha256": "d9af9f77f1f9010eef03bbd1eb11888395a7ab0425fa0a0d3801f8aca44d8df1"
+  },
+  {
+   "file": "cameraView-commit-held.png",
+   "bytes": 4911,
+   "sha256": "5c6fda968c6d759bfdecb915280e1e47b9fae91290f7f154edfb81999b562026"
+  },
+  {
+   "file": "cameraView-escape-after.png",
+   "bytes": 4704,
+   "sha256": "d9af9f77f1f9010eef03bbd1eb11888395a7ab0425fa0a0d3801f8aca44d8df1"
+  },
+  {
+   "file": "cameraView-escape-before.png",
+   "bytes": 4704,
+   "sha256": "d9af9f77f1f9010eef03bbd1eb11888395a7ab0425fa0a0d3801f8aca44d8df1"
+  },
+  {
+   "file": "cameraView-escape-held.png",
+   "bytes": 4911,
+   "sha256": "5c6fda968c6d759bfdecb915280e1e47b9fae91290f7f154edfb81999b562026"
+  },
+  {
+   "file": "canvas-summary.json",
+   "bytes": 920,
+   "sha256": "924399344b4e53e4e0a67eb85d8a1679221909aa1ae829fc00de7067a8821b20"
+  },
+  {
+   "file": "discovery.json",
+   "bytes": 4096,
+   "sha256": "bfce51748c9452f8b2230394a0b954a424f9636de15e64bd484b0ed4806dfa89"
+  },
+  {
+   "file": "discovery.log",
+   "bytes": 371,
+   "sha256": "6e30c29e1e05695486029d4ea8ef97f655d9520d1621b85605f7c4ac9598884d"
+  },
+  {
+   "file": "drawingView-commit-after.png",
+   "bytes": 4442,
+   "sha256": "752240a3a248221a4d369a6aa47c33c398e8f6b566a3bed8eba2f55bed1e36ae"
+  },
+  {
+   "file": "drawingView-commit-before.png",
+   "bytes": 4408,
+   "sha256": "25e4b199555c7f250c11dcd9caf1e10c10abe25fdbf0f1a7b6943c5cdcec408b"
+  },
+  {
+   "file": "drawingView-commit-held.png",
+   "bytes": 4434,
+   "sha256": "2e8c48a29f38c3a0c44d9adeeedd5df4cbff1374c15cd51e361e2ecac4b8782e"
+  },
+  {
+   "file": "drawingView-escape-after.png",
+   "bytes": 4408,
+   "sha256": "25e4b199555c7f250c11dcd9caf1e10c10abe25fdbf0f1a7b6943c5cdcec408b"
+  },
+  {
+   "file": "drawingView-escape-before.png",
+   "bytes": 4408,
+   "sha256": "25e4b199555c7f250c11dcd9caf1e10c10abe25fdbf0f1a7b6943c5cdcec408b"
+  },
+  {
+   "file": "drawingView-escape-held.png",
+   "bytes": 4434,
+   "sha256": "2e8c48a29f38c3a0c44d9adeeedd5df4cbff1374c15cd51e361e2ecac4b8782e"
+  },
+  {
+   "file": "manifest.json",
+   "bytes": 173,
+   "sha256": "d2793329eae3ded261a6d0124d868f2444803ef95be9923d78feb38545987ffd"
+  },
+  {
+   "file": "rapid-0-held.png",
+   "bytes": 4947,
+   "sha256": "702b53d8c301aa69b440d452c9e1e92c9e7cb7ea61c7e42959cce1523ac2301c"
+  },
+  {
+   "file": "rapid-19-held.png",
+   "bytes": 4947,
+   "sha256": "702b53d8c301aa69b440d452c9e1e92c9e7cb7ea61c7e42959cce1523ac2301c"
+  },
+  {
+   "file": "rapid.json",
+   "bytes": 67206,
+   "sha256": "621cdfceaf30deba1f99a793f5544ca97434556ae9a5893e933a3d868637adc7"
+  },
+  {
+   "file": "refused-after.png",
+   "bytes": 4187,
+   "sha256": "bde4638bd6c947c6704d17e24536d1cc4b585ac780b80e9edfd6ac6799c88feb"
+  },
+  {
+   "file": "refused.json",
+   "bytes": 747,
+   "sha256": "6b1a1f2103d13e06b81d6db16f1a840dcd9454841fced01e0c925e264d7c1d7f"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 92200,
+   "sha256": "da3a685ee8f40ea269495a43fc74143f0d6c562672189a43453df036ebd92883"
+  },
+  {
+   "file": "tree-final.json",
+   "bytes": 106290,
+   "sha256": "04b9999cc22e72348be73c1339d6ef0e70f9f10d78f80b1d622fc0f8e1626338"
+  }
+ ]
+}

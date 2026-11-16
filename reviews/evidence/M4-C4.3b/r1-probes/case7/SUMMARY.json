@@ -1,0 +1,221 @@
+{
+ "receipt": "reviews/evidence/M4-C4.3b/r1-probes/case7",
+ "verdict": "see checks",
+ "regenerate": "python tests/adversarial/c43b-r1-live.py <toontown release binary> case7 one-drag-gate   (the reviewer's probe, unchanged)",
+ "rawAt": "e04565e9",
+ "manifest": null,
+ "checks": [
+  {
+   "ok": true,
+   "check": "the canvas runs the requested back end with no fallback",
+   "detail": {
+    "requested": "webgl2",
+    "backend": "webgl2",
+    "fallback": null
+   }
+  },
+  {
+   "ok": true,
+   "check": "D-33 control: 300 frames of the webview's cadence on the start screen",
+   "detail": {
+    "n": 300,
+    "p50": 17.5,
+    "p95": 18.1,
+    "max": 18.6
+   }
+  },
+  {
+   "ok": true,
+   "check": "the 1,000-element scene has its 1002 drawings resident",
+   "detail": 1002
+  },
+  {
+   "ok": true,
+   "check": "sample: every one of the 1 drags committed and was measured",
+   "detail": {
+    "drags": 1,
+    "commits": 1
+   }
+  },
+  {
+   "ok": false,
+   "check": "sample: at least 30 actual release-to-committed samples",
+   "detail": 1
+  },
+  {
+   "ok": true,
+   "check": "sample: 300 idle frame intervals",
+   "detail": 300
+  },
+  {
+   "ok": true,
+   "check": "sample: 300 idle frames' work",
+   "detail": 300
+  },
+  {
+   "ok": false,
+   "check": "sample: 300 frame intervals during the drags",
+   "detail": 54
+  },
+  {
+   "ok": false,
+   "check": "sample: 300 work of the frames drawn during the drags",
+   "detail": 54
+  },
+  {
+   "ok": false,
+   "check": "sample: 300 drag feedback samples",
+   "detail": 29
+  },
+  {
+   "ok": true,
+   "check": "sample: work per frame p95 idle <= 8 ms (D-33)",
+   "detail": {
+    "n": 300,
+    "p50": 0.1,
+    "p95": 0.3,
+    "max": 0.3
+   }
+  },
+  {
+   "ok": true,
+   "check": "sample: at most 1 % of frame intervals idle longer than 35.0 ms (twice the control median; D-33)",
+   "detail": {
+    "share": 0.0,
+    "intervals": 300
+   }
+  },
+  {
+   "ok": true,
+   "check": "sample: work per frame p95 during scene drags <= 8 ms (D-33)",
+   "detail": {
+    "n": 54,
+    "p50": 0.2,
+    "p95": 0.4,
+    "max": 0.5
+   }
+  },
+  {
+   "ok": true,
+   "check": "sample: at most 1 % of frame intervals during scene drags longer than 35.0 ms (twice the control median; D-33)",
+   "detail": {
+    "share": 0.0,
+    "intervals": 54
+   }
+  },
+  {
+   "ok": true,
+   "check": "sample: release-to-committed p95 of a scene drag <= 50.0 ms",
+   "detail": 24.2
+  },
+  {
+   "ok": true,
+   "check": "sample: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms",
+   "detail": 0.6
+  },
+  {
+   "ok": true,
+   "check": "groups1k: every one of the 1 drags committed and was measured",
+   "detail": {
+    "drags": 1,
+    "commits": 1
+   }
+  },
+  {
+   "ok": false,
+   "check": "groups1k: at least 30 actual release-to-committed samples",
+   "detail": 1
+  },
+  {
+   "ok": true,
+   "check": "groups1k: 300 idle frame intervals",
+   "detail": 300
+  },
+  {
+   "ok": true,
+   "check": "groups1k: 300 idle frames' work",
+   "detail": 300
+  },
+  {
+   "ok": false,
+   "check": "groups1k: 300 frame intervals during the drags",
+   "detail": 109
+  },
+  {
+   "ok": false,
+   "check": "groups1k: 300 work of the frames drawn during the drags",
+   "detail": 109
+  },
+  {
+   "ok": false,
+   "check": "groups1k: 300 drag feedback samples",
+   "detail": 57
+  },
+  {
+   "ok": true,
+   "check": "groups1k: work per frame p95 idle <= 8 ms (D-33)",
+   "detail": {
+    "n": 300,
+    "p50": 0.5,
+    "p95": 0.6,
+    "max": 0.8
+   }
+  },
+  {
+   "ok": true,
+   "check": "groups1k: at most 1 % of frame intervals idle longer than 35.0 ms (twice the control median; D-33)",
+   "detail": {
+    "share": 0.0,
+    "intervals": 300
+   }
+  },
+  {
+   "ok": true,
+   "check": "groups1k: work per frame p95 during scene drags <= 8 ms (D-33)",
+   "detail": {
+    "n": 109,
+    "p50": 0.2,
+    "p95": 1.6,
+    "max": 2.8
+   }
+  },
+  {
+   "ok": true,
+   "check": "groups1k: at most 1 % of frame intervals during scene drags longer than 35.0 ms (twice the control median; D-33)",
+   "detail": {
+    "share": 0.0,
+    "intervals": 109
+   }
+  },
+  {
+   "ok": true,
+   "check": "groups1k: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms",
+   "detail": 2.3
+  }
+ ],
+ "kept": [
+  "one-drag-gate-result.json"
+ ],
+ "raw": [
+  {
+   "file": "one-drag-gate/discovery.log",
+   "bytes": 106,
+   "sha256": "a7faa7bde966f4e18b247306555f05da028c445cf676bae28b3801e4104828e2"
+  },
+  {
+   "file": "one-drag-gate/measurements.json",
+   "bytes": 15524,
+   "sha256": "211fddd2b53d7d1a0af14e2995ff0fe04454c36e9cf5b8dad11a3b07b6b55d08"
+  },
+  {
+   "file": "one-drag-gate/transcript.json",
+   "bytes": 4246,
+   "sha256": "3fa8c991f6afddb24d93fa5c7a77607b4b8a9a5e7c954e073d98f9aabc3f91a4"
+  },
+  {
+   "file": "one-drag-gate.txt",
+   "bytes": 2360,
+   "sha256": "fc9a985dbacde67be8b6746a7ce0f429686f367c25fa02cac0e0ccc7140e4388"
+  }
+ ]
+}
