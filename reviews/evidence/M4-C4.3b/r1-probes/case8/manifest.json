@@ -1,0 +1,9 @@
+{
+  "kind": "toontown.c43b.r1.parity",
+  "platform": "win32",
+  "input": "os (SendInput)",
+  "waitForUserMs": 10000,
+  "seconds": 122.2,
+  "failures": [],
+  "checks": 148
+}

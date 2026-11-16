@@ -1,0 +1,64 @@
+{
+  "response": {
+    "closed": true
+  },
+  "state": {
+    "project": null,
+    "scene": null,
+    "frame": null,
+    "element": null,
+    "drawing": null,
+    "mode": null,
+    "activeView": null,
+    "focusedPanel": "drawingView",
+    "activeTool": null,
+    "selection": {
+      "context": "staging",
+      "ids": [],
+      "kinds": []
+    },
+    "workspace": {
+      "name": "Drawing",
+      "modified": false
+    },
+    "playback": {
+      "playing": false
+    },
+    "startScreenVisible": true,
+    "modal": null,
+    "agentSessions": [
+      {
+        "sessionId": "s1-75d154",
+        "name": "mcp",
+        "acting": false
+      }
+    ],
+    "fullScreen": false,
+    "agent": {
+      "sessionId": "s1-75d154",
+      "client": "mcp",
+      "policy": "autonomous",
+      "scopes": [
+        "read",
+        "edit",
+        "ui",
+        "input",
+        "files.read",
+        "files.write",
+        "prefs",
+        "library.global"
+      ],
+      "paused": false,
+      "limits": {
+        "policy": "autonomous",
+        "maxJobs": 2,
+        "maxBatchSteps": 1000,
+        "maxInlineImagePx": 2048,
+        "maxInlineBytes": 52428800,
+        "askInApp": true,
+        "letAgentMoveView": true,
+        "highlightAgentChanges": true
+      }
+    }
+  }
+}

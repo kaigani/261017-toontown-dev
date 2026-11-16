@@ -1,0 +1,42 @@
+ok   the canvas runs the requested back end with no fallback
+ok   D-33 control: 300 frames of the webview's cadence on the start screen
+ok   the 1,000-element scene has its 1002 drawings resident
+ok   sample: every one of the 1 drags committed and was measured
+FAIL sample: at least 30 actual release-to-committed samples
+ok   sample: 300 idle frame intervals
+ok   sample: 300 idle frames' work
+FAIL sample: 300 frame intervals during the drags
+FAIL sample: 300 work of the frames drawn during the drags
+FAIL sample: 300 drag feedback samples
+ok   sample: work per frame p95 idle <= 8 ms (D-33)
+ok   sample: at most 1 % of frame intervals idle longer than 35.0 ms (twice the control median; D-33)
+ok   sample: work per frame p95 during scene drags <= 8 ms (D-33)
+ok   sample: at most 1 % of frame intervals during scene drags longer than 35.0 ms (twice the control median; D-33)
+ok   sample: release-to-committed p95 of a scene drag <= 50.0 ms
+ok   sample: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms
+ok   groups1k: every one of the 1 drags committed and was measured
+FAIL groups1k: at least 30 actual release-to-committed samples
+ok   groups1k: 300 idle frame intervals
+ok   groups1k: 300 idle frames' work
+FAIL groups1k: 300 frame intervals during the drags
+FAIL groups1k: 300 work of the frames drawn during the drags
+FAIL groups1k: 300 drag feedback samples
+ok   groups1k: work per frame p95 idle <= 8 ms (D-33)
+ok   groups1k: at most 1 % of frame intervals idle longer than 35.0 ms (twice the control median; D-33)
+ok   groups1k: work per frame p95 during scene drags <= 8 ms (D-33)
+ok   groups1k: at most 1 % of frame intervals during scene drags longer than 35.0 ms (twice the control median; D-33)
+ok   groups1k: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms
+{
+ "kind": "toontown.c43.camera-measure",
+ "seconds": 63.6,
+ "failures": [
+  "sample: at least 30 actual release-to-committed samples: 1",
+  "sample: 300 frame intervals during the drags: 54",
+  "sample: 300 work of the frames drawn during the drags: 54",
+  "sample: 300 drag feedback samples: 29",
+  "groups1k: at least 30 actual release-to-committed samples: 1",
+  "groups1k: 300 frame intervals during the drags: 109",
+  "groups1k: 300 work of the frames drawn during the drags: 109",
+  "groups1k: 300 drag feedback samples: 57"
+ ]
+}

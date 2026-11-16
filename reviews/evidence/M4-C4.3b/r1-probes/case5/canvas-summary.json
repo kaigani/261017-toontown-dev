@@ -1,0 +1,40 @@
+{
+  "backend": "webgl2",
+  "generation": 0,
+  "drawings": [
+    {
+      "id": "dr_01K7JJN800HTHY7H1SNXSEKMKK",
+      "rev": 5,
+      "bucket": 1
+    },
+    {
+      "id": "dr_01K7JJN800Q43DPMY27JNVT0FH",
+      "rev": 9,
+      "bucket": 1
+    }
+  ],
+  "failures": [
+    "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}",
+    "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}",
+    "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}"
+  ],
+  "gesture": null,
+  "selection": {
+    "objects": 0,
+    "handles": 0,
+    "points": 0,
+    "pivot": false
+  },
+  "viewType": "camera",
+  "camera": {
+    "frame": true,
+    "pivots": 0,
+    "boxes": 0,
+    "otherCameras": 0,
+    "handles": 0
+  },
+  "drawn": 2,
+  "residentDrawings": 2,
+  "residentBytes": 25416092,
+  "lastError": null
+}

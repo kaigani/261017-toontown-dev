@@ -1,0 +1,1117 @@
+"""M4 C4.3b ruling D-39: every GUI binding added in C4.3b exercised once through the real window (Windows).
+
+Usage: python scripts/c43-d39-bindings.py <toontown binary> <out dir> [--only NAME[,NAME...]]
+
+D-27's "declared is not honoured", applied to GUI bindings (C43B-R1-07 and -08 were bindings declared and never
+exercised). One table: each row is a person's action in the running application through the operating system's real
+pointer or keyboard (a click on a rendered control, a native menu item, a key, a choice in a list, a typed path in a
+file dialog), and the row records
+
+- the exact command and parameters the window sent (read from the webview's IPC, recorded through its debugging
+  port; the click itself is real OS input),
+- the effect on the document or the session state, read back through MCP,
+- the undo steps the action made and the spec's label where it makes one (none where the command is UI state),
+- the disabled state where the precheck refuses: after the table, the project is closed and every control is checked
+  disabled (or gone with the project), with a real click sending nothing and the native menu items disabled in the
+  menu and in the window tree (ruling D-38).
+
+A toggle's row clicks twice: the second click must send the opposite value and restore the state. Every row states its
+spec lines. Receipts: `rows.json`, `transcript.json`, `manifest.json` (kind `toontown.c43b.d39-bindings`). Exit 0 when
+every row holds.
+
+The webview's debugging port is opened for this run only (`WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS`); the script carries
+its own small WebSocket client (standard library), so it needs only the MCP SDK.
+"""
+
+from __future__ import annotations
+
+import argparse
+import asyncio
+import base64
+import contextlib
+import ctypes
+import importlib.util
+import json
+import os
+import shutil
+import socket
+import sys
+import tempfile
+import time
+import urllib.parse
+import urllib.request
+from ctypes import wintypes
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+CDP_PORT = 9237
+
+
+def _load(name: str, file: str):
+    spec = importlib.util.spec_from_file_location(name, ROOT / "scripts" / file)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+e6 = _load("c43e6", "c43-e6-coexistence.py")
+e2e, c42 = e6.e2e, e6.c42
+
+
+def spec_line(command: str) -> str:
+    """The spec table row that defines `command`: `<file>:<line>`."""
+    for f in sorted((ROOT / "spec").glob("*.md")):
+        for n, line in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
+            if line.startswith(f"| `{command}` |"):
+                return f"spec/{f.name}:{n}"
+    return f"(no spec row for {command})"
+
+
+# ----- a small WebSocket client for the webview's debugging port (RFC 6455, text frames) ----------------------------
+
+class WebSocket:
+    def __init__(self, url: str):
+        u = urllib.parse.urlparse(url)
+        self.s = socket.create_connection((u.hostname, u.port), timeout=60)
+        key = base64.b64encode(os.urandom(16)).decode()
+        req = (f"GET {u.path} HTTP/1.1\r\nHost: {u.hostname}:{u.port}\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n"
+               f"Sec-WebSocket-Key: {key}\r\nSec-WebSocket-Version: 13\r\n\r\n")
+        self.s.sendall(req.encode())
+        head = b""
+        while b"\r\n\r\n" not in head:
+            chunk = self.s.recv(1)
+            if not chunk:
+                raise RuntimeError("the debugging port closed during the handshake")
+            head += chunk
+        if b" 101 " not in head.split(b"\r\n")[0]:
+            raise RuntimeError(f"no WebSocket upgrade: {head[:200]!r}")
+
+    def _exact(self, n: int) -> bytes:
+        out = b""
+        while len(out) < n:
+            chunk = self.s.recv(n - len(out))
+            if not chunk:
+                raise RuntimeError("the debugging port closed")
+            out += chunk
+        return out
+
+    def send(self, text: str) -> None:
+        data = text.encode()
+        head = bytearray([0x81])
+        n = len(data)
+        if n < 126:
+            head.append(0x80 | n)
+        elif n < 65536:
+            head.append(0x80 | 126)
+            head += n.to_bytes(2, "big")
+        else:
+            head.append(0x80 | 127)
+            head += n.to_bytes(8, "big")
+        mask = os.urandom(4)
+        head += mask
+        self.s.sendall(bytes(head) + bytes(b ^ mask[i % 4] for i, b in enumerate(data)))
+
+    def recv(self) -> str:
+        parts = b""
+        while True:
+            b0, b1 = self._exact(2)
+            op, n = b0 & 0x0F, b1 & 0x7F
+            if n == 126:
+                n = int.from_bytes(self._exact(2), "big")
+            elif n == 127:
+                n = int.from_bytes(self._exact(8), "big")
+            mask = self._exact(4) if b1 & 0x80 else None
+            payload = self._exact(n)
+            if mask:
+                payload = bytes(b ^ mask[i % 4] for i, b in enumerate(payload))
+            if op == 8:
+                raise RuntimeError("the debugging port closed the connection")
+            if op == 9:
+                continue
+            parts += payload
+            if b0 & 0x80:
+                return parts.decode("utf-8", "replace")
+
+
+class Cdp:
+    """The main window's page over the debugging port. A reader thread takes every message: answers go to their
+    callers; a pause at the breakpoint on the page's `invoke` (the recorder) is answered at once, recording the call and
+    resuming, so the page never waits for the script."""
+
+    def __init__(self, port: int):
+        import threading
+        pages = []
+        for _ in range(120):
+            try:
+                pages = json.load(urllib.request.urlopen(f"http://127.0.0.1:{port}/json", timeout=5))
+                if any(p.get("type") == "page" for p in pages):
+                    break
+            except OSError:
+                pass
+            time.sleep(0.5)
+        self.lock = threading.Lock()
+        self.answers: dict = {}
+        self.waiting: dict = {}
+        self.n = 0
+        self.calls: list = []
+        self.bodies: set = set()
+        self.ws = None
+        for p in pages:
+            if p.get("type") != "page" or "float" in (p.get("url") or ""):
+                continue
+            self.ws = WebSocket(p["webSocketDebuggerUrl"])
+            self.reader = threading.Thread(target=self._read, daemon=True)
+            self.reader.start()
+            if self.js("!!document.querySelector('[data-tt-id=\"mainToolbar\"]') || !!document.querySelector('[data-tt-id=\"startScreen\"]')"):
+                return
+        raise RuntimeError(f"no main window page on the debugging port: {[p.get('url') for p in pages]}")
+
+    def _send(self, method: str, params: dict) -> int:
+        import threading
+        with self.lock:
+            self.n += 1
+            ident = self.n
+            self.waiting[ident] = threading.Event()
+            self.ws.send(json.dumps({"id": ident, "method": method, "params": params}))
+        return ident
+
+    def _read(self) -> None:
+        while True:
+            try:
+                r = json.loads(self.ws.recv())
+            except Exception:  # noqa: BLE001 - the page went away
+                return
+            if r.get("method") == "Network.requestWillBeSent":
+                req = r["params"].get("request") or {}
+                if "/run_command" in (req.get("url") or ""):
+                    if req.get("postData"):
+                        self._ipc(req["postData"])
+                    elif req.get("hasPostData"):
+                        with self.lock:
+                            self.n += 1
+                            ident = self.n
+                            self.bodies.add(ident)
+                            self.ws.send(json.dumps({"id": ident, "method": "Network.getRequestPostData",
+                                                     "params": {"requestId": r["params"]["requestId"]}}))
+                continue
+            if r.get("id") in self.bodies:
+                self.bodies.discard(r["id"])
+                self._ipc(((r.get("result") or {}).get("postData")) or "")
+                continue
+            if r.get("method") == "Debugger.paused":
+                frame = r["params"]["callFrames"][0]["callFrameId"]
+                self._send("Debugger.evaluateOnCallFrame", {
+                    "callFrameId": frame, "returnByValue": True,
+                    "expression": "JSON.stringify({cmd: cmd, json: payload && payload.json})"})
+                self._send("Debugger.resume", {})
+                continue
+            ident = r.get("id")
+            if ident is None:
+                continue
+            value = ((r.get("result") or {}).get("result") or {}).get("value")
+            if isinstance(value, str) and value.startswith('{"cmd":'):
+                try:
+                    call = json.loads(value)
+                    if call.get("cmd") == "run_command" and call.get("json"):
+                        req = json.loads(call["json"])
+                        self.calls.append({"command": req.get("command"), "params": req.get("params") or {}})
+                except ValueError:
+                    pass
+            with self.lock:
+                self.answers[ident] = r
+                ev = self.waiting.pop(ident, None)
+            if ev:
+                ev.set()
+
+    def _ipc(self, body: str) -> None:
+        """One IPC request's body: `{json: "<the command request>"}`."""
+        try:
+            outer = json.loads(body)
+            req = json.loads(outer["json"]) if isinstance(outer, dict) and isinstance(outer.get("json"), str) else outer
+            self.calls.append({"command": req.get("command"), "params": req.get("params") or {}})
+        except (ValueError, TypeError, KeyError, AttributeError):
+            self.calls.append({"unparsed": body[:200]})
+
+    def call(self, method: str, params: dict) -> dict:
+        ident = self._send(method, params)
+        with self.lock:
+            ev = self.waiting.get(ident)
+        if ev and not ev.wait(60):
+            raise RuntimeError(f"no answer to {method}")
+        with self.lock:
+            return self.answers.pop(ident, {})
+
+    def js(self, expr: str):
+        r = self.call("Runtime.evaluate", {"expression": expr, "returnByValue": True, "awaitPromise": True})
+        res = r.get("result") or {}
+        if res.get("exceptionDetails"):
+            raise RuntimeError(f"page script failed: {res['exceptionDetails']}")
+        return (res.get("result") or {}).get("value")
+
+    def record(self) -> None:
+        """Records every `run_command` the page sends from now on: Tauri's IPC is an HTTP request to `ipc.localhost`
+        whose body is the call's arguments; the Network domain reports each request with its body (passive: the page
+        never waits for the script)."""
+        self.call("Network.enable", {"maxPostDataSize": 1048576})
+
+
+# ----- OS input ------------------------------------------------------------------------------------------------------
+
+u32 = ctypes.windll.user32 if sys.platform == "win32" else None
+if u32:
+    u32.GetMenu.restype = wintypes.HMENU
+    u32.GetSubMenu.restype = wintypes.HMENU
+
+
+def window_handle() -> int:
+    return e6._main_window(e2e.APP_PID["pid"])
+
+
+def front() -> int:
+    h = window_handle()
+    u32.ShowWindow(h, 9)
+    u32.SetForegroundWindow(h)
+    time.sleep(0.15)
+    return h
+
+
+def click_screen(x: int, y: int) -> None:
+    u32.SetCursorPos(int(x), int(y))
+    time.sleep(0.12)
+    e6._send_button(True)
+    time.sleep(0.05)
+    e6._send_button(False)
+    time.sleep(0.3)
+
+
+def key(vk: int, *mods: int) -> None:
+    for m in mods:
+        u32.keybd_event(m, 0, 0, 0)
+    c42.os_key(vk)
+    for m in reversed(mods):
+        u32.keybd_event(m, 0, 2, 0)
+    time.sleep(0.1)
+
+
+class KEYBDINPUT(ctypes.Structure):
+    _fields_ = [("wVk", wintypes.WORD), ("wScan", wintypes.WORD), ("dwFlags", wintypes.DWORD), ("time", wintypes.DWORD),
+                ("dwExtraInfo", ctypes.POINTER(ctypes.c_ulong))]
+
+
+class INPUT(ctypes.Structure):
+    class _U(ctypes.Union):
+        _fields_ = [("ki", KEYBDINPUT), ("pad", ctypes.c_byte * 32)]
+    _anonymous_ = ("u",)
+    _fields_ = [("type", wintypes.DWORD), ("u", _U)]
+
+
+def type_text(text: str) -> None:
+    """Types `text` through the operating system's keyboard (Unicode key events into the focused control)."""
+    for ch in text:
+        for flags in (0x0004, 0x0004 | 0x0002):
+            i = INPUT(type=1)
+            i.ki = KEYBDINPUT(0, ord(ch), flags, 0, None)
+            u32.SendInput(1, ctypes.byref(i), ctypes.sizeof(INPUT))
+        time.sleep(0.005)
+
+
+def menu_labels(handle) -> list[str]:
+    out = []
+    for i in range(u32.GetMenuItemCount(handle)):
+        b = ctypes.create_unicode_buffer(256)
+        u32.GetMenuStringW(handle, i, b, 256, 0x400)
+        out.append(b.value.replace("&", "").split("\t")[0].rstrip("….").strip())
+    return out
+
+
+def native_item(path: list[str]):
+    """The native menu item at `path`: (its menu handle, its index), or None."""
+    h = window_handle()
+    handle = u32.GetMenu(h)
+    for depth, label in enumerate(path):
+        labels = menu_labels(handle)
+        if label not in labels:
+            return None
+        i = labels.index(label)
+        if depth == len(path) - 1:
+            return handle, i
+        handle = u32.GetSubMenu(handle, i)
+    return None
+
+
+def native_enabled(path: list[str]) -> bool | None:
+    found = native_item(path)
+    if not found:
+        return None
+    flags = u32.GetMenuState(found[0], found[1], 0x400)
+    return not bool(flags & 3)
+
+
+def choose_menu(path: list[str]) -> None:
+    """Opens each menu of `path` with a real click and clicks the item."""
+    h = front()
+    handle = u32.GetMenu(h)
+    for label in path:
+        labels = menu_labels(handle)
+        if label not in labels:
+            raise RuntimeError(f"native menu label absent: {label} (have {labels})")
+        i = labels.index(label)
+        rect = wintypes.RECT()
+        if not u32.GetMenuItemRect(h, handle, i, ctypes.byref(rect)):
+            raise RuntimeError(f"native menu rectangle absent: {label}")
+        click_screen((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
+        handle = u32.GetSubMenu(handle, i)
+
+
+# ----- the table -------------------------------------------------------------------------------------------------------
+
+class Table:
+    def __init__(self, session, run, out: Path, work: Path):
+        self.s, self.run, self.out, self.work = session, run, out, work
+        self.cdp: Cdp | None = None
+        self.rows: list = []
+        self.kinds = self._kinds()
+
+    @staticmethod
+    def _kinds() -> dict:
+        text = (ROOT / "desktop/src/ipc/generated/commands.ts").read_text(encoding="utf-8")
+        out, current = {}, None
+        for line in text.splitlines():
+            if line.startswith('  "') and line.rstrip().endswith(": {"):
+                current = line.strip().split('"')[1]
+            elif current and line.strip().startswith('kind: "'):
+                out[current] = line.split('"')[1]
+                current = None
+        return out
+
+    async def cmd(self, n: str, p: dict | None = None) -> dict:
+        env = await e2e.run_cmd(self.s, n, p or {})
+        res = env.get("result")
+        jid = res.get("jobId") if isinstance(res, dict) else None
+        if jid and env.get("status") == "ok":
+            env = await e2e.call(self.s, "job_wait", {"jobId": jid, "timeoutMs": 120000})
+        if env.get("status") != "ok":
+            raise RuntimeError(f"setup {n} {p}: {json.dumps(env)[:600]}")
+        return env.get("result") if env.get("result") is not None else {}
+
+    async def position(self) -> int:
+        return (await self.cmd("edit.history.get", {"limit": 1000})).get("position", 0)
+
+    async def steps_since(self, pos: int) -> list:
+        h = await self.cmd("edit.history.get", {"limit": 1000})
+        return [(e.get("label"), e.get("source")) for e in (h.get("entries") or [])[pos:h.get("position", 0)]]
+
+    def recorded(self) -> list:
+        """The page's commands since `clear`, without the canvas's own record of its back-end measurement (a
+        `prefs.set` of `display.canvasBackendMeasured` the canvas writes after its back-end self-test; no person's
+        action sends it)."""
+        time.sleep(0.2)
+        own = lambda c: c.get("command") == "prefs.set" and set((c.get("params") or {}).get("values") or {}) == {"display.canvasBackendMeasured"}  # noqa: E731
+        return [c for c in self.cdp.calls if not own(c)]
+
+    def clear(self) -> None:
+        self.cdp.calls.clear()
+
+    def rect(self, ident: str):
+        """The control's centre in screen pixels, scrolled into view, and whether it is enabled; None when absent."""
+        r = self.cdp.js(
+            "(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']'); if (!e) return null;"
+            " e.scrollIntoView({block: 'center', inline: 'center'}); const b = e.getBoundingClientRect();"
+            " if (!b.width) return {hidden: true}; const x = b.x + b.width / 2, y = b.y + b.height / 2;"
+            " const top = document.elementFromPoint(x, y);"
+            " return {x, y, dpr: window.devicePixelRatio || 1, disabled: !!e.disabled,"
+            " reachable: !!top && (top === e || e.contains(top))}; })()" % json.dumps(ident))
+        return r
+
+    def click(self, ident: str) -> str:
+        r = self.rect(ident)
+        if not r or r.get("hidden"):
+            raise RuntimeError(f"control absent or hidden: {ident}")
+        if not r["reachable"]:
+            # Covered at its centre (a palette taller than the window): focused, then pressed with the real keyboard.
+            front()
+            self.cdp.js("document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']').focus()" % json.dumps(ident))
+            key(0x20)
+            return "focus, then a real Space key"
+        h = front()
+        origin = wintypes.POINT(0, 0)
+        u32.ClientToScreen(h, ctypes.byref(origin))
+        click_screen(origin.x + r["x"] * r["dpr"], origin.y + r["y"] * r["dpr"])
+        return "real OS click"
+
+    def pressed(self, ident: str):
+        return self.cdp.js("document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')?.getAttribute('aria-pressed')"
+                           % json.dumps(ident))
+
+    async def do(self, action) -> str:
+        kind = action[0]
+        if kind == "dom":
+            return self.click(action[1])
+        if kind == "menu":
+            key(0x1B)
+            key(0x1B)
+            enabled = native_enabled(action[1])
+            choose_menu(action[1])
+            return f"real native menu clicks (the item enabled before: {enabled})"
+        if kind == "select":
+            self.click(action[1])
+            await asyncio.sleep(0.3)
+            for _ in range(abs(action[2])):
+                key(0x28 if action[2] > 0 else 0x26)
+            key(0x0D)
+            return "real click, arrow keys and Enter"
+        if kind == "none":
+            return "no input"
+        raise ValueError(kind)
+
+    async def row(self, r: dict) -> None:
+        name = r["name"]
+        rec = {"name": name, "spec": r["spec"], "action": list(r["action"])}
+        try:
+            # A dialog a row before left open (a refusal's message box) would hold every later command.
+            for _ in range(3):
+                if not self.cdp.js("!!document.querySelector('[role=alertdialog],[role=dialog][data-tt-id]:not([data-tt-id=startScreen])')"):
+                    break
+                key(0x1B)
+                await asyncio.sleep(0.3)
+            if r.get("setup"):
+                await r["setup"]()
+            await asyncio.sleep(0.3)
+            clicks = 2 if r.get("toggle") else 1
+            rec["clicks"] = []
+            ok_all = True
+            for k in range(clicks):
+                before = await r["state"]()
+                want = r["expect"](before) if callable(r["expect"]) else r["expect"]
+                pos = await self.position()
+                self.clear()
+                how = await self.do(r["action"])
+                await asyncio.sleep(r.get("wait", 0.8))
+                sent = [c for c in self.recorded() if self.kinds.get(c.get("command")) != "query" or c.get("command") == want[0]]
+                after = await r["state"]()
+                steps = await self.steps_since(pos)
+                label = r.get("label")
+                expect_steps = [] if label is None else [[label, "user"]]
+                got_steps = [list(s) for s in steps]
+                effect = bool(r["effect"](before, after, k))
+                click = {"input": how, "expected": {"command": want[0], "params": want[1]}, "sent": sent,
+                         "effect": effect, "steps": got_steps, "expectedSteps": expect_steps,
+                         "before": before, "after": after}
+                exact = sent == [{"command": want[0], "params": want[1]}]
+                ok = exact and effect and got_steps == expect_steps
+                click["ok"] = ok
+                rec["clicks"].append(click)
+                ok_all = ok_all and ok
+            rec["ok"] = ok_all
+            self.run.check(ok_all, f"D-39 {name}: the window sends exactly the command, changes the state and makes the spec's undo steps ({r['spec']})",
+                           [{k: c[k] for k in ("expected", "sent", "effect", "steps", "expectedSteps")} for c in rec["clicks"]])
+            if r.get("after"):
+                await r["after"]()
+        except Exception as ex:  # noqa: BLE001 - the row fails with its text, the table goes on
+            rec["ok"] = False
+            rec["error"] = repr(ex)
+            self.run.check(False, f"D-39 {name}: ran", repr(ex))
+            with contextlib.suppress(Exception):
+                key(0x1B)
+                key(0x1B)
+        rec["disabledTarget"] = r.get("disabled")
+        self.rows.append(rec)
+        self.run.save("rows.json", self.rows)
+
+    async def disabled_checks(self) -> None:
+        """After the project is closed (`project.none` refuses every control of the table): each is disabled or gone,
+        a real click on it sends nothing and changes nothing; each native menu item is disabled in the menu and in the
+        window tree (D-38)."""
+        answer = await e2e.call(self.s, "inspect_ui", {"target": "window", "depth": 32})
+        tree = (answer.get("result") or answer).get("root") or {}
+        bar = next((c for c in tree.get("children") or [] if c.get("id") == "menuBar"), {})
+
+        def menu_node(path):
+            node = bar
+            for label in path:
+                node = next((c for c in node.get("children") or []
+                             if (c.get("label") or "").rstrip("….").strip() == label), None)
+                if not node:
+                    return None
+            return node
+
+        seen = set()
+        for rec in self.rows:
+            target = rec.get("disabledTarget")
+            if not target or json.dumps(target) in seen:
+                continue
+            seen.add(json.dumps(target))
+            out = {"target": target}
+            if target[0] == "menu":
+                out["nativeEnabled"] = native_enabled(target[1])
+                node = menu_node(target[1])
+                out["treeEnabled"] = node.get("enabled") if node else None
+                ok = out["nativeEnabled"] is False and out["treeEnabled"] is False
+            else:
+                r = self.rect(target[1])
+                out["control"] = r
+                if not r or r.get("hidden"):
+                    ok = True
+                    out["note"] = "gone with the project"
+                else:
+                    self.clear()
+                    before = await self.cmd("app.state.get")
+                    with contextlib.suppress(RuntimeError):
+                        self.click(target[1])
+                    await asyncio.sleep(0.4)
+                    sent = [c for c in self.recorded() if self.kinds.get(c.get("command")) != "query"]
+                    out["sent"] = sent
+                    out["unchanged"] = before == await self.cmd("app.state.get")
+                    ok = r.get("disabled") is True and not sent and out["unchanged"]
+            out["ok"] = ok
+            rec["disabled"] = out
+            self.run.check(ok, f"D-39 {rec['name']}: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)", out)
+        self.run.save("rows.json", self.rows)
+
+
+# ----- the rows --------------------------------------------------------------------------------------------------------
+
+async def build_and_run(t: Table, only: set) -> None:
+    cmd = t.cmd
+    await cmd("prefs.set", {"values": {"files.backups.count": 5}})
+    await cmd("project.create", {"name": "D39", "onUnsaved": "fail"})
+    project = t.work / "D39.animpkg"
+    await cmd("project.saveAs", {"path": str(project), "onExists": "overwrite"})
+    bob = ((await cmd("element.create", {"type": "drawing", "name": "Bob"})).get("elementIds") or [None])[0]
+    await cmd("element.drawing.create", {"elementId": bob, "name": "1", "exposeFrom": 1, "exposeTo": 24})
+    await cmd("app.context.set", {"elementId": bob, "frame": 1})
+    await cmd("workspace.select", {"name": "Default"})
+    for p in ("drawingView", "cameraView"):
+        await cmd("window.panel.set", {"panelId": p, "visible": True})
+    await asyncio.sleep(1.0)
+    t.cdp = Cdp(CDP_PORT)
+    t.cdp.record()
+    t.clear()
+    # The recorder sees the page's calls: one read-only call made by the page itself.
+    t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command: 'app.info.get', params: {}})}).then(() => true)")
+    t.run.check(any(c.get("command") == "app.info.get" for c in t.recorded()), "the IPC recorder sees the page's commands", t.recorded())
+
+    async def drawing():
+        return await cmd("draw.drawing.get", {})
+
+    def nodes_of(d):
+        out = []
+
+        def walk(ns):
+            for n in ns or []:
+                out.append(n)
+                walk(n.get("children"))
+        walk(d.get("nodes"))
+        return out
+
+    def strokes_of(d):
+        return [s for n in nodes_of(d) for s in n.get("strokes") or []]
+
+    def ids_in_order(d):
+        return [s["id"] for s in strokes_of(d)] + [n["id"] for n in nodes_of(d)]
+
+    async def clean():
+        # The drawing back to empty and unlocked, whatever the row before left (each step tolerated when it has
+        # nothing to do).
+        await e2e.run_cmd(t.s, "draw.lock.set", {"locked": False})
+        d = await drawing()
+        ids = [n["id"] for n in d.get("nodes") or []]
+        if ids:
+            await e2e.run_cmd(t.s, "draw.object.delete", {"ids": ids})
+        await cmd("draw.selection.set", {"by": "none"})
+
+    async def rect(x, y, layer="new"):
+        return await cmd("draw.rectangle.add", {"from": {"x": x - 40, "y": y - 30}, "to": {"x": x + 40, "y": y + 30}, "layer": layer})
+
+    async def select_all():
+        await cmd("draw.selection.set", {"by": "all"})
+
+    def setup(*steps):
+        async def run():
+            await clean()
+            for s in steps:
+                await s()
+        return run
+
+    def changed(before, after, _k):
+        return before != after
+
+    async def focus_view(view):
+        await cmd("window.panel.set", {"panelId": view, "visible": True, "focus": True})
+        await cmd("view.active.set", {"viewId": view})
+
+    rows: list = []
+
+    # 1. The Drawing menu (02 §4.4 lines 293-296; the commands' rows and labels in 02 §13.5).
+    def menu_row(label, command, params, spec_label, steps, effect, path=None):
+        rows.append({"name": f"Drawing › {label}", "spec": f"{spec_line(command)} (label \"{spec_label}\"); 02 §4.4 lines 293-296",
+                     "action": ("menu", path or ["Drawing", label]), "expect": (command, params), "label": spec_label,
+                     "setup": setup(*steps), "state": drawing, "effect": effect, "disabled": ("menu", path or ["Drawing", label])})
+
+    two = [lambda: rect(-150, 0), lambda: rect(150, 0), select_all]
+    layers = lambda d: [n for n in nodes_of(d) if n.get("type") == "layer" and n.get("strokes")]  # noqa: E731
+    menu_row("Flatten", "draw.flatten.apply", {}, "Flatten Drawing", two, lambda b, a, k: len(layers(a)) < len(layers(b)))
+    menu_row("Optimize", "draw.optimize.apply", {}, "Optimize Drawing", two, lambda b, a, k: len(layers(a)) < len(layers(b)))
+
+    async def wobbly():
+        pts = [{"x": -200 + 10 * i, "y": (i % 2) * 0.2} for i in range(40)]
+        await cmd("draw.stroke.add", {"kind": "pencil", "points": pts, "fit": False, "layer": "new"})
+    anchors = lambda d: sum(len(s.get("bezier") or []) for s in strokes_of(d))  # noqa: E731
+    menu_row("Smooth", "draw.smooth.apply", {}, "Smooth Selection", [wobbly, select_all], lambda b, a, k: anchors(a) < anchors(b))
+    kinds = lambda d: sorted(s.get("kind") for s in strokes_of(d))  # noqa: E731
+    menu_row("Convert Lines to Brush", "draw.linesToBrush.apply", {}, "Convert Lines to Brush",
+             [lambda: rect(0, 0), select_all], lambda b, a, k: "brush" in kinds(a) and "brush" not in kinds(b))
+
+    async def text():
+        await cmd("draw.text.add", {"position": {"x": -60, "y": 0}, "text": "Ab"})
+    menu_row("Break Text Apart", "draw.breakApart.apply", {}, "Break Text Apart", [text, select_all],
+             lambda b, a, k: any(n.get("type") == "text" for n in nodes_of(b)) and not any(n.get("type") == "text" for n in nodes_of(a)))
+
+    async def brush():
+        await cmd("draw.stroke.add", {"kind": "brush", "points": [{"x": -100, "y": 0}, {"x": 0, "y": 40}, {"x": 100, "y": 0}], "layer": "new"})
+    menu_row("Extract Centre Line", "draw.centreLine.apply", {}, "Extract Centre Line", [brush, select_all],
+             lambda b, a, k: "pencil" in kinds(a) and "pencil" not in kinds(b))
+
+    async def select_first():
+        d = await drawing()
+        await cmd("draw.selection.set", {"by": "ids", "ids": [strokes_of(d)[0]["id"]]})
+
+    async def select_last():
+        d = await drawing()
+        await cmd("draw.selection.set", {"by": "ids", "ids": [strokes_of(d)[-1]["id"]]})
+    order = lambda b, a, k: ids_in_order(a) != ids_in_order(b)  # noqa: E731
+    for label, to, sel in (("Bring to Front", "front", select_first), ("Bring Forward", "forward", select_first),
+                           ("Send Backward", "backward", select_last), ("Send to Back", "back", select_last)):
+        menu_row(label, "draw.arrange.apply", {"to": to}, label, [lambda: rect(-30, 0), lambda: rect(30, 10), sel], order,
+                 path=["Drawing", "Arrange", label])
+    geometry = lambda b, a, k: [s.get("bezier") for s in strokes_of(a)] != [s.get("bezier") for s in strokes_of(b)]  # noqa: E731
+    one = [lambda: rect(120, 60), select_all]
+    menu_row("Flip Horizontal", "draw.flip.apply", {"axis": "horizontal"}, "Flip Horizontal", one, geometry)
+    menu_row("Flip Vertical", "draw.flip.apply", {"axis": "vertical"}, "Flip Vertical", one, geometry)
+    menu_row("Rotate 90° CW", "draw.rotate.apply", {"by": "90cw"}, "Rotate 90° CW", one, geometry)
+    menu_row("Rotate 90° CCW", "draw.rotate.apply", {"by": "90ccw"}, "Rotate 90° CCW", one, geometry)
+    menu_row("Rotate 180°", "draw.rotate.apply", {"by": "180"}, "Rotate 180°", one, geometry)
+    groups = lambda d: [n for n in nodes_of(d) if n.get("type") == "group"]  # noqa: E731
+    menu_row("Group", "draw.group.create", {}, "Group Selection", two, lambda b, a, k: len(groups(a)) == len(groups(b)) + 1)
+
+    async def grouped():
+        d = await drawing()
+        g = await cmd("draw.group.create", {"ids": [s["id"] for s in strokes_of(d)]})
+        # The group itself selected (a person's click on it; `by: all` selects its strokes, not the group).
+        await cmd("draw.selection.set", {"by": "ids", "ids": [g["groupId"]]})
+    menu_row("Ungroup", "draw.group.delete", {}, "Ungroup Selection", two + [grouped],
+             lambda b, a, k: len(groups(a)) == len(groups(b)) - 1)
+    menu_row("Delete Objects", "draw.object.delete", {}, "Delete Object", one, lambda b, a, k: len(strokes_of(a)) < len(strokes_of(b)))
+    menu_row("Lock Drawing", "draw.lock.set", {"locked": True}, "Lock Drawing", [lambda: rect(0, 0)],
+             lambda b, a, k: a.get("locked") is True and b.get("locked") is not True)
+
+    async def locked():
+        await rect(0, 0)
+        await cmd("draw.lock.set", {"locked": True})
+    rows.append({"name": "Drawing › Unlock Drawing", "spec": f"{spec_line('draw.lock.set')} (label \"Unlock Drawing\")",
+                 "action": ("menu", ["Drawing", "Unlock Drawing"]), "expect": ("draw.lock.set", {"locked": False}),
+                 "label": "Unlock Drawing", "setup": setup(locked), "state": drawing,
+                 "effect": lambda b, a, k: b.get("locked") is True and a.get("locked") is False,
+                 "disabled": ("menu", ["Drawing", "Unlock Drawing"])})
+
+    # 2. Edit › Cut Special (01 §12 line 1099): the cells of the selection with the timeline edit options.
+    async def drawing_cell():
+        # Working in the Drawing view: the edit context is the focused panel's (01 §6.4).
+        await focus_view("drawingView")
+        await rect(0, 0)
+        await select_all()
+        sel = await cmd("draw.selection.get", {})
+        await cmd("edit.selection.set", {"context": "drawing", "ids": sel.get("selectedIds") or sel.get("ids") or []})
+    rows.append({"name": "Edit › Cut Special", "spec": f"{spec_line('edit.cutSpecial')} (label \"Cut Special\")",
+                 "action": ("menu", ["Edit", "Cut Special"]), "expect": ("edit.cutSpecial", {}), "label": "Cut Special",
+                 "setup": setup(drawing_cell), "state": drawing, "effect": changed, "disabled": ("menu", ["Edit", "Cut Special"])})
+
+    # 3. File › Project Info, Check Project; Help › About: each a dialog showing its query's answer (no undo step).
+    async def dialog_text():
+        return t.cdp.js("Array.from(document.querySelectorAll('[role=dialog]')).map(d => d.getAttribute('data-tt-id') + ':' + d.textContent).join('|')") or ""
+
+    async def close_dialogs():
+        for _ in range(2):
+            key(0x1B)
+            await asyncio.sleep(0.2)
+    for label, command, dlg, path in (("Project Info", "project.info.get", "projectInfo", ["File", "Project Info"]),
+                                      ("Check Project", "doc.validate", "checkProject", ["File", "Check Project"]),
+                                      ("About Toontown", "app.info.get", "about", ["Help", "About Toontown"])):
+        rows.append({"name": f"{path[0]} › {label}", "spec": f"{spec_line(command)}; 01 §12.2",
+                     "action": ("menu", path), "expect": (command, {}), "label": None, "setup": None, "state": dialog_text,
+                     "effect": (lambda d: lambda b, a, k: (d + ":") in a and len(a) > len(d) + 1)(dlg),
+                     "after": close_dialogs, "disabled": ("menu", path) if command != "app.info.get" else None})
+
+    # 4. The main toolbar's toggles and group items (01 §5.7; 02 §10), each toggle clicked twice.
+    async def aids():
+        return await cmd("drawAid.state.get", {})
+
+    def toggle_row(ident, command, field, read, spec):
+        rows.append({"name": f"main toolbar › {ident}", "spec": f"{spec_line(command)}; {spec}", "action": ("dom", f"mainToolbar.{ident}"),
+                     "expect": lambda b: (command, {field: not read(b)}), "label": None, "setup": None, "state": aids, "toggle": True,
+                     "effect": lambda b, a, k: read(a) == (not read(b)), "disabled": ("dom", f"mainToolbar.{ident}")})
+    toggle_row("drawAid.grid.set", "drawAid.grid.set", "visible", lambda s: s["grid"]["visible"], "01 §5.7 lines 451-456 (Grid on/off)")
+    toggle_row("gridOverlay", "drawAid.grid.set", "overlay", lambda s: s["grid"]["overlay"], "01 §5.7 line 451 (grid overlay)")
+    toggle_row("drawAid.onionSkin.set", "drawAid.onionSkin.set", "enabled", lambda s: s["onionSkin"]["enabled"], "01 §5.7 line 452 (onion skin on/off)")
+    toggle_row("drawAid.autoLightTable.set", "drawAid.autoLightTable.set", "enabled", lambda s: s["autoLightTable"], "01 §5.7 line 453 (auto light table)")
+    order_types = ["normal", "field12", "field16"]
+    rows.append({"name": "main toolbar › Grid type", "spec": f"{spec_line('drawAid.grid.set')}; 01 §5.7 lines 457-458 (group items list their members)",
+                 "action": ("select", "mainToolbar.gridType", 1),
+                 "expect": lambda b: ("drawAid.grid.set", {"type": order_types[order_types.index(b["grid"]["type"]) + 1]}),
+                 "label": None, "setup": None, "state": aids,
+                 "effect": lambda b, a, k: a["grid"]["type"] == order_types[order_types.index(b["grid"]["type"]) + 1],
+                 "disabled": ("dom", "mainToolbar.gridType")})
+    for ident, field in (("onionSkinPrevious", "previous"), ("onionSkinNext", "next")):
+        rows.append({"name": f"main toolbar › {ident}", "spec": f"{spec_line('drawAid.onionSkin.set')}; 01 §5.7 lines 452, 457-458",
+                     "action": ("select", f"mainToolbar.{ident}", 1),
+                     "expect": (lambda f: lambda b: ("drawAid.onionSkin.set", {f: b["onionSkin"][f] + 1}))(field),
+                     "label": None, "setup": None, "state": aids,
+                     "effect": (lambda f: lambda b, a, k: a["onionSkin"][f] == b["onionSkin"][f] + 1)(field),
+                     "disabled": ("dom", f"mainToolbar.{ident}")})
+
+    # 5. The view chrome of both views (02 §10): every aid, symmetry, the type buttons.
+    flag = lambda v: v is True  # noqa: E731
+    readers = {
+        "grid": ("visible", lambda s: s["grid"]["visible"]),
+        "onionSkin": ("enabled", lambda s: s["onionSkin"]["enabled"]),
+        "onionOutline": ("outline", lambda s: s["onionSkinStyle"]["outline"]),
+        "autoLightTable": ("enabled", lambda s: flag(s["autoLightTable"])),
+        "strokes": ("visible", lambda s: flag(s["strokes"])),
+        "currentOnTop": ("enabled", lambda s: flag(s["currentOnTop"])),
+        "boxHighlighting": ("boxHighlighting", lambda s: s["selectionDisplay"]["boxHighlighting"]),
+        "outlineOnSelection": ("outlineOnSelection", lambda s: s["selectionDisplay"]["outlineOnSelection"]),
+        "keepSelectionVisible": ("keepSelectionVisible", lambda s: s["selectionDisplay"]["keepSelectionVisible"]),
+        "sceneBackground": ("useSceneColour", lambda s: s["background"]["useSceneColour"]),
+    }
+    commands = {"grid": "drawAid.grid.set", "onionSkin": "drawAid.onionSkin.set", "onionOutline": "drawAid.onionSkinStyle.set",
+                "autoLightTable": "drawAid.autoLightTable.set", "strokes": "drawAid.strokes.set", "currentOnTop": "drawAid.currentOnTop.set",
+                "boxHighlighting": "drawAid.selectionDisplay.set", "outlineOnSelection": "drawAid.selectionDisplay.set",
+                "keepSelectionVisible": "drawAid.selectionDisplay.set", "sceneBackground": "drawAid.background.set"}
+    for view in ("drawingView", "cameraView"):
+        async def into(view=view):
+            await focus_view(view)
+        for aid, (field, read) in readers.items():
+            rows.append({"name": f"{view} chrome › {aid}", "spec": f"{spec_line(commands[aid])}; 02 §10",
+                         "action": ("dom", f"{view}.aid.{aid}"),
+                         "expect": (lambda c, f, r: lambda b: (c, {f: not r(b)}))(commands[aid], field, read),
+                         "label": None, "setup": into, "state": aids, "toggle": True,
+                         "effect": (lambda r: lambda b, a, k: r(a) == (not r(b)))(read), "disabled": ("dom", f"{view}.aid.{aid}")})
+        rows.append({"name": f"{view} chrome › lightTableShade", "spec": f"{spec_line('drawAid.lightTableShade.set')}; 02 §10",
+                     "action": ("dom", f"{view}.aid.lightTableShade"),
+                     "expect": lambda b: ("drawAid.lightTableShade.set", {"auto": not b["lightTableShade"]["auto"], "static": not b["lightTableShade"]["auto"]}),
+                     "label": None, "setup": into, "state": aids, "toggle": True,
+                     "effect": lambda b, a, k: a["lightTableShade"]["auto"] == (not b["lightTableShade"]["auto"]),
+                     "disabled": ("dom", f"{view}.aid.lightTableShade")})
+        for aid, direction in (("onionPrevious", "previous"), ("onionNext", "next")):
+            rows.append({"name": f"{view} chrome › {aid}", "spec": f"{spec_line('drawAid.onionSkinCycle.run')}; 02 §10",
+                         "action": ("dom", f"{view}.aid.{aid}"), "expect": ("drawAid.onionSkinCycle.run", {"direction": direction}),
+                         "label": None, "setup": into, "state": aids,
+                         "effect": (lambda f: lambda b, a, k: a["onionSkin"][f] != b["onionSkin"][f])(direction),
+                         "disabled": ("dom", f"{view}.aid.{aid}")})
+
+        async def panels():
+            return await cmd("window.panel.list", {})
+        rows.append({"name": f"{view} chrome › staticLightTablePanel", "spec": f"{spec_line('drawAid.staticLightTablePanel.set')}; 02 §10",
+                     "action": ("dom", f"{view}.aid.staticLightTablePanel"), "expect": ("drawAid.staticLightTablePanel.set", {"visible": True}),
+                     "label": None, "setup": into, "state": aids, "effect": lambda b, a, k: True,
+                     "disabled": ("dom", f"{view}.aid.staticLightTablePanel")})
+        for aid, command, params, eff in (
+            ("staticLightTableAdd", "drawAid.staticLightTable.add", {}, lambda b, a, k: len(a["staticLightTable"]) == len(b["staticLightTable"]) + 1),
+            ("staticLightTableShowAll", "drawAid.staticLightTable.set", {"all": True, "visible": True},
+             lambda b, a, k: all(e.get("visible") for e in a["staticLightTable"])),
+            ("staticLightTableClear", "drawAid.staticLightTable.remove", {"all": True}, lambda b, a, k: a["staticLightTable"] == []),
+        ):
+            rows.append({"name": f"{view} chrome › {aid}", "spec": f"{spec_line(command)}; 02 §10.3",
+                         "action": ("dom", f"{view}.aid.{aid}"), "expect": (command, params), "label": None,
+                         "setup": (lambda v: (lambda: focus_view(v)))(view) if aid != "staticLightTableAdd" else
+                         (lambda v: setup(lambda: rect(0, 0), lambda: focus_view(v)))(view),
+                         "state": aids, "effect": eff, "disabled": ("dom", f"{view}.aid.{aid}")})
+
+        async def symmetry():
+            s = await cmd("tool.settings.get", {})
+            return (s.get("symmetry") or {}).get("mode")
+        rows.append({"name": f"{view} chrome › symmetry", "spec": f"{spec_line('tool.symmetry.set')}; 02 §6.2",
+                     "action": ("dom", f"{view}.symmetry"),
+                     "expect": lambda b: ("tool.symmetry.set", {"mode": "mirror" if b == "none" else "none"}),
+                     "label": None, "setup": into, "state": symmetry, "toggle": True,
+                     "effect": lambda b, a, k: a == ("mirror" if b == "none" else "none"), "disabled": ("dom", f"{view}.symmetry")})
+
+        async def types(view=view):
+            listed = await cmd("view.list", {})
+            vs = listed if isinstance(listed, list) else listed.get("views") or []
+            return next((v.get("type") for v in vs if v.get("viewId") == view), None)
+        own = "drawing" if view == "drawingView" else "camera"
+        other = "camera" if own == "drawing" else "drawing"
+        for ty in (other, own):
+            rows.append({"name": f"{view} toolbar › type {ty}", "spec": f"{spec_line('view.type.set')}; 01 §5.3",
+                         "action": ("dom", f"{view}.type.{ty}"), "expect": ("view.type.set", {"viewId": view, "type": ty}),
+                         "label": None, "setup": into, "state": types, "effect": (lambda x: lambda b, a, k: a == x)(ty),
+                         "disabled": ("dom", f"{view}.type.{ty}")})
+
+    # 6. The Drawing tools palette: each tool (02 §1.3, §7).
+    async def active_tool():
+        return (await cmd("tool.active.get", {})).get("toolId")
+    tools = [x.get("toolId") for x in (await cmd("tool.list", {})).get("tools") or []]
+    for tool in tools:
+        rows.append({"name": f"tools palette › {tool}", "spec": f"{spec_line('tool.active.set')}; 02 §7",
+                     "action": ("dom", f"drawingTools.{tool}"), "expect": ("tool.active.set", {"toolId": tool}), "label": None,
+                     "setup": None, "state": active_tool, "effect": (lambda x: lambda b, a, k: a == x)(tool),
+                     "disabled": ("dom", f"drawingTools.{tool}")})
+
+    # 7. The shortcut editor's Export and Import (01 §8.3 item 8): a real save and open dialog, a typed path.
+    exported = t.work / "keymap-export.json"
+    edited = t.work / "keymap-import.json"
+
+    async def open_keyboard():
+        if exported.exists():
+            exported.unlink()
+        choose_menu(["File", "Preferences"])
+        await asyncio.sleep(0.8)
+        t.click("preferences.category.keyboard")
+        await asyncio.sleep(0.5)
+
+    async def file_state():
+        return {"exists": exported.exists(), "bindings": len(json.loads(exported.read_text(encoding="utf-8")).get("bindings", [])) if exported.exists() else 0}
+
+    async def type_path(path: Path):
+        await asyncio.sleep(1.5)
+        type_text(str(path))
+        key(0x0D)
+        await asyncio.sleep(1.0)
+
+    rows.append({"name": "shortcut editor › Export", "spec": f"{spec_line('keymap.export')}; 01 §8.3 item 8",
+                 "action": ("dom", "keymap.export"), "expect": ("keymap.export", {"path": str(exported), "onExists": "overwrite"}),
+                 "label": None, "setup": open_keyboard, "state": file_state, "wait": 0.1,
+                 "effect": lambda b, a, k: a["exists"] and a["bindings"] > 0, "disabled": None,
+                 "post_click": lambda: type_path(exported), "after": close_dialogs})
+
+    async def keys_of_save():
+        return [b.get("keys") for b in await cmd("keymap.list", {"commandId": "project.save"})]
+
+    async def prepare_import():
+        await open_keyboard()
+        await cmd("keymap.export", {"path": str(exported), "onExists": "overwrite"})
+        data = json.loads(exported.read_text(encoding="utf-8"))
+        for b in data.get("bindings", []):
+            if b.get("commandId") == "project.save":
+                b["keys"] = "Primary+Shift+F11"
+        edited.write_text(json.dumps(data), encoding="utf-8")
+
+    async def import_flow():
+        t.click("keymap.import")
+        await type_path(edited)
+        key(0x0D)  # the browser's confirm: OK replaces the keymap
+        await asyncio.sleep(0.6)
+        t.click("preferences.submit")
+        await asyncio.sleep(1.0)
+    rows.append({"name": "shortcut editor › Import", "spec": f"{spec_line('keymap.import')}; 01 §8.3 items 8-9 (applied by OK)",
+                 "action": ("none",), "expect": ("keymap.import", {"path": str(edited), "mode": "replace"}), "label": None,
+                 "setup": prepare_import, "state": keys_of_save, "custom": import_flow,
+                 "effect": lambda b, a, k: "Primary+Shift+F11" in a, "disabled": None,
+                 "after": lambda: cmd("keymap.reset", {"all": True})})
+    # A Preferences dialog left open by a failed row would hold the native menu: closed before the next rows.
+    rows.append({"name": "(close dialogs)", "spec": "", "action": ("none",), "expect": ("", {}), "skip": True,
+                 "setup": close_dialogs})
+
+    # 8. The status bar's jobs (01 §9.1): an agent's job shows while it runs and goes when it ends.
+    # 9. File › Open Backup with Open (01 §12.2 lines 1083-1084; C43B-R1-07), last: it replaces the project.
+    async def backups_ready():
+        await rect(0, 0)
+        await cmd("project.save", {})
+        await rect(50, 50)
+        await cmd("project.save", {})
+
+    async def app_project():
+        st = await cmd("app.state.get", {})
+        return (st.get("project") or {}).get("path")
+    backups: dict = {}
+
+    async def open_backup_flow():
+        choose_menu(["File", "Open Backup"])
+        await asyncio.sleep(1.0)
+        listed = await cmd("project.backup.list", {})
+        backups["listed"] = listed
+        backups["buttons"] = t.cdp.js("document.querySelectorAll('[data-tt-command=\"project.backup.open\"]').length")
+        t.click("openBackup.open.0")
+        await asyncio.sleep(2.0)
+
+    rows.append({"name": "File › Open Backup › Open", "spec": f"{spec_line('project.backup.open')}; 01 §12.2 lines 1083-1084",
+                 "action": ("none",), "custom": open_backup_flow,
+                 "expect": lambda b: ("project.backup.open", {"backupId": (backups.get("listed") or [{}])[0].get("backupId")}),
+                 "label": None, "setup": setup(backups_ready), "state": app_project, "late_expect": True,
+                 "effect": lambda b, a, k: backups.get("buttons", 0) >= 2 and a != b, "disabled": None})
+
+    for r in rows:
+        if r.get("skip"):
+            await r["setup"]()
+            continue
+        if only and not any(o in r["name"] for o in only):
+            continue
+        if r.get("custom"):
+            await custom_row(t, r)
+        else:
+            if r.get("post_click"):
+                act = r["action"]
+                post = r["post_click"]
+
+                async def chained(act=act, post=post):
+                    how = await Table.do(t, act)
+                    await post()
+                    return how
+                r = {**r, "custom": chained}
+                await custom_row(t, r, own_action=True)
+            else:
+                await t.row(r)
+
+    await jobs_row(t)
+    # Saved first: the agent's session may not discard (its policy), and the close must not ask.
+    await e2e.run_cmd(t.s, "project.saveAs", {"path": str(t.work / "D39-final.animpkg"), "onExists": "overwrite"})
+    await asyncio.sleep(1.0)
+    await cmd("project.close", {"onUnsaved": "fail"})
+    await asyncio.sleep(1.5)
+    await t.disabled_checks()
+
+
+async def custom_row(t: Table, r: dict, own_action: bool = False) -> None:
+    """A row whose action is a flow (dialogs on the way): run as `Table.row` with the flow as the action."""
+    flow = r["custom"]
+
+    async def do(_action, flow=flow):
+        res = await flow()
+        return res if isinstance(res, str) else "real OS input through the flow"
+    original = t.do
+    t.do = do
+    try:
+        if r.get("late_expect"):
+            # The expected backup id is known once the dialog listed it: evaluated after the action.
+            await _row_late(t, r, r["expect"])
+        else:
+            await t.row(r)
+    finally:
+        t.do = original
+
+
+async def _row_late(t: Table, r: dict, expect) -> None:
+    rec = {"name": r["name"], "spec": r["spec"], "action": list(r["action"])}
+    try:
+        if r.get("setup"):
+            await r["setup"]()
+        before = await r["state"]()
+        pos = await t.position()
+        t.clear()
+        how = await t.do(r["action"])
+        sent = [c for c in t.recorded() if t.kinds.get(c.get("command")) != "query"]
+        want = expect(before)
+        after = await r["state"]()
+        steps = [list(s) for s in await t.steps_since(pos)] if after else []
+        effect = bool(r["effect"](before, after, 0))
+        ok = sent == [{"command": want[0], "params": want[1]}] and effect
+        rec.update({"clicks": [{"input": how, "expected": {"command": want[0], "params": want[1]}, "sent": sent, "effect": effect,
+                                "steps": steps, "before": before, "after": after, "ok": ok}], "ok": ok})
+        t.run.check(ok, f"D-39 {r['name']}: the window sends exactly the command and changes the state ({r['spec']})", rec["clicks"][0])
+    except Exception as ex:  # noqa: BLE001
+        import traceback
+        rec.update({"ok": False, "error": repr(ex), "trace": traceback.format_exc()[-1500:]})
+        t.run.check(False, f"D-39 {r['name']}: ran", repr(ex))
+    rec["disabledTarget"] = r.get("disabled")
+    t.rows.append(rec)
+    t.run.save("rows.json", t.rows)
+
+
+async def jobs_row(t: Table) -> None:
+    """The status bar's jobs segment (01 §9.1): an agent's render job shows "1 job running" while it runs, nothing after."""
+    seq = t.work / "frames"
+    rec = {"name": "status bar › jobs", "spec": f"{spec_line('job.list')}; 01 §9.1 (status bar: running jobs)"}
+    try:
+        env = await e2e.run_cmd(t.s, "render.range.run", {"from": 1, "to": 240, "step": 1, "scale": 2.0, "directory": str(seq),
+                                                           "createDirs": True, "onConflict": "overwrite"})
+        jid = (env.get("result") or {}).get("jobId")
+        shown, running = [], []
+        for _ in range(100):
+            text = t.cdp.js("document.querySelector('[data-tt-id=\"status.jobs\"]')?.textContent ?? null")
+            jobs = (await e2e.run_cmd(t.s, "job.list", {})).get("result")
+            listed = jobs if isinstance(jobs, list) else (jobs or {}).get("jobs") or []
+            running.append(sum(1 for j in listed if j.get("state") == "running"))
+            shown.append(text)
+            if text and "running" in text:
+                break
+            await asyncio.sleep(0.1)
+        rec["runningPerKernel"] = running[-5:]
+        if jid:
+            await e2e.call(t.s, "job_wait", {"jobId": jid, "timeoutMs": 120000})
+        await asyncio.sleep(1.0)
+        end = t.cdp.js("document.querySelector('[data-tt-id=\"status.jobs\"]')?.textContent ?? null")
+        ok = any(x and "1 job running" in x for x in shown) and end == ""
+        rec.update({"jobId": jid, "shownWhileRunning": [x for x in shown if x][-1:] or shown[-1:], "afterEnd": end, "ok": ok})
+        t.run.check(ok, "D-39 status bar › jobs: a running job shows and goes when it ends (01 §9.1)", rec)
+    except Exception as ex:  # noqa: BLE001
+        rec.update({"ok": False, "error": repr(ex)})
+        t.run.check(False, "D-39 status bar › jobs: ran", repr(ex))
+    t.rows.append(rec)
+    t.run.save("rows.json", t.rows)
+
+
+async def session_all(app: str, run, out: Path, work: Path, only: set) -> list:
+    user = work / "user"
+    (user / "Settings").mkdir(parents=True)
+    seed = {"agent.policy.defaults": {"policy": "autonomous", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048,
+                                      "maxInlineBytes": 52428800, "askInApp": True, "letAgentMoveView": True, "highlightAgentChanges": True}}
+    (user / "Settings" / "preferences.json").write_text(json.dumps({"format": "toontown-settings", "kind": "preferences", "formatVersion": "1.0", "data": seed}), encoding="utf-8")
+    discovery = work / "discovery.json"
+    os.environ["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"] = f"--remote-debugging-port={CDP_PORT}"
+    proc = e2e.launch(app, user, discovery)
+    try:
+        d = e2e.wait_discovery(discovery, proc)
+        async with contextlib.AsyncExitStack() as stack:
+            client = await stack.enter_async_context(
+                e2e.httpx2.AsyncClient(headers={"Authorization": f"Bearer {d['token']}"}, timeout=e2e.httpx2.Timeout(60.0, read=300.0)))
+            streams = await stack.enter_async_context(e2e.streamable_http_client(d["endpoint"], http_client=client))
+            from mcp import types
+
+            async def roots(_ctx):
+                return types.ListRootsResult(roots=[types.Root(uri=work.resolve().as_uri(), name="work")])
+            s = await stack.enter_async_context(e2e.ClientSession(streams[0], streams[1], list_roots_callback=roots))
+            await s.initialize()
+            await e2e.gui_tree(s, run, lambda r: e2e.by_id(r, "startScreen") is not None, "the GUI is up")
+            t = Table(s, run, out, work)
+            await build_and_run(t, only)
+            return t.rows
+    finally:
+        e2e.stop(proc)
+
+
+def main() -> int:
+    e6.dpi_aware()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("app")
+    ap.add_argument("out")
+    ap.add_argument("--only", default="")
+    a = ap.parse_args()
+    if sys.platform != "win32":
+        print("D-39's table drives the real window through Windows input; on this platform it does not run.")
+        return 0
+    out = Path(a.out)
+    out.mkdir(parents=True, exist_ok=True)
+    run = e2e.Run(out)
+    work = Path(tempfile.mkdtemp(prefix="tt-d39-"))
+    started = time.monotonic()
+    rows: list = []
+    try:
+        rows = asyncio.run(session_all(a.app, run, out, work, {x for x in a.only.split(",") if x}))
+    except Exception as ex:  # noqa: BLE001 - reported as a failure with its text
+        import traceback
+        traceback.print_exception(ex)
+        run.check(False, "the table ran", repr(ex))
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+    manifest = {"kind": "toontown.c43b.d39-bindings", "seconds": round(time.monotonic() - started, 1), "rows": len(rows),
+                "failed": [r.get("name") for r in rows if not r.get("ok")], "failures": run.failures}
+    run.save("rows.json", rows)
+    run.save("transcript.json", run.transcript)
+    run.save("manifest.json", manifest)
+    print(json.dumps(manifest, indent=1))
+    return 1 if run.failures else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
