@@ -1,0 +1,3315 @@
+{
+  "counts": {
+    "M4 C4.4": 43,
+    "M6 C6.2": 17,
+    "M5 C5.1": 28,
+    "M6 C6.1": 1,
+    "M5 C5.2": 23,
+    "M7 C7.1": 6,
+    "M8 C8.3": 5,
+    "M10 C10.2": 2,
+    "M9 C9.1": 2,
+    "M10 C10.1": 2
+  },
+  "entries": [
+    {
+      "command": "agent.activity.export",
+      "owner": "M4 C4.4",
+      "section": "11 §6.4; 01 §12",
+      "location": "the agent activity panel",
+      "references": [
+        {
+          "file": "spec\\11_agent_interface_mcp.md",
+          "section": "6.4",
+          "headings": [
+            [
+              232,
+              "### 6.4 User control and coexistence (attached mode)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\01_application_shell.md",
+          "section": "12",
+          "headings": [
+            [
+              978,
+              "## 12. Agent interface"
+            ],
+            [
+              980,
+              "### 12.1 Agent-specific requirements"
+            ],
+            [
+              1055,
+              "### 12.2 Command table"
+            ],
+            [
+              1175,
+              "### 12.3 Queries and events"
+            ],
+            [
+              1189,
+              "### 12.4 Result shapes"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "agent.activity.persist.set",
+      "owner": "M4 C4.4",
+      "section": "01 §7.3 (preference catalogue: agent access); 11 §6.4",
+      "location": "Preferences › Agent access",
+      "references": [
+        {
+          "file": "spec\\01_application_shell.md",
+          "section": "7.3",
+          "headings": [
+            [
+              660,
+              "### 7.3 Preference catalogue"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\11_agent_interface_mcp.md",
+          "section": "6.4",
+          "headings": [
+            [
+              232,
+              "### 6.4 User control and coexistence (attached mode)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "agent.confirmation.respond",
+      "owner": "M4 C4.4",
+      "section": "11 §6.3, §6.4",
+      "location": "the agent confirmation sheet",
+      "references": [
+        {
+          "file": "spec\\11_agent_interface_mcp.md",
+          "section": "6.3",
+          "headings": [
+            [
+              214,
+              "### 6.3 Confirmation protocol"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\11_agent_interface_mcp.md",
+          "section": "6.4",
+          "headings": [
+            [
+              232,
+              "### 6.4 User control and coexistence (attached mode)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "agent.policy.defaults.set",
+      "owner": "M4 C4.4",
+      "section": "01 §7.3 (preference catalogue: agent access); 11 §6.4",
+      "location": "Preferences › Agent access",
+      "references": [
+        {
+          "file": "spec\\01_application_shell.md",
+          "section": "7.3",
+          "headings": [
+            [
+              660,
+              "### 7.3 Preference catalogue"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\11_agent_interface_mcp.md",
+          "section": "6.4",
+          "headings": [
+            [
+              232,
+              "### 6.4 User control and coexistence (attached mode)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "agent.server.set",
+      "owner": "M4 C4.4",
+      "section": "01 §7.3 (preference catalogue: agent access); 11 §6.4",
+      "location": "Preferences › Agent access",
+      "references": [
+        {
+          "file": "spec\\01_application_shell.md",
+          "section": "7.3",
+          "headings": [
+            [
+              660,
+              "### 7.3 Preference catalogue"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\11_agent_interface_mcp.md",
+          "section": "6.4",
+          "headings": [
+            [
+              232,
+              "### 6.4 User control and coexistence (attached mode)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "agent.session.grant",
+      "owner": "M4 C4.4",
+      "section": "11 §6.4; 01 §12",
+      "location": "the agent activity panel",
+      "references": [
+        {
+          "file": "spec\\11_agent_interface_mcp.md",
+          "section": "6.4",
+          "headings": [
+            [
+              232,
+              "### 6.4 User control and coexistence (attached mode)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\01_application_shell.md",
+          "section": "12",
+          "headings": [
+            [
+              978,
+              "## 12. Agent interface"
+            ],
+            [
+              980,
+              "### 12.1 Agent-specific requirements"
+            ],
+            [
+              1055,
+              "### 12.2 Command table"
+            ],
+            [
+              1175,
+              "### 12.3 Queries and events"
+            ],
+            [
+              1189,
+              "### 12.4 Result shapes"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "agent.typedTools.set",
+      "owner": "M4 C4.4",
+      "section": "01 §7.3 (preference catalogue: agent access); 11 §6.4",
+      "location": "Preferences › Agent access",
+      "references": [
+        {
+          "file": "spec\\01_application_shell.md",
+          "section": "7.3",
+          "headings": [
+            [
+              660,
+              "### 7.3 Preference catalogue"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\11_agent_interface_mcp.md",
+          "section": "6.4",
+          "headings": [
+            [
+              232,
+              "### 6.4 User control and coexistence (attached mode)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.camera.create",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Scene views, Element menu: Add Camera",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.camera.current.get",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Scene views: camera list",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.camera.current.set",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Scene views: camera list",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.camera.list",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Scene views: camera list",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.function.curveType.set",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: curve type selector",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.function.key.add",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: add key",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.function.key.duplicate",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: drag a key with the duplicate modifier",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.function.key.remove",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: delete key",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.function.key.set",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: values panel, handles, lock in time",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.function.list",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: channel picker",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.function.preset.apply",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: Reshape",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.key.add",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Animation menu, Timeline: Add Keyframe",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.key.move",
+      "owner": "M5 C5.1",
+      "section": "05 §19.3 (Command table)",
+      "location": "Timeline: drag keyframes; function editor: timing modifier",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.key.remove",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Animation menu, Timeline: Remove Keyframe, Remove All Keyframes",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.loop.set",
+      "owner": "M5 C5.1",
+      "section": "05 §19.3 (Command table)",
+      "location": "Timeline: loop controls (M5); Properties panel",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.path.lockDepth.set",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Motion point properties, Animation menu: Toggle Constant Z",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.path.point.add",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Motion tool, motion point properties: add point",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.path.sample",
+      "owner": "M6 C6.1",
+      "section": "05 §19.3 (Command table)",
+      "location": "Scene views: frame markers, ghosts and pivot paths",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.segment.set",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Animation menu, Timeline: Set Constant / Non-Constant Segment",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "anim.segment.uniform.apply",
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Animation menu: Uniform Left / Uniform Right",
+      "references": [
+        {
+          "file": "spec\\05_scene_planning.md",
+          "section": "19.3",
+          "headings": [
+            [
+              1213,
+              "### 19.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "app.currentElement.set",
+      "owner": "M5 C5.1",
+      "section": "04 §2 (Timeline: the current element)",
+      "location": "Timeline and Exposure Sheet",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "2",
+          "headings": [
+            [
+              94,
+              "## 2. Element types"
+            ],
+            [
+              96,
+              "### 2.1 Summary"
+            ],
+            [
+              127,
+              "### 2.2 Drawing element (vector)"
+            ],
+            [
+              138,
+              "### 2.3 Image element (bitmap)"
+            ],
+            [
+              151,
+              "### 2.4 Sound element"
+            ],
+            [
+              157,
+              "### 2.5 Media element (linked files)"
+            ],
+            [
+              171,
+              "### 2.6 Annotation element"
+            ],
+            [
+              183,
+              "### 2.7 Peg"
+            ],
+            [
+              192,
+              "### 2.8 Camera"
+            ],
+            [
+              197,
+              "### 2.9 Effect elements and effect-parameter rows"
+            ],
+            [
+              212,
+              "### 2.10 Skeleton effect and bones"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.blank.add",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Insert Blank Cell",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.blank.remove",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Delete Blank Cell",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.clipboard.apply",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Edit > Paste / Paste Special with cells selected",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.clipboard.set",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Edit > Cut / Copy with cells selected in the Exposure Sheet or Timeline",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.columnate.apply",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Columnate dialog",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.cycle.create",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Create Cycle",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.drawing.duplicate",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Duplicate Drawing",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.exposure.add",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Add Exposure",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.exposure.remove",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Remove Exposure",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.exposure.set",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Set Exposure to 1/2/3/N",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.fill.apply",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Extend Exposure",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.label.set",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet: type in a cell; Cells panel: drawing name field and slider",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.note.set",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet cell context: Set Cell Note",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.range.add",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Insert Cells",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.range.delete",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Edit > Delete with cells selected in the Exposure Sheet or Timeline",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.range.move",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline: drag selected cells",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "cell.select",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline: click and drag over cells",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "colour.fillMapping.get",
+      "owner": "M7 C7.1",
+      "section": "03 §6.6, §8.7 (texture properties, the edit texture tool)",
+      "location": "the Edit Texture tool",
+      "references": [
+        {
+          "file": "spec\\03_colour.md",
+          "section": "6.6",
+          "headings": [
+            [
+              510,
+              "### 6.6 Texture properties"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\03_colour.md",
+          "section": "8.7",
+          "headings": [
+            [
+              659,
+              "### 8.7 Edit Texture (fill mapping)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "colour.fillMapping.set",
+      "owner": "M7 C7.1",
+      "section": "03 §6.6, §8.7 (texture properties, the edit texture tool)",
+      "location": "the Edit Texture tool",
+      "references": [
+        {
+          "file": "spec\\03_colour.md",
+          "section": "6.6",
+          "headings": [
+            [
+              510,
+              "### 6.6 Texture properties"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\03_colour.md",
+          "section": "8.7",
+          "headings": [
+            [
+              659,
+              "### 8.7 Edit Texture (fill mapping)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "colour.gapClosing.set",
+      "owner": "M4 C4.4",
+      "section": "02 §7.3.5 (Close Gap; the paint tools' gap closing option)",
+      "location": "the paint tools' options",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.3.5",
+          "headings": [
+            [
+              593,
+              "#### 7.3.5 Close Gap"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "colour.missing.list",
+      "owner": "M7 C7.1",
+      "section": "03 §16.3 (Command table)",
+      "location": "Colour palette view: missing colours",
+      "references": [
+        {
+          "file": "spec\\03_colour.md",
+          "section": "16.3",
+          "headings": [
+            [
+              1018,
+              "### 16.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "colour.recolour.apply",
+      "owner": "M7 C7.1",
+      "section": "03 §16.3 (Command table)",
+      "location": "Colour view: swatch context menu > Replace uses of this colour with...",
+      "references": [
+        {
+          "file": "spec\\03_colour.md",
+          "section": "16.3",
+          "headings": [
+            [
+              1018,
+              "### 16.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "colour.recovery.run",
+      "owner": "M7 C7.1",
+      "section": "03 §16.3 (Command table)",
+      "location": "Colour palette view: Recover Colours",
+      "references": [
+        {
+          "file": "spec\\03_colour.md",
+          "section": "16.3",
+          "headings": [
+            [
+              1018,
+              "### 16.3 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "colour.selection.apply",
+      "owner": "M7 C7.1",
+      "section": "03 §2.4 (the colour view: applying a swatch)",
+      "location": "the Colour view",
+      "references": [
+        {
+          "file": "spec\\03_colour.md",
+          "section": "2.4",
+          "headings": [
+            [
+              214,
+              "### 2.4 Current colour semantics"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "doc.asset.embed",
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media › Embed",
+      "references": [
+        {
+          "file": "spec\\10_data_model_project_format.md",
+          "section": "10.2",
+          "headings": [
+            [
+              1121,
+              "### 10.2 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "doc.asset.export",
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media › Export",
+      "references": [
+        {
+          "file": "spec\\10_data_model_project_format.md",
+          "section": "10.2",
+          "headings": [
+            [
+              1121,
+              "### 10.2 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "doc.asset.list",
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media",
+      "references": [
+        {
+          "file": "spec\\10_data_model_project_format.md",
+          "section": "10.2",
+          "headings": [
+            [
+              1121,
+              "### 10.2 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "doc.asset.relink",
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media › Relink",
+      "references": [
+        {
+          "file": "spec\\10_data_model_project_format.md",
+          "section": "10.2",
+          "headings": [
+            [
+              1121,
+              "### 10.2 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "doc.asset.remove",
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media › Remove",
+      "references": [
+        {
+          "file": "spec\\10_data_model_project_format.md",
+          "section": "10.2",
+          "headings": [
+            [
+              1121,
+              "### 10.2 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "doc.loadReport.get",
+      "owner": "M4 C4.4",
+      "section": "10 §7.3 (the load report, shown once as a summary)",
+      "location": "the load report window",
+      "references": [
+        {
+          "file": "spec\\10_data_model_project_format.md",
+          "section": "7.3",
+          "headings": [
+            [
+              965,
+              "### 7.3 Load report"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.drawing.rename",
+      "owner": "M4 C4.4",
+      "section": "02 §9 (Drawing inspector: drawing name)",
+      "location": "the Properties view drawing tab",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "9",
+          "headings": [
+            [
+              858,
+              "## 9. Drawing inspector"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.drawing.render",
+      "owner": "M4 C4.4",
+      "section": "02 §9 (Drawing inspector: thumbnail)",
+      "location": "the Properties view drawing tab",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "9",
+          "headings": [
+            [
+              858,
+              "## 9. Drawing inspector"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.envelope.apply",
+      "owner": "M4 C4.4",
+      "section": "02 §7.1.3 (Perspective)",
+      "location": "the Perspective tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.1.3",
+          "headings": [
+            [
+              465,
+              "#### 7.1.3 Perspective"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.inspectorPreview.set",
+      "owner": "M4 C4.4",
+      "section": "02 §9 (Drawing inspector: show preview)",
+      "location": "the Properties view drawing tab",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "9",
+          "headings": [
+            [
+              858,
+              "## 9. Drawing inspector"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.point.add",
+      "owner": "M4 C4.4",
+      "section": "02 §7.1.2 (Contour Editor)",
+      "location": "the Contour Editor tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.1.2",
+          "headings": [
+            [
+              443,
+              "#### 7.1.2 Contour Editor"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.point.delete",
+      "owner": "M4 C4.4",
+      "section": "02 §7.1.2 (Contour Editor)",
+      "location": "the Contour Editor tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.1.2",
+          "headings": [
+            [
+              443,
+              "#### 7.1.2 Contour Editor"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.point.move",
+      "owner": "M4 C4.4",
+      "section": "02 §7.1.2 (Contour Editor)",
+      "location": "the Contour Editor tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.1.2",
+          "headings": [
+            [
+              443,
+              "#### 7.1.2 Contour Editor"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.point.set",
+      "owner": "M4 C4.4",
+      "section": "02 §7.1.2 (Contour Editor)",
+      "location": "the Contour Editor tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.1.2",
+          "headings": [
+            [
+              443,
+              "#### 7.1.2 Contour Editor"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.pointSelection.set",
+      "owner": "M4 C4.4",
+      "section": "02 §7.1.2 (Contour Editor)",
+      "location": "the Contour Editor tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.1.2",
+          "headings": [
+            [
+              443,
+              "#### 7.1.2 Contour Editor"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.repositionAll.apply",
+      "owner": "M4 C4.4",
+      "section": "02 §7.1.4 (Reposition All Drawings)",
+      "location": "the Reposition All Drawings tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.1.4",
+          "headings": [
+            [
+              475,
+              "#### 7.1.4 Reposition All Drawings"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.segment.move",
+      "owner": "M4 C4.4",
+      "section": "02 §7.1.2 (Contour Editor)",
+      "location": "the Contour Editor tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.1.2",
+          "headings": [
+            [
+              443,
+              "#### 7.1.2 Contour Editor"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.stroke.set",
+      "owner": "M4 C4.4",
+      "section": "02 §7.1.2 (Contour Editor); §8 (line properties)",
+      "location": "the Contour Editor tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.1.2",
+          "headings": [
+            [
+              443,
+              "#### 7.1.2 Contour Editor"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8",
+          "headings": [
+            [
+              724,
+              "## 8. Drawing commands and drawing settings"
+            ],
+            [
+              729,
+              "### 8.1 Flatten"
+            ],
+            [
+              737,
+              "### 8.2 Optimize"
+            ],
+            [
+              744,
+              "### 8.3 Smooth"
+            ],
+            [
+              750,
+              "### 8.4 Arrange"
+            ],
+            [
+              762,
+              "### 8.5 Extract Centre Line"
+            ],
+            [
+              772,
+              "### 8.6 Convert Lines to Brush"
+            ],
+            [
+              780,
+              "### 8.7 Break Text Apart"
+            ],
+            [
+              786,
+              "### 8.8 Auto Close Gap"
+            ],
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ],
+            [
+              801,
+              "### 8.10 Draw on Top Layer"
+            ],
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ],
+            [
+              812,
+              "### 8.12 Show Strokes"
+            ],
+            [
+              818,
+              "### 8.13 Transform"
+            ],
+            [
+              832,
+              "### 8.14 Group / Ungroup"
+            ],
+            [
+              837,
+              "### 8.15 Feather Edges"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.text.add",
+      "owner": "M4 C4.4",
+      "section": "02 §7.6 (Text tool)",
+      "location": "the Text tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.6",
+          "headings": [
+            [
+              664,
+              "### 7.6 Text tool"
+            ],
+            [
+              683,
+              "#### 7.6.1 Text panel"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.text.set",
+      "owner": "M4 C4.4",
+      "section": "02 §7.6 (Text tool)",
+      "location": "the Text tool",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.6",
+          "headings": [
+            [
+              664,
+              "### 7.6 Text tool"
+            ],
+            [
+              683,
+              "#### 7.6.1 Text panel"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.textFormat.set",
+      "owner": "M4 C4.4",
+      "section": "02 §7.6.1 (Text panel)",
+      "location": "the Text panel",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.6.1",
+          "headings": [
+            [
+              683,
+              "#### 7.6.1 Text panel"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.vectorize.preview",
+      "owner": "M10 C10.2",
+      "section": "09 §8.1 (import entry points: Import and Vectorize)",
+      "location": "the Import and Vectorize dialog",
+      "references": [
+        {
+          "file": "spec\\09_playback_export.md",
+          "section": "8.1",
+          "headings": [
+            [
+              568,
+              "### 8.1 Import entry points"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "draw.vectorize.run",
+      "owner": "M10 C10.2",
+      "section": "09 §8.1 (import entry points: Import and Vectorize)",
+      "location": "the Import and Vectorize dialog",
+      "references": [
+        {
+          "file": "spec\\09_playback_export.md",
+          "section": "8.1",
+          "headings": [
+            [
+              568,
+              "### 8.1 Import entry points"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.annotation.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline layer context: Set as Annotation / Set as Drawing Element",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.childExposure.apply",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline cell context on a peg: Extend Children Exposure",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.clone",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Clone",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.collapsed.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: disclosure control left of a parent row; layer context Collapse/Expand",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.colour.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Marker / Background / Default Colour",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.create",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu: New Elements / Add <type>; Timeline layer list add control; Exposure Sheet quick-add",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.current.move",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Keyboard: Previous / Next Element (in the Exposure Sheet)",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.current.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline and Exposure Sheet: click a row name or column header",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.delete",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Delete",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.drawing.create",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet: type a new name in a cell; Drawing view: draw in a blank cell",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.drawing.delete",
+      "owner": "M9 C9.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Library view of the scene: Delete Drawing (with confirmation when exposed)",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.drawing.duplicate",
+      "owner": "M9 C9.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Library view of the scene: Duplicate Drawing",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.drawing.rename",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet cell context: Rename Drawing; library view of the scene",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.drawingContent.delete",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Clear Drawing",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.drawingLock.set",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet cell context: Lock / Unlock Drawing",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.duplicate",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Duplicate",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.hierarchy.select",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, camera view and Timeline layer context: Select Parent / Children / Child / Previous / Next Sibling",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.lock.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, camera view context: Lock / Unlock / Lock All Others / Lock All / Unlock All",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.mediaLength.set",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet media cell context: Reset Media",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.note.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Set Element Note",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.order.move",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, camera view context, Exposure Sheet column header: Arrange",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.order.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: drag rows between rows; Exposure Sheet: drag column headers; element list panel drag",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.parent.remove",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline layer context: Detach from Parent",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.parent.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: drop rows onto a peg/effect row; layer context: Attach to Next Object",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.parentPeg.create",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu and Timeline quick-add: Add Parent Peg",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.properties.set",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Properties view: Element panel, Type and Deformable",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.rename",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: double-click a layer name; Exposure Sheet: double-click a column header; Element menu: Rename",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.select",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: click row names (with extend/toggle modifiers); Exposure Sheet: click a column header",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.solo.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline toolbar: Solo Mode toggle",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.timing.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: drag a bar, its ends or its loop handle; layer context: Change Start Frame / Duration / Loops",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.typeColour.set",
+      "owner": "M5 C5.1",
+      "section": "04 §5.1 (default colour per type category, a preference)",
+      "location": "Preferences: Timeline category colours",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "5.1",
+          "headings": [
+            [
+              298,
+              "### 5.1 Default colour per type category (preference)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "element.visibility.set",
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline layer list visibility control and context; Exposure Sheet column header: Hide / Show All / Hide All Others",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "render.frame.run",
+      "owner": "M10 C10.1",
+      "section": "09 §11.2 (Command table)",
+      "location": "File > Export render actions (09); Export Snapshot",
+      "references": [
+        {
+          "file": "spec\\09_playback_export.md",
+          "section": "11.2",
+          "headings": [
+            [
+              991,
+              "### 11.2 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "render.range.run",
+      "owner": "M10 C10.1",
+      "section": "09 §11.2 (Command table)",
+      "location": "File > Export > Image Sequence",
+      "references": [
+        {
+          "file": "spec\\09_playback_export.md",
+          "section": "11.2",
+          "headings": [
+            [
+              991,
+              "### 11.2 Command table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.brush.options.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.drawTopLayer.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.eraser.options.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.options.get",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.options.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.pen.create",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.pen.delete",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.pen.rename",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.pen.select",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.pen.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.pencil.options.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.placeBehind.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.polyline.options.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.select.options.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.settings.get",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.snapToContour.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.tablet.set",
+      "owner": "M4 C4.4",
+      "section": "01 §7.3 (preference catalogue: tablet); 02 §6",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\01_application_shell.md",
+          "section": "7.3",
+          "headings": [
+            [
+              660,
+              "### 7.3 Preference catalogue"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tool.text.options.set",
+      "owner": "M4 C4.4",
+      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
+      "location": "the tool options and pens bar",
+      "references": [
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "6",
+          "headings": [
+            [
+              352,
+              "## 6. Pens, symmetry and tablet input"
+            ],
+            [
+              354,
+              "### 6.1 Pens"
+            ],
+            [
+              386,
+              "### 6.2 Symmetry and Draw Behind (advanced pen-panel options)"
+            ],
+            [
+              400,
+              "### 6.3 Tablet input settings (preferences)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "7.7",
+          "headings": [
+            [
+              701,
+              "### 7.7 Tool option defaults (summary)"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.9",
+          "headings": [
+            [
+              796,
+              "### 8.9 Snap to Contour"
+            ]
+          ]
+        },
+        {
+          "file": "spec\\02_drawing.md",
+          "section": "8.11",
+          "headings": [
+            [
+              806,
+              "### 8.11 Draw Behind"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "window.toolbar.items.set",
+      "owner": "M4 C4.4",
+      "section": "01 §5.7 (toolbar customisation)",
+      "location": "the toolbar customisation sheet",
+      "references": [
+        {
+          "file": "spec\\01_application_shell.md",
+          "section": "5.7",
+          "headings": [
+            [
+              445,
+              "### 5.7 Toolbars and customisation"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "command": "xsheet.exposures.set",
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet: type labels into cells (M5 C5.2); agents write whole windows atomically",
+      "references": [
+        {
+          "file": "spec\\04_timeline_xsheet.md",
+          "section": "17.4",
+          "headings": [
+            [
+              1374,
+              "### 17.4 Command table"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": []
+}
