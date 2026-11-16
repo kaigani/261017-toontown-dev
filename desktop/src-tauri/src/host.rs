@@ -886,7 +886,15 @@ mod tests {
             Ok(json!({}))
         );
         let t = tree(&h);
-        assert_eq!(t["root"]["children"][0]["id"], "float-history", "one tree with the float: {t}");
+        // The window's own children, without the menu bar the kernel adds (ruling D-38).
+        let windows = |t: &Value| -> Vec<Value> {
+            t["root"]["children"].as_array().into_iter().flatten().filter(|c| c["id"] != "menuBar").cloned().collect()
+        };
+        assert_eq!(
+            windows(&t).first().map(|c| c["id"].clone()),
+            Some(json!("float-history")),
+            "one tree with the float: {t}"
+        );
         // A dialog in the float blocks like one in the main window; the main window's own null does not end it.
         let _ = h.report_from("float-history", json!({ "modal": { "kind": "dialog", "title": "Rename" } }));
         let _ = h.report_from("main", json!({ "modal": null }));
@@ -894,7 +902,7 @@ mod tests {
         // The float goes away: its facts go with it (ruling O-9); the tree loses its node.
         h.forget_window_reports("float-history");
         assert_eq!(state(&h)["modal"], Value::Null);
-        assert!(tree(&h)["root"]["children"].as_array().is_some_and(Vec::is_empty));
+        assert!(windows(&tree(&h)).is_empty());
         let _ = std::fs::remove_dir_all(dir);
     }
 

@@ -1191,6 +1191,120 @@ fn virtual_tree(cx: &Cx) -> Value {
     Value::Object(root)
 }
 
+/// The id of the window tree's menu bar node (ruling D-38).
+const MENU_BAR_ID: &str = "menuBar";
+
+/// The window's menu bar subtree (ruling D-38; 11 §7.5 line 339): every menu and item the host's native menu shows,
+/// each command item with its role, label (the live one: undo and redo name their step), enabled state and the reason
+/// when disabled, check state where the item has one, shortcut (the keymap's, global context) and the command it
+/// invokes with the parameters a click runs (the reference completed for the current state: a toggle's next state).
+/// Open Recent and the workspace list are filled as the native menu fills them. Headless there is no menu bar: the
+/// node says so.
+fn menu_bar(cx: &Cx) -> Value {
+    let sensors = &cx.ui().shell().sensors;
+    let Some(Value::Array(menus)) = sensors.menu_bar.clone() else {
+        let reason = if sensors.attached {
+            "the window's host has not reported its menus yet"
+        } else {
+            "headless: there is no menu bar (11 §3); every menu command runs through run_command"
+        };
+        return json!({
+            "role": "menuBar", "id": MENU_BAR_ID, "label": "Menu bar", "present": false, "reason": reason,
+            "children": []
+        });
+    };
+    let Ok(registry) = crate::registry() else {
+        return json!({ "role": "menuBar", "id": MENU_BAR_ID, "label": "Menu bar", "present": false, "children": [] });
+    };
+    let keys = super::keymap::current(cx);
+    let children: Vec<Value> = menus
+        .iter()
+        .map(|m| {
+            let id = m.get("id").and_then(Value::as_str).unwrap_or_default();
+            let label = m.get("label").and_then(Value::as_str).unwrap_or_default();
+            let items = m.get("items").and_then(Value::as_array).map(Vec::as_slice).unwrap_or_default();
+            json!({ "role": "menu", "id": format!("menu.{id}"), "label": label, "enabled": true,
+                    "children": menu_items(cx, registry, &keys, items, &format!("menu:{label}")) })
+        })
+        .collect();
+    json!({ "role": "menuBar", "id": MENU_BAR_ID, "label": "Menu bar", "present": true, "children": children })
+}
+
+fn menu_items(
+    cx: &Cx,
+    registry: &tt_registry::Registry,
+    keys: &[crate::keymap::Binding],
+    items: &[Value],
+    path: &str,
+) -> Vec<Value> {
+    let mut out = Vec::new();
+    for (n, item) in items.iter().enumerate() {
+        let label = item.get("label").and_then(Value::as_str).unwrap_or_default();
+        match item.get("kind").and_then(Value::as_str).unwrap_or_default() {
+            "separator" => out.push(json!({ "role": "separator", "id": format!("{path}/-{n}") })),
+            "predefined" => {
+                let what = item.get("item").and_then(Value::as_str).unwrap_or_default();
+                out.push(json!({ "role": "menuitem", "id": format!("{path}/{what}"), "label": what, "enabled": true,
+                                 "predefined": what }));
+            }
+            "submenu" => {
+                let sub = item.get("items").and_then(Value::as_array).map(Vec::as_slice).unwrap_or_default();
+                let id = format!("{path}/{label}");
+                let children = menu_items(cx, registry, keys, sub, &id);
+                out.push(json!({ "role": "menu", "id": id, "label": label, "enabled": true, "children": children }));
+            }
+            "command" => {
+                let Some(command) = item.get("command").and_then(Value::as_str) else { continue };
+                let params = item.get("params").and_then(Value::as_object).cloned().unwrap_or_default();
+                let a = crate::host::availability_in(registry, cx, command, params.clone());
+                let shortcut = keys
+                    .iter()
+                    .find(|b| {
+                        b.context == crate::keymap::Context::Global
+                            && b.command_id == command
+                            && b.params.clone().unwrap_or_default() == params
+                    })
+                    .map(|b| b.keys.clone());
+                let mut node = Map::new();
+                node.insert("role".into(), json!("menuitem"));
+                node.insert("id".into(), json!(format!("{path}/{label}")));
+                node.insert("label".into(), json!(a.label.clone().unwrap_or_else(|| label.to_owned())));
+                node.insert("enabled".into(), json!(a.enabled));
+                if let Some(r) = &a.reason {
+                    node.insert("reason".into(), json!(r));
+                }
+                if item.get("check").is_some_and(|c| !c.is_null()) {
+                    node.insert("checked".into(), json!(a.checked.unwrap_or(false)));
+                }
+                node.insert("shortcut".into(), json!(shortcut));
+                node.insert("commandId".into(), json!(command));
+                node.insert("command".into(), json!({ "commandId": command, "params": a.params }));
+                if a.dialog {
+                    node.insert("dialog".into(), json!(true));
+                }
+                out.push(Value::Object(node));
+            }
+            "recent" => {
+                for r in &cx.session().env.settings.recent {
+                    out.push(json!({ "role": "menuitem", "id": format!("{path}/recent:{}", r.path), "label": r.name,
+                                     "enabled": true, "commandId": "project.open",
+                                     "command": { "commandId": "project.open", "params": { "path": r.path } } }));
+                }
+            }
+            "workspaces" => {
+                for w in cx.ui().workspaces() {
+                    out.push(json!({ "role": "menuitem", "id": format!("{path}/workspace:{}", w.name),
+                                     "label": w.name, "enabled": true, "checked": w.current,
+                                     "commandId": "workspace.select",
+                                     "command": { "commandId": "workspace.select", "params": { "name": w.name } } }));
+                }
+            }
+            _ => {}
+        }
+    }
+    out
+}
+
 fn find<'a>(n: &'a Value, id: &str) -> Option<&'a Value> {
     if n.get("id").and_then(Value::as_str) == Some(id) {
         return Some(n);
@@ -1252,10 +1366,18 @@ pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<UiTreeResu
     // `renderedSeq`: the engine event the accepted GUI tree reflects (C41-R2-07, SI-121); `null` when the tree is not
     // vouched for or is the headless virtual tree.
     let sensors = &cx.ui().shell().sensors;
-    let (source, tree, seq) = match sensors.ui_tree.clone() {
+    let (source, mut tree, seq) = match sensors.ui_tree.clone() {
         Some(t) if t.is_object() => ("gui", t, sensors.ui_tree_seq),
         _ => ("virtual", virtual_tree(cx), None),
     };
+    // Ruling D-38: the window's tree always carries the menu bar, built here at each call from the menus the host
+    // built and the live availability, so it never depends on a menu being open; headless says it has none.
+    let bar = menu_bar(cx);
+    // Last among the window's children: readers that address the window's own nodes by position keep them.
+    if let Some(Value::Array(children)) = tree.get_mut("children") {
+        children.retain(|c| c.get("id").and_then(Value::as_str) != Some(MENU_BAR_ID));
+        children.push(bar);
+    }
     let target = p.target.unwrap_or_else(|| "window".to_owned());
     let mut sub = if target == "window" {
         tree

@@ -262,6 +262,37 @@ impl Manifest {
     }
 }
 
+/// The menus shown on `platform` in the manifest's own JSON form, items not shown on it removed at every level (ruling
+/// D-38): what the host reports to the kernel, which builds the window tree's menu bar from it and the live
+/// availability.
+#[must_use]
+pub fn menu_bar_json(platform: Platform) -> Value {
+    fn shown(v: &Value, platform: &str) -> bool {
+        v.get("platforms").and_then(Value::as_array).is_none_or(|p| p.iter().any(|x| x.as_str() == Some(platform)))
+    }
+    fn filter(items: &[Value], platform: &str) -> Vec<Value> {
+        items
+            .iter()
+            .filter(|i| shown(i, platform))
+            .map(|i| {
+                let mut i = i.clone();
+                if let Some(sub) = i.get("items").and_then(Value::as_array).cloned() {
+                    i["items"] = Value::Array(filter(&sub, platform));
+                }
+                i
+            })
+            .collect()
+    }
+    let name = match platform {
+        Platform::Windows => "windows",
+        Platform::Macos => "macos",
+        Platform::Linux => "linux",
+    };
+    let raw: Value = serde_json::from_str(MENU_MANIFEST_JSON).unwrap_or(Value::Null);
+    let menus = raw.get("menus").and_then(Value::as_array).map(Vec::as_slice).unwrap_or_default();
+    Value::Array(filter(menus, name))
+}
+
 /// `namespace.object[.verb]`: two or more lower-camelCase segments.
 #[must_use]
 pub fn is_command_id(id: &str) -> bool {
@@ -276,6 +307,34 @@ pub fn is_command_id(id: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_reported_menu_bar_is_the_platform_s_menus() {
+        // D-38: the menus each platform shows, nested items filtered too; every command item keeps its reference.
+        let m = Manifest::embedded().unwrap();
+        for platform in [Platform::Windows, Platform::Macos] {
+            let bar = menu_bar_json(platform);
+            let ids: Vec<&str> = bar.as_array().unwrap().iter().map(|x| x["id"].as_str().unwrap()).collect();
+            let want: Vec<&str> = m.menus.iter().filter(|x| x.on(platform)).map(|x| x.id.as_str()).collect();
+            assert_eq!(ids, want, "{platform:?}");
+            fn commands(items: &[Value], out: &mut Vec<String>) {
+                for i in items {
+                    if i["kind"] == "command" {
+                        out.push(i["command"].as_str().unwrap().to_owned());
+                    }
+                    if let Some(sub) = i["items"].as_array() {
+                        commands(sub, out);
+                    }
+                }
+            }
+            let mut got = Vec::new();
+            for menu in bar.as_array().unwrap() {
+                commands(menu["items"].as_array().unwrap(), &mut got);
+            }
+            let want: Vec<String> = m.commands(platform).iter().map(|c| c.command.clone()).collect();
+            assert_eq!(got, want, "{platform:?}");
+        }
+    }
 
     #[test]
     fn embedded_manifest_is_valid() {

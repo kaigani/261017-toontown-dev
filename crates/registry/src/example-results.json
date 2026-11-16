@@ -9291,6 +9291,14 @@
               "id": "dialogs",
               "label": "Dialogs",
               "children": []
+            },
+            {
+              "role": "menuBar",
+              "id": "menuBar",
+              "label": "Menu bar",
+              "present": false,
+              "reason": "headless: there is no menu bar (11 §3); every menu command runs through run_command",
+              "children": []
             }
           ]
         },

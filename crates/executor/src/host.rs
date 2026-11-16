@@ -258,6 +258,11 @@ pub struct ShellReport {
     /// (round 3, C41-R3-04).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ui_tree_cleared: Option<bool>,
+    /// The native menu bar as the host built it (ruling D-38): the menu manifest's menus shown on this platform, in
+    /// order, each `{id, label, items}` in the manifest's item format. Reported when the host builds the menu;
+    /// `inspect_ui` builds the window's menu bar subtree from it and the live availability at each call.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub menu_bar: Option<Value>,
 }
 
 /// What a key sequence runs (01 §8.4).
@@ -346,6 +351,15 @@ fn toggle_fill(
             let entry = ui.panels().into_iter().find(|p| p.panel_id == id);
             ("visible", !entry.is_some_and(|p| p.visible && (p.current || p.floating)))
         }
+        // The main toolbar's drawing-aid toggles (01 §5.7; 02 §10): their references leave the state open, the next
+        // one is completed here (C43B-R1-08: the Grid button sent `{}`, which changed nothing).
+        "drawAid.grid.set" if !params.contains_key("type") && !params.contains_key("overlay") => {
+            ("visible", !ui.drawing().aids.grid.visible)
+        }
+        "drawAid.onionSkin.set" if !params.contains_key("previous") && !params.contains_key("next") => {
+            ("enabled", !ui.drawing().aids.onion_skin.enabled)
+        }
+        "drawAid.autoLightTable.set" => ("enabled", !ui.drawing().aids.auto_light_table),
         "window.toolbar.set" => {
             let id = params.get("toolbarId").and_then(Value::as_str)?;
             let l = ui.layout();
@@ -516,10 +530,7 @@ pub(crate) fn availability_in(
     params: Map<String, Value>,
 ) -> Availability {
     let s = cx.session();
-    let checked = registry
-        .get(command_id)
-        .filter(|e| e.spec.kind == Kind::Toggle)
-        .and_then(|_| checked_of(s, command_id, &params));
+    let checked = registry.get(command_id).and_then(|_| checked_of(s, command_id, &params));
     let (params, _, dialog) = complete(registry, s, command_id, params);
     // The static checks first; a complete reference that passes them is then asked of its handler (C41-R3-03). A
     // reference with required parameters missing is completed by a dialog (01 §0): its refusals depend on what the
@@ -550,8 +561,8 @@ fn complete(
     mut params: Map<String, Value>,
 ) -> (Value, bool, bool) {
     let entry = registry.get(command_id);
-    if entry.is_some_and(|e| e.spec.kind == Kind::Toggle)
-        && let Some((name, next)) = toggle_fill(s, command_id, &params)
+    // A toggle, or a setter whose reference is used as one (the toolbar's drawing aids): `toggle_fill` names them.
+    if let Some((name, next)) = toggle_fill(s, command_id, &params)
         && !params.contains_key(name)
     {
         params.insert(name.to_owned(), json!(next));
@@ -665,6 +676,9 @@ impl ExecutorHandle {
             }
             if let Some(a) = report.attached {
                 sh.sensors.attached = a;
+            }
+            if let Some(m) = report.menu_bar.filter(Value::is_array) {
+                sh.sensors.menu_bar = Some(m);
             }
             if let Some(sizes) = report.view_sizes {
                 for (id, size) in sizes {

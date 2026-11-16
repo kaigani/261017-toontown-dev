@@ -240,9 +240,16 @@ fn native_label(keys: &str) -> String {
     keys.replace("CmdOrCtrl", "Ctrl")
 }
 
-/// Re-reads the facts and updates every item on the main thread.
+/// Re-reads the facts and updates every item on the main thread. The menus are reported to the executor each time
+/// (ruling D-38: the window tree's menu bar is built from them and the live availability), so an executor that a
+/// restart replaced has them too.
 pub fn refresh(app: &AppHandle) {
     let host = app.state::<Host>();
+    if let Ok(report) =
+        serde_json::from_value(json!({ "menuBar": crate::bindings::menu_bar_json(Platform::current()) }))
+    {
+        host.exec().report_shell(report);
+    }
     let f = facts(app, &host);
     let app2 = app.clone();
     let _ = app.run_on_main_thread(move || apply(&app2, &f));

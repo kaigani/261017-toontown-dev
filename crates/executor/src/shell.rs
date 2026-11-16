@@ -221,6 +221,8 @@ pub struct Sensors {
     pub ui_tree: Option<serde_json::Value>,
     /// The engine event number that tree reflects (`None`: not vouched for).
     pub ui_tree_seq: Option<u64>,
+    /// The native menu bar's menus as the host built them (ruling D-38; `None` headless: there is no menu bar).
+    pub menu_bar: Option<serde_json::Value>,
 }
 
 /// Everything in this module, part of [`crate::ui::UiState`] so that rollback and savepoints carry it.
