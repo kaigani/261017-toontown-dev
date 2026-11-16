@@ -199,10 +199,13 @@ struct Facts {
     menus: Vec<Value>,
 }
 
+/// A command item of the built menu: its native id, command id and fixed parameters.
+type NativeItem = (String, String, serde_json::Map<String, Value>);
+
 fn facts(app: &AppHandle, host: &Host) -> Facts {
     let q = |cmd: &str, params: Value| host.run(cmd, params, false, None).result.unwrap_or(Value::Null);
     let arr = |v: Value| v.as_array().cloned().unwrap_or_default();
-    let (items, manifest): (Vec<(String, String, serde_json::Map<String, Value>)>, Option<Manifest>) = app
+    let (items, manifest): (Vec<NativeItem>, Option<Manifest>) = app
         .try_state::<MenuSlot>()
         .map(|slot| {
             let st = slot.0.lock().unwrap_or_else(PoisonError::into_inner);
