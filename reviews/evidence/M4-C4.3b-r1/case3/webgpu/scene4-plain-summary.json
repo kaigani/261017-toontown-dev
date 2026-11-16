@@ -1,0 +1,45 @@
+{
+  "backend": "webgpu",
+  "generation": 0,
+  "drawings": [
+    {
+      "id": "dr_01K7JJN800M63137GNF6SDMBWY",
+      "rev": 117,
+      "bucket": 1
+    },
+    {
+      "id": "dr_01K7JJN800MQ7CGTRY0E3TR070",
+      "rev": 122,
+      "bucket": 1
+    },
+    {
+      "id": "dr_01K7JJN800BNKM1SV333QF7DFJ",
+      "rev": 126,
+      "bucket": 8
+    }
+  ],
+  "failures": [
+    "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}",
+    "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}",
+    "load dr_01K7JJN800C01XEGBB14SD5JP2: {\"code\":\"ref.notFound\",\"message\":\"drawing `dr_01K7JJN800C01XEGBB14SD5JP2` was not found\",\"details\":{\"ref\":\"dr_01K7JJN800C01XEGBB14SD5JP2\"}}"
+  ],
+  "gesture": null,
+  "selection": {
+    "objects": 0,
+    "handles": 0,
+    "points": 0,
+    "pivot": false
+  },
+  "viewType": "camera",
+  "camera": {
+    "frame": true,
+    "pivots": 0,
+    "boxes": 0,
+    "otherCameras": 0,
+    "handles": 0
+  },
+  "drawn": 3,
+  "residentDrawings": 3,
+  "residentBytes": 20087300,
+  "lastError": null
+}

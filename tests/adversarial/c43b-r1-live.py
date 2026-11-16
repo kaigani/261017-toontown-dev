@@ -1,6 +1,6 @@
 """Independent C4.3b review probes. Usage: probe APP case1-vite."""
 import sys
-if len(sys.argv) < 2:
+if len(sys.argv) < 3:
     print("skipped: no application")
     sys.exit(0)
 import json
@@ -125,6 +125,9 @@ async def scenes(session, run, out):
                 await command('view.pan.set', {'viewId':'cameraView','by':{'x':35,'y':-23}})
                 await command('window.geometry.set', {'maximized':False,'width':1280,'height':900})
             d=await m.compare_camera(session,run,out,f'scene{scene}-{variant}',f'independent scene {scene} {variant}')
+            summary=await m.canvas_summary(session)
+            run.save(f'scene{scene}-{variant}-summary.json',summary)
+            run.check(summary.get('backend')==m.REQUESTED['backend'] and not summary.get('fallback'),'requested actual backend',summary.get('backend'))
             results.append({'scene':scene,'variant':variant,**d})
             run.save('figures.json',results)
 
@@ -153,6 +156,8 @@ def case3():
     sys.exit(int(any(codes)))
 
 def case4():
+    if len(sys.argv)<4:
+        print('skipped: no application'); return
     import inspect
     m=load('review_equiv','scripts/c43-gesture-equivalence.py')
     body=inspect.getsource(m.main)
@@ -205,6 +210,9 @@ def case4():
     return results''')
     m.review_expect=review_expect
     m.canonical=canonical
+    body=body.replace("        before_content=[", "        before_bundle=[canonical((await e.result('doc.export.json',{'scope':'project','binaries':'omit'})).get('bundle')) for e in engines]\n        before_content=[")
+    body=body.replace("        labels = [await e.labels_since", "        bundles=[canonical((await e.result('doc.export.json',{'scope':'project','binaries':'omit'})).get('bundle')) for e in engines]\n        row['wholeDocumentSame']=bundles[0]==bundles[1]==bundles[2]\n        run.check(row['wholeDocumentSame'], 'whole document three-way '+name, None)\n        labels = [await e.labels_since")
+    body=body.replace("        row['undoRestored']=", "        restored_bundle=[canonical((await e.result('doc.export.json',{'scope':'project','binaries':'omit'})).get('bundle')) for e in engines]\n        run.check(restored_bundle==before_bundle,'whole document undo '+name,None)\n        row['undoRestored']=")
     exec(compile(body,__file__,'exec'),m.__dict__)
     app=str(Path(sys.argv[1]).resolve()); head=str(Path(sys.argv[3]).resolve())
     sys.argv=['equiv',app,head,str(OUT/'case4')]
@@ -258,10 +266,179 @@ async def review_expect(m,row,run,u,mapping,ids,name,events,frame):
     run.check(ok,'D-23 stated command target channels label '+name,{'expected':expected,'observed':cmd,'labels':row['labels']})
 
 def canonical(value):
-    if isinstance(value,dict): return {k:canonical(v) for k,v in value.items() if k not in ('rev',)}
+    if isinstance(value,dict): return {k:canonical(v) for k,v in value.items() if k not in ('rev','exportedAt')}
     if isinstance(value,list): return [canonical(v) for v in value]
     return value
 
+def case5():
+    import inspect
+    m=load('review_preview','scripts/c43-camera-e2e.py')
+    body=inspect.getsource(m.session_run)
+    # Keep the launch/session construction and V9 OS click check, replace render comparisons.
+    a=body.index('        # 1. Captures against renders.'); b=body.index('        # 3. V9:',a)
+    body=body[:a]+body[b:]
+    body=body.replace('            await preview_rows(session, run, ids)','            await live_preview(REVIEW_MODULE, session, run, out, ids)')
+    m.REVIEW_MODULE=m; m.live_preview=live_preview
+    exec(compile(body,__file__,'exec'),m.__dict__)
+    app=str(Path(sys.argv[1]).resolve());sys.argv=['preview',app,str(OUT/'case5'),'--backend','webgl2']
+    sys.exit(m.main())
+
+async def live_preview(m,s,run,out,ids):
+    import asyncio,threading,time,ctypes
+    from ctypes import wintypes
+    rc=m.e2e.run_cmd; e6=m.e6; c=m.c42
+    async def cmd(n,p=None):
+        env=await rc(s,n,p or {})
+        run.check(env.get('status')=='ok','preview setup/read '+n,env.get('error'))
+        return env.get('result') or {}
+    async def history(): return await cmd('edit.history.get',{'limit':1000})
+    async def state(): return await cmd('doc.state.get')
+    async def capture(name,view):
+        data=c.png_of(await rc(s,'inspect.screenshot',{'target':view}))
+        if data: (out/(name+'.png')).write_bytes(data)
+        return data
+    def difference(a,b):
+        if not a or not b: return 1.0
+        w,h,ch,aa=c.png_rgba(a); W,H,C,bb=c.png_rgba(b)
+        if (w,h)!=(W,H): return 1.0
+        bad=sum(max(abs(aa[y][x*ch+k]-bb[y][x*C+k]) for k in range(3))>32 for y in range(h) for x in range(w))
+        return bad/(w*h)
+    for view in ('cameraView','drawingView'):
+        current=ids['Bob']
+        if view=='drawingView':
+            el=await cmd('element.create',{'type':'drawing','name':'UnpaintedPreview'})
+            current=el['elementIds'][0]
+            await cmd('element.drawing.create',{'elementId':current,'name':'unpainted','exposeFrom':1,'exposeTo':24})
+            await cmd('app.context.set',{'elementId':current,'frame':1})
+            await cmd('draw.rectangle.add',{'from':{'x':-120,'y':-90},'to':{'x':120,'y':90}})
+        await cmd('workspace.select',{'name':'Default' if view=='cameraView' else 'Drawing'})
+        await cmd('view.active.set',{'viewId':view})
+        await cmd('app.context.set',{'elementId':current,'frame':1})
+        await cmd('view.zoom.set',{'viewId':view,'zoom':.6})
+        if view=='cameraView':
+            await cmd('anim.tool.set',{'tool':'select'})
+            await cmd('edit.selection.set',{'context':'staging','ids':[ids['Bob']]})
+        else:
+            await cmd('tool.active.set',{'toolId':'select'})
+            await cmd('draw.selection.set',{'by':'all'})
+        await asyncio.sleep(1)
+        for ending in ('commit','escape'):
+            place=await e6.locate_view(s,rc,view); b=await m.box_of(s,view)
+            run.check(bool(place and b),'located '+view,place)
+            if not place or not b: continue
+            x,y=(b[0]+b[2])/2+18,(b[1]+b[3])/2+12
+            pts=[(place[0]+x,place[1]+y),(place[0]+x+32,place[1]+y+17)]
+            before=await state(); h0=await history(); pos=h0['position']
+            base=await capture(view+'-'+ending+'-before',view)
+            times={}; th=threading.Thread(target=e6.os_drag,args=(m.e2e.APP_PID['pid'],pts,.15,2.2,times));th.start()
+            await asyncio.sleep(1)
+            held=await state(); hh=await history(); summary=await m.canvas_summary(s,view)
+            mid=await capture(view+'-'+ending+'-held',view)
+            run.check(held==before and hh==h0,'05:400 PV1 held revision and history unchanged '+view+' '+ending,{'before':before,'held':held})
+            run.check(bool(summary.get('preview')),'preview visible '+view+' '+ending,summary.get('preview'))
+            if ending=='escape': c.os_key(0x1B)
+            await asyncio.to_thread(th.join); await asyncio.sleep(.8)
+            after=await capture(view+'-'+ending+'-after',view); ha=await history()
+            if ending=='commit':
+                frac=difference(mid,after)
+                run.check(frac<.01,'SI-154 exact-class capture agrees '+view,{'fraction':frac,'RGBThreshold':32,'bound':.01})
+                run.check(ha['position']==pos+1,'one commit step '+view,ha['position']-pos)
+                await cmd('edit.undo')
+            else:
+                run.check((await state())==before and ha==h0,'Escape document unchanged '+view,None)
+                run.check(not (await m.canvas_summary(s,view)).get('preview') and difference(base,after)<.001,'Escape clears preview next capture '+view,{'fraction':difference(base,after)})
+    # A relative skew crossing 89 degrees must be refused (05:1236).
+    await cmd('workspace.select',{'name':'Default'})
+    await cmd('view.active.set',{'viewId':'cameraView'})
+    await cmd('app.context.set',{'elementId':ids['Bob'],'frame':1})
+    await cmd('anim.transform.set',{'nodeIds':[ids['Bob']],'target':'key','frame':1,'skew':88})
+    await cmd('view.zoom.set',{'viewId':'cameraView','zoom':.1})
+    await cmd('anim.tool.set',{'tool':'transform'})
+    await cmd('edit.selection.set',{'context':'staging','ids':[ids['Bob']]})
+    await asyncio.sleep(1)
+    place=await e6.locate_view(s,rc,'cameraView'); b=await m.box_of(s,'cameraView')
+    if place and b:
+        x,y=(b[0]+b[2])/2,b[1]-12
+        h=await history(); times={}
+        await asyncio.to_thread(e6.os_drag,m.e2e.APP_PID['pid'],[(place[0]+x,place[1]+y),(place[0]+x+32,place[1]+y+17)],.15,.1,times)
+        await asyncio.sleep(1)
+        rec=(await m.canvas_summary(s)).get('lastGesture')
+        run.save('refused.json',rec)
+        await capture('refused-after','cameraView')
+        run.check((await history())['position']==h['position'] and rec and rec.get('status')!='ok' and not (await m.canvas_summary(s)).get('preview'),'refused commit leaves no preview',rec)
+    else: run.check(False,'refusal fixture located',{'place':place,'box':b})
+    await cmd('app.context.set',{'elementId':ids['Bob'],'frame':1})
+    await cmd('anim.tool.set',{'tool':'select'})
+    await cmd('edit.undo')
+    await cmd('view.zoom.set',{'viewId':'cameraView','zoom':.6})
+    await asyncio.sleep(.5)
+    await rapid_drags(m,s,run,out,ids)
+
+async def rapid_drags(m,s,run,out,ids):
+    import asyncio,ctypes,threading,time
+    from ctypes import wintypes
+    rc=m.e2e.run_cmd; e6=m.e6; u=ctypes.windll.user32
+    async def cmd(n,p=None): return (await rc(s,n,p or {})).get('result') or {}
+    results=[]
+    for i in range(20):
+        await cmd('edit.selection.set',{'context':'staging','ids':[ids['Bob']]})
+        b=await m.box_of(s,'cameraView'); place=await e6.locate_view(s,rc,'cameraView')
+        if not b or not place:
+            run.check(False,'rapid fixture located '+str(i),None); continue
+        h0=await cmd('edit.history.get',{'limit':1000}); before=(await cmd('doc.object.get',{'ref':ids['Bob']})).get('object')
+        h=e6._main_window(m.e2e.APP_PID['pid']);u.SetForegroundWindow(h)
+        origin=wintypes.POINT(0,0);u.ClientToScreen(h,ctypes.byref(origin))
+        x=int(origin.x+place[0]+(b[0]+b[2])/2+18); y=int(origin.y+place[1]+(b[1]+b[3])/2+12)
+        times={}
+        def pair():
+            u.SetCursorPos(x,y);time.sleep(.05);e6._send_button(True);time.sleep(.04);u.SetCursorPos(x+14,y+8);time.sleep(.04)
+            e6._send_button(False);times['release1']=time.monotonic()
+            e6._send_button(True);times['press2']=time.monotonic()
+            time.sleep(.04);u.SetCursorPos(x+29,y+17)
+            time.sleep(.65);u.SetCursorPos(x+34,y+20)
+            time.sleep(.1);u.SetCursorPos(x+29,y+17)
+            time.sleep(.8);e6._send_button(False)
+        th=threading.Thread(target=pair);th.start();await asyncio.sleep(.5)
+        preview=(await m.canvas_summary(s)).get('preview')
+        await asyncio.sleep(.4)
+        preview_late=(await m.canvas_summary(s)).get('preview')
+        if i in (0,19):
+            shot=m.c42.png_of(await rc(s,'inspect.screenshot',{'target':'cameraView'}))
+            if shot: (out/f'rapid-{i}-held.png').write_bytes(shot)
+        await asyncio.to_thread(th.join);await asyncio.sleep(.5)
+        hist=await cmd('edit.history.get',{'limit':1000}); after=(await cmd('doc.object.get',{'ref':ids['Bob']})).get('object')
+        steps=hist['position']-h0['position']
+        mapping=(await cmd('draw.viewMapping.get',{'view':'cameraView'}))['drawingToView']
+        a,b,c,d,_,_=mapping; det=a*d-b*c
+        delta=lambda dx,dy: ((d*dx-c*dy)/det/100,(-b*dx+a*dy)/det/100)
+        expected=delta(29,17)
+        off=lambda obj: obj['transform']['offset']
+        observed=(off(after)['x']-off(before)['x'],off(after)['y']-off(before)['y'])
+        ordered=steps==2 and max(abs(v-w) for v,w in zip(expected,observed))<1e-9
+        if steps==2:
+            await cmd('edit.undo')
+            first=(await cmd('doc.object.get',{'ref':ids['Bob']})).get('object')
+            expected_first=delta(14,8)
+            observed_first=(off(first)['x']-off(before)['x'],off(first)['y']-off(before)['y'])
+            ordered=ordered and max(abs(v-w) for v,w in zip(expected_first,observed_first))<1e-9
+            await cmd('edit.undo')
+        else:
+            for _ in range(steps): await cmd('edit.undo')
+        ok=ordered and bool(preview)
+        row={'iteration':i,'times':times,'previewHeld':preview,'previewAfterMoreMovement':preview_late,'steps':steps,'ordered':ordered,'expectedDelta':expected,'observedDelta':observed,'before':before,'after':after}
+        results.append(row);run.save('rapid.json',results)
+        run.check(ok,'PV1 consecutive drags preserve second preview and two steps '+str(i),row)
+
+
 if __name__ == '__main__':
     OUT.mkdir(parents=True,exist_ok=True)
-    {'case1-vite':case1_vite,'case3':case3,'case4':case4}[sys.argv[2]]()
+    # A direct cargo release build uses the development URL. Reuse the built files,
+    # and own the helper process so each subcommand can run in isolation.
+    if sys.argv[2] in ('case3','case4','case5'):
+        import socket,atexit,time
+        sock=socket.socket(); listening=sock.connect_ex(('127.0.0.1',1420))==0; sock.close()
+        if not listening:
+            server=subprocess.Popen([sys.executable,'-m','http.server','1420','--bind','127.0.0.1','--directory',str(ROOT/'desktop/dist')],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+            atexit.register(server.terminate)
+            time.sleep(.5)
+    {'case1-vite':case1_vite,'case3':case3,'case4':case4,'case5':case5}[sys.argv[2]]()

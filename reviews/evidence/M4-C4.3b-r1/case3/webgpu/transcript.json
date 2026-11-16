@@ -183,6 +183,11 @@
     }
   },
   {
+    "check": "requested actual backend",
+    "ok": true,
+    "detail": "webgpu"
+  },
+  {
     "check": "scene construction view.zoom.set",
     "ok": true,
     "detail": null
@@ -214,6 +219,11 @@
       "different": 2406,
       "fraction": 0.004865776562569518
     }
+  },
+  {
+    "check": "requested actual backend",
+    "ok": true,
+    "detail": "webgpu"
   },
   {
     "check": "scene construction edit.history.get",
@@ -494,6 +504,11 @@
     }
   },
   {
+    "check": "requested actual backend",
+    "ok": true,
+    "detail": "webgpu"
+  },
+  {
     "check": "scene construction edit.history.get",
     "ok": true,
     "detail": null
@@ -772,6 +787,11 @@
     }
   },
   {
+    "check": "requested actual backend",
+    "ok": true,
+    "detail": "webgpu"
+  },
+  {
     "check": "scene construction edit.history.get",
     "ok": true,
     "detail": null
@@ -1008,5 +1028,10 @@
       "different": 1578,
       "fraction": 0.003191269915101704
     }
+  },
+  {
+    "check": "requested actual backend",
+    "ok": true,
+    "detail": "webgpu"
   }
 ]

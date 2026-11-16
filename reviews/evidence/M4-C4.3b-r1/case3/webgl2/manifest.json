@@ -3,7 +3,7 @@
   "platform": "win32",
   "input": "os",
   "requestedBackend": "webgl2",
-  "seconds": 16.3,
+  "seconds": 14.3,
   "failures": [],
-  "checks": 189
+  "checks": 194
 }

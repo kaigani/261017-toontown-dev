@@ -1,0 +1,3391 @@
+[
+  {
+    "check": "project.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the default palette's Colour 2 is found",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the Camera view's canvas draws the camera composition with a back end and no errors",
+    "ok": true,
+    "detail": {
+      "backend": "webgl2",
+      "generation": 0,
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+          "rev": 5,
+          "bucket": 1
+        },
+        {
+          "id": "dr_01K7JJN8001R8CZY9JW1WVQNXJ",
+          "rev": 9,
+          "bucket": 1
+        }
+      ],
+      "failures": [
+        "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}",
+        "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}"
+      ],
+      "gesture": null,
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "viewType": "camera",
+      "camera": {
+        "frame": true,
+        "pivots": 0,
+        "boxes": 0,
+        "otherCameras": 0,
+        "handles": 0
+      },
+      "drawn": 2,
+      "residentDrawings": 2,
+      "residentBytes": 25525772,
+      "lastError": null
+    }
+  },
+  {
+    "check": "both elements' drawings are resident and the frame overlay is drawn",
+    "ok": true,
+    "detail": {
+      "backend": "webgl2",
+      "generation": 0,
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+          "rev": 5,
+          "bucket": 1
+        },
+        {
+          "id": "dr_01K7JJN8001R8CZY9JW1WVQNXJ",
+          "rev": 9,
+          "bucket": 1
+        }
+      ],
+      "failures": [
+        "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}",
+        "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}"
+      ],
+      "gesture": null,
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "viewType": "camera",
+      "camera": {
+        "frame": true,
+        "pivots": 0,
+        "boxes": 0,
+        "otherCameras": 0,
+        "handles": 0
+      },
+      "drawn": 2,
+      "residentDrawings": 2,
+      "residentBytes": 25525772,
+      "lastError": null
+    }
+  },
+  {
+    "check": "the canvas runs on the requested back end, webgl2, with no fallback",
+    "ok": true,
+    "detail": {
+      "backend": "webgl2",
+      "generation": 0,
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+          "rev": 5,
+          "bucket": 1
+        },
+        {
+          "id": "dr_01K7JJN8001R8CZY9JW1WVQNXJ",
+          "rev": 9,
+          "bucket": 1
+        }
+      ],
+      "failures": [
+        "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}",
+        "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}"
+      ],
+      "gesture": null,
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "viewType": "camera",
+      "camera": {
+        "frame": true,
+        "pivots": 0,
+        "boxes": 0,
+        "otherCameras": 0,
+        "handles": 0
+      },
+      "drawn": 2,
+      "residentDrawings": 2,
+      "residentBytes": 25525772,
+      "lastError": null
+    }
+  },
+  {
+    "check": "V9: the Camera view is located in the window",
+    "ok": true,
+    "detail": [
+      49,
+      136,
+      901,
+      445
+    ]
+  },
+  {
+    "check": "V9: the OS click lands in the application window",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "V9: a click in the inactive Camera view makes it the active view",
+    "ok": true,
+    "detail": {
+      "viewId": "cameraView",
+      "panelId": "cameraView",
+      "type": "camera"
+    }
+  },
+  {
+    "check": "V9: the same click is the Select tool's click: Bob is selected",
+    "ok": true,
+    "detail": [
+      "el_01K7JJN8001E7DXZ9GC7A4KAB9"
+    ]
+  },
+  {
+    "check": "V9: the activation is no undo step",
+    "ok": true,
+    "detail": 9
+  },
+  {
+    "check": "preview setup/read workspace.select",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read view.active.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read view.zoom.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read anim.tool.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.selection.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "located cameraView",
+    "ok": true,
+    "detail": [
+      49,
+      136,
+      901,
+      445
+    ]
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "05:400 PV1 held revision and history unchanged cameraView commit",
+    "ok": true,
+    "detail": {
+      "before": {
+        "projectId": "pr_01M7H72QXQ2GMP4GDHH18TASAM",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "documentRev": 10,
+        "savedRev": null,
+        "dirty": true,
+        "readOnly": false,
+        "lock": null,
+        "historyFromRev": 1
+      },
+      "held": {
+        "projectId": "pr_01M7H72QXQ2GMP4GDHH18TASAM",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "documentRev": 10,
+        "savedRev": null,
+        "dirty": true,
+        "readOnly": false,
+        "lock": null,
+        "historyFromRev": 1
+      }
+    }
+  },
+  {
+    "check": "preview visible cameraView commit",
+    "ok": true,
+    "detail": {
+      "kind": "scene",
+      "transform": [
+        1,
+        0,
+        0,
+        1,
+        32,
+        17
+      ]
+    }
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "SI-154 exact-class capture agrees cameraView",
+    "ok": true,
+    "detail": {
+      "fraction": 0.0,
+      "RGBThreshold": 32,
+      "bound": 0.01
+    }
+  },
+  {
+    "check": "one commit step cameraView",
+    "ok": true,
+    "detail": 1
+  },
+  {
+    "check": "preview setup/read edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "located cameraView",
+    "ok": true,
+    "detail": [
+      49,
+      136,
+      901,
+      445
+    ]
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "05:400 PV1 held revision and history unchanged cameraView escape",
+    "ok": true,
+    "detail": {
+      "before": {
+        "projectId": "pr_01M7H72QXQ2GMP4GDHH18TASAM",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "documentRev": 12,
+        "savedRev": null,
+        "dirty": true,
+        "readOnly": false,
+        "lock": null,
+        "historyFromRev": 1
+      },
+      "held": {
+        "projectId": "pr_01M7H72QXQ2GMP4GDHH18TASAM",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "documentRev": 12,
+        "savedRev": null,
+        "dirty": true,
+        "readOnly": false,
+        "lock": null,
+        "historyFromRev": 1
+      }
+    }
+  },
+  {
+    "check": "preview visible cameraView escape",
+    "ok": true,
+    "detail": {
+      "kind": "scene",
+      "transform": [
+        1,
+        0,
+        0,
+        1,
+        32,
+        17
+      ]
+    }
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "Escape document unchanged cameraView",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "Escape clears preview next capture cameraView",
+    "ok": true,
+    "detail": {
+      "fraction": 0.0
+    }
+  },
+  {
+    "check": "preview setup/read element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read workspace.select",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read view.active.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read view.zoom.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read tool.active.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read draw.selection.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "located drawingView",
+    "ok": true,
+    "detail": [
+      49,
+      136,
+      901,
+      635
+    ]
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "05:400 PV1 held revision and history unchanged drawingView commit",
+    "ok": true,
+    "detail": {
+      "before": {
+        "projectId": "pr_01M7H72QXQ2GMP4GDHH18TASAM",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "documentRev": 15,
+        "savedRev": null,
+        "dirty": true,
+        "readOnly": false,
+        "lock": null,
+        "historyFromRev": 1
+      },
+      "held": {
+        "projectId": "pr_01M7H72QXQ2GMP4GDHH18TASAM",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "documentRev": 15,
+        "savedRev": null,
+        "dirty": true,
+        "readOnly": false,
+        "lock": null,
+        "historyFromRev": 1
+      }
+    }
+  },
+  {
+    "check": "preview visible drawingView commit",
+    "ok": true,
+    "detail": {
+      "kind": "drawing",
+      "transform": [
+        1,
+        0,
+        0,
+        1,
+        32,
+        17
+      ]
+    }
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "SI-154 exact-class capture agrees drawingView",
+    "ok": true,
+    "detail": {
+      "fraction": 0.00028314995586705934,
+      "RGBThreshold": 32,
+      "bound": 0.01
+    }
+  },
+  {
+    "check": "one commit step drawingView",
+    "ok": true,
+    "detail": 1
+  },
+  {
+    "check": "preview setup/read edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "located drawingView",
+    "ok": true,
+    "detail": [
+      49,
+      136,
+      901,
+      635
+    ]
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "05:400 PV1 held revision and history unchanged drawingView escape",
+    "ok": true,
+    "detail": {
+      "before": {
+        "projectId": "pr_01M7H72QXQ2GMP4GDHH18TASAM",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "documentRev": 17,
+        "savedRev": null,
+        "dirty": true,
+        "readOnly": false,
+        "lock": null,
+        "historyFromRev": 1
+      },
+      "held": {
+        "projectId": "pr_01M7H72QXQ2GMP4GDHH18TASAM",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "documentRev": 17,
+        "savedRev": null,
+        "dirty": true,
+        "readOnly": false,
+        "lock": null,
+        "historyFromRev": 1
+      }
+    }
+  },
+  {
+    "check": "preview visible drawingView escape",
+    "ok": true,
+    "detail": {
+      "kind": "drawing",
+      "transform": [
+        1,
+        0,
+        0,
+        1,
+        32,
+        17
+      ]
+    }
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read doc.state.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "Escape document unchanged drawingView",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "Escape clears preview next capture drawingView",
+    "ok": true,
+    "detail": {
+      "fraction": 0.0
+    }
+  },
+  {
+    "check": "preview setup/read workspace.select",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read view.active.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read view.zoom.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read anim.tool.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.selection.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "refused commit leaves no preview",
+    "ok": true,
+    "detail": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.16,
+        0,
+        4.581800525266482,
+        -0.16,
+        450.5,
+        222.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 450,
+          "y": 195,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 482,
+          "y": 212,
+          "modifiers": [],
+          "dt": 165,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 482,
+          "y": 212,
+          "modifiers": [],
+          "dt": 86,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "error",
+      "code": "anim.valueOutOfRange",
+      "commands": []
+    }
+  },
+  {
+    "check": "preview setup/read app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read anim.tool.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "preview setup/read view.zoom.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 0",
+    "ok": false,
+    "detail": {
+      "iteration": 0,
+      "times": {
+        "release1": 418017.7745175,
+        "press2": 418017.7747414
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 19,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 21,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 1",
+    "ok": false,
+    "detail": {
+      "iteration": 1,
+      "times": {
+        "release1": 418021.0095429,
+        "press2": 418021.009806
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 23,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 25,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 2",
+    "ok": false,
+    "detail": {
+      "iteration": 2,
+      "times": {
+        "release1": 418024.2581474,
+        "press2": 418024.2582702
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 27,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 29,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 3",
+    "ok": false,
+    "detail": {
+      "iteration": 3,
+      "times": {
+        "release1": 418027.4831998,
+        "press2": 418027.4838415
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 31,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 33,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 4",
+    "ok": false,
+    "detail": {
+      "iteration": 4,
+      "times": {
+        "release1": 418030.7055339,
+        "press2": 418030.7060657
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 35,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 37,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 5",
+    "ok": false,
+    "detail": {
+      "iteration": 5,
+      "times": {
+        "release1": 418033.9270668,
+        "press2": 418033.9272626
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 39,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 41,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 6",
+    "ok": false,
+    "detail": {
+      "iteration": 6,
+      "times": {
+        "release1": 418037.1677843,
+        "press2": 418037.1679187
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 43,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 45,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 7",
+    "ok": false,
+    "detail": {
+      "iteration": 7,
+      "times": {
+        "release1": 418040.3610448,
+        "press2": 418040.3615254
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 47,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 49,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 8",
+    "ok": false,
+    "detail": {
+      "iteration": 8,
+      "times": {
+        "release1": 418043.5758807,
+        "press2": 418043.5760712
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 51,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 53,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 9",
+    "ok": false,
+    "detail": {
+      "iteration": 9,
+      "times": {
+        "release1": 418046.7979301,
+        "press2": 418046.7982235
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 55,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 57,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 10",
+    "ok": false,
+    "detail": {
+      "iteration": 10,
+      "times": {
+        "release1": 418050.031679,
+        "press2": 418050.0318614
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 59,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 61,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 11",
+    "ok": false,
+    "detail": {
+      "iteration": 11,
+      "times": {
+        "release1": 418053.2816297,
+        "press2": 418053.282076
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 63,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 65,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 12",
+    "ok": false,
+    "detail": {
+      "iteration": 12,
+      "times": {
+        "release1": 418056.4892148,
+        "press2": 418056.490321
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 67,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 69,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 13",
+    "ok": false,
+    "detail": {
+      "iteration": 13,
+      "times": {
+        "release1": 418059.7242088,
+        "press2": 418059.7244027
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 71,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 73,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 14",
+    "ok": false,
+    "detail": {
+      "iteration": 14,
+      "times": {
+        "release1": 418062.9303273,
+        "press2": 418062.9305755
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 75,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 77,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 15",
+    "ok": false,
+    "detail": {
+      "iteration": 15,
+      "times": {
+        "release1": 418066.1655783,
+        "press2": 418066.1657226
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 79,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 81,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 16",
+    "ok": false,
+    "detail": {
+      "iteration": 16,
+      "times": {
+        "release1": 418069.3917038,
+        "press2": 418069.3918729
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 83,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 85,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 17",
+    "ok": false,
+    "detail": {
+      "iteration": 17,
+      "times": {
+        "release1": 418072.618877,
+        "press2": 418072.6194197
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 87,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 89,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 18",
+    "ok": false,
+    "detail": {
+      "iteration": 18,
+      "times": {
+        "release1": 418075.8580053,
+        "press2": 418075.858187
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 91,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 93,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  },
+  {
+    "check": "PV1 consecutive drags preserve second preview and two steps 19",
+    "ok": false,
+    "detail": {
+      "iteration": 19,
+      "times": {
+        "release1": 418079.0843795,
+        "press2": 418079.0848844
+      },
+      "previewHeld": null,
+      "previewAfterMoreMovement": null,
+      "steps": 2,
+      "ordered": true,
+      "expectedDelta": [
+        0.30208333333333376,
+        -0.1770833333333333
+      ],
+      "observedDelta": [
+        0.30208333333333337,
+        -0.17708333333333331
+      ],
+      "before": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 95,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      },
+      "after": {
+        "id": "el_01K7JJN8001E7DXZ9GC7A4KAB9",
+        "type": "element",
+        "rev": 97,
+        "name": "Bob",
+        "path": "scene:\"Scene-1\"/element:\"Bob\"",
+        "elementType": "drawing",
+        "loops": 1,
+        "loopType": "count",
+        "positionLoop": "cycle",
+        "role": "normal",
+        "deformable": false,
+        "visibleInScene": true,
+        "visibleInXsheet": true,
+        "locked": false,
+        "collapsed": false,
+        "markerColour": null,
+        "backgroundColour": null,
+        "columnWidth": 80,
+        "drawingBankId": "db_01K7JJN801H4M06HNJWKAS0FDE",
+        "exposure": [
+          [
+            "dr_01K7JJN8001Q8A8SJHP6D4DK5S",
+            24
+          ]
+        ],
+        "transform": {
+          "offset": {
+            "x": 0.30208333333333337,
+            "y": -0.17708333333333331,
+            "z": 0.0
+          },
+          "rotation": 0.0,
+          "skew": 0.0,
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "keepProportions": false,
+          "rotationPivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scalePivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "rotateAboutPivot": false,
+          "lockDepth": false,
+          "orientToPath": false
+        },
+        "channels": {},
+        "createdAt": "2026-11-16T03:40:43.370Z"
+      }
+    }
+  }
+]

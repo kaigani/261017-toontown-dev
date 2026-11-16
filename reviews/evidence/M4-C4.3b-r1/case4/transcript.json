@@ -3,8 +3,8 @@
     "check": "the default palette's Colour 2 and Colour 3 are found",
     "ok": true,
     "detail": [
-      "col_01M7H6CG1ZA2R880RTV9PR1ARB",
-      "col_01M7H6CG1ZA2R880RTV9PR1ARC"
+      "col_01M7H6Y1KCVCMDFP01J70NWT24",
+      "col_01M7H6Y1KCVCMDFP01J70NWT25"
     ]
   },
   {
@@ -35,6 +35,11 @@
       914,
       465
     ]
+  },
+  {
+    "check": "whole document three-way move",
+    "ok": true,
+    "detail": null
   },
   {
     "check": "three-way move (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
@@ -71,7 +76,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "static",
         "channel": "position",
@@ -91,7 +96,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "static",
             "position": {
@@ -121,7 +126,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo move",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content move",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way rotate",
     "ok": true,
     "detail": null
   },
@@ -160,7 +175,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "key",
         "channel": "rotation",
@@ -179,7 +194,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "key",
             "frame": 1,
@@ -207,7 +222,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way corner",
     "ok": true,
     "detail": null
   },
@@ -246,7 +271,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "key",
         "channel": "scale",
@@ -269,7 +294,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "key",
             "frame": 1,
@@ -300,7 +325,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo corner",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content corner",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way edge",
     "ok": true,
     "detail": null
   },
@@ -339,7 +374,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "key",
         "channel": "scale",
@@ -360,7 +395,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "key",
             "frame": 1,
@@ -390,7 +425,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo edge",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content edge",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way skew",
     "ok": true,
     "detail": null
   },
@@ -429,7 +474,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "key",
         "channel": "skew",
@@ -448,7 +493,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "key",
             "frame": 1,
@@ -476,7 +521,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo skew",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content skew",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way pivot",
     "ok": true,
     "detail": null
   },
@@ -515,7 +570,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "static",
         "channel": "rotationPivot",
@@ -539,7 +594,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "static",
             "rotationPivot": {
@@ -572,7 +627,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo pivot",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content pivot",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way constrain scale",
     "ok": true,
     "detail": null
   },
@@ -611,7 +676,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "key",
         "channel": "scale",
@@ -634,7 +699,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "key",
             "frame": 1,
@@ -665,7 +730,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo constrain scale",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content constrain scale",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way constrain rotate",
     "ok": true,
     "detail": null
   },
@@ -704,7 +779,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "key",
         "channel": "rotation",
@@ -723,7 +798,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "key",
             "frame": 1,
@@ -751,7 +826,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo constrain rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content constrain rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way temporary select",
     "ok": true,
     "detail": null
   },
@@ -790,7 +875,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "static",
         "channel": "position",
@@ -810,7 +895,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "static",
             "position": {
@@ -840,7 +925,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo temporary select",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content temporary select",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way temporary skew",
     "ok": true,
     "detail": null
   },
@@ -879,7 +974,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "key",
         "channel": "skew",
@@ -898,7 +993,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "key",
             "frame": 1,
@@ -926,7 +1021,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo temporary skew",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content temporary skew",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way keyed frame 8",
     "ok": true,
     "detail": null
   },
@@ -965,7 +1070,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "key",
         "channel": "position",
@@ -987,7 +1092,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "key",
             "frame": 8,
@@ -1018,7 +1123,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo keyed frame 8",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content keyed frame 8",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way child move",
     "ok": true,
     "detail": null
   },
@@ -1057,7 +1172,7 @@
         "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
         "command": "anim.transform.set",
         "nodeIds": [
-          "el_01K7JJN80074RTFZMXKQ849FVR"
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
         ],
         "target": "static",
         "channel": "position",
@@ -1077,7 +1192,7 @@
           "commandId": "anim.transform.set",
           "params": {
             "nodeIds": [
-              "el_01K7JJN80074RTFZMXKQ849FVR"
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
             ],
             "target": "static",
             "position": {
@@ -1107,7 +1222,17 @@
     "detail": "os"
   },
   {
+    "check": "whole document undo child move",
+    "ok": true,
+    "detail": null
+  },
+  {
     "check": "undo restores prior content child move",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way line under peg",
     "ok": true,
     "detail": null
   },
@@ -1172,9 +1297,9 @@
               "x": -70.04106954487719,
               "y": 36.71296415803033
             },
-            "colourId": "col_01M7H6CG1ZA2R880RTV9PR1ARB",
+            "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
             "thickness": 8,
-            "penId": "pen_01M7H6CG1ZA2R880RTV9PR1AW4",
+            "penId": "pen_01M7H6Y1KCVCMDFP01J70NWT5X",
             "layer": "auto",
             "symmetry": true
           }
@@ -1197,6 +1322,11 @@
     "check": "real OS input line under peg",
     "ok": true,
     "detail": "os"
+  },
+  {
+    "check": "whole document undo line under peg",
+    "ok": true,
+    "detail": null
   },
   {
     "check": "undo restores prior content line under peg",
