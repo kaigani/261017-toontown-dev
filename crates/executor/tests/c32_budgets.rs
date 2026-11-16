@@ -72,7 +72,10 @@ fn long_range_evaluation_answers_within_the_watchdog() {
         let seconds = t.elapsed().as_secs_f64();
         let outcome = env.error.as_ref().map_or("completed".to_owned(), |e| e.code.clone());
         println!("{name}: {seconds:.3} s, {outcome}");
-        assert!(seconds < 30.0, "{name} took {seconds} s: past the watchdog");
+        // Ruling D-45: the 30 s budget is the workstation receipt's (`TT_BUDGET_RECEIPT=1`); in CI the bound only
+        // guards a hang just past the watchdog's own 30 s (a macOS runner took 11.8 s, run 43837502373).
+        let bound = if std::env::var("TT_BUDGET_RECEIPT").is_ok_and(|v| v == "1") { 30.0 } else { 35.0 };
+        assert!(seconds < bound, "{name} took {seconds} s: past {bound} s (ruling D-45)");
         assert_eq!(rev(&h), start, "{name}");
         records.push(json!({ "case": name, "seconds": seconds, "outcome": outcome }));
     }

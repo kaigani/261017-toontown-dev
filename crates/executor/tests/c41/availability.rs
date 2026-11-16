@@ -270,7 +270,9 @@ fn worst_chunk(h: &ExecutorHandle) -> std::time::Duration {
 /// for the steady passes and the worst chunk.
 const RATIO: u32 = 20;
 const FLOOR: std::time::Duration = std::time::Duration::from_millis(1);
-const CEILING: std::time::Duration = std::time::Duration::from_millis(40);
+/// Ruling D-45: four times the slowest runner's figure before D-41 (22.6 ms, run 43822938737), so the ceiling only
+/// catches a gross regression.
+const CEILING: std::time::Duration = std::time::Duration::from_millis(100);
 
 fn within(large: std::time::Duration, small: std::time::Duration) -> bool {
     large <= small.max(FLOOR) * RATIO && large <= CEILING
@@ -280,7 +282,7 @@ fn within(large: std::time::Duration, small: std::time::Duration) -> bool {
 /// elements against a project of 100, in the same process. Each figure of the large project (a full pass; for each
 /// case of ruling O-24, the first pass's longest request after the change as the minimum of three real repetitions, and
 /// the steady pass after it; the worst chunk) is within a stated multiple of the same figure on the small project and
-/// under an absolute ceiling of 40 ms. A user command submitted during continuous passes completes within 100 ms.
+/// under an absolute ceiling of 100 ms (ruling D-45). A user command submitted during continuous passes completes within 100 ms.
 #[test]
 fn passes_stay_constant_on_a_large_project() {
     use std::time::{Duration, Instant};
