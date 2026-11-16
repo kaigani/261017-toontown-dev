@@ -126,8 +126,18 @@ export function CheckProjectDialog({ services, close }: { services: ShellService
   );
 }
 
-/** File › Open Backup (`project.backup.list`, then `project.backup.open {backupId}`). */
-export function BackupsDialog({ services, close }: { services: ShellServices; close: () => void }) {
+/** File › Open Backup (`project.backup.list`, then `project.backup.open {backupId}`). C43B-R2-07: the user's answer to
+ *  the unsaved-changes question asked before the dialog opened (Don't Save: `onUnsaved: discard`) is carried to the
+ *  Open; without it the kernel's `fail` default kept the dirty document. */
+export function BackupsDialog({
+  services,
+  close,
+  onUnsaved,
+}: {
+  services: ShellServices;
+  close: () => void;
+  onUnsaved?: 'discard';
+}) {
   const list = useQuery(services, 'project.backup.list', {});
   // The answer is the array of backups itself (01 §12.2 lines 1083-1084; C43B-R1-07: read as an object, it showed none).
   const answer: unknown = list.status === 'ok' ? list.result : null;
@@ -140,6 +150,7 @@ export function BackupsDialog({ services, close }: { services: ShellServices; cl
           {backups.map((b, n) => {
             const o = (b ?? {}) as Record<string, unknown>;
             const backupId = typeof o['backupId'] === 'string' ? o['backupId'] : String(n);
+            const params = onUnsaved ? { backupId, onUnsaved } : { backupId };
             return (
               <li key={backupId}>
                 <span>{typeof o['savedAt'] === 'string' ? o['savedAt'] : backupId}</span>
@@ -148,9 +159,9 @@ export function BackupsDialog({ services, close }: { services: ShellServices; cl
                   data-tt-role="button"
                   data-tt-id={`openBackup.open.${String(n)}`}
                   data-tt-command="project.backup.open"
-                  data-tt-params={JSON.stringify({ backupId })}
+                  data-tt-params={JSON.stringify(params)}
                   onClick={() => {
-                    void services.run('project.backup.open', { backupId }).then(close);
+                    void services.run('project.backup.open', params).then(close);
                   }}
                 >
                   Open
