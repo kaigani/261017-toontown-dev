@@ -1116,7 +1116,7 @@ async def build_and_run(t: Table, only: set) -> None:
     async def import_flow():
         t.click("keymap.import")
         await type_path(edited)
-        key(0x0D)  # the browser's confirm: OK replaces the keymap
+        key(0x0D)  # the application's message box: Enter takes its default button, Replace (C43B-R2-08)
         await asyncio.sleep(0.6)
         t.click("preferences.submit")
         await asyncio.sleep(1.0)

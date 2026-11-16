@@ -33,7 +33,14 @@ export function makeActions(
   setBusy: (b: Busy | null) => void,
   onQuit?: () => void,
 ): ActionsApi {
-  const run = async (command: string, params: Record<string, unknown> = {}): Promise<Envelope> => {
+  /** Runs a command; a failure is surfaced, except the refusals in `handled`, which the caller answers itself (D-44:
+   *  Save As asks Replace / Cancel on `project.exists`, Save turns `project.readOnly` into Save As; surfacing them too
+   *  showed an error box before the question). */
+  const run = async (
+    command: string,
+    params: Record<string, unknown> = {},
+    handled: readonly string[] = [],
+  ): Promise<Envelope> => {
     const query = isQuery(command);
     const running = services.engine.run(command, params, { cancellable: !query });
     const busy = { shown: false };
@@ -46,7 +53,9 @@ export function makeActions(
     const env = await running.done;
     if (timer) clearTimeout(timer);
     if (busy.shown) setBusy(null);
-    if (env.status !== 'ok' && env.status !== 'needs_confirmation') await messages.failure(env, command);
+    const answered = env.status === 'error' && env.error !== undefined && handled.includes(env.error.code);
+    if (env.status !== 'ok' && env.status !== 'needs_confirmation' && !answered)
+      await messages.failure(env, command);
     return env;
   };
 
@@ -68,7 +77,7 @@ export function makeActions(
   const saveAs = async (): Promise<Envelope | null> => {
     const path = await pick('save', 'Save As');
     if (!path) return null;
-    let env = await run('project.saveAs', { path });
+    let env = await run('project.saveAs', { path }, ['project.exists']);
     if (env.status === 'error' && env.error?.code === 'project.exists') {
       const a = await messages.show({
         severity: 'question',
@@ -88,7 +97,7 @@ export function makeActions(
 
   const save = async (): Promise<Envelope | null> => {
     if (!state()?.project?.path) return saveAs();
-    const env = await run('project.save', {});
+    const env = await run('project.save', {}, ['project.readOnly']);
     if (env.status === 'error' && env.error?.code === 'project.readOnly') return saveAs();
     return waitJob(env, 'Saving', false);
   };
@@ -276,6 +285,7 @@ export function makeActions(
         await dialogs.open<null>('Open Backup', (close) => (
           <BackupsDialog
             services={services}
+            {...(p['onUnsaved'] === 'discard' ? { onUnsaved: 'discard' as const } : {})}
             close={() => {
               close(null);
             }}
