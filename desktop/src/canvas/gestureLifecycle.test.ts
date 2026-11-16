@@ -45,7 +45,8 @@ function canvas(generation = 1) {
       pending.push({
         token,
         answer: (failed: Outcome) => {
-          if (life.answered(token, { version, deadline: deadlineOf(failed) }) && failed === 'refused') state.overlay = null;
+          if (life.answered(token, { version, deadline: deadlineOf(failed) }) && failed === 'refused')
+            state.overlay = null;
         },
       });
     },
@@ -151,7 +152,9 @@ describe('gesture lifecycle (C43B-R1S-06)', () => {
 
   it('a step is told by the envelope or by a produced command', () => {
     expect(answerMadeStep({ status: 'ok', undo: { stepId: 'u1' } })).toBe(true);
-    expect(answerMadeStep({ status: 'ok', result: { commands: [{ envelope: { undo: { stepId: 'u2' } } }] } })).toBe(true);
+    expect(
+      answerMadeStep({ status: 'ok', result: { commands: [{ envelope: { undo: { stepId: 'u2' } } }] } }),
+    ).toBe(true);
     expect(answerMadeStep({ status: 'ok', result: { commands: [{ envelope: {} }] } })).toBe(false);
     expect(answerMadeStep({ status: 'ok' })).toBe(false);
     expect(answerMadeStep({ status: 'error', undo: { stepId: 'u3' } })).toBe(false);

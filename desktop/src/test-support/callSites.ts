@@ -18,7 +18,13 @@ import ts from 'typescript';
 const ID = /^[a-z][A-Za-z]*\.[A-Za-z][A-Za-z.]*[A-Za-z]$/;
 
 /** Directories that hold no product code. */
-export const NOT_PRODUCT_DIRS: readonly string[] = ['generated', 'test', 'test-support', '__probes__', 'testdata'];
+export const NOT_PRODUCT_DIRS: readonly string[] = [
+  'generated',
+  'test',
+  'test-support',
+  '__probes__',
+  'testdata',
+];
 
 /** Whether a repository path (with `/`) is product code: a `.ts`, `.tsx` or `.rs` file outside tests and test helpers. */
 export function isProductFile(path: string): boolean {
@@ -28,13 +34,15 @@ export function isProductFile(path: string): boolean {
 
 function literalId(node: ts.Node | undefined): string | null {
   if (!node) return null;
-  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) return ID.test(node.text) ? node.text : null;
+  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node))
+    return ID.test(node.text) ? node.text : null;
   return null;
 }
 
 function unwrap(node: ts.Expression): ts.Expression {
   let n = node;
-  while (ts.isAsExpression(n) || ts.isSatisfiesExpression(n) || ts.isParenthesizedExpression(n)) n = n.expression;
+  while (ts.isAsExpression(n) || ts.isSatisfiesExpression(n) || ts.isParenthesizedExpression(n))
+    n = n.expression;
   return n;
 }
 
@@ -59,7 +67,12 @@ export function tsCallSites(text: string, fileName: string): string[] {
             : null;
       if (id) out.add(id);
     }
-    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === 'SLICES' && node.initializer) {
+    if (
+      ts.isVariableDeclaration(node) &&
+      ts.isIdentifier(node.name) &&
+      node.name.text === 'SLICES' &&
+      node.initializer
+    ) {
       const table = unwrap(node.initializer);
       if (ts.isObjectLiteralExpression(table)) {
         for (const p of table.properties) {
@@ -172,11 +185,14 @@ export function rustCallSites(text: string): string[] {
   for (let k = 0; k < all.length; k++) {
     const seq = all.slice(k, k + 7).map((t) => t.text);
     if (seq.join(' ') === '# [ cfg ( test ) ]' && all[k + 2]?.kind === 'ident') break;
-    tokens.push(all[k] as Token);
+    const token = all[k];
+    if (token) tokens.push(token);
   }
   const out = new Set<string>();
-  const is = (k: number, kind: Token['kind'], text?: string) =>
-    tokens[k]?.kind === kind && (text === undefined || tokens[k]?.text === text);
+  const is = (k: number, kind: Token['kind'], text?: string) => {
+    const t = tokens[k];
+    return t?.kind === kind && (text === undefined || t.text === text);
+  };
   const id = (k: number) => {
     const t = tokens[k];
     return t?.kind === 'string' && ID.test(t.text) ? t.text : null;
@@ -185,9 +201,15 @@ export function rustCallSites(text: string): string[] {
     let found: string | null = null;
     if (is(k, 'punct', '.') && is(k + 1, 'ident', 'run') && is(k + 2, 'punct', '(')) found = id(k + 3);
     else if (is(k, 'ident', 'q') && !is(k - 1, 'punct', '.') && is(k + 1, 'punct', '(')) found = id(k + 2);
-    else if (is(k, 'ident', 'Invocation') && is(k + 1, 'punct', '::') && is(k + 2, 'ident', 'user') && is(k + 3, 'punct', '('))
+    else if (
+      is(k, 'ident', 'Invocation') &&
+      is(k + 1, 'punct', '::') &&
+      is(k + 2, 'ident', 'user') &&
+      is(k + 3, 'punct', '(')
+    )
       found = id(k + 4);
-    else if (is(k, 'ident', 'command') && is(k + 1, 'punct', ':') && !is(k + 2, 'punct', ':')) found = id(k + 2);
+    else if (is(k, 'ident', 'command') && is(k + 1, 'punct', ':') && !is(k + 2, 'punct', ':'))
+      found = id(k + 2);
     if (found) out.add(found);
   }
   return [...out].sort();

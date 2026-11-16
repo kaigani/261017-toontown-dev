@@ -27,7 +27,7 @@ export function optionRef(
 export function chosenRef(
   select: HTMLSelectElement,
 ): { commandId: string; params: Record<string, unknown> } | null {
-  const option = select.selectedOptions[0] as HTMLOptionElement | undefined;
+  const option = select.selectedOptions.item(0);
   const commandId = option?.getAttribute('data-tt-command');
   const params = option?.getAttribute('data-tt-params');
   if (!commandId || !params) return null;

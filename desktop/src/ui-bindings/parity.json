@@ -5,6 +5,7 @@
     "startScreen",
     "main",
     "agentPopover",
+    "jobsWindow",
     "dockTabContextMenu",
     "dialog:About Toontown",
     "dialog:Project Info",
@@ -286,6 +287,16 @@
       ],
       "params": {
         "position": 2
+      }
+    },
+    {
+      "id": "jobsWindow.cancel.job-7",
+      "surface": "jobsWindow",
+      "commands": [
+        "job.cancel"
+      ],
+      "params": {
+        "jobId": "job-7"
       }
     },
     {
@@ -771,6 +782,36 @@
       ]
     },
     {
+      "id": "mainToolbar.gridType.field12",
+      "surface": "main",
+      "commands": [
+        "drawAid.grid.set"
+      ],
+      "params": {
+        "type": "field12"
+      }
+    },
+    {
+      "id": "mainToolbar.gridType.field16",
+      "surface": "main",
+      "commands": [
+        "drawAid.grid.set"
+      ],
+      "params": {
+        "type": "field16"
+      }
+    },
+    {
+      "id": "mainToolbar.gridType.normal",
+      "surface": "main",
+      "commands": [
+        "drawAid.grid.set"
+      ],
+      "params": {
+        "type": "normal"
+      }
+    },
+    {
       "id": "mainToolbar.lipsync.panel.open",
       "surface": "main",
       "commands": [
@@ -786,11 +827,91 @@
       ]
     },
     {
+      "id": "mainToolbar.onionSkinNext.0",
+      "surface": "main",
+      "commands": [
+        "drawAid.onionSkin.set"
+      ],
+      "params": {
+        "next": 0
+      }
+    },
+    {
+      "id": "mainToolbar.onionSkinNext.1",
+      "surface": "main",
+      "commands": [
+        "drawAid.onionSkin.set"
+      ],
+      "params": {
+        "next": 1
+      }
+    },
+    {
+      "id": "mainToolbar.onionSkinNext.2",
+      "surface": "main",
+      "commands": [
+        "drawAid.onionSkin.set"
+      ],
+      "params": {
+        "next": 2
+      }
+    },
+    {
+      "id": "mainToolbar.onionSkinNext.3",
+      "surface": "main",
+      "commands": [
+        "drawAid.onionSkin.set"
+      ],
+      "params": {
+        "next": 3
+      }
+    },
+    {
       "id": "mainToolbar.onionSkinPrevious",
       "surface": "main",
       "commands": [
         "drawAid.onionSkin.set"
       ]
+    },
+    {
+      "id": "mainToolbar.onionSkinPrevious.0",
+      "surface": "main",
+      "commands": [
+        "drawAid.onionSkin.set"
+      ],
+      "params": {
+        "previous": 0
+      }
+    },
+    {
+      "id": "mainToolbar.onionSkinPrevious.1",
+      "surface": "main",
+      "commands": [
+        "drawAid.onionSkin.set"
+      ],
+      "params": {
+        "previous": 1
+      }
+    },
+    {
+      "id": "mainToolbar.onionSkinPrevious.2",
+      "surface": "main",
+      "commands": [
+        "drawAid.onionSkin.set"
+      ],
+      "params": {
+        "previous": 2
+      }
+    },
+    {
+      "id": "mainToolbar.onionSkinPrevious.3",
+      "surface": "main",
+      "commands": [
+        "drawAid.onionSkin.set"
+      ],
+      "params": {
+        "previous": 3
+      }
     },
     {
       "id": "mainToolbar.playback.loop.set",
@@ -806,6 +927,16 @@
       "commands": [
         "workspace.select"
       ]
+    },
+    {
+      "id": "mainToolbar.workspaceList.Default",
+      "surface": "main",
+      "commands": [
+        "workspace.select"
+      ],
+      "params": {
+        "name": "Default"
+      }
     },
     {
       "id": "tab.cameraView",
@@ -1396,6 +1527,11 @@
       "reason": "typing"
     },
     {
+      "id": "jobsWindow.close",
+      "surface": "jobsWindow",
+      "reason": "dismiss"
+    },
+    {
       "id": "agent.toggle",
       "surface": "main",
       "reason": "disclose"
@@ -1419,6 +1555,11 @@
       "id": "mainToolbar.sceneList",
       "surface": "main",
       "reason": "placeholder"
+    },
+    {
+      "id": "status.jobs",
+      "surface": "main",
+      "reason": "disclose"
     },
     {
       "id": "message.ok",
@@ -15276,10 +15417,6 @@
       "file": "desktop/src/shell/toolbarGroups.tsx"
     },
     {
-      "command": "drawAid.onionSkin.set",
-      "file": "desktop/src/shell/toolbarGroups.tsx"
-    },
-    {
       "command": "drawAid.state.get",
       "file": "desktop/src/panels/ViewChrome.tsx"
     },
@@ -15306,6 +15443,10 @@
     {
       "command": "job.cancel",
       "file": "desktop/src/shell/projectForms.tsx"
+    },
+    {
+      "command": "job.cancel",
+      "file": "desktop/src/shell/StatusBar.tsx"
     },
     {
       "command": "job.list",
@@ -15574,10 +15715,6 @@
     {
       "command": "workspace.list",
       "file": "desktop/src/state/store.ts"
-    },
-    {
-      "command": "workspace.select",
-      "file": "desktop/src/shell/Toolbars.tsx"
     }
   ],
   "uses": [
@@ -15693,6 +15830,7 @@
     {
       "command": "app.info.get",
       "files": [
+        "desktop/src-tauri/src/menu_model.rs",
         "desktop/src/shell/infoDialogs.tsx",
         "desktop/src/shell/makeActions.tsx"
       ]
@@ -15845,6 +15983,7 @@
     {
       "command": "doc.changed",
       "files": [
+        "desktop/src-tauri/src/menu.rs",
         "desktop/src/state/store.ts"
       ]
     },
@@ -15878,6 +16017,7 @@
     {
       "command": "draw.selection.changed",
       "files": [
+        "desktop/src-tauri/src/menu.rs",
         "desktop/src/state/store.ts"
       ]
     },
@@ -15908,6 +16048,7 @@
     {
       "command": "drawAid.changed",
       "files": [
+        "desktop/src-tauri/src/menu.rs",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
         "desktop/src/state/store.ts"
@@ -16028,6 +16169,7 @@
     {
       "command": "edit.selection.changed",
       "files": [
+        "desktop/src-tauri/src/menu.rs",
         "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/state/store.ts"
       ]
@@ -16143,6 +16285,7 @@
     {
       "command": "job.cancel",
       "files": [
+        "desktop/src/shell/StatusBar.tsx",
         "desktop/src/shell/projectForms.tsx"
       ]
     },
@@ -16175,6 +16318,12 @@
       "command": "job.waitTimeout",
       "files": [
         "desktop/src/shell/projectForms.tsx"
+      ]
+    },
+    {
+      "command": "jobsWindow.close",
+      "files": [
+        "desktop/src/shell/StatusBar.tsx"
       ]
     },
     {
@@ -16238,6 +16387,12 @@
       "files": [
         "desktop/src/prefs/PreferencesDialog.tsx",
         "desktop/src/shell/makeActions.tsx"
+      ]
+    },
+    {
+      "command": "keymap.importMode",
+      "files": [
+        "desktop/src/prefs/PreferencesDialog.tsx"
       ]
     },
     {
@@ -16522,6 +16677,7 @@
       "command": "project.open",
       "files": [
         "desktop/src-tauri/src/menu.rs",
+        "desktop/src-tauri/src/menu_model.rs",
         "desktop/src-tauri/src/shell.rs",
         "desktop/src/App.tsx",
         "desktop/src/shell/actionsApi.ts",
@@ -16679,6 +16835,7 @@
     {
       "command": "shell.view",
       "files": [
+        "desktop/src-tauri/src/menu.rs",
         "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/panels/PanelBody.tsx",
         "desktop/src/panels/ViewChrome.tsx",
@@ -16852,6 +17009,7 @@
     {
       "command": "tool.active.changed",
       "files": [
+        "desktop/src-tauri/src/menu.rs",
         "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/state/store.ts"
@@ -16879,6 +17037,7 @@
     {
       "command": "tool.options.changed",
       "files": [
+        "desktop/src-tauri/src/menu.rs",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/state/store.ts"
       ]
@@ -17124,6 +17283,7 @@
       "command": "workspace.select",
       "files": [
         "desktop/src-tauri/src/menu.rs",
+        "desktop/src-tauri/src/menu_model.rs",
         "desktop/src/shell/Toolbars.tsx"
       ]
     }

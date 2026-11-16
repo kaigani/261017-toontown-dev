@@ -12,6 +12,12 @@ import { collectUiTree, type UiNode } from './uiTree';
 
 afterEach(cleanup);
 
+/** The element, or a failure naming what is absent. */
+function must<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`absent: ${what}`);
+  return v;
+}
+
 const PROJECT_STATE = {
   ...NO_PROJECT_STATE,
   project: {
@@ -79,7 +85,12 @@ describe('list controls declare each option (C43B-R2-03)', () => {
         { previous: n },
         n === 2,
       ]),
-      'mainToolbar.onionSkinNext': [0, 1, 2, 3].map((n) => [String(n), 'drawAid.onionSkin.set', { next: n }, n === 0]),
+      'mainToolbar.onionSkinNext': [0, 1, 2, 3].map((n) => [
+        String(n),
+        'drawAid.onionSkin.set',
+        { next: n },
+        n === 0,
+      ]),
       'mainToolbar.workspaceList': [
         ['Default', 'workspace.select', { name: 'Default' }, true],
         ['Inking', 'workspace.select', { name: 'Inking' }, false],
@@ -95,17 +106,22 @@ describe('list controls declare each option (C43B-R2-03)', () => {
         o.command?.params,
         o.selected,
       ]);
-      expect(reported, listId).toEqual(options.map(([label, cmd, params, sel]) => ['option', label, cmd, params, sel]));
+      expect(reported, listId).toEqual(
+        options.map(([label, cmd, params, sel]) => ['option', label, cmd, params, sel]),
+      );
       // Choosing each option sends exactly the reference it reports.
       const select = document.querySelector<HTMLSelectElement>(`[data-tt-id="${listId}"]`);
       expect(select, listId).not.toBeNull();
       for (const node of list?.children ?? []) {
         const before = h.actions().length;
-        fireEvent.change(select as HTMLSelectElement, { target: { value: node.value } });
+        fireEvent.change(must(select, listId), { target: { value: node.value } });
         await waitFor(() => {
-          expect(h.actions().slice(before).map((a) => ({ commandId: a.command, params: a.params }))).toEqual([
-            node.command,
-          ]);
+          expect(
+            h
+              .actions()
+              .slice(before)
+              .map((a) => ({ commandId: a.command, params: a.params })),
+          ).toEqual([node.command]);
         });
       }
     }
@@ -134,7 +150,10 @@ describe('list controls declare each option (C43B-R2-03)', () => {
     document.body.appendChild(root);
     const c = collect(root, 'main');
     expect(c.unbound).toEqual([
-      { surface: 'main', what: 'fixture.list: option "12-field grid" does not declare the reference choosing it sends' },
+      {
+        surface: 'main',
+        what: 'fixture.list: option "12-field grid" does not declare the reference choosing it sends',
+      },
     ]);
     const tree = collectUiTree(root);
     expect(find(tree, 'fixture.form')?.children).toEqual([

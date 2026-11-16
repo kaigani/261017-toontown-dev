@@ -31,7 +31,13 @@ import { canvasLaunch } from './launch';
 import { cameraGridMatrix, cameraOverlay } from './cameraOverlay';
 import { activeViewOf } from './activeView';
 import { decodeDrawing } from './format';
-import { answerMadeStep, GestureLifecycle, type ClearAt, type CommitAnswer, type GestureToken } from './gestureLifecycle';
+import {
+  answerMadeStep,
+  GestureLifecycle,
+  type ClearAt,
+  type CommitAnswer,
+  type GestureToken,
+} from './gestureLifecycle';
 import { gestureOrder } from './gestureOrder';
 import { drawingPreview, grabberPreview, scenePreview, type Box } from './preview';
 import { CanvasMetrics } from './metrics';
