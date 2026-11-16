@@ -25,7 +25,6 @@ fn d36_owner_matrix() {
     }
 }
 #[test]
-#[ignore = "known round-two finding; run with --ignored to reproduce"]
 fn d35_reads_both_ways() {
     let declared = json!({"surfaces":{"review":{"reads":{"app.state.get":["review.ts"]}}},"plumbing":{}}).to_string();
     assert!(!reads_problems(&json!({}), &declared).is_empty(), "D-35 declared read needs call site");
@@ -37,7 +36,6 @@ fn d35_reads_both_ways() {
     );
 }
 #[test]
-#[ignore = "known round-two finding; run with --ignored to reproduce"]
 fn d36_escaped_duplicate() {
     let raw = r#"{"deferred":{"anim.camera.set":{"owner":"M4 C4.4"},"anim.camera.\u0073et":{"owner":"M4 C4.4"}}}"#;
     assert!(deferred_entries(raw).is_err(), "D-36 duplicate decoded JSON keys must be refused");
@@ -448,7 +446,6 @@ mod selection_attacks {
 }
 
 #[test]
-#[ignore = "known round-two finding; run with --ignored to reproduce"]
 fn d35_renamed_real_surface() {
     let m = manifest();
     let mut r: serde_json::Value = serde_json::from_str(READS).unwrap();
@@ -459,7 +456,6 @@ fn d35_renamed_real_surface() {
     assert!(!reads_problems(&m, &r.to_string()).is_empty(), "D-35 renamed nonexistent surface must fail too");
 }
 #[test]
-#[ignore = "known round-two finding; run with --ignored to reproduce"]
 fn d36_escaped_root_cannot_hide_entries() {
     let raw = r#"{"defer\u0072ed":{"anim.camera.set":{},"anim.camera.set":{}}}"#;
     assert!(deferred_entries(raw).is_err(), "D-36 escaped root must still reject duplicates");
