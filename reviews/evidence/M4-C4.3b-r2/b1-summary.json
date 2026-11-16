@@ -1,0 +1,510 @@
+{
+ "results": [
+  {
+   "name": "measure-webgl2",
+   "exit": 0
+  },
+  {
+   "name": "measure-webgpu",
+   "exit": 0
+  },
+  {
+   "name": "one-drag-gate",
+   "exit": 0
+  },
+  {
+   "name": "wrong-backend",
+   "exit": 0,
+   "rejectedBy": [
+    "the canvas runs the requested back end with no fallback"
+   ]
+  },
+  {
+   "name": "fallback",
+   "exit": 0,
+   "rejectedBy": [
+    "the canvas runs the requested back end with no fallback"
+   ]
+  },
+  {
+   "name": "1001-resident",
+   "exit": 0,
+   "rejectedBy": [
+    "the 1,000-element scene has its 1002 drawings resident"
+   ]
+  },
+  {
+   "name": "29-samples",
+   "exit": 0,
+   "rejectedBy": [
+    "sample: every one of the 30 drags committed and was measured",
+    "sample: at least 30 actual release-to-committed samples"
+   ]
+  },
+  {
+   "name": "uncommitted",
+   "exit": 0,
+   "rejectedBy": [
+    "sample: every one of the 30 drags committed and was measured",
+    "sample: at least 30 actual release-to-committed samples"
+   ]
+  },
+  {
+   "name": "short-ring",
+   "exit": 0,
+   "rejectedBy": [
+    "sample: 300 frame intervals during the drags"
+   ]
+  },
+  {
+   "name": "missing-control",
+   "exit": 0,
+   "rejectedBy": [
+    "D-33 control: 300 frames of the webview's cadence on the start screen"
+   ]
+  },
+  {
+   "name": "idle-only-work",
+   "exit": 0,
+   "rejectedBy": [
+    "sample: 300 work of the frames drawn during the drags"
+   ]
+  },
+  {
+   "name": "zero-control",
+   "exit": 1,
+   "rejectedBy": [],
+   "secondAssessment": [
+    [
+     true,
+     "the canvas runs the requested back end with no fallback",
+     {
+      "requested": "webgpu",
+      "backend": "webgpu",
+      "fallback": null
+     }
+    ],
+    [
+     true,
+     "D-33 control: 300 frames of the webview's cadence on the start screen",
+     {
+      "n": 300,
+      "p50": 0,
+      "p95": 0,
+      "max": 0
+     }
+    ],
+    [
+     true,
+     "the 1,000-element scene has its 1002 drawings resident",
+     1002
+    ],
+    [
+     true,
+     "sample: every one of the 30 drags committed and was measured",
+     {
+      "drags": 30,
+      "commits": 30
+     }
+    ],
+    [
+     true,
+     "sample: at least 30 actual release-to-committed samples",
+     30
+    ],
+    [
+     true,
+     "sample: 300 idle frame intervals",
+     300
+    ],
+    [
+     true,
+     "sample: 300 idle frames' work",
+     300
+    ],
+    [
+     true,
+     "sample: 300 frame intervals during the drags",
+     300
+    ],
+    [
+     true,
+     "sample: 300 work of the frames drawn during the drags",
+     300
+    ],
+    [
+     true,
+     "sample: 300 drag feedback samples",
+     300
+    ],
+    [
+     true,
+     "sample: frame time p95, idle <= 17.5 ms",
+     16.8
+    ],
+    [
+     true,
+     "sample: frame time p95, during scene drags <= 17.5 ms",
+     16.9
+    ],
+    [
+     true,
+     "sample: release-to-committed p95 of a scene drag <= 50.0 ms",
+     30.0
+    ],
+    [
+     true,
+     "sample: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms",
+     12.0
+    ],
+    [
+     true,
+     "groups1k: every one of the 30 drags committed and was measured",
+     {
+      "drags": 30,
+      "commits": 30
+     }
+    ],
+    [
+     true,
+     "groups1k: at least 30 actual release-to-committed samples",
+     30
+    ],
+    [
+     true,
+     "groups1k: 300 idle frame intervals",
+     300
+    ],
+    [
+     true,
+     "groups1k: 300 idle frames' work",
+     300
+    ],
+    [
+     true,
+     "groups1k: 300 frame intervals during the drags",
+     300
+    ],
+    [
+     true,
+     "groups1k: 300 work of the frames drawn during the drags",
+     300
+    ],
+    [
+     true,
+     "groups1k: 300 drag feedback samples",
+     300
+    ],
+    [
+     true,
+     "groups1k: frame time p95, idle <= 17.5 ms",
+     16.8
+    ],
+    [
+     true,
+     "groups1k: frame time p95, during scene drags <= 17.5 ms",
+     16.9
+    ],
+    [
+     true,
+     "groups1k: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms",
+     12.0
+    ]
+   ]
+  },
+  {
+   "name": "webgl2-figures",
+   "record": {
+    "control": {
+     "frameMs": {
+      "n": 300,
+      "p50": 17.6,
+      "p95": 18.1,
+      "max": 18.7
+     },
+     "canvases": 1,
+     "startScreen": true
+    },
+    "backend": "webgl2",
+    "fallback": null,
+    "sample": {
+     "resident": null,
+     "idleWork": {
+      "n": 300,
+      "p50": 0.1,
+      "p95": 0.2,
+      "max": 0.2
+     },
+     "dragWork": {
+      "n": 300,
+      "p50": 0.1,
+      "p95": 0.3,
+      "max": 0.4
+     },
+     "feedback": {
+      "n": 300,
+      "p50": 0.2,
+      "p95": 0.4,
+      "max": 0.9
+     },
+     "d33": {
+      "idle": {
+       "workP95": 0.2,
+       "longShare": 0.0,
+       "intervals": 300,
+       "longMs": 35.2
+      },
+      "during scene drags": {
+       "workP95": 0.3,
+       "longShare": 0.0,
+       "intervals": 300,
+       "longMs": 35.2
+      }
+     },
+     "commits": {
+      "n": 30,
+      "p95": 34.1,
+      "max": 34.1
+     }
+    },
+    "groups1k": {
+     "resident": 1002,
+     "idleWork": {
+      "n": 300,
+      "p50": 0.4,
+      "p95": 0.5,
+      "max": 0.8
+     },
+     "dragWork": {
+      "n": 300,
+      "p50": 0.8,
+      "p95": 1.6,
+      "max": 2.6
+     },
+     "feedback": {
+      "n": 300,
+      "p50": 1.1,
+      "p95": 2,
+      "max": 3
+     },
+     "d33": {
+      "idle": {
+       "workP95": 0.5,
+       "longShare": 0.0,
+       "intervals": 300,
+       "longMs": 35.2
+      },
+      "during scene drags": {
+       "workP95": 1.6,
+       "longShare": 0.0,
+       "intervals": 300,
+       "longMs": 35.2
+      }
+     },
+     "commits": {
+      "n": 30,
+      "p95": 57.6,
+      "max": 58.6
+     }
+    }
+   }
+  },
+  {
+   "name": "webgpu-figures",
+   "record": {
+    "control": {
+     "frameMs": {
+      "n": 300,
+      "p50": 17.5,
+      "p95": 18.1,
+      "max": 18.9
+     },
+     "canvases": 1,
+     "startScreen": true
+    },
+    "backend": "webgpu",
+    "fallback": null,
+    "sample": {
+     "resident": null,
+     "idleWork": {
+      "n": 300,
+      "p50": 0.2,
+      "p95": 0.3,
+      "max": 0.4
+     },
+     "dragWork": {
+      "n": 300,
+      "p50": 0.1,
+      "p95": 0.3,
+      "max": 0.6
+     },
+     "feedback": {
+      "n": 300,
+      "p50": 0.2,
+      "p95": 0.5,
+      "max": 0.9
+     },
+     "d33": {
+      "idle": {
+       "workP95": 0.3,
+       "longShare": 0.0,
+       "intervals": 300,
+       "longMs": 35.0
+      },
+      "during scene drags": {
+       "workP95": 0.3,
+       "longShare": 0.0,
+       "intervals": 300,
+       "longMs": 35.0
+      }
+     },
+     "commits": {
+      "n": 30,
+      "p95": 32,
+      "max": 32.6
+     }
+    },
+    "groups1k": {
+     "resident": 1002,
+     "idleWork": {
+      "n": 300,
+      "p50": 0.4,
+      "p95": 0.8,
+      "max": 1.2
+     },
+     "dragWork": {
+      "n": 300,
+      "p50": 1.3,
+      "p95": 2,
+      "max": 3.3
+     },
+     "feedback": {
+      "n": 300,
+      "p50": 1.6,
+      "p95": 2.5,
+      "max": 3.3
+     },
+     "d33": {
+      "idle": {
+       "workP95": 0.8,
+       "longShare": 0.0,
+       "intervals": 300,
+       "longMs": 35.0
+      },
+      "during scene drags": {
+       "workP95": 2,
+       "longShare": 0.0,
+       "intervals": 300,
+       "longMs": 35.0
+      }
+     },
+     "commits": {
+      "n": 30,
+      "p95": 59.1,
+      "max": 59.7
+     }
+    }
+   }
+  }
+ ],
+ "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r2-raw-__dup5hf",
+ "hashes": [
+  {
+   "file": "1001-resident.json",
+   "sha256": "c970a07abc71c489e292f7d0270f6c9d2114310c80832338fea962c889b0aa6d"
+  },
+  {
+   "file": "29-samples.json",
+   "sha256": "6e8b36a60d553ea7c539b3f5469afb67fa43e5b19b8c88416e2a2f86032e04e1"
+  },
+  {
+   "file": "fallback.json",
+   "sha256": "3cef73de9acb2943b41e70e31781c78fd968dd449e3347a58bab39ed4bdb54aa"
+  },
+  {
+   "file": "idle-only-work.json",
+   "sha256": "0b54c426c0e63f33775dcab5cdb9f358b5b6eb507fad04fc304952236bbb4810"
+  },
+  {
+   "file": "missing-control.json",
+   "sha256": "80c671158ddd53685d3e95ff2d5fe2e4d4bf5e45d01f54e6e726bfdead50c73b"
+  },
+  {
+   "file": "short-ring.json",
+   "sha256": "b67374467f898bbbdcbe15e3cad2591391f6d1833e400cb67a73c2fd5336baad"
+  },
+  {
+   "file": "uncommitted.json",
+   "sha256": "1d07ae5ab179dd26192380facd1f3b6fd5c4f48134d74e62684cd83b2613df2c"
+  },
+  {
+   "file": "wrong-backend.json",
+   "sha256": "bb07f70c98b0e5aac506c0def2699f2866fe75336790be342ed7ed624486ffaa"
+  },
+  {
+   "file": "zero-control.json",
+   "sha256": "0d98e1e7057e3d2a6967e3e84def4fd8bfea651cb132d7fc96bec24b2762b0d7"
+  },
+  {
+   "file": "case7\\measure-webgl2-result.json",
+   "sha256": "1cdba8e5c7be510f9667fe995d2805e04eb1aa035a01403581309ca99792219b"
+  },
+  {
+   "file": "case7\\measure-webgl2.txt",
+   "sha256": "70dd3d993ef4a3387d1a6e129410f97fcf04ab7fecdf15ac5329a9e0d55bda7d"
+  },
+  {
+   "file": "case7\\measure-webgpu-result.json",
+   "sha256": "2c3732c82be46eddb41ff95abe8a184ad2253d3a43f00bc73e5a86f0009b6ad5"
+  },
+  {
+   "file": "case7\\measure-webgpu.txt",
+   "sha256": "5b3d0118d5926a50e12059334bc459583409db7c3d14c936eb7a91cc12dd8383"
+  },
+  {
+   "file": "case7\\one-drag-gate-result.json",
+   "sha256": "383f916fe8e735516c610593409ddb4f52caa750696d6e3a7a6a5fc320722e66"
+  },
+  {
+   "file": "case7\\one-drag-gate.txt",
+   "sha256": "3c0d90d8b8a3094963dd3e63942a6b8df957f197e38f641effce265d5847fade"
+  },
+  {
+   "file": "case7\\measure-webgl2\\discovery.log",
+   "sha256": "e8e92c52184f71c6e088712ac19d524d1c094c8fe137d547dce71efbdd009970"
+  },
+  {
+   "file": "case7\\measure-webgl2\\measurements.json",
+   "sha256": "fc0d22d2d97d3e62fc718976b40c4b151281405597e008a74ea12847859043be"
+  },
+  {
+   "file": "case7\\measure-webgl2\\transcript.json",
+   "sha256": "858569020c937ff736739a9e21318d38c98ef8e41f8c00e32333ff5a2fc52efc"
+  },
+  {
+   "file": "case7\\measure-webgpu\\discovery.log",
+   "sha256": "781bfe3d6530f8c33d33d54b45e74b75897e5b039abde89e0c1c1615a6eb8861"
+  },
+  {
+   "file": "case7\\measure-webgpu\\measurements.json",
+   "sha256": "f4a228b9ebbeda97adb47807ebddbbe7719b793a87e32ace96fdac38d53d74f6"
+  },
+  {
+   "file": "case7\\measure-webgpu\\transcript.json",
+   "sha256": "d0562a976a1d765f1bf7035bf0251eb4d80d07d378b2eba377acefb1126cf8cf"
+  },
+  {
+   "file": "case7\\one-drag-gate\\discovery.log",
+   "sha256": "d41c5c98ef5995cacea37c4dc8ba9dda0e604484857982286d366e7891b4c37d"
+  },
+  {
+   "file": "case7\\one-drag-gate\\measurements.json",
+   "sha256": "9c44eb5836420c4c4776c7d12c01a385b02120d2678206f90a8a50a3dce92691"
+  },
+  {
+   "file": "case7\\one-drag-gate\\transcript.json",
+   "sha256": "2d3e10292ccb57b97386c6527542a4ce920c5de95f6072ce0ba82196803d9bae"
+  }
+ ],
+ "regenerate": "python tests/adversarial/c43b-r2-live.py target/release/toontown.exe b1"
+}

@@ -259,6 +259,197 @@ def a3():
  m.Table.tree=m.McpTable.tree;m.Table.node=staticmethod(m.McpTable.node)
  sys.argv=["d39",str(Path(sys.argv[1]).resolve()),str(OUT/"a3"),"--mode","os"]
  raise SystemExit(m.main())
+def baseline(case, check=None):
+ old=sys.argv[:]
+ sys.argv=[old[0],str(Path(old[1]).resolve()),case]+([check] if check else ([str(ROOT/"target/release/toontown-headless.exe")] if case=="case4" else []))
+ try:
+  getattr(r1,case)()
+  return 0
+ except SystemExit as ex:return int(ex.code or 0)
+ finally:sys.argv=old
+
+def summarize(case, results):
+ import hashlib
+ files=[{"file":str(p.relative_to(OUT)),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()} for p in OUT.rglob("*") if p.is_file()]
+ dest=ROOT/"reviews/evidence/M4-C4.3b-r2"/(case+"-summary.json")
+ dest.write_text(json.dumps({"results":results,"raw":str(OUT),"hashes":files,"regenerate":"python tests/adversarial/c43b-r2-live.py target/release/toontown.exe "+case},indent=1)+"\n",encoding="utf-8",newline="\n")
+ print(json.dumps(results),flush=True)
+ return any(r.get("exit",0) for r in results)
+
+def b1():
+ results=[]
+ for name in ("measure-webgl2","measure-webgpu","one-drag-gate"):
+  results.append({"name":name,"exit":baseline("case7",name)})
+ m=load("assessmentFixtures","scripts/test_c43_measure_assess.py")
+ import copy
+ mutations={
+ "wrong-backend":lambda r:r.update(backend="webgl2"),
+ "fallback":lambda r:r.update(fallback="adapter unavailable"),
+ "1001-resident":lambda r:r["groups1k"].update(resident=1001),
+ "29-samples":lambda r:r["sample"]["commits"].update(n=29),
+ "uncommitted":lambda r:r["sample"]["commits"].update(n=0),
+ "short-ring":lambda r:r["sample"].update(dragIntervals=[16.7]),
+ "missing-control":lambda r:r.pop("control"),
+ "idle-only-work":lambda r:r["sample"].pop("dragWork"),
+ "zero-control":lambda r:r["control"]["frameMs"].update(p50=0,p95=0,max=0)}
+ for name,mutate in mutations.items():
+  record=m.complete();mutate(record)
+  path=OUT/(name+".json");path.write_text(json.dumps(record),encoding="utf-8")
+  failures=m.failed(json.loads(path.read_text()))
+  results.append({"name":name,"exit":0 if failures else 1,"rejectedBy":failures})
+  if not failures:
+   independent=load("assessmentIndependent"+name.replace("-",""),"scripts/c43_measure_assess.py")
+   results[-1]["secondAssessment"]=independent.assess(json.loads(path.read_text()),m.BOUNDS,30)
+ for backend in ("webgl2","webgpu"):
+  path=OUT/"case7"/("measure-"+backend)/"measurements.json"
+  if path.exists():
+   rec=json.loads(path.read_text())["record"]
+   figures={"control":rec.get("control"),"backend":rec.get("backend"),"fallback":rec.get("fallback")}
+   for scene in ("sample","groups1k"):
+    data=rec.get(scene,{})
+    figures[scene]={k:data.get(k) for k in ("resident","idleWork","dragWork","feedback","d33")}
+    figures[scene]["commits"]={k:v for k,v in data.get("commits",{}).items() if k!="samples"}
+   results.append({"name":backend+"-figures","record":figures})
+ raise SystemExit(summarize("b1",results))
+
+def b2():
+ results=[]
+ for case in ("case3","case4","case6"):
+  results.append({"name":case,"exit":baseline(case)})
+ names=["c41","c42","byte","r1","r2","r3","r4","c42b-r1s-selection","c42b-r1s-generation","c42b-r1s-experiments","c42b-r1-conformance"]
+ names += ["r1-"+x for x in ("c3","d2","d2-exact-attached","d2-exact-headless","d3-webgl2")]
+ names += ["r2-"+x for x in ("c2","d3-webgl2","gui","regression","byte","exact","exact-select","exact-tools")]+["r3-labels"]
+ if len(sys.argv)>3:names=[sys.argv[3]]
+ for name in names:results.append({"name":name,"exit":baseline("case7",name)})
+ app=str(Path(sys.argv[1]).resolve());head=str(ROOT/"target/release/toontown-headless.exe")
+ jobs=[("builder-e6",["scripts/c43-e6-coexistence.py",app,str(OUT/"builder-e6")]),("builder-equivalence",["scripts/c43-gesture-equivalence.py",app,head,str(OUT/"builder-equivalence")]),("builder-d39",["scripts/c43-d39-bindings.py",app,str(OUT/"builder-d39"),"--mode","os"])]
+ jobs += [("builder-camera-"+b,["scripts/c43-camera-e2e.py",app,str(OUT/("builder-camera-"+b)),"--backend",b]) for b in ("webgl2","webgpu")]
+ for name,args in jobs:
+  try:
+   proc=subprocess.run([sys.executable]+args,cwd=ROOT,capture_output=True,timeout=530)
+   (OUT/(name+".txt")).write_bytes(proc.stdout+proc.stderr)
+   results.append({"name":name,"exit":proc.returncode})
+  except subprocess.TimeoutExpired:results.append({"name":name,"exit":1,"error":"530 second timeout"})
+ raise SystemExit(summarize("b2",results))
+
+def b3():
+ m=load("b3table","scripts/c43-d39-bindings.py")
+ original_row=m.Table.row
+ async def reflecting_row(t,r):
+  await original_row(t,r)
+  if r.get("shows"):
+   before=await r["state"]();want=r["expect"](before) if callable(r["expect"]) else r["expect"]
+   await t.cmd(want[0],want[1]);after=await r["state"]()
+   shown=await m.McpTable.shows(t,r,after)
+   t.run.check(shown is not False,"D-39 agent changes reflected; "+r["spec"],shown)
+ m.Table.row=reflecting_row
+ original_jobs=m.jobs_row
+ async def extra(t):
+  await original_jobs(t)
+  env=await m.e2e.run_cmd(t.s,"render.range.run",{"from":1,"to":240,"scale":2,"directory":str(t.work/"cancel-frames"),"createDirs":True,"onConflict":"overwrite"})
+  jid=(env.get("result") or {}).get("jobId")
+  await asyncio.sleep(.5)
+  dom=t.cdp.js("Array.from(document.querySelectorAll('[data-tt-command=\"job.cancel\"]')).map(e=>({id:e.dataset.ttId,params:e.dataset.ttParams}))")
+  tree=(await m.e2e.tree(t.s)).get("result")
+  t.run.save("b3-job-cancel.json",{"jobId":jid,"dom":dom,"tree":tree})
+  t.run.check(bool(dom),"01 section 9.5 lines 924-926 cancellable running operation has window Cancel",dom)
+  if dom:
+   t.clear();t.click(dom[0]["id"]);await asyncio.sleep(.5)
+   t.run.check(any(c.get("command")=="job.cancel" and c.get("params",{}).get("jobId")==jid for c in t.recorded()),"01 section 9.5 lines 924-926 window sends job.cancel for displayed job",t.recorded())
+  if jid:
+   await m.e2e.run_cmd(t.s,"job.cancel",{"jobId":jid})
+   await m.e2e.call(t.s,"job_wait",{"jobId":jid,"timeoutMs":120000})
+  async def cmd(n,p=None):return await t.cmd(n,p or {})
+  async def check(name,fn):
+   try:await fn()
+   except Exception as ex:t.run.check(False,name+" ran",repr(ex))
+  async def backups():
+   import hashlib
+   await cmd("project.save",{})
+   path=t.work/"B3.animpkg"
+   await cmd("project.saveAs",{"path":str(path),"onExists":"overwrite"})
+   snapshots=[]
+   for i in range(3):
+    await cmd("draw.rectangle.add",{"from":{"x":i*20,"y":0},"to":{"x":i*20+10,"y":10}})
+    await cmd("project.save",{})
+    snapshots.append(await cmd("doc.export.json",{}))
+   listed=await cmd("project.backup.list",{})
+   before=hashlib.sha256(path.read_bytes()).hexdigest()
+   m.choose_menu(["File","Open Backup"]);await asyncio.sleep(1)
+   text=t.cdp.js("document.querySelector('[data-tt-id=\"openBackup.list\"]')?.textContent")
+   t.run.check(len(listed)>=2 and all(x["savedAt"] in text for x in listed),"01 section 3.7 lines 259-262 backup save times listed",text)
+   await cmd("draw.rectangle.add",{"from":{"x":200,"y":0},"to":{"x":220,"y":10}})
+   dirty=await cmd("doc.export.json",{})
+   t.click("openBackup.open.1");await asyncio.sleep(.8)
+   message=t.cdp.js("document.querySelector('[data-tt-id=\"message.project.unsavedChanges\"]')?.textContent")
+   t.run.check(bool(message),"01 section 3.5 unsaved backup opening prompts Save/Discard/Cancel",message)
+   if message:
+    t.click("message.cancel");await asyncio.sleep(.5)
+    t.run.check(await cmd("doc.export.json",{})==dirty,"01 section 3.5 Cancel preserves dirty current document",None)
+    m.choose_menu(["File","Open Backup"]);await asyncio.sleep(.7)
+    t.clear();t.click("openBackup.open.1");await asyncio.sleep(.5);t.click("message.discard");await asyncio.sleep(2)
+   else:
+    t.clear()
+   
+   state=await cmd("app.state.get",{})
+   doc=await cmd("doc.export.json",{})
+   t.run.save("b3-backup-state.json",{"listed":listed,"snapshots":snapshots,"opened":doc,"state":state,"sent":t.recorded()})
+   t.run.check(not (state.get("project") or {}).get("path"),"01 section 3.7 lines 259-262 older backup is untitled",state)
+   t.run.check(hashlib.sha256(path.read_bytes()).hexdigest()==before,"01 section 3.7 lines 259-262 original file untouched",None)
+   t.run.check(doc in snapshots,"01 section 3.7 lines 259-262 opened content equals a saved snapshot",None)
+  await check("backup",backups)
+  async def empty_backup():
+   await cmd("project.create",{"name":"EmptyB3","onUnsaved":"discard"})
+   m.choose_menu(["File","Open Backup"]);await asyncio.sleep(1)
+   text=t.cdp.js("document.querySelector('[data-tt-id=\"openBackup.list\"]')?.textContent")
+   buttons=t.cdp.js("document.querySelectorAll('[data-tt-command=\"project.backup.open\"]').length")
+   t.run.check(text and "No backups" in text and buttons==0,"01 section 3.7 lines 259-262 empty backup notice and no Open",text)
+   m.key(0x1B);await asyncio.sleep(.5)
+  await check("empty backup",empty_backup)
+  async def keymaps():
+   await cmd("keymap.set",{"commandId":"project.save","keys":"Primary+Shift+F11","replaceExisting":True})
+   await cmd("keymap.set",{"commandId":"edit.undo","keys":"Primary+Shift+F12","replaceExisting":True})
+   expected=await cmd("keymap.list",{})
+   m.choose_menu(["File","Preferences"]);await asyncio.sleep(.8);t.click("preferences.category.keyboard");await asyncio.sleep(.5)
+   exported=t.work/"B3-keymap.json"
+   t.click("keymap.export");await asyncio.sleep(1.5);m.type_text(str(exported));m.key(0x0D);await asyncio.sleep(1)
+   t.run.check(exported.exists(),"01 section 8.3 line 857 Export real save dialog creates file",None)
+   m.key(0x1B);await asyncio.sleep(.4)
+   for mode in ("replace","merge"):
+    await cmd("keymap.reset",{"all":True})
+    m.choose_menu(["File","Preferences"]);await asyncio.sleep(.8);t.click("preferences.category.keyboard");await asyncio.sleep(.5)
+    t.click("keymap.import");await asyncio.sleep(1.5);m.type_text(str(exported));m.key(0x0D);await asyncio.sleep(1)
+    m.key(0x0D if mode=="replace" else 0x1B);await asyncio.sleep(.5);t.click("preferences.submit");await asyncio.sleep(1)
+    after=await cmd("keymap.list",{})
+    t.run.check(after==expected,"01 section 8.3 lines 857-858 imported "+mode+" keymap equals exported bindings",None)
+   await cmd("keymap.reset",{"all":True})
+   for kind in ("malformed","conflict"):
+    before=await cmd("keymap.list",{})
+    bad=t.work/(kind+".json")
+    data=json.loads(exported.read_text())
+    if kind=="conflict":
+     bindings=data["bindings"]
+     bindings[1]["keys"]=bindings[0]["keys"];bindings[1]["context"]=bindings[0]["context"]
+    bad.write_text("{oops" if kind=="malformed" else json.dumps(data),encoding="utf-8")
+    m.choose_menu(["File","Preferences"]);await asyncio.sleep(.8);t.click("preferences.category.keyboard");await asyncio.sleep(.5)
+    t.click("keymap.import");await asyncio.sleep(1.5);m.type_text(str(bad));m.key(0x0D);await asyncio.sleep(1);m.key(0x0D);await asyncio.sleep(.5);t.click("preferences.submit");await asyncio.sleep(1)
+    after=await cmd("keymap.list",{})
+    notice=t.cdp.js("document.body.textContent")
+    t.run.save("b3-"+kind+".json",{"before":before,"after":after,"notice":notice})
+    t.run.check(before==after,"01 section 8.3 lines 850-858 "+kind+" import no partial change",None)
+    m.key(0x1B);await asyncio.sleep(.3);m.key(0x1B);await asyncio.sleep(.3)
+  await check("keymaps",keymaps)
+ m.jobs_row=extra
+ original_build=m.build_and_run
+ async def build(t,only):
+  await original_build(t,only)
+  env=await m.e2e.run_cmd(t.s,"tool.symmetry.set",{"mode":"mirror"})
+  t.run.check(env.get("status")!="ok" and (env.get("error") or {}).get("code")=="project.none","D-39 and 01 section 1.3 symmetry without project refused project.none",env)
+ m.build_and_run=build
+ old=sys.argv[:];sys.argv=["d39",str(Path(old[1]).resolve()),str(OUT/"b3"),"--mode","os","--only","main toolbar,type camera,type drawing,symmetry"]
+ code=m.main();sys.argv=old
+ raise SystemExit(summarize("b3",[{"name":"B3-window","exit":code}]))
+
 if __name__=="__main__":
  import socket
  sock=socket.socket();listening=sock.connect_ex(("127.0.0.1",1420))==0;sock.close()
@@ -267,6 +458,6 @@ if __name__=="__main__":
   server=subprocess.Popen([sys.executable,"-m","http.server","1420","--bind","127.0.0.1","--directory",str(ROOT/"desktop/dist")],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
   time.sleep(.5)
  print("Raw evidence:",OUT,flush=True)
- try:{"a2":a2,"a3":a3}[sys.argv[2]]()
+ try:{"a2":a2,"a3":a3,"b1":b1,"b2":b2,"b3":b3}[sys.argv[2]]()
  finally:
   if server:server.terminate();server.wait()
