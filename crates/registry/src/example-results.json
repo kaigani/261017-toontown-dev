@@ -9335,7 +9335,8 @@
         "message": "",
         "startedAt": "2026-11-14T16:38:48.916Z",
         "result": {},
-        "session": "user"
+        "session": "user",
+        "cancellable": false
       },
       "varies": [
         "/startedAt"
@@ -9354,7 +9355,8 @@
           "message": "",
           "startedAt": "2026-11-14T16:38:48.933Z",
           "result": {},
-          "session": "user"
+          "session": "user",
+          "cancellable": false
         }
       ],
       "varies": [
@@ -9373,7 +9375,8 @@
         "message": "",
         "startedAt": "2026-11-14T16:38:48.948Z",
         "result": {},
-        "session": "user"
+        "session": "user",
+        "cancellable": false
       },
       "varies": [
         "/startedAt"

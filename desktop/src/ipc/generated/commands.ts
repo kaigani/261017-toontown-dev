@@ -62957,6 +62957,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Session that started it.",
         type: "string",
       },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
+      },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
         type: "array",
@@ -63085,6 +63090,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Session that started it.",
         type: "string",
       },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
+      },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
         type: "array",
@@ -63167,6 +63177,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       session: {
         description: "Session that started it.",
         type: "string",
+      },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
       },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
@@ -63362,6 +63377,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Session that started it.",
         type: "string",
       },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
+      },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
         type: "array",
@@ -63505,6 +63525,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       session: {
         description: "Session that started it.",
         type: "string",
+      },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
       },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
@@ -100456,6 +100481,8 @@ export interface job_cancel_result {
   error?: job_cancel_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
 }
@@ -100498,6 +100525,8 @@ export interface job_finished_result {
   error?: job_finished_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
 }
@@ -100530,6 +100559,8 @@ export interface job_list_JobRecord {
   error?: job_list_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
 }
@@ -100589,6 +100620,8 @@ export interface job_progress_result {
   error?: job_progress_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
 }
@@ -100636,6 +100669,8 @@ export interface job_wait_result {
   error?: job_wait_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
   /** `true` when the job was still running when the timeout passed; absent otherwise (A / 11 §15.2 `timedOut?`; C12-R1-13). */
