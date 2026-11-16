@@ -175,15 +175,15 @@ fn d36_deferred_entries_are_validated_in_full() {
     // scan before anything is decoded (an escaped duplicate, an escaped root, an escaped entry field, a non-ASCII key),
     // without a panic; an escape in a value is not a key and stays allowed.
     for raw in [
-        r#"{"deferred":{"anim.camera.set":{"owner":"M4 C4.4"},"anim.camera.set":{"owner":"M4 C4.4"}}}"#,
-        r#"{"deferred":{"anim.camera.set":{},"anim.camera.set":{}}}"#,
-        r#"{"deferred":{"anim.camera.set":{"owner":"M4 C4.4"}}}"#,
+        r#"{"deferred":{"anim.camera.set":{"owner":"M4 C4.4"},"anim.camera.\u0073et":{"owner":"M4 C4.4"}}}"#,
+        r#"{"defer\u0072ed":{"anim.camera.set":{},"anim.camera.set":{}}}"#,
+        r#"{"deferred":{"anim.camera.set":{"own\u0065r":"M4 C4.4"}}}"#,
         "{\"deferred\":{\"anim.camera.s\u{0435}t\":{}}}",
     ] {
         let err = deferred_entries(raw).expect_err(raw);
         assert!(err.contains("keys are plain ASCII"), "{raw}: {err}");
     }
-    let ok = deferred_entries(r#"{"deferred":{"anim.camera.set":{"owner":"M4 C4.4"}}}"#).unwrap();
+    let ok = deferred_entries(r#"{"deferred":{"anim.camera.set":{"owner":"M4 C\u0034.4"}}}"#).unwrap();
     assert_eq!(ok[0].1["owner"], "M4 C4.4");
 }
 
