@@ -1,4 +1,4 @@
-"""Independent round-two live probes: python FILE APP a2|a3. Raw data stays in TEMP."""
+"""Independent round-two live probes: python FILE APP a2|a3|b1|b2|b3. Raw data stays in TEMP."""
 import sys
 if len(sys.argv)<3:
  print("skipped: no application")
@@ -291,10 +291,11 @@ def summarize(case, results):
  dest=ROOT/"reviews/evidence/M4-C4.3b-r2"/(case+"-summary.json")
  receipts=[]
  for p in OUT.rglob("*.json"):
-  if p.name not in ("manifest.json","rows.json","measurements.json"):continue
+  if p.name not in ("manifest.json","rows.json","measurements.json") and not (case=="b3" and p.name=="transcript.json"):continue
   try:
    data=json.loads(p.read_text(encoding="utf-8"))
    if isinstance(data,list):
+    if p.name=="transcript.json":receipts.append({"file":str(p.relative_to(OUT)),"checks":[{"check":r.get("check"),"ok":r.get("ok")} for r in data if isinstance(r,dict)]})
     if p.name=="rows.json":receipts.append({"file":str(p.relative_to(OUT)),"rows":[{"name":r.get("name"),"ok":r.get("ok")} for r in data if isinstance(r,dict)]})
    elif isinstance(data,dict):receipts.append({"file":str(p.relative_to(OUT)),**{k:data[k] for k in ("checks","rows","failed","failures","seconds") if k in data}})
   except (ValueError,UnicodeError):pass
@@ -364,6 +365,11 @@ def b2():
 
 def b3():
  m=load("b3table","scripts/c43-d39-bindings.py")
+ m.Table.tree=m.McpTable.tree;m.Table.node=staticmethod(m.McpTable.node)
+ def merge_confirm(t):
+  state=t.cdp.js("({confirm:String(window.confirm),notice:document.querySelector('[data-tt-id=\"keymap.notice\"]')?.textContent})")
+  t.run.save("b3-merge-confirm.json",state)
+  t.run.check("(merge)" in (state.get("notice") or ""),"01 section 8.3 line 857 Import offers merge rather than always replacing",state)
  original_row=m.Table.row
  async def reflecting_row(t,r):
   await original_row(t,r)
@@ -376,20 +382,37 @@ def b3():
  original_jobs=m.jobs_row
  async def extra(t):
   await original_jobs(t)
-  env=await m.e2e.run_cmd(t.s,"render.range.run",{"from":1,"to":2400,"scale":2,"directory":str(t.work/"cancel-frames"),"createDirs":True,"onConflict":"overwrite"})
-  jid=(env.get("result") or {}).get("jobId")
-  await asyncio.sleep(.5)
-  listed=await m.e2e.run_cmd(t.s,"job.list",{})
-  dom=t.cdp.js("Array.from(document.querySelectorAll('[data-tt-command=\"job.cancel\"]')).map(e=>({id:e.dataset.ttId,params:e.dataset.ttParams}))")
-  tree=(await m.e2e.tree(t.s)).get("result")
-  t.run.save("b3-job-cancel.json",{"jobId":jid,"jobs":listed,"dom":dom,"tree":tree})
-  t.run.check(bool(dom),"01 section 9.5 lines 925-927 cancellable running operation has window Cancel",dom)
-  if dom:
-   t.clear();t.click(dom[0]["id"]);await asyncio.sleep(.5)
-   t.run.check(any(c.get("command")=="job.cancel" and c.get("params",{}).get("jobId")==jid for c in t.recorded()),"01 section 9.5 lines 925-927 window sends job.cancel for displayed job",t.recorded())
-  if jid:
-   await m.e2e.run_cmd(t.s,"job.cancel",{"jobId":jid})
-   await m.e2e.call(t.s,"job_wait",{"jobId":jid,"timeoutMs":120000})
+  discovery=json.loads((t.work/"discovery.json").read_text())
+  async with m.contextlib.AsyncExitStack() as stack:
+   client=await stack.enter_async_context(m.e2e.httpx2.AsyncClient(headers={"Authorization":"Bearer "+discovery["token"]},timeout=300))
+   streams=await stack.enter_async_context(m.e2e.streamable_http_client(discovery["endpoint"],http_client=client))
+   from mcp import types
+   async def roots(_ctx):return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name="work")])
+   agent=await stack.enter_async_context(m.e2e.ClientSession(streams[0],streams[1],list_roots_callback=roots))
+   await agent.initialize()
+   env=await m.e2e.run_cmd(agent,"render.range.run",{"from":1,"to":2400,"scale":2,"directory":str(t.work/"cancel-frames"),"createDirs":True,"onConflict":"overwrite"})
+   jid=(env.get("result") or {}).get("jobId")
+   await asyncio.sleep(.5)
+   listed=await m.e2e.run_cmd(agent,"job.list",{})
+   status_text=t.cdp.js("document.querySelector('[data-tt-id=\"status.jobs\"]')?.textContent")
+   t.run.check(bool(status_text) and "running" in status_text,"01 section 9.1 second agent job shown while running",status_text)
+   dom=t.cdp.js("Array.from(document.querySelectorAll('[data-tt-command=\"job.cancel\"]')).map(e=>({id:e.dataset.ttId,params:e.dataset.ttParams}))")
+   tree=(await m.e2e.tree(t.s)).get("result")
+   t.run.save("b3-job-cancel.json",{"jobId":jid,"jobs":listed,"dom":dom,"tree":tree})
+   t.run.check(bool(dom),"01 section 9.5 lines 925-927 cancellable running operation has window Cancel",dom)
+   if dom:
+    t.clear();t.click(dom[0]["id"]);await asyncio.sleep(.5)
+    t.run.check(any(c.get("command")=="job.cancel" and c.get("params",{}).get("jobId")==jid for c in t.recorded()),"01 section 9.5 lines 925-927 window sends job.cancel for displayed job",t.recorded())
+   if jid:
+    payload={"command":"job.cancel","params":{"jobId":jid}}
+    direct=t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json:"+json.dumps(json.dumps(payload))+"})")
+    t.run.save("b3-job-cancel-direct.json",{"jobId":jid,"response":direct})
+    await m.e2e.call(agent,"job_wait",{"jobId":jid,"timeoutMs":120000})
+    for _ in range(30):
+     end=t.cdp.js("document.querySelector('[data-tt-id=\"status.jobs\"]')?.textContent")
+     if not end:break
+     await asyncio.sleep(.1)
+    t.run.check(end=="","01 section 9.1 second agent job disappears when ended",end)
   async def cmd(n,p=None):return await t.cmd(n,p or {})
   async def document():return r1.canonical((await cmd("doc.export.json",{"scope":"project","binaries":"omit"})).get("bundle"))
   async def check(name,fn):
@@ -431,10 +454,17 @@ def b3():
     t.run.check(await document()==dirty,"01 section 3.5 Cancel preserves dirty current document",None)
     m.choose_menu(["File","Open Backup"]);await asyncio.sleep(.5);t.click("message.discard");await asyncio.sleep(.7)
     t.clear();t.click("openBackup.open.1");await asyncio.sleep(2)
-    t.run.check(await document()==snapshots[0],"01 section 3.5 Discard then Open restores chosen backup",t.recorded())
+    after_discard=await document();sent=t.recorded()
+    t.run.check(after_discard==snapshots[0],"01 section 3.5 Discard then Open restores chosen backup",sent)
+    payload={"command":"project.backup.open","params":{"backupId":listed[1]["backupId"],"onUnsaved":"discard"}}
+    direct=t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json:"+json.dumps(json.dumps(payload))+"})")
+    await asyncio.sleep(.7);after_direct=await document()
+    t.run.save("b3-backup-unsaved.json",{"dirty":dirty,"afterDiscardOpen":after_discard,"expected":snapshots[0],"sent":sent,"direct":direct,"afterDirect":after_direct})
+    t.run.check(after_direct==snapshots[0],"01 section 3.5 independent explicit discard control restores backup",None)
   await check("backup",backups)
   async def empty_backup():
-   await cmd("project.create",{"name":"EmptyB3","onUnsaved":"discard"})
+   await cmd("project.saveAs",{"path":str(t.work/"BeforeEmpty.animpkg"),"onExists":"overwrite"})
+   await cmd("project.create",{"name":"EmptyB3","onUnsaved":"fail"})
    await cmd("project.saveAs",{"path":str(t.work/"EmptyB3.animpkg"),"onExists":"overwrite"})
    m.choose_menu(["File","Open Backup"]);await asyncio.sleep(1)
    text=t.cdp.js("document.querySelector('[data-tt-id=\"openBackup.list\"]')?.textContent")
@@ -456,14 +486,24 @@ def b3():
     defaults=await cmd("keymap.list",{})
     m.choose_menu(["File","Preferences"]);await asyncio.sleep(.8);t.click("preferences.category.keyboard");await asyncio.sleep(.5)
     t.click("keymap.import");await asyncio.sleep(1.5);m.type_text(str(exported));m.key(0x0D);await asyncio.sleep(1)
-    m.key(0x0D if mode=="replace" else 0x1B);await asyncio.sleep(.5);t.click("preferences.submit");await asyncio.sleep(1)
+
+    if mode=="replace":m.key(0x0D)
+    else:merge_confirm(t)
+    await asyncio.sleep(.5);t.click("preferences.submit");await asyncio.sleep(1)
     after=await cmd("keymap.list",{})
     canonical=lambda rows:sorted(json.dumps(x,sort_keys=True) for x in rows)
     wanted=expected if mode=="replace" else defaults+[x for x in expected if x not in defaults]
     t.run.check(canonical(after)==canonical(wanted),"01 section 8.3 lines 857-858 imported "+mode+" keymap equals replacement or union",None)
     tree=(await m.e2e.tree(t.s)).get("result") or {}
     encoded=json.dumps(tree)
-    t.run.save("b3-keymap-"+mode+".json",{"expected":wanted,"actual":after,"tree":tree})
+    t.run.save("b3-keymap-"+mode+".json",{"expected":wanted,"actual":after,"tree":tree,"sent":t.recorded()})
+    if mode=="merge":
+     await cmd("keymap.reset",{"all":True})
+     await cmd("keymap.import",{"path":str(exported),"mode":"merge"})
+     direct=await cmd("keymap.list",{})
+     after=direct
+     t.run.save("b3-merge-direct.json",{"expected":wanted,"actual":direct})
+     t.run.check(canonical(direct)==canonical(wanted),"01 section 8.3 line 857 independent explicit merge preserves union",None)
     if mode=="replace":t.run.check("Primary+Shift+F11" in encoded and "Primary+Shift+F12" in encoded,"D-38 replaced keymap menu shortcuts reflect imported bindings",None)
     import ctypes
     u=ctypes.windll.user32;u.GetMenu.restype=ctypes.c_void_p;u.GetMenu.argtypes=[ctypes.c_void_p];u.GetSubMenu.restype=ctypes.c_void_p
@@ -506,7 +546,7 @@ def b3():
  async def build(t,only):
   await original_build(t,only)
   env=await m.e2e.run_cmd(t.s,"tool.symmetry.set",{"mode":"mirror"})
-  t.run.check(env.get("status")!="ok" and (env.get("error") or {}).get("code")=="project.none","D-39 and 01 section 1.3 symmetry without project refused project.none",env)
+  t.run.check(env.get("status")!="ok" and (env.get("error") or {}).get("code")=="project.none","D-39 and 01 section 1.3 lines 71-75 symmetry without project refused project.none",env)
  m.build_and_run=build
  old=sys.argv[:];sys.argv=["d39",str(Path(old[1]).resolve()),str(OUT/"b3"),"--mode","os","--only","main toolbar,type camera,type drawing,symmetry"]
  code=m.main();sys.argv=old

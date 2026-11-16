@@ -1,0 +1,25 @@
+{
+ "reproduced": [
+  "C43B-R2-06",
+  "C43B-R2-07"
+ ],
+ "files": [
+  {
+   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r2-raw-e8uxfwts\\b3\\b3-job-cancel.json",
+   "sha256": "ed24feef5896480ced342ce284c385d918d953a4df138c89e555f372ca2b6358"
+  },
+  {
+   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r2-raw-e8uxfwts\\b3\\b3-backup-state.json",
+   "sha256": "f4fcb109ee5ed5a9a8f840f6d772ebb1eee812d1b0a5b1b8b015d0f8669bf684"
+  },
+  {
+   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r2-raw-mxlmynk2\\b3\\b3-job-cancel.json",
+   "sha256": "831e09ebdd4fc0cfa05bdb36d8e64b6829372f51d4dab32f7365bfae41ce894e"
+  },
+  {
+   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r2-raw-mxlmynk2\\b3\\b3-backup-unsaved.json",
+   "sha256": "208253b22da25a69ec2bcf750bfcd5f2c8a345cc226f146215dfba6abfc730ac"
+  }
+ ],
+ "note": "Fresh independent projects. The final b3 run additionally uses a second simultaneous agent session and reproduces merge through the real open dialog; earlier tooling failures are excluded."
+}
