@@ -1,0 +1,456 @@
+{
+  "case": "A3",
+  "verdict": "FAIL",
+  "checks": 697,
+  "failedAssertions": 10,
+  "findings": [
+    "C43B-R2-03",
+    "C43B-R2-04"
+  ],
+  "controls": [
+    {
+      "control": "main toolbar > drawAid.grid.set",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ],
+        [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": false
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "main toolbar > gridOverlay",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "overlay": true
+            }
+          }
+        ],
+        [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "overlay": false
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "main toolbar > drawAid.onionSkin.set",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "main toolbar > drawAid.autoLightTable.set",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "drawAid.autoLightTable.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        [
+          {
+            "command": "drawAid.autoLightTable.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "main toolbar > Grid type",
+      "verdict": "FAIL R2-03",
+      "commands": [
+        [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "type": "field12"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "main toolbar > onionSkinPrevious",
+      "verdict": "FAIL R2-03",
+      "commands": [
+        [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "previous": 2
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "drawingView chrome > grid",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": false
+            }
+          }
+        ],
+        [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "drawingView chrome > onionSkin",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "drawingView chrome > symmetry",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "tool.symmetry.set",
+            "params": {
+              "mode": "mirror"
+            }
+          }
+        ],
+        [
+          {
+            "command": "tool.symmetry.set",
+            "params": {
+              "mode": "none"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "drawingView toolbar > type camera",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "view.type.set",
+            "params": {
+              "viewId": "drawingView",
+              "type": "camera"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "drawingView toolbar > type drawing",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "view.type.set",
+            "params": {
+              "viewId": "drawingView",
+              "type": "drawing"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "cameraView chrome > grid",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ],
+        [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": false
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "cameraView chrome > onionSkin",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "cameraView chrome > symmetry",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "tool.symmetry.set",
+            "params": {
+              "mode": "none"
+            }
+          }
+        ],
+        [
+          {
+            "command": "tool.symmetry.set",
+            "params": {
+              "mode": "mirror"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "cameraView toolbar > type drawing",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "view.type.set",
+            "params": {
+              "viewId": "cameraView",
+              "type": "drawing"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "cameraView toolbar > type camera",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "view.type.set",
+            "params": {
+              "viewId": "cameraView",
+              "type": "camera"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "tools palette > select",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "select"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "tools palette > contourEditor",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "contourEditor"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "tools palette > perspective",
+      "verdict": "PASS",
+      "commands": [
+        [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "perspective"
+            }
+          }
+        ]
+      ],
+      "effects": true
+    },
+    {
+      "control": "status bar > jobs",
+      "verdict": "PASS",
+      "commands": [],
+      "effects": true
+    },
+    {
+      "control": "status bar > agent disclosure",
+      "verdict": "PASS",
+      "commands": [],
+      "effects": true
+    }
+  ],
+  "menus": [
+    {
+      "state": "no-project",
+      "items": 138,
+      "commandItems": 108,
+      "mismatchedItems": 1,
+      "verdict": "FAIL R2-04"
+    },
+    {
+      "state": "empty-selection",
+      "items": 139,
+      "commandItems": 109,
+      "mismatchedItems": 1,
+      "verdict": "FAIL R2-04"
+    },
+    {
+      "state": "drawing-selection",
+      "items": 139,
+      "commandItems": 109,
+      "mismatchedItems": 1,
+      "verdict": "FAIL R2-04"
+    },
+    {
+      "state": "locked",
+      "items": 139,
+      "commandItems": 109,
+      "mismatchedItems": 1,
+      "verdict": "FAIL R2-04"
+    }
+  ],
+  "hashes": {
+    "about-second-api-drawing-selection.json": "5e79eed827d3b373bc6cbe6e211a4132ec4a835bf080624a333e1e641febaaac",
+    "about-second-api-empty-selection.json": "5e79eed827d3b373bc6cbe6e211a4132ec4a835bf080624a333e1e641febaaac",
+    "about-second-api-locked.json": "5e79eed827d3b373bc6cbe6e211a4132ec4a835bf080624a333e1e641febaaac",
+    "about-second-api-no-project.json": "5e79eed827d3b373bc6cbe6e211a4132ec4a835bf080624a333e1e641febaaac",
+    "declared-cameraView.aid.grid.json": "01ec1018dd845bae863829b52488578c42ad9fea1109d9777abac54854ce34e8",
+    "declared-cameraView.aid.onionSkin.json": "e525443f7da379d7e789d414fdc4c1441f44a6524f59c9919279d914c7924553",
+    "declared-cameraView.symmetry.json": "ed5b9817ac2f98da3a47b9a19e19e740b171b2b3970b48296559f18493920709",
+    "declared-cameraView.type.camera.json": "f8797ca738414075a93cb22fbe56394170ac069c1c636d953448b1a2cf95bce3",
+    "declared-cameraView.type.drawing.json": "168bc1ece93dd3dd9a464defbbcff2da70e5027b8986fbe2340e90a0f4de22c5",
+    "declared-drawingTools.contourEditor.json": "8b5634f78716868aee2b59247f7a19afa8bb1e07a73c38408ff2180ec06b96c6",
+    "declared-drawingTools.perspective.json": "dd2404ee722f3f568266e9795c01de0695fe51cc6ea05b3e78a2dd04edfa33c2",
+    "declared-drawingTools.select.json": "60910a2e343fdf48e95372b90c338cf4687e70a1f09df735e95088fd9ab2e740",
+    "declared-drawingView.aid.grid.json": "d7aa60c6409164e1a25d7fd7af96920b43f4c7dd29c9fe795fd53fff72d4a135",
+    "declared-drawingView.aid.onionSkin.json": "aecf71fb39ca6a501bb62a11dedfdfccc5f302ddb20f9619945acb5e27329b3a",
+    "declared-drawingView.symmetry.json": "cf068ddc8e59b39c179ddc44a8d6f92a551385c76d813c772c9bd6715e5a56f6",
+    "declared-drawingView.type.camera.json": "334a6aba31b2e4b61c683449afe305e8b2bef216d5965321aec7d2c777ad6bc2",
+    "declared-drawingView.type.drawing.json": "7d12d14bbe45df8c4ee4500d928450604e1718f0f01a335e394d92083e84213b",
+    "declared-mainToolbar.drawAid.autoLightTable.set.json": "f0a882b12e726d85f2c5a3ca1f7a6be63e3dd68834592e3b71ae02194d839efa",
+    "declared-mainToolbar.drawAid.grid.set.json": "aea2d21b92789226192c064f8e562190f6f06e24c7198a884b8c180ec8ade811",
+    "declared-mainToolbar.drawAid.onionSkin.set.json": "f93266ce7a1e8c484fb089ff044164a8b2e1fd89dece28dea78413d5c10059d1",
+    "declared-mainToolbar.gridOverlay.json": "5c6e87f9718717fe6f8130ee70437b72d80500c05958aa34f41bd9acf2b601a2",
+    "declared-mainToolbar.gridType.json": "4ab70b4decdc15aa34d2e6552f818a91ffe5369aef01717b9c8623808daf6400",
+    "declared-mainToolbar.onionSkinPrevious.json": "295a6389d7741eb704baff71f9ace4a1896fd9b56916ce9eb6fd9f52f1eea200",
+    "manifest.json": "b046c8c587869f5790cdee87a0b6291a83d852191cbe8b14401261ec96b5225c",
+    "menus-drawing-selection.json": "59eb825aa97fc002182929b6332441b02e8175c269124565590d61d9e6c4c691",
+    "menus-empty-selection.json": "230d24f8feb82ad19ad58321aa7cd48f9fb63d2e1cb1423c18b7f2fb9d0b0706",
+    "menus-locked.json": "16ab0646738e3d7794354ccd10e2fec8e48743867aeab9f6903cacf279d2ab56",
+    "menus-no-project.json": "8f1279e8b423df7840abdfa106663857603a490e9534a3b2ffb0edc94a3a5c20",
+    "rows.json": "a75d73153793b72f485d2ca7997e9bc516fbaf27c21f67b8bedf0e4e8f00d484",
+    "transcript.json": "7b63c3abb82a5b87f6426e1d4b4bf9b1ea13b4980813f077abfd2ca4fa075c27"
+  },
+  "regenerate": "python tests/adversarial/c43b-r2-live.py target/release/toontown.exe a3"
+}

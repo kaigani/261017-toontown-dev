@@ -132,6 +132,7 @@ def a3():
  async def do(t,action):
   tree=await m.McpTable.tree(t)
   node=m.McpTable.node(tree,action[1]) if action[0] in ("dom","select") else None
+  t.run.save("declared-"+str(action[1])+".json",node)
   ref=(node or {}).get("command") or {}
   t.review_declared={"command":ref.get("commandId"),"params":ref.get("params") or {}}
   return await original_do(t,action)
@@ -147,6 +148,9 @@ def a3():
   import ctypes
   from ctypes import wintypes
   u=ctypes.windll.user32;u.GetMenu.restype=wintypes.HMENU;u.GetSubMenu.restype=wintypes.HMENU
+  u.GetMenu.argtypes=[wintypes.HWND];u.GetSubMenu.argtypes=[wintypes.HMENU,ctypes.c_int]
+  u.GetMenuItemCount.argtypes=[wintypes.HMENU];u.GetMenuState.argtypes=[wintypes.HMENU,ctypes.c_uint,ctypes.c_uint]
+  u.GetMenuStringW.argtypes=[wintypes.HMENU,ctypes.c_uint,wintypes.LPWSTR,ctypes.c_int,ctypes.c_uint]
   h=m.window_handle()
   def native(handle):
    rows=[]
@@ -154,7 +158,7 @@ def a3():
     b=ctypes.create_unicode_buffer(1024);u.GetMenuStringW(handle,i,b,1024,0x400)
     flags=u.GetMenuState(handle,i,0x400);sub=u.GetSubMenu(handle,i)
     text=b.value.replace('&','');parts=text.split('\t')
-    rows.append({"role":"separator" if flags&0x800 else "menu" if sub else "menuitem","label":parts[0].removeprefix(chr(0x2713)+" "),"enabled":not bool(flags&3),"checked":bool(flags&8) or parts[0].startswith(chr(0x2713)+" "),"shortcut":parts[1] if len(parts)>1 else "","children":native(sub) if sub else []})
+    rows.append({"role":"menu" if sub else "separator" if flags&0x800 else "menuitem","label":parts[0].removeprefix(chr(0x2713)+" "),"enabled":not bool(flags&3),"checked":bool(flags&8) or parts[0].startswith(chr(0x2713)+" "),"shortcut":parts[1] if len(parts)>1 else "","children":native(sub) if sub else []})
    return rows
   await asyncio.sleep(.5)
   bindings={}
@@ -176,7 +180,11 @@ def a3():
     if n["role"]!="separator":equal=equal and n["enabled"]==q.get("enabled")
     if n["role"]=="menuitem":
      equal=equal and n["enabled"]==q.get("enabled") and n["checked"]==bool(q.get("checked"))
-     norm=lambda text:(text or "").lower().replace("primary","ctrl").replace("control","ctrl").replace(" ","")
+     def norm(text):
+      value=(text or "").lower().replace("primary","ctrl").replace("control","ctrl").replace(" ","")
+      for word,symbol in (("equal","="),("minus","-"),("bracketright","]"),("bracketleft","["),("backslash",chr(92)),("comma",","),("period",".")):
+       value=value.replace(word,symbol)
+      return value
      equal=equal and norm(n["shortcut"])==norm(q.get("shortcut"))
      ref=q.get("command") or {}
      equal=equal and ref.get("commandId")==q.get("commandId") and isinstance(ref.get("params",{}),dict)
@@ -186,6 +194,17 @@ def a3():
     t.run.check(equal,"D-38 role/label/enabled/checked/reference "+state+path+"/"+label,{"native":n,"tree":q})
     if n["children"]:walk(n["children"],q.get("children",[]),path+"/"+label)
   walk(raw,bar.get("children",[]),"")
+  class Info(ctypes.Structure):
+   _fields_=[("cbSize",wintypes.UINT),("fMask",wintypes.UINT),("fType",wintypes.UINT),("fState",wintypes.UINT),("wID",wintypes.UINT),("hSubMenu",wintypes.HMENU),("hbmpChecked",wintypes.HBITMAP),("hbmpUnchecked",wintypes.HBITMAP),("dwItemData",ctypes.c_size_t),("dwTypeData",wintypes.LPWSTR),("cch",wintypes.UINT),("hbmpItem",wintypes.HBITMAP)]
+  u.GetMenuItemInfoW.argtypes=[wintypes.HMENU,wintypes.UINT,wintypes.BOOL,ctypes.POINTER(Info)]
+  help_index=next(i for i,n in enumerate(raw) if n["label"]=="Help")
+  help_handle=u.GetSubMenu(u.GetMenu(h),help_index)
+  text=ctypes.create_unicode_buffer(256);info=Info();info.cbSize=ctypes.sizeof(Info);info.fMask=0x40;info.dwTypeData=ctypes.cast(text,wintypes.LPWSTR);info.cch=255
+  about_index=next(i for i,n in enumerate(raw[help_index]["children"]) if n["label"]=="About")
+  if not u.GetMenuItemInfoW(help_handle,about_index,True,ctypes.byref(info)):raise RuntimeError("secondary menu label API failed")
+  help_tree=bar["children"][help_index]["children"][about_index]
+  t.run.check(text.value.replace("&","")==help_tree.get("label"),"D-38 second native API GetMenuItemInfoW About label "+state,{"native":text.value.replace("&",""),"tree":help_tree.get("label")})
+  t.run.save("about-second-api-"+state+".json",{"native":text.value,"tree":help_tree})
  original_build=m.build_and_run
  async def build(t,only):
   await menus(t,"no-project")
@@ -238,7 +257,7 @@ def a3():
  async def no_custom(*args,**kwargs):return None
  m.custom_row=no_custom
  m.Table.tree=m.McpTable.tree;m.Table.node=staticmethod(m.McpTable.node)
- sys.argv=["d39",sys.argv[1],str(OUT/"a3"),"--mode","os"]
+ sys.argv=["d39",str(Path(sys.argv[1]).resolve()),str(OUT/"a3"),"--mode","os"]
  raise SystemExit(m.main())
 if __name__=="__main__":
  import socket
