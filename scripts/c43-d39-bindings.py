@@ -1059,6 +1059,10 @@ async def session_all(app: str, run, out: Path, work: Path, only: set) -> list:
     (user / "Settings" / "preferences.json").write_text(json.dumps({"format": "toontown-settings", "kind": "preferences", "formatVersion": "1.0", "data": seed}), encoding="utf-8")
     discovery = work / "discovery.json"
     os.environ["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"] = f"--remote-debugging-port={CDP_PORT}"
+    # A webview browser process still running from an earlier launch with the same data folder (an earlier step of the
+    # same CI job) would take this window and ignore the argument: this run gets a data folder of its own (WebView2's
+    # environment variables override the application's values).
+    os.environ["WEBVIEW2_USER_DATA_FOLDER"] = str(work / "webview2")
     proc = e2e.launch(app, user, discovery)
     try:
         d = e2e.wait_discovery(discovery, proc)
