@@ -90,8 +90,8 @@ fn colour(h: &ExecutorHandle, name: &str) -> String {
 enum Mark {
     /// In the cell around this point, in this colour (any colour when `None`).
     Cell(f64, f64, Option<String>),
-    /// The bitmap record of this image.
-    Image,
+    /// The bitmap record whose quad's centre is in the cell around this point (two bitmaps share one image).
+    Image(f64, f64),
 }
 
 struct Table {
@@ -163,6 +163,26 @@ impl Table {
         id
     }
 
+    /// A copy of the locked drawing's bitmap pasted on top of the table's drawing, moved by `(dx, dy)` (its quad then
+    /// centres at `(dx, 32 + dy)`).
+    fn paste_bitmap(&mut self, locked: &str, dx: f64, dy: f64) -> String {
+        let source = ok(&self.h, "draw.drawing.get", json!({ "drawingId": locked }));
+        let r = ok(
+            &self.h,
+            "draw.content.add",
+            json!({ "drawingId": self.drawing, "content": source, "offset": { "x": dx, "y": dy } }),
+        );
+        let id = r["idMap"].as_object().unwrap().values().next().unwrap().as_str().unwrap().to_owned();
+        self.objects.insert(id.clone(), Mark::Image(dx, 32.0 + dy));
+        id
+    }
+
+    /// The drawing's top-level nodes, back to front.
+    fn top_level_order(&self) -> Vec<String> {
+        let d = ok(&self.h, "draw.drawing.get", json!({ "drawingId": self.drawing }));
+        d["nodes"].as_array().unwrap().iter().map(|n| n["id"].as_str().unwrap().to_owned()).collect()
+    }
+
     fn group(&mut self, ids: &[&str]) -> String {
         let r = ok(&self.h, "draw.group.create", json!({ "drawingId": self.drawing, "ids": ids }));
         r["groupId"].as_str().unwrap().to_owned()
@@ -209,9 +229,18 @@ impl Table {
                     }
                 }
                 Record::Bitmap { quad, .. } => {
-                    let id = self.objects.iter().find(|(_, m)| matches!(m, Mark::Image)).unwrap().0.clone();
-                    for p in quad.as_chunks::<2>().0 {
-                        out.push((p[0], p[1], id.clone()));
+                    let corners = quad.as_chunks::<2>().0;
+                    let n = corners.len() as f64;
+                    let (cx, cy) = corners.iter().fold((0.0, 0.0), |(x, y), p| (x + f64::from(p[0]) / n, y + f64::from(p[1]) / n));
+                    let owners: Vec<&String> = self
+                        .objects
+                        .iter()
+                        .filter(|(_, m)| matches!(m, Mark::Image(x, y) if (cx - x).abs() <= CELL && (cy - y).abs() <= CELL))
+                        .map(|(id, _)| id)
+                        .collect();
+                    assert_eq!(owners.len(), 1, "the bitmap quad centred at ({cx}, {cy}) belongs to one bitmap: {owners:?}");
+                    for p in corners {
+                        out.push((p[0], p[1], owners[0].clone()));
                     }
                 }
             }
@@ -228,7 +257,7 @@ impl Table {
                 Mark::Cell(cx, cy, c) => {
                     (x - cx).abs() <= CELL && (y - cy).abs() <= CELL && c.as_ref().is_none_or(|c| c == slot)
                 }
-                Mark::Image => false,
+                Mark::Image(..) => false,
             })
             .map(|(id, _)| id)
             .collect();
@@ -289,29 +318,48 @@ fn r1_03_selection_parts_full_table() {
     let bitmap = r["idMap"].as_object().unwrap().values().next().unwrap().as_str().unwrap().to_owned();
     ok(&h, "app.context.set", json!({ "elementId": BOB, "frame": FRAME }));
     let mut t = Table { h, drawing, ink, skin, objects: BTreeMap::new(), zone_of: BTreeMap::new() };
-    t.objects.insert(bitmap.clone(), Mark::Image);
+    // The locked drawing's bitmap: 64 x 32 du centred at (0, 32).
+    t.objects.insert(bitmap.clone(), Mark::Image(0.0, 32.0));
 
-    // Stage 1: every kind alone, on two top-level layers; a text and the bitmap at the top level.
+    // Stage 1: every kind alone with each of two top-level layers. A layer holds strokes only (02 §3; text and bitmap
+    // nodes are its siblings), so a text and a bitmap "on" a layer are the ones in the stacking order directly above it
+    // (C43B-R2S-04): the first layer, its text and a bitmap; then the second layer, its text and a second bitmap.
     let (pa, la) = t.pencil_square(-900.0, 600.0, "new");
     let za = t.paint(-900.0, 600.0, &pa);
     let ba = t.brush(-600.0, 600.0, &la);
+    let ta = t.text(600.0, 600.0);
+    // The first layer's bitmap: the original moved above it would change its id, so the original (pasted first, below
+    // the first layer) stays as the bitmap below both layers; another paste above the first layer, at (0, 632).
+    let bitmap_a = t.paste_bitmap(&locked, 0.0, 600.0);
     let (pb, lb) = t.pencil_square(-300.0, 600.0, "new");
     let zb = t.paint(-300.0, 600.0, &pb);
     let bb = t.brush(300.0, 600.0, &lb);
-    let ta = t.text(600.0, 600.0);
+    let tb = t.text(900.0, 600.0);
+    let bitmap_b = t.paste_bitmap(&locked, 0.0, -600.0);
     assert_ne!(la, lb, "two layers");
+    let order = t.top_level_order();
+    let at = |id: &str| order.iter().position(|x| x == id).unwrap_or_else(|| panic!("`{id}` is not a top-level node: {order:?}"));
+    assert!(at(&la) < at(&ta) && at(&ta) < at(&lb), "the first text is directly above the first layer: {order:?}");
+    assert!(at(&la) < at(&bitmap_a) && at(&bitmap_a) < at(&lb), "the first layer's bitmap is above it: {order:?}");
+    assert!(at(&lb) < at(&tb) && at(&lb) < at(&bitmap_b), "the second text and bitmap are above the second layer: {order:?}");
     for (name, ids) in [
         ("pencil alone, first layer", vec![pa.as_str()]),
         ("zone alone, first layer", vec![za.as_str()]),
         ("brush alone, first layer", vec![ba.as_str()]),
+        ("text alone, first layer", vec![ta.as_str()]),
+        ("bitmap alone, first layer", vec![bitmap_a.as_str()]),
         ("pencil alone, second layer", vec![pb.as_str()]),
         ("zone alone, second layer", vec![zb.as_str()]),
         ("brush alone, second layer", vec![bb.as_str()]),
-        ("text alone", vec![ta.as_str()]),
-        ("bitmap alone", vec![bitmap.as_str()]),
+        ("text alone, second layer", vec![tb.as_str()]),
+        ("bitmap alone, second layer", vec![bitmap_b.as_str()]),
+        ("bitmap alone, below both layers", vec![bitmap.as_str()]),
         ("first layer whole", vec![la.as_str()]),
         ("second layer whole", vec![lb.as_str()]),
+        ("first layer whole and its text and bitmap", vec![la.as_str(), ta.as_str(), bitmap_a.as_str()]),
+        ("second layer whole and its text and bitmap", vec![lb.as_str(), tb.as_str(), bitmap_b.as_str()]),
         ("one object on each layer", vec![pa.as_str(), bb.as_str()]),
+        ("a text and a bitmap of different layers", vec![ta.as_str(), bitmap_b.as_str()]),
     ] {
         t.cell(name, &ids);
     }
