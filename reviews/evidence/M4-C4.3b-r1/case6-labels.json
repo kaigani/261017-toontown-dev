@@ -1,0 +1,32 @@
+[
+  {
+    "view": "camera",
+    "spec": "spec/05_scene_planning.md:1135; spec/02_drawing.md:1318",
+    "expected": [
+      "Move Element",
+      "Move Element",
+      "Move Element"
+    ],
+    "observed": [
+      "Move Element",
+      "Move Element",
+      "Move Element"
+    ],
+    "pass": true
+  },
+  {
+    "view": "drawing",
+    "spec": "spec/05_scene_planning.md:1135; spec/02_drawing.md:1318",
+    "expected": [
+      "Brush Tool",
+      "Move Element",
+      "Brush Tool"
+    ],
+    "observed": [
+      "Brush Tool",
+      "Move Element",
+      "Brush Tool"
+    ],
+    "pass": true
+  }
+]

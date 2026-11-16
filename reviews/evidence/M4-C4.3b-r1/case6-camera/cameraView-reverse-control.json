@@ -1,0 +1,150 @@
+{
+  "times": {
+    "press": 419706.9923616,
+    "release": 419707.5928573
+  },
+  "before": 14,
+  "history": {
+    "entries": [
+      {
+        "index": 1,
+        "stepId": "u-1",
+        "label": "New Elements",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.110Z",
+        "objectCount": 4
+      },
+      {
+        "index": 2,
+        "stepId": "u-2",
+        "label": "Create Drawing",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.113Z",
+        "objectCount": 3
+      },
+      {
+        "index": 3,
+        "stepId": "u-3",
+        "label": "Rectangle Tool",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.119Z",
+        "objectCount": 3
+      },
+      {
+        "index": 4,
+        "stepId": "u-4",
+        "label": "Paint",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.123Z",
+        "objectCount": 2
+      },
+      {
+        "index": 5,
+        "stepId": "u-5",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:08:43.091Z",
+        "objectCount": 3
+      },
+      {
+        "index": 6,
+        "stepId": "u-6",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:43.112Z",
+        "objectCount": 1
+      },
+      {
+        "index": 7,
+        "stepId": "u-7",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:08:45.506Z",
+        "objectCount": 1
+      },
+      {
+        "index": 8,
+        "stepId": "u-8",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:09:00.415Z",
+        "objectCount": 1
+      },
+      {
+        "index": 9,
+        "stepId": "u-9",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:09:06.223Z",
+        "objectCount": 1
+      },
+      {
+        "index": 10,
+        "stepId": "u-10",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:09:11.558Z",
+        "objectCount": 1
+      },
+      {
+        "index": 11,
+        "stepId": "u-11",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:09:11.573Z",
+        "objectCount": 1
+      },
+      {
+        "index": 12,
+        "stepId": "u-12",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:09:11.575Z",
+        "objectCount": 1
+      },
+      {
+        "index": 13,
+        "stepId": "u-13",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:09:14.880Z",
+        "objectCount": 1
+      },
+      {
+        "index": 14,
+        "stepId": "u-14",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:09:22.287Z",
+        "objectCount": 1
+      },
+      {
+        "index": 15,
+        "stepId": "u-17",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:09:27.544Z",
+        "objectCount": 1
+      }
+    ],
+    "position": 15,
+    "cleanPosition": 0,
+    "total": 15
+  }
+}
