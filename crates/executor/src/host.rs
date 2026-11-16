@@ -258,9 +258,8 @@ pub struct ShellReport {
     /// (round 3, C41-R3-04).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ui_tree_cleared: Option<bool>,
-    /// The native menu bar as the host built it (ruling D-38): the menu manifest's menus shown on this platform, in
-    /// order, each `{id, label, items}` in the manifest's item format. Reported when the host builds the menu;
-    /// `inspect_ui` builds the window's menu bar subtree from it and the live availability at each call.
+    /// The native menu as the person sees it (ruling D-38; C43B-R2S-03): the host's model of its menus at its last
+    /// refresh, the nodes the window tree's menu bar carries (`desktop/src-tauri/src/menu_model.rs`).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub menu_bar: Option<Value>,
 }

@@ -20,6 +20,7 @@ pub mod host;
 pub mod instance;
 pub mod ipc;
 pub mod menu;
+pub mod menu_model;
 pub mod shell;
 pub mod watchdog;
 // Spike code is compiled into a build only with the feature; unit tests always compile it so its tests keep running.

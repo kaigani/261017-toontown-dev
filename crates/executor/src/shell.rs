@@ -221,7 +221,8 @@ pub struct Sensors {
     pub ui_tree: Option<serde_json::Value>,
     /// The engine event number that tree reflects (`None`: not vouched for).
     pub ui_tree_seq: Option<u64>,
-    /// The native menu bar's menus as the host built them (ruling D-38; `None` headless: there is no menu bar).
+    /// The native menu as the person sees it, as the host's model reports it (ruling D-38, C43B-R2S-03; `None` headless:
+    /// there is no menu bar).
     pub menu_bar: Option<serde_json::Value>,
 }
 

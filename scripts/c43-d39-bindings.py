@@ -701,7 +701,14 @@ class McpTable(Table):
             ref = n.get("command") or {}
             self.declared = {"command": ref.get("commandId"), "params": ref.get("params") or {}}
         elif kind == "menu":
+            # The menu (and the tree that carries it) refreshes after the events that change availability, a moment
+            # after the setup's commands answered: the item is read again until it shows enabled, for up to 3 s.
             n = self.menu_node(tree, action[1])
+            for _ in range(12):
+                if n and n.get("enabled") is True:
+                    break
+                await asyncio.sleep(0.25)
+                n = self.menu_node(await self.tree(), action[1])
             if not n:
                 raise RuntimeError(f"menu item absent from the window's tree: {action[1]}")
             if n.get("enabled") is False:
