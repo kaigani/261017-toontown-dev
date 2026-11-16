@@ -81,6 +81,26 @@
       ]
     },
     {
+      "id": "openBackup.open.0",
+      "surface": "dialog:Open Backup",
+      "commands": [
+        "project.backup.open"
+      ],
+      "params": {
+        "backupId": "b1"
+      }
+    },
+    {
+      "id": "openBackup.open.1",
+      "surface": "dialog:Open Backup",
+      "commands": [
+        "project.backup.open"
+      ],
+      "params": {
+        "backupId": "b2"
+      }
+    },
+    {
       "id": "progress.cancel",
       "surface": "dialog:Opening project",
       "commands": [

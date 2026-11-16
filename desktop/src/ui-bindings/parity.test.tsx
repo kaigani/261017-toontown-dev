@@ -126,12 +126,26 @@ interface Surface {
 
 const snapshot = (name: string, el: Element): Surface => ({ name, root: el.cloneNode(true) as Element });
 
+/** The surface as rendered once the answers it asked for have arrived (a slow runner otherwise snapshots a loading
+ *  state): pending promises and timers run first. */
+async function settled(name: string, el: Element): Promise<Surface> {
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  });
+  return snapshot(name, el);
+}
+
+/** Dialogs whose actions depend on a query's answer: what to wait for before collecting them. */
+const LOADED_ACTIONS: Readonly<Record<string, { selector: string; count: number }>> = {
+  'Open Backup': { selector: '[data-tt-command="project.backup.open"]', count: 2 },
+};
+
 /** Every surface and state the GUI can show (D-35), each with what opens it. */
 async function surfaces(): Promise<Surface[]> {
   const out: Surface[] = [];
   // The start screen (no project), with a recovery entry.
   mount(host(false));
-  out.push(snapshot('startScreen', await screen.findByRole('dialog', { name: 'Start screen' })));
+  out.push(await settled('startScreen', await screen.findByRole('dialog', { name: 'Start screen' })));
   cleanup();
 
   // The main window with a project: toolbars, tool palettes, the dock's panels (History with an entry) and view
@@ -141,13 +155,13 @@ async function surfaces(): Promise<Surface[]> {
   await screen.findByRole('toolbar', { name: 'Main toolbar' });
   await screen.findByText('brush');
   await screen.findByText(/Agent: mcp/);
-  out.push(snapshot('main', document.body));
+  out.push(await settled('main', document.body));
 
   // The agent popover open.
   act(() => {
     fireEvent.click(screen.getByText(/Agent: mcp/));
   });
-  out.push(snapshot('agentPopover', await screen.findByRole('dialog', { name: 'Agent sessions' })));
+  out.push(await settled('agentPopover', await screen.findByRole('dialog', { name: 'Agent sessions' })));
   act(() => {
     fireEvent.click(screen.getByText(/Agent: mcp/));
   });
@@ -159,7 +173,7 @@ async function surfaces(): Promise<Surface[]> {
     fireEvent.contextMenu(tab);
   });
   const checklist = await screen.findByRole('menu');
-  out.push(snapshot('dockTabContextMenu', checklist));
+  out.push(await settled('dockTabContextMenu', checklist));
   act(() => {
     fireEvent.keyDown(checklist, { key: 'Escape' });
   });
@@ -180,7 +194,15 @@ async function surfaces(): Promise<Surface[]> {
       h.menu(command, {});
     });
     const d = await screen.findByRole('dialog', { name: title });
-    out.push(snapshot(`dialog:${title}`, d));
+    // A dialog whose actions arrive with its query's answer is collected once they are there (Open Backup's Open
+    // buttons follow `project.backup.list`; a slow runner snapshotted the loading state).
+    const loaded = LOADED_ACTIONS[title];
+    if (loaded) {
+      await waitFor(() => {
+        expect(d.querySelectorAll(loaded.selector).length).toBe(loaded.count);
+      });
+    }
+    out.push(await settled(`dialog:${title}`, d));
     act(() => {
       d.querySelector<HTMLElement>('[data-tt-id$=".cancel"]')?.click();
     });
@@ -190,7 +212,7 @@ async function surfaces(): Promise<Surface[]> {
     h.event('shell.help', {});
   });
   const help = await screen.findByRole('dialog', { name: /Help|Documentation/ });
-  out.push(snapshot('dialog:Help', help));
+  out.push(await settled('dialog:Help', help));
   act(() => {
     help.querySelector<HTMLElement>('[data-tt-id$=".cancel"]')?.click();
   });
@@ -199,13 +221,13 @@ async function surfaces(): Promise<Surface[]> {
     h.menu('project.open', { path: '/p/Walk.animpkg' });
   });
   const progress = await screen.findByRole('dialog', { name: 'Opening project' });
-  out.push(snapshot('dialog:Opening project', progress));
+  out.push(await settled('dialog:Opening project', progress));
   // A message box (a refused command).
   act(() => {
     h.menu('project.close', {});
   });
   const message = await screen.findByRole('alertdialog');
-  out.push(snapshot('messageBox', message));
+  out.push(await settled('messageBox', message));
 
   // Preferences: every category, and the shortcut editor with a command selected and with a conflict.
   act(() => {
@@ -216,7 +238,7 @@ async function surfaces(): Promise<Surface[]> {
     act(() => {
       prefs.querySelector<HTMLElement>(`[data-tt-id="preferences.category.${c.id}"]`)?.click();
     });
-    out.push(snapshot(`preferences:${c.id}`, prefs));
+    out.push(await settled(`preferences:${c.id}`, prefs));
   }
   act(() => {
     prefs.querySelector<HTMLElement>('[data-tt-id="preferences.category.keyboard"]')?.click();
@@ -229,7 +251,7 @@ async function surfaces(): Promise<Surface[]> {
   act(() => {
     undo.click();
   });
-  out.push(snapshot('preferences:keyboard:details', prefs));
+  out.push(await settled('preferences:keyboard:details', prefs));
   const capture = prefs.querySelector<HTMLElement>('[data-tt-id="keymap.capture"]');
   if (!capture) throw new Error('no capture control');
   act(() => {
@@ -240,13 +262,13 @@ async function surfaces(): Promise<Surface[]> {
     await Promise.resolve();
   });
   await screen.findByText(/is bound to/);
-  out.push(snapshot('preferences:keyboard:conflict', prefs));
+  out.push(await settled('preferences:keyboard:conflict', prefs));
   cleanup();
 
   // A floating window.
   mount(host(true), 'history');
   await screen.findByText('Rectangle Tool');
-  out.push(snapshot('float:history', document.body));
+  out.push(await settled('float:history', document.body));
   cleanup();
   return out;
 }
