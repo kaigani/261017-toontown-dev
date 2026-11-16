@@ -1,0 +1,925 @@
+[
+  {
+    "command": "anim.camera.delete",
+    "declaration": "crates/executor/src/commands/anim_camera.rs",
+    "line": 192,
+    "reason": "agents delete cameras by id (05 §12.2); the Timeline deletes them as elements (M5)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1278,
+        "row": "| `anim.camera.delete` | action | Delete a camera (not the last one) | `cameraId: id` | `{currentCameraId}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "anim.camera.get",
+    "declaration": "crates/executor/src/commands/anim_camera.rs",
+    "line": 309,
+    "reason": "agents read the evaluated camera (05 §19.1.5); the Properties panel shows it (M6 C6.2)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1280,
+        "row": "| `anim.camera.get` | query | Camera properties and evaluated view at a frame | `cameraId?: id; frame?: int` | `{id, position, roll, fovMode, fov, effectiveFov, worldPosition, viewMatrix[16], frameCornersAtZ0[4], resolution {w,h}}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "anim.camera.set",
+    "declaration": "crates/executor/src/commands/anim_camera.rs",
+    "line": 366,
+    "reason": "agents set camera values (05 §19.1.1 FOV wedge equivalent); the Properties panel does the same (M6 C6.2)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1281,
+        "row": "| `anim.camera.set` | action | Set camera position, roll, FOV mode and FOV (keyed at `frame` when dynamic) | `cameraId: id; position?: object {x,y,z}; roll?: number; fovMode?: enum \"static\"\\|\"dynamic\"; fov?: number (1..179); frame?: int` | `{cameraId}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "anim.evaluate",
+    "declaration": "crates/executor/src/commands/anim_eval.rs",
+    "line": 390,
+    "reason": "agents verify placement without rendering (05 §19.1.5); the Properties panel and views show these values (M6)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1241,
+        "row": "| `anim.evaluate` | query | Evaluate transforms of nodes at frames (no rendering) | `nodeIds: [id]; frames?: [int]; include?: [enum \"static\"\\|\"animated\"\\|\"local\"\\|\"world\"\\|\"bounds\"\\|\"screen\"] = all; cameraId?: id` | `{frames: [{frame, nodes: [NodeEval]}]}` (§19.4) | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "anim.projection.get",
+    "declaration": "crates/executor/src/commands/anim_eval.rs",
+    "line": 476,
+    "reason": "agents read output-pixel positions (05 §19.1.5); C3.3's convert_coordinates builds on it",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1285,
+        "row": "| `anim.projection.get` | query | Project world points or node bounds into output pixels | `frame?: int; cameraId?: id; points?: [object]; nodeIds?: [id]` | `{points: [{x, y, depth, visible}], nodes: [{id, bbox {x,y,width,height}, visible}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "anim.function.sample",
+    "declaration": "crates/executor/src/commands/anim_eval.rs",
+    "line": 686,
+    "reason": "agents read curves numerically (05 §19.1.5); the function editor plots them (M6 C6.2)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1272,
+        "row": "| `anim.function.sample` | query | Evaluate a channel over a frame range | `nodeId: id; channel: string; from: number; to: number; step: number = 1` | `{samples: [{frame, value}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "anim.function.get",
+    "declaration": "crates/executor/src/commands/anim_function.rs",
+    "line": 261,
+    "reason": "agents read curves as key lists (05 §19.4); the function editor shows them (M6 C6.2)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1264,
+        "row": "| `anim.function.get` | query | Function curve as a key-point list | `nodeId: id; channel: string` | `Function` (§19.4) | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "anim.function.set",
+    "declaration": "crates/executor/src/commands/anim_function.rs",
+    "line": 411,
+    "reason": "agents replace a key list (05 §19.3); the function editor edits points (M6 C6.2)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1265,
+        "row": "| `anim.function.set` | action | Replace a 1-D channel's key list and curve type | `nodeId: id; channel: string; curveType?: enum \"spline\"\\|\"interpolation\"\\|\"velocityBased\"; keys: [object {frame, value, constantSegment?, handleMode?, left?, right?, preset?}]` | `{nodeId, channel, keyCount}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "anim.key.list",
+    "declaration": "crates/executor/src/commands/anim_key.rs",
+    "line": 361,
+    "reason": "agents read keyed frames (05 §19.1.5); the Timeline shows them (M5, M6)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1259,
+        "row": "| `anim.key.list` | query | Keyed frames and channels of a node | `nodeId: id; from?: int; to?: int; includeDescendants: bool = false` | `{keys: [{frame, channels[], constant[], descendantKeyed}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "anim.path.get",
+    "declaration": "crates/executor/src/commands/anim_path.rs",
+    "line": 301,
+    "reason": "agents read paths numerically (05 §19.1.5); the Motion tool and motion point properties show them (M6 C6.2)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1249,
+        "row": "| `anim.path.get` | query | Motion path with all points, parameters and arc lengths | `nodeId: id` | `Path` (§19.4) | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "anim.path.set",
+    "declaration": "crates/executor/src/commands/anim_path.rs",
+    "line": 434,
+    "reason": "agents replace a whole path (05 §19.3); the Motion tool edits points (M6 C6.2)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1250,
+        "row": "| `anim.path.set` | action | Replace a node's whole motion path | `nodeId: id; points: [object {kind, frame?, x, y, z, tension?, continuity?, bias?, constantSegment?, lockDepth?}]; lockDepth?: bool` | `{nodeId, pointIds[], warnings[]}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "anim.path.point.set",
+    "declaration": "crates/executor/src/commands/anim_path.rs",
+    "line": 789,
+    "reason": "agents edit points by id (05 §9.4); the motion point properties do the same (M6 C6.2)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1252,
+        "row": "| `anim.path.point.set` | action | Edit a motion point (position, frame, lock in time, TCB, constant, per-key rotation/scale/pivot) | `pointIds: [id]; x?: number; y?: number; z?: number; frame?: int; lockInTime?: bool; tension?: number (-1..1); continuity?: number (-1..1); bias?: number (-1..1); constantSegment?: bool; rotation?: number; scale?: point; pivot?: point` | `{pointIds, warnings[]}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "anim.path.point.remove",
+    "declaration": "crates/executor/src/commands/anim_path.rs",
+    "line": 1034,
+    "reason": "agents remove points by id (05 §9.6); the motion point properties and Delete do the same (M6 C6.2)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1253,
+        "row": "| `anim.path.point.remove` | action | Delete motion points | `pointIds: [id]` | `{removed, warnings[]}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "anim.view.coords.get",
+    "declaration": "crates/executor/src/commands/anim_view.rs",
+    "line": 85,
+    "reason": "agents map scene points to view pixels for pointer simulation (05 §19.3)",
+    "specRows": [
+      {
+        "file": "spec/05_scene_planning.md",
+        "line": 1234,
+        "row": "| `anim.view.coords.get` | query | Map points between scene space and view pixels (for pointer simulation) | `viewId: id; points: [object]; from: enum \"scene\"\\|\"view\"; depth?: number = 0` | `{points: [object]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "app.state.get",
+    "declaration": "crates/executor/src/commands/app.rs",
+    "line": 48,
+    "reason": "the GUI shows this state directly; agents read it as their first call (11 §7.1 get_state)",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1059,
+        "row": "| `app.state.get` | query | Current application state (project, scene, frame, element, drawing, mode, active view, focused panel, active tool, selection, workspace, modal state, agent sessions) | — | `AppState` (§12.4) | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "app.context.set",
+    "declaration": "crates/executor/src/commands/app.rs",
+    "line": 105,
+    "reason": "the GUI sets these parts one by one (scene list, frame field, element selection)",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1067,
+        "row": "| `app.context.set` | ui | Set several parts of the current context at once | `sceneId?: id; frame?: int; elementId?: id; drawingId?: id` | `AppState` | no |"
+      }
+    ]
+  },
+  {
+    "command": "doc.export.json",
+    "declaration": "crates/executor/src/commands/bundle.rs",
+    "line": 344,
+    "reason": "agents exchange object-model bundles",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1138,
+        "row": "| `doc.export.json` | query | Export the project, scenes or elements as an interchange bundle (§6.8), inline or to a file | `scope: enum \"project\"\\|\"scenes\"\\|\"elements\"; refs?: [id]; path?: path; binaries: enum \"embed\"\\|\"reference\"\\|\"omit\" = \"reference\"; pretty: bool = true; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"` | `{bundle?: object, path?: path, bytes, objectCount}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.import.json",
+    "declaration": "crates/executor/src/commands/bundle.rs",
+    "line": 1545,
+    "reason": "agents exchange object-model bundles",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1139,
+        "row": "| `doc.import.json` | action | Import an interchange bundle as new scenes or into a scene (\"Import JSON\") | `source: path \\| object; target?: id (scene; omit = new scenes); index?: int (scene position); atFrame: int = 1; idPolicy: enum \"new\"\\|\"preserve\" = \"new\"; onConflict: enum \"rename\"\\|\"replace\"\\|\"fail\" = \"rename\"; colours: enum \"keepExisting\"\\|\"updateExisting\" = \"keepExisting\"; dryRun: bool = false` | `{created: {scenes[], elements[], drawings[], palettes[], assets[]}, renamed: [{id, from, to}], recoveredColourIds[], issues[]}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "cell.selection.get",
+    "declaration": "crates/executor/src/commands/cell.rs",
+    "line": 1936,
+    "reason": "the Exposure Sheet and Timeline show the selection directly",
+    "specRows": [
+      {
+        "file": "spec/04_timeline_xsheet.md",
+        "line": 1420,
+        "row": "| `cell.selection.get` | query | Current cell/row selection and current position | — | `{elementIds[], from, to, rowsSelected, currentElementId, currentFrame}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "checkpoint.create",
+    "declaration": "crates/executor/src/commands/checkpoint.rs",
+    "line": 39,
+    "reason": "agent safety net (11 §7.7); the GUI's equivalent is the History panel",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 632,
+        "row": "| `checkpoint.create` | ui | Create a named in-memory snapshot of the document | `name: string` | `{name, documentRev}` | no |"
+      }
+    ]
+  },
+  {
+    "command": "checkpoint.list",
+    "declaration": "crates/executor/src/commands/checkpoint.rs",
+    "line": 104,
+    "reason": "agent safety net (11 §7.7)",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 634,
+        "row": "| `checkpoint.list` | query | List checkpoints | — | `[{name, createdAt, documentRev, origin}]` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "checkpoint.restore",
+    "declaration": "crates/executor/src/commands/checkpoint.rs",
+    "line": 127,
+    "reason": "agent safety net (11 §7.7)",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 633,
+        "row": "| `checkpoint.restore` | action | Restore a checkpoint (one undo step \"Restore checkpoint\") | `name: string` | `{name, documentRev}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "checkpoint.delete",
+    "declaration": "crates/executor/src/commands/checkpoint.rs",
+    "line": 148,
+    "reason": "agent safety net (11 §7.7)",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 635,
+        "row": "| `checkpoint.delete` | ui | Delete a checkpoint | `name: string` | `{}` | no |"
+      }
+    ]
+  },
+  {
+    "command": "draw.hitTest.get",
+    "declaration": "crates/executor/src/commands/colour.rs",
+    "line": 1779,
+    "reason": "verification and targeting for agents (02 §13.1 item 10); the GUI hit-tests in the views",
+    "specRows": [
+      {
+        "file": "spec/02_drawing.md",
+        "line": 1313,
+        "row": "| `draw.hitTest.get` | query | Objects and zone under a point, front to back | `drawingId?: id; point: point; tolerance: number = 3 (view px); includeInvisible: bool = false` | `{hits: [object], zoneId\\|null, rev}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "colour.gapClosing.get",
+    "declaration": "crates/executor/src/commands/colour.rs",
+    "line": 1987,
+    "reason": "the GUI shows the mode in the paint tool options",
+    "specRows": [
+      {
+        "file": "spec/03_colour.md",
+        "line": 1065,
+        "row": "| `colour.gapClosing.get` | query | Current gap closing mode and tolerances | — | `{mode, tolerancesPx: {small, medium, large}}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.object.get",
+    "declaration": "crates/executor/src/commands/doc.rs",
+    "line": 135,
+    "reason": "agents read the object model; the GUI shows it in its panels (11 §7.4 get_object)",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1125,
+        "row": "| `doc.object.get` | query | Read one or more objects as object-model JSON (= `get_object`) | `ref?: id; refs?: [id]; depth: int = 1 (-1 = all, 0–20); fields?: [string]; include?: [enum \"derived\"\\|\"stats\"]; page?: object {pointer: string, offset: int = 0, limit: int = 1000}` | `{object}` or `{objects: [object]}`; paged arrays carry `{total, nextOffset}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.object.find",
+    "declaration": "crates/executor/src/commands/doc.rs",
+    "line": 443,
+    "reason": "agents query the object model (11 §7.4 find_objects)",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1126,
+        "row": "| `doc.object.find` | query | Find objects by type, name and predicate (= `find_objects` / `query`) | `type?: string; within?: id; name?: string (exact or glob); where?: object (§10.3); limit: int = 100 (1–1000); offset: int = 0; fields?: [string]; sort?: enum \"path\"\\|\"name\"\\|\"rev\"\\|\"createdAt\" = \"path\"` | `{items: [{id, type, name, path, rev, …fields}], total, nextOffset}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.object.resolve",
+    "declaration": "crates/executor/src/commands/doc.rs",
+    "line": 564,
+    "reason": "agents translate paths and IDs (10 AG-03)",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1127,
+        "row": "| `doc.object.resolve` | query | Resolve paths to IDs and IDs to canonical paths | `refs: [string]` | `{items: [{ref, id, type, name, path, rev} \\| {ref, error}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.object.patch",
+    "declaration": "crates/executor/src/commands/doc.rs",
+    "line": 1076,
+    "reason": "agents patch the object model (11 §7.4 set_properties); the GUI uses the area commands",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1129,
+        "row": "| `doc.object.patch` | action | Generic validated property patch on one or more objects (= `set_properties`) | `targets: [id] (1–1000); props?: object; ops?: [object {op: enum \"add\"\\|\"remove\"\\|\"replace\"\\|\"move\"\\|\"copy\"\\|\"test\", path: string, value?: any, from?: string}]; expectRev?: int \\| object; label?: string; dryRun: bool = false` | `{changes: [change], documentRev}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "doc.schema.list",
+    "declaration": "crates/executor/src/commands/doc.rs",
+    "line": 1252,
+    "reason": "schema discovery for agents (10 §2.8)",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1130,
+        "row": "| `doc.schema.list` | query | List object types with their parents and addressing | — | `{formatVersion, types: [{type, aliases[], parents[], nameAddressable, description}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.schema.get",
+    "declaration": "crates/executor/src/commands/doc.rs",
+    "line": 1301,
+    "reason": "schema discovery for agents (10 §2.8)",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1131,
+        "row": "| `doc.schema.get` | query | JSON Schema of an object type (or of one property) | `type: string; property?: string (JSON Pointer)` | `{type, formatVersion, schema}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.state.get",
+    "declaration": "crates/executor/src/commands/doc.rs",
+    "line": 1352,
+    "reason": "agents track revisions (10 AG-09)",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1133,
+        "row": "| `doc.state.get` | query | Document state | — | `{projectId, path, form, formatVersion, migratedFrom, documentRev, savedRev, dirty, readOnly, lock, historyFromRev}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.diff",
+    "declaration": "crates/executor/src/commands/doc.rs",
+    "line": 1493,
+    "reason": "agents catch up after reconnecting (10 AG-09)",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1134,
+        "row": "| `doc.diff` | query | Net changes since a revision or checkpoint (= `doc_diff`) | `sinceRev?: int; sinceCheckpoint?: id; untilRev?: int; within?: id; types?: [string]; detail: enum \"summary\"\\|\"full\" = \"full\"; limit: int = 1000` | `{fromRev, toRev, changes: [change], truncated}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.blob.get",
+    "declaration": "crates/executor/src/commands/doc_io.rs",
+    "line": 229,
+    "reason": "agents read binary package entries",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1140,
+        "row": "| `doc.blob.get` | query | Read a binary payload (asset file, bitmap node pixels, texture) as base64 | `ref?: id; entry?: string; maxBytes: int = 8388608 (1–67108864)` | `{mediaType, size, sha256, base64}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.package.get",
+    "declaration": "crates/executor/src/commands/doc_io.rs",
+    "line": 1144,
+    "reason": "agents inspect files before opening them",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1147,
+        "row": "| `doc.package.get` | query | Inspect a package, folder, template or palette file on disk without opening it | `path: path; validate: bool = false` | `{kind: enum \"project\"\\|\"template\"\\|\"palette\"\\|\"library\", form, formatVersion, minReaderVersion, readable, projectId?, name, savedAt, entryCount, issues[]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.package.export",
+    "declaration": "crates/executor/src/commands/doc_io.rs",
+    "line": 1199,
+    "reason": "agents copy the project in either form (10 FMT-02)",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1146,
+        "row": "| `doc.package.export` | job | Write a copy of the current project in package or folder form without changing the open project's location | `path: path; form: enum \"package\"\\|\"folder\" = \"package\"; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"` | `{jobId}` → `{path, form, bytes, entries}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.object.refs",
+    "declaration": "crates/executor/src/commands/doc_lint.rs",
+    "line": 192,
+    "reason": "agents inspect references",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1128,
+        "row": "| `doc.object.refs` | query | List objects that reference an object (incoming) or that it references (outgoing) | `ref: id; direction: enum \"incoming\"\\|\"outgoing\" = \"incoming\"; limit: int = 500` | `{refs: [{id, type, path, property}], total}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "doc.schema.validate",
+    "declaration": "crates/executor/src/commands/doc_lint.rs",
+    "line": 319,
+    "reason": "agents check candidates before applying them",
+    "specRows": [
+      {
+        "file": "spec/10_data_model_project_format.md",
+        "line": 1132,
+        "row": "| `doc.schema.validate` | query | Validate a candidate object or bundle against the schema and semantic rules without applying it | `type: string; object: object; mode: enum \"create\"\\|\"replace\" = \"replace\"` | `{valid: bool, errors: [{pointer, code, message}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "draw.drawing.get",
+    "declaration": "crates/executor/src/commands/draw.rs",
+    "line": 382,
+    "reason": "the primary read model for agents (02 §13.6); the GUI renders drawings directly",
+    "specRows": [
+      {
+        "file": "spec/02_drawing.md",
+        "line": 1310,
+        "row": "| `draw.drawing.get` | query | Full vector content as JSON (§13.4) | `drawingId?: id; elementId?: id; frame?: int; include?: [enum \"zones\"\\|\"pressure\"\\|\"outline\"\\|\"bounds\"]; flatten: bool = false; ids?: [id]` | drawing JSON (§13.4) | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "draw.current.get",
+    "declaration": "crates/executor/src/commands/draw.rs",
+    "line": 514,
+    "reason": "the GUI shows the current drawing in the views",
+    "specRows": [
+      {
+        "file": "spec/02_drawing.md",
+        "line": 1309,
+        "row": "| `draw.current.get` | query | Current drawing target and context | `view?: string` | `{drawingId\\|null, elementId, sceneId, frame, cellEmpty: bool, locked: bool, activeView}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "draw.selection.get",
+    "declaration": "crates/executor/src/commands/draw_select.rs",
+    "line": 457,
+    "reason": "the GUI shows the selection in the Drawing view",
+    "specRows": [
+      {
+        "file": "spec/02_drawing.md",
+        "line": 1330,
+        "row": "| `draw.selection.get` | query | Current drawing selection | `drawingId?: id` | `{selectedIds: [id], bounds, selectedPoints: [{strokeId, anchor}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "draw.bounds.get",
+    "declaration": "crates/executor/src/commands/draw_select.rs",
+    "line": 641,
+    "reason": "the GUI shows bounds as the selection box",
+    "specRows": [
+      {
+        "file": "spec/02_drawing.md",
+        "line": 1312,
+        "row": "| `draw.bounds.get` | query | Bounding box of the drawing or of given objects | `drawingId?: id; ids?: [id]; includeInvisible: bool = false` | `{bounds: {x,y,width,height}\\|null}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "draw.viewMapping.get",
+    "declaration": "crates/executor/src/commands/draw_select.rs",
+    "line": 718,
+    "reason": "agents convert between view pixels and drawing units",
+    "specRows": [
+      {
+        "file": "spec/02_drawing.md",
+        "line": 1314,
+        "row": "| `draw.viewMapping.get` | query | Mapping between a view's pixels and drawing space | `view: string = \"drawing\"` | `{drawingId, drawingToView: [number], viewToDrawing: [number], zoom, rotation, viewSize: {width,height}}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "draw.content.add",
+    "declaration": "crates/executor/src/commands/draw_stroke.rs",
+    "line": 814,
+    "reason": "the GUI pastes with Edit › Paste (edit.paste); this command takes explicit content for agents",
+    "specRows": [
+      {
+        "file": "spec/02_drawing.md",
+        "line": 1327,
+        "row": "| `draw.content.add` | action | Insert drawing content given in the §13.4 JSON shape (IDs reassigned; colour recovery applies) (\"Paste\") | `drawingId?: id; content: object; offset: point = {0,0}; layer: enum \"top\"\\|\"behind\" = \"top\"; select: bool = true` | `{idMap: object, rev}` | yes |"
+      }
+    ]
+  },
+  {
+    "command": "edit.selection.get",
+    "declaration": "crates/executor/src/commands/edit.rs",
+    "line": 325,
+    "reason": "the GUI shows the selection directly",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1103,
+        "row": "| `edit.selection.get` | query | Selection of an edit context | `context: enum (as edit.cut) = \"auto\"` | `{context, ids: [id], kinds: [string]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "edit.clipboard.get",
+    "declaration": "crates/executor/src/commands/edit.rs",
+    "line": 838,
+    "reason": "the GUI reads the clipboard implicitly when pasting",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1101,
+        "row": "| `edit.clipboard.get` | query | Clipboard content as structured data | `includeData: bool = false` | `Clipboard` (§12.4) | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "edit.clipboard.set",
+    "declaration": "crates/executor/src/commands/edit.rs",
+    "line": 889,
+    "reason": "agents place prepared content on the clipboard; the GUI fills it by cutting and copying",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1102,
+        "row": "| `edit.clipboard.set` | ui | Put structured content on the clipboard (validated against the schema of its kind) | `content: Clipboard` | `{kind, itemCount}` | no |"
+      }
+    ]
+  },
+  {
+    "command": "element.drawing.list",
+    "declaration": "crates/executor/src/commands/element_bank.rs",
+    "line": 146,
+    "reason": "the Cells panel, Exposure Sheet and library show the drawings directly",
+    "specRows": [
+      {
+        "file": "spec/04_timeline_xsheet.md",
+        "line": 1411,
+        "row": "| `element.drawing.list` | query | Drawings of an element's bank with usage and optional thumbnails | `elementId: id; filter: enum \"all\"\\|\"used\"\\|\"unused\" = \"all\"; thumbnails?: int (16–512)` | `{drawings: [{id, name, exposures: [{from, to}], useCount, locked, empty, missing, contentType, thumbnail?}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "element.unusedDrawing.list",
+    "declaration": "crates/executor/src/commands/element_bank.rs",
+    "line": 254,
+    "reason": "the library's view of the scene lists unused drawings directly",
+    "specRows": [
+      {
+        "file": "spec/04_timeline_xsheet.md",
+        "line": 1412,
+        "row": "| `element.unusedDrawing.list` | query | Find drawings not exposed in any cell, for given elements or the whole scene | `sceneId?: id; elementIds?: [id]` | `{items: [{elementId, drawingId, name}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "element.list",
+    "declaration": "crates/executor/src/commands/element_read.rs",
+    "line": 86,
+    "reason": "the Timeline and Exposure Sheet show the elements directly",
+    "specRows": [
+      {
+        "file": "spec/04_timeline_xsheet.md",
+        "line": 1383,
+        "row": "| `element.list` | query | List the elements of a scene in Timeline or Exposure Sheet order | `sceneId?: id; order: enum \"timeline\"\\|\"xsheet\" = \"timeline\"; types?: [string]; parentId?: id; recursive: bool = true` | `{elements: [{id, name, type, parentId, depth, index}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "element.get",
+    "declaration": "crates/executor/src/commands/element_read.rs",
+    "line": 348,
+    "reason": "the Timeline, Exposure Sheet and Properties view show an element's state directly",
+    "specRows": [
+      {
+        "file": "spec/04_timeline_xsheet.md",
+        "line": 1384,
+        "row": "| `element.get` | query | Full state of one element (17.5) | `elementId: id` | element object | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "element.hierarchy.get",
+    "declaration": "crates/executor/src/commands/element_read.rs",
+    "line": 383,
+    "reason": "the Timeline shows the hierarchy by indentation",
+    "specRows": [
+      {
+        "file": "spec/04_timeline_xsheet.md",
+        "line": 1393,
+        "row": "| `element.hierarchy.get` | query | Parent, children and siblings of an element | `elementId: id` | `{parentId, childIds[], previousSiblingId, nextSiblingId, depth}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "element.typeColour.get",
+    "declaration": "crates/executor/src/commands/element_read.rs",
+    "line": 421,
+    "reason": "the preferences dialog shows the category colours directly",
+    "specRows": [
+      {
+        "file": "spec/04_timeline_xsheet.md",
+        "line": 1405,
+        "row": "| `element.typeColour.get` | query | Default colours of all categories | — | `{colours: object}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "inspect.frame.describe",
+    "declaration": "crates/executor/src/commands/inspect.rs",
+    "line": 199,
+    "reason": "agents verify frames structurally (11 §7.5 describe_frame)",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 628,
+        "row": "| `inspect.frame.describe` | query | Structured description of what is visible and audible at a frame (same as `describe_frame`) | `sceneId?: id; frame?: int; cameraId?: id; detail?: enum \"summary\"\\|\"full\" = \"summary\"` | `{elements: [{elementId, name, drawingId?, worldTransform, cameraBounds, opacity, effects[]}], sounds: [{elementId, level}], mouthShape?, warnings[]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "inspect.hitTest",
+    "declaration": "crates/executor/src/commands/inspect.rs",
+    "line": 390,
+    "reason": "agents locate objects by position (11 §7.5 hit_test)",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 629,
+        "row": "| `inspect.hitTest` | query | Objects under a point, top-most first | `space: enum \"view\"\\|\"drawing\"\\|\"scene\"\\|\"camera\"\\|\"image\"; point: point; sceneId?: id; frame?: int; view?: string` | `{hits: [{elementId, drawingId?, layerId?, objectId?, kind, colourId?}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "inspect.coordinates.convert",
+    "declaration": "crates/executor/src/commands/inspect.rs",
+    "line": 672,
+    "reason": "agents convert between coordinate spaces (11 §7.5 convert_coordinates)",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 630,
+        "row": "| `inspect.coordinates.convert` | query | Convert points between coordinate spaces | `from: string; to: string; points: [{x,y,z?}]; sceneId?: id; frame?: int; elementId?: id; view?: string` | `{points: [{x,y,z?}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "inspect.contactSheet.render",
+    "declaration": "crates/executor/src/commands/inspect.rs",
+    "line": 984,
+    "reason": "agents review motion in one image (11 §7.5 render_contact_sheet)",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 631,
+        "row": "| `inspect.contactSheet.render` | query | Grid image of several frames (same as `render_contact_sheet`) | `sceneId?: id; frames: [int] \\| {from,to,step}; columns?: int; cellWidth?: int = 240; labels?: bool = true` | `{png, width, height, cells: [{frame, x, y, w, h}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "inspect.ui.tree",
+    "declaration": "crates/executor/src/commands/inspect.rs",
+    "line": 1241,
+    "reason": "agents inspect the GUI (11 §7.5 inspect_ui)",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 626,
+        "row": "| `inspect.ui.tree` | query | UI tree of the window, a view, a panel or the open dialogs (same as `inspect_ui`) | `target?: string = \"window\"; depth?: int = 3` | `{nodes: [{role, id, label, value?, enabled, visible, commandId?, children[]}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "inspect.screenshot",
+    "declaration": "crates/executor/src/commands/inspect.rs",
+    "line": 1611,
+    "reason": "agents look at the GUI (11 §7.8 screenshot)",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 627,
+        "row": "| `inspect.screenshot` | query | PNG of the real GUI (attached) or a virtual view (headless) | `target?: string = \"window\"; region?: {x,y,w,h}` | `{png, width, height, sha256}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "job.wait",
+    "declaration": "crates/executor/src/commands/job.rs",
+    "line": 111,
+    "reason": "agents wait for jobs; the GUI shows progress",
+    "specRows": [
+      {
+        "file": "spec/11_agent_interface_mcp.md",
+        "line": 637,
+        "row": "| `job.wait` | query | Wait for a job to finish or a timeout | `jobId: string; timeoutMs?: int = 60000` | Job record, `timedOut?: bool` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "keymap.get",
+    "declaration": "crates/executor/src/commands/keymap.rs",
+    "line": 180,
+    "reason": "the shortcut editor shows every command's bindings from keymap.list; this answers one command or chord for agents",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1151,
+        "row": "| `keymap.get` | query | Bindings of a command, or the command a key sequence runs in a context | `commandId?: string; keys?: string; context: enum \"global\"\\|\"drawing\"\\|\"staging\" = \"global\"` | `{bindings: [Binding], effectiveCommand?: {commandId, params?}}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "render.limits.get",
+    "declaration": "crates/executor/src/commands/render.rs",
+    "line": 859,
+    "reason": "agents size their renders (09 §11.1 item 3)",
+    "specRows": [
+      {
+        "file": "spec/09_playback_export.md",
+        "line": 1014,
+        "row": "| `render.limits.get` | query | Inline size limits, max output size, supported render formats | — | `{maxInlinePixels, maxInlineBytes, maxWidth, maxHeight, formats[]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "ui.statusBar.get",
+    "declaration": "crates/executor/src/commands/ui_shell.rs",
+    "line": 202,
+    "reason": "the GUI shows the status bar itself",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1162,
+        "row": "| `ui.statusBar.get` | query | Status bar segment texts | — | `{visible, description, context, pointer, playback, agentIndicator}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "view.coordinates.convert",
+    "declaration": "crates/executor/src/commands/view.rs",
+    "line": 696,
+    "reason": "the status bar's pointer position is the kernel's own (its status-bar texts); agents convert points with this",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1118,
+        "row": "| `view.coordinates.convert` | query | Convert a point between view pixels, drawing space and scene space for a view | `viewId: id; point: point; from: enum \"view\"\\|\"drawing\"\\|\"scene\"; to: enum \"view\"\\|\"drawing\"\\|\"scene\"` | `{point}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "window.panel.list",
+    "declaration": "crates/executor/src/commands/window.rs",
+    "line": 40,
+    "reason": "the GUI shows the panels themselves",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1119,
+        "row": "| `window.panel.list` | query | Panels with visibility, dock area, tab group, floating geometry and focus | — | `[{panelId, title, visible, floating, area?, tabGroup?, current, geometry?, focused}]` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "window.toolbar.list",
+    "declaration": "crates/executor/src/commands/window.rs",
+    "line": 265,
+    "reason": "the GUI shows the toolbars themselves",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1129,
+        "row": "| `window.toolbar.list` | query | Toolbars and tool palettes with visibility, items and allowed items | — | `[{toolbarId, visible, floating, position?, items: [string], allowedItems: [string]}]` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "window.geometry.get",
+    "declaration": "crates/executor/src/commands/window.rs",
+    "line": 473,
+    "reason": "native window state read by agents",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1127,
+        "row": "| `window.geometry.get` | query | Main window geometry and screens | — | `{x, y, width, height, maximized, fullScreen, screens: [{x, y, width, height, scale}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "workspace.get",
+    "declaration": "crates/executor/src/commands/workspace.rs",
+    "line": 35,
+    "reason": "the GUI shows the arrangement itself",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1134,
+        "row": "| `workspace.get` | query | Full layout of a workspace (default: the current arrangement) | `name?: string` | `Layout` (§12.4) | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "workspace.layout.set",
+    "declaration": "crates/executor/src/commands/workspace.rs",
+    "line": 224,
+    "reason": "agents apply prepared layouts; users arrange panels by dragging",
+    "specRows": [
+      {
+        "file": "spec/01_application_shell.md",
+        "line": 1141,
+        "row": "| `workspace.layout.set` | ui | Apply a layout to the window without saving it to a workspace | `layout: Layout` | `Layout` | no |"
+      }
+    ]
+  },
+  {
+    "command": "xsheet.exposures.get",
+    "declaration": "crates/executor/src/commands/xsheet.rs",
+    "line": 181,
+    "reason": "the Exposure Sheet shows the cells directly",
+    "specRows": [
+      {
+        "file": "spec/04_timeline_xsheet.md",
+        "line": 1451,
+        "row": "| `xsheet.exposures.get` | query | Exposure sheet of a frame window as run-length JSON (17.2) | `sceneId?: id; elementIds?: [id]; from: int = 1; to?: int; include?: [string]` | exposure-sheet object | n/a |"
+      }
+    ]
+  },
+  {
+    "command": "xsheet.lightTable.list",
+    "declaration": "crates/executor/src/commands/xsheet.rs",
+    "line": 676,
+    "reason": "the static light table panel shows its items directly",
+    "specRows": [
+      {
+        "file": "spec/04_timeline_xsheet.md",
+        "line": 1459,
+        "row": "| `xsheet.lightTable.list` | query | Light-table items in stacking order | — | `{items: [{itemId, elementId, drawingId, label, visible, placement}]}` | n/a |"
+      }
+    ]
+  }
+]
