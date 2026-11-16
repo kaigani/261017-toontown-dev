@@ -1022,6 +1022,17 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/c43-e6-coexistence.py "$app" "desktop-gui/c43-e6"
+      # M4 C4.3b (camera note §6.1): the Camera view's capture against the activeView render (plain, zoomed out and in,
+      # rolled, after a scene drag) and, on Windows, click to activate by OS input (V9).
+      - name: The Camera view end to end (C4.3b)
+        if: always()
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; VPY=.venv-gui/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/c43-camera-e2e.py "$app" "desktop-gui/c43-camera"
       # M4 C4.2b (ruling D-5): the canvas's GPU and webview quantities, recorded on the runners with loose sanity bounds
       # (no GPU); the plan's numbers are asserted on the workstation with committed receipts.
       - name: Canvas measurements (C4.2b; loose bounds on CI)
@@ -1153,6 +1164,16 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; hl=headless-bin/toontown-headless; VPY=.venv-gate/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/c42-gesture-equivalence.py "$app" "$hl" "byte-gate/gesture-equivalence"
+      # M4 C4.3b (plan §5; SI-158): the same three ways in the Camera view, for the scene tools and the drawing tools.
+      - name: Gesture equivalence three ways in the Camera view
+        if: always()
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; hl=headless-bin/toontown-headless.exe; VPY=.venv-gate/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; hl=headless-bin/toontown-headless; VPY=.venv-gate/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/c43-gesture-equivalence.py "$app" "$hl" "byte-gate/camera-equivalence"
       # M4 C4.2b round 2: the reviewer's round-2 runner's modes that need the headless binary as well as the application
       # (the byte gate and the exact three-way comparison: all tools, the core tools with the reviewer's extra Polyline
       # click, the Select handles).

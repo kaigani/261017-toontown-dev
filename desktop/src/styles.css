@@ -282,6 +282,27 @@ select:focus-visible {
   flex: 1;
 }
 
+/* The zoom readout and the drawing aids share the view toolbar's one row (01 §5.3); when the window is narrow the row
+   scrolls sideways instead of wrapping over the canvas. */
+.view-toolbar {
+  align-items: center;
+}
+
+.view-chrome {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: thin;
+}
+
+.view-chrome > * {
+  flex: none;
+}
+
 .view-canvas {
   flex: 1;
   min-height: 0;

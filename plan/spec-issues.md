@@ -1968,3 +1968,32 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Test:** `scripts/c43-e6-coexistence.py` (both modes: the history's order, the answer after the release);
   `desktop/src/canvas/gestureOrder.test.ts` (the commit is sent before the end is reported).
 
+## SI-158 — how exact the Camera view's three-way can be through a headless view of another size (found in M4 C4.3b; interim)
+
+- **Sections:** plan §5 ("the exact three-way ... content, ids, one undo step and its label, exactly"), ruling D-4 (no
+  tolerance), 11 §3 (headless views are virtual), SI-069 (the virtual views' sizes), 05 §5.1-§5.2 (a scene drag's X/Y
+  converted to the node's parent space so the element stays under the pointer).
+- **Problem:** the three-way's second engine replays the window's samples on a headless engine whose Camera view is
+  the virtual 960 x 540 view, while the window's is whatever size the window has; no command sets a headless view's
+  size (the desktop host reports the window's). A drawing tool's samples replay in drawing units and a scene tool's
+  in camera units, both independent of the view's size, but a scene move's parent-space delta and a skew are computed
+  through the view's geometry (view pixels at the element's depth), so the replay can differ from the window in the
+  last bits (measured: 3.6e-16 and 1.1e-14 relative). The window and the third engine (the window's commands sent
+  directly) agree exactly.
+- **Interim decision:** the window and the third engine are compared exactly; the second engine exactly where it is
+  (the clicks, corner scale, pivot and every drawing tool in the Camera view), else within 1e-9 relative, and each row's
+  receipt says whether it was exact and gives the largest difference (`scripts/c43-gesture-equivalence.py`,
+  `replayNotExact` in its manifest).
+- **Question:** accept the tolerance for those rows, or give headless engines a way to take a view's size (a
+  test-only option of the headless binary, or a `view.size.set` command) so the replay sees the window's geometry.
+
+## SI-159 — click to activate never fired (found in M4 C4.3b; defect fixed)
+
+- **Sections:** views note V9, SI-142 (a press in a view window that is not the active view activates it first).
+- **Problem:** the canvas read `app.state.get`'s `activeView` as a string; it is an object (`{viewId, panelId, type}`,
+  SI-026), so the canvas never knew the active view and a press never activated its window. The Camera view e2e's V9
+  check (real OS input) found it.
+- **Decision (a defect):** the canvas reads `activeView.viewId` (`desktop/src/canvas/activeView.ts`, tested against
+  the answer's shape). Behaviour change: a press in an inactive Drawing or Camera view window now activates it, as V9
+  states.
+

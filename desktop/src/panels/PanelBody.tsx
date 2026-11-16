@@ -177,7 +177,7 @@ export function ViewPanel({ panelId }: { panelId: string }) {
             {v.label}
           </button>
         ))}
-        <span className="spacer" />
+        {drawing ? <ViewChrome viewId={panelId} /> : <span className="spacer" />}
         <button
           type="button"
           data-tt-role="button"
@@ -190,7 +190,6 @@ export function ViewPanel({ panelId }: { panelId: string }) {
           Focus
         </button>
       </div>
-      {drawing && <ViewChrome viewId={panelId} />}
       {drawing ? (
         <CanvasView engine={engine} viewId={panelId} />
       ) : (

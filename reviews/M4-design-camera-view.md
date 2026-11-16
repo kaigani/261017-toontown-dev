@@ -147,3 +147,20 @@ and after each scene gesture.
   changes a render's bytes (kernel, `c43`).
 - **V9**: a press in an inactive view window activates it and acts as the tool's press; `edit.history.get` shows no
   step for the activation (e2e on Windows by OS input).
+
+### 6.1 As built (C4.3b)
+
+- **Captures against renders** (`scripts/c43-camera-e2e.py`, the `desktop gui` job). The `activeView` render of the
+  Camera view is the camera's output image, not the view's area, so the comparison maps each capture pixel's centre
+  through `inspect.coordinates.convert {from: view, to: image, view: cameraView}` (an affine from three points) to the
+  render's pixel under it; capture pixels outside the frame (the dimmed outside, an overlay) and within 3 view pixels
+  of its edge (the outline) are left out. Under 1 % of the compared pixels may differ by more than 32, and at least a
+  quarter of the capture must be compared. Plain, zoomed out to 25 % (the frame and the dimmed outside in view),
+  zoomed in to 200 %, at 50 % rolled 20 degrees, and after a scene drag. Workstation: all five within the bound.
+- **V9** is checked there with real OS input on Windows; it found SI-159 (the canvas never knew the active view).
+- **The three-way** (`scripts/c43-gesture-equivalence.py`, the byte-gate job, beside C4.2b's): the scene tools'
+  click, moves, corner scale, skew and pivot, and the drawing tools in the Camera view (Brush, Rectangle, Ellipse,
+  Line, Eraser, Cutter, Paint, the drawing Select's marquee). Engine 2 replays a scene tool's samples in camera units
+  and a drawing tool's in drawing units; SI-158 records the last-bit differences of the scene moves and the skew.
+- **The gesture record and the modal state name the acting tool** (the scene tool in the scene family), so a replay
+  knows which tool made a gesture and an agent's `ui.busy` names it.

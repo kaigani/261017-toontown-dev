@@ -29,6 +29,7 @@ import { createWebGL2 } from './webgl2';
 import { createWebGPU } from './webgpu';
 import { canvasLaunch } from './launch';
 import { cameraGridMatrix, cameraOverlay } from './cameraOverlay';
+import { activeViewOf } from './activeView';
 import { decodeDrawing } from './format';
 import { gestureOrder } from './gestureOrder';
 import { drawingPreview, grabberPreview, scenePreview, type Box } from './preview';
@@ -161,8 +162,7 @@ export function CanvasView({
       void engine
         .run('app.state.get', {})
         .done.then((env) => {
-          const v = (env.result as Record<string, unknown> | undefined)?.['activeView'];
-          if (typeof v === 'string') activeView = v;
+          activeView = activeViewOf(env.result);
         })
         .catch(() => undefined);
     };
@@ -212,10 +212,11 @@ export function CanvasView({
     // The modal state and the commits go out in order: an end is never overtaken by the start before it
     // (C42B-R2-03), and a gesture's end follows its commit's answer (SI-157).
     const order = gestureOrder(engine);
+    /** The tool a gesture of this view is made with: in a Camera view running the scene family, the scene tool
+     *  (05 §5.0); otherwise the drawing tool. */
+    const actingTool = () => (model?.scene?.viewType === 'camera' && sceneFamily ? sceneTool : style.tool);
     const reportGesture = (on: boolean) => {
-      // The title names the tool that acts: in a Camera view running the scene family, the scene tool (05 §5.0).
-      const title = model?.scene?.viewType === 'camera' && sceneFamily ? sceneTool : style.tool;
-      order.report(on ? { kind: 'gesture', title } : null);
+      order.report(on ? { kind: 'gesture', title: actingTool() } : null);
     };
     const dropParts = () => {
       if (parts && renderer) {
@@ -523,8 +524,7 @@ export function CanvasView({
         mappedVersion = model.version;
         refreshMapping();
       }
-      const actingTool = camera && sceneFamily ? sceneTool : style.tool;
-      const key = `${String(model.selectionVersion)}/${String(viewVersion)}/${String(model.version)}/${actingTool}`;
+      const key = `${String(model.selectionVersion)}/${String(viewVersion)}/${String(model.version)}/${actingTool()}`;
       if (key !== selectionKey) {
         selectionKey = key;
         if (camera) {
@@ -653,7 +653,8 @@ export function CanvasView({
     const commit = (req: ReturnType<GestureCollector['up']>) => {
       if (!req) return;
       const before = model?.version ?? 0;
-      const tool = style.tool;
+      // The record names the tool that acted (a scene tool in the scene family), as the modal state does.
+      const tool = actingTool();
       const mapping = d2v;
       void order.commitThenEnd(req).then((env) => {
         lastRecord = stringifyWireJson(gestureRecord('user', tool, mapping, req, env));
