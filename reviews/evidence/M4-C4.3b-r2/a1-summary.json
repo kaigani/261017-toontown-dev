@@ -1,0 +1,19 @@
+{
+  "verdict": "FAIL",
+  "regression": "11 pass; 4 finding reproducers ignored by default",
+  "findings": "4 failing reproducers, 2 P2 defects",
+  "runs": [
+    {
+      "name": "regression",
+      "exit": 0,
+      "sha256": "19d750de7ce3666e80aea5aebe25ccaebfbd73b32767f6bbea934f571ce2965a",
+      "command": "cargo test -p tt-executor --test c43b_r1_review --test c43b_r2_review --locked --features tt-persist/test-hooks"
+    },
+    {
+      "name": "findings",
+      "exit": 101,
+      "sha256": "7b9eae354e530a044825d8648cbf799d2ade8f89cda73f2de235e190033a96b4",
+      "command": "cargo test -p tt-executor --test c43b_r2_review --locked --features tt-persist/test-hooks -- --ignored"
+    }
+  ]
+}

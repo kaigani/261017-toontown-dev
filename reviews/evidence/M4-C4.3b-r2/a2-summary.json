@@ -1,0 +1,69 @@
+{
+  "case": "A2",
+  "verdict": "PASS",
+  "checks": 710,
+  "rows": [
+    {
+      "variant": "triple",
+      "passed": 10,
+      "attempts": 10,
+      "verdict": "PASS"
+    },
+    {
+      "variant": "rotate",
+      "passed": 10,
+      "attempts": 10,
+      "verdict": "PASS"
+    },
+    {
+      "variant": "cross-view",
+      "passed": 10,
+      "attempts": 10,
+      "verdict": "PASS"
+    },
+    {
+      "variant": "escape",
+      "passed": 10,
+      "attempts": 10,
+      "verdict": "PASS"
+    },
+    {
+      "variant": "refusal",
+      "passed": 10,
+      "attempts": 10,
+      "verdict": "PASS"
+    },
+    {
+      "variant": "agent-between",
+      "passed": 10,
+      "attempts": 10,
+      "verdict": "PASS"
+    },
+    {
+      "variant": "played-overlap",
+      "passed": 10,
+      "attempts": 10,
+      "verdict": "PASS"
+    }
+  ],
+  "hashes": {
+    "canvas-summary.json": "85ba120271313dcb537f2da7dec5018adcfdd8b5eee2543884c04b3aa66d2e5d",
+    "discovery.json": "50bfe63d23e69caf5b0d6d45550700ffaf835a3eb84de14412c95ed0ba990c22",
+    "discovery.log": "da1d3e0e0d7ba22c613c56d08fad433ae46144f83b3c1b640b10d3d38754ece0",
+    "manifest.json": "9046e9f3bb0fb559d99e3814b9fd857e8dc39635db6336d977783a70adc9a817",
+    "refusal-0.json": "01397746ddce611bf966862f88f9abc36a32d3e771c18874c5fc93be2ff45430",
+    "refusal-1.json": "d0223f98fc92519ca090dbc325a822ede57d98f3c728a19d28cc2eee393dbdea",
+    "refusal-2.json": "8aaf52a3ecfe62f68d4ca7a93f0d197c6f851cae4cad4f1ee2231b93da3b7843",
+    "refusal-3.json": "22750e6d48278a045063dde4e47a1a920b9296dba7c3df047df628b819aa4b32",
+    "refusal-4.json": "19e2270165131a22f4328045132c9679be07f6a1039f04d307486cc206abbc90",
+    "refusal-5.json": "eeb8b052fad1a7cb27f207b3e613d47736667da9fa39201f790deda665cefca4",
+    "refusal-6.json": "3b7d7dad1c1019dcf24a773a234f4e7627dbd404ef093fae858ec1f5e79c010c",
+    "refusal-7.json": "742d7193ca97e37c764703222548db370b65ef267708944026b3a905b67b81d0",
+    "refusal-8.json": "eab4fe19d4c46408d01bf450a44dce62b516ba55f7ff81ac95b92b98c557b520",
+    "refusal-9.json": "b816041f6295df2a54925cb2e0f0c5eb2f674befdf173b916bb28b4ea8741668",
+    "transcript.json": "24816df820f81c93631e2f848807201f6a3dd98be78ef1ea2a301c74c440db38",
+    "tree-final.json": "8ea1606c198b0fc97c599dcd1f3c20fcc5a714da873f1328911bc5db7a3af156",
+    "variants.json": "0d79d5b4f4fdfafe07ac36bbb31465e60f0ce2b18584937f8784fa75b40cad05"
+  },
+  "regenerate": "python tests/adversarial/c43b-r2-live.py target/release/toontown.exe a2"
+}
