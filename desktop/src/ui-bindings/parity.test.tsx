@@ -486,19 +486,15 @@ describe('the parity manifest (parity note 9)', () => {
     expect(callSitesOf('desktop/src-tauri/src/x.rs', rust)).toEqual(['job.list', 'view.list', 'window.panel.list']);
   });
 
-  // C43B-R2S-01: every surface `reads.json` names is rendered by the collector (or is the native menu, which the manifest
-  // collects from `menu.json`).
-  it('C43B-R2S-01: the surfaces reads.json names are collected surfaces', async () => {
-    const reads = readJson('desktop/src/ui-bindings/reads.json') as {
-      surfaces: Record<string, { in?: string[] }>;
-    };
+  // C43B-R2S-01, C43B-R2-01: every surface key of `reads.json` is a surface the collector renders (or the native menu,
+  // which the manifest collects from `menu.json`): an invented surface, or a real one renamed, is refused.
+  it('C43B-R2-01: the surfaces reads.json names are collected surfaces', async () => {
+    const reads = readJson('desktop/src/ui-bindings/reads.json') as { surfaces: Record<string, unknown> };
     const known = new Set([...(await surfaces()).map((x) => x.name), 'menu']);
-    const unknown = (table: typeof reads) =>
-      Object.entries(table.surfaces).flatMap(([name, s]) =>
-        (s.in ?? []).length === 0 ? [`${name}: names no collected surface`] : (s.in ?? []).filter((x) => !known.has(x)).map((x) => `${name}: ${x}`),
-      );
+    const unknown = (table: typeof reads) => Object.keys(table.surfaces).filter((name) => !known.has(name));
     expect(unknown(reads)).toEqual([]);
-    const invented = { surfaces: { ...reads.surfaces, ghost: { in: ['dialog:Nowhere'] }, bare: {} } };
-    expect(unknown(invented)).toEqual(['ghost: dialog:Nowhere', 'bare: names no collected surface']);
+    const { 'dialog:Help': help, ...rest } = reads.surfaces;
+    expect(unknown({ surfaces: { ...reads.surfaces, 'dialog:Nowhere': {} } })).toEqual(['dialog:Nowhere']);
+    expect(unknown({ surfaces: { ...rest, helpWindow: help } })).toEqual(['helpWindow']);
   });
 });

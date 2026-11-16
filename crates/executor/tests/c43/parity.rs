@@ -77,7 +77,7 @@ fn d35_a_mention_binds_nothing() {
     assert!(bad.iter().any(|p| p.contains("`keymap.export` is in no state")), "{bad:?}");
     // `tool.list`: read by the Drawing tools palette; without its declared read the mention binds nothing.
     let mut reads: Value = serde_json::from_str(READS).unwrap();
-    reads["surfaces"]["drawingToolsPalette"]["reads"].as_object_mut().unwrap().remove("tool.list");
+    reads["surfaces"]["main"]["reads"].as_object_mut().unwrap().remove("tool.list");
     let (bad, _) = pa3_entries(&m, &entries, &reads.to_string());
     assert!(bad.iter().any(|p| p.contains("`tool.list` is in no state")), "{bad:?}");
 }
@@ -89,23 +89,27 @@ fn d35_declared_reads_and_call_sites_agree_both_ways() {
     assert_eq!(reads_problems(&m, READS), Vec::<String>::new());
     // An undeclared call site fails.
     let mut reads: Value = serde_json::from_str(READS).unwrap();
-    reads["surfaces"]["viewPanel"]["reads"].as_object_mut().unwrap().remove("view.list");
+    reads["surfaces"]["main"]["reads"].as_object_mut().unwrap().remove("view.list");
     let bad = reads_problems(&m, &reads.to_string());
     assert!(bad.iter().any(|p| p.contains("`view.list` is read in desktop/src/panels/PanelBody.tsx")), "{bad:?}");
     // A declared read without a call site fails, as does a declared mutating command.
     let mut reads: Value = serde_json::from_str(READS).unwrap();
-    reads["surfaces"]["viewPanel"]["reads"]["job.list"] = json!(["desktop/src/panels/PanelBody.tsx"]);
-    reads["surfaces"]["viewPanel"]["reads"]["edit.undo"] = json!(["desktop/src/panels/PanelBody.tsx"]);
+    reads["surfaces"]["main"]["reads"]["job.list"] = json!(["desktop/src/panels/PanelBody.tsx"]);
+    reads["surfaces"]["main"]["reads"]["edit.undo"] = json!(["desktop/src/panels/PanelBody.tsx"]);
     let bad = reads_problems(&m, &reads.to_string());
     assert!(bad.iter().any(|p| p.contains("declares `job.list` in desktop/src/panels/PanelBody.tsx")), "{bad:?}");
     assert!(bad.iter().any(|p| p.contains("`edit.undo` is not a query")), "{bad:?}");
-    // C43B-R2S-01: a surface the collector does not render, and a surface naming none, fail.
+    // C43B-R2S-01, C43B-R2-01: a surface key the collector does not render fails, with or without reads; so does a real
+    // surface renamed (its reads moved to an invented key).
     let mut reads: Value = serde_json::from_str(READS).unwrap();
-    reads["surfaces"]["ghost"] = json!({ "description": "x", "in": ["dialog:Nowhere"], "reads": {} });
-    reads["surfaces"]["bare"] = json!({ "description": "x", "reads": {} });
+    reads["surfaces"]["dialog:Nowhere"] = json!({ "description": "x", "reads": {} });
     let bad = reads_problems(&m, &reads.to_string());
-    assert!(bad.iter().any(|p| p.contains("`ghost` is in `dialog:Nowhere`")), "{bad:?}");
-    assert!(bad.iter().any(|p| p.contains("`bare` names no collected surface")), "{bad:?}");
+    assert!(bad.iter().any(|p| p.contains("`dialog:Nowhere` is not a surface the collector renders")), "{bad:?}");
+    let mut reads: Value = serde_json::from_str(READS).unwrap();
+    let moved = reads["surfaces"].as_object_mut().unwrap().remove("dialog:Help").unwrap();
+    reads["surfaces"]["helpWindow"] = moved;
+    let bad = reads_problems(&m, &reads.to_string());
+    assert_eq!(bad, vec!["reads.json: surface `helpWindow` is not a surface the collector renders".to_owned()]);
     // A call site removed from the manifest (an inert mention left behind) leaves its declared read without a call.
     let mut m2 = m.clone();
     m2["callSites"].as_array_mut().unwrap().retain(|c| c["command"] != "tool.list");
@@ -167,6 +171,20 @@ fn d36_deferred_entries_are_validated_in_full() {
     raw.insert_str(at, &format!("\n    {}: {},", serde_json::to_string(&id).unwrap(), entry));
     let (bad, _) = pa3_raw(&m, &raw);
     assert!(bad.iter().any(|p| p.contains(&format!("deferred `{id}` is listed twice"))), "{bad:?}");
+    // Ruling on C43B-R2-02: a key with an escape sequence or a non-ASCII character, at any depth, is refused by the raw
+    // scan before anything is decoded (an escaped duplicate, an escaped root, an escaped entry field, a non-ASCII key),
+    // without a panic; an escape in a value is not a key and stays allowed.
+    for raw in [
+        r#"{"deferred":{"anim.camera.set":{"owner":"M4 C4.4"},"anim.camera.set":{"owner":"M4 C4.4"}}}"#,
+        r#"{"deferred":{"anim.camera.set":{},"anim.camera.set":{}}}"#,
+        r#"{"deferred":{"anim.camera.set":{"owner":"M4 C4.4"}}}"#,
+        "{\"deferred\":{\"anim.camera.s\u{0435}t\":{}}}",
+    ] {
+        let err = deferred_entries(raw).expect_err(raw);
+        assert!(err.contains("keys are plain ASCII"), "{raw}: {err}");
+    }
+    let ok = deferred_entries(r#"{"deferred":{"anim.camera.set":{"owner":"M4 C4.4"}}}"#).unwrap();
+    assert_eq!(ok[0].1["owner"], "M4 C4.4");
 }
 
 #[test]

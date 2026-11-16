@@ -252,11 +252,18 @@ pub fn deferred_entries(raw: &str) -> Result<Vec<(String, Value)>, String> {
     }
     let doc: Value = serde_json::from_str(raw).map_err(|e| format!("deferred.json: {e}"))?;
     let map = doc["deferred"].as_object().ok_or("deferred.json: no `deferred` object")?;
-    Ok(keys.into_iter().map(|k| (k.clone(), map[&k].clone())).collect())
+    keys.into_iter()
+        .map(|k| match map.get(&k) {
+            Some(v) => Ok((k, v.clone())),
+            None => Err(format!("deferred `{k}`: the key read from the text is not the decoded key (D-36)")),
+        })
+        .collect()
 }
 
 /// The keys of the top-level `deferred` object, in order, read from the text (a small JSON scanner: strings with
-/// escapes, nesting depth).
+/// escapes, nesting depth). Ruling on C43B-R2-02: every key in the file, at any depth, is plain ASCII with no escape
+/// sequence, so the text's keys are the decoded keys; a key with a backslash or a non-ASCII byte is refused here,
+/// before anything is decoded.
 fn deferred_keys(raw: &str) -> Result<Vec<String>, String> {
     let b = raw.as_bytes();
     let (mut i, mut depth) = (0usize, 0usize);
@@ -274,12 +281,19 @@ fn deferred_keys(raw: &str) -> Result<Vec<String>, String> {
                     }
                     i += 1;
                 }
-                let s = String::from_utf8_lossy(&b[start..i.min(b.len())]).into_owned();
+                let text = &b[start..i.min(b.len())];
+                let s = String::from_utf8_lossy(text).into_owned();
                 let mut j = i + 1;
                 while j < b.len() && b[j].is_ascii_whitespace() {
                     j += 1;
                 }
                 if b.get(j) == Some(&b':') {
+                    if text.contains(&b'\\') || !text.is_ascii() {
+                        return Err(format!(
+                            "deferred.json: key `{s}` has an escape sequence or a non-ASCII character; keys are plain \
+                             ASCII (D-36, C43B-R2-02)"
+                        ));
+                    }
                     if depth == 1 {
                         root_key = s;
                     } else if depth == 2 && inside {
@@ -337,16 +351,21 @@ pub fn deferred_problems(entries: &[(String, Value)]) -> Vec<String> {
 
 // ----- D-35: declared reads -------------------------------------------------------------------------------------------
 
-/// The declared reads: `(query, file)` pairs under the surfaces, and under plumbing.
+/// The declared reads: `(query, file)` pairs under the surfaces, and under plumbing; and the surface keys themselves,
+/// which the gate checks against the collected surfaces (C43B-R2-01).
 pub struct Reads {
     pub surfaces: BTreeSet<(String, String)>,
     pub plumbing: BTreeSet<(String, String)>,
+    /// The `surfaces` object's keys, in file order.
+    pub surface_names: Vec<String>,
 }
 
 pub fn reads(raw: &str) -> Reads {
     let doc: Value = serde_json::from_str(raw).unwrap();
     let mut surfaces = BTreeSet::new();
-    for s in doc["surfaces"].as_object().unwrap().values() {
+    let mut surface_names = Vec::new();
+    for (name, s) in doc["surfaces"].as_object().unwrap() {
+        surface_names.push(name.clone());
         for (q, files) in s["reads"].as_object().unwrap() {
             for f in files.as_array().unwrap() {
                 surfaces.insert((q.clone(), f.as_str().unwrap().to_owned()));
@@ -359,7 +378,7 @@ pub fn reads(raw: &str) -> Reads {
             plumbing.insert((q.clone(), f.as_str().unwrap().to_owned()));
         }
     }
-    Reads { surfaces, plumbing }
+    Reads { surfaces, plumbing, surface_names }
 }
 
 /// The manifest's call sites, `(command, file)`.
@@ -382,8 +401,9 @@ pub fn reads_problems(m: &Value, reads_raw: &str) -> Vec<String> {
     let sites = call_sites(m);
     let is_query = |id: &str| r.get(id).is_some_and(|e| e.spec.kind == Kind::Query);
     let mut out = Vec::new();
-    // C43B-R2S-01: every surface the table names is a collected surface (the manifest's `surfaces`, or `menu` for the
-    // native menu the manifest collects from `menu.json`).
+    // C43B-R2S-01, C43B-R2-01: every surface key is a collected surface (the manifest's `surfaces`, or `menu` for the
+    // native menu the manifest collects from `menu.json`), so a read declared under a surface that does not exist, or a
+    // real surface renamed to an invented one, is refused.
     let collected: BTreeSet<&str> = m["surfaces"]
         .as_array()
         .map(Vec::as_slice)
@@ -392,16 +412,9 @@ pub fn reads_problems(m: &Value, reads_raw: &str) -> Vec<String> {
         .filter_map(Value::as_str)
         .chain(std::iter::once("menu"))
         .collect();
-    let doc: Value = serde_json::from_str(reads_raw).unwrap();
-    for (name, s) in doc["surfaces"].as_object().unwrap() {
-        let within: Vec<&str> = s["in"].as_array().map(Vec::as_slice).unwrap_or_default().iter().filter_map(Value::as_str).collect();
-        if within.is_empty() {
-            out.push(format!("reads.json: surface `{name}` names no collected surface (`in`)"));
-        }
-        for w in within {
-            if !collected.contains(w) {
-                out.push(format!("reads.json: surface `{name}` is in `{w}`, which the collector does not render"));
-            }
+    for name in &rd.surface_names {
+        if !collected.contains(name.as_str()) {
+            out.push(format!("reads.json: surface `{name}` is not a surface the collector renders"));
         }
     }
     for (q, f) in &sites {

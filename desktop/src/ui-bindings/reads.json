@@ -1,68 +1,57 @@
 {
-  "$comment": "The queries each rendered surface reads (ruling D-35); `in` names the collected surfaces (parity.json `surfaces`, or `menu` for the native menu) the surface is rendered in, checked by the gate (C43B-R2S-01). A query is bound only if a surface here declares it; the gate (crates/executor/tests/common/parity_gate.rs) checks this table both ways against the query call sites the parity test finds in product code (parity.json `callSites`): every call site is declared here, under a surface or under plumbing, and every declared read has a call site in a file it names. Plumbing calls bind nothing.",
+  "$comment": "The queries each rendered surface reads (ruling D-35). Each key is a collected surface (parity.json `surfaces`, or `menu` for the native menu built from menu.json), so a read belongs to a surface the window renders; the gate refuses any other key (C43B-R2S-01, C43B-R2-01). A query is bound only if a surface here declares it; the gate (crates/executor/tests/common/parity_gate.rs) checks this table both ways against the query call sites the parity test finds in product code (parity.json `callSites`): every call site is declared here, under a surface or under plumbing, and every declared read has a call site in a file it names. Plumbing calls bind nothing.",
   "surfaces": {
-    "mainWindow": {
-      "description": "the main window's title, mode, start screen and modal state (01 §5.1)",
-      "in": ["main", "startScreen"],
-      "reads": { "app.state.get": ["desktop/src/state/store.ts"] }
-    },
-    "dock": {
-      "description": "the dock: the workspace's arrangement and the panels it shows (01 §5.4, §5.5)",
-      "in": ["main"],
+    "main": {
+      "description": "the main window's title, mode, start screen and modal state (01 §5.1); the dock: the workspace's arrangement and the panels it shows (01 §5.4, §5.5); the main toolbar and the tool palettes (01 §5.7); the Drawing tools palette's tools (02 §7); the status bar: its texts, the running jobs, the agent indicator and its sessions popover (01 §9.1, 11 §6.4); the History panel (01 §10); a view window's type buttons (01 §5.3); a view window's zoom readout, drawing aids and symmetry (01 §5.3, 02 §6.2, §10); the Drawing and Camera view canvas: its mapping, active view, tools, pens, selection and preferences (02 §4, camera note §6)",
       "reads": {
+        "app.state.get": ["desktop/src/state/store.ts", "desktop/src/canvas/CanvasView.tsx"],
         "workspace.get": ["desktop/src/state/store.ts"],
-        "window.panel.list": ["desktop/src/state/store.ts"]
-      }
-    },
-    "toolbars": {
-      "description": "the main toolbar and the tool palettes (01 §5.7)",
-      "in": ["main"],
-      "reads": {
+        "window.panel.list": ["desktop/src/state/store.ts"],
         "window.toolbar.list": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src/state/store.ts"],
-        "drawAid.state.get": ["desktop/src/shell/toolbarGroups.tsx"]
+        "drawAid.state.get": ["desktop/src/shell/toolbarGroups.tsx", "desktop/src/panels/ViewChrome.tsx"],
+        "tool.list": ["desktop/src/shell/Toolbars.tsx"],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "job.list": ["desktop/src/shell/StatusBar.tsx"],
+        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.activity.list": ["desktop/src/shell/StatusBar.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "view.list": ["desktop/src/panels/PanelBody.tsx"],
+        "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
+        "tool.settings.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "draw.viewMapping.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx"],
+        "prefs.get": ["desktop/src/canvas/CanvasView.tsx"]
       }
     },
-    "drawingToolsPalette": {
-      "description": "the Drawing tools palette's tools (02 §7)",
-      "in": ["main"],
-      "reads": { "tool.list": ["desktop/src/shell/Toolbars.tsx"] }
+    "startScreen": {
+      "description": "the main window's title, mode, start screen and modal state (01 §5.1); the start screen: recent projects and recovery (01 §2, §3.7)",
+      "reads": {
+        "app.state.get": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"]
+      }
     },
-    "nativeMenu": {
+    "menu": {
       "description": "the native menu: accelerators, Open Recent, the workspace list (01 §5.1, §3.3, §5.5)",
-      "in": ["menu"],
       "reads": {
         "keymap.list": ["desktop/src-tauri/src/menu.rs"],
         "project.recent.list": ["desktop/src-tauri/src/menu.rs"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs"]
       }
     },
-    "statusBar": {
-      "description": "the status bar: its texts, the running jobs, the agent indicator and its sessions popover (01 §9.1, 11 §6.4)",
-      "in": ["main"],
-      "reads": {
-        "ui.statusBar.get": ["desktop/src/state/store.ts"],
-        "job.list": ["desktop/src/shell/StatusBar.tsx"],
-        "agent.server.status": ["desktop/src/state/store.ts"],
-        "agent.activity.list": ["desktop/src/shell/StatusBar.tsx"]
-      }
-    },
-    "historyPanel": {
+    "float:history": {
       "description": "the History panel (01 §10)",
-      "in": ["main", "float:history"],
-      "reads": { "edit.history.get": ["desktop/src/state/store.ts"] }
-    },
-    "startScreen": {
-      "description": "the start screen: recent projects and recovery (01 §2, §3.7)",
-      "in": ["startScreen"],
       "reads": {
-        "project.recent.list": ["desktop/src/state/store.ts"],
-        "project.recovery.list": ["desktop/src/state/store.ts"]
+        "edit.history.get": ["desktop/src/state/store.ts"]
       }
     },
-    "preferences": {
+    "preferences:general": {
       "description": "the Preferences window: the values, themes, tips and the shortcut editor's bindings (01 §7, §8.3, §9.4)",
-      "in": ["preferences:general"],
       "reads": {
         "prefs.list": ["desktop/src/state/store.ts"],
         "ui.theme.list": ["desktop/src/state/store.ts"],
@@ -70,19 +59,20 @@
         "keymap.list": ["desktop/src/state/store.ts"]
       }
     },
-    "newProject": {
+    "dialog:New Project": {
       "description": "the New Project form's presets (01 §3.1)",
-      "in": ["dialog:New Project"],
-      "reads": { "project.presets.list": ["desktop/src/state/store.ts"] }
+      "reads": {
+        "project.presets.list": ["desktop/src/state/store.ts"]
+      }
     },
-    "projectProperties": {
+    "dialog:Project Properties": {
       "description": "the Project Properties dialog (01 §3.8)",
-      "in": ["dialog:Project Properties"],
-      "reads": { "project.properties.get": ["desktop/src/shell/projectForms.tsx"] }
+      "reads": {
+        "project.properties.get": ["desktop/src/shell/projectForms.tsx"]
+      }
     },
-    "infoDialogs": {
+    "dialog:About Toontown": {
       "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
-      "in": ["dialog:About Toontown", "dialog:Project Info", "dialog:Check Project", "dialog:Open Backup"],
       "reads": {
         "app.info.get": ["desktop/src/shell/infoDialogs.tsx"],
         "project.info.get": ["desktop/src/shell/infoDialogs.tsx"],
@@ -90,37 +80,37 @@
         "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
       }
     },
-    "help": {
-      "description": "the Help window (01 §9.3)",
-      "in": ["dialog:Help"],
-      "reads": { "ui.help.get": ["desktop/src/App.tsx"] }
-    },
-    "viewPanel": {
-      "description": "a view window's type buttons (01 §5.3)",
-      "in": ["main"],
-      "reads": { "view.list": ["desktop/src/panels/PanelBody.tsx"] }
-    },
-    "viewChrome": {
-      "description": "a view window's zoom readout, drawing aids and symmetry (01 §5.3, 02 §6.2, §10)",
-      "in": ["main"],
+    "dialog:Project Info": {
+      "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
       "reads": {
-        "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"],
-        "drawAid.state.get": ["desktop/src/panels/ViewChrome.tsx"],
-        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
-        "tool.settings.get": ["desktop/src/panels/ViewChrome.tsx"]
+        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"],
+        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"],
+        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"],
+        "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
       }
     },
-    "canvas": {
-      "description": "the Drawing and Camera view canvas: its mapping, active view, tools, pens, selection and preferences (02 §4, camera note §6)",
-      "in": ["main"],
+    "dialog:Check Project": {
+      "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
       "reads": {
-        "app.state.get": ["desktop/src/canvas/CanvasView.tsx"],
-        "draw.viewMapping.get": ["desktop/src/canvas/CanvasView.tsx"],
-        "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
-        "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
-        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx"],
-        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx"],
-        "prefs.get": ["desktop/src/canvas/CanvasView.tsx"]
+        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"],
+        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"],
+        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"],
+        "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
+      }
+    },
+    "dialog:Open Backup": {
+      "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
+      "reads": {
+        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"],
+        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"],
+        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"],
+        "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
+      }
+    },
+    "dialog:Help": {
+      "description": "the Help window (01 §9.3)",
+      "reads": {
+        "ui.help.get": ["desktop/src/App.tsx"]
       }
     }
   },
