@@ -205,7 +205,7 @@ fn selection_summary(cx: &Cx) -> String {
     label = "Read the status bar",
     scopes = [read],
     example(title = "The status bar's segments", params = "{}"),
-    agent_only = "the GUI shows the status bar itself",
+    gui = "the status bar: its texts",
 )]
 pub(crate) fn ui_status_bar_get(cx: &mut Cx, _p: NoParams) -> Result<StatusBar, CommandError> {
     let sensors = cx.ui().shell().sensors.clone();

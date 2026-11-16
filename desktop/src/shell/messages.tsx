@@ -257,6 +257,7 @@ function MessageBox({
               autoFocus={b.role === 'default'}
               data-tt-role="button"
               data-tt-id={`message.${b.id}`}
+              data-tt-gui-only={buttons.length === 1 ? 'dismiss' : 'answer'}
               onClick={() => {
                 onAnswer(b.id, suppress);
               }}

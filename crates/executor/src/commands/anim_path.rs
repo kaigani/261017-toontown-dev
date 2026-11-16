@@ -794,7 +794,7 @@ pub(crate) struct PointSetResult {
     undo = "Change Motion Point",
     needs_project,
     example(title = "Move Bob's last keyframe and sharpen it", params = r#"{"pointIds": ["scene:\"Intro\"/element:\"Bob\"/channel:\"position\"/key:\"24\""], "x": 5, "tension": 0.5}"#),
-    agent_only = "agents edit points by id (05 §9.4); the motion point properties do the same (M6 C6.2)",
+    gui = "Properties: motion point properties (05 §9.4 line 690) (M6 C6.2)",
 )]
 pub(crate) fn anim_path_point_set(cx: &mut Cx, p: PointSetParams) -> Result<PointSetResult, CommandError> {
     let doc = cx.document()?.clone();
@@ -1039,7 +1039,7 @@ pub(crate) fn remove_point(
     undo = "Remove Motion Point",
     needs_project,
     example(title = "Remove Bob's last keyframe", params = r#"{"pointIds": ["scene:\"Intro\"/element:\"Bob\"/channel:\"position\"/key:\"24\""]}"#),
-    agent_only = "agents remove points by id (05 §9.6); the motion point properties and Delete do the same (M6 C6.2)",
+    gui = "Motion path: remove point, Delete (05 §9.4 line 704, §9.6 lines 720-725) (M6 C6.2)",
 )]
 pub(crate) fn anim_path_point_remove(cx: &mut Cx, p: PointRemoveParams) -> Result<PointRemoveResult, CommandError> {
     let doc = cx.document()?.clone();

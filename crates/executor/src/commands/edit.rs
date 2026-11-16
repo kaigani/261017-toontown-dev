@@ -329,7 +329,7 @@ pub(crate) fn selection_in(cx: &Cx, context: EditContext) -> Vec<String> {
     scopes = [read],
     needs_project,
     example(title = "Selection of the focused context", params = "{}"),
-    agent_only = "the GUI shows the selection directly",
+    gui = "the Camera view canvas: the selected elements it previews",
 )]
 pub(crate) fn edit_selection_get(cx: &mut Cx, p: ContextParams) -> Result<SelectionGetResult, CommandError> {
     let context = resolve_context(cx, p.context);

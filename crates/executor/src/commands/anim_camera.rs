@@ -371,7 +371,7 @@ pub(crate) struct SetParams {
     undo = "Change Camera",
     needs_project,
     example(title = "Widen and roll the Intro camera", params = r#"{"cameraId": "scene:\"Intro\"/element:\"Camera\"", "fov": 60, "roll": 5}"#),
-    agent_only = "agents set camera values (05 §19.1.1 FOV wedge equivalent); the Properties panel does the same (M6 C6.2)",
+    gui = "Top view: FOV wedge dragging (05 §19.1 item 1, lines 1174-1177); camera properties (M6 C6.2)",
 )]
 pub(crate) fn anim_camera_set(cx: &mut Cx, p: SetParams) -> Result<CameraResult, CommandError> {
     let doc = cx.document()?.clone();

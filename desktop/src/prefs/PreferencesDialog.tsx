@@ -18,7 +18,7 @@ function coerce(p: PrefEntry, raw: unknown): unknown {
 }
 
 interface KeymapOp {
-  readonly command: 'keymap.set' | 'keymap.remove' | 'keymap.reset';
+  readonly command: 'keymap.set' | 'keymap.remove' | 'keymap.reset' | 'keymap.import';
   readonly params: Record<string, unknown>;
 }
 
@@ -446,6 +446,7 @@ export function KeymapEditor({
         value={filter}
         data-tt-role="field"
         data-tt-id="keymap.filter"
+        data-tt-gui-only="typing"
         onChange={(e) => {
           setFilter(e.target.value);
         }}
@@ -461,6 +462,7 @@ export function KeymapEditor({
                 aria-pressed={selected === c.id}
                 data-tt-role="button"
                 data-tt-id={`keymap.command.${c.id}`}
+                data-tt-gui-only="navigate"
                 onClick={() => {
                   setSelected(c.id);
                   setNotice(null);
@@ -575,6 +577,7 @@ export function KeymapEditor({
                 type="button"
                 data-tt-role="button"
                 data-tt-id="keymap.conflict.override"
+                data-tt-command="keymap.set"
                 onClick={() => {
                   stageSet(conflict.keys, true);
                   setConflict(null);
@@ -586,6 +589,7 @@ export function KeymapEditor({
                 type="button"
                 data-tt-role="button"
                 data-tt-id="keymap.conflict.cancel"
+                data-tt-gui-only="dismiss"
                 onClick={() => {
                   setConflict(null);
                 }}
@@ -609,6 +613,63 @@ export function KeymapEditor({
       >
         Reset all…
       </button>
+      {/* 01 §8.3 item 8: import (staged like every keymap edit, item 9: applied by OK, discarded by Cancel) and export
+          (writes the keymap in force; changes nothing). */}
+      <button
+        type="button"
+        data-tt-role="button"
+        data-tt-id="keymap.import"
+        data-tt-command="keymap.import"
+        onClick={() => {
+          void services.engine
+            .pickPath({
+              kind: 'open',
+              title: 'Import Keymap',
+              filters: [{ name: 'JSON', extensions: ['json'] }],
+            })
+            .catch(() => null)
+            .then((path) => {
+              if (!path) return;
+              const mode = window.confirm('Replace the whole keymap? (Cancel merges the file into it.)')
+                ? 'replace'
+                : 'merge';
+              onStage({ command: 'keymap.import', params: { path, mode } }, bindings);
+              setNotice(`${path} will be imported (${mode}) when Preferences is confirmed.`);
+            });
+        }}
+      >
+        Import…
+      </button>
+      <button
+        type="button"
+        data-tt-role="button"
+        data-tt-id="keymap.export"
+        data-tt-command="keymap.export"
+        onClick={() => {
+          void services.engine
+            .pickPath({
+              kind: 'save',
+              title: 'Export Keymap',
+              filters: [{ name: 'JSON', extensions: ['json'] }],
+            })
+            .catch(() => null)
+            .then((path) => {
+              if (!path) return;
+              void services.run('keymap.export', { path, onExists: 'overwrite' }).then((env) => {
+                setNotice(
+                  env.status === 'ok' ? `Exported to ${path}.` : (env.error?.message ?? 'Export failed.'),
+                );
+              });
+            });
+        }}
+      >
+        Export…
+      </button>
+      {!selected && notice && (
+        <p className="field-problem" role="alert" data-tt-role="text" data-tt-id="keymap.notice">
+          {notice}
+        </p>
+      )}
     </div>
   );
 }

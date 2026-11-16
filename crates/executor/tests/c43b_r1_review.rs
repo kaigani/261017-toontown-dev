@@ -23,130 +23,8 @@ const DEFERRED: &str = include_str!("../../../desktop/src/ui-bindings/deferred.j
 const GESTURES: &str = include_str!("../src/gesture-table.json");
 const TOOLBAR: &str = include_str!("../src/toolbar-default.json");
 
-/// The sections of GUI actions (each entry: `{id, surface, commands, params?}`; the gestures: `{view, tool, commands}`).
-const SECTIONS: &[&str] = &["dom", "menu", "keymap", "toolbar", "gestures"];
-
-/// The checkpoints that have passed when this checkpoint hands off: a `deferred` owner must come after them (D-31).
-/// M4 C4.3b's own handoff makes C4.3b passed too, so C4.4 is the first M4 checkpoint a GUI location may wait for.
-fn passed(owner: &str) -> bool {
-    let Some((m, c)) = owner.split_once(' ') else { return true };
-    let (Ok(m), Some(c)) = (m.trim_start_matches('M').parse::<u32>(), c.strip_prefix('C')) else { return true };
-    let mut parts = c.split('.').map(str::parse::<u32>);
-    let (Some(Ok(cm)), Some(Ok(ck))) = (parts.next(), parts.next()) else { return true };
-    cm != m || m < 4 || (m == 4 && ck <= 3)
-}
-
-fn manifest() -> Value {
-    serde_json::from_str(MANIFEST).unwrap()
-}
-
-/// Every (command, params) a GUI action of `m` sends.
-fn actions(m: &Value) -> Vec<(String, Option<Value>, String)> {
-    let mut out = Vec::new();
-    for sec in SECTIONS {
-        for a in m[*sec].as_array().unwrap() {
-            let at = format!("{sec}:{}", a["id"].as_str().or(a["tool"].as_str()).unwrap_or("?"));
-            for c in a["commands"].as_array().unwrap() {
-                out.push((c.as_str().unwrap().to_owned(), a.get("params").cloned(), at.clone()));
-            }
-        }
-    }
-    out
-}
-
-/// PA2 over a manifest: the problems (an unregistered command, an event, parameters that do not validate). Each
-/// action's parameters are completed the way the GUI runs them (`complete_reference`: a toggle the reference leaves
-/// open gets its next state), in a fixture with a project open; when required parameters are still missing the GUI
-/// collects them with a dialog (01 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§0), so the parameters given are checked against the schema without `required`.
-fn pa2(m: &Value) -> Vec<String> {
-    let r = tt_executor::registry().unwrap();
-    let h = fixture();
-    let mut out = Vec::new();
-    for (id, params, at) in actions(m) {
-        let Some(e) = r.get(&id) else {
-            out.push(format!("{at}: `{id}` is not registered"));
-            continue;
-        };
-        if e.spec.kind == Kind::Event {
-            out.push(format!("{at}: `{id}` is an event"));
-            continue;
-        }
-        // A gesture's parameters are the driver's (its samples): the battery of the gesture table runs them.
-        if at.starts_with("gestures:") {
-            continue;
-        }
-        let given = params.and_then(|p| p.as_object().cloned()).unwrap_or_default();
-        let (params, dialog) = match h.complete_reference(&id, given) {
-            Ok(KeyResolution::Command { params, dialog, .. }) => (params, dialog),
-            other => {
-                out.push(format!("{at}: `{id}` does not complete: {other:?}"));
-                continue;
-            }
-        };
-        let mut schema = e.params_schema();
-        if dialog && let Some(o) = schema.as_object_mut() {
-            o.remove("required");
-        }
-        if let Err(err) = validate_params(&id, &schema, &params) {
-            out.push(format!("{at}: `{id}` {params}: {}", err.message));
-        }
-    }
-    out
-}
-
-/// The commands a GUI action of the manifest sends.
-fn sent(m: &Value) -> BTreeSet<String> {
-    actions(m).into_iter().map(|a| a.0).collect()
-}
-
-/// The commands the front end's or the host's source names by id (the reads behind a surface, the host's own calls).
-fn read(m: &Value) -> BTreeSet<String> {
-    m["uses"].as_array().unwrap().iter().map(|u| u["command"].as_str().unwrap().to_owned()).collect()
-}
-
-/// PA3 over a manifest and a deferred table: the commands in none or several of the three states, and the deferred
-/// entries whose owner has passed or that lack a section. Bound: a GUI action sends it, or the source reads it and it
-/// is not declared agent-only. A command declared agent-only that the source names is agent-only: the read is the
-/// GUI's plumbing (its state stores, the host's tree and geometry reads), not a location the user acts at; one that a
-/// GUI action sends is in two states (parity note 9, PA3).
-fn pa3(m: &Value, deferred: &Value) -> (Vec<String>, BTreeMap<&'static str, usize>) {
-    let r = tt_executor::registry().unwrap();
-    let (sent, read) = (sent(m), read(m));
-    let d = deferred["deferred"].as_object().unwrap();
-    let mut problems = Vec::new();
-    let mut counts = BTreeMap::new();
-    for e in r.entries() {
-        if e.spec.kind == Kind::Event || !matches!(e.status(), Status::Implemented) {
-            continue;
-        }
-        let id = e.id();
-        let agent = e.command.and_then(|c| c.decl.agent_only).filter(|j| j.len() > 10);
-        let bound = sent.contains(id) || (agent.is_none() && read.contains(id));
-        let states: Vec<&'static str> =
-            [bound.then_some("bound"), agent.map(|_| "agent-only"), d.contains_key(id).then_some("deferred")]
-                .into_iter()
-                .flatten()
-                .collect();
-        match states.as_slice() {
-            [one] => *counts.entry(*one).or_insert(0) += 1,
-            [] => problems.push(format!("`{id}` is in no state: bind it, declare it agent-only, or defer it")),
-            many => problems.push(format!("`{id}` is in several states: {many:?}")),
-        }
-    }
-    for (id, v) in d {
-        let owner = v["owner"].as_str().unwrap_or("");
-        if passed(owner) {
-            problems.push(format!("deferred `{id}`: owner `{owner}` has passed (D-31)"));
-        }
-        if v["section"].as_str().is_none_or(str::is_empty) {
-            problems.push(format!("deferred `{id}`: no spec section (D-31)"));
-        }
-        if r.get(id).is_none() {
-            problems.push(format!("deferred `{id}` is not registered"));
-        }
-    }
-    (problems, counts)
-}
+// Ruling D-37 (C43B-R1-01, -02): the gate is the product's shared one, not a copy.
+use common::parity_gate::{manifest, pa2, pa3, pa3_raw};
 
 #[test]
 fn case1_gate_negative_matrix() {
@@ -177,8 +55,7 @@ fn case1_duplicate_deferred_entry_rejected() {
     // Duplicate a command inside the deferred object, using valid raw JSON.
     let at = raw[at..].find('{').unwrap() + at + 1;
     raw.insert_str(at, &format!("{}:{},", serde_json::to_string(id).unwrap(), value));
-    let parsed: Value = serde_json::from_str(&raw).unwrap();
-    assert!(!pa3(&m, &parsed).0.is_empty(), "D-31 exact gate accepts duplicate deferred command {id}");
+    assert!(!pa3_raw(&m, &raw).0.is_empty(), "D-31 exact gate accepts duplicate deferred command {id}");
 }
 
 #[test]

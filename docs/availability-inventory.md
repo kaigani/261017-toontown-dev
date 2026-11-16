@@ -72,6 +72,32 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `*` | `project.unsavedChanges` | asks-user | the user is asked to save, discard or cancel (01 §3.5) |
 | `*` | `render.failed` | execution | rasterising or encoding failed |
 | `*` | `text.glyphsUnavailable` | execution | the system fonts lack the glyphs (a property of the machine) |
+| `anim.camera.set` | `anim.channelUnsupported` | parameter | a value the caller gives does not apply to the camera |  |
+| `anim.camera.set` | `anim.frameInvalid` | parameter | a frame value is outside 1-100000 |  |
+| `anim.camera.set` | `anim.frameNotInteger` | parameter | a key frame must be an integer |  |
+| `anim.camera.set` | `anim.notFound` | parameter | the camera the caller names does not exist |  |
+| `anim.camera.set` | `anim.valueOutOfRange` | parameter | a value is out of range |  |
+| `anim.path.point.remove` | `anim.frameInvalid` | parameter | a frame value is outside 1-100000 |  |
+| `anim.path.point.remove` | `anim.notFound` | parameter | the motion point the caller names does not exist |  |
+| `anim.path.point.set` | `anim.channelUnsupported` | parameter | the channel the caller names does not apply to the node |  |
+| `anim.path.point.set` | `anim.frameInvalid` | parameter | a frame value is outside 1-100000 |  |
+| `anim.path.point.set` | `anim.frameNotInteger` | parameter | a key frame must be an integer |  |
+| `anim.path.point.set` | `anim.keyExists` | parameter | a key exists at the frame the caller moves the point to |  |
+| `anim.path.point.set` | `anim.notFound` | parameter | the motion point or path the caller names does not exist |  |
+| `anim.path.point.set` | `anim.pathEndKey` | parameter | a value the caller gives for a path's end point that only an inner point takes |  |
+| `anim.path.point.set` | `anim.valueOutOfRange` | parameter | a value is out of range |  |
+| `draw.viewMapping.get` | `anim.notFound` | parameter | only when the caller names a Camera view: the transform evaluation of the current element or the camera |  |
+| `draw.viewMapping.get` | `anim.valueOutOfRange` | parameter | only when the caller names a Camera view: a singular or out-of-range transform on the way (the evaluator's refusal) |  |
+| `draw.viewMapping.get` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
+| `draw.viewMapping.get` | `command.notImplemented` | parameter | the caller names a Top or Side view window (M6 C6.1) |  |
+| `draw.viewMapping.get` | `drawing.noTarget` | parameter | only when the caller names a Camera view: no current drawing element (the Drawing view's mapping needs none) |  |
+| `draw.viewMapping.get` | `drawing.notVectorElement` | parameter | only when the caller names a Camera view: the current element is not a drawing or annotation element |  |
+| `draw.viewMapping.get` | `inspect.behindCamera` | parameter | only when the caller names a Camera view: the current element's plane is at or behind the camera's near plane (SI-145) |  |
+| `draw.viewMapping.get` | `project.none` | parameter | only when the caller names a Camera view: no project is open (the Drawing view's mapping needs none) |  |
+| `draw.viewMapping.get` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
+| `draw.viewMapping.get` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
+| `draw.viewMapping.get` | `view.notFound` | parameter | the view the caller names does not exist |  |
+| `ui.statusBar.get` | `project.none` | unreachable | every document read of the handler is guarded (`let Ok(doc) = cx.document() else …`): it always answers |  |
 
 ## By command
 

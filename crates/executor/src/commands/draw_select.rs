@@ -721,7 +721,7 @@ pub(crate) struct ViewSize {
     label = "Get the view mapping",
     scopes = [read],
     example(title = "The Drawing view's mapping", params = r#"{"view": "drawing"}"#),
-    agent_only = "agents convert between view pixels and drawing units",
+    gui = "the Drawing and Camera view canvas: its drawing mapping (02 line 104)",
 )]
 pub(crate) fn draw_view_mapping_get(cx: &mut Cx, p: ViewMappingParams) -> Result<ViewMappingResult, CommandError> {
     // A Camera view's mapping (02 lines 101-104; C43A-R1-01): the current drawing's plane through the element's full

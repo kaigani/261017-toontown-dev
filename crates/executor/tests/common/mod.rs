@@ -71,3 +71,6 @@ pub fn get(h: &ExecutorHandle, r: &str) -> Value {
 pub fn first(h: &ExecutorHandle, ty: &str) -> String {
     ok(h, "doc.object.find", json!({ "type": ty, "limit": 1 }))["items"][0]["id"].as_str().unwrap().to_owned()
 }
+
+/// The parity gate's checks (rulings D-25, D-31, D-35, D-36), shared with the reviewers' test files.
+pub mod parity_gate;

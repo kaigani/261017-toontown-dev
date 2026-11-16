@@ -1,0 +1,137 @@
+{
+  "$comment": "The queries each rendered surface reads (ruling D-35). A query is bound only if a surface here declares it; the gate (crates/executor/tests/common/parity_gate.rs) checks this table both ways against the query call sites the parity test finds in product code (parity.json `callSites`): every call site is declared here, under a surface or under plumbing, and every declared read has a call site in a file it names. Plumbing calls bind nothing.",
+  "surfaces": {
+    "mainWindow": {
+      "description": "the main window's title, mode, start screen and modal state (01 §5.1)",
+      "reads": { "app.state.get": ["desktop/src/state/store.ts"] }
+    },
+    "dock": {
+      "description": "the dock: the workspace's arrangement and the panels it shows (01 §5.4, §5.5)",
+      "reads": {
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"]
+      }
+    },
+    "toolbars": {
+      "description": "the main toolbar and the tool palettes (01 §5.7)",
+      "reads": {
+        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src/state/store.ts"],
+        "drawAid.state.get": ["desktop/src/shell/toolbarGroups.tsx"]
+      }
+    },
+    "drawingToolsPalette": {
+      "description": "the Drawing tools palette's tools (02 §7)",
+      "reads": { "tool.list": ["desktop/src/shell/Toolbars.tsx"] }
+    },
+    "nativeMenu": {
+      "description": "the native menu: accelerators, Open Recent, the workspace list (01 §5.1, §3.3, §5.5)",
+      "reads": {
+        "keymap.list": ["desktop/src-tauri/src/menu.rs"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs"]
+      }
+    },
+    "statusBar": {
+      "description": "the status bar: its texts, the running jobs, the agent indicator and its sessions popover (01 §9.1, 11 §6.4)",
+      "reads": {
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "job.list": ["desktop/src/shell/StatusBar.tsx"],
+        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.activity.list": ["desktop/src/shell/StatusBar.tsx"]
+      }
+    },
+    "historyPanel": {
+      "description": "the History panel (01 §10)",
+      "reads": { "edit.history.get": ["desktop/src/state/store.ts"] }
+    },
+    "startScreen": {
+      "description": "the start screen: recent projects and recovery (01 §2, §3.7)",
+      "reads": {
+        "project.recent.list": ["desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"]
+      }
+    },
+    "preferences": {
+      "description": "the Preferences window: the values, themes, tips and the shortcut editor's bindings (01 §7, §8.3, §9.4)",
+      "reads": {
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src/state/store.ts"]
+      }
+    },
+    "newProject": {
+      "description": "the New Project form's presets (01 §3.1)",
+      "reads": { "project.presets.list": ["desktop/src/state/store.ts"] }
+    },
+    "projectProperties": {
+      "description": "the Project Properties dialog (01 §3.8)",
+      "reads": { "project.properties.get": ["desktop/src/shell/projectForms.tsx"] }
+    },
+    "infoDialogs": {
+      "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
+      "reads": {
+        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"],
+        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"],
+        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"],
+        "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
+      }
+    },
+    "help": {
+      "description": "the Help window (01 §9.3)",
+      "reads": { "ui.help.get": ["desktop/src/App.tsx"] }
+    },
+    "viewPanel": {
+      "description": "a view window's type buttons (01 §5.3)",
+      "reads": { "view.list": ["desktop/src/panels/PanelBody.tsx"] }
+    },
+    "viewChrome": {
+      "description": "a view window's zoom readout, drawing aids and symmetry (01 §5.3, 02 §6.2, §10)",
+      "reads": {
+        "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "drawAid.state.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
+        "tool.settings.get": ["desktop/src/panels/ViewChrome.tsx"]
+      }
+    },
+    "canvas": {
+      "description": "the Drawing and Camera view canvas: its mapping, active view, tools, pens, selection and preferences (02 §4, camera note §6)",
+      "reads": {
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "draw.viewMapping.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx"],
+        "prefs.get": ["desktop/src/canvas/CanvasView.tsx"]
+      }
+    }
+  },
+  "plumbing": {
+    "app.state.get": {
+      "files": ["desktop/src-tauri/src/watchdog.rs"],
+      "reason": "the host's engine watchdog probes the document thread"
+    },
+    "prefs.get": {
+      "files": ["desktop/src-tauri/src/host.rs", "desktop/src-tauri/src/shell.rs", "desktop/src/App.tsx"],
+      "reason": "the host reads the agent server's port and switch; the window reads the start-up behaviour at launch"
+    },
+    "project.recent.list": {
+      "files": ["desktop/src/App.tsx"],
+      "reason": "the start-up behaviour 'open the last project' (01 §1.1) reads the most recent project"
+    },
+    "window.geometry.get": {
+      "files": ["desktop/src-tauri/src/shell.rs"],
+      "reason": "the host applies the stored main-window geometry to the native window"
+    },
+    "window.panel.list": {
+      "files": ["desktop/src-tauri/src/floats.rs"],
+      "reason": "the host opens and closes the native float windows the kernel's panel list names"
+    },
+    "job.wait": {
+      "files": ["desktop/src/shell/projectForms.tsx"],
+      "reason": "the New Project form waits for its own creation job; the progress it shows is job.list's"
+    }
+  }
+}

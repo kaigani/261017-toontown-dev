@@ -39,7 +39,7 @@ pub(crate) struct OptionalName {
     scopes = [read],
     example(title = "The current arrangement", params = "{}"),
     example(title = "The stored Drawing workspace", params = r#"{"name": "Drawing"}"#),
-    agent_only = "the GUI shows the arrangement itself",
+    gui = "the dock: the workspace's arrangement",
 )]
 pub(crate) fn workspace_get(cx: &mut Cx, p: OptionalName) -> Result<Layout, CommandError> {
     cx.ui().workspace_layout(p.name.as_deref())

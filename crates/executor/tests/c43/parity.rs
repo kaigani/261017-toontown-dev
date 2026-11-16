@@ -1,148 +1,19 @@
-//! The parity gate, kernel half (M4 C4.3b; parity note 9, rulings D-25, D-30, D-31). PA2: every command a GUI action
-//! of the generated manifest sends is registered, not an event, and its fixed parameters validate. PA3: every
-//! implemented command is exactly one of bound (the manifest sends or uses it), agent-only (its declaration says so,
-//! with a justification) or deferred (`deferred.json`: an owner checkpoint that has not passed and the spec section).
-//! Freshness: the manifest's keymap, toolbar and gesture sections are the kernel's data, both ways; the gesture table
-//! is the driver's, both ways. Each check fails on a fixture built to break it.
+//! The parity gate, kernel half (M4 C4.3b; parity note 9, rulings D-25, D-30, D-31, D-35, D-36). The checks live in
+//! `tests/common/parity_gate.rs`, shared with the reviewers' test files; these tests run them on the committed
+//! manifest and tables, and each check against a fixture built to break it. The freshness of the manifest's keymap,
+//! toolbar and gesture sections, and the gesture table against the driver both ways, are tested here.
 
 use std::collections::{BTreeMap, BTreeSet};
 
 use serde_json::{Value, json};
-use tt_executor::host::KeyResolution;
 use tt_executor::{ExecutorHandle, Origin};
-use tt_registry::{Kind, Status, validate_params};
+use tt_registry::Kind;
 
+use crate::common::parity_gate::{
+    DEFERRED, GESTURES, READS, TOOLBAR, WINDOW_GESTURES, actions, catalogue, deferred_entries, manifest, owner_problem,
+    pa2, pa3, pa3_entries, pa3_raw, reads_problems, section_problems, states, window_gesture_problems,
+};
 use crate::common::*;
-
-const MANIFEST: &str = include_str!("../../../../desktop/src/ui-bindings/parity.json");
-const DEFERRED: &str = include_str!("../../../../desktop/src/ui-bindings/deferred.json");
-const GESTURES: &str = include_str!("../../src/gesture-table.json");
-const TOOLBAR: &str = include_str!("../../src/toolbar-default.json");
-
-/// The sections of GUI actions (each entry: `{id, surface, commands, params?}`; the gestures: `{view, tool, commands}`).
-const SECTIONS: &[&str] = &["dom", "menu", "keymap", "toolbar", "gestures"];
-
-/// The checkpoints that have passed when this checkpoint hands off: a `deferred` owner must come after them (D-31).
-/// M4 C4.3b's own handoff makes C4.3b passed too, so C4.4 is the first M4 checkpoint a GUI location may wait for.
-fn passed(owner: &str) -> bool {
-    let Some((m, c)) = owner.split_once(' ') else { return true };
-    let (Ok(m), Some(c)) = (m.trim_start_matches('M').parse::<u32>(), c.strip_prefix('C')) else { return true };
-    let mut parts = c.split('.').map(str::parse::<u32>);
-    let (Some(Ok(cm)), Some(Ok(ck))) = (parts.next(), parts.next()) else { return true };
-    cm != m || m < 4 || (m == 4 && ck <= 3)
-}
-
-fn manifest() -> Value {
-    serde_json::from_str(MANIFEST).unwrap()
-}
-
-/// Every (command, params) a GUI action of `m` sends.
-fn actions(m: &Value) -> Vec<(String, Option<Value>, String)> {
-    let mut out = Vec::new();
-    for sec in SECTIONS {
-        for a in m[*sec].as_array().unwrap() {
-            let at = format!("{sec}:{}", a["id"].as_str().or(a["tool"].as_str()).unwrap_or("?"));
-            for c in a["commands"].as_array().unwrap() {
-                out.push((c.as_str().unwrap().to_owned(), a.get("params").cloned(), at.clone()));
-            }
-        }
-    }
-    out
-}
-
-/// PA2 over a manifest: the problems (an unregistered command, an event, parameters that do not validate). Each
-/// action's parameters are completed the way the GUI runs them (`complete_reference`: a toggle the reference leaves
-/// open gets its next state), in a fixture with a project open; when required parameters are still missing the GUI
-/// collects them with a dialog (01 §0), so the parameters given are checked against the schema without `required`.
-fn pa2(m: &Value) -> Vec<String> {
-    let r = tt_executor::registry().unwrap();
-    let h = fixture();
-    let mut out = Vec::new();
-    for (id, params, at) in actions(m) {
-        let Some(e) = r.get(&id) else {
-            out.push(format!("{at}: `{id}` is not registered"));
-            continue;
-        };
-        if e.spec.kind == Kind::Event {
-            out.push(format!("{at}: `{id}` is an event"));
-            continue;
-        }
-        // A gesture's parameters are the driver's (its samples): the battery of the gesture table runs them.
-        if at.starts_with("gestures:") {
-            continue;
-        }
-        let given = params.and_then(|p| p.as_object().cloned()).unwrap_or_default();
-        let (params, dialog) = match h.complete_reference(&id, given) {
-            Ok(KeyResolution::Command { params, dialog, .. }) => (params, dialog),
-            other => {
-                out.push(format!("{at}: `{id}` does not complete: {other:?}"));
-                continue;
-            }
-        };
-        let mut schema = e.params_schema();
-        if dialog && let Some(o) = schema.as_object_mut() {
-            o.remove("required");
-        }
-        if let Err(err) = validate_params(&id, &schema, &params) {
-            out.push(format!("{at}: `{id}` {params}: {}", err.message));
-        }
-    }
-    out
-}
-
-/// The commands a GUI action of the manifest sends.
-fn sent(m: &Value) -> BTreeSet<String> {
-    actions(m).into_iter().map(|a| a.0).collect()
-}
-
-/// The commands the front end's or the host's source names by id (the reads behind a surface, the host's own calls).
-fn read(m: &Value) -> BTreeSet<String> {
-    m["uses"].as_array().unwrap().iter().map(|u| u["command"].as_str().unwrap().to_owned()).collect()
-}
-
-/// PA3 over a manifest and a deferred table: the commands in none or several of the three states, and the deferred
-/// entries whose owner has passed or that lack a section. Bound: a GUI action sends it, or the source reads it and it
-/// is not declared agent-only. A command declared agent-only that the source names is agent-only: the read is the
-/// GUI's plumbing (its state stores, the host's tree and geometry reads), not a location the user acts at; one that a
-/// GUI action sends is in two states (parity note 9, PA3).
-fn pa3(m: &Value, deferred: &Value) -> (Vec<String>, BTreeMap<&'static str, usize>) {
-    let r = tt_executor::registry().unwrap();
-    let (sent, read) = (sent(m), read(m));
-    let d = deferred["deferred"].as_object().unwrap();
-    let mut problems = Vec::new();
-    let mut counts = BTreeMap::new();
-    for e in r.entries() {
-        if e.spec.kind == Kind::Event || !matches!(e.status(), Status::Implemented) {
-            continue;
-        }
-        let id = e.id();
-        let agent = e.command.and_then(|c| c.decl.agent_only).filter(|j| j.len() > 10);
-        let bound = sent.contains(id) || (agent.is_none() && read.contains(id));
-        let states: Vec<&'static str> =
-            [bound.then_some("bound"), agent.map(|_| "agent-only"), d.contains_key(id).then_some("deferred")]
-                .into_iter()
-                .flatten()
-                .collect();
-        match states.as_slice() {
-            [one] => *counts.entry(*one).or_insert(0) += 1,
-            [] => problems.push(format!("`{id}` is in no state: bind it, declare it agent-only, or defer it")),
-            many => problems.push(format!("`{id}` is in several states: {many:?}")),
-        }
-    }
-    for (id, v) in d {
-        let owner = v["owner"].as_str().unwrap_or("");
-        if passed(owner) {
-            problems.push(format!("deferred `{id}`: owner `{owner}` has passed (D-31)"));
-        }
-        if v["section"].as_str().is_none_or(str::is_empty) {
-            problems.push(format!("deferred `{id}`: no spec section (D-31)"));
-        }
-        if r.get(id).is_none() {
-            problems.push(format!("deferred `{id}` is not registered"));
-        }
-    }
-    (problems, counts)
-}
 
 #[test]
 fn pa2_every_manifest_command_is_registered_and_its_fixed_parameters_validate() {
@@ -162,17 +33,20 @@ fn pa2_every_manifest_command_is_registered_and_its_fixed_parameters_validate() 
 #[test]
 fn pa3_every_implemented_command_is_exactly_one_of_bound_agent_only_or_deferred() {
     let (m, d) = (manifest(), serde_json::from_str::<Value>(DEFERRED).unwrap());
-    let (problems, counts) = pa3(&m, &d);
+    let (problems, counts) = pa3_raw(&m, DEFERRED);
     eprintln!("PA3 states: {counts:?}");
+    for (state, ids) in states(&m, DEFERRED) {
+        eprintln!("{state} ({}): {}", ids.len(), ids.join(", "));
+    }
     assert_eq!(problems, Vec::<String>::new());
     // The check catches what it is for: a command in no state, in two, a passed owner, an entry without a section.
     let mut d2 = d.clone();
     let deferred = d2["deferred"].as_object_mut().unwrap();
     let (gone, _) = deferred.iter().next().map(|(k, v)| (k.clone(), v.clone())).unwrap();
     deferred.remove(&gone);
-    deferred.insert("edit.undo".into(), json!({ "owner": "M4 C4.4", "section": "01", "location": "x" }));
-    deferred.insert("tool.list".into(), json!({ "owner": "M4 C4.2", "section": "02 §1", "location": "x" }));
-    deferred.insert("app.state.get".into(), json!({ "owner": "M5 C5.1", "section": "", "location": "x" }));
+    deferred.insert("edit.undo".into(), json!({ "owner": "M4 C4.4", "section": "01 §6.1", "location": "x" }));
+    deferred.insert("tool.list".into(), json!({ "owner": "M4 C4.2", "section": "02 §7", "location": "x" }));
+    deferred.insert("app.info.get".into(), json!({ "owner": "M5 C5.1", "section": "", "location": "x" }));
     let mut m2 = m.clone();
     m2["menu"].as_array_mut().unwrap().push(json!({ "id": "x", "surface": "menu", "commands": ["keymap.get"] }));
     let (bad, _) = pa3(&m2, &d2);
@@ -180,7 +54,112 @@ fn pa3_every_implemented_command_is_exactly_one_of_bound_agent_only_or_deferred(
     assert!(bad.iter().any(|p| p.contains(&format!("`{gone}` is in no state"))), "{bad:?}");
     assert!(bad.iter().any(|p| p.contains("`edit.undo` is in several states")), "{bad:?}");
     assert!(bad.iter().any(|p| p.contains("owner `M4 C4.2` has passed")), "{bad:?}");
-    assert!(bad.iter().any(|p| p.contains("`app.state.get`: no spec section")), "{bad:?}");
+    assert!(bad.iter().any(|p| p.contains("`app.info.get`: no spec section")), "{bad:?}");
+}
+
+/// D-35: a mention in the source binds nothing. A mutating command whose only action is removed, and a query whose
+/// declared read and call site are removed, fall into no state although `uses` still names them.
+#[test]
+fn d35_a_mention_binds_nothing() {
+    let m = manifest();
+    let entries = deferred_entries(DEFERRED).unwrap();
+    // `keymap.export`: its one action is the shortcut editor's button.
+    let mut m2 = m.clone();
+    m2["dom"]
+        .as_array_mut()
+        .unwrap()
+        .retain(|a| !a["commands"].as_array().unwrap().iter().any(|c| c == "keymap.export"));
+    assert!(
+        m2["uses"].as_array().unwrap().iter().any(|u| u["command"] == "keymap.export"),
+        "the fixture keeps the mention"
+    );
+    let (bad, _) = pa3_entries(&m2, &entries, READS);
+    assert!(bad.iter().any(|p| p.contains("`keymap.export` is in no state")), "{bad:?}");
+    // `tool.list`: read by the Drawing tools palette; without its declared read the mention binds nothing.
+    let mut reads: Value = serde_json::from_str(READS).unwrap();
+    reads["surfaces"]["drawingToolsPalette"]["reads"].as_object_mut().unwrap().remove("tool.list");
+    let (bad, _) = pa3_entries(&m, &entries, &reads.to_string());
+    assert!(bad.iter().any(|p| p.contains("`tool.list` is in no state")), "{bad:?}");
+}
+
+/// D-35: the declared reads and the query call sites of product code agree both ways.
+#[test]
+fn d35_declared_reads_and_call_sites_agree_both_ways() {
+    let m = manifest();
+    assert_eq!(reads_problems(&m, READS), Vec::<String>::new());
+    // An undeclared call site fails.
+    let mut reads: Value = serde_json::from_str(READS).unwrap();
+    reads["surfaces"]["viewPanel"]["reads"].as_object_mut().unwrap().remove("view.list");
+    let bad = reads_problems(&m, &reads.to_string());
+    assert!(bad.iter().any(|p| p.contains("`view.list` is read in desktop/src/panels/PanelBody.tsx")), "{bad:?}");
+    // A declared read without a call site fails, as does a declared mutating command.
+    let mut reads: Value = serde_json::from_str(READS).unwrap();
+    reads["surfaces"]["viewPanel"]["reads"]["job.list"] = json!(["desktop/src/panels/PanelBody.tsx"]);
+    reads["surfaces"]["viewPanel"]["reads"]["edit.undo"] = json!(["desktop/src/panels/PanelBody.tsx"]);
+    let bad = reads_problems(&m, &reads.to_string());
+    assert!(bad.iter().any(|p| p.contains("declares `job.list` in desktop/src/panels/PanelBody.tsx")), "{bad:?}");
+    assert!(bad.iter().any(|p| p.contains("`edit.undo` is not a query")), "{bad:?}");
+    // A call site removed from the manifest (an inert mention left behind) leaves its declared read without a call.
+    let mut m2 = m.clone();
+    m2["callSites"].as_array_mut().unwrap().retain(|c| c["command"] != "tool.list");
+    let bad = reads_problems(&m2, READS);
+    assert!(bad.iter().any(|p| p.contains("declares `tool.list`")), "{bad:?}");
+}
+
+/// The window gestures are called where their rows say; a row whose command no file calls fails.
+#[test]
+fn window_gestures_have_their_call_sites() {
+    let m = manifest();
+    assert_eq!(window_gesture_problems(&m, WINDOW_GESTURES), Vec::<String>::new());
+    let mut rows: Value = serde_json::from_str(WINDOW_GESTURES).unwrap();
+    rows["rows"][0]["files"] = json!(["desktop/src/App.tsx"]);
+    let bad = window_gesture_problems(&m, &rows.to_string());
+    assert!(bad.iter().any(|p| p.contains("dock:drop: no file it names calls `window.panel.move`")), "{bad:?}");
+}
+
+/// D-36: owners in their exact syntax from the plan's catalogue and not passed; sections that exist; commands that are
+/// implemented and not events; duplicates refused while parsing. Each rule fails on its fixture.
+#[test]
+fn d36_deferred_entries_are_validated_in_full() {
+    let cat = catalogue();
+    for owner in ["M4 C4.4", "M5 C5.1", "M6 C6.2", "M10 C10.2", "M11 C11.1"] {
+        assert_eq!(owner_problem(owner, &cat), None, "{owner}");
+    }
+    for owner in
+        ["M5 C5.1.trailing", "M5 C6.1", "M5 C5.9", "M99 C99.0", "M5  C5.1", "M5 C5.", "M4 C4.3", "M4 C4.2", "M0 C0.1"]
+    {
+        assert!(owner_problem(owner, &cat).is_some(), "owner `{owner}` accepted");
+    }
+    let m = manifest();
+    let base = deferred_entries(DEFERRED).unwrap();
+    let (id, entry) = base[0].clone();
+    let with = |f: &dyn Fn(&mut Value)| {
+        let mut e = base.clone();
+        f(&mut e[0].1);
+        pa3_entries(&m, &e, READS).0
+    };
+    for owner in ["5 C5.1", "nonsense", "M5 C5.1.trailing"] {
+        let bad = with(&|v| v["owner"] = json!(owner));
+        assert!(bad.iter().any(|p| p.contains(&format!("owner `{owner}`"))), "{owner}: {bad:?}");
+    }
+    let bad = with(&|v| v["section"] = json!("02 §99.9 (nothing)"));
+    assert!(bad.iter().any(|p| p.contains("has no heading §99.9")), "{bad:?}");
+    let bad = with(&|v| v["section"] = json!("a section without a sign"));
+    assert!(bad.iter().any(|p| p.contains("no spec section cited")), "{bad:?}");
+    assert!(section_problems("x", "§7.6 (no file number)").iter().any(|p| p.contains("names no spec file")));
+    // A command that is an event, and one that is not registered.
+    let mut e = base.clone();
+    e.push(("job.finished".into(), entry.clone()));
+    e.push(("review.missing".into(), entry.clone()));
+    let bad = pa3_entries(&m, &e, READS).0;
+    assert!(bad.iter().any(|p| p.contains("deferred `job.finished` is an event")), "{bad:?}");
+    assert!(bad.iter().any(|p| p.contains("deferred `review.missing` is not registered")), "{bad:?}");
+    // A duplicate entry in the raw file.
+    let at = DEFERRED.find("\"deferred\": {").unwrap() + "\"deferred\": {".len();
+    let mut raw = DEFERRED.to_owned();
+    raw.insert_str(at, &format!("\n    {}: {},", serde_json::to_string(&id).unwrap(), entry));
+    let (bad, _) = pa3_raw(&m, &raw);
+    assert!(bad.iter().any(|p| p.contains(&format!("deferred `{id}` is listed twice"))), "{bad:?}");
 }
 
 #[test]

@@ -62,6 +62,8 @@ pub(crate) struct SymmetryResult {
     kind = ui,
     label = "Symmetry drawing mode",
     scopes = [ui],
+    // 01 §1.3: a tool command is disabled without a project and an agent's call fails `project.none` (C43B-R1S-09).
+    needs_project,
     example(title = "A kaleidoscope of 8 mirrors at 15°", params = r#"{"mode": "kaleidoscope", "angle": 15, "mirrors": 8}"#),
     example(title = "Mirror about the vertical axis", params = r#"{"mode": "mirror"}"#),
     gui = "Drawing toolbar › Symmetry (M4 C4.2)",

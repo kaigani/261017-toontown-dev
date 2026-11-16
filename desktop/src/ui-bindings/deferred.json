@@ -31,6 +31,11 @@
       "section": "11 §6.4; 01 §12",
       "location": "the agent activity panel"
     },
+    "agent.token.regenerate": {
+      "owner": "M4 C4.4",
+      "section": "11 §4 (Transport: the token shown and regenerable in Preferences › Agent access, lines 107-109)",
+      "location": "Preferences › Agent access (D-35)"
+    },
     "agent.typedTools.set": {
       "owner": "M4 C4.4",
       "section": "01 §7.3 (preference catalogue: agent access); 11 §6.4",
@@ -42,19 +47,24 @@
       "location": "Scene views, Element menu: Add Camera"
     },
     "anim.camera.current.get": {
-      "owner": "M6 C6.2",
-      "section": "05 §19.3 (Command table)",
-      "location": "Scene views: camera list"
+      "owner": "M4 C4.4",
+      "section": "01 §5.7 (Toolbars and customisation: the main toolbar's camera list, lines 453-460)",
+      "location": "the main toolbar's camera list (C43B-R1S-05)"
     },
     "anim.camera.current.set": {
-      "owner": "M6 C6.2",
-      "section": "05 §19.3 (Command table)",
-      "location": "Scene views: camera list"
+      "owner": "M4 C4.4",
+      "section": "01 §5.7 (Toolbars and customisation: the main toolbar's camera list, lines 453-460)",
+      "location": "the main toolbar's camera list (C43B-R1S-05)"
     },
     "anim.camera.list": {
+      "owner": "M4 C4.4",
+      "section": "01 §5.7 (Toolbars and customisation: the main toolbar's camera list, lines 453-460)",
+      "location": "the main toolbar's camera list (C43B-R1S-05)"
+    },
+    "anim.camera.set": {
       "owner": "M6 C6.2",
-      "section": "05 §19.3 (Command table)",
-      "location": "Scene views: camera list"
+      "section": "05 §19.1 (item 1: FOV wedge dragging, lines 1174-1177)",
+      "location": "the Top view's FOV wedge and the camera properties (C43B-R1S-01)"
     },
     "anim.function.curveType.set": {
       "owner": "M6 C6.2",
@@ -120,6 +130,16 @@
       "owner": "M6 C6.2",
       "section": "05 §19.3 (Command table)",
       "location": "Motion tool, motion point properties: add point"
+    },
+    "anim.path.point.remove": {
+      "owner": "M6 C6.2",
+      "section": "05 §9.4 (line 704), §9.6 (lines 720-725)",
+      "location": "the motion path's remove point and Delete (C43B-R1S-01)"
+    },
+    "anim.path.point.set": {
+      "owner": "M6 C6.2",
+      "section": "05 §9.4 (motion point properties, line 690)",
+      "location": "the motion point properties (C43B-R1S-01)"
     },
     "anim.path.sample": {
       "owner": "M6 C6.1",
@@ -612,11 +632,6 @@
       "location": "the tool options and pens bar"
     },
     "tool.select.options.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.settings.get": {
       "owner": "M4 C4.4",
       "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
       "location": "the tool options and pens bar"

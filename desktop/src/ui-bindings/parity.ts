@@ -17,6 +17,12 @@ export const GUI_ONLY_REASONS = [
   'dismiss',
   'navigate',
   'placeholder',
+  // Opens or closes a popover or a section (the agent sessions popover, 11 §6.4): nothing changes in the document or
+  // the session; what the popover then shows is its own surface (D-35).
+  'disclose',
+  // A message box's button answers the question of the action that asked it (01 §12.1): the action's own command is
+  // bound where the action is; an informational message's OK changes nothing (`dismiss`).
+  'answer',
 ] as const;
 export type GuiOnlyReason = (typeof GUI_ONLY_REASONS)[number];
 

@@ -51,7 +51,7 @@ pub(crate) fn app_state_without_selection_ids(s: &Session) -> serde_json::Value 
     label = "Get application state",
     scopes = [read],
     example(title = "Read the current project, scene, frame, element, selection and workspace", params = "{}"),
-    agent_only = "the GUI shows this state directly; agents read it as their first call (11 §7.1 get_state)",
+    gui = "the main window: title, start screen, mode and modal state (the shell store); the canvas: the active view",
 )]
 pub(crate) fn app_state_get(cx: &mut Cx, _p: NoParams) -> Result<AppState, CommandError> {
     let mut st = app_state(cx.session());

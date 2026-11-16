@@ -43,7 +43,7 @@ pub(crate) fn window_full_screen_set(cx: &mut Cx, p: Enabled) -> Result<Enabled,
     label = "List panels",
     scopes = [read],
     example(title = "Every panel with its visibility, place and focus", params = "{}"),
-    agent_only = "the GUI shows the panels themselves",
+    gui = "the dock and the Window menu's panel checklist",
 )]
 pub(crate) fn window_panel_list(cx: &mut Cx, _p: NoParams) -> Result<Vec<PanelEntry>, CommandError> {
     Ok(cx.ui().panels())
@@ -268,7 +268,7 @@ fn toolbars(cx: &Cx) -> Vec<ToolbarEntry> {
     label = "List toolbars",
     scopes = [read],
     example(title = "The main toolbar and the tool palettes", params = "{}"),
-    agent_only = "the GUI shows the toolbars themselves",
+    gui = "the main toolbar and the tool palettes",
 )]
 pub(crate) fn window_toolbar_list(cx: &mut Cx, _p: NoParams) -> Result<Vec<ToolbarEntry>, CommandError> {
     Ok(toolbars(cx))

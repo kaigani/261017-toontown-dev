@@ -66,6 +66,10 @@ NOT_SUITES = {
     "fixed-webgpu are workstation receipts",
     "c42b-r1-conformance.py": "attached-mode MCP conformance through the running application: needs the release "
     "binary; the same suite (scripts/mcp-conformance.py --http) runs in the `desktop gui` job on both OSes",
+    # M4 C4.3b round 1 (declared in reviews/M4-C4.3b-handoff-r2.md): a wrapper, not a suite.
+    "c43b-r1-regression-runner.py": "the reviewer's wrapper that its live runner (c43b-r1-live.py case7) calls with a "
+    "probe's path and arguments to run an earlier probe with its receipts redirected; without them it has nothing to "
+    "run",
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
     "inventory.json and asserts the register ends at SI-110 (SI-111 is ruled in round 2); its live counterpart is "
     "scripts/check-merge-note-inventory.py",

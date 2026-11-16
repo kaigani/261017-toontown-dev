@@ -1,10 +1,12 @@
-// The parity gate, front-end half (M4 C4.3b; parity note 9, rulings D-25, D-30, D-31): PA1 (every actionable element
-// of every rendered surface sends a command or is GUI-only for a listed reason) and PA4 (the manifest is the
-// generator's output). `TT_PARITY_WRITE=1` (`pnpm parity:gen`) writes `parity.json` instead of comparing; the Rust
-// half (`crates/executor/tests/c43/parity.rs`) checks PA2, PA3 and the kernel-derived sections.
+// The parity gate, front-end half (M4 C4.3b; parity note 9, rulings D-25, D-30, D-31, D-35): PA1 (every actionable
+// element of every rendered surface, conditional surfaces and states included, sends a command or is GUI-only for a
+// listed reason) and PA4 (the manifest is the generator's output). `TT_PARITY_WRITE=1` (`pnpm parity:gen`) writes
+// `parity.json` instead of comparing; the Rust half (`crates/executor/tests/common/parity_gate.rs`, run by
+// `tests/c43/parity.rs`) checks PA2, PA3, the declared reads against the call sites found here, the window gestures and
+// the kernel-derived sections.
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 
-import { act, cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { App } from '../App';
@@ -14,8 +16,10 @@ import {
   DEFAULT_LAYOUT,
   NO_PROJECT_STATE,
   ok,
+  fail,
   type ScriptedHost,
 } from '../test-support/scriptedHost';
+import { CATEGORIES } from '../prefs/categories';
 import { itemRef } from '../shell/toolbarItems';
 import menu from './menu.json';
 import { collect, GUI_ONLY_REASONS, type Action } from './parity';
@@ -33,6 +37,9 @@ const KEYMAP = readJson('crates/executor/src/keymap-default.json') as {
 const TOOLBAR = readJson('crates/executor/src/toolbar-default.json') as string[];
 const GESTURES = readJson('crates/executor/src/gesture-table.json') as {
   rows: { view: string; tool: string; commands: string[] }[];
+};
+const WINDOW_GESTURES = readJson('desktop/src/ui-bindings/window-gestures.json') as {
+  rows: { id: string; surface: string; commands: string[] }[];
 };
 const TOOLS = [
   ...new Set(GESTURES.rows.filter((r) => r.view === 'drawing' && r.tool !== '*').map((r) => r.tool)),
@@ -54,41 +61,111 @@ const PROJECT_STATE = {
   startScreenVisible: false,
 };
 
+const SESSIONS = {
+  enabled: true,
+  endpoint: 'http://127.0.0.1:47215/mcp',
+  sessions: [{ sessionId: 's1', client: 'mcp', policy: 'assist' }],
+};
+
+/** A host whose answers show every conditional part of a surface: an agent connected, history entries, a recovery
+ *  entry, keymap bindings that can clash. */
 function host(project: boolean): ScriptedHost {
   return createScriptedHost({
     'app.state.get': () => ok(project ? PROJECT_STATE : NO_PROJECT_STATE),
-    'window.layout.get': () =>
+    'workspace.get': () =>
       ok({ ...DEFAULT_LAYOUT, mainToolbar: { visible: true, items: TOOLBAR }, fullScreen: DEFAULT_LAYOUT }),
     'tool.list': () => ok({ tools: TOOLS.map((toolId) => ({ toolId })), activeToolId: 'brush' }),
+    'agent.server.status': () => ok(SESSIONS),
+    'agent.activity.list': () => ok([{ seq: 1, commandId: 'app.state.get', status: 'ok' }]),
+    'edit.history.get': () =>
+      project
+        ? ok({
+            entries: [{ index: 1, stepId: 'u-1', label: 'Rectangle Tool', source: 'user' }],
+            position: 1,
+            cleanPosition: 0,
+            total: 1,
+          })
+        : fail('project.none', 'no project is open'),
+    'project.recovery.list': () =>
+      ok([{ recoveryId: 'r1', name: 'Walk', path: '/p/Walk.animpkg', savedAt: '2026-11-01T10:00:00Z' }]),
+    // Two backups: the Open Backup dialog shows its Open buttons (C43B-R1-07: the answer is the array itself).
+    'project.backup.list': () =>
+      ok([
+        { backupId: 'b1', savedAt: '2026-11-01T09:00:00Z', sizeBytes: 1000, documentRev: 3 },
+        { backupId: 'b2', savedAt: '2026-11-01T10:00:00Z', sizeBytes: 1100, documentRev: 4 },
+      ]),
+    // Bindings that can clash in the shortcut editor; its dry run answers.
+    'keymap.list': () =>
+      ok([
+        { commandId: 'project.save', keys: 'Primary+S', context: 'global', isDefault: true },
+        { commandId: 'edit.undo', keys: 'Primary+Z', context: 'global', isDefault: true },
+      ]),
+    'keymap.set': () => ok({}),
+    // The Help dialog's text.
+    'ui.help.get': () => ok({ title: 'Help', text: 'History panel' }),
+    // A job that never ends keeps its progress window open.
+    'project.open': () => ok({ jobId: 'j1' }),
+    'job.wait': () => new Promise(() => undefined),
+    // A refusal shows its message box.
+    'project.close': () => fail('project.busy', 'the project is busy'),
   });
 }
 
-function mount(h: ScriptedHost) {
+function mount(h: ScriptedHost, floatPanel?: string) {
   render(
     <HostProvider api={createHostApi(h)}>
-      <App />
+      <App {...(floatPanel ? { floatPanel } : {})} />
     </HostProvider>,
   );
 }
 
-/** The surfaces the gate renders, each with what opens it. */
-async function surfaces(): Promise<{ name: string; root: Element }[]> {
-  const out: { name: string; root: Element }[] = [];
-  // The start screen (no project).
+interface Surface {
+  name: string;
+  root: Element;
+}
+
+const snapshot = (name: string, el: Element): Surface => ({ name, root: el.cloneNode(true) as Element });
+
+/** Every surface and state the GUI can show (D-35), each with what opens it. */
+async function surfaces(): Promise<Surface[]> {
+  const out: Surface[] = [];
+  // The start screen (no project), with a recovery entry.
   mount(host(false));
-  out.push({
-    name: 'startScreen',
-    root: (await screen.findByRole('dialog', { name: 'Start screen' })).cloneNode(true) as Element,
-  });
+  out.push(snapshot('startScreen', await screen.findByRole('dialog', { name: 'Start screen' })));
   cleanup();
-  // The main window with a project: toolbars, tool palettes, the dock's panels and view chrome, the status bar.
+
+  // The main window with a project: toolbars, tool palettes, the dock's panels (History with an entry) and view
+  // chrome, the status bar with an agent connected.
   const h = host(true);
   mount(h);
   await screen.findByRole('toolbar', { name: 'Main toolbar' });
   await screen.findByText('brush');
-  out.push({ name: 'main', root: document.body.cloneNode(true) as Element });
-  // Each dialog the menus open.
-  const dialogs: [string, string, Record<string, unknown>?][] = [
+  await screen.findByText(/Agent: mcp/);
+  out.push(snapshot('main', document.body));
+
+  // The agent popover open.
+  act(() => {
+    fireEvent.click(screen.getByText(/Agent: mcp/));
+  });
+  out.push(snapshot('agentPopover', await screen.findByRole('dialog', { name: 'Agent sessions' })));
+  act(() => {
+    fireEvent.click(screen.getByText(/Agent: mcp/));
+  });
+
+  // The dock tab's context menu.
+  const tab = document.querySelector('[data-tt-id^="tab."]');
+  if (!tab) throw new Error('no dock tab rendered');
+  act(() => {
+    fireEvent.contextMenu(tab);
+  });
+  const checklist = await screen.findByRole('menu');
+  out.push(snapshot('dockTabContextMenu', checklist));
+  act(() => {
+    fireEvent.keyDown(checklist, { key: 'Escape' });
+  });
+
+  // Each dialog the menus and events open.
+  const dialogs: [string, string][] = [
     ['About Toontown', 'app.info.get'],
     ['Project Info', 'project.info.get'],
     ['Check Project', 'doc.validate'],
@@ -96,23 +173,80 @@ async function surfaces(): Promise<{ name: string; root: Element }[]> {
     ['New Project', 'project.create'],
     ['Project Properties', 'project.properties.set'],
     ['New Workspace', 'workspace.create'],
+    ['Rename Workspace', 'workspace.rename'],
   ];
-  for (const [title, command, params] of dialogs) {
+  for (const [title, command] of dialogs) {
     act(() => {
-      h.menu(command, params ?? {});
+      h.menu(command, {});
     });
     const d = await screen.findByRole('dialog', { name: title });
-    out.push({ name: `dialog:${title}`, root: d.cloneNode(true) as Element });
+    out.push(snapshot(`dialog:${title}`, d));
     act(() => {
       d.querySelector<HTMLElement>('[data-tt-id$=".cancel"]')?.click();
     });
   }
-  // Preferences.
+  // Help.
+  act(() => {
+    h.event('shell.help', {});
+  });
+  const help = await screen.findByRole('dialog', { name: /Help|Documentation/ });
+  out.push(snapshot('dialog:Help', help));
+  act(() => {
+    help.querySelector<HTMLElement>('[data-tt-id$=".cancel"]')?.click();
+  });
+  // A job's progress window (Cancel).
+  act(() => {
+    h.menu('project.open', { path: '/p/Walk.animpkg' });
+  });
+  const progress = await screen.findByRole('dialog', { name: 'Opening project' });
+  out.push(snapshot('dialog:Opening project', progress));
+  // A message box (a refused command).
+  act(() => {
+    h.menu('project.close', {});
+  });
+  const message = await screen.findByRole('alertdialog');
+  out.push(snapshot('messageBox', message));
+
+  // Preferences: every category, and the shortcut editor with a command selected and with a conflict.
   act(() => {
     h.event('shell.preferences', { category: 'general' });
   });
   const prefs = await screen.findByRole('dialog', { name: 'Preferences' });
-  out.push({ name: 'dialog:Preferences', root: prefs.cloneNode(true) as Element });
+  for (const c of CATEGORIES) {
+    act(() => {
+      prefs.querySelector<HTMLElement>(`[data-tt-id="preferences.category.${c.id}"]`)?.click();
+    });
+    out.push(snapshot(`preferences:${c.id}`, prefs));
+  }
+  act(() => {
+    prefs.querySelector<HTMLElement>('[data-tt-id="preferences.category.keyboard"]')?.click();
+  });
+  const undo = await waitFor(() => {
+    const el = prefs.querySelector<HTMLElement>('[data-tt-id="keymap.command.edit.undo"]');
+    if (!el) throw new Error('no edit.undo in the shortcut editor');
+    return el;
+  });
+  act(() => {
+    undo.click();
+  });
+  out.push(snapshot('preferences:keyboard:details', prefs));
+  const capture = prefs.querySelector<HTMLElement>('[data-tt-id="keymap.capture"]');
+  if (!capture) throw new Error('no capture control');
+  act(() => {
+    capture.click();
+  });
+  await act(async () => {
+    fireEvent.keyDown(capture, { key: 's', code: 'KeyS', ctrlKey: true });
+    await Promise.resolve();
+  });
+  await screen.findByText(/is bound to/);
+  out.push(snapshot('preferences:keyboard:conflict', prefs));
+  cleanup();
+
+  // A floating window.
+  mount(host(true), 'history');
+  await screen.findByText('Rectangle Tool');
+  out.push(snapshot('float:history', document.body));
   cleanup();
   return out;
 }
@@ -170,11 +304,20 @@ function toolbarActions(): Action[] {
   return out;
 }
 
-/** The commands the front end and the host use by id in their source (the queries a surface reads to show its state,
- *  and the commands they send outside a `data-tt-command`), with the files. */
-function sourceUses(): { command: string; files: string[] }[] {
-  const ids = new Map<string, Set<string>>();
-  const roots = ['desktop/src', 'desktop/src-tauri/src'];
+const ID = '([a-z][A-Za-z]*\\.[A-Za-z][A-Za-z.]*[A-Za-z])';
+/** Call forms in the front end: `run('id'`, `perform('id'`, `useQuery(services, 'id'`. */
+const TS_CALL = new RegExp(
+  `(?:(?:\\.|\\b)(?:run|perform)\\(\\s*|\\buseQuery\\(\\s*[\\w.]+,\\s*)['"]${ID}['"]`,
+  'g',
+);
+/** The store's slice table: each entry is a query the store runs on every refresh (`store.ts` `SLICES`). */
+const SLICE_CALL = new RegExp(`^\\s+\\w+: \\['${ID}',`, 'gm');
+/** Call forms in the host: `.run("id"`, `q("id"`, `Invocation::user("id"`, `command: "id"`. */
+const RS_CALL = new RegExp(`(?:\\.run|\\bq|Invocation::user)\\(\\s*"${ID}"`, 'g');
+const RS_FIELD = new RegExp(`command:\\s*"${ID}"`, 'g');
+
+function productFiles(): string[] {
+  const out: string[] = [];
   const walk = (dir: string) => {
     for (const name of readdirSync(`${repo}${dir}`)) {
       const path = `${dir}/${name}`;
@@ -182,19 +325,51 @@ function sourceUses(): { command: string; files: string[] }[] {
         if (!['generated', 'test', 'test-support', '__probes__', 'testdata'].includes(name)) walk(path);
         continue;
       }
-      if (!/\.(ts|tsx|rs)$/.test(name) || /\.test\.tsx?$/.test(name)) continue;
-      const text = readFileSync(`${repo}${path}`, 'utf8');
-      for (const m of text.matchAll(/['"]([a-z][A-Za-z]*\.[A-Za-z][A-Za-z.]*[A-Za-z])['"]/g)) {
-        const id = m[1] ?? '';
-        if (!ids.has(id)) ids.set(id, new Set());
-        ids.get(id)?.add(path);
-      }
+      if (/\.(ts|tsx|rs)$/.test(name) && !/\.test\.tsx?$/.test(name)) out.push(path);
     }
   };
-  for (const r of roots) walk(r);
+  for (const r of ['desktop/src', 'desktop/src-tauri/src']) walk(r);
+  return out.sort();
+}
+
+/** Every command id quoted in product code, with its files: mentions, which bind nothing (D-35). */
+function sourceUses(): { command: string; files: string[] }[] {
+  const ids = new Map<string, Set<string>>();
+  for (const path of productFiles()) {
+    const text = readFileSync(`${repo}${path}`, 'utf8');
+    for (const m of text.matchAll(/['"]([a-z][A-Za-z]*\.[A-Za-z][A-Za-z.]*[A-Za-z])['"]/g)) {
+      const id = m[1] ?? '';
+      if (!ids.has(id)) ids.set(id, new Set());
+      ids.get(id)?.add(path);
+    }
+  }
   return [...ids.entries()]
     .map(([command, files]) => ({ command, files: [...files].sort() }))
     .sort((a, b) => a.command.localeCompare(b.command));
+}
+
+/** The calls of commands in product code (a test module of a Rust file, after `#[cfg(test)]`, is not product code):
+ *  the gate checks the declared reads (`reads.json`) and the window gestures against them. */
+function callSites(): { command: string; file: string }[] {
+  const out = new Set<string>();
+  for (const path of productFiles()) {
+    let text = readFileSync(`${repo}${path}`, 'utf8');
+    const patterns: RegExp[] = [];
+    if (path.endsWith('.rs')) {
+      text = text.split('#[cfg(test)]')[0] ?? '';
+      patterns.push(RS_CALL, RS_FIELD);
+    } else {
+      patterns.push(TS_CALL);
+      if (path.endsWith('/state/store.ts')) patterns.push(SLICE_CALL);
+    }
+    for (const p of patterns) for (const m of text.matchAll(p)) out.add(`${m[1] ?? ''}\u0000${path}`);
+  }
+  return [...out]
+    .map((k) => {
+      const [command = '', file = ''] = k.split('\u0000');
+      return { command, file };
+    })
+    .sort((a, b) => a.command.localeCompare(b.command) || a.file.localeCompare(b.file));
 }
 
 const byId = (a: { id: string; surface: string }, b: { id: string; surface: string }) =>
@@ -205,7 +380,8 @@ describe('the parity manifest (parity note 9)', () => {
     const dom: Action[] = [];
     const guiOnly: { id: string; surface: string; reason: string }[] = [];
     const unbound: { surface: string; what: string }[] = [];
-    for (const s of await surfaces()) {
+    const rendered = await surfaces();
+    for (const s of rendered) {
       const c = collect(s.root, s.name);
       dom.push(...c.actions);
       guiOnly.push(...c.guiOnly);
@@ -222,14 +398,21 @@ describe('the parity manifest (parity note 9)', () => {
     };
     const manifest = {
       $comment:
-        'Generated by `pnpm --dir desktop parity:gen` (desktop/src/ui-bindings/parity.test.tsx); never edited by hand. Every GUI action of every surface with the commands it sends (parity note 9, ruling D-25).',
-      version: 1,
+        'Generated by `pnpm --dir desktop parity:gen` (desktop/src/ui-bindings/parity.test.tsx); never edited by hand. Every GUI action of every surface with the commands it sends (parity note 9, rulings D-25, D-35); `callSites` are the product code calls the gate checks the declared reads and window gestures against; `uses` are mentions, which bind nothing.',
+      version: 2,
+      surfaces: rendered.map((s) => s.name),
       dom: dedupe(dom).sort(byId),
       guiOnly: dedupe(guiOnly).sort(byId),
       menu: menuActions(),
       keymap: keymapActions(),
       toolbar: toolbarActions(),
       gestures: GESTURES.rows,
+      windowGestures: WINDOW_GESTURES.rows.map((r) => ({
+        id: r.id,
+        surface: r.surface,
+        commands: r.commands,
+      })),
+      callSites: callSites(),
       uses: sourceUses(),
     };
     const text = `${JSON.stringify(manifest, null, 2)}\n`;
@@ -240,5 +423,29 @@ describe('the parity manifest (parity note 9)', () => {
     expect(guiOnly.filter((g) => !(GUI_ONLY_REASONS as readonly string[]).includes(g.reason))).toEqual([]);
     // PA4: the committed manifest is exactly this.
     expect(readFileSync(path, 'utf8')).toBe(text);
+  });
+
+  it('D-35: each surface is collected (an undeclared element added to it fails PA1)', async () => {
+    for (const s of await surfaces()) {
+      const root = s.root.cloneNode(true) as Element;
+      const stray = document.createElement('button');
+      stray.setAttribute('data-tt-id', 'fixture.stray');
+      root.appendChild(stray);
+      const c = collect(root, s.name);
+      expect(
+        c.unbound.some((u) => u.what.startsWith('fixture.stray')),
+        `${s.name}: an undeclared button is not reported`,
+      ).toBe(true);
+      const own = collect(s.root, s.name);
+      expect(own.actions.length + own.guiOnly.length, `${s.name}: nothing collected`).toBeGreaterThan(0);
+    }
+  });
+
+  it('D-35: a mention in the source is not a call site', () => {
+    const text = "const label = 'keymap.export'; // see agent.server.set\nawait engine.run('job.list', {});";
+    const found = [...text.matchAll(TS_CALL)].map((m) => m[1]);
+    expect(found).toContain('job.list');
+    expect(found).not.toContain('keymap.export');
+    expect(found).not.toContain('agent.server.set');
   });
 });
