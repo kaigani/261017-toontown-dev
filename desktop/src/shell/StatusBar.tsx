@@ -1,8 +1,9 @@
 // The status bar (01 §9.1; M4 C4.1): description, context, pointer and selection, playback, and the agent indicator
 // (01 §12.1 rule 9, 11 §6.4) with Pause, Stop and Activity. The segment texts come from `ui.statusBar.get`, so the
 // GUI and an agent read the same thing; the left end shows the last status line.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { useShell, useSlice, useStoreState } from '../state/context';
 import type { AgentServerStatus, StatusBarTexts } from '../state/types';
 import { useActions } from './actionsApi';
@@ -48,13 +49,34 @@ export function StatusBar() {
   );
 }
 
+/** A job as `job.list` answers it (11 §15.2). */
+interface JobRow {
+  jobId: string;
+  commandId: string;
+  state: string;
+  progress: number;
+  message: string;
+  session: string;
+  cancellable?: boolean;
+}
+
+const isRunning = (j: JobRow) => j.state === 'running' || j.state === 'queued';
+
 /** The progress area (01 §9.1; ruling D-30, group 1): the running jobs of every session (`job.list {all: true}`, the
  *  GUI's own listing, 11 §15.2), read again when a job reports progress or finishes. C4.3b round 1 (D-39): the answer
  *  is the array of jobs, and without `all` only the window's own session's jobs are listed, so an agent's job showed
- *  nothing. */
+ *  nothing. C43B-R2-06 (01 §9.5 lines 925-927): the segment opens the progress window, which lists every running job
+ *  with its title, step and fraction, and a Cancel (`job.cancel {jobId}`) where the job is still cancellable, an agent
+ *  session's jobs included (the user's priority, 11 §6.4; SI-160). The window opens by itself when a job of another
+ *  session starts (the window's own jobs have their progress dialog) and closes when no job runs. */
 function JobsIndicator() {
   const { engine } = useShell();
-  const [running, setRunning] = useState(0);
+  const actions = useActions();
+  const agents = useSlice('agents') as AgentServerStatus | undefined;
+  const [jobs, setJobs] = useState<readonly JobRow[]>([]);
+  const [open, setOpen] = useState(false);
+  const seen = useRef(new Set<string>());
+  const running = jobs.filter(isRunning);
   useEffect(() => {
     let stopped = false;
     let off: (() => void) | null = null;
@@ -63,8 +85,14 @@ function JobsIndicator() {
         .run('job.list', { all: true })
         .done.then((env) => {
           const answer: unknown = env.status === 'ok' ? env.result : null;
-          const jobs = (Array.isArray(answer) ? answer : []) as { state?: string }[];
-          if (!stopped) setRunning(jobs.filter((j) => j.state === 'running' || j.state === 'queued').length);
+          const list = (Array.isArray(answer) ? answer : []) as JobRow[];
+          if (stopped) return;
+          setJobs(list);
+          // A running job of another session not seen before opens the window (01 §9.5: long operations show it).
+          const fresh = list.filter((j) => isRunning(j) && !seen.current.has(j.jobId));
+          for (const j of fresh) seen.current.add(j.jobId);
+          if (fresh.some((j) => j.session.startsWith('agent:'))) setOpen(true);
+          if (!list.some(isRunning)) setOpen(false);
         })
         .catch(() => undefined);
     };
@@ -82,9 +110,99 @@ function JobsIndicator() {
       off?.();
     };
   }, [engine]);
+  const count = running.length;
+  const who = (session: string) => {
+    if (!session.startsWith('agent:')) return 'You';
+    const id = session.slice('agent:'.length);
+    const s = agents?.sessions.find((x) => x.sessionId === id);
+    return `Agent: ${s?.client ?? id}`;
+  };
   return (
-    <span className="status-jobs" data-tt-role="text" data-tt-id="status.jobs">
-      {running > 0 ? `${String(running)} job${running === 1 ? '' : 's'} running` : ''}
+    <span className="status-jobs-area">
+      <button
+        type="button"
+        className="status-jobs"
+        disabled={count === 0}
+        aria-expanded={open && count > 0}
+        aria-label={count > 0 ? undefined : 'No jobs running'}
+        data-tt-role="button"
+        data-tt-id="status.jobs"
+        data-tt-gui-only="disclose"
+        onClick={() => {
+          setOpen((o) => !o);
+        }}
+      >
+        {count > 0 ? `${String(count)} job${count === 1 ? '' : 's'} running` : ''}
+      </button>
+      {open && count > 0 && (
+        <span
+          className="jobs-window"
+          role="dialog"
+          aria-modal="false"
+          aria-label="Jobs"
+          data-tt-role="dialog"
+          data-tt-id="jobsWindow"
+          data-tt-surface="jobsWindow"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setOpen(false);
+          }}
+        >
+          <strong>Jobs</strong>
+          {running.map((j) => {
+            const title = (COMMAND_INDEX as Record<string, { label?: string } | undefined>)[j.commandId]
+              ?.label;
+            const percent = Math.round(Math.min(Math.max(j.progress, 0), 1) * 100);
+            return (
+              <span
+                key={j.jobId}
+                className="jobs-row"
+                data-tt-role="group"
+                data-tt-id={`jobsWindow.job.${j.jobId}`}
+              >
+                <span className="jobs-title" data-tt-role="text" data-tt-id={`jobsWindow.title.${j.jobId}`}>
+                  {title ?? j.commandId} ({who(j.session)})
+                </span>
+                <span className="jobs-step" data-tt-role="text" data-tt-id={`jobsWindow.step.${j.jobId}`}>
+                  {j.message || (j.state === 'queued' ? 'Waiting' : '')}
+                </span>
+                <progress
+                  max={100}
+                  value={percent}
+                  aria-label={`${title ?? j.commandId} progress`}
+                  data-tt-role="progress"
+                  data-tt-id={`jobsWindow.progress.${j.jobId}`}
+                  data-tt-value={String(percent)}
+                />
+                {j.cancellable !== false && (
+                  <button
+                    type="button"
+                    data-tt-role="button"
+                    data-tt-id={`jobsWindow.cancel.${j.jobId}`}
+                    data-tt-command="job.cancel"
+                    data-tt-params={JSON.stringify({ jobId: j.jobId })}
+                    onClick={() => {
+                      void actions.run('job.cancel', { jobId: j.jobId });
+                    }}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </span>
+            );
+          })}
+          <button
+            type="button"
+            data-tt-role="button"
+            data-tt-id="jobsWindow.close"
+            data-tt-gui-only="dismiss"
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
+            Close
+          </button>
+        </span>
+      )}
     </span>
   );
 }

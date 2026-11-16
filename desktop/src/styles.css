@@ -850,3 +850,46 @@ select:focus-visible {
   overflow: hidden;
   clip-path: inset(50%);
 }
+
+/* The progress window (01 §9.5; C43B-R2-06): the running jobs, above the status bar's jobs segment. */
+.status-jobs-area {
+  position: relative;
+}
+
+.status-jobs:disabled {
+  border-color: transparent;
+  background: transparent;
+}
+
+.jobs-window {
+  position: absolute;
+  right: 0;
+  bottom: 26px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 340px;
+  padding: 8px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 35%);
+  white-space: normal;
+}
+
+.jobs-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 8px;
+  align-items: center;
+}
+
+.jobs-step {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: var(--tt-textMuted);
+}
+
+.jobs-row progress {
+  width: 100%;
+}

@@ -2009,3 +2009,23 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   the answer's shape). Behaviour change: a press in an inactive Drawing or Camera view window now activates it, as V9
   states.
 
+
+## SI-160 — the person cancels an agent session's job from the progress window (found in M4 C4.3b round 2; ruled)
+
+- **Sections:** 01 §9.5 lines 925-927 (long operations show a progress window with Cancel where cancellation is
+  supported), 01 §9.1 (the status bar's progress area), 11 §6.4 (user priority in attached mode), 11 §15.2 (`job.list
+  {all: true}` lists every session's jobs for the GUI; `job.cancel`).
+- **Problem:** the status bar showed every session's running jobs as text only (C43B-R2-06). 01 §9.5 asks for Cancel
+  where cancellation is supported, and says nothing about whose job it is; 11 §6.4 gives the person priority over an
+  agent but does not name cancelling an agent's job.
+- **Ruled (round 2, C43B-R2-06):** the status bar's jobs segment opens the progress window, which lists every running
+  job (the window's own and every agent session's) with its title, the session that started it, the current step and
+  the fraction, and a Cancel that sends `job.cancel {jobId}` while the job is cancellable. The person may cancel an
+  agent session's job: under 11 §6.4 the person's decision wins, as Pause and Stop already let them stop the session.
+  The agent learns of it from the job's final state (`cancelled`, through `job_status` and `job.finished`). The window
+  opens by itself when another session's job starts (01 §9.5: long operations show it; the window's own long
+  operations keep their progress dialog), and closes when no job runs.
+- **Built:** `JobRecord.cancellable` (true while the job is neither final nor past its commit point, and no cancellation
+  was requested; `crates/executor/src/jobs.rs`), so Cancel is offered only where it can take effect; the progress
+  window in `desktop/src/shell/StatusBar.tsx`; `shell/jobsWindow.test.tsx`; the D-44 flow table's
+  "progress window › Cancel" row through the real window.

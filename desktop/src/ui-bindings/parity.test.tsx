@@ -167,6 +167,31 @@ async function surfaces(): Promise<Surface[]> {
     fireEvent.click(screen.getByText(/Agent: mcp/));
   });
 
+  // The progress window (C43B-R2-06): an agent session's running job opens it, with its Cancel.
+  h.handlers['job.list'] = () =>
+    ok([
+      {
+        jobId: 'job-7',
+        commandId: 'render.range.run',
+        state: 'running',
+        progress: 0.25,
+        message: 'Frame 3 of 12',
+        session: 'agent:s1',
+        cancellable: true,
+      },
+    ]);
+  act(() => {
+    h.event('job.progress', { jobId: 'job-7' });
+  });
+  out.push(await settled('jobsWindow', await screen.findByRole('dialog', { name: 'Jobs' })));
+  h.handlers['job.list'] = () => ok([]);
+  act(() => {
+    h.event('job.finished', { jobId: 'job-7' });
+  });
+  await waitFor(() => {
+    expect(screen.queryByRole('dialog', { name: 'Jobs' })).toBeNull();
+  });
+
   // The dock tab's context menu.
   const tab = document.querySelector('[data-tt-id^="tab."]');
   if (!tab) throw new Error('no dock tab rendered');
@@ -364,7 +389,8 @@ function sourceUses(): { command: string; files: string[] }[] {
 function callSites(): { command: string; file: string }[] {
   const out: { command: string; file: string }[] = [];
   for (const path of productFiles()) {
-    for (const command of callSitesOf(path, readFileSync(`${repo}${path}`, 'utf8'))) out.push({ command, file: path });
+    for (const command of callSitesOf(path, readFileSync(`${repo}${path}`, 'utf8')))
+      out.push({ command, file: path });
   }
   return out.sort((a, b) => a.command.localeCompare(b.command) || a.file.localeCompare(b.file));
 }
@@ -466,10 +492,15 @@ describe('the parity manifest (parity note 9)', () => {
     expect(callSitesOf('desktop/src/panels/x.test.tsx', helper)).toEqual([]);
     expect(callSitesOf('desktop/src/panels/x.ts', helper)).toEqual(['tool.settings.get']);
     // The store's slice table and `useQuery`'s second argument are read by the parser too.
-    expect(tsCallSites("export const SLICES = { a: ['app.state.get', {}] } as const;", 'desktop/src/state/store.ts')).toEqual([
-      'app.state.get',
+    expect(
+      tsCallSites(
+        "export const SLICES = { a: ['app.state.get', {}] } as const;",
+        'desktop/src/state/store.ts',
+      ),
+    ).toEqual(['app.state.get']);
+    expect(tsCallSites("const r = useQuery(services, 'doc.validate', {});", 'desktop/src/x.tsx')).toEqual([
+      'doc.validate',
     ]);
-    expect(tsCallSites("const r = useQuery(services, 'doc.validate', {});", 'desktop/src/x.tsx')).toEqual(['doc.validate']);
     // The host's Rust: comments, strings, raw strings and the test module do not count.
     const rust = [
       '// host.run("tool.settings.get", json!({}));',
@@ -483,7 +514,11 @@ describe('the parity manifest (parity note 9)', () => {
       'mod tests { fn t() { host.run("keymap.list", json!({})); } }',
     ].join('\n');
     expect(rustCallSites(rust)).toEqual(['job.list', 'view.list', 'window.panel.list']);
-    expect(callSitesOf('desktop/src-tauri/src/x.rs', rust)).toEqual(['job.list', 'view.list', 'window.panel.list']);
+    expect(callSitesOf('desktop/src-tauri/src/x.rs', rust)).toEqual([
+      'job.list',
+      'view.list',
+      'window.panel.list',
+    ]);
   });
 
   // C43B-R2S-01, C43B-R2-01: every surface key of `reads.json` is a surface the collector renders (or the native menu,
