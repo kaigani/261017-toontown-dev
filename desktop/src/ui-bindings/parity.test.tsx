@@ -21,6 +21,7 @@ import {
 } from '../test-support/scriptedHost';
 import { CATEGORIES } from '../prefs/categories';
 import { itemRef } from '../shell/toolbarItems';
+import { callSitesOf, isProductFile, rustCallSites, tsCallSites } from '../test-support/callSites';
 import menu from './menu.json';
 import { collect, GUI_ONLY_REASONS, type Action } from './parity';
 
@@ -326,28 +327,16 @@ function toolbarActions(): Action[] {
   return out;
 }
 
-const ID = '([a-z][A-Za-z]*\\.[A-Za-z][A-Za-z.]*[A-Za-z])';
-/** Call forms in the front end: `run('id'`, `perform('id'`, `useQuery(services, 'id'`. */
-const TS_CALL = new RegExp(
-  `(?:(?:\\.|\\b)(?:run|perform)\\(\\s*|\\buseQuery\\(\\s*[\\w.]+,\\s*)['"]${ID}['"]`,
-  'g',
-);
-/** The store's slice table: each entry is a query the store runs on every refresh (`store.ts` `SLICES`). */
-const SLICE_CALL = new RegExp(`^\\s+\\w+: \\['${ID}',`, 'gm');
-/** Call forms in the host: `.run("id"`, `q("id"`, `Invocation::user("id"`, `command: "id"`. */
-const RS_CALL = new RegExp(`(?:\\.run|\\bq|Invocation::user)\\(\\s*"${ID}"`, 'g');
-const RS_FIELD = new RegExp(`command:\\s*"${ID}"`, 'g');
-
 function productFiles(): string[] {
   const out: string[] = [];
   const walk = (dir: string) => {
     for (const name of readdirSync(`${repo}${dir}`)) {
       const path = `${dir}/${name}`;
       if (statSync(`${repo}${path}`).isDirectory()) {
-        if (!['generated', 'test', 'test-support', '__probes__', 'testdata'].includes(name)) walk(path);
+        walk(path);
         continue;
       }
-      if (/\.(ts|tsx|rs)$/.test(name) && !/\.test\.tsx?$/.test(name)) out.push(path);
+      if (isProductFile(path)) out.push(path);
     }
   };
   for (const r of ['desktop/src', 'desktop/src-tauri/src']) walk(r);
@@ -373,25 +362,11 @@ function sourceUses(): { command: string; files: string[] }[] {
 /** The calls of commands in product code (a test module of a Rust file, after `#[cfg(test)]`, is not product code):
  *  the gate checks the declared reads (`reads.json`) and the window gestures against them. */
 function callSites(): { command: string; file: string }[] {
-  const out = new Set<string>();
+  const out: { command: string; file: string }[] = [];
   for (const path of productFiles()) {
-    let text = readFileSync(`${repo}${path}`, 'utf8');
-    const patterns: RegExp[] = [];
-    if (path.endsWith('.rs')) {
-      text = text.split('#[cfg(test)]')[0] ?? '';
-      patterns.push(RS_CALL, RS_FIELD);
-    } else {
-      patterns.push(TS_CALL);
-      if (path.endsWith('/state/store.ts')) patterns.push(SLICE_CALL);
-    }
-    for (const p of patterns) for (const m of text.matchAll(p)) out.add(`${m[1] ?? ''}\u0000${path}`);
+    for (const command of callSitesOf(path, readFileSync(`${repo}${path}`, 'utf8'))) out.push({ command, file: path });
   }
-  return [...out]
-    .map((k) => {
-      const [command = '', file = ''] = k.split('\u0000');
-      return { command, file };
-    })
-    .sort((a, b) => a.command.localeCompare(b.command) || a.file.localeCompare(b.file));
+  return out.sort((a, b) => a.command.localeCompare(b.command) || a.file.localeCompare(b.file));
 }
 
 const byId = (a: { id: string; surface: string }, b: { id: string; surface: string }) =>
@@ -465,9 +440,65 @@ describe('the parity manifest (parity note 9)', () => {
 
   it('D-35: a mention in the source is not a call site', () => {
     const text = "const label = 'keymap.export'; // see agent.server.set\nawait engine.run('job.list', {});";
-    const found = [...text.matchAll(TS_CALL)].map((m) => m[1]);
-    expect(found).toContain('job.list');
-    expect(found).not.toContain('keymap.export');
-    expect(found).not.toContain('agent.server.set');
+    const found = tsCallSites(text, 'desktop/src/x.ts');
+    expect(found).toEqual(['job.list']);
+  });
+
+  // C43B-R2S-01: call sites are executable call expressions, found with a parser. Each fixture holds one real call and
+  // the same call where it does not execute; only the real one counts.
+  it('C43B-R2S-01: a call in a comment, a string or a test helper is not a call site', () => {
+    const comment = [
+      "// engine.run('tool.settings.get', {})",
+      "/* services.perform('edit.undo', {}) */",
+      "/** useQuery(services, 'prefs.get', {}) */",
+      "engine.run('job.list', {});",
+    ].join('\n');
+    expect(tsCallSites(comment, 'desktop/src/x.ts')).toEqual(['job.list']);
+    const strings = [
+      'const text = "engine.run(\'tool.settings.get\', {})";',
+      "const tpl = `actions.perform('edit.undo', {})`;",
+      "engine.run('job.list', {});",
+    ].join('\n');
+    expect(tsCallSites(strings, 'desktop/src/x.tsx')).toEqual(['job.list']);
+    // A test helper and a test are not product code, whatever they call.
+    const helper = "export const seed = () => engine.run('tool.settings.get', {});";
+    expect(callSitesOf('desktop/src/test-support/helper.ts', helper)).toEqual([]);
+    expect(callSitesOf('desktop/src/panels/x.test.tsx', helper)).toEqual([]);
+    expect(callSitesOf('desktop/src/panels/x.ts', helper)).toEqual(['tool.settings.get']);
+    // The store's slice table and `useQuery`'s second argument are read by the parser too.
+    expect(tsCallSites("export const SLICES = { a: ['app.state.get', {}] } as const;", 'desktop/src/state/store.ts')).toEqual([
+      'app.state.get',
+    ]);
+    expect(tsCallSites("const r = useQuery(services, 'doc.validate', {});", 'desktop/src/x.tsx')).toEqual(['doc.validate']);
+    // The host's Rust: comments, strings, raw strings and the test module do not count.
+    const rust = [
+      '// host.run("tool.settings.get", json!({}));',
+      '/* q("prefs.get") /* nested */ still a comment */',
+      'let s = "self.run(\\"edit.undo\\")";',
+      'let r = r#"q("app.state.get")"#;',
+      'host.run("job.list", json!({}));',
+      'let a = Invocation::user("view.list", json!({}));',
+      'Request { command: "window.panel.list" }',
+      '#[cfg(test)]',
+      'mod tests { fn t() { host.run("keymap.list", json!({})); } }',
+    ].join('\n');
+    expect(rustCallSites(rust)).toEqual(['job.list', 'view.list', 'window.panel.list']);
+    expect(callSitesOf('desktop/src-tauri/src/x.rs', rust)).toEqual(['job.list', 'view.list', 'window.panel.list']);
+  });
+
+  // C43B-R2S-01: every surface `reads.json` names is rendered by the collector (or is the native menu, which the manifest
+  // collects from `menu.json`).
+  it('C43B-R2S-01: the surfaces reads.json names are collected surfaces', async () => {
+    const reads = readJson('desktop/src/ui-bindings/reads.json') as {
+      surfaces: Record<string, { in?: string[] }>;
+    };
+    const known = new Set([...(await surfaces()).map((x) => x.name), 'menu']);
+    const unknown = (table: typeof reads) =>
+      Object.entries(table.surfaces).flatMap(([name, s]) =>
+        (s.in ?? []).length === 0 ? [`${name}: names no collected surface`] : (s.in ?? []).filter((x) => !known.has(x)).map((x) => `${name}: ${x}`),
+      );
+    expect(unknown(reads)).toEqual([]);
+    const invented = { surfaces: { ...reads.surfaces, ghost: { in: ['dialog:Nowhere'] }, bare: {} } };
+    expect(unknown(invented)).toEqual(['ghost: dialog:Nowhere', 'bare: names no collected surface']);
   });
 });

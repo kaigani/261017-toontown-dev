@@ -99,6 +99,13 @@ fn d35_declared_reads_and_call_sites_agree_both_ways() {
     let bad = reads_problems(&m, &reads.to_string());
     assert!(bad.iter().any(|p| p.contains("declares `job.list` in desktop/src/panels/PanelBody.tsx")), "{bad:?}");
     assert!(bad.iter().any(|p| p.contains("`edit.undo` is not a query")), "{bad:?}");
+    // C43B-R2S-01: a surface the collector does not render, and a surface naming none, fail.
+    let mut reads: Value = serde_json::from_str(READS).unwrap();
+    reads["surfaces"]["ghost"] = json!({ "description": "x", "in": ["dialog:Nowhere"], "reads": {} });
+    reads["surfaces"]["bare"] = json!({ "description": "x", "reads": {} });
+    let bad = reads_problems(&m, &reads.to_string());
+    assert!(bad.iter().any(|p| p.contains("`ghost` is in `dialog:Nowhere`")), "{bad:?}");
+    assert!(bad.iter().any(|p| p.contains("`bare` names no collected surface")), "{bad:?}");
     // A call site removed from the manifest (an inert mention left behind) leaves its declared read without a call.
     let mut m2 = m.clone();
     m2["callSites"].as_array_mut().unwrap().retain(|c| c["command"] != "tool.list");

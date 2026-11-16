@@ -382,6 +382,28 @@ pub fn reads_problems(m: &Value, reads_raw: &str) -> Vec<String> {
     let sites = call_sites(m);
     let is_query = |id: &str| r.get(id).is_some_and(|e| e.spec.kind == Kind::Query);
     let mut out = Vec::new();
+    // C43B-R2S-01: every surface the table names is a collected surface (the manifest's `surfaces`, or `menu` for the
+    // native menu the manifest collects from `menu.json`).
+    let collected: BTreeSet<&str> = m["surfaces"]
+        .as_array()
+        .map(Vec::as_slice)
+        .unwrap_or_default()
+        .iter()
+        .filter_map(Value::as_str)
+        .chain(std::iter::once("menu"))
+        .collect();
+    let doc: Value = serde_json::from_str(reads_raw).unwrap();
+    for (name, s) in doc["surfaces"].as_object().unwrap() {
+        let within: Vec<&str> = s["in"].as_array().map(Vec::as_slice).unwrap_or_default().iter().filter_map(Value::as_str).collect();
+        if within.is_empty() {
+            out.push(format!("reads.json: surface `{name}` names no collected surface (`in`)"));
+        }
+        for w in within {
+            if !collected.contains(w) {
+                out.push(format!("reads.json: surface `{name}` is in `{w}`, which the collector does not render"));
+            }
+        }
+    }
     for (q, f) in &sites {
         if is_query(q)
             && !rd.surfaces.contains(&(q.clone(), f.clone()))
