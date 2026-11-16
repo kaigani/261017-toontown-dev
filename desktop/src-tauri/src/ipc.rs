@@ -224,16 +224,19 @@ struct PickFilter {
 }
 
 /// Shows a native Open, Save As or folder picker (01 §3.2, §3.6) and answers `{path}` (`null` when cancelled). The
-/// picker runs off the main thread.
+/// picker runs off the main thread. It is owned by the window that asked (modal to it), and that window takes the
+/// keyboard focus back when it closes: the question that follows a choice (keymap Import's Merge / Replace / Cancel,
+/// C43B-R2-08) then answers the keyboard at once (found by the D-39 table: Enter reached no page after the picker).
 ///
 /// # Errors
 /// The JSON text of an `arg.invalid` error for a malformed request.
 #[tauri::command]
-pub async fn pick_path(app: AppHandle, json: String) -> Result<Response, String> {
+pub async fn pick_path(app: AppHandle, window: tauri::WebviewWindow, json: String) -> Result<Response, String> {
     use tauri_plugin_dialog::DialogExt;
     let req: PickRequest = parse(&json)?;
+    let owner = window.clone();
     let path = tauri::async_runtime::spawn_blocking(move || {
-        let mut d = app.dialog().file().set_title(&req.title);
+        let mut d = app.dialog().file().set_title(&req.title).set_parent(&owner);
         for f in &req.filters {
             let exts: Vec<&str> = f.extensions.iter().map(String::as_str).collect();
             d = d.add_filter(&f.name, &exts);
@@ -250,6 +253,7 @@ pub async fn pick_path(app: AppHandle, json: String) -> Result<Response, String>
     })
     .await
     .map_err(|e| internal(e.to_string()))?;
+    let _ = window.set_focus();
     respond(&json!({ "path": path }))
 }
 
