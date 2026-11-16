@@ -109,6 +109,16 @@ const productProperties = [
   ]),
   { object: 'navigator', property: 'serviceWorker', message: WORKERS },
 ];
+// C43B-R2-08: the browser's dialogs are not the application's message box (01 §9.5: specific verbs, the platform's
+// default and cancel buttons); in the webview `window.confirm` even returns a promise, which is always truthy. Every
+// question goes through the messages API (src/shell/messagesApi.ts). Forbidden in every file, tests included; kept in
+// these rule lists because a later block's rule replaces an earlier one's whole.
+const DIALOG = 'Use the application message box (useMessages().show), not the browser dialog (C43B-R2-08).';
+const DIALOG_NAMES = ['alert', 'confirm', 'prompt'];
+const dialogGlobals = DIALOG_NAMES.map((name) => ({ name, message: DIALOG }));
+const dialogProperties = ['window', 'globalThis', 'self'].flatMap((object) =>
+  DIALOG_NAMES.map((property) => ({ object, property, message: DIALOG })),
+);
 const productGlobals = [
   { name: 'atob', message: ASSEMBLY },
   ...['Worker', 'SharedWorker', 'Worklet'].map((name) => ({ name, message: WORKERS })),
@@ -133,8 +143,12 @@ export const BOUNDARY_RULE_NAMES = [
 export const ipcBoundaryRules = {
   'no-restricted-imports': restrictedImports({ allowTransport: false }),
   'no-restricted-syntax': ['error', ...baseSyntax],
-  'no-restricted-globals': ['error', ...TAURI_GLOBALS.map((name) => ({ name, message: HOST }))],
-  'no-restricted-properties': 'off',
+  'no-restricted-globals': [
+    'error',
+    ...TAURI_GLOBALS.map((name) => ({ name, message: HOST })),
+    ...dialogGlobals,
+  ],
+  'no-restricted-properties': ['error', ...dialogProperties],
   'no-eval': 'error',
   'no-new-func': 'error',
 };
@@ -200,11 +214,12 @@ export function ipcBoundaryConfig(commentsPlugin) {
       files: [`src/**/*.${EXT}`],
       ignores: [`src/**/*.test.${EXT}`],
       rules: {
-        'no-restricted-properties': ['error', ...productProperties],
+        'no-restricted-properties': ['error', ...productProperties, ...dialogProperties],
         'no-restricted-globals': [
           'error',
           ...TAURI_GLOBALS.map((name) => ({ name, message: HOST })),
           ...productGlobals,
+          ...dialogGlobals,
         ],
       },
     },

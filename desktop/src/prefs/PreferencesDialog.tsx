@@ -7,6 +7,7 @@ import { useMemo, useRef, useState } from 'react';
 import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { isMac, nativeNotation, sequenceOf } from '../keys/sequence';
 import { Dialog } from '../shell/dialogs';
+import { useMessages } from '../shell/messagesApi';
 import type { ShellServices } from '../state/context';
 import type { Binding, PrefEntry, Theme, Tip } from '../state/types';
 import { applyTheme } from '../theme/theme';
@@ -368,6 +369,9 @@ export function KeymapEditor({
   onStage: (op: KeymapOp, next: readonly Binding[]) => void;
 }) {
   const mac = isMac();
+  // C43B-R2-08: the editor's questions are the application's message boxes with specific verbs (01 §9.5); the
+  // browser's `window.confirm` returns a promise in this webview, which is always truthy.
+  const messages = useMessages();
   const [filter, setFilter] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
   const [context, setContext] = useState<'global' | 'drawing' | 'staging'>('global');
@@ -606,9 +610,20 @@ export function KeymapEditor({
         data-tt-id="keymap.resetAll"
         data-tt-command="keymap.reset"
         onClick={() => {
-          if (window.confirm('Restore the whole default keymap?')) {
-            onStage({ command: 'keymap.reset', params: { all: true } }, bindings);
-          }
+          void messages
+            .show({
+              severity: 'question',
+              messageId: 'keymap.resetAll',
+              title: 'Reset all shortcuts',
+              text: 'Restore the whole default keymap? Every changed shortcut goes back to its default when Preferences is confirmed.',
+              buttons: [
+                { id: 'reset', label: 'Reset All', role: 'destructive' },
+                { id: 'cancel', label: 'Cancel', role: 'cancel' },
+              ],
+            })
+            .then((a) => {
+              if (a.button === 'reset') onStage({ command: 'keymap.reset', params: { all: true } }, bindings);
+            });
         }}
       >
         Reset all…
@@ -628,11 +643,22 @@ export function KeymapEditor({
               filters: [{ name: 'JSON', extensions: ['json'] }],
             })
             .catch(() => null)
-            .then((path) => {
+            .then(async (path) => {
               if (!path) return;
-              const mode = window.confirm('Replace the whole keymap? (Cancel merges the file into it.)')
-                ? 'replace'
-                : 'merge';
+              // 01 §8.3 item 8: the file merged into the keymap or replacing it, or nothing (C43B-R2-08).
+              const a = await messages.show({
+                severity: 'question',
+                messageId: 'keymap.importMode',
+                title: 'Import Keymap',
+                text: `Merge the shortcuts of "${path}" into the keymap, or replace the whole keymap with them?`,
+                buttons: [
+                  { id: 'merge', label: 'Merge' },
+                  { id: 'replace', label: 'Replace', role: 'default' },
+                  { id: 'cancel', label: 'Cancel', role: 'cancel' },
+                ],
+              });
+              if (a.button !== 'merge' && a.button !== 'replace') return;
+              const mode = a.button;
               onStage({ command: 'keymap.import', params: { path, mode } }, bindings);
               setNotice(`${path} will be imported (${mode}) when Preferences is confirmed.`);
             });
