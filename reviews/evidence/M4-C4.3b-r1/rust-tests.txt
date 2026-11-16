@@ -1,0 +1,48 @@
+
+running 6 tests
+test case1_duplicate_deferred_entry_rejected ... FAILED
+test case2_tool_choice_table ... ok
+test case1_gate_negative_matrix ... FAILED
+test case2_selection_parts_empty_whole_group_text_and_generation ... FAILED
+test case1_other_negative_fixtures ... ok
+test case2_mutation_waits_for_commit_cancel_and_refusal ... ok
+
+failures:
+
+failures:
+    case1_duplicate_deferred_entry_rejected
+    case1_gate_negative_matrix
+    case2_selection_parts_empty_whole_group_text_and_generation
+
+test result: FAILED. 3 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running tests\c43b_r1_review.rs (target\debug\deps\c43b_r1_review-2e266deb09b11bed.exe)
+
+thread 'case1_duplicate_deferred_entry_rejected' (59432) panicked at crates\executor\tests\c43b_r1_review.rs:172:5:
+D-31 exact gate accepts duplicate deferred command agent.activity.export
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+selection answer={"selectedIds":[],"bounds":null}
+selection={"by":"none"} generation=1 vertices=3399 selected=0
+selection={"by":"none"} generation=7 vertices=3399 selected=0
+selection answer={"selectedIds":["st_01K742SG0QD1F2HFZSX8R4V7WP","st_01K742SG0R61SYK9GG0HGYVNBT","st_01K742SG0S0NT23BWCZN64SFQ5","nd_01K742SG0WFAQJFKAZKV4CD56C","st_01K7JJN800J6GZ68MHS01HNTDM","st_01K7JJN800FJRWFM4KTPMG2Y8P","nd_01K7JJN800RXHD55052GG3NDRM"],"bounds":{"x":-381.0,"y":-441.396484375,"width":822.0,"height":641.396484375}}
+selection={"by":"all"} generation=1 vertices=3399 selected=3399
+selection={"by":"all"} generation=7 vertices=3399 selected=3399
+owner="M4 C4.3" errors=["deferred `agent.activity.export`: owner `M4 C4.3` has passed (D-31)"]
+owner="M4 C4.2" errors=["deferred `agent.activity.export`: owner `M4 C4.2` has passed (D-31)"]
+selection answer={"selectedIds":["nd_01K7JJN802HZEJ5904KPDNSW4V"],"bounds":{"x":-381.0,"y":-251.0,"width":822.0,"height":52.0}}
+owner="nonsense" errors=["deferred `agent.activity.export`: owner `nonsense` has passed (D-31)"]
+owner="M5 C5.1.trailing" errors=[]
+owner="5 C5.1" errors=[]
+
+thread 'case1_gate_negative_matrix' (49560) panicked at crates\executor\tests\c43b_r1_review.rs:159:5:
+D-31 malformed/passed owners accepted: ["M5 C5.1.trailing", "5 C5.1"]
+
+thread 'case2_selection_parts_empty_whole_group_text_and_generation' (43960) panicked at crates\executor\tests\c43b_r1_review.rs:276:31:
+PV3 selected nonempty group/text has no geometry: {"by":"ids","ids":["nd_01K7JJN802HZEJ5904KPDNSW4V"]}
+fixture=missing errors=["`agent.activity.export` is in no state: bind it, declare it agent-only, or defer it"]
+fixture=bound-deferred errors=["`edit.undo` is in several states: [\"bound\", \"deferred\"]"]
+fixture=agent-menu errors=["`keymap.get` is in several states: [\"bound\", \"agent-only\"]"]
+fixture=unknown errors=["deferred `review.missing` is not registered"]
+fixture=empty-section errors=["deferred `agent.activity.export`: no spec section (D-31)"]
+error: test failed, to rerun pass `-p tt-executor --test c43b_r1_review`

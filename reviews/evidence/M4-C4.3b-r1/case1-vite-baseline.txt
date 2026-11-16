@@ -1,0 +1,17 @@
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\AppData\Local\Temp\c43b-review-dxj3f_nj\desktop
+> vitest run --config vite.config.ts "src/ui-bindings/parity.test.tsx"
+
+
+ RUN  v5.0.5 C:/Users/kaiga/AppData/Local/Temp/c43b-review-dxj3f_nj/desktop
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  19:09:11
+   Duration  2.38s (transform 36%, environment 36%, tests 14%, setup 7%, import 7%)
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
