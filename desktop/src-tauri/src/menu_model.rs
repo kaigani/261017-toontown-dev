@@ -143,7 +143,8 @@ fn items(list: &[Item], platform: Platform, f: &Facts, path: &str, next: &mut us
                 }
                 node.insert("shortcut".into(), json!(binding_keys(&f.keymap, c)));
                 node.insert("commandId".into(), json!(c.command));
-                let params = if facts.params.is_object() { facts.params.clone() } else { Value::Object(c.params_object()) };
+                let params =
+                    if facts.params.is_object() { facts.params.clone() } else { Value::Object(c.params_object()) };
                 node.insert("command".into(), json!({ "commandId": c.command, "params": params }));
                 out.push(Value::Object(node));
             }

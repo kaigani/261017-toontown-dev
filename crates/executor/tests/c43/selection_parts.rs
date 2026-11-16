@@ -231,14 +231,21 @@ impl Table {
                 Record::Bitmap { quad, .. } => {
                     let corners = quad.as_chunks::<2>().0;
                     let n = corners.len() as f64;
-                    let (cx, cy) = corners.iter().fold((0.0, 0.0), |(x, y), p| (x + f64::from(p[0]) / n, y + f64::from(p[1]) / n));
+                    let (cx, cy) =
+                        corners.iter().fold((0.0, 0.0), |(x, y), p| (x + f64::from(p[0]) / n, y + f64::from(p[1]) / n));
                     let owners: Vec<&String> = self
                         .objects
                         .iter()
-                        .filter(|(_, m)| matches!(m, Mark::Image(x, y) if (cx - x).abs() <= CELL && (cy - y).abs() <= CELL))
+                        .filter(
+                            |(_, m)| matches!(m, Mark::Image(x, y) if (cx - x).abs() <= CELL && (cy - y).abs() <= CELL),
+                        )
                         .map(|(id, _)| id)
                         .collect();
-                    assert_eq!(owners.len(), 1, "the bitmap quad centred at ({cx}, {cy}) belongs to one bitmap: {owners:?}");
+                    assert_eq!(
+                        owners.len(),
+                        1,
+                        "the bitmap quad centred at ({cx}, {cy}) belongs to one bitmap: {owners:?}"
+                    );
                     for p in corners {
                         out.push((p[0], p[1], owners[0].clone()));
                     }
@@ -338,10 +345,15 @@ fn r1_03_selection_parts_full_table() {
     let bitmap_b = t.paste_bitmap(&locked, 0.0, -600.0);
     assert_ne!(la, lb, "two layers");
     let order = t.top_level_order();
-    let at = |id: &str| order.iter().position(|x| x == id).unwrap_or_else(|| panic!("`{id}` is not a top-level node: {order:?}"));
+    let at = |id: &str| {
+        order.iter().position(|x| x == id).unwrap_or_else(|| panic!("`{id}` is not a top-level node: {order:?}"))
+    };
     assert!(at(&la) < at(&ta) && at(&ta) < at(&lb), "the first text is directly above the first layer: {order:?}");
     assert!(at(&la) < at(&bitmap_a) && at(&bitmap_a) < at(&lb), "the first layer's bitmap is above it: {order:?}");
-    assert!(at(&lb) < at(&tb) && at(&lb) < at(&bitmap_b), "the second text and bitmap are above the second layer: {order:?}");
+    assert!(
+        at(&lb) < at(&tb) && at(&lb) < at(&bitmap_b),
+        "the second text and bitmap are above the second layer: {order:?}"
+    );
     for (name, ids) in [
         ("pencil alone, first layer", vec![pa.as_str()]),
         ("zone alone, first layer", vec![za.as_str()]),

@@ -226,27 +226,27 @@ impl JobTable {
                 progress.table.update(&progress.job_id, |r| {
                     r.cancellable = false;
                     match outcome {
-                    // A job that stops at the cancellation and reports what it completed keeps that report
-                    // (`draw.vectorize.run` keeps its finished images, 02 §11.2).
-                    Ok(v) if cancelled => {
-                        r.state = JobState::Cancelled;
-                        r.result = Some(v);
-                    }
-                    // A cancelled job keeps its typed error (C33-R3-01): the cancellation itself, or what met it
-                    // (a rollback the file system refused stays `export.rollbackIncomplete`); its warnings stay too.
-                    Err(e) if cancelled => {
-                        r.state = JobState::Cancelled;
-                        r.error = Some(e);
-                    }
-                    Ok(v) => {
-                        r.state = JobState::Succeeded;
-                        r.progress = 1.0;
-                        r.result = Some(v);
-                    }
-                    Err(e) => {
-                        r.state = JobState::Failed;
-                        r.error = Some(e);
-                    }
+                        // A job that stops at the cancellation and reports what it completed keeps that report
+                        // (`draw.vectorize.run` keeps its finished images, 02 §11.2).
+                        Ok(v) if cancelled => {
+                            r.state = JobState::Cancelled;
+                            r.result = Some(v);
+                        }
+                        // A cancelled job keeps its typed error (C33-R3-01): the cancellation itself, or what met it
+                        // (a rollback the file system refused stays `export.rollbackIncomplete`); its warnings stay too.
+                        Err(e) if cancelled => {
+                            r.state = JobState::Cancelled;
+                            r.error = Some(e);
+                        }
+                        Ok(v) => {
+                            r.state = JobState::Succeeded;
+                            r.progress = 1.0;
+                            r.result = Some(v);
+                        }
+                        Err(e) => {
+                            r.state = JobState::Failed;
+                            r.error = Some(e);
+                        }
                     }
                 });
             })

@@ -306,8 +306,10 @@ fn apply(app: &AppHandle, f: &Facts) {
         let node = menu_model::by_native_id(&f.menus, id);
         let on = node.and_then(|n| n.get("enabled")).and_then(Value::as_bool).unwrap_or(false);
         let acc = accelerator(&f.keymap, &entry.item);
-        let mut label =
-            node.and_then(|n| n.get("label")).and_then(Value::as_str).map_or_else(|| entry.item.label.clone(), str::to_owned);
+        let mut label = node
+            .and_then(|n| n.get("label"))
+            .and_then(Value::as_str)
+            .map_or_else(|| entry.item.label.clone(), str::to_owned);
         if !mac && let Some(a) = &acc {
             label = format!("{label}\t{}", native_label(a));
         }
@@ -323,7 +325,8 @@ fn apply(app: &AppHandle, f: &Facts) {
                 let _ = m.set_enabled(on);
                 let _ = m.set_text(&label);
                 if entry.item.check.is_some() {
-                    let _ = m.set_checked(node.and_then(|n| n.get("checked")).and_then(Value::as_bool).unwrap_or(false));
+                    let _ =
+                        m.set_checked(node.and_then(|n| n.get("checked")).and_then(Value::as_bool).unwrap_or(false));
                 }
                 if mac {
                     let _ = m.set_accelerator(acc.as_deref());
@@ -353,15 +356,19 @@ fn apply(app: &AppHandle, f: &Facts) {
     };
     let recent = dynamic("dyn:recent:");
     if let Some(sub) = st.recent.clone() {
-        let entries: Vec<(String, String)> =
-            recent.iter().map(|(_, label, p)| (p["path"].as_str().unwrap_or_default().to_owned(), label.clone())).collect();
+        let entries: Vec<(String, String)> = recent
+            .iter()
+            .map(|(_, label, p)| (p["path"].as_str().unwrap_or_default().to_owned(), label.clone()))
+            .collect();
         rebuild_dynamic(app, &sub, "recent", &entries);
     }
     st.recent_paths = recent.iter().map(|(_, _, p)| p["path"].as_str().unwrap_or_default().to_owned()).collect();
     let workspaces = dynamic("dyn:workspace:");
     if let Some(sub) = st.workspaces.clone() {
-        let entries: Vec<(String, String)> =
-            workspaces.iter().map(|(_, label, p)| (p["name"].as_str().unwrap_or_default().to_owned(), label.clone())).collect();
+        let entries: Vec<(String, String)> = workspaces
+            .iter()
+            .map(|(_, label, p)| (p["name"].as_str().unwrap_or_default().to_owned(), label.clone()))
+            .collect();
         rebuild_dynamic(app, &sub, "workspace", &entries);
     }
     st.workspace_names = workspaces.iter().map(|(_, _, p)| p["name"].as_str().unwrap_or_default().to_owned()).collect();
