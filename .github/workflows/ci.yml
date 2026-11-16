@@ -1041,12 +1041,6 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/c43-camera-e2e.py "$app" "desktop-gui/c43-camera"
-      # M4 C4.3b round 1, ruling D-39: every GUI binding added in C4.3b exercised once through the real window (OS input),
-      # the command observed, its effect, its label and its disabled state (Windows input; workstation receipt
-      # reviews/evidence/M4-C4.3b/d39-bindings).
-      - name: GUI bindings table (C4.3b, D-39)
-        if: always() && runner.os == 'Windows'
-        run: PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python scripts/c43-d39-bindings.py desktop-artifact/default-build/toontown.exe desktop-gui/c43-d39
       # M4 C4.2b (ruling D-5): the canvas's GPU and webview quantities, recorded on the runners with loose sanity bounds
       # (no GPU); the plan's numbers are asserted on the workstation with committed receipts.
       - name: Canvas measurements (C4.2b; loose bounds on CI)

@@ -20,7 +20,9 @@ spec lines. Receipts: `rows.json`, `transcript.json`, `manifest.json` (kind `too
 every row holds.
 
 The webview's debugging port is opened for this run only (`WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS`); the script carries
-its own small WebSocket client (standard library), so it needs only the MCP SDK.
+its own small WebSocket client (standard library), so it needs only the MCP SDK. A workstation receipt
+(reviews/evidence/M4-C4.3b/d39-bindings), like the reviewer's case 8, which observes the page the same way: on the CI
+runners the webview never opened the port (runs 43822938737 and 43830431401, with and without a data folder of its own).
 """
 
 from __future__ import annotations
