@@ -94,6 +94,26 @@ describe('the Camera view preview (SI-150, SI-151)', () => {
     expect(sceneHandleAt(b, [400, 100], [400, 100])).toEqual({ kind: 'pivot' });
     expect(sceneHandleAt(b, null, [400, 100])).toEqual({ kind: 'corner', i: 1 });
   });
+
+  it('one node: a scale, rotation or skew keeps its factor and turns about the node pivot (SI-150; exact, §4)', () => {
+    const pivot: [number, number] = [260, 210];
+    // A corner scale: the factors of the box rule, the node's pivot fixed.
+    const free = must(scenePreview(b, null, [400, 100], [450, 80], false));
+    const one = must(scenePreview(b, null, [400, 100], [450, 80], false, false, pivot));
+    close([one[0], one[1], one[2], one[3]], [free[0], free[1], free[2], free[3]], 'the same linear part');
+    close(apply(one, pivot[0], pivot[1]), pivot, 'the pivot stays');
+    // A rotation and a skew likewise.
+    const rot = must(scenePreview(b, null, [409, 91], [420, 140], false, false, pivot));
+    close(apply(rot, pivot[0], pivot[1]), pivot, 'rotation about the pivot');
+    const sk = must(scenePreview(b, null, [300, 100], [320, 100], false, true, pivot));
+    close(apply(sk, pivot[0], pivot[1]), pivot, 'skew about the pivot');
+    // A move is a translation whatever the anchor.
+    close(
+      must(scenePreview(b, null, [300, 175], [340, 160], false, false, pivot)),
+      [1, 0, 0, 1, 40, -15],
+      'move',
+    );
+  });
 });
 
 describe('the Drawing view preview (SI-141)', () => {

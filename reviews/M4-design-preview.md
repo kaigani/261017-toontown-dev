@@ -54,7 +54,10 @@ The preview is exact where the command's result is the same view-pixel affine:
   and the view mapping is affine. A painted zone the kernel re-derives from moved strokes (02 §3.12) is not a selected
   object: it stays where it was until the commit;
 - a Camera-view move of nodes at one depth;
-- a Camera-view scale, rotation or skew of one node whose plane faces the camera, about the same point.
+- a Camera-view scale, rotation or skew of one node whose plane faces the camera, about the same point. The kernel takes a handle's factor, angle or
+  shear from the union box and applies it to the node about its own pivot (SI-150), so with one node selected the
+  window re-anchors the box rule's affine at that node's pivot (`reanchor` in `preview.ts`; C4.3b: the first build
+  scaled about the opposite corner and was 16 view pixels off for a centred pivot, found by the e2e's PV2 row).
 
 Elsewhere it approximates the result: several nodes at different depths or about different pivots, and planes turned
 out of the image plane. There, the committed state replaces the preview when it is drawn. The preview is kept until

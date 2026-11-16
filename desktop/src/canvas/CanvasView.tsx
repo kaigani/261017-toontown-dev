@@ -775,7 +775,9 @@ export function CanvasView({
       const skew = tool === 'transform' && press.alternate;
       const p0 = scene.overlays.pivots[0];
       const pivot = tool === 'transform' && p0 ? apply(v, p0[0], p0[1]) : null;
-      return scenePreview(box, pivot, press.p, now, press.constrain, skew);
+      // One selected node: the preview turns, scales and skews about its pivot, as the commit does (SI-150).
+      const anchor = scene.overlays.pivots.length === 1 && p0 ? apply(v, p0[0], p0[1]) : null;
+      return scenePreview(box, pivot, press.p, now, press.constrain, skew, anchor);
     };
     const onMove = (e: PointerEvent) => {
       if (!collector.active) {

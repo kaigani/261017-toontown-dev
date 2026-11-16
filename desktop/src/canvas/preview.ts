@@ -106,6 +106,13 @@ export function sceneHandleAt(b: Box, pivot: Pt | null, p: Pt): Handle | null {
  * the Transform tool's temporary Skew (SI-151). Null when the drag changes no occurrence (a rubber band, a pivot drag,
  * the Skew tool off a side).
  */
+/** The same linear map, with its fixed point moved to `a`: the kernel takes a handle's factor, angle or shear from the
+ *  box (SI-150) and applies it to a node about the node's own pivot. */
+export function reanchor(m: Affine, a: Pt): Affine {
+  const [p, q, r, s] = m;
+  return [p, q, r, s, a[0] - (p * a[0] + r * a[1]), a[1] - (q * a[0] + s * a[1])];
+}
+
 export function scenePreview(
   b: Box,
   pivot: Pt | null,
@@ -113,6 +120,21 @@ export function scenePreview(
   pn: Pt,
   constrain: boolean,
   skewTool = false,
+  anchor: Pt | null = null,
+): Affine | null {
+  const m = sceneAffine(b, pivot, p0, pn, constrain, skewTool);
+  // One node: its scale, rotation or skew is applied about its pivot, so the preview is exact (preview note §4).
+  // Several nodes turn about their own pivots: the preview about the box approximates them.
+  return m && anchor && !(m[0] === 1 && m[1] === 0 && m[2] === 0 && m[3] === 1) ? reanchor(m, anchor) : m;
+}
+
+function sceneAffine(
+  b: Box,
+  pivot: Pt | null,
+  p0: Pt,
+  pn: Pt,
+  constrain: boolean,
+  skewTool: boolean,
 ): Affine | null {
   const h = sceneHandleAt(b, skewTool ? null : pivot, p0);
   if (!h) return null;
