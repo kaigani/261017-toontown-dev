@@ -33,6 +33,11 @@ export class CanvasMetrics {
   /** Frame intervals while a gesture is in progress (the plan's "during a gesture"). */
   readonly gestureFrames: number[] = [];
   readonly work: number[] = [];
+  /** The work of each frame drawn while a gesture is in progress (C43B-R1S-08: the plan's per-frame budget during a
+   *  drag is measured on these frames only, not on idle frames). */
+  readonly gestureWork: number[] = [];
+  /** The work of each frame drawn with no gesture in progress (the idle measurement's own frames). */
+  readonly idleWork: number[] = [];
   readonly ink: number[] = [];
   readonly commit: number[] = [];
   /** Each commit's parts: release to the commit's answer, the answer to the frame drawing it. */
@@ -49,6 +54,7 @@ export class CanvasMetrics {
     if (this.last !== null) ring(inGesture ? this.gestureFrames : this.frames, now - this.last, 300);
     this.last = now;
     ring(this.work, workMs, 300);
+    ring(inGesture ? this.gestureWork : this.idleWork, workMs, 300);
   }
 
   /** A pointer sample arrived at `t` (its event's timeStamp). */
@@ -100,6 +106,8 @@ export class CanvasMetrics {
     frameMs: Stat;
     gestureFrameMs: Stat;
     workMs: Stat;
+    gestureWorkMs: Stat;
+    idleWorkMs: Stat;
     inkMs: Stat;
     commitMs: Stat;
     sceneMs: Stat;
@@ -107,6 +115,8 @@ export class CanvasMetrics {
     /** The raw intervals of the last frames, idle and in a gesture (ruling D-33: the share of long intervals). */
     frameIntervals: number[];
     gestureIntervals: number[];
+    /** The raw work of the last frames drawn during a gesture (C43B-R1S-08). */
+    gestureWork: number[];
     commitParts: CanvasMetrics['commitParts'];
     loads: CanvasMetrics['loads'];
   } {
@@ -114,12 +124,15 @@ export class CanvasMetrics {
       frameMs: stat(this.frames),
       gestureFrameMs: stat(this.gestureFrames),
       workMs: stat(this.work),
+      gestureWorkMs: stat(this.gestureWork),
+      idleWorkMs: stat(this.idleWork),
       inkMs: stat(this.ink),
       commitMs: stat(this.commit),
       sceneMs: stat(this.scenes),
       commits: this.commit.map((v) => Math.round(v * 100) / 100),
       frameIntervals: this.frames.map((v) => Math.round(v * 100) / 100),
       gestureIntervals: this.gestureFrames.map((v) => Math.round(v * 100) / 100),
+      gestureWork: this.gestureWork.map((v) => Math.round(v * 100) / 100),
       commitParts: [...this.commitParts],
       loads: [...this.loads],
     };

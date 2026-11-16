@@ -20,7 +20,9 @@ copy of the same saved project, with the Camera view active:
 
 Each row must give, on all three engines, exactly (ruling D-4): the same commands with the same parameters, the same
 content (Bob's element for a scene tool, the current drawing for a drawing tool), and at most one undo step with the
-same label. Every row is undone on all three engines before the next. Receipts: `rows.json`, `transcript.json`,
+same label. C43B-R1S-07 (ruling D-23): each row also states what the spec expects, with its lines, before anything
+runs (`EXPECTED`: the command, its target and parameters, the keyed channels or a static edit, the undo label, or no
+undo step at all), and each of the three paths is compared with that statement, not only with the others. Every row is undone on all three engines before the next. Receipts: `rows.json`, `transcript.json`,
 `manifest.json` (kind `toontown.c43.gesture-equivalence`). Exit 0 when every row holds.
 """
 
@@ -96,6 +98,115 @@ def replay_agrees(window, replay) -> tuple:
 
 def normalised(cmds: list) -> list:
     return [{"commandId": c.get("commandId"), "params": c.get("params")} for c in cmds if c.get("commandId") not in TOOL_CHOICE]
+
+
+#: C43B-R1S-07: what the spec expects of each row, derived from the spec before the run (ruling D-23). `command`: the
+#: one document command the gesture sends (a ui command for a no-step row); `params`: values the parameters must have
+#: (`BOB` stands for Bob's node id); `defaults`: values a parameter may also omit (the spec's default); `keys`: parameters
+#: that must be present; `keyed`: the result's `keyedChannels` ([] = a static edit, None = not a scene key); `label`: the
+#: one undo step's label, or None for a row that makes no undo step.
+SCENE_LABELS = "reviews/M4-design-gestures.md lines 113-118 (SI-144: 05 §17 line 1135)"
+EXPECTED = {
+    "scene select: click": {
+        "spec": "05 §5.0 line 396 (selection sync); M4-design-gestures.md line 101: a click sends `edit.selection.set`; "
+                "selection is UI state, no undo step (05 §17)",
+        "command": "edit.selection.set", "params": {"ids": ["BOB"]}, "keys": [], "keyed": None, "label": None},
+    "scene select: move": {
+        "spec": "05 §5.1 lines 405-406 (static values, drag inside moves, no keys; 05 line 397: Select never keys); "
+                "M4-design-gestures.md line 103; " + SCENE_LABELS,
+        "command": "anim.transform.set", "params": {"target": "static", "nodeIds": ["BOB"]}, "keys": ["position"],
+        "keyed": [], "label": "Move Element"},
+    "scene transform: move": {
+        "spec": "05 §5.2 line 416 (drag inside translates, keys `position`), line 399 (keyed channels: only `position`); "
+                "M4-design-gestures.md line 103; " + SCENE_LABELS,
+        "command": "anim.transform.set", "params": {"target": "key", "nodeIds": ["BOB"], "frame": 1}, "keys": ["position"],
+        "keyed": ["position"], "label": "Move Element"},
+    "scene transform: corner scale": {
+        "spec": "05 §5.2 line 416 (drag a scale handle scales), line 399 (keys `scale.x`/`scale.y`); "
+                "M4-design-gestures.md line 104; " + SCENE_LABELS,
+        "command": "anim.transform.set", "params": {"target": "key", "nodeIds": ["BOB"], "frame": 1}, "keys": ["scale"],
+        "keyed": ["scale.x", "scale.y"], "label": "Scale Element"},
+    "scene transform: skew": {
+        "spec": "05 §5.2 line 418 (drag a skew handle skews), line 399 (keys `skew`); M4-design-gestures.md line 106; "
+                + SCENE_LABELS,
+        "command": "anim.transform.set", "params": {"target": "key", "nodeIds": ["BOB"], "frame": 1}, "keys": ["skew"],
+        "keyed": ["skew"], "label": "Skew Element"},
+    "scene transform: pivot": {
+        "spec": "05 §5.2 line 418 (drag the pivot moves the static pivot, no key); M4-design-gestures.md line 107; "
+                + SCENE_LABELS,
+        "command": "anim.transform.set", "params": {"target": "static", "nodeIds": ["BOB"]}, "keys": ["rotationPivot"],
+        "keyed": [], "label": "Move Pivot Element"},
+    "brush": {
+        "spec": "02 §13.3 line 1207 (`draw.stroke.add`, kind brush by default, 02 line 1318); 02 §7.2 line 495 (label)",
+        "command": "draw.stroke.add", "params": {}, "defaults": {"kind": "brush"}, "keys": ["points"], "keyed": None,
+        "label": "Brush Tool"},
+    "rectangle": {
+        "spec": "02 §13.3 line 1210 (`draw.rectangle.add {from, to}`); 02 line 513 (label)",
+        "command": "draw.rectangle.add", "params": {}, "keys": ["from", "to"], "keyed": None, "label": "Rectangle Tool"},
+    "ellipse": {
+        "spec": "02 §13.3 line 1211 (`draw.ellipse.add {from, to}`); 02 line 520 (label)",
+        "command": "draw.ellipse.add", "params": {}, "keys": ["from", "to"], "keyed": None, "label": "Ellipse Tool"},
+    "line": {
+        "spec": "02 §13.3 line 1212 (`draw.line.add {from, to}`); 02 line 543 (label)",
+        "command": "draw.line.add", "params": {}, "keys": ["from", "to"], "keyed": None, "label": "Line Tool"},
+    "eraser": {
+        "spec": "02 §13.3 line 1220 (`draw.erase.apply {path}`); 02 line 639 (label)",
+        "command": "draw.erase.apply", "params": {}, "keys": ["path"], "keyed": None, "label": "Eraser Tool"},
+    "cutter": {
+        "spec": "02 §13.3 line 1221 (`draw.cut.apply {polygon}`); 02 line 647 (label)",
+        "command": "draw.cut.apply", "params": {}, "keys": ["polygon"], "keyed": None, "label": "Cutter Tool"},
+    "paint": {
+        "spec": "02 §13.3 line 1214 (a click: `colour.paint.apply {points}`); 03 §8.1 line 589 (label \"Paint\")",
+        "command": "colour.paint.apply", "params": {}, "keys": ["points"], "keyed": None, "label": "Paint"},
+    "select (drawing)": {
+        "spec": "02 §7.1 line 427 (a drag on empty space is a marquee selection); 02 §13.3 line 1223 "
+                "(`draw.selection.set {by: rect}`); a ui command, no undo step (02 line 1329)",
+        "command": "draw.selection.set", "params": {"by": "rect"}, "keys": ["rect"], "keyed": None, "label": None},
+}
+
+
+def spec_problems(expect: dict, path: str, cmds: list, keyed, labels: list, bob: str) -> list:
+    """What one path did against the spec's statement for its row: an empty list when it agrees."""
+    out = []
+    sub = lambda v: [bob if x == "BOB" else x for x in v] if isinstance(v, list) else v  # noqa: E731
+    if len(cmds) != 1:
+        out.append(f"{path}: {len(cmds)} commands, the spec states one ({expect['command']})")
+    if cmds:
+        c = cmds[0]
+        params = c.get("params") or {}
+        if c.get("commandId") != expect["command"]:
+            out.append(f"{path}: command {c.get('commandId')}, the spec states {expect['command']}")
+        for k, v in expect.get("params", {}).items():
+            if params.get(k) != sub(v):
+                out.append(f"{path}: parameter {k} = {params.get(k)!r}, the spec states {sub(v)!r}")
+        for k, v in expect.get("defaults", {}).items():
+            if k in params and params[k] != v:
+                out.append(f"{path}: parameter {k} = {params[k]!r}, the spec states {v!r} (its default)")
+        for k in expect.get("keys", []):
+            if k not in params:
+                out.append(f"{path}: parameter {k} missing")
+        if expect["command"] == "anim.transform.set" and expect["keys"] == ["scale"]:
+            if set((params.get("scale") or {}).keys()) != {"x", "y"}:
+                out.append(f"{path}: a corner scale sets x and y, got {params.get('scale')!r}")
+    if expect["keyed"] is not None:
+        if keyed is None:
+            out.append(f"{path}: no keyedChannels reported")
+        elif sorted(keyed) != sorted(expect["keyed"]):
+            out.append(f"{path}: keyed {sorted(keyed)}, the spec states {sorted(expect['keyed'])}")
+    want = [] if expect["label"] is None else [expect["label"]]
+    if labels != want:
+        out.append(f"{path}: undo steps {labels}, the spec states {want}")
+    return out
+
+
+def keyed_of(entry) -> list | None:
+    """The `keyedChannels` of a command's answer (an envelope, or a command record carrying one), when reported."""
+    if not isinstance(entry, dict):
+        return None
+    for res in (entry.get("result"), (entry.get("envelope") or {}).get("result")):
+        if isinstance(res, dict) and isinstance(res.get("keyedChannels"), list):
+            return res["keyedChannels"]
+    return None
 
 
 async def camera_state(engine: Engine) -> dict:
@@ -197,6 +308,8 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
         ("paint", "drawing", "paint", du((0, 0), (0, 0)), False),
         ("select (drawing)", "drawing", "select", du((-130, 100), (0, 0), (130, -100)), False),
     ]
+    missing = [name for name, *_ in rows if name not in EXPECTED]
+    run.check(not missing, "C43B-R1S-07: every row states the spec's expectation before it runs", missing)
     results = []
     only = {x for x in os.environ.get("C43_EQUIV_ROWS", "").split(",") if x}
     for name, family, tool, points, selected in rows:
@@ -299,6 +412,28 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
                     "replayExact": cmds_exact and content_exact, "replayLargestDifference": max(cmds_diff or 0.0, content_diff or 0.0)})
         if not same_content:
             row["contents"] = contents
+        # C43B-R1S-07: each path against the spec's statement for the row (the window's commands and answers, engine 2's
+        # replay, engine 3's direct commands), not only against each other.
+        expect = EXPECTED.get(name) or {}
+        raw_window = [c for c in rec.get("commands") or [] if c.get("commandId") not in TOOL_CHOICE]
+        raw_h2 = [c for c in cmds2 if c.get("commandId") not in TOOL_CHOICE]
+        direct_kept = [d for c, d in zip(rec.get("commands") or [], direct) if c.get("commandId") not in TOOL_CHOICE]
+        keyed = [keyed_of(raw_window[0]) if raw_window else None, keyed_of(raw_h2[0]) if raw_h2 else None,
+                 keyed_of(direct_kept[0]) if direct_kept else None]
+        if expect.get("keyed") is not None and keyed[0] is None:
+            # The window's record may carry commands without their answers: its answer is engine 3's, which received
+            # exactly the window's commands on the same state (asserted below with the content).
+            keyed[0] = keyed[2]
+        spec_bad = []
+        if expect:
+            for path, cmds, k, lab in (("window", win_cmds, keyed[0], labels[0]), ("engine2", h2_cmds, keyed[1], labels[1]),
+                                       ("engine3", win_cmds, keyed[2], labels[2])):
+                spec_bad += spec_problems(expect, path, cmds, k, lab, ids["Bob"])
+        else:
+            spec_bad.append("the row states no expectation")
+        row.update({"expected": expect, "keyedChannels": keyed, "specProblems": spec_bad, "specVerdict": "PASS" if not spec_bad else "FAIL"})
+        run.check(not spec_bad, f"three-way {name} ({how}): each path does what the spec states ({expect.get('spec')})",
+                  {"expected": expect, "problems": spec_bad, "labels": labels, "keyedChannels": keyed})
         run.check(same_cmds and same_content and same_labels and statuses == ["ok", "ok", "ok"] and len(win_cmds) >= 1,
                   f"three-way {name} ({how}): the window, the recorded samples replayed headless and the produced commands "
                   "sent directly give the same commands, content and undo step",

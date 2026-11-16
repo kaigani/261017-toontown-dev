@@ -31,6 +31,23 @@ describe('canvas metrics', () => {
     expect(m.gestureFrames).toEqual([24, 16]);
   });
 
+  it('the work of frames drawn during a gesture is kept apart from idle work (C43B-R1S-08)', () => {
+    const m = new CanvasMetrics();
+    m.frame(0, 1);
+    m.frame(16, 2);
+    m.frame(32, 7, true);
+    m.frame(48, 9, true);
+    m.frame(64, 3);
+    expect(m.gestureWork).toEqual([7, 9]);
+    expect(m.idleWork).toEqual([1, 2, 3]);
+    const s = m.snapshot();
+    expect(s.gestureWorkMs).toEqual({ n: 2, p50: 7, p95: 9, max: 9 });
+    expect(s.idleWorkMs.n).toBe(3);
+    expect(s.gestureWork).toEqual([7, 9]);
+    // Every frame's work is still in the overall figure.
+    expect(s.workMs.n).toBe(5);
+  });
+
   it('input-to-ink runs from the oldest undrawn sample to the frame that draws it', () => {
     const m = new CanvasMetrics();
     m.sample(100);

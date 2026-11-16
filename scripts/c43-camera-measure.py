@@ -26,6 +26,12 @@ of intervals longer than twice the control's median, idle and during the drags, 
 1,000-element scene's release-to-committed is recorded);
 `--bounds ci` loose sanity bounds only (D-5: CI runners have no GPU). The receipt is `measurements.json` (kind
 `toontown.c43.camera-measure`) with every number, the bounds and the machine.
+
+C43B-R1S-08: the work per frame during the drags is that of the frames drawn while a gesture was in progress
+(`gestureWorkMs`), the idle work that of the frames with none (`idleWorkMs`); the idle phase lasts until the canvas's
+ring holds 300 idle frames of this scene. An incomplete measurement fails (scripts/c43_measure_assess.py, tested by
+scripts/test_c43_measure_assess.py): the requested back end with no fallback, 1,002 drawings resident in the large
+scene, every drag committed, and full rings of idle and drag frames and of drag feedback samples.
 """
 
 from __future__ import annotations
@@ -55,24 +61,23 @@ def _load(name: str, file: str):
 measure42 = _load("c42measure", "c42-canvas-measure.py")
 e6 = _load("c43e6", "c43-e6-coexistence.py")
 cam = _load("c43camera", "c43-camera-e2e.py")
+assess_mod = _load("c43assess", "c43_measure_assess.py")
 e2e, c42 = e6.e2e, e6.c42
 
 BOUNDS = {
-    "workstation": {"frameMs": 17.5, "dragFrameMs": 17.5, "feedbackMs": 16.7, "commitMs": 50.0},
-    "ci": {"frameMs": 1000.0, "dragFrameMs": 1000.0, "feedbackMs": 1000.0, "commitMs": 5000.0},
+    "workstation": {"frameMs": 17.5, "dragFrameMs": 17.5, "feedbackMs": 16.7, "commitMs": 50.0, "minSamples": 30},
+    "ci": {"frameMs": 1000.0, "dragFrameMs": 1000.0, "feedbackMs": 1000.0, "commitMs": 5000.0, "minSamples": 1},
 }
 
 
-def p95(values: list) -> float | None:
-    s = sorted(values)
-    return s[max(0, -(-len(s) * 95 // 100) - 1)] if s else None
+p95 = assess_mod.p95
 
 
 async def metrics(session) -> dict:
     return (await cam.canvas_summary(session)).get("metrics") or {}
 
 
-async def scene_measure(session, run, label: str, element: str, drags: int, os_input: bool) -> dict:
+async def scene_measure(session, run, label: str, element: str, drags: int, os_input: bool, control_ms: float | None) -> dict:
     """Idle frames, then `drags` scene drags of `element` (selected) with the Select tool; each drag undone."""
     rc = e2e.run_cmd
     await rc(session, "view.active.set", {"viewId": "cameraView"})
@@ -80,9 +85,10 @@ async def scene_measure(session, run, label: str, element: str, drags: int, os_i
     await rc(session, "app.context.set", {"elementId": element, "frame": 1})
     await rc(session, "edit.selection.set", {"context": "staging", "ids": [element]})
     await rc(session, "anim.tool.set", {"tool": "select"})
-    await asyncio.sleep(6.0)
+    # Long enough for the ring to hold only this scene's idle frames: 300 at the control's cadence, with a margin.
+    await asyncio.sleep(max(6.0, 1.3 * assess_mod.FULL * (control_ms or 16.7) / 1000.0))
     idle = await metrics(session)
-    out: dict = {"idle": idle.get("frameMs"), "idleWork": idle.get("workMs"), "idleIntervals": idle.get("frameIntervals") or []}
+    out: dict = {"idle": idle.get("frameMs"), "idleWork": idle.get("idleWorkMs"), "idleIntervals": idle.get("frameIntervals") or []}
     place = await e6.locate_view(session, rc, "cameraView") if os_input else None
     out["input"] = "os" if place else "agent"
     committed = 0
@@ -118,7 +124,7 @@ async def scene_measure(session, run, label: str, element: str, drags: int, os_i
     # The canvas keeps its last commits in a ring: this scene's are its last ones, one per drag that committed.
     all_commits = m.get("commits") or []
     mine = all_commits[-committed:] if committed else []
-    out.update({"dragFrames": m.get("gestureFrameMs"), "dragWork": m.get("workMs"), "dragIntervals": m.get("gestureIntervals") or [], "feedback": m.get("inkMs"), "feedbackBefore": feedback_before,
+    out.update({"dragFrames": m.get("gestureFrameMs"), "dragWork": m.get("gestureWorkMs"), "dragIntervals": m.get("gestureIntervals") or [], "feedback": m.get("inkMs"), "feedbackBefore": feedback_before,
                 "commits": {"n": len(mine), "p95": p95(mine), "max": max(mine) if mine else None, "samples": mine},
                 "commitParts": (m.get("commitParts") or [])[-5:], "drags": drags})
     return out
@@ -150,8 +156,7 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict, drags:
             await asyncio.sleep(0.5)
         record["control"] = control
         record["displayRefreshHz"] = refresh_rate()
-        run.check((control.get("frameMs") or {}).get("n", 0) >= 300 and control.get("startScreen") is True,
-                  "D-33 control: 300 frames of the webview's cadence on the start screen", control)
+        # The control's completeness is assessed with the rest (assess_mod.assess).
         await rc(session, "project.create", {"name": "CameraMeasure", "onUnsaved": "fail"})
         found = (await rc(session, "doc.object.find", {"type": "swatch", "name": "Colour 2"})).get("result") or {}
         items = found.get("items") or found.get("matches") or []
@@ -175,7 +180,8 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict, drags:
                 break
             await asyncio.sleep(0.5)
         record["backend"], record["fallback"] = st.get("backend"), st.get("fallback")
-        record["sample"] = await scene_measure(session, run, "the sample scene", ids["Bob"], drags, os_input)
+        control_ms = (control.get("frameMs") or {}).get("p50")
+        record["sample"] = await scene_measure(session, run, "the sample scene", ids["Bob"], drags, os_input, control_ms)
 
         # The 1,000-element scene (E-C1's fixture), built in batches of 100 elements.
         for g in range(10):
@@ -194,43 +200,13 @@ async def measure(url, token, run, out: Path, bounds: dict, record: dict, drags:
         start = time.monotonic()
         while time.monotonic() - start < 180:
             st = await cam.canvas_summary(session)
-            if len(st.get("drawings") or []) >= 1000:
+            if len(st.get("drawings") or []) >= assess_mod.RESIDENT_1K:
                 break
             await asyncio.sleep(0.5)
         record["groups1k"] = {"resident": len(st.get("drawings") or [])}
-        record["groups1k"].update(await scene_measure(session, run, "the 1,000-element scene", ids["Bob"], drags, os_input))
-
-        median = (control.get("frameMs") or {}).get("p50")
-        capped = median is not None and median > 17.0
-        record["assessment"] = "D-33 external cap: work p95 <= 8 ms, <= 1 % of intervals > 2 x the control median" if capped else "plan §6: frame time p95 <= 17.5 ms"
-        for scene in ("sample", "groups1k"):
-            r = record[scene]
-            if capped:
-                long = 2 * median
-                for phase, intervals, work in (("idle", r.get("idleIntervals") or [], r.get("idleWork") or {}),
-                                               ("during scene drags", r.get("dragIntervals") or [], r.get("dragWork") or {})):
-                    share = sum(1 for v in intervals if v > long) / len(intervals) if intervals else None
-                    r.setdefault("d33", {})[phase] = {"workP95": work.get("p95"), "longShare": share, "intervals": len(intervals), "longMs": long}
-                    run.check(work.get("p95") is not None and work["p95"] <= 8.0, f"{scene}: work per frame p95 {phase} <= 8 ms (D-33)", work)
-                    run.check(share is not None and share <= 0.01,
-                              f"{scene}: at most 1 % of frame intervals {phase} longer than {long:.1f} ms (twice the control median; D-33)",
-                              {"share": share, "intervals": len(intervals)})
-                checks = []
-            else:
-                checks = [
-                    ("frame time p95, idle", (r.get("idle") or {}).get("p95"), bounds["frameMs"]),
-                    ("frame time p95, during scene drags", (r.get("dragFrames") or {}).get("p95"), bounds["dragFrameMs"]),
-                ]
-            # Plan §6 names the 1,000-element scene for the frame time; release-to-committed is the sample scene's
-            # bound, and the large scene's figure is recorded with its parts (the kernel's answer, the redraw).
-            if scene == "sample":
-                checks.append(("release-to-committed p95 of a scene drag", (r.get("commits") or {}).get("p95"), bounds["commitMs"]))
-            if r.get("input") == "os":
-                checks.append(("drag feedback p95 (a sample to the frame drawing the preview)", (r.get("feedback") or {}).get("p95"), bounds["feedbackMs"]))
-            for name, value, bound in checks:
-                run.check(value is not None and value <= bound, f"{scene}: {name} <= {bound} ms", value)
-            run.check((r.get("commits") or {}).get("n", 0) >= min(30, r.get("drags", 0)),
-                      f"{scene}: at least 30 release-to-committed samples", (r.get("commits") or {}).get("n"))
+        record["groups1k"].update(await scene_measure(session, run, "the 1,000-element scene", ids["Bob"], drags, os_input, control_ms))
+        for ok, name, detail in assess_mod.assess(record, bounds, drags):
+            run.check(ok, name, detail)
 
 
 def refresh_rate() -> list | None:
