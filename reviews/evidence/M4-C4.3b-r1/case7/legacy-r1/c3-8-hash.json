@@ -1,0 +1,14 @@
+{
+  "reported": "ce072664c71a1ea737917ec71a41c80a7002633236d29856b34cb2aaaf7b09a7",
+  "actual": "ce072664c71a1ea737917ec71a41c80a7002633236d29856b34cb2aaaf7b09a7",
+  "meta": {
+    "width": 901,
+    "height": 635,
+    "sha256": "ce072664c71a1ea737917ec71a41c80a7002633236d29856b34cb2aaaf7b09a7",
+    "target": "drawingView",
+    "viewId": "drawingView",
+    "source": "gui",
+    "drawingId": null,
+    "note": "what the user sees: the window's own pixels, captured by the host (D-6)"
+  }
+}

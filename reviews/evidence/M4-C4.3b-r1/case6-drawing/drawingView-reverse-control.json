@@ -1,0 +1,222 @@
+{
+  "times": {
+    "press": 419811.0917359,
+    "release": 419811.6925765
+  },
+  "before": 22,
+  "history": {
+    "entries": [
+      {
+        "index": 1,
+        "stepId": "u-1",
+        "label": "New Elements",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:09:57.438Z",
+        "objectCount": 4
+      },
+      {
+        "index": 2,
+        "stepId": "u-2",
+        "label": "Create Drawing",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:09:57.441Z",
+        "objectCount": 3
+      },
+      {
+        "index": 3,
+        "stepId": "u-3",
+        "label": "Rectangle Tool",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:09:57.448Z",
+        "objectCount": 3
+      },
+      {
+        "index": 4,
+        "stepId": "u-4",
+        "label": "Paint",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:09:57.453Z",
+        "objectCount": 2
+      },
+      {
+        "index": 5,
+        "stepId": "u-5",
+        "label": "Brush Tool",
+        "source": "user",
+        "time": "2026-11-16T04:10:00.439Z",
+        "objectCount": 3
+      },
+      {
+        "index": 6,
+        "stepId": "u-6",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:10:00.450Z",
+        "objectCount": 1
+      },
+      {
+        "index": 7,
+        "stepId": "u-7",
+        "label": "Brush Tool",
+        "source": "user",
+        "time": "2026-11-16T04:10:02.833Z",
+        "objectCount": 3
+      },
+      {
+        "index": 8,
+        "stepId": "u-8",
+        "label": "Brush Tool",
+        "source": "user",
+        "time": "2026-11-16T04:10:17.761Z",
+        "objectCount": 3
+      },
+      {
+        "index": 9,
+        "stepId": "u-9",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:10:23.593Z",
+        "objectCount": 1
+      },
+      {
+        "index": 10,
+        "stepId": "u-10",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:10:28.942Z",
+        "objectCount": 1
+      },
+      {
+        "index": 11,
+        "stepId": "u-11",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:10:28.952Z",
+        "objectCount": 1
+      },
+      {
+        "index": 12,
+        "stepId": "u-12",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:10:28.953Z",
+        "objectCount": 1
+      },
+      {
+        "index": 13,
+        "stepId": "u-13",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:10:32.256Z",
+        "objectCount": 1
+      },
+      {
+        "index": 14,
+        "stepId": "u-14",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:10:39.657Z",
+        "objectCount": 1
+      },
+      {
+        "index": 15,
+        "stepId": "u-17",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:10:44.848Z",
+        "objectCount": 1
+      },
+      {
+        "index": 16,
+        "stepId": "u-18",
+        "label": "Brush Tool",
+        "source": "user",
+        "time": "2026-11-16T04:10:50.213Z",
+        "objectCount": 3
+      },
+      {
+        "index": 17,
+        "stepId": "u-19",
+        "label": "Brush Tool",
+        "source": "user",
+        "time": "2026-11-16T04:10:55.568Z",
+        "objectCount": 3
+      },
+      {
+        "index": 18,
+        "stepId": "u-20",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:10:55.591Z",
+        "objectCount": 1
+      },
+      {
+        "index": 19,
+        "stepId": "u-21",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:10:55.593Z",
+        "objectCount": 1
+      },
+      {
+        "index": 20,
+        "stepId": "u-22",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:10:58.935Z",
+        "objectCount": 1
+      },
+      {
+        "index": 21,
+        "stepId": "u-23",
+        "label": "Brush Tool",
+        "source": "user",
+        "time": "2026-11-16T04:11:06.375Z",
+        "objectCount": 3
+      },
+      {
+        "index": 22,
+        "stepId": "u-24",
+        "label": "Brush Tool",
+        "source": "agent",
+        "agentSessionId": "s1-abb5cc",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:11:06.419Z",
+        "objectCount": 3
+      },
+      {
+        "index": 23,
+        "stepId": "u-27",
+        "label": "Brush Tool",
+        "source": "user",
+        "time": "2026-11-16T04:11:11.640Z",
+        "objectCount": 3
+      }
+    ],
+    "position": 23,
+    "cleanPosition": 0,
+    "total": 23
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "backend": "webgl2",
+  "generation": 0,
+  "drawings": [
+    {
+      "id": "dr_01K7JJN800EER30ZN2YE2DMWDQ",
+      "rev": 91,
+      "bucket": 0
+    }
+  ],
+  "failures": [],
+  "gesture": {
+    "status": "ok"
+  },
+  "selection": {
+    "objects": 0,
+    "handles": 0,
+    "points": 0,
+    "pivot": false
+  },
+  "viewType": "drawing",
+  "drawn": 1,
+  "residentDrawings": 1,
+  "residentBytes": 34403512,
+  "lastError": null,
+  "lastGesture": {
+    "origin": "user",
+    "tool": "polyline",
+    "view": "drawingView",
+    "pointerType": "mouse",
+    "drawingToView": [
+      1,
+      0,
+      0,
+      -1,
+      450.5,
+      317.5
+    ],
+    "events": [
+      {
+        "type": "down",
+        "x": 100,
+        "y": 260,
+        "modifiers": [],
+        "dt": 0,
+        "pressure": 1,
+        "button": "left"
+      },
+      {
+        "type": "move",
+        "x": 100,
+        "y": 260,
+        "modifiers": [],
+        "dt": 32,
+        "pressure": 1
+      },
+      {
+        "type": "up",
+        "x": 100,
+        "y": 260,
+        "modifiers": [],
+        "dt": 49,
+        "pressure": 1
+      },
+      {
+        "type": "down",
+        "x": 200,
+        "y": 240,
+        "modifiers": [],
+        "dt": 353,
+        "pressure": 1,
+        "button": "left"
+      },
+      {
+        "type": "move",
+        "x": 200,
+        "y": 240,
+        "modifiers": [],
+        "dt": 32,
+        "pressure": 1
+      },
+      {
+        "type": "up",
+        "x": 200,
+        "y": 240,
+        "modifiers": [],
+        "dt": 50,
+        "pressure": 1
+      },
+      {
+        "type": "down",
+        "x": 130,
+        "y": 300,
+        "modifiers": [],
+        "dt": 966,
+        "pressure": 1,
+        "button": "left"
+      },
+      {
+        "type": "move",
+        "x": 130,
+        "y": 300,
+        "modifiers": [],
+        "dt": 33,
+        "pressure": 1
+      },
+      {
+        "type": "up",
+        "x": 130,
+        "y": 300,
+        "modifiers": [],
+        "dt": 47,
+        "pressure": 1
+      }
+    ],
+    "eventCount": 9,
+    "status": "ok",
+    "code": null,
+    "commands": [
+      {
+        "commandId": "draw.polyline.add",
+        "params": {
+          "points": [
+            {
+              "x": -350.5,
+              "y": 57.5
+            },
+            {
+              "x": -250.5,
+              "y": 77.5
+            },
+            {
+              "x": -320.5,
+              "y": 17.5
+            }
+          ],
+          "closed": false,
+          "snap": true,
+          "snapRadius": 8,
+          "colourId": "col_01M7H9E7C0D3GE0ZX3NS0E612T",
+          "thickness": 8,
+          "penId": "pen_01M7H9E7C123SNJCRC0FHRB57N",
+          "layer": "auto",
+          "symmetry": true
+        }
+      }
+    ]
+  }
+}

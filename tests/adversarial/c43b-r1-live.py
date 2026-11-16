@@ -430,15 +430,487 @@ async def rapid_drags(m,s,run,out,ids):
         run.check(ok,'PV1 consecutive drags preserve second preview and two steps '+str(i),row)
 
 
+def case8():
+    import inspect
+    os.environ['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS']='--remote-debugging-port=9223'
+    m=load('review_parity','scripts/c43-e6-coexistence.py')
+    body=inspect.getsource(m.session_run)
+    from mcp import types
+    async def review_roots(_ctx):
+        return types.ListRootsResult(roots=[types.Root(uri=(OUT/'case8').resolve().as_uri(),name='review temporary project')])
+    body=body.replace('e2e.ClientSession(streams[0], streams[1])','e2e.ClientSession(streams[0], streams[1], list_roots_callback=review_roots)')
+    m.review_roots=review_roots
+    body=body[:body.index('        own =')]+ '        await parity_window(session,run,out,bob,REVIEW_E6)\n'
+    m.parity_window=parity_window;m.REVIEW_E6=m
+    exec(compile(body,__file__,'exec'),m.__dict__)
+    main_body=inspect.getsource(m.main).replace('toontown.c43.e6','toontown.c43b.r1.parity')
+    exec(compile(main_body,__file__,'exec'),m.__dict__)
+    sys.argv=['parity',str(Path(sys.argv[1]).resolve()),str(OUT/'case8')]
+    sys.exit(m.main())
+
+async def parity_window(s,run,out,bob,m):
+    import asyncio,ctypes,urllib.request,websockets
+    from ctypes import wintypes
+    rc=m.e2e.run_cmd
+    setup_audit=[]
+    async def cmd(n,p=None):
+        env=await rc(s,n,p or {})
+        jid=(env.get('result') or {}).get('jobId') if isinstance(env.get('result'),dict) else None
+        if jid: env=await m.e2e.call(s,'job_wait',{'jobId':jid,'timeoutMs':60000})
+        setup_audit.append({'command':n,'params':p or {},'response':env})
+        run.save('setup-audit.json',setup_audit)
+        if env.get('status')!='ok': raise RuntimeError('parity setup/read '+n+': '+json.dumps(env)[:900])
+        return env.get('result') or {}
+    pages=json.load(urllib.request.urlopen('http://127.0.0.1:9223/json'))
+    page=next(p for p in pages if p['type']=='page' and '1420' in p['url'])
+    async with websockets.connect(page['webSocketDebuggerUrl'],max_size=30000000) as ws:
+        seq=0
+        pending={}
+        audit_tasks=set()
+        async def cdp(method,params):
+            nonlocal seq
+            seq+=1;ident=seq;future=asyncio.get_running_loop().create_future();pending[ident]=future
+            await ws.send(json.dumps({'id':ident,'method':method,'params':params}))
+            return await future
+        async def paused(event):
+            try:
+                frame=event['params']['callFrames'][0]['callFrameId']
+                await cdp('Debugger.evaluateOnCallFrame',{'callFrameId':frame,'expression':'window.reviewIPC.push({command:cmd,args:payload});true','returnByValue':True})
+            finally: await cdp('Debugger.resume',{})
+        async def pump():
+            async for message in ws:
+                r=json.loads(message)
+                if r.get('method')=='Debugger.paused':
+                    task=asyncio.create_task(paused(r));audit_tasks.add(task);task.add_done_callback(audit_tasks.discard)
+                elif r.get('id') in pending: pending.pop(r['id']).set_result(r)
+        receiver=asyncio.create_task(pump())
+        async def js(expr):
+            r=await cdp('Runtime.evaluate',{'expression':expr,'returnByValue':True,'awaitPromise':True})
+            if r.get('result',{}).get('exceptionDetails'): raise RuntimeError(r)
+            return r.get('result',{}).get('result',{}).get('value')
+        await js('window.reviewIPC=[];true')
+        await cdp('Debugger.enable',{})
+        function=await cdp('Runtime.evaluate',{'expression':'window.__TAURI_INTERNALS__.invoke'})
+        audited=['draw.flatten.apply','draw.arrange.apply','draw.flip.apply','draw.group.create','edit.cutSpecial','project.info.get','doc.validate','project.backup.list','project.backup.open','app.info.get','drawAid.grid.set','tool.symmetry.set','tool.active.set','edit.selectAll']
+        condition="cmd === 'dispatch_key' || (cmd === 'run_command' && "+json.dumps(audited)+".includes(JSON.parse(payload.json).command))"
+        breakpoint=await cdp('Debugger.setBreakpointOnFunctionCall',{'objectId':function['result']['result']['objectId'],'condition':condition})
+        await js("window.__TAURI_INTERNALS__.invoke('run_command',{json:JSON.stringify({command:'app.info.get',params:{}})}).then(()=>true)")
+        captured=await js('window.reviewIPC')
+        if not captured: raise RuntimeError('IPC capture self-test failed (read-only app.info.get, spec/01_application_shell.md:1060)')
+        u=ctypes.windll.user32;u.GetMenu.restype=wintypes.HMENU;u.GetSubMenu.restype=wintypes.HMENU
+        h=m._main_window(m.e2e.APP_PID['pid']);u.SetForegroundWindow(h)
+        native_trace=[]
+        phase='enabled'
+        def has_menu_command(value,command):
+            if isinstance(value,dict):
+                ref=value.get('command') or {}
+                if value.get('role')=='menuitem' and (value.get('commandId')==command or isinstance(ref,dict) and ref.get('commandId')==command): return True
+                return any(has_menu_command(v,command) for v in value.values())
+            return isinstance(value,list) and any(has_menu_command(v,command) for v in value)
+        def native_state(path):
+            handle=u.GetMenu(h)
+            for label in path:
+                found=None
+                for i in range(u.GetMenuItemCount(handle)):
+                    b=ctypes.create_unicode_buffer(256);u.GetMenuStringW(handle,i,b,256,0x400)
+                    if b.value.replace('&','').split('\t')[0].rstrip(chr(0x2026)+'.').strip()==label:found=i;break
+                if found is None:return {'missing':label}
+                flags=u.GetMenuState(handle,found,0x400)
+                state={'label':label,'flags':flags,'enabled':not bool(flags&3)}
+                handle=u.GetSubMenu(handle,found)
+            return state
+        async def click_screen(x,y):
+            u.SetCursorPos(int(x),int(y));await asyncio.sleep(.12);m._send_button(True);m._send_button(False);await asyncio.sleep(.35)
+        async def drawing_place():
+            value=await js("(()=>{let e=document.querySelector('[data-tt-id=\"drawingView.canvas\"] canvas');if(!e)return null;let r=e.getBoundingClientRect();return [r.x,r.y,r.width,r.height,window.devicePixelRatio]})()")
+            if not value or value[2]<=0 or value[3]<=0:raise RuntimeError('Drawing canvas is not visible')
+            return tuple(v*value[4] for v in value[:4])
+        async def menu(path):
+            handle=u.GetMenu(h)
+            for label in path:
+                found=None
+                for i in range(u.GetMenuItemCount(handle)):
+                    b=ctypes.create_unicode_buffer(256);u.GetMenuStringW(handle,i,b,256,0x400)
+                    if b.value.replace('&','').split('\t')[0].rstrip(chr(0x2026)+'.').strip()==label:
+                        found=i;break
+                if found is None: raise RuntimeError('native menu label absent: '+label)
+                rect=wintypes.RECT()
+                if not u.GetMenuItemRect(h,handle,found,ctypes.byref(rect)): raise RuntimeError('native menu rectangle absent: '+label)
+                await click_screen((rect.left+rect.right)/2,(rect.top+rect.bottom)/2)
+                native_trace.append({'label':label,'treeWhileOpen':await m.e2e.call(s,'inspect_ui',{'target':'window','depth':32})})
+                handle=u.GetSubMenu(handle,found)
+                if handle: run.shot('native-'+phase+'-'+name.lower().replace(' ','-')+'-'+label.lower().replace(' ','-'),m.e2e.APP_PID['pid'])
+        async def dom(command):
+            rect=await js("(()=>{let e=[...document.querySelectorAll('[data-tt-command]')].find(e=>e.getAttribute('data-tt-command')==="+json.dumps(command)+"&&e.getBoundingClientRect().width"+("&&e.title==='brush'" if command=='tool.active.set' else '')+");if(!e)return null;let r=e.getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2]})()")
+            if not rect: raise RuntimeError('rendered control absent: '+command)
+            visible=await js('(()=>{let e=document.elementFromPoint('+str(rect[0])+','+str(rect[1])+');return !!e&&!!e.closest(\'[data-tt-command="'+command+'"]\')})()')
+            if not visible:
+                for _ in range(100):
+                    m.c42.os_key(0x09);await asyncio.sleep(.03)
+                    focused=await js("document.activeElement?.getAttribute('data-tt-command')")
+                    if focused==command: break
+                if focused!=command: raise RuntimeError('control not reached with real Tab keys: '+command)
+                m.c42.os_key(0x20);await asyncio.sleep(.35)
+                return 'real Tab then Space'
+            p=wintypes.POINT(0,0);u.ClientToScreen(h,ctypes.byref(p));await click_screen(p.x+rect[0],p.y+rect[1])
+            return 'real OS click'
+        rows=[]
+        citations={}
+        for spec in ('01_application_shell.md','02_drawing.md','10_data_model_project_format.md'):
+            heading=''
+            for number,line in enumerate((ROOT/'spec'/spec).read_text(encoding='utf-8').splitlines(),1):
+                if line.startswith('#'): heading=line.lstrip('# ').strip()
+                if line.startswith('| `'):
+                    command=line.split('`')[1]
+                    citations[command]='spec/'+spec+' section '+heading+' line '+str(number)
+        actions=[('Flatten','draw.flatten.apply',['Drawing','Flatten']),('Arrange','draw.arrange.apply',['Drawing','Arrange','Send to Back']),('Flip','draw.flip.apply',['Drawing','Flip Horizontal']),('Group','draw.group.create',['Drawing','Group']),('Cut Special','edit.cutSpecial',['Edit','Cut Special']),('Project Info','project.info.get',['File','Project Info']),('Check Project','doc.validate',['File','Check Project']),('Open Backup','project.backup.open',['File','Open Backup']),('About','app.info.get',['Help','About Toontown']),('Grid','drawAid.grid.set',None),('Symmetry','tool.symmetry.set',None),('Brush','tool.active.set',None),('Select All','edit.selectAll','key'),('Brush gesture','draw.stroke.add','gesture')]
+        await cmd('workspace.select',{'name':'Drawing'});await cmd('view.active.set',{'viewId':'drawingView'})
+        await cmd('window.panel.set',{'panelId':'drawingView','visible':True,'focus':True})
+        work=tempfile.TemporaryDirectory(prefix='parity-project-',dir=out)
+        await cmd('prefs.set',{'values':{'files.backups.count':5}})
+        await cmd('project.saveAs',{'path':str(Path(work.name)/'Parity.animpkg')})
+        await cmd('draw.rectangle.add',{'from':{'x':-50,'y':-45},'to':{'x':35,'y':25},'layer':'new'})
+        await cmd('project.save')
+        for name,command,path in actions:
+            citation=citations[command]
+            row={'action':name,'expectedCommand':command,'spec':citation+'; D-25; D-30'}
+            start_check=len(run.transcript)
+            try:
+                native_trace.clear()
+                await cmd('app.context.set',{'elementId':bob,'frame':1})
+                await cmd('window.panel.set',{'panelId':'drawingView','visible':True,'focus':True})
+                await cmd('tool.active.set',{'toolId':'select'})
+                place=await drawing_place()
+                focus_times={}
+                await asyncio.to_thread(m.os_drag,m.e2e.APP_PID['pid'],[(place[0]+18,place[1]+18)]*2,.05,.05,focus_times)
+                await asyncio.sleep(.2)
+                row['focusInput']=focus_times
+                row['panelsBefore']=await cmd('window.panel.list')
+                added=await cmd('draw.rectangle.add',{'from':{'x':-90,'y':-65},'to':{'x':60,'y':40},'layer':'new'})
+                await cmd('draw.selection.set',{'by':'all'})
+                if name=='Cut Special':
+                    selected=await cmd('draw.selection.get')
+                    await cmd('edit.selection.set',{'context':'drawing','ids':selected['selectedIds']})
+                if name=='Arrange': await cmd('draw.selection.set',{'by':'ids','ids':added['strokeIds']})
+                if name=='Select All': await cmd('draw.selection.set',{'by':'none'})
+                if name=='Open Backup':
+                    await cmd('project.save')
+                    row['availableBackups']=await cmd('project.backup.list')
+                await js('window.reviewIPC=[]')
+                row['before']=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
+                row['historyBefore']=await cmd('edit.history.get',{'limit':1000})
+                row['beforeSelection']=await cmd('draw.selection.get')
+                state_selector={'Grid':'[data-tt-id="mainToolbar.drawAid.grid.set"]','Symmetry':'[data-tt-id="drawingView.symmetry"]','Brush':'[data-tt-id="drawingTools.brush"]'}.get(name)
+                if state_selector:row['pressedBefore']=await js('document.querySelector('+json.dumps(state_selector)+')?.getAttribute("aria-pressed")')
+                if name=='Grid': row['gridBefore']=await cmd('drawAid.state.get')
+                if path=='key':
+                    u.keybd_event(0x11,0,0,0);m.c42.os_key(0x41);u.keybd_event(0x11,0,2,0)
+                elif path=='undo':
+                    u.keybd_event(0x11,0,0,0);m.c42.os_key(0x5A);u.keybd_event(0x11,0,2,0)
+                elif path=='gesture':
+                    await cmd('tool.active.set',{'toolId':'brush'})
+                    place=await drawing_place()
+                    mapping=(await cmd('draw.viewMapping.get',{'view':'drawingView'}))['drawingToView']
+                    pts=[m.c42.apply(mapping,*p) for p in ((-60,10),(-20,35),(30,5))]
+                    times={};await asyncio.to_thread(m.os_drag,m.e2e.APP_PID['pid'],[(place[0]+x,place[1]+y) for x,y in pts],.5,.1,times)
+                    row['osTimes']=times
+                elif path: await menu(path)
+                else: row['input']=await dom(command)
+                if name=='Open Backup':
+                    await asyncio.sleep(.5)
+                    present=await js("!!document.querySelector('[data-tt-command=\"project.backup.open\"]')")
+                    row['backupOpenButtonPresent']=present
+                    run.shot('open-backup-dialog-with-valid-backups',m.e2e.APP_PID['pid'])
+                    run.check(bool(row['availableBackups']) and present,'D-25; spec/01_application_shell.md section 12.2 lines 1083-1084: nonempty backup list offers project.backup.open',{'available':row['availableBackups'],'buttonPresent':present})
+                    if present: await dom('project.backup.open')
+                await asyncio.sleep(.7)
+                row['ipc']=await js('window.reviewIPC');row['tree']=await m.e2e.tree(s)
+                row['nativeMenuTrace']=list(native_trace)
+                if isinstance(path,list):
+                    row['inspectExposesMenuItem']=any(has_menu_command(t['treeWhileOpen'],command) for t in native_trace[:-1])
+                    run.check(row['inspectExposesMenuItem'],'spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command '+command,row['inspectExposesMenuItem'])
+                row['after']=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
+                row['history']=await cmd('edit.history.get',{'limit':1000})
+                row['afterSelection']=await cmd('draw.selection.get')
+                if state_selector:
+                    row['pressedAfter']=await js('document.querySelector('+json.dumps(state_selector)+')?.getAttribute("aria-pressed")')
+                    if name!='Grid':run.check(row['pressedBefore']=='false' and row['pressedAfter']=='true','expected '+name+' changes its declared checked state; '+citation,{'before':row['pressedBefore'],'after':row['pressedAfter']})
+                if name=='Grid':
+                    row['gridAfter']=await cmd('drawAid.state.get')
+                    before_grid=row['gridBefore']['grid']['visible'];after_grid=row['gridAfter']['grid']['visible']
+                    run.check(after_grid!=before_grid,'D-25 Grid toolbar action toggles visibility; spec/02_drawing.md section 13.5 line 1388',{'before':before_grid,'after':after_grid})
+                    if after_grid==before_grid:
+                        row['directGridSet']=await cmd('drawAid.grid.set',{'visible':not before_grid})
+                        row['gridAfterDirect']=await cmd('drawAid.state.get')
+                        run.check(row['gridAfterDirect']['grid']['visible']!=before_grid,'second path: explicit Grid visible parameter changes state; 02:1388',row['gridAfterDirect'])
+                        await cmd('drawAid.grid.set',{'visible':before_grid})
+                if name=='Open Backup' and not row.get('backupOpenButtonPresent') and row['availableBackups']:
+                    m.c42.os_key(0x1B);await asyncio.sleep(.2)
+                    backup=row['availableBackups'][0]['backupId']
+                    row['directBackupOpen']=await rc(s,'project.backup.open',{'backupId':backup,'onUnsaved':'fail'})
+                    row['directBackupDocument']=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
+                    run.check(row['directBackupOpen'].get('status')=='ok','second path: valid backup opens through command, 01:1084',row['directBackupOpen'])
+                run.shot(name.lower().replace(' ','-'),m.e2e.APP_PID['pid'])
+                observed=[json.loads(e['args'].get('json','{}')).get('command') for e in row['ipc'] if e['command']=='run_command']
+                if path=='gesture':
+                    camera=load('parity_canvas','scripts/c43-camera-e2e.py')
+                    row['gesture']=await camera.canvas_summary(s,'drawingView')
+                    observed += [c['commandId'] for c in (row['gesture'].get('lastGesture') or {}).get('commands',[])]
+                row['observed']=observed
+                run.check(command in observed,'D-25 expected '+command+' from '+name+'; '+citation,observed)
+                values=[json.loads(e['args'].get('json','{}')) for e in row['ipc'] if e['command']=='run_command']
+                expected={'Arrange':{'to':'back'},'Flip':{'axis':'horizontal'},'Brush':{'toolId':'brush'},'Grid':{'visible':not row.get('gridBefore',{}).get('grid',{}).get('visible',False)},'Symmetry':{'mode':'mirror'}}.get(name,{})
+                row['expectedParams']=expected
+                matching=[v for v in values if v.get('command')==command and all(v.get('params',{}).get(k)==x for k,x in expected.items())]
+                if path=='gesture': matching=(row['gesture'].get('lastGesture') or {}).get('commands',[])
+                run.check(bool(matching),'D-23 expected parameters '+json.dumps(expected)+' for '+name+'; '+citation,values)
+                if path=='gesture':
+                    strokes=[c for c in matching if c.get('commandId')=='draw.stroke.add']
+                    run.check(bool(strokes) and strokes[0].get('params',{}).get('kind')=='brush','02:1207,1318 Brush gesture sends kind brush',strokes)
+                if name in ('Flatten','Arrange','Flip','Group','Cut Special','Brush gesture','Open Backup'):
+                    row['documentChanged']=canonical(row['before'])!=canonical(row['after'])
+                    run.check(row['documentChanged'],'document effect '+name,row['documentChanged'])
+                if name=='Select All':
+                    run.check(not row['beforeSelection'].get('bounds') and bool(row['afterSelection'].get('bounds')),'02:1329 Select All selects previously empty selection',row['afterSelection'])
+                if name in ('Project Info','Check Project','About'):
+                    run.check(canonical(row['before'])==canonical(row['after']),'query leaves document unchanged; '+citation,None)
+                    root=(row['tree'].get('result') or {}).get('root') or {}
+                    ident={'Project Info':'projectInfo','Check Project':'checkProject','About':'about'}[name]
+                    run.check(m.e2e.by_id(root,ident) is not None,'expected '+name+' dialog '+ident+'; '+citation,None)
+                if name in ('Grid','Symmetry','Brush','Select All'):
+                    run.check(canonical(row['before'])==canonical(row['after']) and row['historyBefore']['position']==row['history']['position'],'session UI effect makes no document undo step; '+citation,None)
+                label={'Flatten':'Flatten Drawing','Arrange':'Send to Back','Flip':'Flip Horizontal','Group':'Group Selection','Cut Special':'Cut Special','Brush gesture':'Brush Tool'}.get(name)
+                if label:
+                    got=row['history']['entries'][-1]['label'];row['expectedLabel']=label
+                    run.check(got==label,'D-23 expected undo label '+label+'; '+citation,got)
+                row['verdict']='PASS' if command in observed else 'FAIL'
+            except Exception as ex:
+                row['error']=repr(ex);row['verdict']='FAIL';run.check(False,'parity action completed '+name,repr(ex))
+            finally:
+                m.c42.os_key(0x1B);await asyncio.sleep(.2)
+                await js("document.querySelector('[role=dialog] button')?.focus();true")
+                # Dismiss dialogs with a real Escape; retain their inspected tree above.
+                m.c42.os_key(0x1B)
+            row['checks']=run.transcript[start_check:]
+            row['verdict']='PASS' if all(c.get('ok',True) for c in row['checks']) else 'FAIL'
+            rows.append(row);run.save('rows.json',rows)
+        await cmd('project.saveAs',{'path':str(Path(work.name)/'FinalParity.animpkg')})
+        close=await cmd('project.close',{'onUnsaved':'fail'})
+        run.save('closed.json',{'response':close,'state':await cmd('app.state.get')})
+        await asyncio.sleep(.5)
+        phase='disabled'
+        for row,(_,command,path) in zip(rows,actions):
+            name=row['action']
+            if isinstance(path,list):
+                row['nativeNoProject']=native_state(path)
+                native_trace.clear();await menu(path[:-1])
+            row['disabledTree']=await m.e2e.call(s,'inspect_ui',{'target':'window','depth':32})
+            m.c42.os_key(0x1B);m.c42.os_key(0x1B);m.c42.os_key(0x1B)
+            if command in ('app.info.get','project.backup.open'):
+                row['disabledState']='Not applicable: globally available under spec/01_application_shell.md section 1.3 lines 71-75'
+                run.save('rows.json',rows);continue
+            params={'draw.arrange.apply':{'to':'back'},'draw.flip.apply':{'axis':'horizontal'},'tool.active.set':{'toolId':'brush'},'tool.symmetry.set':{'mode':'mirror'},'drawAid.grid.set':{'visible':True},'draw.stroke.add':{'kind':'brush','points':[{'x':0,'y':0},{'x':10,'y':5}]}}.get(command,{})
+            expression="(async()=>{let x=await window.__TAURI_INTERNALS__.invoke('availability',{json:"+json.dumps(json.dumps({'refs':[{'commandId':command,'params':params}]}))+"});if(x instanceof ArrayBuffer)return JSON.parse(new TextDecoder().decode(x));if(typeof x==='string')return JSON.parse(x);return x})()"
+            # Runtime read only: retain the kernel's precheck result beside the inspected tree.
+            # Promise evaluation is awaited by CDP below.
+            result=await cdp('Runtime.evaluate',{'expression':expression,'returnByValue':True,'awaitPromise':True})
+            row['noProjectAvailability']=result
+            before=await rc(s,'doc.state.get',{})
+            await js('window.reviewIPC=[]')
+            if isinstance(path,list):
+                await menu(path)
+                m.c42.os_key(0x1B);m.c42.os_key(0x1B);m.c42.os_key(0x1B)
+            elif path=='key':
+                u.keybd_event(0x11,0,0,0);m.c42.os_key(0x41);u.keybd_event(0x11,0,2,0)
+            elif path is None:
+                try: row['disabledInput']=await dom(command)
+                except RuntimeError as ex: row['disabledInput']=str(ex)
+            else:row['disabledInput']='No drawing gesture: no project is open; tool command tested directly below'
+            await asyncio.sleep(.3)
+            row['disabledIPC']=await js('window.reviewIPC')
+            row['disabledUIUnchanged']=(await rc(s,'doc.state.get',{}))==before
+            run.check(row['disabledUIUnchanged'],'disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: '+command,None)
+            m.c42.os_key(0x1B);m.c42.os_key(0x1B);await asyncio.sleep(.2)
+            refusal=await rc(s,command,params)
+            after=await rc(s,'doc.state.get',{})
+            row['noProjectInvocation']={'response':refusal,'unchanged':before==after}
+            run.check(refusal.get('status')=='error' and (refusal.get('error') or {}).get('code')=='project.none','spec/01_application_shell.md section 1.3 lines 71-75: '+command+' refuses project.none without project',refusal.get('error'))
+            if refusal.get('status')=='error': run.check(before==after,'refused command changes no document '+command,None)
+            run.save('rows.json',rows)
+        work.cleanup()
+        await cdp('Debugger.removeBreakpoint',{'breakpointId':breakpoint['result']['breakpointId']})
+        if audit_tasks: await asyncio.gather(*list(audit_tasks))
+        await cdp('Debugger.disable',{})
+        receiver.cancel();await asyncio.gather(receiver,return_exceptions=True)
+
+def case7():
+    app=str(Path(sys.argv[1]).resolve()); head=str(ROOT/'target/release/toontown-headless.exe')
+    out=OUT/'case7';out.mkdir(parents=True,exist_ok=True)
+    results=[]
+    jobs=[('measure-'+b,['scripts/c43-camera-measure.py',app,str(out/('measure-'+b)),'--backend',b,'--bounds','workstation','--drags','30']) for b in ('webgl2','webgpu')]
+    jobs += [('one-drag-gate',['scripts/c43-camera-measure.py',app,str(out/'one-drag-gate'),'--backend','webgl2','--bounds','workstation','--drags','1'])]
+    jobs += [('c41',['scripts/c41-gui-e2e.py',app,str(out/'c41')]),('c42',['scripts/c42-gui-e2e.py',app,str(out/'c42')]),('byte',['scripts/c42-byte-gate.py',app,head,str(out/'byte')])]
+    jobs += [(n,['tests/adversarial/'+f,app]+args) for n,f,args in [('r1','c42b-r1-live.py',['c2']),('r2','c42b-r2-live.py',['selection',head]),('r3','c42b-r3-live.py',['endings',head]),('r4','c42b-r4-live.py',['named',head])]]
+    jobs += [(n,['tests/adversarial/'+n+'.py',app]) for n in ('c42b-r1s-selection','c42b-r1s-generation','c42b-r1s-experiments','c42b-r1-conformance')]
+    jobs += [('r1-'+mode,['tests/adversarial/c42b-r1-live.py',app,mode]) for mode in ('c3','d2','d2-exact-attached','d2-exact-headless','d3-webgl2')]
+    jobs += [('r2-'+mode,['tests/adversarial/c42b-r2-live.py',app,mode,head]) for mode in ('c2','d3-webgl2','gui','regression','byte','exact','exact-select','exact-tools')]
+    jobs += [('r3-labels',['tests/adversarial/c42b-r3-live.py',app,'labels',head])]
+    if len(sys.argv)>3:
+        jobs=[j for j in jobs if j[0]==sys.argv[3]]
+        if not jobs: raise SystemExit('unknown Case 7 check: '+sys.argv[3])
+    for name,args in jobs:
+        try:
+            if args[0].startswith('tests/adversarial/'):
+                source_path=str(ROOT/args[0])
+                args=[str(ROOT/'tests/adversarial/c43b-r1-regression-runner.py'),source_path]+args[1:]
+            p=subprocess.run([sys.executable]+args,cwd=ROOT,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=530)
+            (out/(name+'.txt')).write_text(p.stdout+p.stderr,encoding='utf-8',newline='\n')
+            results.append({'name':name,'exit':p.returncode})
+            if name=='one-drag-gate':
+                results[-1]['builderExit']=p.returncode
+                results[-1]['assertion']='D-33 workstation gate must reject fewer than 30 samples per scene'
+                results[-1]['exit']=0 if p.returncode!=0 else 1
+            if name.startswith('measure-'):
+                receipt=json.loads((out/name/'measurements.json').read_text(encoding='utf-8'))
+                r=receipt.get('record',{})
+                validations=[{'assertion':'D-33 requested backend ran','pass':r.get('backend')==name[8:],'requested':name[8:],'actual':r.get('backend')}]
+                for scene in ('sample','groups1k'):
+                    data=r.get(scene,{})
+                    validations.append({'assertion':'D-33 30 actual commits '+scene,'pass':data.get('commits',{}).get('n',0)>=30})
+                results[-1]['independentChecks']=validations
+                if any(not v['pass'] for v in validations):results[-1]['exit']=1
+        except subprocess.TimeoutExpired as ex:
+            results.append({'name':name,'timeout':530})
+        (out/(name+'-result.json')).write_text(json.dumps(results[-1],indent=2)+'\n',encoding='utf-8',newline='\n')
+        print(results[-1],flush=True)
+    sys.exit(1 if any(r.get('exit')!=0 for r in results) else 0)
+
+def case6():
+    import inspect
+    m=load('review_e6','scripts/c43-e6-coexistence.py')
+    body=inspect.getsource(m.session_run)
+    body=body.replace('        run.save("tree-final.json"', '        await extra_coexistence(session,run,out,bob,REVIEW_E6)\n        run.save("tree-final.json"')
+    body=body.replace('        env = await rc(session, "edit.undo", {"ifTop": agent_step})', '        protected=canonical((await rc(session,"doc.export.json",{"scope":"project","binaries":"omit"})).get("result"))\n        env = await rc(session, "edit.undo", {"ifTop": agent_step})')
+    body=body.replace('        hist = await history()\n        after =', '        surviving=canonical((await rc(session,"doc.export.json",{"scope":"project","binaries":"omit"})).get("result"))\n        run.check(protected==surviving,"11:587 refused ifTop preserves entire document",None)\n        run.save("protected-document.json",surviving)\n        hist = await history()\n        after =')
+    m.canonical=canonical
+    m.extra_coexistence=extra_coexistence; m.REVIEW_E6=m
+    exec(compile(body,__file__,'exec'),m.__dict__)
+    app=str(Path(sys.argv[1]).resolve())
+    sys.argv=['e6',app,str(OUT/'case6-camera')]
+    first=m.main()
+    body=body.replace('cameraView','drawingView').replace('"transform"','"brush"')
+    body=body.replace('await rc(session, "anim.tool.set", {"tool": "brush"})','await rc(session, "workspace.select", {"name":"Drawing"})\n        await rc(session, "tool.active.set", {"toolId":"brush"})')
+    # The drawing variant still queues the agent transform; only the user's tool changes.
+    exec(compile(body,__file__,'exec'),m.__dict__)
+    sys.argv=['e6',app,str(OUT/'case6-drawing')]
+    second=m.main()
+    labels=[]
+    for name,expected in [('camera',['Move Element']*3),('drawing',['Brush Tool','Move Element','Brush Tool'])]:
+        hist=json.loads((OUT/('case6-'+name)/'history.json').read_text(encoding='utf-8'))
+        got=[e['label'] for e in hist['entries'][-3:]]
+        labels.append({'view':name,'spec':'spec/05_scene_planning.md:1135; spec/02_drawing.md:1318','expected':expected,'observed':got,'pass':got==expected})
+    (OUT/'case6-labels.json').write_text(json.dumps(labels,indent=2)+'\n',encoding='utf-8',newline='\n')
+    first=max(first,int(any(not r['pass'] for r in labels)))
+    sys.exit(max(first,second))
+
+async def extra_coexistence(s,run,out,bob,m):
+    import asyncio,threading,time
+    rc=m.e2e.run_cmd
+    async def cmd(n,p=None): return (await rc(s,n,p or {})).get('result') or {}
+    for view in ('cameraView','drawingView'):
+        await cmd('workspace.select',{'name':'Default' if view=='cameraView' else 'Drawing'})
+        await cmd('view.active.set',{'viewId':view})
+        await cmd('app.context.set',{'elementId':bob,'frame':1})
+        await cmd('view.zoom.set',{'viewId':view,'zoom':.6})
+        await cmd('anim.tool.set',{'tool':'select'}) if view=='cameraView' else await cmd('tool.active.set',{'toolId':'brush'})
+        for variant in ('read','queue','escape','pointer'):
+            await cmd('edit.selection.set',{'context':'staging','ids':[bob]})
+            await asyncio.sleep(.6)
+            place=await m.locate_view(s,rc,view)
+            mapping=(await cmd('draw.viewMapping.get',{'view':view}))['drawingToView']
+            pts=[m.c42.apply(mapping,*p) for p in ((60,40),(85,55))]
+            pts=[(place[0]+x,place[1]+y) for x,y in pts]
+            before=await cmd('edit.history.get',{'limit':1000})
+            times={}; th=threading.Thread(target=m.os_drag,args=(m.e2e.APP_PID['pid'],pts,.3,2.5,times));th.start()
+            while 'press' not in times and th.is_alive(): await asyncio.sleep(.02)
+            await asyncio.sleep(.5)
+            tasks=[]; reads=None
+            if variant=='read':
+                reads=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
+                run.check('release' not in times and bool(reads),'busy note section 2 queries never blocked '+view,times)
+            elif variant=='pointer':
+                tasks=[asyncio.create_task(m.e2e.call(s,'pointer',{'view':view,'events':m.c42.drag([(100,100),(120,110)])}))]
+                await asyncio.sleep(.2)
+                run.check(not tasks[0].done(),'busy note section 2 pointer waits during user drag '+view,None)
+            else:
+                tasks=[asyncio.create_task(rc(s,'anim.transform.set',{'nodeIds':[bob],'target':'static','position':{'x':v,'y':0}})) for v in ((.7,.9) if variant=='queue' else (.8,))]
+                await asyncio.sleep(.2)
+                run.check(all(not t.done() for t in tasks),'11:586 busy mutation waits '+view+' '+variant,None)
+                if variant=='escape': m.c42.os_key(0x1B)
+            responses=await asyncio.gather(*tasks)
+            await asyncio.to_thread(th.join);await asyncio.sleep(.6)
+            after=await cmd('edit.history.get',{'limit':1000})
+            delta=after['position']-before['position']
+            if variant in ('read','escape','queue'):
+                run.check(delta=={'read':1,'escape':1,'queue':3}[variant],'busy note section 5 full history count '+view+' '+variant,delta)
+            doc=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
+            run.save(view+'-'+variant+'.json',{'times':times,'before':before,'after':after,'responses':responses,'document':doc})
+            run.check('error' not in times and all(r.get('status')=='ok' for r in responses),'11:586 waiting calls succeed '+view+' '+variant,responses)
+            if variant=='queue':
+                obj=(await cmd('doc.object.get',{'ref':bob}))['object']
+                run.check(obj['transform']['offset']['x']==.9,'busy note section 5 no reorder queued positions .7 then .9 '+view,obj)
+                await cmd('edit.undo')
+                middle=(await cmd('doc.object.get',{'ref':bob}))['object']
+                run.check(middle['transform']['offset']['x']==.7,'busy note section 5 preceding queued position is .7 '+view,middle)
+                await cmd('edit.redo')
+        # Reverse overlap: user input during an already running atomic mutation.
+        await cmd('edit.selection.set',{'context':'staging','ids':[bob]})
+        await asyncio.sleep(.4)
+        place=await m.locate_view(s,rc,view)
+        mapping=(await cmd('draw.viewMapping.get',{'view':view}))['drawingToView']
+        pts=[m.c42.apply(mapping,*p) for p in ((60,40),(85,55))]
+        pts=[(place[0]+x,place[1]+y) for x,y in pts]
+        import time as walltime
+        from ctypes import wintypes
+        import ctypes
+        u=ctypes.windll.user32;h=m._main_window(m.e2e.APP_PID['pid'])
+        u.SetForegroundWindow(h);origin=wintypes.POINT(0,0);u.ClientToScreen(h,ctypes.byref(origin))
+        u.SetCursorPos(int(origin.x+pts[0][0]),int(origin.y+pts[0][1]));await asyncio.sleep(.3)
+        times={}
+        reverse_start=(await cmd('edit.history.get',{'limit':1000}))['position']
+        steps=[{'id':'draw.rectangle.add','params':{'from':{'x':-100+i*.01,'y':-70},'to':{'x':100,'y':70}}} for i in range(150)]
+        def reverse_input():
+            walltime.sleep(.03);m._send_button(True);times['press']=time.monotonic()
+            walltime.sleep(.3);u.SetCursorPos(int(origin.x+pts[1][0]),int(origin.y+pts[1][1]));walltime.sleep(1)
+            times['release']=time.monotonic();m._send_button(False)
+        times['send']=time.monotonic()
+        task=asyncio.create_task(m.e2e.call(s,'batch',{'steps':steps,'label':'Review long mutation','atomic':True}))
+        th=threading.Thread(target=reverse_input); th.start()
+        response=await task;times['answer']=time.monotonic()
+        await asyncio.to_thread(th.join);await asyncio.sleep(.5)
+        run.save(view+'-reverse.json',{'times':times,'response':response,'history':await cmd('edit.history.get',{'limit':1000}),'document':await cmd('doc.export.json',{'scope':'project','binaries':'omit'})})
+        run.check('press' in times and times['send']<times['press']<times['answer'],'busy note section 2 reverse overlap occurred '+view,times)
+        run.check(response.get('status')=='ok' and 'error' not in times,'busy note section 2 user input while mutation completes '+view,response.get('error'))
+        now=(await cmd('edit.history.get',{'limit':1000}))['position']
+        run.check(now>=reverse_start+2,'busy note section 2 reverse overlap preserves agent and user steps '+view,{'before':reverse_start,'after':now})
+        for _ in range(now-reverse_start): await cmd('edit.undo')
+        control_start=(await cmd('edit.history.get',{'limit':1000}))['position']
+        control_times={}
+        await asyncio.to_thread(m.os_drag,m.e2e.APP_PID['pid'],pts,.3,.3,control_times)
+        await asyncio.sleep(.6)
+        control_history=await cmd('edit.history.get',{'limit':1000})
+        run.save(view+'-reverse-control.json',{'times':control_times,'before':control_start,'history':control_history})
+        run.check(control_history['position']==control_start+1,'reverse control identical OS drag commits without concurrent batch '+view,control_history)
+
 if __name__ == '__main__':
     OUT.mkdir(parents=True,exist_ok=True)
     # A direct cargo release build uses the development URL. Reuse the built files,
     # and own the helper process so each subcommand can run in isolation.
-    if sys.argv[2] in ('case3','case4','case5'):
+    if sys.argv[2] in ('case3','case4','case5','case6','case7','case8'):
         import socket,atexit,time
         sock=socket.socket(); listening=sock.connect_ex(('127.0.0.1',1420))==0; sock.close()
         if not listening:
             server=subprocess.Popen([sys.executable,'-m','http.server','1420','--bind','127.0.0.1','--directory',str(ROOT/'desktop/dist')],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
             atexit.register(server.terminate)
             time.sleep(.5)
-    {'case1-vite':case1_vite,'case3':case3,'case4':case4,'case5':case5}[sys.argv[2]]()
+    {'case1-vite':case1_vite,'case3':case3,'case4':case4,'case5':case5,'case6':case6,'case7':case7,'case8':case8}[sys.argv[2]]()

@@ -1,0 +1,116 @@
+[
+  {
+    "check": "the same document revision on both sides",
+    "ok": true,
+    "detail": {
+      "headless": 12,
+      "attached": 12
+    }
+  },
+  {
+    "check": "frame 1: identical PNG bytes attached and headless",
+    "ok": true,
+    "detail": {
+      "headless": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "attached": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "metadataDiff": [],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    }
+  },
+  {
+    "check": "frame 1: identical metadata except the volatile fields",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "frame 6: identical PNG bytes attached and headless",
+    "ok": true,
+    "detail": {
+      "headless": "889bda334887a6af0e79af2e53e6bbba8d38270fbab7385dda129704aa1c74c3",
+      "attached": "889bda334887a6af0e79af2e53e6bbba8d38270fbab7385dda129704aa1c74c3",
+      "metadataDiff": [
+        "renderMs"
+      ],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    }
+  },
+  {
+    "check": "frame 6: identical metadata except the volatile fields",
+    "ok": true,
+    "detail": [
+      "renderMs"
+    ]
+  },
+  {
+    "check": "frame 12: identical PNG bytes attached and headless",
+    "ok": true,
+    "detail": {
+      "headless": "37482857e2cfdfff1311091975d40e1b2ce3885045807e12de1fc60e00dc34cf",
+      "attached": "37482857e2cfdfff1311091975d40e1b2ce3885045807e12de1fc60e00dc34cf",
+      "metadataDiff": [
+        "renderMs"
+      ],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    }
+  },
+  {
+    "check": "frame 12: identical metadata except the volatile fields",
+    "ok": true,
+    "detail": [
+      "renderMs"
+    ]
+  },
+  {
+    "check": "frame 18: identical PNG bytes attached and headless",
+    "ok": true,
+    "detail": {
+      "headless": "4b14aa5a7e27ffe7ae0f7349024d4444966b2bfd04202823dbaf3d0958651586",
+      "attached": "4b14aa5a7e27ffe7ae0f7349024d4444966b2bfd04202823dbaf3d0958651586",
+      "metadataDiff": [
+        "renderMs"
+      ],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    }
+  },
+  {
+    "check": "frame 18: identical metadata except the volatile fields",
+    "ok": true,
+    "detail": [
+      "renderMs"
+    ]
+  },
+  {
+    "check": "frame 24: identical PNG bytes attached and headless",
+    "ok": true,
+    "detail": {
+      "headless": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "attached": "a72d362f9df3b30d188093e57ade17d2ce2104ac2681442083bb317d57f32545",
+      "metadataDiff": [
+        "renderMs"
+      ],
+      "status": [
+        "ok",
+        "ok"
+      ]
+    }
+  },
+  {
+    "check": "frame 24: identical metadata except the volatile fields",
+    "ok": true,
+    "detail": [
+      "renderMs"
+    ]
+  }
+]

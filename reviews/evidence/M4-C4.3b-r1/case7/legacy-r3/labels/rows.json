@@ -1,0 +1,1582 @@
+[
+  {
+    "name": "rectangle",
+    "tool": "rectangle",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "rectangle",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        317.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 390,
+          "y": 467,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 390,
+          "y": 467,
+          "modifiers": [],
+          "dt": 13,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 440,
+          "y": 442,
+          "modifiers": [],
+          "dt": 16,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 490,
+          "y": 417,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 490,
+          "y": 417,
+          "modifiers": [],
+          "dt": 45,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 5,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.rectangle.add",
+          "params": {
+            "from": {
+              "x": -60.5,
+              "y": -149.5
+            },
+            "to": {
+              "x": 39.5,
+              "y": -99.5
+            },
+            "square": false,
+            "fromCentre": false,
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.rectangle.add",
+          "params": {
+            "from": {
+              "x": -60.5,
+              "y": -149.5
+            },
+            "to": {
+              "x": 39.5,
+              "y": -99.5
+            },
+            "square": false,
+            "fromCentre": false,
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.rectangle.add",
+          "params": {
+            "from": {
+              "x": -60.5,
+              "y": -149.5
+            },
+            "to": {
+              "x": 39.5,
+              "y": -99.5
+            },
+            "square": false,
+            "fromCentre": false,
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8.0,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        317.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Rectangle Tool",
+    "undoRedo": [
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ]
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "name": "ellipse",
+    "tool": "ellipse",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "ellipse",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        317.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 510,
+          "y": 467,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 560,
+          "y": 442,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 610,
+          "y": 417,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 610,
+          "y": 417,
+          "modifiers": [],
+          "dt": 45,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 4,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.ellipse.add",
+          "params": {
+            "from": {
+              "x": 59.5,
+              "y": -149.5
+            },
+            "to": {
+              "x": 159.5,
+              "y": -99.5
+            },
+            "circle": false,
+            "fromCentre": false,
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.ellipse.add",
+          "params": {
+            "from": {
+              "x": 59.5,
+              "y": -149.5
+            },
+            "to": {
+              "x": 159.5,
+              "y": -99.5
+            },
+            "circle": false,
+            "fromCentre": false,
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.ellipse.add",
+          "params": {
+            "from": {
+              "x": 59.5,
+              "y": -149.5
+            },
+            "to": {
+              "x": 159.5,
+              "y": -99.5
+            },
+            "circle": false,
+            "fromCentre": false,
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8.0,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Ellipse Tool"
+      ],
+      [
+        "Ellipse Tool"
+      ],
+      [
+        "Ellipse Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        317.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Ellipse Tool",
+    "undoRedo": [
+      [
+        "Ellipse Tool"
+      ],
+      [
+        "Ellipse Tool"
+      ],
+      [
+        "Ellipse Tool"
+      ]
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "name": "line",
+    "tool": "line",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "line",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        317.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 250,
+          "y": 167,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 450,
+          "y": 162,
+          "modifiers": [],
+          "dt": 31,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 650,
+          "y": 157,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 650,
+          "y": 157,
+          "modifiers": [],
+          "dt": 46,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 4,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.line.add",
+          "params": {
+            "to": {
+              "x": 199.5,
+              "y": 160.5
+            },
+            "constrainAngle": false,
+            "continuePrevious": false,
+            "from": {
+              "x": -200.5,
+              "y": 150.5
+            },
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.line.add",
+          "params": {
+            "to": {
+              "x": 199.5,
+              "y": 160.5
+            },
+            "constrainAngle": false,
+            "continuePrevious": false,
+            "from": {
+              "x": -200.5,
+              "y": 150.5
+            },
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.line.add",
+          "params": {
+            "to": {
+              "x": 199.5,
+              "y": 160.5
+            },
+            "constrainAngle": false,
+            "continuePrevious": false,
+            "from": {
+              "x": -200.5,
+              "y": 150.5
+            },
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8.0,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Line Tool"
+      ],
+      [
+        "Line Tool"
+      ],
+      [
+        "Line Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        317.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Line Tool",
+    "undoRedo": [
+      [
+        "Line Tool"
+      ],
+      [
+        "Line Tool"
+      ],
+      [
+        "Line Tool"
+      ]
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "name": "polyline",
+    "tool": "polyline",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "polyline",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        317.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 620,
+          "y": 217,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 620,
+          "y": 217,
+          "modifiers": [],
+          "dt": 45,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 620,
+          "y": 217,
+          "modifiers": [],
+          "dt": 36,
+          "pressure": 1
+        },
+        {
+          "type": "down",
+          "x": 670,
+          "y": 177,
+          "modifiers": [],
+          "dt": 32,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "up",
+          "x": 670,
+          "y": 177,
+          "modifiers": [],
+          "dt": 31,
+          "pressure": 1
+        },
+        {
+          "type": "down",
+          "x": 670,
+          "y": 177,
+          "modifiers": [],
+          "dt": 32,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "up",
+          "x": 670,
+          "y": 177,
+          "modifiers": [],
+          "dt": 30,
+          "pressure": 1
+        },
+        {
+          "type": "doubleClick",
+          "x": 670,
+          "y": 177,
+          "modifiers": [],
+          "dt": 0
+        }
+      ],
+      "eventCount": 8,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.polyline.add",
+          "params": {
+            "points": [
+              {
+                "x": 169.5,
+                "y": 100.5
+              },
+              {
+                "x": 219.5,
+                "y": 140.5
+              },
+              {
+                "x": 219.5,
+                "y": 140.5
+              }
+            ],
+            "closed": false,
+            "snap": true,
+            "snapRadius": 8,
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.polyline.add",
+          "params": {
+            "points": [
+              {
+                "x": 169.5,
+                "y": 100.5
+              },
+              {
+                "x": 219.5,
+                "y": 140.5
+              },
+              {
+                "x": 219.5,
+                "y": 140.5
+              }
+            ],
+            "closed": false,
+            "snap": true,
+            "snapRadius": 8,
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.polyline.add",
+          "params": {
+            "points": [
+              {
+                "x": 169.5,
+                "y": 100.5
+              },
+              {
+                "x": 219.5,
+                "y": 140.5
+              },
+              {
+                "x": 219.5,
+                "y": 140.5
+              }
+            ],
+            "closed": false,
+            "snap": true,
+            "snapRadius": 8.0,
+            "colourId": "col_01M7H9W6FFSSB73P7QFY1YXSS7",
+            "thickness": 8.0,
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX0",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Polyline Tool"
+      ],
+      [
+        "Polyline Tool"
+      ],
+      [
+        "Polyline Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        317.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Polyline Tool",
+    "undoRedo": [
+      [
+        "Polyline Tool"
+      ],
+      [
+        "Polyline Tool"
+      ],
+      [
+        "Polyline Tool"
+      ]
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "name": "eraser",
+    "tool": "eraser",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "eraser",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        317.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 290,
+          "y": 317,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 310,
+          "y": 312,
+          "modifiers": [],
+          "dt": 43,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 330,
+          "y": 307,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 350,
+          "y": 312,
+          "modifiers": [],
+          "dt": 17,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 370,
+          "y": 317,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 370,
+          "y": 317,
+          "modifiers": [],
+          "dt": 45,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 6,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.erase.apply",
+          "params": {
+            "path": [
+              {
+                "x": -160.5,
+                "y": 0.5,
+                "pressure": 1
+              },
+              {
+                "x": -140.5,
+                "y": 5.5,
+                "pressure": 1
+              },
+              {
+                "x": -120.5,
+                "y": 10.5,
+                "pressure": 1
+              },
+              {
+                "x": -100.5,
+                "y": 5.5,
+                "pressure": 1
+              },
+              {
+                "x": -80.5,
+                "y": 0.5,
+                "pressure": 1
+              },
+              {
+                "x": -80.5,
+                "y": 0.5,
+                "pressure": 1
+              }
+            ],
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX4"
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.erase.apply",
+          "params": {
+            "path": [
+              {
+                "x": -160.5,
+                "y": 0.5,
+                "pressure": 1
+              },
+              {
+                "x": -140.5,
+                "y": 5.5,
+                "pressure": 1
+              },
+              {
+                "x": -120.5,
+                "y": 10.5,
+                "pressure": 1
+              },
+              {
+                "x": -100.5,
+                "y": 5.5,
+                "pressure": 1
+              },
+              {
+                "x": -80.5,
+                "y": 0.5,
+                "pressure": 1
+              },
+              {
+                "x": -80.5,
+                "y": 0.5,
+                "pressure": 1
+              }
+            ],
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX4"
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.erase.apply",
+          "params": {
+            "path": [
+              {
+                "x": -160.5,
+                "y": 0.5,
+                "pressure": 1.0
+              },
+              {
+                "x": -140.5,
+                "y": 5.5,
+                "pressure": 1.0
+              },
+              {
+                "x": -120.5,
+                "y": 10.5,
+                "pressure": 1.0
+              },
+              {
+                "x": -100.5,
+                "y": 5.5,
+                "pressure": 1.0
+              },
+              {
+                "x": -80.5,
+                "y": 0.5,
+                "pressure": 1.0
+              },
+              {
+                "x": -80.5,
+                "y": 0.5,
+                "pressure": 1.0
+              }
+            ],
+            "penId": "pen_01M7H9W6FFSSB73P7QFY1YXSX4"
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Eraser Tool"
+      ],
+      [
+        "Eraser Tool"
+      ],
+      [
+        "Eraser Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        317.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Eraser Tool",
+    "undoRedo": [
+      [
+        "Eraser Tool"
+      ],
+      [
+        "Eraser Tool"
+      ],
+      [
+        "Eraser Tool"
+      ]
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "name": "cutter",
+    "tool": "cutter",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "cutter",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        317.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 280,
+          "y": 397,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 360,
+          "y": 397,
+          "modifiers": [],
+          "dt": 46,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 360,
+          "y": 237,
+          "modifiers": [],
+          "dt": 17,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 280,
+          "y": 237,
+          "modifiers": [],
+          "dt": 34,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 280,
+          "y": 397,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 280,
+          "y": 397,
+          "modifiers": [],
+          "dt": 42,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 6,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.cut.apply",
+          "params": {
+            "polygon": [
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.cut.apply",
+          "params": {
+            "polygon": [
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              }
+            ]
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.cut.apply",
+          "params": {
+            "polygon": [
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": -79.5
+              },
+              {
+                "x": -90.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": 80.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              },
+              {
+                "x": -170.5,
+                "y": -79.5
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Cutter Tool"
+      ],
+      [
+        "Cutter Tool"
+      ],
+      [
+        "Cutter Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        317.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Cutter Tool",
+    "undoRedo": [
+      [
+        "Cutter Tool"
+      ],
+      [
+        "Cutter Tool"
+      ],
+      [
+        "Cutter Tool"
+      ]
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "name": "scissor",
+    "tool": "scissor",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "scissor",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        317.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 290,
+          "y": 337,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 300,
+          "y": 317,
+          "modifiers": [],
+          "dt": 42,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 310,
+          "y": 297,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 310,
+          "y": 297,
+          "modifiers": [],
+          "dt": 36,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 4,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.cut.apply",
+          "params": {
+            "rect": {
+              "x": -160.5,
+              "y": -19.5,
+              "width": 20,
+              "height": 40
+            }
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.cut.apply",
+          "params": {
+            "rect": {
+              "x": -160.5,
+              "y": -19.5,
+              "width": 20,
+              "height": 40
+            }
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.cut.apply",
+          "params": {
+            "rect": {
+              "x": -160.5,
+              "y": -19.5,
+              "width": 20.0,
+              "height": 40.0
+            }
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Scissor Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        317.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Scissor Tool",
+    "undoRedo": [
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Scissor Tool"
+      ]
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "name": "select: move",
+    "tool": "select",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "select",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        317.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 360,
+          "y": 317,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 385,
+          "y": 332,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 385,
+          "y": 332,
+          "modifiers": [],
+          "dt": 48,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "translate": {
+              "x": 25,
+              "y": -15
+            },
+            "copy": false
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "translate": {
+              "x": 25,
+              "y": -15
+            },
+            "copy": false
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "translate": {
+              "x": 25.0,
+              "y": -15.0
+            },
+            "copy": false
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Move Object"
+      ],
+      [
+        "Move Object"
+      ],
+      [
+        "Move Object"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "mappings": {
+      "window": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        450.5,
+        317.5
+      ],
+      "engine2": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "engine3": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ]
+    },
+    "expectedLabel": "Move Object",
+    "undoRedo": [
+      [
+        "Move Object"
+      ],
+      [
+        "Move Object"
+      ],
+      [
+        "Move Object"
+      ]
+    ],
+    "verdict": "PASS"
+  }
+]
