@@ -513,8 +513,10 @@ class Table:
                 if self.WHO == "agent":
                     click["declared"] = self.declared
                     exact = exact and self.declared == {"command": want[0], "params": want[1]}
+                    self.shown_after = None
                     shown = await self.shows(r, after)
                     click["shown"] = shown
+                    click["shownAfter"] = self.shown_after
                     exact = exact and shown is not False
                 ok = exact and effect and got_steps == expect_steps
                 click["ok"] = ok
@@ -665,15 +667,24 @@ class McpTable(Table):
         show = r.get("shows")
         if not show:
             return None
-        # The window reports its tree after it has rendered the kernel's event: read again for up to 3 s (a slower
-        # runner took longer than 0.5 s once, run 43847318713); a state never shown stays False.
-        deadline = time.monotonic() + 3.0
+        # A wait for a state, not a duration (ruling D-45): the window reports its tree after it has rendered the
+        # kernel's event, and the row waits until the tree shows the state. The bound only guards a hang: 3 s was a
+        # duration a macOS runner exceeded once (run 43867592907, tools palette › editTexture: command, effect and
+        # steps right, the pressed state not yet reported), so a state never shown fails after 20 s. How long the
+        # state took and the tree's rendered event numbers are recorded with the row.
+        start = time.monotonic()
+        seqs = []
         while True:
             await asyncio.sleep(0.25)
-            n = self.node(await self.tree(), show[0])
+            answer = await e2e.call(self.s, "inspect_ui", {"target": "window", "depth": 32})
+            res = answer.get("result") or answer
+            seqs.append(res.get("renderedSeq"))
+            n = self.node(res.get("root") or {}, show[0])
             if n is not None and show[1](n, after):
+                self.shown_after = {"seconds": round(time.monotonic() - start, 2), "renderedSeq": seqs[-3:]}
                 return True
-            if time.monotonic() > deadline:
+            if time.monotonic() - start > 20.0:
+                self.shown_after = {"seconds": None, "renderedSeq": seqs[-5:]}
                 return False
 
     async def activity(self) -> list:
@@ -707,11 +718,11 @@ class McpTable(Table):
             self.declared = {"command": ref.get("commandId"), "params": ref.get("params") or {}}
         elif kind == "menu":
             # The menu (and the tree that carries it) refreshes after the events that change availability, a moment
-            # after the setup's commands answered: the item is read again until it shows enabled, for up to 3 s.
+            # after the setup's commands answered: the item is read again until it shows enabled (a wait for a state,
+            # ruling D-45; the 20 s bound only guards a hang).
             n = self.menu_node(tree, action[1])
-            for _ in range(12):
-                if n and n.get("enabled") is True:
-                    break
+            start = time.monotonic()
+            while not (n and n.get("enabled") is True) and time.monotonic() - start < 20.0:
                 await asyncio.sleep(0.25)
                 n = self.menu_node(await self.tree(), action[1])
             if not n:
