@@ -55,10 +55,12 @@ pub fn recent_label(name: &str, exists: bool) -> String {
     if exists { name.to_owned() } else { format!("{name} (missing)") }
 }
 
-/// A workspace entry's label: the current one is marked with a check.
+/// A workspace entry's label: its name. The current one is a checked check item (its native check mark), so the label
+/// is the same in the native menu and the window tree and carries no glyph (C4.3b round 3: a check glyph in the text
+/// read as part of the name).
 #[must_use]
-pub fn workspace_label(name: &str, current: bool) -> String {
-    if current { format!("\u{2713} {name}") } else { name.to_owned() }
+pub fn workspace_label(name: &str, _current: bool) -> String {
+    name.to_owned()
 }
 
 /// A predefined item's label as the platform shows it: macOS names the application in About and Hide; Windows and
@@ -237,7 +239,7 @@ mod tests {
         let m = Manifest::embedded().unwrap();
         let menus = model(&m, Platform::Windows, &facts());
         let current = find(&menus, &|n| n["id"] == "dyn:workspace:1").expect("the current workspace");
-        assert_eq!(current["label"], "\u{2713} Drawing");
+        assert_eq!(current["label"], "Drawing");
         assert_eq!(current["checked"], true);
         let other = find(&menus, &|n| n["id"] == "dyn:workspace:0").unwrap();
         assert_eq!(other["label"], "Default");

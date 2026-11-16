@@ -338,11 +338,11 @@ fn apply(app: &AppHandle, f: &Facts) {
         }
     }
     // Open Recent and the workspace list (01 §3.3, §5.5): the model's entries and labels (C43B-R2S-03).
-    let dynamic = |prefix: &str| -> Vec<(String, String, Value)> {
-        fn walk(n: &Value, prefix: &str, out: &mut Vec<(String, String, Value)>) {
+    let dynamic = |prefix: &str| -> Vec<(Option<bool>, String, Value)> {
+        fn walk(n: &Value, prefix: &str, out: &mut Vec<(Option<bool>, String, Value)>) {
             if n.get("id").and_then(Value::as_str).is_some_and(|id| id.starts_with(prefix)) {
                 out.push((
-                    n["id"].as_str().unwrap_or_default().to_owned(),
+                    n.get("checked").and_then(Value::as_bool),
                     n["label"].as_str().unwrap_or_default().to_owned(),
                     n["command"]["params"].clone(),
                 ));
@@ -359,26 +359,22 @@ fn apply(app: &AppHandle, f: &Facts) {
     };
     let recent = dynamic("dyn:recent:");
     if let Some(sub) = st.recent.clone() {
-        let entries: Vec<(String, String)> = recent
-            .iter()
-            .map(|(_, label, p)| (p["path"].as_str().unwrap_or_default().to_owned(), label.clone()))
-            .collect();
+        let entries: Vec<(String, Option<bool>)> = recent.iter().map(|(_, label, _)| (label.clone(), None)).collect();
         rebuild_dynamic(app, &sub, "recent", &entries);
     }
     st.recent_paths = recent.iter().map(|(_, _, p)| p["path"].as_str().unwrap_or_default().to_owned()).collect();
     let workspaces = dynamic("dyn:workspace:");
     if let Some(sub) = st.workspaces.clone() {
-        let entries: Vec<(String, String)> = workspaces
-            .iter()
-            .map(|(_, label, p)| (p["name"].as_str().unwrap_or_default().to_owned(), label.clone()))
-            .collect();
+        let entries: Vec<(String, Option<bool>)> =
+            workspaces.iter().map(|(checked, label, _)| (label.clone(), Some(checked.unwrap_or(false)))).collect();
         rebuild_dynamic(app, &sub, "workspace", &entries);
     }
     st.workspace_names = workspaces.iter().map(|(_, _, p)| p["name"].as_str().unwrap_or_default().to_owned()).collect();
 }
 
 /// Replaces the leading dynamic items of a submenu (`dyn:<kind>:<n>`) with new ones.
-fn rebuild_dynamic(app: &AppHandle, sub: &Submenu<Wry>, kind: &str, entries: &[(String, String)]) {
+/// Each entry is its label and, for a check item (a workspace), its check state.
+fn rebuild_dynamic(app: &AppHandle, sub: &Submenu<Wry>, kind: &str, entries: &[(String, Option<bool>)]) {
     if let Ok(items) = sub.items() {
         for it in items {
             if it.id().as_ref().starts_with(&format!("dyn:{kind}:")) {
@@ -386,9 +382,19 @@ fn rebuild_dynamic(app: &AppHandle, sub: &Submenu<Wry>, kind: &str, entries: &[(
             }
         }
     }
-    for (i, (_, label)) in entries.iter().enumerate() {
-        if let Ok(m) = MenuItemBuilder::with_id(format!("dyn:{kind}:{i}"), label).build(app) {
-            let _ = sub.insert(&m, i);
+    for (i, (label, checked)) in entries.iter().enumerate() {
+        let id = format!("dyn:{kind}:{i}");
+        match checked {
+            Some(c) => {
+                if let Ok(m) = CheckMenuItemBuilder::with_id(id, label).checked(*c).build(app) {
+                    let _ = sub.insert(&m, i);
+                }
+            }
+            None => {
+                if let Ok(m) = MenuItemBuilder::with_id(id, label).build(app) {
+                    let _ = sub.insert(&m, i);
+                }
+            }
         }
     }
 }
