@@ -92,7 +92,7 @@ fn build_items<'a>(
             Item::Separator { .. } => sub.separator(),
             // Built with the model's text (C43B-R2S-03): the native label is the one the window tree carries.
             Item::Predefined { item, .. } => {
-                let text = predefined_label(*item, &app_name(app));
+                let text = predefined_label(*item, &app_name(app), Platform::current());
                 match item {
                     Predefined::About => sub.about_with_text(text, Some(about_metadata(app))),
                     Predefined::Services => sub.services_with_text(text),

@@ -61,12 +61,14 @@ pub fn workspace_label(name: &str, current: bool) -> String {
     if current { format!("\u{2713} {name}") } else { name.to_owned() }
 }
 
-/// A predefined item's label as the platform shows it (macOS names the application in About and Hide; the native item
-/// is built with this text, so the two cannot differ).
+/// A predefined item's label as the platform shows it: macOS names the application in About and Hide; Windows and
+/// Linux show About alone (their Help menu also has the declared "About Toontown…" item). The native item is built with
+/// this text, so the two cannot differ, and the window tree never shows the manifest's token (C43B-R2-04).
 #[must_use]
-pub fn predefined_label(item: Predefined, app_name: &str) -> String {
+pub fn predefined_label(item: Predefined, app_name: &str, platform: Platform) -> String {
     match item {
-        Predefined::About => format!("About {app_name}"),
+        Predefined::About if platform == Platform::Macos => format!("About {app_name}"),
+        Predefined::About => "About".to_owned(),
         Predefined::Services => "Services".to_owned(),
         Predefined::Hide => format!("Hide {app_name}"),
         Predefined::HideOthers => "Hide Others".to_owned(),
@@ -113,7 +115,7 @@ fn items(list: &[Item], platform: Platform, f: &Facts, path: &str, next: &mut us
         match item {
             Item::Separator { .. } => out.push(json!({ "role": "separator", "id": format!("{path}/-{n}") })),
             Item::Predefined { item, .. } => {
-                let label = predefined_label(*item, &f.app_name);
+                let label = predefined_label(*item, &f.app_name, platform);
                 out.push(json!({ "role": "menuitem", "id": format!("{path}/{label}"), "label": label, "enabled": true,
                                  "predefined": format!("{item:?}") }));
             }
@@ -255,8 +257,32 @@ mod tests {
             })
             .collect();
         assert_eq!(labels, ["About Toontown", "Services", "Hide Toontown", "Hide Others", "Show All"]);
-        // Windows shows none of them (the application menu is macOS only).
-        assert!(find(&model(&m, Platform::Windows, &facts()), &|n| n.get("predefined").is_some()).is_none());
+    }
+
+    /// C43B-R2-04: Windows shows one predefined item, Help's About, with the label the native menu displays (About),
+    /// never the manifest's token; the declared About Toontown… item is a separate command item.
+    #[test]
+    fn the_windows_predefined_about_carries_its_native_label() {
+        fn walk(n: &Value, out: &mut Vec<Value>) {
+            if n.get("predefined").is_some() {
+                out.push(n.clone());
+            }
+            for c in n.get("children").and_then(Value::as_array).into_iter().flatten() {
+                walk(c, out);
+            }
+        }
+        let m = Manifest::embedded().unwrap();
+        let menus = model(&m, Platform::Windows, &facts());
+        let mut predefined = Vec::new();
+        for menu in &menus {
+            walk(menu, &mut predefined);
+        }
+        assert_eq!(predefined.len(), 1, "{predefined:?}");
+        assert_eq!(predefined[0]["label"], "About");
+        assert_eq!(predefined[0]["predefined"], "About");
+        assert_eq!(predefined[0]["label"], predefined_label(Predefined::About, "Toontown", Platform::Windows));
+        let declared = find(&menus, &|n| n["commandId"] == "app.info.get").expect("the declared About item");
+        assert_eq!(declared["label"], "About Toontown\u{2026}");
     }
 
     #[test]
