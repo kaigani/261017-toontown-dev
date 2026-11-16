@@ -11,6 +11,7 @@ import { useShell, useSlice } from '../state/context';
 import type { Arrangement, Layout, WorkspaceEntry } from '../state/types';
 import { useActions } from './actionsApi';
 import { refKey, type Availability } from './availability';
+import { optionRef, runChosen } from './listControl';
 import { AidGroupItem } from './toolbarGroups';
 import { AID_GROUPS, ITEM_LABELS, ITEM_OWNERS, itemRef } from './toolbarItems';
 import { enabledIn, useAvailability } from './useAvailability';
@@ -97,18 +98,22 @@ function WorkspaceList() {
       data-tt-role="field"
       data-tt-id="mainToolbar.workspaceList"
       data-tt-command="workspace.select"
-      onChange={(e) => {
-        void actions.run('workspace.select', { name: e.target.value });
-      }}
+      onChange={runChosen(actions)}
     >
       {[...workspaces]
         .sort((x, y) => x.position - y.position)
-        .map((w) => (
-          <option key={w.name} value={w.name}>
-            {w.name}
-            {w.current && w.modified ? ' *' : ''}
-          </option>
-        ))}
+        .map((w) => {
+          const label = `${w.name}${w.current && w.modified ? ' *' : ''}`;
+          return (
+            <option
+              key={w.name}
+              value={w.name}
+              {...optionRef('mainToolbar.workspaceList', w.name, label, 'workspace.select', { name: w.name })}
+            >
+              {label}
+            </option>
+          );
+        })}
     </select>
   );
 }

@@ -465,12 +465,17 @@ class Table:
             choose_menu(action[1])
             return f"real native menu clicks (the item enabled before: {enabled})"
         if kind == "select":
+            # C43B-R2-03: the row's option, by its value; the distance from the chosen option is read from the page.
+            moves = self.cdp.js(
+                "(() => { const s = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                " return [...s.options].findIndex(o => o.value === %s) - s.selectedIndex; })()"
+                % (json.dumps(action[1]), json.dumps(action[2])))
             self.click(action[1])
             await asyncio.sleep(0.3)
-            for _ in range(abs(action[2])):
-                key(0x28 if action[2] > 0 else 0x26)
+            for _ in range(abs(moves)):
+                key(0x28 if moves > 0 else 0x26)
             key(0x0D)
-            return "real click, arrow keys and Enter"
+            return f"real click, {abs(moves)} arrow keys and Enter"
         if kind == "none":
             return "no input"
         raise ValueError(kind)
@@ -719,12 +724,16 @@ class McpTable(Table):
                 env = await e2e.call(self.s, "key", {"keys": n["shortcut"]})
                 return f"the menu item's shortcut {n['shortcut']} through `key` ({env.get('status')})"
         elif kind == "select":
+            # C43B-R2-03: every option of a list is a child node with its label, selected state and the reference
+            # choosing it sends; the row checks that declared reference against the spec's expectation.
             n = self.node(tree, action[1])
             if not n or n.get("enabled") is False:
                 raise RuntimeError(f"list absent or disabled in the window's tree: {action[1]}")
-            ref = n.get("command") or {}
-            # A list's members are its options; the member chosen is the row's (the next one).
-            self.declared = {"command": ref.get("commandId"), "params": self.want[1]}
+            o = next((c for c in n.get("children") or [] if c.get("role") == "option" and c.get("value") == action[2]), None)
+            if not o:
+                raise RuntimeError(f"option {action[2]!r} absent from the list's node: {action[1]}")
+            ref = o.get("command") or {}
+            self.declared = {"command": ref.get("commandId"), "params": ref.get("params") or {}}
         else:
             raise RuntimeError("an action the MCP form does not perform")
         env = await e2e.run_cmd(self.s, self.declared["command"], self.declared["params"])
@@ -945,22 +954,32 @@ async def build_and_run(t: Table, only: set) -> None:
     toggle_row("gridOverlay", "drawAid.grid.set", "overlay", lambda s: s["grid"]["overlay"], "01 §5.7 line 451 (grid overlay)")
     toggle_row("drawAid.onionSkin.set", "drawAid.onionSkin.set", "enabled", lambda s: s["onionSkin"]["enabled"], "01 §5.7 line 452 (onion skin on/off)")
     toggle_row("drawAid.autoLightTable.set", "drawAid.autoLightTable.set", "enabled", lambda s: s["autoLightTable"], "01 §5.7 line 453 (auto light table)")
-    order_types = ["normal", "field12", "field16"]
-    rows.append({"name": "main toolbar › Grid type", "spec": f"{spec_line('drawAid.grid.set')}; 01 §5.7 lines 457-458 (group items list their members)",
-                 "action": ("select", "mainToolbar.gridType", 1),
-                 "expect": lambda b: ("drawAid.grid.set", {"type": order_types[order_types.index(b["grid"]["type"]) + 1]}),
-                 "label": None, "setup": None, "state": aids,
-                 "effect": lambda b, a, k: a["grid"]["type"] == order_types[order_types.index(b["grid"]["type"]) + 1],
-                 "disabled": ("dom", "mainToolbar.gridType"),
-                 "shows": ("mainToolbar.gridType", lambda n, a: n.get("value") == a["grid"]["type"])})
-    for ident, field in (("onionSkinPrevious", "previous"), ("onionSkinNext", "next")):
-        rows.append({"name": f"main toolbar › {ident}", "spec": f"{spec_line('drawAid.onionSkin.set')}; 01 §5.7 lines 452, 457-458",
-                     "action": ("select", f"mainToolbar.{ident}", 1),
-                     "expect": (lambda f: lambda b: ("drawAid.onionSkin.set", {f: b["onionSkin"][f] + 1}))(field),
-                     "label": None, "setup": None, "state": aids,
-                     "effect": (lambda f: lambda b, a, k: a["onionSkin"][f] == b["onionSkin"][f] + 1)(field),
+    # C43B-R2-03: one row per option of each list (01 §5.7 lines 457-458: group items list their members), each choosing
+    # that option by its declared reference; the options in an order where each differs from the one chosen before it
+    # (choosing the chosen option sends nothing), starting after the state's own.
+    start = await aids()
+
+    def rotated(values, current):
+        i = values.index(current) if current in values else -1
+        return values[i + 1:] + values[:i + 1]
+
+    def option_row(ident, label, value, command, params, read, spec):
+        shown = str(value)
+        rows.append({"name": f"main toolbar › {label} › {shown}", "spec": f"{spec_line(command)}; {spec}",
+                     "action": ("select", f"mainToolbar.{ident}", shown),
+                     "expect": (command, params), "label": None, "setup": None, "state": aids,
+                     "effect": lambda b, a, k: read(a) == value,
                      "disabled": ("dom", f"mainToolbar.{ident}"),
-                     "shows": (f"mainToolbar.{ident}", (lambda f: lambda n, a: n.get("value") == str(a["onionSkin"][f]))(field))})
+                     "shows": (f"mainToolbar.{ident}", lambda n, a: n.get("value") == shown and any(
+                         c.get("value") == shown and c.get("selected") is True for c in n.get("children") or []))})
+
+    for value in rotated(["normal", "field12", "field16"], start["grid"]["type"]):
+        option_row("gridType", "Grid type", value, "drawAid.grid.set", {"type": value}, lambda s: s["grid"]["type"],
+                   "01 §5.7 lines 457-458 (group items list their members)")
+    for ident, label, field in (("onionSkinPrevious", "Previous drawings", "previous"), ("onionSkinNext", "Next drawings", "next")):
+        for value in rotated([0, 1, 2, 3], start["onionSkin"][field]):
+            option_row(ident, label, value, "drawAid.onionSkin.set", {field: value},
+                       (lambda f: lambda s: s["onionSkin"][f])(field), "01 §5.7 lines 452, 457-458")
 
     # 5. The view chrome of both views (02 §10): every aid, symmetry, the type buttons.
     flag = lambda v: v is True  # noqa: E731

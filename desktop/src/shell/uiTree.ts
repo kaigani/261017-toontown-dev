@@ -9,6 +9,8 @@ export interface UiNode {
   value?: string;
   enabled?: boolean;
   checked?: boolean;
+  /** An option of a list control: whether it is the chosen one (C43B-R2-03). */
+  selected?: boolean;
   visible?: boolean;
   command?: { commandId: string; params?: unknown };
   children?: UiNode[];
@@ -56,13 +58,36 @@ function nodeOf(el: Element): UiNode {
   return n;
 }
 
+/** C43B-R2-03: every option of a list control, as a child node with its label, value and selected state, and the
+ *  reference choosing it sends when it declares one (`listControl.ts`). A form's list declares none: choosing an option
+ *  there sends nothing until the form is submitted. */
+function optionsOf(select: HTMLSelectElement, listId: string | undefined): UiNode[] {
+  return Array.from(select.options).map((o) => {
+    const n: UiNode = {
+      role: 'option',
+      id: o.getAttribute('data-tt-id') ?? `${listId ?? 'list'}.${o.value}`,
+      label: o.getAttribute('data-tt-label') ?? o.text.trim(),
+      value: o.value,
+      selected: o.selected,
+    };
+    const command = o.getAttribute('data-tt-command');
+    if (command) {
+      const params = parseParams(o.getAttribute('data-tt-params'));
+      n.command = params === undefined ? { commandId: command } : { commandId: command, params };
+    }
+    if (o.disabled) n.enabled = false;
+    return n;
+  });
+}
+
 /** Walks `root` and returns the marked elements as a tree (unmarked elements are transparent). */
 export function collectUiTree(root: Element, rootNode: UiNode = { role: 'window', id: 'main' }): UiNode {
   const walk = (el: Element, into: UiNode) => {
     for (const child of Array.from(el.children)) {
       if (child.hasAttribute('data-tt-role')) {
         const n = nodeOf(child);
-        walk(child, n);
+        if (child instanceof HTMLSelectElement) n.children = optionsOf(child, n.id);
+        else walk(child, n);
         (into.children ??= []).push(n);
       } else {
         walk(child, into);

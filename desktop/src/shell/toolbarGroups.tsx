@@ -2,12 +2,14 @@
 // counts are pop-ups whose members each send the aid's command with that member; Overlay is a toggle. Their state is
 // the kernel's (`drawAid.state.get`, re-read on `drawAid.changed`, so an agent's change shows), and they are enabled
 // when the kernel's availability of the aid's command says so (ruling O-10). C4.3b round 1 (D-35): the collector
-// rendered the default toolbar and found these items unbound with an owner that had passed (M4 C4.2).
+// rendered the default toolbar and found these items unbound with an owner that had passed (M4 C4.2). C43B-R2-03: each
+// pop-up's options declare the reference choosing them sends (`listControl.ts`).
 import { useCallback, useEffect, useState } from 'react';
 
 import { useShell } from '../state/context';
 import { useActions } from './actionsApi';
 import type { CommandRef } from './availability';
+import { optionRef, runChosen } from './listControl';
 import { enabledIn, useAvailability } from './useAvailability';
 
 type Json = Record<string, unknown>;
@@ -76,12 +78,14 @@ export function AidGroupItem({ item }: { item: string }) {
         data-tt-role="field"
         data-tt-id="mainToolbar.gridType"
         data-tt-command="drawAid.grid.set"
-        onChange={(e) => {
-          void actions.run('drawAid.grid.set', { type: e.target.value });
-        }}
+        onChange={runChosen(actions)}
       >
         {GRID_TYPES.map(([v, label]) => (
-          <option key={v} value={v}>
+          <option
+            key={v}
+            value={v}
+            {...optionRef('mainToolbar.gridType', v, label, 'drawAid.grid.set', { type: v })}
+          >
             {label}
           </option>
         ))}
@@ -122,12 +126,14 @@ export function AidGroupItem({ item }: { item: string }) {
         data-tt-role="field"
         data-tt-id={`mainToolbar.${item}`}
         data-tt-command="drawAid.onionSkin.set"
-        onChange={(e) => {
-          void actions.run('drawAid.onionSkin.set', { [key]: Number(e.target.value) });
-        }}
+        onChange={runChosen(actions)}
       >
         {[0, 1, 2, 3].map((n) => (
-          <option key={n} value={String(n)}>
+          <option
+            key={n}
+            value={String(n)}
+            {...optionRef(`mainToolbar.${item}`, String(n), String(n), 'drawAid.onionSkin.set', { [key]: n })}
+          >
             {n}
           </option>
         ))}

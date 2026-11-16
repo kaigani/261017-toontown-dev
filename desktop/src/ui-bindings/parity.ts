@@ -75,6 +75,28 @@ export function collect(root: Element, surface: string): Collected {
       const a: Action = { id, surface: region, commands: command.split(/\s+/).filter(Boolean) };
       if (params) a.params = JSON.parse(params) as unknown;
       out.actions.push(a);
+      // C43B-R2-03: a list that sends a command when a member is chosen declares, on every option, the reference
+      // choosing it sends; each option is an action of its own, and an option without one is unbound.
+      if (el instanceof HTMLSelectElement) {
+        for (const o of Array.from(el.options)) {
+          const oid = o.getAttribute('data-tt-id');
+          const ocmd = o.getAttribute('data-tt-command');
+          const oparams = o.getAttribute('data-tt-params');
+          if (!oid || !ocmd || !oparams) {
+            out.unbound.push({
+              surface: region,
+              what: `${id}: option "${o.text.trim()}" does not declare the reference choosing it sends`,
+            });
+            continue;
+          }
+          out.actions.push({
+            id: oid,
+            surface: region,
+            commands: ocmd.split(/\s+/).filter(Boolean),
+            params: JSON.parse(oparams) as unknown,
+          });
+        }
+      }
     } else if (gui) {
       out.guiOnly.push({ id, surface: region, reason: gui });
     } else {
