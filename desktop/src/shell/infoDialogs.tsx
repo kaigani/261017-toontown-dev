@@ -129,7 +129,9 @@ export function CheckProjectDialog({ services, close }: { services: ShellService
 /** File › Open Backup (`project.backup.list`, then `project.backup.open {backupId}`). */
 export function BackupsDialog({ services, close }: { services: ShellServices; close: () => void }) {
   const list = useQuery(services, 'project.backup.list', {});
-  const backups = list.status === 'ok' && Array.isArray(list.result['backups']) ? list.result['backups'] : [];
+  // The answer is the array of backups itself (01 §12.2 lines 1083-1084; C43B-R1-07: read as an object, it showed none).
+  const answer: unknown = list.status === 'ok' ? list.result : null;
+  const backups: unknown[] = Array.isArray(answer) ? answer : [];
   return (
     <Dialog id="openBackup" title="Open Backup" onCancel={close} wide>
       {list.status === 'ok' ? (
@@ -140,7 +142,7 @@ export function BackupsDialog({ services, close }: { services: ShellServices; cl
             const backupId = typeof o['backupId'] === 'string' ? o['backupId'] : String(n);
             return (
               <li key={backupId}>
-                <span>{typeof o['createdAt'] === 'string' ? o['createdAt'] : backupId}</span>
+                <span>{typeof o['savedAt'] === 'string' ? o['savedAt'] : backupId}</span>
                 <button
                   type="button"
                   data-tt-role="button"

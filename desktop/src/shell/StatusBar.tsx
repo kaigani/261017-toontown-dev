@@ -48,8 +48,10 @@ export function StatusBar() {
   );
 }
 
-/** The progress area (01 §9.1; ruling D-30, group 1): the running jobs (`job.list`), read again when a job reports
- *  progress or finishes. */
+/** The progress area (01 §9.1; ruling D-30, group 1): the running jobs of every session (`job.list {all: true}`, the
+ *  GUI's own listing, 11 §15.2), read again when a job reports progress or finishes. C4.3b round 1 (D-39): the answer
+ *  is the array of jobs, and without `all` only the window's own session's jobs are listed, so an agent's job showed
+ *  nothing. */
 function JobsIndicator() {
   const { engine } = useShell();
   const [running, setRunning] = useState(0);
@@ -58,9 +60,10 @@ function JobsIndicator() {
     let off: (() => void) | null = null;
     const read = () => {
       void engine
-        .run('job.list', {})
+        .run('job.list', { all: true })
         .done.then((env) => {
-          const jobs = (env.result as { jobs?: { state?: string }[] } | undefined)?.jobs ?? [];
+          const answer: unknown = env.status === 'ok' ? env.result : null;
+          const jobs = (Array.isArray(answer) ? answer : []) as { state?: string }[];
           if (!stopped) setRunning(jobs.filter((j) => j.state === 'running' || j.state === 'queued').length);
         })
         .catch(() => undefined);
@@ -122,6 +125,7 @@ export function AgentIndicator() {
         aria-expanded={open}
         data-tt-role="button"
         data-tt-id="agent.toggle"
+        data-tt-gui-only="disclose"
         onClick={() => {
           setOpen(!open);
           if (!open) {

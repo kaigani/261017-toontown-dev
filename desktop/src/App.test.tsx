@@ -535,7 +535,15 @@ describe('one source of availability (ruling O-10)', () => {
 
   it('the toolbar follows the kernel in the no-project and the project state', async () => {
     let project = false;
-    const items = ['edit.undo', 'edit.redo', 'separator', 'firstFrame', 'nextFrame', 'gridType', 'playStop'];
+    const items = [
+      'edit.undo',
+      'edit.redo',
+      'separator',
+      'firstFrame',
+      'nextFrame',
+      'gridOverlay',
+      'playStop',
+    ];
     const layout = { ...DEFAULT_LAYOUT, mainToolbar: { visible: true, items: [...items, 'workspaceList'] } };
     const host = createScriptedHost({
       'app.state.get': () => ok(project ? PROJECT_STATE : NO_PROJECT_STATE),

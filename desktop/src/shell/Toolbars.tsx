@@ -3,7 +3,7 @@
 // drop-downs show their members. Whether an item is enabled, checked and how it is labelled comes from the kernel's
 // availability (ruling O-10), the source the native menu and the key dispatch use too; until it has answered, an
 // item is disabled. Items whose command belongs to a later checkpoint stay visible and disabled, with the reason.
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { TOOL_PALETTES } from '../panels/catalogue';
@@ -11,7 +11,9 @@ import { useShell, useSlice } from '../state/context';
 import type { Arrangement, Layout, WorkspaceEntry } from '../state/types';
 import { useActions } from './actionsApi';
 import { refKey, type Availability } from './availability';
-import { ITEM_LABELS, ITEM_OWNERS, itemRef } from './toolbarItems';
+import { AidGroupItem } from './toolbarGroups';
+import { AID_GROUPS, ITEM_LABELS, ITEM_OWNERS, itemRef } from './toolbarItems';
+import { enabledIn, useAvailability } from './useAvailability';
 
 const INDEX = COMMAND_INDEX as unknown as Readonly<
   Record<string, { readonly label?: string; readonly milestone?: string } | undefined>
@@ -40,6 +42,7 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
         if (item === 'space') return <span key={i} className="toolbar-space" />;
         if (item === 'flexibleSpace') return <span key={i} className="toolbar-flex" />;
         if (item === 'workspaceList') return <WorkspaceList key={i} />;
+        if (AID_GROUPS.has(item)) return <AidGroupItem key={i} item={item} />;
         const ref = itemRef(item);
         const facts = ref ? availability[refKey(ref)] : undefined;
         const owner = ITEM_OWNERS[item];
@@ -60,9 +63,17 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
             data-tt-label={label}
             {...(ref
               ? { 'data-tt-command': ref.commandId, 'data-tt-params': JSON.stringify(ref.params) }
-              : {})}
+              : owner
+                ? { 'data-tt-gui-only': 'placeholder' }
+                : {})}
             onClick={() => {
-              if (ref) void actions.perform(ref.commandId, ref.params);
+              // The parameters as the kernel completes them for the current state (O-10): a toggle's reference leaves
+              // its state open and the answer gives the next one (C43B-R1-08: sending the open reference changed nothing).
+              const run =
+                facts && facts.params !== null && typeof facts.params === 'object'
+                  ? (facts.params as Record<string, unknown>)
+                  : undefined;
+              if (ref) void actions.perform(ref.commandId, run ?? ref.params);
             }}
           >
             {label}
@@ -102,7 +113,9 @@ function WorkspaceList() {
 }
 
 /** The Drawing tools palette's tools (M4 C4.3b; ruling D-30, group 1; 02 §1.3): `tool.list`'s tools, each a button
- *  that makes it the active tool (`tool.active.set`), the active one pressed. */
+ *  that makes it the active tool (`tool.active.set`), the active one pressed. Each button is enabled only when the
+ *  kernel's availability of its reference says so (C43B-R1S-09); the list and the active tool are re-read on the
+ *  kernel's events, a project closed included (its tools go away with it). */
 function DrawingToolButtons() {
   const { engine } = useShell();
   const actions = useActions();
@@ -115,7 +128,7 @@ function DrawingToolButtons() {
       void engine
         .run('tool.list', {})
         .done.then((env) => {
-          const r = (env.result ?? {}) as {
+          const r = (env.status === 'ok' ? (env.result ?? {}) : {}) as {
             tools?: { toolId: string; group?: string }[];
             activeToolId?: string;
           };
@@ -128,7 +141,8 @@ function DrawingToolButtons() {
     read();
     void engine
       .onEvent((e) => {
-        if (e.name === 'tool.active.changed' || e.name === 'project.opened') read();
+        if (e.name === 'tool.active.changed' || e.name === 'project.opened' || e.name === 'project.closed')
+          read();
       })
       .then((u) => {
         if (stopped) u();
@@ -139,6 +153,11 @@ function DrawingToolButtons() {
       off?.();
     };
   }, [engine]);
+  const refs = useMemo(
+    () => tools.map((t) => ({ commandId: 'tool.active.set', params: { toolId: t.toolId } })),
+    [tools],
+  );
+  const availability = useAvailability(refs);
   return (
     <>
       {tools.map((t) => (
@@ -146,6 +165,7 @@ function DrawingToolButtons() {
           key={t.toolId}
           type="button"
           className="tool-button"
+          disabled={!enabledIn(availability({ commandId: 'tool.active.set', params: { toolId: t.toolId } }))}
           aria-pressed={active === t.toolId}
           title={t.toolId}
           data-tt-role="button"

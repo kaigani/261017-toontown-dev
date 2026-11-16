@@ -19,16 +19,23 @@ export const ITEM_LABELS: Readonly<Record<string, string>> = {
   workspaceList: 'Workspace',
 };
 
-/** Group items whose behaviour belongs to a later checkpoint (shown disabled with the owner; they run no command). */
+/** Group items whose behaviour belongs to a later checkpoint (shown disabled with the owner; they run no command): the
+ *  owners of their commands (`timeline.currentFrame.move` and playback: M5 C5.1; the camera list: M4 C4.4, ruling
+ *  C43B-R1S-05; the scene list: M9). The drawing aids' group items are built (`toolbarGroups.tsx`). */
 export const ITEM_OWNERS: Readonly<Record<string, string>> = {
-  gridType: 'M4 C4.2',
-  gridOverlay: 'M4 C4.2',
-  onionSkinPrevious: 'M4 C4.2',
-  onionSkinNext: 'M4 C4.2',
   playStop: 'M5 C5.1',
-  cameraList: 'M4 C4.3',
+  lastFrame: 'M5 C5.1',
+  cameraList: 'M4 C4.4',
   sceneList: 'M9',
 };
+
+/** The drawing aids' group items: each member is its own reference (`toolbarGroups.tsx`). */
+export const AID_GROUPS: ReadonlySet<string> = new Set([
+  'gridType',
+  'gridOverlay',
+  'onionSkinPrevious',
+  'onionSkinNext',
+]);
 
 const FRAME_STEPS: Readonly<Record<string, CommandRef>> = {
   firstFrame: { commandId: 'app.frame.set', params: { frame: 1 } },
@@ -38,7 +45,7 @@ const FRAME_STEPS: Readonly<Record<string, CommandRef>> = {
 
 /** The command reference a toolbar item runs (`null`: a separator, a list or a group item without a command). */
 export function itemRef(item: string): CommandRef | null {
-  if (item in ITEM_OWNERS) return null;
+  if (item in ITEM_OWNERS || AID_GROUPS.has(item)) return null;
   if (item.includes('.')) return { commandId: item, params: {} };
   return FRAME_STEPS[item] ?? null;
 }

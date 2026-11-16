@@ -27,6 +27,19 @@ export const SLICES = {
 
 export type SliceName = keyof typeof SLICES | 'availability';
 
+/** Events that change what a watched reference's availability says (its check mark, its completed parameters, its
+ *  precheck) without making a slice stale: the drawing aids, the drawing tools and their settings, the selections, the
+ *  view windows. After one, the availability is read again (C4.3b round 1, D-39: after the toolbar's Grid was clicked
+ *  its next click sent the same visibility, the check mark and the completed reference being the old ones). */
+export const AVAILABILITY_EVENTS: ReadonlySet<string> = new Set([
+  'drawAid.changed',
+  'tool.options.changed',
+  'tool.active.changed',
+  'draw.selection.changed',
+  'edit.selection.changed',
+  'shell.view',
+]);
+
 /** Which slices an engine event makes stale (01 §12.3 events). */
 export function slicesFor(event: string): SliceName[] {
   switch (event) {
@@ -91,10 +104,11 @@ export interface Store {
   /** Called for every event after it is applied (dialogs opened by `shell.*` notices, notifications). */
   onEvent(hook: EventHook): () => void;
   /**
-   * The command references the GUI shows (toolbars, rail): their availability is kept in the `availability` slice,
-   * keyed by `refKey`, and re-read from the kernel after every refresh (ruling O-10).
+   * The command references the GUI shows (toolbars, rail, view chrome): their availability is kept in the
+   * `availability` slice, keyed by `refKey`, and re-read from the kernel after every refresh (ruling O-10). Each
+   * surface registers its own references under its `owner` (C43B-R1S-09); the store asks for the union.
    */
-  watch(refs: readonly CommandRef[]): void;
+  watch(refs: readonly CommandRef[], owner?: string): void;
 }
 
 export function createStore(engine: EngineApi): Store {
@@ -108,6 +122,7 @@ export function createStore(engine: EngineApi): Store {
     });
   };
 
+  const owners = new Map<string, readonly CommandRef[]>();
   let watched: CommandRef[] = [];
   const readAvailability = async () => {
     if (watched.length === 0) return;
@@ -193,6 +208,7 @@ export function createStore(engine: EngineApi): Store {
           if (p?.state !== undefined) set({ ...state, slices: { ...state.slices, appState: p.state } });
         }
         if (stale.length > 0) await refresh(stale);
+        else if (AVAILABILITY_EVENTS.has(event.name)) await readAvailability();
       }
       set({ ...state, seq: Math.max(state.seq, event.seq) });
       hooks.forEach((h) => {
@@ -209,9 +225,13 @@ export function createStore(engine: EngineApi): Store {
         hooks.delete(hook);
       };
     },
-    watch(refs) {
+    watch(refs, owner = 'main') {
       const before = new Set(watched.map(refKey));
-      watched = [...refs];
+      if (refs.length === 0) owners.delete(owner);
+      else owners.set(owner, refs);
+      const union = new Map<string, CommandRef>();
+      for (const list of owners.values()) for (const r of list) union.set(refKey(r), r);
+      watched = [...union.values()];
       if (watched.some((r) => !before.has(refKey(r))) || watched.length !== before.size)
         void readAvailability();
     },

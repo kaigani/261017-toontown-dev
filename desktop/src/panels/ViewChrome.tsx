@@ -1,12 +1,17 @@
 // A Drawing or Camera view window's chrome (M4 C4.3b; ruling D-30, group 1; 01 §5.3, 02 §10): the zoom and rotation
 // readout (`view.transform.get`), the window's current type (`view.list`), the drawing aids (`drawAid.*`, their state
-// from `drawAid.state.get`) and symmetry (`tool.symmetry.set`). Every control runs its command through the one entry
-// point (`actions.run`); a toggle sends the negation of the state it shows, so its parameters are not fixed and the
-// parity manifest binds the command alone.
+// from `drawAid.state.get`) and symmetry (`tool.symmetry.set`, its state from `tool.settings.get`). Every control runs
+// its command through the one entry point (`actions.run`); a toggle sends the negation of the state it shows, so its
+// parameters are not fixed and the parity manifest binds the command alone. Each control is enabled only when the
+// kernel's availability of its reference says so (ruling O-10, C43B-R1S-09: disabled without a project and when its
+// precheck refuses), and shows the kernel's state, re-read on the kernel's change events, so a change an agent makes
+// shows too.
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useActions } from '../shell/actionsApi';
+import type { CommandRef } from '../shell/availability';
+import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell } from '../state/context';
 
 type Json = Record<string, unknown>;
@@ -63,8 +68,10 @@ const AIDS: Aid[] = [
     id: 'autoLightTable',
     label: 'Auto light table',
     command: 'drawAid.autoLightTable.set',
-    on: (s) => flag(obj(s['autoLightTable'])['enabled']),
-    params: (s) => ({ enabled: !flag(obj(s['autoLightTable'])['enabled']) }),
+    // `drawAid.state.get` answers these three as booleans (C4.3b round 1, D-39: read as objects, the buttons never
+    // showed as on and always sent the same value).
+    on: (s) => flag(s['autoLightTable']),
+    params: (s) => ({ enabled: !flag(s['autoLightTable']) }),
   },
   {
     id: 'lightTableShade',
@@ -105,15 +112,15 @@ const AIDS: Aid[] = [
     id: 'strokes',
     label: 'Show strokes',
     command: 'drawAid.strokes.set',
-    on: (s) => flag(obj(s['strokes'])['visible']),
-    params: (s) => ({ visible: !flag(obj(s['strokes'])['visible']) }),
+    on: (s) => flag(s['strokes']),
+    params: (s) => ({ visible: !flag(s['strokes']) }),
   },
   {
     id: 'currentOnTop',
     label: 'Current drawing on top',
     command: 'drawAid.currentOnTop.set',
-    on: (s) => flag(obj(s['currentOnTop'])['enabled']),
-    params: (s) => ({ enabled: !flag(obj(s['currentOnTop'])['enabled']) }),
+    on: (s) => flag(s['currentOnTop']),
+    params: (s) => ({ enabled: !flag(s['currentOnTop']) }),
   },
   {
     id: 'boxHighlighting',
@@ -145,6 +152,12 @@ const AIDS: Aid[] = [
   },
 ];
 
+/** The symmetry mode in a settings map (`tool.settings.get`, `tool.options.changed` with no tool). */
+const modeOf = (settings: Json): string | null => {
+  const m = obj(settings['symmetry'])['mode'];
+  return typeof m === 'string' ? m : null;
+};
+
 export function ViewChrome({ viewId }: { viewId: string }) {
   const { engine } = useShell();
   const actions = useActions();
@@ -153,6 +166,13 @@ export function ViewChrome({ viewId }: { viewId: string }) {
   const [symmetry, setSymmetry] = useState<string>('none');
   const [lightTableEntries, setLightTableEntries] = useState(0);
   const refresh = useCallback(() => {
+    void engine
+      .run('tool.settings.get', {})
+      .done.then((env) => {
+        const m = env.status === 'ok' ? modeOf(obj(env.result)) : null;
+        if (m) setSymmetry(m);
+      })
+      .catch(() => undefined);
     void engine
       .run('drawAid.state.get', {})
       .done.then((env) => {
@@ -181,7 +201,18 @@ export function ViewChrome({ viewId }: { viewId: string }) {
     let stopped = false;
     void engine
       .onEvent((e) => {
-        if (e.name === 'drawAid.changed' || e.name === 'shell.view' || e.name === 'project.opened') refresh();
+        if (
+          e.name === 'drawAid.changed' ||
+          e.name === 'shell.view' ||
+          e.name === 'project.opened' ||
+          e.name === 'project.closed'
+        )
+          refresh();
+        // The global drawing-tool settings changed (`tool.options.changed` with no tool): symmetry among them.
+        const p = obj(e.payload);
+        const m =
+          e.name === 'tool.options.changed' && p['toolId'] === null ? modeOf(obj(p['options'])) : null;
+        if (m) setSymmetry(m);
       })
       .then((u) => {
         if (stopped) u();
@@ -192,6 +223,18 @@ export function ViewChrome({ viewId }: { viewId: string }) {
       off?.();
     };
   }, [engine, refresh]);
+  const symmetryRef = useMemo(
+    (): CommandRef => ({
+      commandId: 'tool.symmetry.set',
+      params: { mode: symmetry === 'none' ? 'mirror' : 'none' },
+    }),
+    [symmetry],
+  );
+  const refs = useMemo(
+    () => [...AIDS.map((a): CommandRef => ({ commandId: a.command, params: a.params(aids) })), symmetryRef],
+    [aids, symmetryRef],
+  );
+  const availability = useAvailability(refs);
   return (
     <div className="view-chrome" role="group" data-tt-role="group" data-tt-id={`${viewId}.aids`}>
       <span className="view-zoom" data-tt-role="text" data-tt-id={`${viewId}.zoom`}>
@@ -201,17 +244,19 @@ export function ViewChrome({ viewId }: { viewId: string }) {
       </span>
       {AIDS.map((a) => {
         const on = a.on?.(aids);
+        const params = a.params(aids);
         return (
           <button
             key={a.id}
             type="button"
+            disabled={!enabledIn(availability({ commandId: a.command, params }))}
             aria-pressed={on}
             title={a.label}
             data-tt-role="button"
             data-tt-id={`${viewId}.aid.${a.id}`}
             data-tt-command={a.command}
             onClick={() => {
-              void actions.run(a.command, a.params(aids));
+              void actions.run(a.command, params);
             }}
           >
             {a.label}
@@ -223,17 +268,15 @@ export function ViewChrome({ viewId }: { viewId: string }) {
       })}
       <button
         type="button"
+        disabled={!enabledIn(availability(symmetryRef))}
         aria-pressed={symmetry !== 'none'}
         title="Mirror symmetry"
         data-tt-role="button"
         data-tt-id={`${viewId}.symmetry`}
         data-tt-command="tool.symmetry.set"
         onClick={() => {
-          const mode = symmetry === 'none' ? 'mirror' : 'none';
-          void actions.run('tool.symmetry.set', { mode }).then((env) => {
-            const m = obj(env.result)['mode'];
-            if (typeof m === 'string') setSymmetry(m);
-          });
+          // The shown state follows the kernel's `tool.options.changed`, not this click's answer.
+          void actions.run('tool.symmetry.set', symmetryRef.params);
         }}
       >
         Symmetry

@@ -1,10 +1,11 @@
 // Panel contents (01 §5.2). C4.1 implements the History panel and the view windows' chrome; every other panel is an
 // honest placeholder that names the checkpoint bringing its content, where a user would look for it.
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { CanvasView } from '../canvas/CanvasView';
 import { ViewChrome } from './ViewChrome';
 import { useActions } from '../shell/actionsApi';
+import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell, useSlice } from '../state/context';
 import type { History } from '../state/types';
 import { panelInfo } from './catalogue';
@@ -106,6 +107,11 @@ export function ViewPanel({ panelId }: { panelId: string }) {
   // The Drawing and Camera view windows show the canvas, which reports its own size (M4 C4.2b, C4.3b; camera-view note
   // §6: it follows the scene answer's view type); the Top and Side windows keep the placeholder (M6 C6.1).
   const drawing = panelId === 'drawingView' || panelId === 'cameraView';
+  // The type buttons' references, enabled by the kernel's availability (ruling O-10; C43B-R1S-09).
+  const typeRefs = useMemo(
+    () => VIEW_TYPES.map((v) => ({ commandId: 'view.type.set', params: { viewId: panelId, type: v.type } })),
+    [panelId],
+  );
   // The window's current type (`view.list`), shown on the type buttons (ruling D-30, group 1).
   const [viewType, setViewType] = useState<string | null>(null);
   useEffect(() => {
@@ -115,8 +121,9 @@ export function ViewPanel({ panelId }: { panelId: string }) {
       void engine
         .run('view.list', {})
         .done.then((env) => {
-          const views =
-            (env.result as { views?: { viewId?: string; type?: string }[] } | undefined)?.views ?? [];
+          // `view.list` answers the list of view windows (C43B-R1S-09: read as `{views}` before, so the buttons never
+          // showed the window's type).
+          const views = Array.isArray(env.result) ? (env.result as { viewId?: string; type?: string }[]) : [];
           const mine = views.find((v) => v.viewId === panelId);
           if (!stopped && mine?.type) setViewType(mine.type);
         })
@@ -152,6 +159,7 @@ export function ViewPanel({ panelId }: { panelId: string }) {
       ro.disconnect();
     };
   }, [engine, panelId, drawing]);
+  const availability = useAvailability(typeRefs);
   return (
     <div
       className="view-panel"
@@ -164,6 +172,11 @@ export function ViewPanel({ panelId }: { panelId: string }) {
           <button
             key={v.type}
             type="button"
+            disabled={
+              !enabledIn(
+                availability({ commandId: 'view.type.set', params: { viewId: panelId, type: v.type } }),
+              )
+            }
             aria-pressed={viewType === v.type}
             title={`Show the ${v.label} view in this window (view.type.set)`}
             data-tt-role="button"

@@ -93,6 +93,8 @@ export interface ScriptedHost extends HostTransport {
     checked?: boolean;
     label?: string;
     reason?: string;
+    /** The reference as the kernel completes it (a toggle's next state); the reference's own when absent. */
+    params?: Record<string, unknown>;
   };
   /** Answers to `pick_path` (null: cancelled). */
   picked: string | null;
