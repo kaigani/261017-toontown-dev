@@ -1,0 +1,9 @@
+{
+  "kind": "toontown.c43.camera-e2e",
+  "platform": "win32",
+  "input": "os",
+  "requestedBackend": "webgl2",
+  "seconds": 16.3,
+  "failures": [],
+  "checks": 189
+}

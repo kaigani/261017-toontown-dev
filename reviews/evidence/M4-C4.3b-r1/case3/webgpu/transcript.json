@@ -1,0 +1,1012 @@
+[
+  {
+    "check": "scene construction project.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction doc.object.find",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.parent.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.parent.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.selection.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction view.active.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction view.transform.reset",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the Camera view shows what the final renderer draws: independent scene 1 plain (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+    "ok": true,
+    "detail": {
+      "capture": [
+        914,
+        465
+      ],
+      "render": [
+        1920,
+        1080
+      ],
+      "compared": 425010,
+      "covered": 1.0,
+      "different": 2067,
+      "fraction": 0.004863414978471095
+    }
+  },
+  {
+    "check": "scene construction view.zoom.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction view.pan.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction window.geometry.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the Camera view shows what the final renderer draws: independent scene 1 zoom-pan-resize (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+    "ok": true,
+    "detail": {
+      "capture": [
+        914,
+        541
+      ],
+      "render": [
+        1920,
+        1080
+      ],
+      "compared": 494474,
+      "covered": 1.0,
+      "different": 2406,
+      "fraction": 0.004865776562569518
+    }
+  },
+  {
+    "check": "scene construction edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction doc.object.find",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.camera.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.camera.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.camera.current.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.camera.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.selection.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction view.active.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction view.transform.reset",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the Camera view shows what the final renderer draws: independent scene 2 plain (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+    "ok": true,
+    "detail": {
+      "capture": [
+        914,
+        541
+      ],
+      "render": [
+        1920,
+        1080
+      ],
+      "compared": 494474,
+      "covered": 1.0,
+      "different": 2640,
+      "fraction": 0.005339006702071292
+    }
+  },
+  {
+    "check": "scene construction edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction doc.object.find",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.visibility.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.lock.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction drawAid.currentOnTop.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction drawAid.selectionDisplay.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.selection.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction view.active.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction view.transform.reset",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.selection.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.tool.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.viewMapping.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the Camera view shows what the final renderer draws: independent scene 3 plain (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+    "ok": true,
+    "detail": {
+      "capture": [
+        914,
+        541
+      ],
+      "render": [
+        1920,
+        1080
+      ],
+      "compared": 463662,
+      "covered": 0.9376873202635528,
+      "different": 726,
+      "fraction": 0.0015657957736454572
+    }
+  },
+  {
+    "check": "scene construction edit.history.get",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.undo",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction doc.object.find",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction element.drawing.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.current.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction draw.rectangle.add",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction colour.paint.apply",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction anim.transform.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction app.context.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction edit.selection.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction view.active.set",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "scene construction view.transform.reset",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the Camera view shows what the final renderer draws: independent scene 4 plain (its capture against the activeView render inside the frame, under 1 % of the pixels differ)",
+    "ok": true,
+    "detail": {
+      "capture": [
+        914,
+        541
+      ],
+      "render": [
+        1920,
+        1080
+      ],
+      "compared": 494474,
+      "covered": 1.0,
+      "different": 1578,
+      "fraction": 0.003191269915101704
+    }
+  }
+]
