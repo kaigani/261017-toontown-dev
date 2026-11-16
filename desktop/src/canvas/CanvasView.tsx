@@ -31,6 +31,7 @@ import { canvasLaunch } from './launch';
 import { cameraGridMatrix, cameraOverlay } from './cameraOverlay';
 import { activeViewOf } from './activeView';
 import { decodeDrawing } from './format';
+import { GestureLifecycle, type GestureToken } from './gestureLifecycle';
 import { gestureOrder } from './gestureOrder';
 import { drawingPreview, grabberPreview, scenePreview, type Box } from './preview';
 import { CanvasMetrics } from './metrics';
@@ -134,8 +135,9 @@ export function CanvasView({
     let style: OverlayStyle = { tool: 'select', ink: ACCENT, width: 1 };
     let penSizes = { brush: 3, eraser: 10 };
     let currentColour: string | null = null;
-    let clearOverlayAt: { version: number; deadline: number } | null = null;
     let lastGesture: { status: string; code?: string } | null = null;
+    // The user's gesture in progress or last released (C43B-R1S-06): its commit's answer acts only while it is current.
+    let gestureToken: GestureToken | null = null;
     // The last committed gesture's record (C42B-R1-03; SI-141 item 9), as JSON text: written once per commit and
     // spliced into the summary, so a long gesture is not serialised again every frame.
     let lastRecord = '';
@@ -199,9 +201,19 @@ export function CanvasView({
     // Agent gestures routed to this window (design note 2 §6; P1, P2): one at a time, played through the overlay, then
     // committed unchanged through gesture_commit with their request id; a user press aborts the one playing.
     const agentQueue: AgentInput[] = [];
-    let playing: { input: AgentInput; shown: number; points: [number, number][] } | null = null;
+    let playing: {
+      input: AgentInput;
+      shown: number;
+      points: [number, number][];
+      token: GestureToken;
+    } | null = null;
     // The engine generation this window follows (D-7b): input of another generation is never played or committed.
-    let followed = engine.generation();
+    // Each gesture is tagged by gesture and generation (C43B-R1S-06): a commit's answer clears the overlay and preview
+    // only while its gesture is the current one; a new generation and unmounting drop the preview's resources at once.
+    const life = new GestureLifecycle(engine.generation(), () => {
+      overlay = null;
+      endPreview();
+    });
     const reportPresence = (present: boolean) => {
       const r = canvas.getBoundingClientRect();
       void engine
@@ -288,14 +300,13 @@ export function CanvasView({
     // queued), with nothing committed; the host has already answered the agent's calls (the SI-120 refusal). Run on
     // the first event of the new generation and when the window adopts it, whichever comes first.
     const adoptGeneration = (generation: number) => {
-      if (generation === followed) return;
-      followed = generation;
+      if (generation === life.generation) return;
       cancelGesture();
       if (playing) reportGesture(false);
       playing = null;
       agentQueue.splice(0);
-      overlay = null;
-      clearOverlayAt = null;
+      // Discards the overlay and the preview with its parts even after the release, while a commit is unanswered.
+      life.adopt(generation);
     };
 
     // The display preferences the canvas honours (01 §7.2, 06 §6.9): `display.antiAliasing` and
@@ -507,15 +518,9 @@ export function CanvasView({
       model.frame();
       const scene = model.scene;
       playAgent();
-      if (
-        clearOverlayAt &&
-        (model.settledVersion > clearOverlayAt.version || performance.now() > clearOverlayAt.deadline)
-      ) {
-        overlay = null;
-        clearOverlayAt = null;
-        // The committed state is drawn (or the commit was refused): the preview gives way to it (preview note §4).
-        endPreview();
-      }
+      // The committed state is drawn (or the commit was refused): the overlay and preview give way to it (preview
+      // note §4).
+      life.frame(model.settledVersion, performance.now());
       if (scene && scene.colours !== lastColours) {
         renderer.setColours(scene.colours);
         lastColours = scene.colours;
@@ -682,6 +687,7 @@ export function CanvasView({
       // The record names the tool that acted (a scene tool in the scene family), as the modal state does.
       const tool = actingTool();
       const mapping = d2v;
+      const token = gestureToken;
       void order.commitThenEnd(req).then((env) => {
         lastRecord = stringifyWireJson(gestureRecord('user', tool, mapping, req, env));
         metrics?.answered(performance.now());
@@ -689,12 +695,15 @@ export function CanvasView({
           env.status === 'error'
             ? { status: 'error', code: env.error?.code ?? 'error' }
             : { status: env.status };
-        // The overlay stays until the committed drawing is drawn (or briefly, when nothing changed).
-        clearOverlayAt = {
-          version: before,
-          deadline: performance.now() + (env.status === 'error' ? 0 : 400),
-        };
-        if (env.status === 'error') overlay = null;
+        // The overlay stays until the committed drawing is drawn (or briefly, when nothing changed); an answer for a
+        // gesture that is no longer current (a later press, another generation, a closed window) clears nothing.
+        const armed =
+          token !== null &&
+          life.answered(token, {
+            version: before,
+            deadline: performance.now() + (env.status === 'error' ? 0 : 400),
+          });
+        if (armed && env.status === 'error') overlay = null;
       });
     };
     // An agent gesture is shown over at most about two seconds of frames, at least 16 events a frame (its simulated
@@ -706,7 +715,9 @@ export function CanvasView({
         if (collector.active) return;
         const next = agentQueue.shift();
         if (!next) return;
-        playing = { input: next, shown: 0, points: [] };
+        // The agent's gesture is a gesture of its own from its first frame: an earlier commit's answer does not clear
+        // its overlay, and a user press makes its own answer obsolete.
+        playing = { input: next, shown: 0, points: [], token: life.begin() };
         reportGesture(true);
       }
       const events = Array.isArray(playing.input.request['events'])
@@ -728,6 +739,7 @@ export function CanvasView({
       const before = model?.version ?? 0;
       const request = done.input.request as { view: string; events: WireEvent[]; tool?: unknown };
       const mapping = d2v;
+      const token = done.token;
       void order.commitThenEnd({ ...request, agentRequest: done.input.requestId }).then((env) => {
         const tool = typeof request.tool === 'string' ? request.tool : style.tool;
         lastRecord = stringifyWireJson(gestureRecord('agent', tool, mapping, request, env));
@@ -736,10 +748,10 @@ export function CanvasView({
           env.status === 'error'
             ? { status: 'error', code: env.error?.code ?? 'error' }
             : { status: env.status };
-        clearOverlayAt = {
+        life.answered(token, {
           version: before,
           deadline: performance.now() + (env.status === 'error' ? 0 : 400),
-        };
+        });
       });
     };
     const onDown = (e: PointerEvent) => {
@@ -758,7 +770,8 @@ export function CanvasView({
       if (!collector.down(sample(e))) return;
       e.preventDefault();
       canvas.setPointerCapture(e.pointerId);
-      clearOverlayAt = null;
+      // A new gesture: an earlier commit still unanswered no longer clears anything (its overlay gives way here).
+      gestureToken = life.begin();
       reportGesture(true);
       overlay = gestureOverlay(collector.points, style);
       // Which preview this drag takes (preview note §3).
@@ -928,6 +941,8 @@ export function CanvasView({
       ro?.disconnect();
       unlisten?.();
       onReady?.(null);
+      // The preview's parts are dropped while the renderer is alive; a commit answering later acts on nothing.
+      life.unmount();
       renderer?.destroy();
     };
   }, [engine, viewId, onReady]);
