@@ -184,8 +184,11 @@ pub(crate) struct Builder<'a> {
     /// The interactive canvas's walk (M4 C4.2b, design note 1 §8): what each item's paint came from, beside `items`.
     pub(crate) tags: Option<Vec<Tag>>,
     /// The interactive canvas's selection parts (M4 C4.3b, preview note §3): only the objects whose id is in the set
-    /// (`true`) or not in it (`false`); every object when `None`.
+    /// (`true`) or not in it (`false`); every object when `None`. A selected group or layer selects everything in it
+    /// (C43B-R1-03).
     pub(crate) only: Option<(std::collections::BTreeSet<String>, bool)>,
+    /// Whether the walk is inside a selected group or layer: its descendants are selected objects (C43B-R1-03).
+    in_selected: bool,
 }
 
 /// What an item's paint came from, for the interactive canvas's colour slots (06 §6.3).
@@ -249,12 +252,19 @@ impl<'a> Builder<'a> {
             work,
             tags: None,
             only: None,
+            in_selected: false,
         }
     }
 
-    /// Whether the object `id` is drawn by this walk (its selection part, preview note §3).
+    /// Whether the object `id` is drawn by this walk (its selection part, preview note §3): selected when its id is in
+    /// the selection or a group or layer containing it is (C43B-R1-03).
     fn keeps(&self, id: &str) -> bool {
-        self.only.as_ref().is_none_or(|(set, inside)| set.contains(id) == *inside)
+        self.only.as_ref().is_none_or(|(set, inside)| (self.in_selected || set.contains(id)) == *inside)
+    }
+
+    /// Whether the node `id` (a group or layer) is selected itself: the walk of its descendants inherits it.
+    fn selects(&self, id: &str) -> bool {
+        self.only.as_ref().is_some_and(|(set, _)| set.contains(id))
     }
 
     /// Pushes an item and, in the canvas walk, its tag.
@@ -485,9 +495,20 @@ impl<'a> Builder<'a> {
         zones: &BTreeMap<String, crate::planar::LayerZones>,
     ) -> Result<(), CommandError> {
         for n in list {
+            let outer = self.in_selected;
             match n.kind() {
-                NodeKind::Layer => self.layer(n, zones.get(n.id().as_str()), &Affine::IDENTITY)?,
-                NodeKind::Group => self.nodes(n.children().as_deref().unwrap_or_default(), zones)?,
+                NodeKind::Layer => {
+                    self.in_selected = outer || self.selects(n.id().as_str());
+                    let r = self.layer(n, zones.get(n.id().as_str()), &Affine::IDENTITY);
+                    self.in_selected = outer;
+                    r?;
+                }
+                NodeKind::Group => {
+                    self.in_selected = outer || self.selects(n.id().as_str());
+                    let r = self.nodes(n.children().as_deref().unwrap_or_default(), zones);
+                    self.in_selected = outer;
+                    r?;
+                }
                 NodeKind::Text => self.text(n)?,
                 NodeKind::Bitmap => self.bitmap(n)?,
             }
@@ -720,6 +741,7 @@ pub(crate) fn rasterise_with(
         work: u64::from(width) * u64::from(height) / 1024,
         tags: None,
         only: None,
+        in_selected: false,
     };
     b.nodes(d.nodes(), &zones)?;
     if o.show_strokes {
