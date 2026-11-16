@@ -1,0 +1,2596 @@
+[
+  {
+    "name": "move",
+    "family": "scene",
+    "tool": "select",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "select",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 487,
+          "y": 197,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 508,
+          "y": 178,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 508,
+          "y": 178,
+          "modifiers": [],
+          "dt": 48,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Move Element"
+      ],
+      [
+        "Move Element"
+      ],
+      [
+        "Move Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 16,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/offset/x",
+                "value": 0.2531199676204362,
+                "oldValue": 0.0
+              },
+              {
+                "op": "replace",
+                "path": "/transform/offset/y",
+                "value": 0.1283910323793144,
+                "oldValue": 0.0
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-1",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 16
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "static",
+      "channel": "position",
+      "frame": 1,
+      "label": "Move Element",
+      "keyedChannels": [],
+      "numeric": {
+        "position": {
+          "x": 0.2531199676204363,
+          "y": 0.12839103237931423
+        }
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "rotate",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 609,
+          "y": 114,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 566,
+          "y": 73,
+          "modifiers": [],
+          "dt": 41,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 566,
+          "y": 73,
+          "modifiers": [],
+          "dt": 40,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "rotation": 17.71169547178611,
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "rotation": 17.71169547178611,
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "rotation": 17.71169547178611,
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Rotate Element"
+      ],
+      [
+        "Rotate Element"
+      ],
+      [
+        "Rotate Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [
+            "rotation"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "ch_01K7JJN8019AVYYYFQM2ADNNHZ/ky_01K7JJN800P51J3HHQWXPGJDW0",
+            "type": "key",
+            "op": "created",
+            "rev": 18,
+            "parentId": "ch_01K7JJN8019AVYYYFQM2ADNNHZ",
+            "index": 0
+          },
+          {
+            "id": "ch_01K7JJN8019AVYYYFQM2ADNNHZ",
+            "type": "channel",
+            "op": "created",
+            "rev": 18,
+            "parentId": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "index": 1
+          },
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 18,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/channels/rotation",
+                "value": {
+                  "id": "ch_01K7JJN8019AVYYYFQM2ADNNHZ",
+                  "type": "channel"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-2",
+          "label": "Rotate Element"
+        },
+        "warnings": [],
+        "documentRev": 18
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "key",
+      "channel": "rotation",
+      "frame": 1,
+      "label": "Rotate Element",
+      "keyedChannels": [
+        "rotation"
+      ],
+      "numeric": {
+        "rotation": 17.71169547178611
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "corner",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 600,
+          "y": 123,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 621,
+          "y": 110,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 621,
+          "y": 110,
+          "modifiers": [],
+          "dt": 47,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.0731950989583563,
+              "y": 1.059485387799947
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.0731950989583563,
+              "y": 1.059485387799947
+            },
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.0731950989583563,
+              "y": 1.059485387799947
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Scale Element"
+      ],
+      [
+        "Scale Element"
+      ],
+      [
+        "Scale Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [
+            "scale.x",
+            "scale.y"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "ch_01K7JJN8019QT7D8YXNWXVNQW7/ky_01K7JJN800C3A0PT70PQN3E90J",
+            "type": "key",
+            "op": "created",
+            "rev": 20,
+            "parentId": "ch_01K7JJN8019QT7D8YXNWXVNQW7",
+            "index": 0
+          },
+          {
+            "id": "ch_01K7JJN8019QT7D8YXNWXVNQW7",
+            "type": "channel",
+            "op": "created",
+            "rev": 20,
+            "parentId": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "index": 1
+          },
+          {
+            "id": "ch_01K7JJN8032Y7Z879JGNPN451E/ky_01K7JJN802ZK09A3EEXM6EK3JP",
+            "type": "key",
+            "op": "created",
+            "rev": 20,
+            "parentId": "ch_01K7JJN8032Y7Z879JGNPN451E",
+            "index": 0
+          },
+          {
+            "id": "ch_01K7JJN8032Y7Z879JGNPN451E",
+            "type": "channel",
+            "op": "created",
+            "rev": 20,
+            "parentId": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "index": 2
+          },
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 20,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/channels/scale.x",
+                "value": {
+                  "id": "ch_01K7JJN8019QT7D8YXNWXVNQW7",
+                  "type": "channel"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/channels/scale.y",
+                "value": {
+                  "id": "ch_01K7JJN8032Y7Z879JGNPN451E",
+                  "type": "channel"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-3",
+          "label": "Scale Element"
+        },
+        "warnings": [],
+        "documentRev": 20
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "key",
+      "channel": "scale",
+      "frame": 1,
+      "label": "Scale Element",
+      "keyedChannels": [
+        "scale.x",
+        "scale.y"
+      ],
+      "numeric": {
+        "scale": {
+          "x": 1.0731950989583563,
+          "y": 1.059485387799947
+        }
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "edge",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 600,
+          "y": 232,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 624,
+          "y": 232,
+          "modifiers": [],
+          "dt": 38,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 624,
+          "y": 232,
+          "modifiers": [],
+          "dt": 43,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.083651541666693
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.083651541666693
+            },
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.083651541666693
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Scale Element"
+      ],
+      [
+        "Scale Element"
+      ],
+      [
+        "Scale Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [
+            "scale.x"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "ch_01K7JJN8010TP2HT03NDQVFQ0G/ky_01K7JJN800SW13JYTJ40Y0M7E5",
+            "type": "key",
+            "op": "created",
+            "rev": 22,
+            "parentId": "ch_01K7JJN8010TP2HT03NDQVFQ0G",
+            "index": 0
+          },
+          {
+            "id": "ch_01K7JJN8010TP2HT03NDQVFQ0G",
+            "type": "channel",
+            "op": "created",
+            "rev": 22,
+            "parentId": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "index": 1
+          },
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 22,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/channels/scale.x",
+                "value": {
+                  "id": "ch_01K7JJN8010TP2HT03NDQVFQ0G",
+                  "type": "channel"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-4",
+          "label": "Scale Element"
+        },
+        "warnings": [],
+        "documentRev": 22
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "key",
+      "channel": "scale",
+      "frame": 1,
+      "label": "Scale Element",
+      "keyedChannels": [
+        "scale.x"
+      ],
+      "numeric": {
+        "scale": {
+          "x": 1.083651541666693
+        }
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "skew",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 457,
+          "y": 111,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 479,
+          "y": 111,
+          "modifiers": [],
+          "dt": 35,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 479,
+          "y": 111,
+          "modifiers": [],
+          "dt": 46,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "skew": 11.406798415237361,
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "skew": 11.406798415237361,
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "skew": 11.406798415237361,
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Skew Element"
+      ],
+      [
+        "Skew Element"
+      ],
+      [
+        "Skew Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [
+            "skew"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "ch_01K7JJN801FXHV3FTAT1NAXEYW/ky_01K7JJN800C8ZCHP25ASQWZFM6",
+            "type": "key",
+            "op": "created",
+            "rev": 24,
+            "parentId": "ch_01K7JJN801FXHV3FTAT1NAXEYW",
+            "index": 0
+          },
+          {
+            "id": "ch_01K7JJN801FXHV3FTAT1NAXEYW",
+            "type": "channel",
+            "op": "created",
+            "rev": 24,
+            "parentId": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "index": 1
+          },
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 24,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/channels/skew",
+                "value": {
+                  "id": "ch_01K7JJN801FXHV3FTAT1NAXEYW",
+                  "type": "channel"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-5",
+          "label": "Skew Element"
+        },
+        "warnings": [],
+        "documentRev": 24
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "key",
+      "channel": "skew",
+      "frame": 1,
+      "label": "Skew Element",
+      "keyedChannels": [
+        "skew"
+      ],
+      "numeric": {
+        "skew": 11.406798415237361
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "pivot",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 457,
+          "y": 232,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 474,
+          "y": 223,
+          "modifiers": [],
+          "dt": 32,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 474,
+          "y": 223,
+          "modifiers": [],
+          "dt": 49,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "rotationPivot": {
+              "x": 0.17808356860053892,
+              "y": 0.0052295177451912875
+            },
+            "scalePivot": {
+              "x": 0.17808356860053892,
+              "y": 0.0052295177451912875
+            }
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "rotationPivot": {
+              "x": 0.17808356860053892,
+              "y": 0.0052295177451912875
+            },
+            "scalePivot": {
+              "x": 0.17808356860053892,
+              "y": 0.0052295177451912875
+            }
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "rotationPivot": {
+              "x": 0.17808356860053892,
+              "y": 0.0052295177451912875
+            },
+            "scalePivot": {
+              "x": 0.17808356860053892,
+              "y": 0.0052295177451912875
+            }
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Move Pivot Element"
+      ],
+      [
+        "Move Pivot Element"
+      ],
+      [
+        "Move Pivot Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 26,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/rotationPivot/x",
+                "value": 0.17808356860053892,
+                "oldValue": 0.0
+              },
+              {
+                "op": "replace",
+                "path": "/transform/rotationPivot/y",
+                "value": 0.0052295177451912875,
+                "oldValue": 0.0
+              },
+              {
+                "op": "replace",
+                "path": "/transform/scalePivot/x",
+                "value": 0.17808356860053892,
+                "oldValue": 0.0
+              },
+              {
+                "op": "replace",
+                "path": "/transform/scalePivot/y",
+                "value": 0.0052295177451912875,
+                "oldValue": 0.0
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-6",
+          "label": "Move Pivot Element"
+        },
+        "warnings": [],
+        "documentRev": 26
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "static",
+      "channel": "rotationPivot",
+      "frame": 1,
+      "label": "Move Pivot Element",
+      "keyedChannels": [],
+      "numeric": {
+        "rotationPivot": {
+          "x": 0.17808356860053873,
+          "y": 0.00522951774519109
+        },
+        "scalePivot": {
+          "x": 0.17808356860053873,
+          "y": 0.00522951774519109
+        }
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "constrain scale",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 600,
+          "y": 123,
+          "modifiers": [
+            "shift"
+          ],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 621,
+          "y": 110,
+          "modifiers": [
+            "shift"
+          ],
+          "dt": 31,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 621,
+          "y": 110,
+          "modifiers": [
+            "shift"
+          ],
+          "dt": 51,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.0731950989583563,
+              "y": 1.0731950989583563
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.0731950989583563,
+              "y": 1.0731950989583563
+            },
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.0731950989583563,
+              "y": 1.0731950989583563
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Scale Element"
+      ],
+      [
+        "Scale Element"
+      ],
+      [
+        "Scale Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [
+            "scale.x",
+            "scale.y"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "ch_01K7JJN801YB4WQJADDT8TB56T/ky_01K7JJN80052A5G9DXC5X00NB4",
+            "type": "key",
+            "op": "created",
+            "rev": 28,
+            "parentId": "ch_01K7JJN801YB4WQJADDT8TB56T",
+            "index": 0
+          },
+          {
+            "id": "ch_01K7JJN801YB4WQJADDT8TB56T",
+            "type": "channel",
+            "op": "created",
+            "rev": 28,
+            "parentId": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "index": 1
+          },
+          {
+            "id": "ch_01K7JJN803E1VCYVEJYVWX27VC/ky_01K7JJN8022AV0VKDT2JGH37GZ",
+            "type": "key",
+            "op": "created",
+            "rev": 28,
+            "parentId": "ch_01K7JJN803E1VCYVEJYVWX27VC",
+            "index": 0
+          },
+          {
+            "id": "ch_01K7JJN803E1VCYVEJYVWX27VC",
+            "type": "channel",
+            "op": "created",
+            "rev": 28,
+            "parentId": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "index": 2
+          },
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 28,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/channels/scale.x",
+                "value": {
+                  "id": "ch_01K7JJN801YB4WQJADDT8TB56T",
+                  "type": "channel"
+                }
+              },
+              {
+                "op": "add",
+                "path": "/channels/scale.y",
+                "value": {
+                  "id": "ch_01K7JJN803E1VCYVEJYVWX27VC",
+                  "type": "channel"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-7",
+          "label": "Scale Element"
+        },
+        "warnings": [],
+        "documentRev": 28
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "key",
+      "channel": "scale",
+      "frame": 1,
+      "label": "Scale Element",
+      "keyedChannels": [
+        "scale.x",
+        "scale.y"
+      ],
+      "numeric": {
+        "scale": {
+          "x": 1.0731950989583563,
+          "y": 1.0731950989583563
+        }
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "constrain rotate",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 609,
+          "y": 114,
+          "modifiers": [
+            "shift"
+          ],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 566,
+          "y": 73,
+          "modifiers": [
+            "shift"
+          ],
+          "dt": 34,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 566,
+          "y": 73,
+          "modifiers": [
+            "shift"
+          ],
+          "dt": 47,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "rotation": 15,
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "rotation": 15,
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "rotation": 15.0,
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Rotate Element"
+      ],
+      [
+        "Rotate Element"
+      ],
+      [
+        "Rotate Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [
+            "rotation"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "ch_01K7JJN801F9C9WB4W43HRS6X1/ky_01K7JJN800YMEAZKKARCRYG952",
+            "type": "key",
+            "op": "created",
+            "rev": 30,
+            "parentId": "ch_01K7JJN801F9C9WB4W43HRS6X1",
+            "index": 0
+          },
+          {
+            "id": "ch_01K7JJN801F9C9WB4W43HRS6X1",
+            "type": "channel",
+            "op": "created",
+            "rev": 30,
+            "parentId": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "index": 1
+          },
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 30,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/channels/rotation",
+                "value": {
+                  "id": "ch_01K7JJN801F9C9WB4W43HRS6X1",
+                  "type": "channel"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-8",
+          "label": "Rotate Element"
+        },
+        "warnings": [],
+        "documentRev": 30
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "key",
+      "channel": "rotation",
+      "frame": 1,
+      "label": "Rotate Element",
+      "keyedChannels": [
+        "rotation"
+      ],
+      "numeric": {
+        "rotation": 15
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "temporary select",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 487,
+          "y": 197,
+          "modifiers": [
+            "ctrl"
+          ],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 508,
+          "y": 178,
+          "modifiers": [
+            "ctrl"
+          ],
+          "dt": 43,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 508,
+          "y": 178,
+          "modifiers": [
+            "ctrl"
+          ],
+          "dt": 38,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Move Element"
+      ],
+      [
+        "Move Element"
+      ],
+      [
+        "Move Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 32,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/offset/x",
+                "value": 0.2531199676204362,
+                "oldValue": 0.0
+              },
+              {
+                "op": "replace",
+                "path": "/transform/offset/y",
+                "value": 0.1283910323793144,
+                "oldValue": 0.0
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-9",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 32
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "static",
+      "channel": "position",
+      "frame": 1,
+      "label": "Move Element",
+      "keyedChannels": [],
+      "numeric": {
+        "position": {
+          "x": 0.2531199676204363,
+          "y": 0.12839103237931423
+        }
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "temporary skew",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 457,
+          "y": 111,
+          "modifiers": [
+            "alt"
+          ],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 479,
+          "y": 111,
+          "modifiers": [
+            "alt"
+          ],
+          "dt": 37,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 479,
+          "y": 111,
+          "modifiers": [
+            "alt"
+          ],
+          "dt": 44,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "skew": 11.406798415237361,
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "skew": 11.406798415237361,
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 1,
+            "skew": 11.406798415237361,
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Skew Element"
+      ],
+      [
+        "Skew Element"
+      ],
+      [
+        "Skew Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [
+            "skew"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "ch_01K7JJN801PZK7PYTWN2RBNS6D/ky_01K7JJN800767AVV7SFFTYG0JS",
+            "type": "key",
+            "op": "created",
+            "rev": 34,
+            "parentId": "ch_01K7JJN801PZK7PYTWN2RBNS6D",
+            "index": 0
+          },
+          {
+            "id": "ch_01K7JJN801PZK7PYTWN2RBNS6D",
+            "type": "channel",
+            "op": "created",
+            "rev": 34,
+            "parentId": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "index": 1
+          },
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 34,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/channels/skew",
+                "value": {
+                  "id": "ch_01K7JJN801PZK7PYTWN2RBNS6D",
+                  "type": "channel"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-10",
+          "label": "Skew Element"
+        },
+        "warnings": [],
+        "documentRev": 34
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "key",
+      "channel": "skew",
+      "frame": 1,
+      "label": "Skew Element",
+      "keyedChannels": [
+        "skew"
+      ],
+      "numeric": {
+        "skew": 11.406798415237361
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "keyed frame 8",
+    "family": "scene",
+    "tool": "transform",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "transform",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 487,
+          "y": 197,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 508,
+          "y": 178,
+          "modifiers": [],
+          "dt": 34,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 508,
+          "y": 178,
+          "modifiers": [],
+          "dt": 47,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 8,
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 8,
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "key",
+            "frame": 8,
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Move Element"
+      ],
+      [
+        "Move Element"
+      ],
+      [
+        "Move Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [
+            "position"
+          ],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "ch_01K7JJN801ZQEYVY97M69N5QKD/mp_01K7JJN800581MG9GXF0QVBHBN",
+            "type": "motionPoint",
+            "op": "created",
+            "rev": 36,
+            "parentId": "ch_01K7JJN801ZQEYVY97M69N5QKD",
+            "index": 1
+          },
+          {
+            "id": "ch_01K7JJN801ZQEYVY97M69N5QKD",
+            "type": "channel",
+            "op": "modified",
+            "rev": 36,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/points/1",
+                "value": {
+                  "id": "mp_01K7JJN800581MG9GXF0QVBHBN",
+                  "type": "motionPoint"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-11",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 36
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "key",
+      "channel": "position",
+      "frame": 8,
+      "label": "Move Element",
+      "keyedChannels": [
+        "position"
+      ],
+      "numeric": {
+        "position": {
+          "x": 0.2531199676204363,
+          "y": 0.12839103237931423
+        }
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "child move",
+    "family": "scene",
+    "tool": "select",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "select",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 487,
+          "y": 197,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 508,
+          "y": 178,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 508,
+          "y": 178,
+          "modifiers": [],
+          "dt": 48,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN80074RTFZMXKQ849FVR"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Move Element"
+      ],
+      [
+        "Move Element"
+      ],
+      [
+        "Move Element"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN80074RTFZMXKQ849FVR"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN80074RTFZMXKQ849FVR",
+            "type": "element",
+            "op": "modified",
+            "rev": 38,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/offset/x",
+                "value": 0.2531199676204362,
+                "oldValue": 0.0
+              },
+              {
+                "op": "replace",
+                "path": "/transform/offset/y",
+                "value": 0.1283910323793144,
+                "oldValue": 0.0
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-12",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 38
+      }
+    ],
+    "expected": {
+      "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+      "command": "anim.transform.set",
+      "nodeIds": [
+        "el_01K7JJN80074RTFZMXKQ849FVR"
+      ],
+      "target": "static",
+      "channel": "position",
+      "frame": 1,
+      "label": "Move Element",
+      "keyedChannels": [],
+      "numeric": {
+        "position": {
+          "x": 0.2531199676204363,
+          "y": 0.12839103237931423
+        }
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  },
+  {
+    "name": "line under peg",
+    "family": "drawing",
+    "tool": "line",
+    "input": "os",
+    "record": {
+      "origin": "user",
+      "tool": "line",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        0.9622870461234366,
+        -0.4903097397187107,
+        -0.2614985278499784,
+        -0.5132197579324996,
+        457,
+        232.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 380,
+          "y": 248,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 496,
+          "y": 179,
+          "modifiers": [],
+          "dt": 33,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 496,
+          "y": 179,
+          "modifiers": [],
+          "dt": 47,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.line.add",
+          "params": {
+            "to": {
+              "x": 54.66457979575199,
+              "y": 52.019478392769656
+            },
+            "constrainAngle": false,
+            "continuePrevious": false,
+            "from": {
+              "x": -70.04106954487719,
+              "y": 36.71296415803033
+            },
+            "colourId": "col_01M7H6CG1ZA2R880RTV9PR1ARB",
+            "thickness": 8,
+            "penId": "pen_01M7H6CG1ZA2R880RTV9PR1AW4",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "commands": {
+      "window": [
+        {
+          "commandId": "draw.line.add",
+          "params": {
+            "to": {
+              "x": 54.66457979575199,
+              "y": 52.019478392769656
+            },
+            "constrainAngle": false,
+            "continuePrevious": false,
+            "from": {
+              "x": -70.04106954487719,
+              "y": 36.71296415803033
+            },
+            "colourId": "col_01M7H6CG1ZA2R880RTV9PR1ARB",
+            "thickness": 8,
+            "penId": "pen_01M7H6CG1ZA2R880RTV9PR1AW4",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ],
+      "engine2": [
+        {
+          "commandId": "draw.line.add",
+          "params": {
+            "to": {
+              "x": 54.66457979575199,
+              "y": 52.019478392769656
+            },
+            "constrainAngle": false,
+            "continuePrevious": false,
+            "from": {
+              "x": -70.04106954487719,
+              "y": 36.71296415803033
+            },
+            "colourId": "col_01M7H6CG1ZA2R880RTV9PR1ARB",
+            "thickness": 8.0,
+            "penId": "pen_01M7H6CG1ZA2R880RTV9PR1AW4",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ]
+    },
+    "labels": [
+      [
+        "Line Tool"
+      ],
+      [
+        "Line Tool"
+      ],
+      [
+        "Line Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true,
+    "replayExact": true,
+    "replayLargestDifference": 0.0,
+    "directResults": [
+      {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN800PYPFVKR5V0PEKP5R",
+          "strokeIds": [
+            "st_01K7JJN800DNZAX471B1PS70R6"
+          ],
+          "zoneIds": [],
+          "layerId": "nd_01K7JJN801PT5N6HFV1MTN5E66",
+          "createdIds": [
+            "st_01K7JJN800DNZAX471B1PS70R6",
+            "nd_01K7JJN801PT5N6HFV1MTN5E66"
+          ],
+          "modifiedIds": [],
+          "removedIds": [],
+          "rev": 40
+        },
+        "changes": [
+          {
+            "id": "dr_01K7JJN800PYPFVKR5V0PEKP5R/st_01K7JJN800DNZAX471B1PS70R6",
+            "type": "stroke",
+            "op": "created",
+            "rev": 40,
+            "parentId": "dr_01K7JJN800PYPFVKR5V0PEKP5R/nd_01K7JJN801PT5N6HFV1MTN5E66",
+            "index": 0
+          },
+          {
+            "id": "dr_01K7JJN800PYPFVKR5V0PEKP5R/nd_01K7JJN801PT5N6HFV1MTN5E66",
+            "type": "drawingNode",
+            "op": "created",
+            "rev": 40,
+            "parentId": "dr_01K7JJN800PYPFVKR5V0PEKP5R",
+            "index": 1
+          },
+          {
+            "id": "dr_01K7JJN800PYPFVKR5V0PEKP5R",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 40,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/nodes/1",
+                "value": {
+                  "id": "nd_01K7JJN801PT5N6HFV1MTN5E66",
+                  "type": "drawingNode"
+                }
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-13",
+          "label": "Line Tool"
+        },
+        "warnings": [],
+        "documentRev": 40
+      }
+    ],
+    "expected": {
+      "spec": "02_drawing.md:540-543,1321; M4-design-gestures.md:92-94",
+      "command": "draw.line.add",
+      "label": "Line Tool",
+      "numeric": {
+        "from": {
+          "x": -70.04106954487717,
+          "y": 36.712964158030296
+        },
+        "to": {
+          "x": 54.664579795751955,
+          "y": 52.01947839276972
+        }
+      },
+      "independentTolerance": 1e-09
+    },
+    "specVerdict": "PASS",
+    "undoRestored": true
+  }
+]

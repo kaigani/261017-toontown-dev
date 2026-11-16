@@ -184,22 +184,27 @@ def case4():
             await engine.run("edit.selection.set"''')
     body=body.replace('        before = json.dumps', '''        before_content=[(await e.result('doc.object.get',{'ref':ids['Bob']})).get('object') if family=='scene' else await e.result('draw.drawing.get',{}) for e in engines]
         before = json.dumps''')
+    body=body.replace('            # The Paint row', '''            await engine.run('view.zoom.set',{'viewId':'cameraView','zoom':.5})
+            # The Paint row''')
     body=body.replace('            e6.os_drag(e2e.APP_PID', '''            modifier=0x10 if name.startswith('constrain') else 0x11 if name=='temporary select' else 0x12 if name=='temporary skew' else None
             import ctypes
             if modifier: ctypes.windll.user32.keybd_event(modifier,0,0,0)
             e6.os_drag(e2e.APP_PID''')
     body=body.replace('            how = "os"', '''            if modifier: ctypes.windll.user32.keybd_event(modifier,0,2,0)
             how = "os"''')
-    body=body.replace('        results.append(row)\n        run.save', '''        await review_expect(m=None, row=row, run=run, u=u, mapping=m, ids=ids, name=name, events=events, frame=8 if name=='keyed frame 8' else 1)
+    body=body.replace('        results.append(row)\n        run.save', '''        row['directResults']=direct
+        await review_expect(m=None, row=row, run=run, u=u, mapping=m, ids=ids, name=name, events=events, frame=8 if name=='keyed frame 8' else 1)
         run.check(how=='os','real OS input '+name,how)
         results.append(row)
         run.save''')
     body=body.replace('    return results', '''        restored=[(await e.result('doc.object.get',{'ref':ids['Bob']})).get('object') if family=='scene' else await e.result('draw.drawing.get',{}) for e in engines]
-        row['undoRestored']=restored==before_content
+        run.save('undo-'+name.replace(' ','-')+'.json',{'before':before_content,'after':restored})
+        row['undoRestored']=canonical(restored)==canonical(before_content)
         run.check(row['undoRestored'],'undo restores prior content '+name,None)
         run.save('rows.json',results)
     return results''')
     m.review_expect=review_expect
+    m.canonical=canonical
     exec(compile(body,__file__,'exec'),m.__dict__)
     app=str(Path(sys.argv[1]).resolve()); head=str(Path(sys.argv[3]).resolve())
     sys.argv=['equiv',app,head,str(OUT/'case4')]
@@ -214,13 +219,48 @@ async def review_expect(m,row,run,u,mapping,ids,name,events,frame):
     expected={'spec':'05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)','command':'anim.transform.set','nodeIds':[ids['Bob']],'target':target,'channel':field,'frame':frame,'label':label}
     ok=bool(cmd) and cmd[0]['commandId']=='anim.transform.set' and p.get('target')==target and p.get('nodeIds')==[ids['Bob']] and field in p and row['labels']==[[label]]*3
     if name=='line under peg':
-        expected={'spec':'02_drawing.md section 7.4; M4-design-gestures.md:92-94','command':'draw.line.add','label':'Line Tool'}
+        expected={'spec':'02_drawing.md:540-543,1321; M4-design-gestures.md:92-94','command':'draw.line.add','label':'Line Tool'}
         ok=bool(cmd) and cmd[0]['commandId']=='draw.line.add' and row['labels']==[['Line Tool']]*3
     elif target=='key':
         ok=ok and p.get('frame')==frame
         if name=='edge': ok=ok and set(p.get('scale',{}))=={'x'}
+    if name!='line under peg':
+        channels=[] if target=='static' else ['scale.x'] if name=='edge' else ['scale.x','scale.y'] if field=='scale' else [field]
+        keyed=(row['directResults'][0].get('result') or {}).get('keyedChannels',[])
+        expected['keyedChannels']=channels
+        ok=ok and sorted(keyed)==sorted(channels)
+    if events:
+        start,end=events[0],events[-1]
+        x,y=start['x'],start['y']; X,Y=end['x'],end['y']
+        a,b,c,d,e,f=mapping; det=a*d-b*c
+        dx=(d*(X-x)-c*(Y-y))/det; dy=(-b*(X-x)+a*(Y-y))/det
+        values={}
+        if field=='position': values={'position':{'x':dx/100,'y':dy/100}}
+        elif field=='rotationPivot': values={'rotationPivot':{'x':dx/100,'y':dy/100},'scalePivot':{'x':dx/100,'y':dy/100}}
+        elif field=='rotation':
+            cx,cy=(u[0]+u[2])/2,(u[1]+u[3])/2
+            angle=math.degrees(math.atan2(y-cy,x-cx)-math.atan2(Y-cy,X-cx))
+            if name.startswith('constrain'): angle=round(angle/15)*15
+            values={'rotation':angle}
+        elif field=='scale':
+            sx=(X-u[0])/(x-u[0]); sy=(Y-u[3])/(y-u[3])
+            if name=='constrain scale': sx=sy=max(sx,sy,key=abs)
+            values={'scale':{'x':sx} if name=='edge' else {'x':sx,'y':sy}}
+        elif field=='skew': values={'skew':math.degrees(math.atan((X-x)/((u[3]-u[1])/2)))}
+        if name=='line under peg':
+            values={'from':{'x':(d*(x-e)-c*(y-f))/det,'y':(-b*(x-e)+a*(y-f))/det},'to':{'x':(d*(X-e)-c*(Y-f))/det,'y':(-b*(X-e)+a*(Y-f))/det}}
+        def close(a,b):
+            if isinstance(a,dict): return isinstance(b,dict) and all(k in b and close(v,b[k]) for k,v in a.items())
+            return isinstance(b,(float,int)) and abs(a-b)<=1e-9*max(1,abs(a),abs(b))
+        expected['numeric']=values;expected['independentTolerance']=1e-9
+        ok=ok and close(values,p)
     row['expected']=expected; row['specVerdict']='PASS' if ok else 'FAIL'
     run.check(ok,'D-23 stated command target channels label '+name,{'expected':expected,'observed':cmd,'labels':row['labels']})
+
+def canonical(value):
+    if isinstance(value,dict): return {k:canonical(v) for k,v in value.items() if k not in ('rev',)}
+    if isinstance(value,list): return [canonical(v) for v in value]
+    return value
 
 if __name__ == '__main__':
     OUT.mkdir(parents=True,exist_ok=True)
