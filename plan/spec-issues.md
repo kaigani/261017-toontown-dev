@@ -1934,6 +1934,16 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   command is bound to that command. A command declared agent-only that the GUI's source reads (its state stores, the
   host's own reads) stays agent-only: that read is plumbing, not a location a person acts at (parity note 9, PA3).
 - **Question:** confirm the list, and that plumbing reads do not bind an agent-only command.
+- **Ruled (D-35, C4.3b round 1):** a mention in the source binds nothing. A mutating command is bound only by a
+  manifest action (a menu item, a default key binding, a rendered actionable element, a toolbar item, a gesture row, or
+  a window gesture row: `window-gestures.json`, for geometry that ends in a `window.*` or `view.active.set` command).
+  A query is bound only by a read declared under the surface that shows it (`reads.json` `surfaces`), checked both
+  ways against the product's call sites; the plumbing reads (`reads.json` `plumbing`: the watchdog's state poll, the
+  host's preferences and geometry reads, a form waiting for its job) bind nothing. Built: one more reason, `disclose`
+  (a control that only shows or hides a surface of the GUI's own, as the status bar's agent indicator opening its
+  popover; the surface's own controls are collected and bound). Round 1's collector then rendered a message box: its
+  buttons answer the question of the action that asked it, so one more reason, `answer` (a single informational OK is
+  `dismiss`); the action's own command is bound where the action is. Question: confirm `answer`.
 
 ## SI-156 — where the drawing Select tool's handles are in a Camera view (found in M4 C4.3b; defect fixed)
 

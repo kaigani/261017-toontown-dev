@@ -40,7 +40,9 @@ note §7) and the Camera view's overlays (camera-view note §6).
   (TTRD §4). At the press on the selection the canvas loads two more payloads of the current drawing at its revision:
   the selected objects alone, and the rest. During the drag it draws the rest through `drawingToView` and the selected
   objects through `P · drawingToView`. They come from `canvas_load` with a new `part` argument (`all`, the default,
-  `selection`, `rest`): the kernel's walk is the same, filtered by object id against the selection at that revision.
+  `selection`, `rest`): the kernel's walk is the same, filtered by object id against the selection at that revision;
+  a selected group or layer selects every object inside it, at any depth (C43B-R1-03: the first build matched ids only,
+  so a selected group's members were drawn in the rest and did not move).
   The payload format does not change. Until the two parts arrive (a selection of a few objects arrives within a frame
   or two) the whole drawing and the moving outline are drawn, as in C4.2b.
 - **Navigation.** A Grabber drag pans the view by `P` (a translation of everything drawn) and commits one
@@ -73,7 +75,17 @@ the gesture's ink. There is no frame without either.
   drawn after it, within 1 view pixel at the selection's corners. e2e, both back ends: corners read from the window's
   summary.
 - **PV3** `canvas_load {part}`: `selection` and `rest` together draw the same pixels as `all`, and `selection` holds
-  exactly the selected objects (kernel test of the walk; a Vitest decode of both parts).
+  exactly the selected objects (kernel test of the walk; a Vitest decode of both parts). C43B-R1-03 (ruling D-27): as a full table
+  (`crates/executor/tests/c43/selection_parts.rs`): every selectable kind (pencil, brush, painted zone, text, bitmap)
+  alone on each of two layers, in a group, in a nested group and as part of a partly selected group, and layers and
+  groups themselves; each cell checks selection + rest = all and that the selected geometry is in `selection` only.
+- **PV5** (C43B-R1S-06, C43B-R1-04) The overlay and the preview belong to their gesture: each press (and each agent
+  gesture) is tagged by gesture and engine generation (`desktop/src/canvas/gestureLifecycle.ts`). A commit's answer
+  clears the overlay and preview only while its gesture is the current one, so a release followed at once by a second
+  press keeps the second drag's preview however late the first answer comes; a new generation and unmounting drop the
+  preview with its loaded parts at once, and a later answer acts on nothing. Vitest with answers delivered when the
+  test says (a delayed answer after a second gesture began; a restart between release and answer; unmount); the
+  review's probe repeats the rapid pair 20 times through the real pointer.
 - **PV4** The preview's affine follows the furniture rule of the kernel's command for every handle: for each row of
   the gestures note's tables, the window's `P` maps the box's corners where the committed command's result puts them,
   within 1 view pixel, in the exact cases. Vitest, against values derived in the test.
