@@ -67,7 +67,20 @@ export function useEngineMirror(services: ShellServices, reportScreens: boolean)
   }, [services, reportScreens]);
 }
 
-/** Shortcuts (01 §8.4): the kernel's keymap decides; a text field keeps unmodified keys. */
+/** Whether the key event's target is a control Enter or Space activates (a button, a link, a check box, a radio). */
+function isActivatable(el: EventTarget | null): boolean {
+  if (!(el instanceof HTMLElement)) return false;
+  if (el instanceof HTMLButtonElement || el instanceof HTMLAnchorElement) return true;
+  if (el instanceof HTMLInputElement)
+    return ['checkbox', 'radio', 'button', 'submit', 'reset'].includes(el.type);
+  return ['button', 'menuitem', 'menuitemcheckbox', 'option', 'tab', 'checkbox', 'switch'].includes(
+    el.getAttribute('role') ?? '',
+  );
+}
+
+/** Shortcuts (01 §8.4): the kernel's keymap decides; a text field keeps unmodified keys. Keys inside a modal dialog or
+ *  message box are the dialog's (its buttons, its Escape), and Enter or Space on a focused control activates it: the
+ *  keymap's Enter (Play) once took a message box's default button's Enter (found by the D-39 table, C4.3b round 3). */
 export function useShortcuts(
   services: ShellServices,
   actions: ActionsApi,
@@ -81,6 +94,12 @@ export function useShortcuts(
       if (!seq) return;
       const field = isTextField(e.target);
       if (field && isUnmodified(seq)) return;
+      if ((seq === 'Enter' || seq === 'Space') && isActivatable(e.target)) return;
+      if (e.target instanceof Element && e.target.closest('[aria-modal="true"]')) {
+        // The page's own accelerators (reload, print) stay off; no command runs behind a modal question.
+        if (isBrowserAccelerator(seq)) e.preventDefault();
+        return;
+      }
       const bound = keymap.some((b) => b.keys === seq);
       if (!bound && !isBrowserAccelerator(seq)) return;
       e.preventDefault();
