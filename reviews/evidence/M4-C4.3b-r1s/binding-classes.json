@@ -1,0 +1,389 @@
+{
+  "menu": [
+    "app.frame.move",
+    "app.info.get",
+    "app.mode.set",
+    "app.quit",
+    "doc.validate",
+    "draw.arrange.apply",
+    "draw.breakApart.apply",
+    "draw.centreLine.apply",
+    "draw.flatten.apply",
+    "draw.flip.apply",
+    "draw.group.create",
+    "draw.group.delete",
+    "draw.linesToBrush.apply",
+    "draw.lock.set",
+    "draw.object.delete",
+    "draw.optimize.apply",
+    "draw.rotate.apply",
+    "draw.smooth.apply",
+    "edit.copy",
+    "edit.cut",
+    "edit.cutSpecial",
+    "edit.delete",
+    "edit.deselectAll",
+    "edit.paste",
+    "edit.pasteAsNewElement",
+    "edit.pasteSpecial",
+    "edit.redo",
+    "edit.selectAll",
+    "edit.undo",
+    "project.backup.open",
+    "project.close",
+    "project.create",
+    "project.info.get",
+    "project.open",
+    "project.properties.set",
+    "project.recent.remove",
+    "project.save",
+    "project.saveAs",
+    "ui.contextHelpMode.set",
+    "ui.help.open",
+    "ui.preferences.open",
+    "ui.startScreen.set",
+    "ui.statusBar.set",
+    "view.rotation.set",
+    "view.transform.reset",
+    "view.type.set",
+    "view.zoom.set",
+    "window.floatingPanels.set",
+    "window.fullScreen.set",
+    "window.minimized.set",
+    "window.panel.set",
+    "window.raiseAll.run",
+    "window.sidePanelsExtended.set",
+    "window.toolbar.items.reset",
+    "window.toolbar.set",
+    "workspace.create",
+    "workspace.delete",
+    "workspace.export",
+    "workspace.import",
+    "workspace.rename",
+    "workspace.reset",
+    "workspace.save"
+  ],
+  "keymap": [
+    "app.currentElement.move",
+    "playback.start",
+    "playback.stop",
+    "print.run",
+    "tool.group.select"
+  ],
+  "dom": [
+    "doc.repair",
+    "drawAid.autoLightTable.set",
+    "drawAid.background.set",
+    "drawAid.currentOnTop.set",
+    "drawAid.grid.set",
+    "drawAid.lightTableShade.set",
+    "drawAid.onionSkin.set",
+    "drawAid.onionSkinCycle.run",
+    "drawAid.onionSkinStyle.set",
+    "drawAid.selectionDisplay.set",
+    "drawAid.staticLightTable.add",
+    "drawAid.staticLightTable.remove",
+    "drawAid.staticLightTable.set",
+    "drawAid.staticLightTablePanel.set",
+    "drawAid.strokes.set",
+    "prefs.reset",
+    "prefs.set",
+    "tool.active.set",
+    "tool.symmetry.set",
+    "workspace.select"
+  ],
+  "toolbar": [
+    "app.frame.set",
+    "lipsync.panel.open",
+    "playback.loop.set"
+  ],
+  "gestures": [
+    "anim.tool.set",
+    "anim.transform.set",
+    "colour.current.set",
+    "colour.gap.close",
+    "colour.paint.apply",
+    "colour.paint.remove",
+    "colour.paintUnpainted.apply",
+    "colour.pick",
+    "draw.cut.apply",
+    "draw.ellipse.add",
+    "draw.erase.apply",
+    "draw.line.add",
+    "draw.pivot.set",
+    "draw.polyline.add",
+    "draw.rectangle.add",
+    "draw.selection.set",
+    "draw.stroke.add",
+    "draw.transform.apply",
+    "edit.selection.set",
+    "view.pan.set"
+  ],
+  "sourceOnly": [
+    {
+      "command": "agent.activity.list",
+      "files": [
+        "desktop/src/shell/StatusBar.tsx"
+      ]
+    },
+    {
+      "command": "agent.server.status",
+      "files": [
+        "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "agent.session.disconnect",
+      "files": [
+        "desktop/src/shell/StatusBar.tsx"
+      ]
+    },
+    {
+      "command": "agent.session.pause",
+      "files": [
+        "desktop/src/shell/StatusBar.tsx"
+      ]
+    },
+    {
+      "command": "agent.session.resume",
+      "files": [
+        "desktop/src/shell/StatusBar.tsx"
+      ]
+    },
+    {
+      "command": "agent.token.regenerate",
+      "files": [
+        "desktop/src-tauri/src/host.rs"
+      ]
+    },
+    {
+      "command": "anim.tool.get",
+      "files": [
+        "desktop/src-tauri/src/host.rs",
+        "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
+      "command": "drawAid.state.get",
+      "files": [
+        "desktop/src/panels/ViewChrome.tsx"
+      ]
+    },
+    {
+      "command": "drawAid.staticLightTable.list",
+      "files": [
+        "desktop/src/panels/ViewChrome.tsx"
+      ]
+    },
+    {
+      "command": "edit.history.get",
+      "files": [
+        "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "edit.history.move",
+      "files": [
+        "desktop/src/panels/PanelBody.tsx"
+      ]
+    },
+    {
+      "command": "job.cancel",
+      "files": [
+        "desktop/src/shell/projectForms.tsx"
+      ]
+    },
+    {
+      "command": "job.list",
+      "files": [
+        "desktop/src/shell/StatusBar.tsx"
+      ]
+    },
+    {
+      "command": "keymap.export",
+      "files": [
+        "desktop/src/shell/makeActions.tsx"
+      ]
+    },
+    {
+      "command": "keymap.import",
+      "files": [
+        "desktop/src/shell/makeActions.tsx"
+      ]
+    },
+    {
+      "command": "keymap.list",
+      "files": [
+        "desktop/src-tauri/src/menu.rs",
+        "desktop/src/prefs/PreferencesDialog.tsx",
+        "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "keymap.remove",
+      "files": [
+        "desktop/src/prefs/PreferencesDialog.tsx"
+      ]
+    },
+    {
+      "command": "keymap.reset",
+      "files": [
+        "desktop/src/prefs/PreferencesDialog.tsx"
+      ]
+    },
+    {
+      "command": "keymap.set",
+      "files": [
+        "desktop/src/prefs/PreferencesDialog.tsx"
+      ]
+    },
+    {
+      "command": "prefs.get",
+      "files": [
+        "desktop/src-tauri/src/host.rs",
+        "desktop/src-tauri/src/shell.rs",
+        "desktop/src/App.tsx",
+        "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
+      "command": "prefs.list",
+      "files": [
+        "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "project.backup.list",
+      "files": [
+        "desktop/src/shell/infoDialogs.tsx"
+      ]
+    },
+    {
+      "command": "project.presets.list",
+      "files": [
+        "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "project.properties.get",
+      "files": [
+        "desktop/src/shell/projectForms.tsx"
+      ]
+    },
+    {
+      "command": "project.recent.list",
+      "files": [
+        "desktop/src-tauri/src/menu.rs",
+        "desktop/src/App.tsx",
+        "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "project.recovery.delete",
+      "files": [
+        "desktop/src/start/StartScreen.tsx"
+      ]
+    },
+    {
+      "command": "project.recovery.list",
+      "files": [
+        "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "project.recovery.open",
+      "files": [
+        "desktop/src/shell/actionsApi.ts",
+        "desktop/src/shell/makeActions.tsx",
+        "desktop/src/start/StartScreen.tsx"
+      ]
+    },
+    {
+      "command": "tool.active.get",
+      "files": [
+        "desktop/src-tauri/src/host.rs",
+        "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
+      "command": "tool.list",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "tool.pen.list",
+      "files": [
+        "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
+      "command": "ui.help.get",
+      "files": [
+        "desktop/src/App.tsx"
+      ]
+    },
+    {
+      "command": "ui.theme.list",
+      "files": [
+        "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "ui.tips.list",
+      "files": [
+        "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "ui.tips.reset",
+      "files": [
+        "desktop/src/prefs/PreferencesDialog.tsx"
+      ]
+    },
+    {
+      "command": "ui.tips.set",
+      "files": [
+        "desktop/src/prefs/PreferencesDialog.tsx",
+        "desktop/src/shell/messages.tsx"
+      ]
+    },
+    {
+      "command": "view.active.set",
+      "files": [
+        "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
+      "command": "view.list",
+      "files": [
+        "desktop/src/panels/PanelBody.tsx"
+      ]
+    },
+    {
+      "command": "view.transform.get",
+      "files": [
+        "desktop/src/panels/ViewChrome.tsx"
+      ]
+    },
+    {
+      "command": "window.geometry.set",
+      "files": [
+        "desktop/src-tauri/src/shell.rs"
+      ]
+    },
+    {
+      "command": "window.panel.move",
+      "files": [
+        "desktop/src/dock/DockArea.tsx"
+      ]
+    },
+    {
+      "command": "workspace.list",
+      "files": [
+        "desktop/src-tauri/src/menu.rs",
+        "desktop/src/state/store.ts"
+      ]
+    }
+  ]
+}
