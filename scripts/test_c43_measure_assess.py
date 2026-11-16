@@ -106,6 +106,20 @@ class Assess(unittest.TestCase):
         r["control"]["startScreen"] = False
         self.assertTrue(any("D-33 control" in n for n in failed(r)))
 
+    def test_an_implausible_control_cadence_fails_before_either_budget(self):
+        # C43B-R2-05: 300 frames with a cadence of zero (the reviewer's `zero-control`), a negative or absent one, an
+        # unordered one, one faster than a display or slower than 10 frames a second: each fails, whatever branch.
+        for name, frame in (("zero", {"p50": 0, "p95": 0, "max": 0}), ("negative", {"p50": -16.7, "p95": -16.7, "max": -16.7}),
+                            ("absent", {"p50": None, "p95": None, "max": None}), ("unordered", {"p50": 20.0, "p95": 16.7, "max": 30.0}),
+                            ("too fast", {"p50": 1.0, "p95": 1.0, "max": 1.0}), ("too slow", {"p50": 250.0, "p95": 250.0, "max": 250.0}),
+                            ("not finite", {"p50": float("inf"), "p95": float("inf"), "max": float("inf")})):
+            r = complete()
+            r["control"]["frameMs"].update(frame)
+            self.assertTrue(any("plausible cadence" in n for n in failed(r)), name)
+        # A 60 Hz control and a 30 Hz capped one pass the check.
+        for median in (16.7, 33.3):
+            self.assertFalse(any("plausible cadence" in n for n in failed(complete(median=median))), median)
+
     def test_a_missing_scene_fails(self):
         r = complete()
         del r["sample"]

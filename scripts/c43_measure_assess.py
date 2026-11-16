@@ -17,8 +17,14 @@ per frame and share of long intervals; release-to-committed on the sample scene;
 
 from __future__ import annotations
 
+import math
+
 #: The canvas keeps the last 300 frames of each kind (desktop/src/canvas/metrics.ts).
 FULL = 300
+#: A plausible control median frame interval, ms: a 333 Hz display at the fastest, 10 frames a second at the slowest
+#: (C43B-R2-05).
+CONTROL_MIN_MS = 3.0
+CONTROL_MAX_MS = 100.0
 #: The 1,000-element scene's drawings and the sample scene's two (Bob and Ann).
 RESIDENT_1K = 1002
 
@@ -49,7 +55,18 @@ def assess(record: dict, bounds: dict, drags: int) -> list:
     resident = (record.get("groups1k") or {}).get("resident", 0)
     check(resident >= RESIDENT_1K, f"the 1,000-element scene has its {RESIDENT_1K} drawings resident", resident)
 
-    median = (control.get("frameMs") or {}).get("p50")
+    # C43B-R2-05: the control's cadence must be a display's before it chooses the budget: positive, finite, ordered
+    # (p50 <= p95 <= max) and between CONTROL_MIN_MS and CONTROL_MAX_MS (a 333 Hz display to 10 frames a second); a
+    # zero or absent cadence fails here instead of selecting plan §6's ordinary budget.
+    frame = control.get("frameMs") or {}
+    median = frame.get("p50")
+    stats = [frame.get(k) for k in ("p50", "p95", "max")]
+    plausible = (all(isinstance(v, (int, float)) and math.isfinite(v) and v > 0 for v in stats)
+                 and stats[0] <= stats[1] <= stats[2] and CONTROL_MIN_MS <= stats[0] <= CONTROL_MAX_MS)
+    check(plausible, f"D-33 control: a plausible cadence (median {CONTROL_MIN_MS:g}-{CONTROL_MAX_MS:g} ms, "
+          "positive, p50 <= p95 <= max)", {k: frame.get(k) for k in ("p50", "p95", "max")})
+    if not plausible:
+        median = None
     capped = median is not None and median > 17.0
     record["assessment"] = ("D-33 external cap: work p95 <= 8 ms, <= 1 % of intervals > 2 x the control median" if capped
                             else "plan §6: frame time p95 <= 17.5 ms")
