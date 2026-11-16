@@ -1,0 +1,40 @@
+{
+  "backend": "webgpu",
+  "generation": 0,
+  "drawings": [
+    {
+      "id": "dr_01K7JJN800PYQJJSRV3D9HQC90",
+      "rev": 88,
+      "bucket": 1
+    },
+    {
+      "id": "dr_01K7JJN800NFTTJF69FXWVE933",
+      "rev": 93,
+      "bucket": 1
+    }
+  ],
+  "failures": [
+    "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}",
+    "scene: {\"code\":\"project.none\",\"message\":\"no project is open\",\"details\":{}}",
+    "load dr_01K7JJN800C01XEGBB14SD5JP2: {\"code\":\"ref.notFound\",\"message\":\"drawing `dr_01K7JJN800C01XEGBB14SD5JP2` was not found\",\"details\":{\"ref\":\"dr_01K7JJN800C01XEGBB14SD5JP2\"}}"
+  ],
+  "gesture": null,
+  "selection": {
+    "objects": 0,
+    "handles": 12,
+    "points": 0,
+    "pivot": false
+  },
+  "viewType": "camera",
+  "camera": {
+    "frame": true,
+    "pivots": 1,
+    "boxes": 1,
+    "otherCameras": 0,
+    "handles": 12
+  },
+  "drawn": 2,
+  "residentDrawings": 2,
+  "residentBytes": 19800040,
+  "lastError": null
+}

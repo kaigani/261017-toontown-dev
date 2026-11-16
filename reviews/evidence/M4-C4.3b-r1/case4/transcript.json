@@ -1,0 +1,1336 @@
+[
+  {
+    "check": "the default palette's Colour 2 and Colour 3 are found",
+    "ok": true,
+    "detail": [
+      "col_01M7H6Y1KCVCMDFP01J70NWT24",
+      "col_01M7H6Y1KCVCMDFP01J70NWT25"
+    ]
+  },
+  {
+    "check": "the application saves the fixture project",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "D-32: engine 2's Camera view has the window's size",
+    "ok": true,
+    "detail": {
+      "window": {
+        "width": 914.0,
+        "height": 465.0
+      },
+      "engine2": {
+        "width": 914.0,
+        "height": 465.0
+      }
+    }
+  },
+  {
+    "check": "the Camera view's canvas is located in the window (OS input)",
+    "ok": true,
+    "detail": [
+      49,
+      136,
+      914,
+      465
+    ]
+  },
+  {
+    "check": "whole document three-way move",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way move (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label move",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "static",
+        "channel": "position",
+        "frame": 1,
+        "label": "Move Element",
+        "keyedChannels": [],
+        "numeric": {
+          "position": {
+            "x": 0.2531199676204363,
+            "y": 0.12839103237931423
+          }
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input move",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo move",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content move",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way rotate (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Rotate Element"
+        ],
+        [
+          "Rotate Element"
+        ],
+        [
+          "Rotate Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label rotate",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "key",
+        "channel": "rotation",
+        "frame": 1,
+        "label": "Rotate Element",
+        "keyedChannels": [
+          "rotation"
+        ],
+        "numeric": {
+          "rotation": 17.71169547178611
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "key",
+            "frame": 1,
+            "rotation": 17.71169547178611,
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Rotate Element"
+        ],
+        [
+          "Rotate Element"
+        ],
+        [
+          "Rotate Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input rotate",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way corner",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way corner (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label corner",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "key",
+        "channel": "scale",
+        "frame": 1,
+        "label": "Scale Element",
+        "keyedChannels": [
+          "scale.x",
+          "scale.y"
+        ],
+        "numeric": {
+          "scale": {
+            "x": 1.0731950989583563,
+            "y": 1.059485387799947
+          }
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.0731950989583563,
+              "y": 1.059485387799947
+            },
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input corner",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo corner",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content corner",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way edge",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way edge (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label edge",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "key",
+        "channel": "scale",
+        "frame": 1,
+        "label": "Scale Element",
+        "keyedChannels": [
+          "scale.x"
+        ],
+        "numeric": {
+          "scale": {
+            "x": 1.083651541666693
+          }
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.083651541666693
+            },
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input edge",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo edge",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content edge",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way skew",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way skew (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label skew",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "key",
+        "channel": "skew",
+        "frame": 1,
+        "label": "Skew Element",
+        "keyedChannels": [
+          "skew"
+        ],
+        "numeric": {
+          "skew": 11.406798415237361
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "key",
+            "frame": 1,
+            "skew": 11.406798415237361,
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input skew",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo skew",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content skew",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way pivot",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way pivot (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move Pivot Element"
+        ],
+        [
+          "Move Pivot Element"
+        ],
+        [
+          "Move Pivot Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label pivot",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "static",
+        "channel": "rotationPivot",
+        "frame": 1,
+        "label": "Move Pivot Element",
+        "keyedChannels": [],
+        "numeric": {
+          "rotationPivot": {
+            "x": 0.17808356860053873,
+            "y": 0.00522951774519109
+          },
+          "scalePivot": {
+            "x": 0.17808356860053873,
+            "y": 0.00522951774519109
+          }
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "static",
+            "rotationPivot": {
+              "x": 0.17808356860053892,
+              "y": 0.0052295177451912875
+            },
+            "scalePivot": {
+              "x": 0.17808356860053892,
+              "y": 0.0052295177451912875
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Move Pivot Element"
+        ],
+        [
+          "Move Pivot Element"
+        ],
+        [
+          "Move Pivot Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input pivot",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo pivot",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content pivot",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way constrain scale",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way constrain scale (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label constrain scale",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "key",
+        "channel": "scale",
+        "frame": 1,
+        "label": "Scale Element",
+        "keyedChannels": [
+          "scale.x",
+          "scale.y"
+        ],
+        "numeric": {
+          "scale": {
+            "x": 1.0731950989583563,
+            "y": 1.0731950989583563
+          }
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "key",
+            "frame": 1,
+            "scale": {
+              "x": 1.0731950989583563,
+              "y": 1.0731950989583563
+            },
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ],
+        [
+          "Scale Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input constrain scale",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo constrain scale",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content constrain scale",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way constrain rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way constrain rotate (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Rotate Element"
+        ],
+        [
+          "Rotate Element"
+        ],
+        [
+          "Rotate Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label constrain rotate",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "key",
+        "channel": "rotation",
+        "frame": 1,
+        "label": "Rotate Element",
+        "keyedChannels": [
+          "rotation"
+        ],
+        "numeric": {
+          "rotation": 15
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "key",
+            "frame": 1,
+            "rotation": 15,
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Rotate Element"
+        ],
+        [
+          "Rotate Element"
+        ],
+        [
+          "Rotate Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input constrain rotate",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo constrain rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content constrain rotate",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way temporary select",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way temporary select (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label temporary select",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "static",
+        "channel": "position",
+        "frame": 1,
+        "label": "Move Element",
+        "keyedChannels": [],
+        "numeric": {
+          "position": {
+            "x": 0.2531199676204363,
+            "y": 0.12839103237931423
+          }
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input temporary select",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo temporary select",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content temporary select",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way temporary skew",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way temporary skew (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label temporary skew",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "key",
+        "channel": "skew",
+        "frame": 1,
+        "label": "Skew Element",
+        "keyedChannels": [
+          "skew"
+        ],
+        "numeric": {
+          "skew": 11.406798415237361
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "key",
+            "frame": 1,
+            "skew": 11.406798415237361,
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ],
+        [
+          "Skew Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input temporary skew",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo temporary skew",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content temporary skew",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way keyed frame 8",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way keyed frame 8 (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label keyed frame 8",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "key",
+        "channel": "position",
+        "frame": 8,
+        "label": "Move Element",
+        "keyedChannels": [
+          "position"
+        ],
+        "numeric": {
+          "position": {
+            "x": 0.2531199676204363,
+            "y": 0.12839103237931423
+          }
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "key",
+            "frame": 8,
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input keyed frame 8",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo keyed frame 8",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content keyed frame 8",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way child move",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way child move (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label child move",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "05_scene_planning.md:394-419; 1174-1199; M4-design-gestures.md:113-118 (SI-144)",
+        "command": "anim.transform.set",
+        "nodeIds": [
+          "el_01K7JJN800X28VAYKG4JB48KDJ"
+        ],
+        "target": "static",
+        "channel": "position",
+        "frame": 1,
+        "label": "Move Element",
+        "keyedChannels": [],
+        "numeric": {
+          "position": {
+            "x": 0.2531199676204363,
+            "y": 0.12839103237931423
+          }
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN800X28VAYKG4JB48KDJ"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.2531199676204362,
+              "y": 0.1283910323793144
+            },
+            "relative": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ],
+        [
+          "Move Element"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input child move",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo child move",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content child move",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "whole document three-way line under peg",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way line under peg (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Line Tool"
+        ],
+        [
+          "Line Tool"
+        ],
+        [
+          "Line Tool"
+        ]
+      ],
+      "replayExact": true,
+      "replayLargestDifference": 0.0
+    }
+  },
+  {
+    "check": "D-23 stated command target channels label line under peg",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "spec": "02_drawing.md:540-543,1321; M4-design-gestures.md:92-94",
+        "command": "draw.line.add",
+        "label": "Line Tool",
+        "numeric": {
+          "from": {
+            "x": -70.04106954487717,
+            "y": 36.712964158030296
+          },
+          "to": {
+            "x": 54.664579795751955,
+            "y": 52.01947839276972
+          }
+        },
+        "independentTolerance": 1e-09
+      },
+      "observed": [
+        {
+          "commandId": "draw.line.add",
+          "params": {
+            "to": {
+              "x": 54.66457979575199,
+              "y": 52.019478392769656
+            },
+            "constrainAngle": false,
+            "continuePrevious": false,
+            "from": {
+              "x": -70.04106954487719,
+              "y": 36.71296415803033
+            },
+            "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+            "thickness": 8,
+            "penId": "pen_01M7H6Y1KCVCMDFP01J70NWT5X",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Line Tool"
+        ],
+        [
+          "Line Tool"
+        ],
+        [
+          "Line Tool"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "real OS input line under peg",
+    "ok": true,
+    "detail": "os"
+  },
+  {
+    "check": "whole document undo line under peg",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo restores prior content line under peg",
+    "ok": true,
+    "detail": null
+  }
+]
