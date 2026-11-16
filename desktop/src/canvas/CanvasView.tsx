@@ -31,7 +31,7 @@ import { canvasLaunch } from './launch';
 import { cameraGridMatrix, cameraOverlay } from './cameraOverlay';
 import { activeViewOf } from './activeView';
 import { decodeDrawing } from './format';
-import { GestureLifecycle, type GestureToken } from './gestureLifecycle';
+import { answerMadeStep, GestureLifecycle, type ClearAt, type CommitAnswer, type GestureToken } from './gestureLifecycle';
 import { gestureOrder } from './gestureOrder';
 import { drawingPreview, grabberPreview, scenePreview, type Box } from './preview';
 import { CanvasMetrics } from './metrics';
@@ -681,6 +681,11 @@ export function CanvasView({
         timeStamp: e.timeStamp,
       };
     };
+    /** When a commit's answer lets the overlay and preview go (C43B-R2S-02; preview note §4). */
+    const clearAt = (before: number, env: CommitAnswer): ClearAt => ({
+      version: before,
+      deadline: answerMadeStep(env) ? null : performance.now() + (env.status === 'error' ? 0 : 400),
+    });
     const commit = (req: ReturnType<GestureCollector['up']>) => {
       if (!req) return;
       const before = model?.version ?? 0;
@@ -695,14 +700,10 @@ export function CanvasView({
           env.status === 'error'
             ? { status: 'error', code: env.error?.code ?? 'error' }
             : { status: env.status };
-        // The overlay stays until the committed drawing is drawn (or briefly, when nothing changed); an answer for a
-        // gesture that is no longer current (a later press, another generation, a closed window) clears nothing.
-        const armed =
-          token !== null &&
-          life.answered(token, {
-            version: before,
-            deadline: performance.now() + (env.status === 'error' ? 0 : 400),
-          });
+        // The overlay stays until the committed drawing is drawn (C43B-R2S-02: no deadline after a step), briefly when
+        // nothing changed, and not at all after a refusal; an answer for a gesture that is no longer current (a later
+        // press, another generation, a closed window) clears nothing.
+        const armed = token !== null && life.answered(token, clearAt(before, env));
         if (armed && env.status === 'error') overlay = null;
       });
     };
@@ -748,10 +749,7 @@ export function CanvasView({
           env.status === 'error'
             ? { status: 'error', code: env.error?.code ?? 'error' }
             : { status: env.status };
-        life.answered(token, {
-          version: before,
-          deadline: performance.now() + (env.status === 'error' ? 0 : 400),
-        });
+        life.answered(token, clearAt(before, env));
       });
     };
     const onDown = (e: PointerEvent) => {

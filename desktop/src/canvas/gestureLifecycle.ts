@@ -4,16 +4,44 @@
 // in. A commit's answer arms the clearing of the overlay and preview only while its token is still the current one:
 // an answer that arrives after a later gesture began, or after the engine restarted, is obsolete and changes nothing.
 // Adopting a new generation and unmounting discard the preview's resources at once, whatever was pending.
+//
+// C43B-R2S-02 (preview note §4): after a successful answer that made an undo step, the overlay and preview are cleared
+// only by the frame that draws the committed state (the scene revision passed the one before the commit), however long
+// that takes: a slow redraw must not show the old state in between. A time fallback applies only to an answer without a
+// step: a refusal, an error (at once) or a commit that changed nothing (briefly).
 
 export interface GestureToken {
   readonly gesture: number;
   readonly generation: number;
 }
 
-/** When the committed state counts as drawn: the scene revision passed `version`, or the clock passed `deadline`. */
+/** When the overlay and preview give way: the frame that draws a scene revision past `version`; or, for an answer
+ *  without a step, the first frame after `deadline` (`null`: no deadline, only the drawn state clears). */
 export interface ClearAt {
   readonly version: number;
-  readonly deadline: number;
+  readonly deadline: number | null;
+}
+
+/** The part of a gesture commit's answer that says whether it made an undo step: the envelope's own `undo`, or that of
+ *  a command the gesture produced (`result.commands[].envelope.undo`). */
+export interface CommitAnswer {
+  readonly status: string;
+  readonly result?: unknown;
+  readonly undo?: unknown;
+}
+
+/** Whether a gesture commit's answer made an undo step (a successful change of the document). */
+export function answerMadeStep(env: CommitAnswer): boolean {
+  if (env.status !== 'ok') return false;
+  if (env.undo !== undefined && env.undo !== null) return true;
+  const commands = (env.result as { commands?: unknown } | undefined)?.commands;
+  return (
+    Array.isArray(commands) &&
+    commands.some((c) => {
+      const undo = (c as { envelope?: { undo?: unknown } } | null)?.envelope?.undo;
+      return undo !== undefined && undo !== null;
+    })
+  );
 }
 
 export class GestureLifecycle {
@@ -68,7 +96,7 @@ export class GestureLifecycle {
       this.clear = null;
       return false;
     }
-    if (settledVersion > c.version || now > c.deadline) {
+    if (settledVersion > c.version || (c.deadline !== null && now > c.deadline)) {
       this.clear = null;
       this.discard();
       return true;

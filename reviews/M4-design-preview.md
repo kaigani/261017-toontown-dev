@@ -83,7 +83,11 @@ the gesture's ink. There is no frame without either.
   gesture) is tagged by gesture and engine generation (`desktop/src/canvas/gestureLifecycle.ts`). A commit's answer
   clears the overlay and preview only while its gesture is the current one, so a release followed at once by a second
   press keeps the second drag's preview however late the first answer comes; a new generation and unmounting drop the
-  preview with its loaded parts at once, and a later answer acts on nothing. Vitest with answers delivered when the
+  preview with its loaded parts at once, and a later answer acts on nothing. C43B-R2S-02: after a successful answer
+  that made an undo step, only the frame that draws the committed state (a scene revision past the one before the
+  commit) clears the preview, however long the redraw takes; the time fallback applies only to an answer without a step
+  (a refusal or an error at once, a commit that changed nothing after 400 ms). Vitest: a successful step whose model
+  settles after more than 400 ms keeps the preview until that frame. Vitest with answers delivered when the
   test says (a delayed answer after a second gesture began; a restart between release and answer; unmount); the
   review's probe repeats the rapid pair 20 times through the real pointer.
 - **PV4** The preview's affine follows the furniture rule of the kernel's command for every handle: for each row of

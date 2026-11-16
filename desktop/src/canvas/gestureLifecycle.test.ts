@@ -1,8 +1,14 @@
 // C43B-R1S-06: a commit's answer acts only for its own gesture and generation; adopting a generation and unmounting
-// drop the preview's resources. Deterministic: the commits are answered when the test says, the clock is the test's.
+// drop the preview's resources. C43B-R2S-02: after an answer that made a step, only the frame drawing the committed
+// state clears the preview; a deadline applies only to an answer without a step. Deterministic: the commits are answered
+// when the test says, the clock is the test's (the answer arrives at time 0, as CanvasView's `clearAt` computes it).
 import { describe, expect, it } from 'vitest';
 
-import { GestureLifecycle, type GestureToken } from './gestureLifecycle';
+import { answerMadeStep, GestureLifecycle, type GestureToken } from './gestureLifecycle';
+
+/** How an answer lets the preview go, as CanvasView's `clearAt` does at the answer's arrival (time 0). */
+type Outcome = 'step' | 'noStep' | 'refused';
+const deadlineOf = (o: Outcome): number | null => (o === 'step' ? null : o === 'refused' ? 0 : 400);
 
 /** The canvas side as CanvasView keeps it: an overlay, a preview holding two GPU parts, a renderer's resident keys. */
 function canvas(generation = 1) {
@@ -18,7 +24,7 @@ function canvas(generation = 1) {
     for (const k of state.parts ?? []) resident.delete(k);
     state.parts = null;
   });
-  const pending: { token: GestureToken; answer: (failed: boolean) => void }[] = [];
+  const pending: { token: GestureToken; answer: (failed: Outcome) => void }[] = [];
   return {
     life,
     state,
@@ -38,12 +44,12 @@ function canvas(generation = 1) {
     release(token: GestureToken, version: number) {
       pending.push({
         token,
-        answer: (failed) => {
-          if (life.answered(token, { version, deadline: failed ? 0 : 1000 }) && failed) state.overlay = null;
+        answer: (failed: Outcome) => {
+          if (life.answered(token, { version, deadline: deadlineOf(failed) }) && failed === 'refused') state.overlay = null;
         },
       });
     },
-    answerOldest(failed = false) {
+    answerOldest(failed: Outcome = 'step') {
       pending.shift()?.answer(failed);
     },
   };
@@ -81,7 +87,7 @@ describe('gesture lifecycle (C43B-R1S-06)', () => {
     const first = c.press('first');
     c.release(first, 5);
     c.press('second');
-    c.answerOldest(true);
+    c.answerOldest('refused');
     expect(c.state.overlay).toBe('second overlay');
     expect(c.life.frame(0, 5000)).toBe(false);
     expect(c.state.preview).toBe('second preview');
@@ -109,14 +115,46 @@ describe('gesture lifecycle (C43B-R1S-06)', () => {
     expect(c.state.preview).toBe('next preview');
   });
 
-  it('an answer for the current gesture clears at its deadline when the revision does not move', () => {
+  it('an answer that made no step clears at its deadline when the revision does not move', () => {
     const c = canvas();
     const g = c.press('only');
     c.release(g, 5);
-    c.answerOldest();
-    expect(c.life.frame(5, 999)).toBe(false);
-    expect(c.life.frame(5, 1001)).toBe(true);
+    c.answerOldest('noStep');
+    expect(c.life.frame(5, 399)).toBe(false);
+    expect(c.life.frame(5, 401)).toBe(true);
     expect(c.resident.size).toBe(0);
+  });
+
+  it('C43B-R2S-02: a successful step whose model settles after 400 ms keeps the preview until it is drawn', () => {
+    const c = canvas();
+    const g = c.press('only');
+    c.release(g, 5);
+    c.answerOldest('step');
+    // Frames long past any deadline while the committed state has not been drawn: the preview stays.
+    for (const now of [100, 400, 401, 1000, 5000]) expect(c.life.frame(5, now)).toBe(false);
+    expect(c.state.preview).toBe('only preview');
+    expect([...c.resident]).toEqual(['only#rest', 'only#selection']);
+    // The frame that draws the committed state (the revision past the one before the commit) clears it.
+    expect(c.life.frame(6, 5001)).toBe(true);
+    expect(c.state).toEqual({ overlay: null, preview: null, parts: null });
+  });
+
+  it('a refused answer clears at once', () => {
+    const c = canvas();
+    const g = c.press('only');
+    c.release(g, 5);
+    c.answerOldest('refused');
+    expect(c.state.overlay).toBeNull();
+    expect(c.life.frame(5, 1)).toBe(true);
+    expect(c.state.preview).toBeNull();
+  });
+
+  it('a step is told by the envelope or by a produced command', () => {
+    expect(answerMadeStep({ status: 'ok', undo: { stepId: 'u1' } })).toBe(true);
+    expect(answerMadeStep({ status: 'ok', result: { commands: [{ envelope: { undo: { stepId: 'u2' } } }] } })).toBe(true);
+    expect(answerMadeStep({ status: 'ok', result: { commands: [{ envelope: {} }] } })).toBe(false);
+    expect(answerMadeStep({ status: 'ok' })).toBe(false);
+    expect(answerMadeStep({ status: 'error', undo: { stepId: 'u3' } })).toBe(false);
   });
 
   it('unmounting drops the preview resources and later answers act on nothing', () => {
