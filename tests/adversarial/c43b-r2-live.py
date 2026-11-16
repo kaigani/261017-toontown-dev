@@ -6,7 +6,7 @@ if len(sys.argv)<3:
 import asyncio, importlib.util, json, os, subprocess, tempfile, time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-OUT=Path(tempfile.mkdtemp(prefix="c43b-r2-raw-"))
+OUT=Path(os.environ["REVIEW_RAW"]) if os.environ.get("REVIEW_RAW") else Path(tempfile.mkdtemp(prefix="c43b-r2-raw-"))
 def load(name,path):
  spec=importlib.util.spec_from_file_location(name,ROOT/path)
  m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
@@ -260,19 +260,45 @@ def a3():
  sys.argv=["d39",str(Path(sys.argv[1]).resolve()),str(OUT/"a3"),"--mode","os"]
  raise SystemExit(m.main())
 def baseline(case, check=None):
+ if os.environ.get("REVIEW_RESUME"):
+  paths={"case3":OUT/"case3/webgpu/manifest.json","case4":OUT/"case4/manifest.json","case6":OUT/"case6-drawing/manifest.json"}
+  if case in paths and paths[case].exists():
+   return int(bool(json.loads(paths[case].read_text()).get("failures")))
+  if check and (OUT/"case7"/(check+"-result.json")).exists():
+   return json.loads((OUT/"case7"/(check+"-result.json")).read_text())["exit"]
  old=sys.argv[:]
  sys.argv=[old[0],str(Path(old[1]).resolve()),case]+([check] if check else ([str(ROOT/"target/release/toontown-headless.exe")] if case=="case4" else []))
+ original_run=subprocess.run
+ def redirected_run(args,**kwargs):
+  if len(args)>1 and str(args[1]).endswith("c43b-r1-regression-runner.py"):
+   runner=OUT/"regression-runner.py"
+   source=(ROOT/"tests/adversarial/c43b-r1-regression-runner.py").read_text()
+   source=source.replace("ROOT=Path(__file__).resolve().parents[2]","ROOT=Path("+repr(str(ROOT))+")")
+   source=source.replace("NEW='reviews/evidence/M4-C4.3b-r1/case7/legacy'","NEW="+repr((OUT/"legacy").as_posix()))
+   runner.write_text(source,encoding="utf-8",newline="\n")
+   args=[args[0],str(runner)]+list(args[2:])
+  return original_run(args,**kwargs)
+ subprocess.run=redirected_run
  try:
   getattr(r1,case)()
   return 0
  except SystemExit as ex:return int(ex.code or 0)
- finally:sys.argv=old
+ finally:sys.argv=old;subprocess.run=original_run
 
 def summarize(case, results):
  import hashlib
  files=[{"file":str(p.relative_to(OUT)),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()} for p in OUT.rglob("*") if p.is_file()]
  dest=ROOT/"reviews/evidence/M4-C4.3b-r2"/(case+"-summary.json")
- dest.write_text(json.dumps({"results":results,"raw":str(OUT),"hashes":files,"regenerate":"python tests/adversarial/c43b-r2-live.py target/release/toontown.exe "+case},indent=1)+"\n",encoding="utf-8",newline="\n")
+ receipts=[]
+ for p in OUT.rglob("*.json"):
+  if p.name not in ("manifest.json","rows.json","measurements.json"):continue
+  try:
+   data=json.loads(p.read_text(encoding="utf-8"))
+   if isinstance(data,list):
+    if p.name=="rows.json":receipts.append({"file":str(p.relative_to(OUT)),"rows":[{"name":r.get("name"),"ok":r.get("ok")} for r in data if isinstance(r,dict)]})
+   elif isinstance(data,dict):receipts.append({"file":str(p.relative_to(OUT)),**{k:data[k] for k in ("checks","rows","failed","failures","seconds") if k in data}})
+  except (ValueError,UnicodeError):pass
+ dest.write_text(json.dumps({"receipts":receipts,"results":results,"raw":str(OUT),"hashes":files,"regenerate":"python tests/adversarial/c43b-r2-live.py target/release/toontown.exe "+case},indent=1)+"\n",encoding="utf-8",newline="\n")
  print(json.dumps(results),flush=True)
  return any(r.get("exit",0) for r in results)
 
@@ -325,11 +351,15 @@ def b2():
  jobs=[("builder-e6",["scripts/c43-e6-coexistence.py",app,str(OUT/"builder-e6")]),("builder-equivalence",["scripts/c43-gesture-equivalence.py",app,head,str(OUT/"builder-equivalence")]),("builder-d39",["scripts/c43-d39-bindings.py",app,str(OUT/"builder-d39"),"--mode","os"])]
  jobs += [("builder-camera-"+b,["scripts/c43-camera-e2e.py",app,str(OUT/("builder-camera-"+b)),"--backend",b]) for b in ("webgl2","webgpu")]
  for name,args in jobs:
+  cached=OUT/(name+"-result.json")
+  if os.environ.get("REVIEW_RESUME") and cached.exists():
+   results.append(json.loads(cached.read_text()));continue
   try:
    proc=subprocess.run([sys.executable]+args,cwd=ROOT,capture_output=True,timeout=530)
    (OUT/(name+".txt")).write_bytes(proc.stdout+proc.stderr)
    results.append({"name":name,"exit":proc.returncode})
   except subprocess.TimeoutExpired:results.append({"name":name,"exit":1,"error":"530 second timeout"})
+  cached.write_text(json.dumps(results[-1]),encoding="utf-8")
  raise SystemExit(summarize("b2",results))
 
 def b3():
@@ -346,20 +376,22 @@ def b3():
  original_jobs=m.jobs_row
  async def extra(t):
   await original_jobs(t)
-  env=await m.e2e.run_cmd(t.s,"render.range.run",{"from":1,"to":240,"scale":2,"directory":str(t.work/"cancel-frames"),"createDirs":True,"onConflict":"overwrite"})
+  env=await m.e2e.run_cmd(t.s,"render.range.run",{"from":1,"to":2400,"scale":2,"directory":str(t.work/"cancel-frames"),"createDirs":True,"onConflict":"overwrite"})
   jid=(env.get("result") or {}).get("jobId")
   await asyncio.sleep(.5)
+  listed=await m.e2e.run_cmd(t.s,"job.list",{})
   dom=t.cdp.js("Array.from(document.querySelectorAll('[data-tt-command=\"job.cancel\"]')).map(e=>({id:e.dataset.ttId,params:e.dataset.ttParams}))")
   tree=(await m.e2e.tree(t.s)).get("result")
-  t.run.save("b3-job-cancel.json",{"jobId":jid,"dom":dom,"tree":tree})
-  t.run.check(bool(dom),"01 section 9.5 lines 924-926 cancellable running operation has window Cancel",dom)
+  t.run.save("b3-job-cancel.json",{"jobId":jid,"jobs":listed,"dom":dom,"tree":tree})
+  t.run.check(bool(dom),"01 section 9.5 lines 925-927 cancellable running operation has window Cancel",dom)
   if dom:
    t.clear();t.click(dom[0]["id"]);await asyncio.sleep(.5)
-   t.run.check(any(c.get("command")=="job.cancel" and c.get("params",{}).get("jobId")==jid for c in t.recorded()),"01 section 9.5 lines 924-926 window sends job.cancel for displayed job",t.recorded())
+   t.run.check(any(c.get("command")=="job.cancel" and c.get("params",{}).get("jobId")==jid for c in t.recorded()),"01 section 9.5 lines 925-927 window sends job.cancel for displayed job",t.recorded())
   if jid:
    await m.e2e.run_cmd(t.s,"job.cancel",{"jobId":jid})
    await m.e2e.call(t.s,"job_wait",{"jobId":jid,"timeoutMs":120000})
   async def cmd(n,p=None):return await t.cmd(n,p or {})
+  async def document():return r1.canonical((await cmd("doc.export.json",{"scope":"project","binaries":"omit"})).get("bundle"))
   async def check(name,fn):
    try:await fn()
    except Exception as ex:t.run.check(False,name+" ran",repr(ex))
@@ -370,36 +402,40 @@ def b3():
    await cmd("project.saveAs",{"path":str(path),"onExists":"overwrite"})
    snapshots=[]
    for i in range(3):
+    await asyncio.sleep(1.1)
     await cmd("draw.rectangle.add",{"from":{"x":i*20,"y":0},"to":{"x":i*20+10,"y":10}})
     await cmd("project.save",{})
-    snapshots.append(await cmd("doc.export.json",{}))
+    snapshots.append(await document())
    listed=await cmd("project.backup.list",{})
    before=hashlib.sha256(path.read_bytes()).hexdigest()
    m.choose_menu(["File","Open Backup"]);await asyncio.sleep(1)
    text=t.cdp.js("document.querySelector('[data-tt-id=\"openBackup.list\"]')?.textContent")
    t.run.check(len(listed)>=2 and all(x["savedAt"] in text for x in listed),"01 section 3.7 lines 259-262 backup save times listed",text)
+   t.clear();t.click("openBackup.open.1");await asyncio.sleep(2)
+   state=await cmd("app.state.get",{})
+   doc=await document()
+   t.run.save("b3-backup-state.json",{"listed":listed,"snapshots":snapshots,"opened":doc,"state":state,"sent":t.recorded()})
+   t.run.check(not (state.get("project") or {}).get("path"),"01 section 3.7 lines 259-262 older backup is untitled",state)
+   t.run.check(hashlib.sha256(path.read_bytes()).hexdigest()==before,"01 section 3.7 lines 259-262 original file untouched",None)
+   t.run.check(doc==snapshots[0],"01 section 3.7 lines 259-262 older selected backup equals first content save",None)
+   found=await cmd("doc.object.find",{"type":"element","name":"Bob"})
+   bob=(found.get("items") or found.get("matches") or [{}])[0].get("id")
+   await cmd("app.context.set",{"elementId":bob,"frame":1})
    await cmd("draw.rectangle.add",{"from":{"x":200,"y":0},"to":{"x":220,"y":10}})
-   dirty=await cmd("doc.export.json",{})
-   t.click("openBackup.open.1");await asyncio.sleep(.8)
+   dirty=await document()
+   m.choose_menu(["File","Open Backup"]);await asyncio.sleep(.8)
    message=t.cdp.js("document.querySelector('[data-tt-id=\"message.project.unsavedChanges\"]')?.textContent")
    t.run.check(bool(message),"01 section 3.5 unsaved backup opening prompts Save/Discard/Cancel",message)
    if message:
     t.click("message.cancel");await asyncio.sleep(.5)
-    t.run.check(await cmd("doc.export.json",{})==dirty,"01 section 3.5 Cancel preserves dirty current document",None)
-    m.choose_menu(["File","Open Backup"]);await asyncio.sleep(.7)
-    t.clear();t.click("openBackup.open.1");await asyncio.sleep(.5);t.click("message.discard");await asyncio.sleep(2)
-   else:
-    t.clear()
-   
-   state=await cmd("app.state.get",{})
-   doc=await cmd("doc.export.json",{})
-   t.run.save("b3-backup-state.json",{"listed":listed,"snapshots":snapshots,"opened":doc,"state":state,"sent":t.recorded()})
-   t.run.check(not (state.get("project") or {}).get("path"),"01 section 3.7 lines 259-262 older backup is untitled",state)
-   t.run.check(hashlib.sha256(path.read_bytes()).hexdigest()==before,"01 section 3.7 lines 259-262 original file untouched",None)
-   t.run.check(doc in snapshots,"01 section 3.7 lines 259-262 opened content equals a saved snapshot",None)
+    t.run.check(await document()==dirty,"01 section 3.5 Cancel preserves dirty current document",None)
+    m.choose_menu(["File","Open Backup"]);await asyncio.sleep(.5);t.click("message.discard");await asyncio.sleep(.7)
+    t.clear();t.click("openBackup.open.1");await asyncio.sleep(2)
+    t.run.check(await document()==snapshots[0],"01 section 3.5 Discard then Open restores chosen backup",t.recorded())
   await check("backup",backups)
   async def empty_backup():
    await cmd("project.create",{"name":"EmptyB3","onUnsaved":"discard"})
+   await cmd("project.saveAs",{"path":str(t.work/"EmptyB3.animpkg"),"onExists":"overwrite"})
    m.choose_menu(["File","Open Backup"]);await asyncio.sleep(1)
    text=t.cdp.js("document.querySelector('[data-tt-id=\"openBackup.list\"]')?.textContent")
    buttons=t.cdp.js("document.querySelectorAll('[data-tt-command=\"project.backup.open\"]').length")
@@ -417,11 +453,36 @@ def b3():
    m.key(0x1B);await asyncio.sleep(.4)
    for mode in ("replace","merge"):
     await cmd("keymap.reset",{"all":True})
+    defaults=await cmd("keymap.list",{})
     m.choose_menu(["File","Preferences"]);await asyncio.sleep(.8);t.click("preferences.category.keyboard");await asyncio.sleep(.5)
     t.click("keymap.import");await asyncio.sleep(1.5);m.type_text(str(exported));m.key(0x0D);await asyncio.sleep(1)
     m.key(0x0D if mode=="replace" else 0x1B);await asyncio.sleep(.5);t.click("preferences.submit");await asyncio.sleep(1)
     after=await cmd("keymap.list",{})
-    t.run.check(after==expected,"01 section 8.3 lines 857-858 imported "+mode+" keymap equals exported bindings",None)
+    canonical=lambda rows:sorted(json.dumps(x,sort_keys=True) for x in rows)
+    wanted=expected if mode=="replace" else defaults+[x for x in expected if x not in defaults]
+    t.run.check(canonical(after)==canonical(wanted),"01 section 8.3 lines 857-858 imported "+mode+" keymap equals replacement or union",None)
+    tree=(await m.e2e.tree(t.s)).get("result") or {}
+    encoded=json.dumps(tree)
+    t.run.save("b3-keymap-"+mode+".json",{"expected":wanted,"actual":after,"tree":tree})
+    if mode=="replace":t.run.check("Primary+Shift+F11" in encoded and "Primary+Shift+F12" in encoded,"D-38 replaced keymap menu shortcuts reflect imported bindings",None)
+    import ctypes
+    u=ctypes.windll.user32;u.GetMenu.restype=ctypes.c_void_p;u.GetMenu.argtypes=[ctypes.c_void_p];u.GetSubMenu.restype=ctypes.c_void_p
+    u.GetMenuItemCount.argtypes=[ctypes.c_void_p];u.GetSubMenu.argtypes=[ctypes.c_void_p,ctypes.c_int]
+    u.GetMenuStringW.argtypes=[ctypes.c_void_p,ctypes.c_uint,ctypes.c_wchar_p,ctypes.c_int,ctypes.c_uint]
+    def labels(menu):
+     found=[]
+     for i in range(u.GetMenuItemCount(menu)):
+      b=ctypes.create_unicode_buffer(1024);u.GetMenuStringW(menu,i,b,1024,0x400)
+      found.append(b.value.replace("&",""))
+      sub=u.GetSubMenu(menu,i)
+      if sub:found.extend(labels(sub))
+     return found
+    native=labels(u.GetMenu(m.front()))
+    for command,label in (("project.save","Save"),("edit.undo","Undo")):
+     allowed=[b["keys"] for b in after if b["commandId"]==command]
+     normalize=lambda x:sorted(x.replace("Primary","Ctrl").split("+"))
+     visible=[x.split("\t",1)[1] for x in native if "\t" in x and (x.split("\t",1)[0]==label or label=="Undo" and x.split("\t",1)[0].startswith("Undo "))]
+     t.run.check(bool(visible) and all(any(normalize(k)==normalize(v) for k in allowed) for v in visible),"D-38 native "+label+" accelerator belongs to imported "+mode+" keymap",{"shown":visible,"allowed":allowed})
    await cmd("keymap.reset",{"all":True})
    for kind in ("malformed","conflict"):
     before=await cmd("keymap.list",{})
@@ -434,7 +495,8 @@ def b3():
     m.choose_menu(["File","Preferences"]);await asyncio.sleep(.8);t.click("preferences.category.keyboard");await asyncio.sleep(.5)
     t.click("keymap.import");await asyncio.sleep(1.5);m.type_text(str(bad));m.key(0x0D);await asyncio.sleep(1);m.key(0x0D);await asyncio.sleep(.5);t.click("preferences.submit");await asyncio.sleep(1)
     after=await cmd("keymap.list",{})
-    notice=t.cdp.js("document.body.textContent")
+    notice=t.cdp.js("document.querySelector('[data-tt-id=\"preferences.refusal\"]')?.textContent")
+    t.run.check(bool(notice),"01 section 8.3 lines 850-858 "+kind+" import reports refusal",notice)
     t.run.save("b3-"+kind+".json",{"before":before,"after":after,"notice":notice})
     t.run.check(before==after,"01 section 8.3 lines 850-858 "+kind+" import no partial change",None)
     m.key(0x1B);await asyncio.sleep(.3);m.key(0x1B);await asyncio.sleep(.3)
