@@ -1,0 +1,26 @@
+{
+  "kind": "toontown.c43b.r1.parity",
+  "platform": "win32",
+  "input": "os (SendInput)",
+  "waitForUserMs": 10000,
+  "seconds": 118.3,
+  "failures": [
+    "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command draw.flatten.apply: false",
+    "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command draw.arrange.apply: false",
+    "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command draw.flip.apply: false",
+    "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command draw.group.create: false",
+    "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command edit.cutSpecial: false",
+    "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command project.info.get: false",
+    "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command doc.validate: false",
+    "D-25; spec/01_application_shell.md section 12.2 lines 1083-1084: nonempty backup list offers project.backup.open: {\"available\": [{\"backupId\": \"bk_8da57efdf845596b\", \"savedAt\": \"2026-11-16T05:01:32.758Z\", \"sizeBytes\": 8879, \"documentRev\": 8}, {\"backupId\": \"bk_a564b73b8af9b767\", \"savedAt\": \"2026-11-16T05:01:32.683Z\", \"sizeBytes\": 8803, \"documentRev\": 6}], \"buttonPresent\": false}",
+    "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command project.backup.open: false",
+    "D-25 expected project.backup.open from Open Backup; spec/01_application_shell.md section 12.2 Command table line 1084: [\"project.backup.list\"]",
+    "D-23 expected parameters {} for Open Backup; spec/01_application_shell.md section 12.2 Command table line 1084: [{\"command\": \"project.backup.list\", \"params\": {}}]",
+    "document effect Open Backup: false",
+    "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command app.info.get: false",
+    "D-25 Grid toolbar action toggles visibility; spec/02_drawing.md section 13.5 line 1388: {\"before\": false, \"after\": false}",
+    "D-23 expected parameters {\"visible\": true} for Grid; spec/02_drawing.md section 13.5 Command table line 1388: [{\"command\": \"drawAid.grid.set\", \"params\": {}, \"requestToken\": \"r6\"}]",
+    "spec/01_application_shell.md section 1.3 lines 71-75: tool.symmetry.set refuses project.none without project: null"
+  ],
+  "checks": 149
+}

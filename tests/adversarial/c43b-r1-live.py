@@ -435,9 +435,16 @@ def case8():
     os.environ['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS']='--remote-debugging-port=9223'
     m=load('review_parity','scripts/c43-e6-coexistence.py')
     body=inspect.getsource(m.session_run)
+    from mcp import types
+    async def review_roots(_ctx):
+        return types.ListRootsResult(roots=[types.Root(uri=(OUT/'case8').resolve().as_uri(),name='review temporary project')])
+    body=body.replace('e2e.ClientSession(streams[0], streams[1])','e2e.ClientSession(streams[0], streams[1], list_roots_callback=review_roots)')
+    m.review_roots=review_roots
     body=body[:body.index('        own =')]+ '        await parity_window(session,run,out,bob,REVIEW_E6)\n'
     m.parity_window=parity_window;m.REVIEW_E6=m
     exec(compile(body,__file__,'exec'),m.__dict__)
+    main_body=inspect.getsource(m.main).replace('toontown.c43.e6','toontown.c43b.r1.parity')
+    exec(compile(main_body,__file__,'exec'),m.__dict__)
     sys.argv=['parity',str(Path(sys.argv[1]).resolve()),str(OUT/'case8')]
     sys.exit(m.main())
 
@@ -445,20 +452,51 @@ async def parity_window(s,run,out,bob,m):
     import asyncio,ctypes,urllib.request,websockets
     from ctypes import wintypes
     rc=m.e2e.run_cmd
-    async def cmd(n,p=None): return (await rc(s,n,p or {})).get('result') or {}
+    setup_audit=[]
+    async def cmd(n,p=None):
+        env=await rc(s,n,p or {})
+        jid=(env.get('result') or {}).get('jobId') if isinstance(env.get('result'),dict) else None
+        if jid: env=await m.e2e.call(s,'job_wait',{'jobId':jid,'timeoutMs':60000})
+        setup_audit.append({'command':n,'params':p or {},'response':env})
+        run.save('setup-audit.json',setup_audit)
+        if env.get('status')!='ok': raise RuntimeError('parity setup/read '+n+': '+json.dumps(env)[:900])
+        return env.get('result') or {}
     pages=json.load(urllib.request.urlopen('http://127.0.0.1:9223/json'))
     page=next(p for p in pages if p['type']=='page' and '1420' in p['url'])
     async with websockets.connect(page['webSocketDebuggerUrl'],max_size=30000000) as ws:
         seq=0
-        async def js(expr):
+        pending={}
+        audit_tasks=set()
+        async def cdp(method,params):
             nonlocal seq
-            seq+=1; await ws.send(json.dumps({'id':seq,'method':'Runtime.evaluate','params':{'expression':expr,'returnByValue':True}}))
-            while True:
-                r=json.loads(await ws.recv())
-                if r.get('id')==seq:
-                    if r.get('result',{}).get('exceptionDetails'): raise RuntimeError(r)
-                    return r.get('result',{}).get('result',{}).get('value')
-        await js("window.reviewIPC=[];window.reviewInvoke=window.__TAURI_INTERNALS__.invoke;window.__TAURI_INTERNALS__.invoke=async function(c,a,...z){let v=await window.reviewInvoke.call(this,c,a,...z);if(c==='run_command'||c==='dispatch_key')window.reviewIPC.push({command:c,args:a,result:v});return v};true")
+            seq+=1;ident=seq;future=asyncio.get_running_loop().create_future();pending[ident]=future
+            await ws.send(json.dumps({'id':ident,'method':method,'params':params}))
+            return await future
+        async def paused(event):
+            try:
+                frame=event['params']['callFrames'][0]['callFrameId']
+                await cdp('Debugger.evaluateOnCallFrame',{'callFrameId':frame,'expression':'window.reviewIPC.push({command:cmd,args:payload});true','returnByValue':True})
+            finally: await cdp('Debugger.resume',{})
+        async def pump():
+            async for message in ws:
+                r=json.loads(message)
+                if r.get('method')=='Debugger.paused':
+                    task=asyncio.create_task(paused(r));audit_tasks.add(task);task.add_done_callback(audit_tasks.discard)
+                elif r.get('id') in pending: pending.pop(r['id']).set_result(r)
+        receiver=asyncio.create_task(pump())
+        async def js(expr):
+            r=await cdp('Runtime.evaluate',{'expression':expr,'returnByValue':True,'awaitPromise':True})
+            if r.get('result',{}).get('exceptionDetails'): raise RuntimeError(r)
+            return r.get('result',{}).get('result',{}).get('value')
+        await js('window.reviewIPC=[];true')
+        await cdp('Debugger.enable',{})
+        function=await cdp('Runtime.evaluate',{'expression':'window.__TAURI_INTERNALS__.invoke'})
+        audited=['draw.flatten.apply','draw.arrange.apply','draw.flip.apply','draw.group.create','edit.cutSpecial','project.info.get','doc.validate','project.backup.list','project.backup.open','app.info.get','drawAid.grid.set','tool.symmetry.set','tool.active.set','edit.selectAll']
+        condition="cmd === 'dispatch_key' || (cmd === 'run_command' && "+json.dumps(audited)+".includes(JSON.parse(payload.json).command))"
+        breakpoint=await cdp('Debugger.setBreakpointOnFunctionCall',{'objectId':function['result']['result']['objectId'],'condition':condition})
+        await js("window.__TAURI_INTERNALS__.invoke('run_command',{json:JSON.stringify({command:'app.info.get',params:{}})}).then(()=>true)")
+        captured=await js('window.reviewIPC')
+        if not captured: raise RuntimeError('IPC capture self-test failed (read-only app.info.get, spec/01_application_shell.md:1060)')
         u=ctypes.windll.user32;u.GetMenu.restype=wintypes.HMENU;u.GetSubMenu.restype=wintypes.HMENU
         h=m._main_window(m.e2e.APP_PID['pid']);u.SetForegroundWindow(h)
         native_trace=[]
@@ -475,7 +513,7 @@ async def parity_window(s,run,out,bob,m):
                 found=None
                 for i in range(u.GetMenuItemCount(handle)):
                     b=ctypes.create_unicode_buffer(256);u.GetMenuStringW(handle,i,b,256,0x400)
-                    if b.value.replace('&','').split('\t')[0].rstrip('…').strip()==label:found=i;break
+                    if b.value.replace('&','').split('\t')[0].rstrip(chr(0x2026)+'.').strip()==label:found=i;break
                 if found is None:return {'missing':label}
                 flags=u.GetMenuState(handle,found,0x400)
                 state={'label':label,'flags':flags,'enabled':not bool(flags&3)}
@@ -483,13 +521,17 @@ async def parity_window(s,run,out,bob,m):
             return state
         async def click_screen(x,y):
             u.SetCursorPos(int(x),int(y));await asyncio.sleep(.12);m._send_button(True);m._send_button(False);await asyncio.sleep(.35)
+        async def drawing_place():
+            value=await js("(()=>{let e=document.querySelector('[data-tt-id=\"drawingView.canvas\"] canvas');if(!e)return null;let r=e.getBoundingClientRect();return [r.x,r.y,r.width,r.height,window.devicePixelRatio]})()")
+            if not value or value[2]<=0 or value[3]<=0:raise RuntimeError('Drawing canvas is not visible')
+            return tuple(v*value[4] for v in value[:4])
         async def menu(path):
             handle=u.GetMenu(h)
             for label in path:
                 found=None
                 for i in range(u.GetMenuItemCount(handle)):
                     b=ctypes.create_unicode_buffer(256);u.GetMenuStringW(handle,i,b,256,0x400)
-                    if b.value.replace('&','').split('\t')[0].rstrip('ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦').strip()==label:
+                    if b.value.replace('&','').split('\t')[0].rstrip(chr(0x2026)+'.').strip()==label:
                         found=i;break
                 if found is None: raise RuntimeError('native menu label absent: '+label)
                 rect=wintypes.RECT()
@@ -507,9 +549,11 @@ async def parity_window(s,run,out,bob,m):
                     m.c42.os_key(0x09);await asyncio.sleep(.03)
                     focused=await js("document.activeElement?.getAttribute('data-tt-command')")
                     if focused==command: break
-                rect=await js("(()=>{let e=document.activeElement;if(e?.getAttribute('data-tt-command')!=="+json.dumps(command)+")return null;let r=e.getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2]})()")
-                if not rect: raise RuntimeError('control not reached with real Tab keys: '+command)
+                if focused!=command: raise RuntimeError('control not reached with real Tab keys: '+command)
+                m.c42.os_key(0x20);await asyncio.sleep(.35)
+                return 'real Tab then Space'
             p=wintypes.POINT(0,0);u.ClientToScreen(h,ctypes.byref(p));await click_screen(p.x+rect[0],p.y+rect[1])
+            return 'real OS click'
         rows=[]
         citations={}
         for spec in ('01_application_shell.md','02_drawing.md','10_data_model_project_format.md'):
@@ -521,7 +565,8 @@ async def parity_window(s,run,out,bob,m):
                     citations[command]='spec/'+spec+' section '+heading+' line '+str(number)
         actions=[('Flatten','draw.flatten.apply',['Drawing','Flatten']),('Arrange','draw.arrange.apply',['Drawing','Arrange','Send to Back']),('Flip','draw.flip.apply',['Drawing','Flip Horizontal']),('Group','draw.group.create',['Drawing','Group']),('Cut Special','edit.cutSpecial',['Edit','Cut Special']),('Project Info','project.info.get',['File','Project Info']),('Check Project','doc.validate',['File','Check Project']),('Open Backup','project.backup.open',['File','Open Backup']),('About','app.info.get',['Help','About Toontown']),('Grid','drawAid.grid.set',None),('Symmetry','tool.symmetry.set',None),('Brush','tool.active.set',None),('Select All','edit.selectAll','key'),('Brush gesture','draw.stroke.add','gesture')]
         await cmd('workspace.select',{'name':'Drawing'});await cmd('view.active.set',{'viewId':'drawingView'})
-        work=tempfile.TemporaryDirectory(prefix='tt-review-parity-')
+        await cmd('window.panel.set',{'panelId':'drawingView','visible':True,'focus':True})
+        work=tempfile.TemporaryDirectory(prefix='parity-project-',dir=out)
         await cmd('prefs.set',{'values':{'files.backups.count':5}})
         await cmd('project.saveAs',{'path':str(Path(work.name)/'Parity.animpkg')})
         await cmd('draw.rectangle.add',{'from':{'x':-50,'y':-45},'to':{'x':35,'y':25},'layer':'new'})
@@ -532,30 +577,52 @@ async def parity_window(s,run,out,bob,m):
             start_check=len(run.transcript)
             try:
                 native_trace.clear()
+                await cmd('app.context.set',{'elementId':bob,'frame':1})
+                await cmd('window.panel.set',{'panelId':'drawingView','visible':True,'focus':True})
+                await cmd('tool.active.set',{'toolId':'select'})
+                place=await drawing_place()
+                focus_times={}
+                await asyncio.to_thread(m.os_drag,m.e2e.APP_PID['pid'],[(place[0]+18,place[1]+18)]*2,.05,.05,focus_times)
+                await asyncio.sleep(.2)
+                row['focusInput']=focus_times
+                row['panelsBefore']=await cmd('window.panel.list')
                 added=await cmd('draw.rectangle.add',{'from':{'x':-90,'y':-65},'to':{'x':60,'y':40},'layer':'new'})
                 await cmd('draw.selection.set',{'by':'all'})
+                if name=='Cut Special':
+                    selected=await cmd('draw.selection.get')
+                    await cmd('edit.selection.set',{'context':'drawing','ids':selected['selectedIds']})
                 if name=='Arrange': await cmd('draw.selection.set',{'by':'ids','ids':added['strokeIds']})
                 if name=='Select All': await cmd('draw.selection.set',{'by':'none'})
-                if name=='Open Backup': await cmd('project.save')
+                if name=='Open Backup':
+                    await cmd('project.save')
+                    row['availableBackups']=await cmd('project.backup.list')
                 await js('window.reviewIPC=[]')
                 row['before']=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
+                row['historyBefore']=await cmd('edit.history.get',{'limit':1000})
                 row['beforeSelection']=await cmd('draw.selection.get')
+                state_selector={'Grid':'[data-tt-id="mainToolbar.drawAid.grid.set"]','Symmetry':'[data-tt-id="drawingView.symmetry"]','Brush':'[data-tt-id="drawingTools.brush"]'}.get(name)
+                if state_selector:row['pressedBefore']=await js('document.querySelector('+json.dumps(state_selector)+')?.getAttribute("aria-pressed")')
+                if name=='Grid': row['gridBefore']=await cmd('drawAid.state.get')
                 if path=='key':
                     u.keybd_event(0x11,0,0,0);m.c42.os_key(0x41);u.keybd_event(0x11,0,2,0)
                 elif path=='undo':
                     u.keybd_event(0x11,0,0,0);m.c42.os_key(0x5A);u.keybd_event(0x11,0,2,0)
                 elif path=='gesture':
                     await cmd('tool.active.set',{'toolId':'brush'})
-                    place=await m.locate_view(s,rc,'drawingView')
+                    place=await drawing_place()
                     mapping=(await cmd('draw.viewMapping.get',{'view':'drawingView'}))['drawingToView']
                     pts=[m.c42.apply(mapping,*p) for p in ((-60,10),(-20,35),(30,5))]
                     times={};await asyncio.to_thread(m.os_drag,m.e2e.APP_PID['pid'],[(place[0]+x,place[1]+y) for x,y in pts],.5,.1,times)
                     row['osTimes']=times
                 elif path: await menu(path)
-                else: await dom(command)
+                else: row['input']=await dom(command)
                 if name=='Open Backup':
                     await asyncio.sleep(.5)
-                    await dom('project.backup.open')
+                    present=await js("!!document.querySelector('[data-tt-command=\"project.backup.open\"]')")
+                    row['backupOpenButtonPresent']=present
+                    run.shot('open-backup-dialog-with-valid-backups',m.e2e.APP_PID['pid'])
+                    run.check(bool(row['availableBackups']) and present,'D-25; spec/01_application_shell.md section 12.2 lines 1083-1084: nonempty backup list offers project.backup.open',{'available':row['availableBackups'],'buttonPresent':present})
+                    if present: await dom('project.backup.open')
                 await asyncio.sleep(.7)
                 row['ipc']=await js('window.reviewIPC');row['tree']=await m.e2e.tree(s)
                 row['nativeMenuTrace']=list(native_trace)
@@ -565,6 +632,24 @@ async def parity_window(s,run,out,bob,m):
                 row['after']=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
                 row['history']=await cmd('edit.history.get',{'limit':1000})
                 row['afterSelection']=await cmd('draw.selection.get')
+                if state_selector:
+                    row['pressedAfter']=await js('document.querySelector('+json.dumps(state_selector)+')?.getAttribute("aria-pressed")')
+                    if name!='Grid':run.check(row['pressedBefore']=='false' and row['pressedAfter']=='true','expected '+name+' changes its declared checked state; '+citation,{'before':row['pressedBefore'],'after':row['pressedAfter']})
+                if name=='Grid':
+                    row['gridAfter']=await cmd('drawAid.state.get')
+                    before_grid=row['gridBefore']['grid']['visible'];after_grid=row['gridAfter']['grid']['visible']
+                    run.check(after_grid!=before_grid,'D-25 Grid toolbar action toggles visibility; spec/02_drawing.md section 13.5 line 1388',{'before':before_grid,'after':after_grid})
+                    if after_grid==before_grid:
+                        row['directGridSet']=await cmd('drawAid.grid.set',{'visible':not before_grid})
+                        row['gridAfterDirect']=await cmd('drawAid.state.get')
+                        run.check(row['gridAfterDirect']['grid']['visible']!=before_grid,'second path: explicit Grid visible parameter changes state; 02:1388',row['gridAfterDirect'])
+                        await cmd('drawAid.grid.set',{'visible':before_grid})
+                if name=='Open Backup' and not row.get('backupOpenButtonPresent') and row['availableBackups']:
+                    m.c42.os_key(0x1B);await asyncio.sleep(.2)
+                    backup=row['availableBackups'][0]['backupId']
+                    row['directBackupOpen']=await rc(s,'project.backup.open',{'backupId':backup,'onUnsaved':'fail'})
+                    row['directBackupDocument']=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
+                    run.check(row['directBackupOpen'].get('status')=='ok','second path: valid backup opens through command, 01:1084',row['directBackupOpen'])
                 run.shot(name.lower().replace(' ','-'),m.e2e.APP_PID['pid'])
                 observed=[json.loads(e['args'].get('json','{}')).get('command') for e in row['ipc'] if e['command']=='run_command']
                 if path=='gesture':
@@ -574,7 +659,7 @@ async def parity_window(s,run,out,bob,m):
                 row['observed']=observed
                 run.check(command in observed,'D-25 expected '+command+' from '+name+'; '+citation,observed)
                 values=[json.loads(e['args'].get('json','{}')) for e in row['ipc'] if e['command']=='run_command']
-                expected={'Arrange':{'to':'back'},'Flip':{'axis':'horizontal'},'Brush':{'toolId':'brush'}}.get(name,{})
+                expected={'Arrange':{'to':'back'},'Flip':{'axis':'horizontal'},'Brush':{'toolId':'brush'},'Grid':{'visible':not row.get('gridBefore',{}).get('grid',{}).get('visible',False)},'Symmetry':{'mode':'mirror'}}.get(name,{})
                 row['expectedParams']=expected
                 matching=[v for v in values if v.get('command')==command and all(v.get('params',{}).get(k)==x for k,x in expected.items())]
                 if path=='gesture': matching=(row['gesture'].get('lastGesture') or {}).get('commands',[])
@@ -592,6 +677,8 @@ async def parity_window(s,run,out,bob,m):
                     root=(row['tree'].get('result') or {}).get('root') or {}
                     ident={'Project Info':'projectInfo','Check Project':'checkProject','About':'about'}[name]
                     run.check(m.e2e.by_id(root,ident) is not None,'expected '+name+' dialog '+ident+'; '+citation,None)
+                if name in ('Grid','Symmetry','Brush','Select All'):
+                    run.check(canonical(row['before'])==canonical(row['after']) and row['historyBefore']['position']==row['history']['position'],'session UI effect makes no document undo step; '+citation,None)
                 label={'Flatten':'Flatten Drawing','Arrange':'Send to Back','Flip':'Flip Horizontal','Group':'Group Selection','Cut Special':'Cut Special','Brush gesture':'Brush Tool'}.get(name)
                 if label:
                     got=row['history']['entries'][-1]['label'];row['expectedLabel']=label
@@ -607,7 +694,9 @@ async def parity_window(s,run,out,bob,m):
             row['checks']=run.transcript[start_check:]
             row['verdict']='PASS' if all(c.get('ok',True) for c in row['checks']) else 'FAIL'
             rows.append(row);run.save('rows.json',rows)
-        await cmd('project.close',{'onUnsaved':'discard'})
+        await cmd('project.saveAs',{'path':str(Path(work.name)/'FinalParity.animpkg')})
+        close=await cmd('project.close',{'onUnsaved':'fail'})
+        run.save('closed.json',{'response':close,'state':await cmd('app.state.get')})
         await asyncio.sleep(.5)
         phase='disabled'
         for row,(_,command,path) in zip(rows,actions):
@@ -621,22 +710,38 @@ async def parity_window(s,run,out,bob,m):
                 row['disabledState']='Not applicable: globally available under spec/01_application_shell.md section 1.3 lines 71-75'
                 run.save('rows.json',rows);continue
             params={'draw.arrange.apply':{'to':'back'},'draw.flip.apply':{'axis':'horizontal'},'tool.active.set':{'toolId':'brush'},'tool.symmetry.set':{'mode':'mirror'},'drawAid.grid.set':{'visible':True},'draw.stroke.add':{'kind':'brush','points':[{'x':0,'y':0},{'x':10,'y':5}]}}.get(command,{})
-            expression="window.__TAURI_INTERNALS__.invoke('availability',{json:"+json.dumps(json.dumps({'refs':[{'commandId':command,'params':params}]}))+"})"
+            expression="(async()=>{let x=await window.__TAURI_INTERNALS__.invoke('availability',{json:"+json.dumps(json.dumps({'refs':[{'commandId':command,'params':params}]}))+"});if(x instanceof ArrayBuffer)return JSON.parse(new TextDecoder().decode(x));if(typeof x==='string')return JSON.parse(x);return x})()"
             # Runtime read only: retain the kernel's precheck result beside the inspected tree.
             # Promise evaluation is awaited by CDP below.
-            seq+=1;await ws.send(json.dumps({'id':seq,'method':'Runtime.evaluate','params':{'expression':expression,'returnByValue':True,'awaitPromise':True}}))
-            while True:
-                result=json.loads(await ws.recv())
-                if result.get('id')==seq: break
+            result=await cdp('Runtime.evaluate',{'expression':expression,'returnByValue':True,'awaitPromise':True})
             row['noProjectAvailability']=result
-            before=await cmd('doc.state.get')
+            before=await rc(s,'doc.state.get',{})
+            await js('window.reviewIPC=[]')
+            if isinstance(path,list):
+                await menu(path)
+                m.c42.os_key(0x1B);m.c42.os_key(0x1B);m.c42.os_key(0x1B)
+            elif path=='key':
+                u.keybd_event(0x11,0,0,0);m.c42.os_key(0x41);u.keybd_event(0x11,0,2,0)
+            elif path is None:
+                try: row['disabledInput']=await dom(command)
+                except RuntimeError as ex: row['disabledInput']=str(ex)
+            else:row['disabledInput']='No drawing gesture: no project is open; tool command tested directly below'
+            await asyncio.sleep(.3)
+            row['disabledIPC']=await js('window.reviewIPC')
+            row['disabledUIUnchanged']=(await rc(s,'doc.state.get',{}))==before
+            run.check(row['disabledUIUnchanged'],'disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: '+command,None)
+            m.c42.os_key(0x1B);m.c42.os_key(0x1B);await asyncio.sleep(.2)
             refusal=await rc(s,command,params)
-            after=await cmd('doc.state.get')
+            after=await rc(s,'doc.state.get',{})
             row['noProjectInvocation']={'response':refusal,'unchanged':before==after}
             run.check(refusal.get('status')=='error' and (refusal.get('error') or {}).get('code')=='project.none','spec/01_application_shell.md section 1.3 lines 71-75: '+command+' refuses project.none without project',refusal.get('error'))
             if refusal.get('status')=='error': run.check(before==after,'refused command changes no document '+command,None)
             run.save('rows.json',rows)
         work.cleanup()
+        await cdp('Debugger.removeBreakpoint',{'breakpointId':breakpoint['result']['breakpointId']})
+        if audit_tasks: await asyncio.gather(*list(audit_tasks))
+        await cdp('Debugger.disable',{})
+        receiver.cancel();await asyncio.gather(receiver,return_exceptions=True)
 
 def case7():
     app=str(Path(sys.argv[1]).resolve()); head=str(ROOT/'target/release/toontown-headless.exe')
