@@ -113,7 +113,7 @@ async def selection(m, s, part):
     await record(4,z,z['handles']==8 and z['finalHandles']==0)
     await rc('view.transform.reset',{'viewId':'drawingView'})
     await m.settle(s)
-    drags = [([ (30,30),(80,80)],'scale'), ([(38,38),(-128,38)],'rotate'), ([(-20,-20),(0,-10)],'translate')]
+    drags = [([ (34,34),(80,80)],'scale'), ([(38,38),(-128,38)],'rotate'), ([(-20,-20),(0,-10)],'translate')]
     for n,(pts,key) in enumerate(drags,5):
         before = (await rc('edit.history.get'))['result']['position']
         box = (await rc('draw.selection.get'))['result']['bounds']

@@ -1,0 +1,10 @@
+{
+  "kind": "toontown.c42.gesture-equivalence",
+  "platform": "win32",
+  "seconds": 5.0,
+  "rows": 1,
+  "input": [
+    "agent"
+  ],
+  "failures": []
+}

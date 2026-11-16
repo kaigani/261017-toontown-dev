@@ -1,0 +1,25 @@
+{
+  "drawingId": "dr_01K7JJN80080HSMJDCCCFRED9A",
+  "drawingToView": [
+    1.0,
+    0.0,
+    0.0,
+    -1.0,
+    450.5,
+    317.5
+  ],
+  "viewToDrawing": [
+    1.0,
+    0.0,
+    0.0,
+    -1.0,
+    -450.5,
+    317.5
+  ],
+  "zoom": 1.0,
+  "rotation": 0.0,
+  "viewSize": {
+    "width": 901,
+    "height": 635
+  }
+}

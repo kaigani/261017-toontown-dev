@@ -461,6 +461,26 @@ async def parity_window(s,run,out,bob,m):
         await js("window.reviewIPC=[];window.reviewInvoke=window.__TAURI_INTERNALS__.invoke;window.__TAURI_INTERNALS__.invoke=async function(c,a,...z){let v=await window.reviewInvoke.call(this,c,a,...z);if(c==='run_command'||c==='dispatch_key')window.reviewIPC.push({command:c,args:a,result:v});return v};true")
         u=ctypes.windll.user32;u.GetMenu.restype=wintypes.HMENU;u.GetSubMenu.restype=wintypes.HMENU
         h=m._main_window(m.e2e.APP_PID['pid']);u.SetForegroundWindow(h)
+        native_trace=[]
+        phase='enabled'
+        def has_menu_command(value,command):
+            if isinstance(value,dict):
+                ref=value.get('command') or {}
+                if value.get('role')=='menuitem' and (value.get('commandId')==command or isinstance(ref,dict) and ref.get('commandId')==command): return True
+                return any(has_menu_command(v,command) for v in value.values())
+            return isinstance(value,list) and any(has_menu_command(v,command) for v in value)
+        def native_state(path):
+            handle=u.GetMenu(h)
+            for label in path:
+                found=None
+                for i in range(u.GetMenuItemCount(handle)):
+                    b=ctypes.create_unicode_buffer(256);u.GetMenuStringW(handle,i,b,256,0x400)
+                    if b.value.replace('&','').split('\t')[0].rstrip('…').strip()==label:found=i;break
+                if found is None:return {'missing':label}
+                flags=u.GetMenuState(handle,found,0x400)
+                state={'label':label,'flags':flags,'enabled':not bool(flags&3)}
+                handle=u.GetSubMenu(handle,found)
+            return state
         async def click_screen(x,y):
             u.SetCursorPos(int(x),int(y));await asyncio.sleep(.12);m._send_button(True);m._send_button(False);await asyncio.sleep(.35)
         async def menu(path):
@@ -469,19 +489,37 @@ async def parity_window(s,run,out,bob,m):
                 found=None
                 for i in range(u.GetMenuItemCount(handle)):
                     b=ctypes.create_unicode_buffer(256);u.GetMenuStringW(handle,i,b,256,0x400)
-                    if b.value.replace('&','').split('\t')[0].rstrip('ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦').strip()==label:
+                    if b.value.replace('&','').split('\t')[0].rstrip('ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦').strip()==label:
                         found=i;break
                 if found is None: raise RuntimeError('native menu label absent: '+label)
                 rect=wintypes.RECT()
                 if not u.GetMenuItemRect(h,handle,found,ctypes.byref(rect)): raise RuntimeError('native menu rectangle absent: '+label)
                 await click_screen((rect.left+rect.right)/2,(rect.top+rect.bottom)/2)
+                native_trace.append({'label':label,'treeWhileOpen':await m.e2e.call(s,'inspect_ui',{'target':'window','depth':32})})
                 handle=u.GetSubMenu(handle,found)
+                if handle: run.shot('native-'+phase+'-'+name.lower().replace(' ','-')+'-'+label.lower().replace(' ','-'),m.e2e.APP_PID['pid'])
         async def dom(command):
             rect=await js("(()=>{let e=[...document.querySelectorAll('[data-tt-command]')].find(e=>e.getAttribute('data-tt-command')==="+json.dumps(command)+"&&e.getBoundingClientRect().width"+("&&e.title==='brush'" if command=='tool.active.set' else '')+");if(!e)return null;let r=e.getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2]})()")
             if not rect: raise RuntimeError('rendered control absent: '+command)
+            visible=await js('(()=>{let e=document.elementFromPoint('+str(rect[0])+','+str(rect[1])+');return !!e&&!!e.closest(\'[data-tt-command="'+command+'"]\')})()')
+            if not visible:
+                for _ in range(100):
+                    m.c42.os_key(0x09);await asyncio.sleep(.03)
+                    focused=await js("document.activeElement?.getAttribute('data-tt-command')")
+                    if focused==command: break
+                rect=await js("(()=>{let e=document.activeElement;if(e?.getAttribute('data-tt-command')!=="+json.dumps(command)+")return null;let r=e.getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2]})()")
+                if not rect: raise RuntimeError('control not reached with real Tab keys: '+command)
             p=wintypes.POINT(0,0);u.ClientToScreen(h,ctypes.byref(p));await click_screen(p.x+rect[0],p.y+rect[1])
         rows=[]
-        actions=[('Flatten','draw.flatten.apply',['Drawing','Flatten']),('Arrange','draw.arrange.apply',['Drawing','Arrange','Send to Back']),('Flip','draw.flip.apply',['Drawing','Flip Horizontal']),('Group','draw.group.create',['Drawing','Group']),('Cut Special','edit.cutSpecial',['Edit','Cut Special']),('Project Info','project.info.get',['File','Project Info']),('Check Project','doc.validate',['File','Check Project']),('Open Backup','project.backup.open',['File','Open Backup']),('About','app.info.get',['Help','About Toontown']),('Grid','drawAid.grid.set',None),('Symmetry','tool.symmetry.set',None),('Brush','tool.active.set',None),('Select All','edit.selectAll','key'),('Undo','edit.undo','undo')]
+        citations={}
+        for spec in ('01_application_shell.md','02_drawing.md','10_data_model_project_format.md'):
+            heading=''
+            for number,line in enumerate((ROOT/'spec'/spec).read_text(encoding='utf-8').splitlines(),1):
+                if line.startswith('#'): heading=line.lstrip('# ').strip()
+                if line.startswith('| `'):
+                    command=line.split('`')[1]
+                    citations[command]='spec/'+spec+' section '+heading+' line '+str(number)
+        actions=[('Flatten','draw.flatten.apply',['Drawing','Flatten']),('Arrange','draw.arrange.apply',['Drawing','Arrange','Send to Back']),('Flip','draw.flip.apply',['Drawing','Flip Horizontal']),('Group','draw.group.create',['Drawing','Group']),('Cut Special','edit.cutSpecial',['Edit','Cut Special']),('Project Info','project.info.get',['File','Project Info']),('Check Project','doc.validate',['File','Check Project']),('Open Backup','project.backup.open',['File','Open Backup']),('About','app.info.get',['Help','About Toontown']),('Grid','drawAid.grid.set',None),('Symmetry','tool.symmetry.set',None),('Brush','tool.active.set',None),('Select All','edit.selectAll','key'),('Brush gesture','draw.stroke.add','gesture')]
         await cmd('workspace.select',{'name':'Drawing'});await cmd('view.active.set',{'viewId':'drawingView'})
         work=tempfile.TemporaryDirectory(prefix='tt-review-parity-')
         await cmd('prefs.set',{'values':{'files.backups.count':5}})
@@ -489,18 +527,30 @@ async def parity_window(s,run,out,bob,m):
         await cmd('draw.rectangle.add',{'from':{'x':-50,'y':-45},'to':{'x':35,'y':25},'layer':'new'})
         await cmd('project.save')
         for name,command,path in actions:
-            row={'action':name,'expectedCommand':command,'spec':'D-25; D-30; spec/11_agent_interface_mcp.md section 14.1 lines 560-563'}
+            citation=citations[command]
+            row={'action':name,'expectedCommand':command,'spec':citation+'; D-25; D-30'}
+            start_check=len(run.transcript)
             try:
+                native_trace.clear()
                 added=await cmd('draw.rectangle.add',{'from':{'x':-90,'y':-65},'to':{'x':60,'y':40},'layer':'new'})
                 await cmd('draw.selection.set',{'by':'all'})
                 if name=='Arrange': await cmd('draw.selection.set',{'by':'ids','ids':added['strokeIds']})
+                if name=='Select All': await cmd('draw.selection.set',{'by':'none'})
                 if name=='Open Backup': await cmd('project.save')
                 await js('window.reviewIPC=[]')
                 row['before']=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
+                row['beforeSelection']=await cmd('draw.selection.get')
                 if path=='key':
                     u.keybd_event(0x11,0,0,0);m.c42.os_key(0x41);u.keybd_event(0x11,0,2,0)
                 elif path=='undo':
                     u.keybd_event(0x11,0,0,0);m.c42.os_key(0x5A);u.keybd_event(0x11,0,2,0)
+                elif path=='gesture':
+                    await cmd('tool.active.set',{'toolId':'brush'})
+                    place=await m.locate_view(s,rc,'drawingView')
+                    mapping=(await cmd('draw.viewMapping.get',{'view':'drawingView'}))['drawingToView']
+                    pts=[m.c42.apply(mapping,*p) for p in ((-60,10),(-20,35),(30,5))]
+                    times={};await asyncio.to_thread(m.os_drag,m.e2e.APP_PID['pid'],[(place[0]+x,place[1]+y) for x,y in pts],.5,.1,times)
+                    row['osTimes']=times
                 elif path: await menu(path)
                 else: await dom(command)
                 if name=='Open Backup':
@@ -508,20 +558,44 @@ async def parity_window(s,run,out,bob,m):
                     await dom('project.backup.open')
                 await asyncio.sleep(.7)
                 row['ipc']=await js('window.reviewIPC');row['tree']=await m.e2e.tree(s)
+                row['nativeMenuTrace']=list(native_trace)
+                if isinstance(path,list):
+                    row['inspectExposesMenuItem']=any(has_menu_command(t['treeWhileOpen'],command) for t in native_trace[:-1])
+                    run.check(row['inspectExposesMenuItem'],'spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command '+command,row['inspectExposesMenuItem'])
                 row['after']=await cmd('doc.export.json',{'scope':'project','binaries':'omit'})
                 row['history']=await cmd('edit.history.get',{'limit':1000})
+                row['afterSelection']=await cmd('draw.selection.get')
+                run.shot(name.lower().replace(' ','-'),m.e2e.APP_PID['pid'])
                 observed=[json.loads(e['args'].get('json','{}')).get('command') for e in row['ipc'] if e['command']=='run_command']
+                if path=='gesture':
+                    camera=load('parity_canvas','scripts/c43-camera-e2e.py')
+                    row['gesture']=await camera.canvas_summary(s,'drawingView')
+                    observed += [c['commandId'] for c in (row['gesture'].get('lastGesture') or {}).get('commands',[])]
                 row['observed']=observed
-                run.check(command in observed,'D-25 exact command reachable '+name,observed)
+                run.check(command in observed,'D-25 expected '+command+' from '+name+'; '+citation,observed)
                 values=[json.loads(e['args'].get('json','{}')) for e in row['ipc'] if e['command']=='run_command']
                 expected={'Arrange':{'to':'back'},'Flip':{'axis':'horizontal'},'Brush':{'toolId':'brush'}}.get(name,{})
                 row['expectedParams']=expected
                 matching=[v for v in values if v.get('command')==command and all(v.get('params',{}).get(k)==x for k,x in expected.items())]
-                run.check(bool(matching),'D-23 parameters '+name+' spec/02_drawing.md:1318,1333,1344,1347; section 8.4:750-760',values)
-                label={'Flatten':'Flatten Drawing','Arrange':'Send to Back','Flip':'Flip Horizontal','Group':'Group Selection','Cut Special':'Cut Special'}.get(name)
+                if path=='gesture': matching=(row['gesture'].get('lastGesture') or {}).get('commands',[])
+                run.check(bool(matching),'D-23 expected parameters '+json.dumps(expected)+' for '+name+'; '+citation,values)
+                if path=='gesture':
+                    strokes=[c for c in matching if c.get('commandId')=='draw.stroke.add']
+                    run.check(bool(strokes) and strokes[0].get('params',{}).get('kind')=='brush','02:1207,1318 Brush gesture sends kind brush',strokes)
+                if name in ('Flatten','Arrange','Flip','Group','Cut Special','Brush gesture','Open Backup'):
+                    row['documentChanged']=canonical(row['before'])!=canonical(row['after'])
+                    run.check(row['documentChanged'],'document effect '+name,row['documentChanged'])
+                if name=='Select All':
+                    run.check(not row['beforeSelection'].get('bounds') and bool(row['afterSelection'].get('bounds')),'02:1329 Select All selects previously empty selection',row['afterSelection'])
+                if name in ('Project Info','Check Project','About'):
+                    run.check(canonical(row['before'])==canonical(row['after']),'query leaves document unchanged; '+citation,None)
+                    root=(row['tree'].get('result') or {}).get('root') or {}
+                    ident={'Project Info':'projectInfo','Check Project':'checkProject','About':'about'}[name]
+                    run.check(m.e2e.by_id(root,ident) is not None,'expected '+name+' dialog '+ident+'; '+citation,None)
+                label={'Flatten':'Flatten Drawing','Arrange':'Send to Back','Flip':'Flip Horizontal','Group':'Group Selection','Cut Special':'Cut Special','Brush gesture':'Brush Tool'}.get(name)
                 if label:
                     got=row['history']['entries'][-1]['label'];row['expectedLabel']=label
-                    run.check(got==label,'D-23 undo label '+name+' spec/02_drawing.md:735,759,822,834; spec/01_application_shell.md:1099',got)
+                    run.check(got==label,'D-23 expected undo label '+label+'; '+citation,got)
                 row['verdict']='PASS' if command in observed else 'FAIL'
             except Exception as ex:
                 row['error']=repr(ex);row['verdict']='FAIL';run.check(False,'parity action completed '+name,repr(ex))
@@ -530,12 +604,23 @@ async def parity_window(s,run,out,bob,m):
                 await js("document.querySelector('[role=dialog] button')?.focus();true")
                 # Dismiss dialogs with a real Escape; retain their inspected tree above.
                 m.c42.os_key(0x1B)
+            row['checks']=run.transcript[start_check:]
+            row['verdict']='PASS' if all(c.get('ok',True) for c in row['checks']) else 'FAIL'
             rows.append(row);run.save('rows.json',rows)
         await cmd('project.close',{'onUnsaved':'discard'})
         await asyncio.sleep(.5)
+        phase='disabled'
         for row,(_,command,path) in zip(rows,actions):
-            row['disabledTree']=await m.e2e.tree(s)
-            params={'draw.arrange.apply':{'to':'back'},'draw.flip.apply':{'axis':'horizontal'},'tool.active.set':{'toolId':'brush'},'tool.symmetry.set':{'mode':'mirror'},'drawAid.grid.set':{'visible':True}}.get(command,{})
+            name=row['action']
+            if isinstance(path,list):
+                row['nativeNoProject']=native_state(path)
+                native_trace.clear();await menu(path[:-1])
+            row['disabledTree']=await m.e2e.call(s,'inspect_ui',{'target':'window','depth':32})
+            m.c42.os_key(0x1B);m.c42.os_key(0x1B);m.c42.os_key(0x1B)
+            if command in ('app.info.get','project.backup.open'):
+                row['disabledState']='Not applicable: globally available under spec/01_application_shell.md section 1.3 lines 71-75'
+                run.save('rows.json',rows);continue
+            params={'draw.arrange.apply':{'to':'back'},'draw.flip.apply':{'axis':'horizontal'},'tool.active.set':{'toolId':'brush'},'tool.symmetry.set':{'mode':'mirror'},'drawAid.grid.set':{'visible':True},'draw.stroke.add':{'kind':'brush','points':[{'x':0,'y':0},{'x':10,'y':5}]}}.get(command,{})
             expression="window.__TAURI_INTERNALS__.invoke('availability',{json:"+json.dumps(json.dumps({'refs':[{'commandId':command,'params':params}]}))+"})"
             # Runtime read only: retain the kernel's precheck result beside the inspected tree.
             # Promise evaluation is awaited by CDP below.
@@ -548,6 +633,7 @@ async def parity_window(s,run,out,bob,m):
             refusal=await rc(s,command,params)
             after=await cmd('doc.state.get')
             row['noProjectInvocation']={'response':refusal,'unchanged':before==after}
+            run.check(refusal.get('status')=='error' and (refusal.get('error') or {}).get('code')=='project.none','spec/01_application_shell.md section 1.3 lines 71-75: '+command+' refuses project.none without project',refusal.get('error'))
             if refusal.get('status')=='error': run.check(before==after,'refused command changes no document '+command,None)
             run.save('rows.json',rows)
         work.cleanup()
@@ -557,22 +643,28 @@ def case7():
     out=OUT/'case7';out.mkdir(parents=True,exist_ok=True)
     results=[]
     jobs=[('measure-'+b,['scripts/c43-camera-measure.py',app,str(out/('measure-'+b)),'--backend',b,'--bounds','workstation','--drags','30']) for b in ('webgl2','webgpu')]
+    jobs += [('one-drag-gate',['scripts/c43-camera-measure.py',app,str(out/'one-drag-gate'),'--backend','webgl2','--bounds','workstation','--drags','1'])]
     jobs += [('c41',['scripts/c41-gui-e2e.py',app,str(out/'c41')]),('c42',['scripts/c42-gui-e2e.py',app,str(out/'c42')]),('byte',['scripts/c42-byte-gate.py',app,head,str(out/'byte')])]
     jobs += [(n,['tests/adversarial/'+f,app]+args) for n,f,args in [('r1','c42b-r1-live.py',['c2']),('r2','c42b-r2-live.py',['selection',head]),('r3','c42b-r3-live.py',['endings',head]),('r4','c42b-r4-live.py',['named',head])]]
     jobs += [(n,['tests/adversarial/'+n+'.py',app]) for n in ('c42b-r1s-selection','c42b-r1s-generation','c42b-r1s-experiments','c42b-r1-conformance')]
     jobs += [('r1-'+mode,['tests/adversarial/c42b-r1-live.py',app,mode]) for mode in ('c3','d2','d2-exact-attached','d2-exact-headless','d3-webgl2')]
     jobs += [('r2-'+mode,['tests/adversarial/c42b-r2-live.py',app,mode,head]) for mode in ('c2','d3-webgl2','gui','regression','byte','exact','exact-select','exact-tools')]
     jobs += [('r3-labels',['tests/adversarial/c42b-r3-live.py',app,'labels',head])]
-    if len(sys.argv)>3: jobs=[j for j in jobs if j[0]==sys.argv[3]]
+    if len(sys.argv)>3:
+        jobs=[j for j in jobs if j[0]==sys.argv[3]]
+        if not jobs: raise SystemExit('unknown Case 7 check: '+sys.argv[3])
     for name,args in jobs:
         try:
             if args[0].startswith('tests/adversarial/'):
                 source_path=str(ROOT/args[0])
-                wrapper="import sys;from pathlib import Path;p=Path(sys.argv[1]);sys.argv=sys.argv[1:];s=p.read_text(encoding='utf-8').replace('reviews/evidence/M4-C4.2b','reviews/evidence/M4-C4.3b-r1/case7/legacy');exec(compile(s,str(p),'exec'),{'__file__':str(p),'__name__':'__main__'})"
-                args=['-c',wrapper,source_path]+args[1:]
+                args=[str(ROOT/'tests/adversarial/c43b-r1-regression-runner.py'),source_path]+args[1:]
             p=subprocess.run([sys.executable]+args,cwd=ROOT,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=530)
             (out/(name+'.txt')).write_text(p.stdout+p.stderr,encoding='utf-8',newline='\n')
             results.append({'name':name,'exit':p.returncode})
+            if name=='one-drag-gate':
+                results[-1]['builderExit']=p.returncode
+                results[-1]['assertion']='D-33 workstation gate must reject fewer than 30 samples per scene'
+                results[-1]['exit']=0 if p.returncode!=0 else 1
             if name.startswith('measure-'):
                 receipt=json.loads((out/name/'measurements.json').read_text(encoding='utf-8'))
                 r=receipt.get('record',{})

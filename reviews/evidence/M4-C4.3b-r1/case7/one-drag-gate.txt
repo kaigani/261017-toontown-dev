@@ -1,0 +1,19 @@
+ok   D-33 control: 300 frames of the webview's cadence on the start screen
+ok   sample: work per frame p95 idle <= 8 ms (D-33)
+ok   sample: at most 1 % of frame intervals idle longer than 35.0 ms (twice the control median; D-33)
+ok   sample: work per frame p95 during scene drags <= 8 ms (D-33)
+ok   sample: at most 1 % of frame intervals during scene drags longer than 35.0 ms (twice the control median; D-33)
+ok   sample: release-to-committed p95 of a scene drag <= 50.0 ms
+ok   sample: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms
+ok   sample: at least 30 release-to-committed samples
+ok   groups1k: work per frame p95 idle <= 8 ms (D-33)
+ok   groups1k: at most 1 % of frame intervals idle longer than 35.0 ms (twice the control median; D-33)
+ok   groups1k: work per frame p95 during scene drags <= 8 ms (D-33)
+ok   groups1k: at most 1 % of frame intervals during scene drags longer than 35.0 ms (twice the control median; D-33)
+ok   groups1k: drag feedback p95 (a sample to the frame drawing the preview) <= 16.7 ms
+ok   groups1k: at least 30 release-to-committed samples
+{
+ "kind": "toontown.c43.camera-measure",
+ "seconds": 60.8,
+ "failures": []
+}

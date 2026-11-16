@@ -1,0 +1,35 @@
+ok   the application saves the fixture project
+ok   the canvas is located in the window (OS input)
+ok   three-way brush (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way pencil (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way rectangle (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way ellipse (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way line (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way polyline (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way select (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way eraser (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way cutter (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way scissor (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way paint (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way unpaint (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way paintUnpainted (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way dropper (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way closeGap (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way zoom (click) (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way grabber (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way select: corner scale (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way select: constrained corner (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way select: side scale (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way select: rotate (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way select: drawing pivot (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+{
+ "kind": "toontown.c42.gesture-equivalence",
+ "platform": "win32",
+ "seconds": 16.9,
+ "rows": 22,
+ "input": [
+  "agent",
+  "os"
+ ],
+ "failures": []
+}

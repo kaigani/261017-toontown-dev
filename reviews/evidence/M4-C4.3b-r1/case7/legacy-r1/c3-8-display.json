@@ -1,0 +1,35 @@
+{
+  "os": [
+    {
+      "title": "Toontown",
+      "width": 1280,
+      "height": 800,
+      "frame": "client"
+    }
+  ],
+  "mapping": {
+    "drawingId": "dr_01K7JJN800JCY12TY2SV9YF2EN",
+    "drawingToView": [
+      1.0,
+      0.0,
+      0.0,
+      -1.0,
+      450.5,
+      317.5
+    ],
+    "viewToDrawing": [
+      1.0,
+      0.0,
+      0.0,
+      -1.0,
+      -450.5,
+      317.5
+    ],
+    "zoom": 1.0,
+    "rotation": 0.0,
+    "viewSize": {
+      "width": 901,
+      "height": 635
+    }
+  }
+}

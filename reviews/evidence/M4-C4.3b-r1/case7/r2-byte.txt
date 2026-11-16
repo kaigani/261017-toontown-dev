@@ -1,0 +1,19 @@
+ok   the same document revision on both sides
+ok   frame 1: identical PNG bytes attached and headless
+ok   frame 1: identical metadata except the volatile fields
+ok   frame 6: identical PNG bytes attached and headless
+ok   frame 6: identical metadata except the volatile fields
+ok   frame 12: identical PNG bytes attached and headless
+ok   frame 12: identical metadata except the volatile fields
+ok   frame 18: identical PNG bytes attached and headless
+ok   frame 18: identical metadata except the volatile fields
+ok   frame 24: identical PNG bytes attached and headless
+ok   frame 24: identical metadata except the volatile fields
+{
+ "kind": "toontown.c42.byte-gate",
+ "documentRev": {
+  "headless": 12,
+  "attached": 12
+ },
+ "failures": []
+}
