@@ -124,7 +124,7 @@ function JobsIndicator() {
         className="status-jobs"
         disabled={count === 0}
         aria-expanded={open && count > 0}
-        aria-label={count > 0 ? undefined : 'No jobs running'}
+        aria-hidden={count > 0 ? undefined : true}
         data-tt-role="button"
         data-tt-id="status.jobs"
         data-tt-gui-only="disclose"
