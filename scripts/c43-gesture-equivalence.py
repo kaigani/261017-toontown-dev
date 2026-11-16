@@ -199,6 +199,18 @@ def spec_problems(expect: dict, path: str, cmds: list, keyed, labels: list, bob:
     return out
 
 
+def spec_verdict(run, row: dict, what: str, expect: dict, cmds: tuple, keyed: list, labels: list, bob: str) -> list:
+    """C43B-R1S-07: each path (the window, engine 2's replay, engine 3's direct commands) against `expect`, the spec's
+    statement for the row, given by the caller (this script's `EXPECTED`, or a caller's own); records the verdict."""
+    spec_bad: list = []
+    for path, c, k, lab in zip(("window", "engine2", "engine3"), cmds, keyed, labels):
+        spec_bad += spec_problems(expect, path, c, k, lab, bob)
+    row.update({"expected": expect, "keyedChannels": keyed, "specProblems": spec_bad, "specVerdict": "PASS" if not spec_bad else "FAIL"})
+    run.check(not spec_bad, f"three-way {what}: each path does what the spec states ({expect.get('spec')})",
+              {"expected": expect, "problems": spec_bad, "labels": labels, "keyedChannels": keyed})
+    return spec_bad
+
+
 def keyed_of(entry) -> list | None:
     """The `keyedChannels` of a command's answer (an envelope, or a command record carrying one), when reported."""
     if not isinstance(entry, dict):
@@ -310,6 +322,8 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
     ]
     missing = [name for name, *_ in rows if name not in EXPECTED]
     run.check(not missing, "C43B-R1S-07: every row states the spec's expectation before it runs", missing)
+    if missing:
+        return []  # this script's own table is incomplete: no row runs without the spec's statement
     results = []
     only = {x for x in os.environ.get("C43_EQUIV_ROWS", "").split(",") if x}
     for name, family, tool, points, selected in rows:
@@ -414,26 +428,22 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
             row["contents"] = contents
         # C43B-R1S-07: each path against the spec's statement for the row (the window's commands and answers, engine 2's
         # replay, engine 3's direct commands), not only against each other.
-        expect = EXPECTED.get(name) or {}
+        # The expectation of this row: this script's own rows each have one (checked before any row runs); a caller
+        # that brings its own rows (a reviewer's probe reusing this function) checks them with its own expectations.
+        expect = EXPECTED.get(name)
         raw_window = [c for c in rec.get("commands") or [] if c.get("commandId") not in TOOL_CHOICE]
         raw_h2 = [c for c in cmds2 if c.get("commandId") not in TOOL_CHOICE]
         direct_kept = [d for c, d in zip(rec.get("commands") or [], direct) if c.get("commandId") not in TOOL_CHOICE]
         keyed = [keyed_of(raw_window[0]) if raw_window else None, keyed_of(raw_h2[0]) if raw_h2 else None,
                  keyed_of(direct_kept[0]) if direct_kept else None]
-        if expect.get("keyed") is not None and keyed[0] is None:
+        if (expect or {}).get("keyed") is not None and keyed[0] is None:
             # The window's record may carry commands without their answers: its answer is engine 3's, which received
             # exactly the window's commands on the same state (asserted below with the content).
             keyed[0] = keyed[2]
-        spec_bad = []
-        if expect:
-            for path, cmds, k, lab in (("window", win_cmds, keyed[0], labels[0]), ("engine2", h2_cmds, keyed[1], labels[1]),
-                                       ("engine3", win_cmds, keyed[2], labels[2])):
-                spec_bad += spec_problems(expect, path, cmds, k, lab, ids["Bob"])
+        if expect is not None:
+            spec_verdict(run, row, f"{name} ({how})", expect, (win_cmds, h2_cmds, win_cmds), keyed, labels, ids["Bob"])
         else:
-            spec_bad.append("the row states no expectation")
-        row.update({"expected": expect, "keyedChannels": keyed, "specProblems": spec_bad, "specVerdict": "PASS" if not spec_bad else "FAIL"})
-        run.check(not spec_bad, f"three-way {name} ({how}): each path does what the spec states ({expect.get('spec')})",
-                  {"expected": expect, "problems": spec_bad, "labels": labels, "keyedChannels": keyed})
+            row.update({"keyedChannels": keyed, "specVerdict": "the caller's: its rows carry their own expectations"})
         run.check(same_cmds and same_content and same_labels and statuses == ["ok", "ok", "ok"] and len(win_cmds) >= 1,
                   f"three-way {name} ({how}): the window, the recorded samples replayed headless and the produced commands "
                   "sent directly give the same commands, content and undo step",
