@@ -1,0 +1,4391 @@
+[
+  {
+    "check": "D-39 Drawing \u203a Flatten: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1347 (label \"Flatten Drawing\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.flatten.apply",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "draw.flatten.apply",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Flatten Drawing",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Flatten Drawing",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Optimize: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1348 (label \"Optimize Drawing\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.optimize.apply",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "draw.optimize.apply",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Optimize Drawing",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Optimize Drawing",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Smooth: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1349 (label \"Smooth Selection\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.smooth.apply",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "draw.smooth.apply",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Smooth Selection",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Smooth Selection",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Convert Lines to Brush: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1351 (label \"Convert Lines to Brush\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.linesToBrush.apply",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "draw.linesToBrush.apply",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Convert Lines to Brush",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Convert Lines to Brush",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Break Text Apart: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1352 (label \"Break Text Apart\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.breakApart.apply",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "draw.breakApart.apply",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Break Text Apart",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Break Text Apart",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Extract Centre Line: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1350 (label \"Extract Centre Line\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.centreLine.apply",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "draw.centreLine.apply",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Extract Centre Line",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Extract Centre Line",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Bring to Front: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1346 (label \"Bring to Front\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.arrange.apply",
+          "params": {
+            "to": "front"
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.arrange.apply",
+            "params": {
+              "to": "front"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Bring to Front",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Bring to Front",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Bring Forward: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1346 (label \"Bring Forward\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.arrange.apply",
+          "params": {
+            "to": "forward"
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.arrange.apply",
+            "params": {
+              "to": "forward"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Bring Forward",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Bring Forward",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Send Backward: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1346 (label \"Send Backward\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.arrange.apply",
+          "params": {
+            "to": "backward"
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.arrange.apply",
+            "params": {
+              "to": "backward"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Send Backward",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Send Backward",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Send to Back: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1346 (label \"Send to Back\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.arrange.apply",
+          "params": {
+            "to": "back"
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.arrange.apply",
+            "params": {
+              "to": "back"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Send to Back",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Send to Back",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Flip Horizontal: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1333 (label \"Flip Horizontal\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.flip.apply",
+          "params": {
+            "axis": "horizontal"
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.flip.apply",
+            "params": {
+              "axis": "horizontal"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Flip Horizontal",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Flip Horizontal",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Flip Vertical: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1333 (label \"Flip Vertical\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.flip.apply",
+          "params": {
+            "axis": "vertical"
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.flip.apply",
+            "params": {
+              "axis": "vertical"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Flip Vertical",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Flip Vertical",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Rotate 90\u00b0 CW: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1334 (label \"Rotate 90\u00b0 CW\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.rotate.apply",
+          "params": {
+            "by": "90cw"
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.rotate.apply",
+            "params": {
+              "by": "90cw"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Rotate 90\u00b0 CW",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Rotate 90\u00b0 CW",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Rotate 90\u00b0 CCW: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1334 (label \"Rotate 90\u00b0 CCW\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.rotate.apply",
+          "params": {
+            "by": "90ccw"
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.rotate.apply",
+            "params": {
+              "by": "90ccw"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Rotate 90\u00b0 CCW",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Rotate 90\u00b0 CCW",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Rotate 180\u00b0: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1334 (label \"Rotate 180\u00b0\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.rotate.apply",
+          "params": {
+            "by": "180"
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.rotate.apply",
+            "params": {
+              "by": "180"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Rotate 180\u00b0",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Rotate 180\u00b0",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Group: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1344 (label \"Group Selection\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.group.create",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "draw.group.create",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Group Selection",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Group Selection",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Ungroup: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1345 (label \"Ungroup Selection\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.group.delete",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "draw.group.delete",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Ungroup Selection",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Ungroup Selection",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Delete Objects: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1328 (label \"Delete Object\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.object.delete",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "draw.object.delete",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Delete Object",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Delete Object",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Lock Drawing: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1316 (label \"Lock Drawing\"); 02 \u00a74.4 lines 293-296)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.lock.set",
+          "params": {
+            "locked": true
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.lock.set",
+            "params": {
+              "locked": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Lock Drawing",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Lock Drawing",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Drawing \u203a Unlock Drawing: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1316 (label \"Unlock Drawing\"))",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "draw.lock.set",
+          "params": {
+            "locked": false
+          }
+        },
+        "sent": [
+          {
+            "command": "draw.lock.set",
+            "params": {
+              "locked": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Unlock Drawing",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Unlock Drawing",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 Edit \u203a Cut Special: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1099 (label \"Cut Special\"))",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "edit.cutSpecial",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "edit.cutSpecial",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [
+          [
+            "Cut Special",
+            "agent"
+          ]
+        ],
+        "expectedSteps": [
+          [
+            "Cut Special",
+            "agent"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "check": "D-39 File \u203a Project Info: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1074; 01 \u00a712.2)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "project.info.get",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "project.info.get",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 File \u203a Check Project: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/10_data_model_project_format.md:1135; 01 \u00a712.2)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "doc.validate",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "doc.validate",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 Help \u203a About Toontown: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1060; 01 \u00a712.2)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "app.info.get",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "app.info.get",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 main toolbar \u203a drawAid.grid.set: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1388; 01 \u00a75.7 lines 451-456 (Grid on/off))",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.grid.set",
+          "params": {
+            "visible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.grid.set",
+          "params": {
+            "visible": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 main toolbar \u203a gridOverlay: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1388; 01 \u00a75.7 line 451 (grid overlay))",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.grid.set",
+          "params": {
+            "overlay": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "overlay": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.grid.set",
+          "params": {
+            "overlay": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "overlay": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 main toolbar \u203a drawAid.onionSkin.set: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1389; 01 \u00a75.7 line 452 (onion skin on/off))",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkin.set",
+          "params": {
+            "enabled": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.onionSkin.set",
+          "params": {
+            "enabled": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 main toolbar \u203a drawAid.autoLightTable.set: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1392; 01 \u00a75.7 line 453 (auto light table))",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.autoLightTable.set",
+          "params": {
+            "enabled": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.autoLightTable.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.autoLightTable.set",
+          "params": {
+            "enabled": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.autoLightTable.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 main toolbar \u203a Grid type: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1388; 01 \u00a75.7 lines 457-458 (group items list their members))",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.grid.set",
+          "params": {
+            "type": "field12"
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "type": "field12"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 main toolbar \u203a onionSkinPrevious: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1389; 01 \u00a75.7 lines 452, 457-458)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkin.set",
+          "params": {
+            "previous": 2
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "previous": 2
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 main toolbar \u203a onionSkinNext: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1389; 01 \u00a75.7 lines 452, 457-458)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkin.set",
+          "params": {
+            "next": 1
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "next": 1
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a grid: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1388; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.grid.set",
+          "params": {
+            "visible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.grid.set",
+          "params": {
+            "visible": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a onionSkin: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1389; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkin.set",
+          "params": {
+            "enabled": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.onionSkin.set",
+          "params": {
+            "enabled": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a onionOutline: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1390; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkinStyle.set",
+          "params": {
+            "outline": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkinStyle.set",
+            "params": {
+              "outline": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.onionSkinStyle.set",
+          "params": {
+            "outline": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkinStyle.set",
+            "params": {
+              "outline": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a autoLightTable: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1392; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.autoLightTable.set",
+          "params": {
+            "enabled": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.autoLightTable.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.autoLightTable.set",
+          "params": {
+            "enabled": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.autoLightTable.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a strokes: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1399; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.strokes.set",
+          "params": {
+            "visible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.strokes.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.strokes.set",
+          "params": {
+            "visible": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.strokes.set",
+            "params": {
+              "visible": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a currentOnTop: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1400; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.currentOnTop.set",
+          "params": {
+            "enabled": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.currentOnTop.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.currentOnTop.set",
+          "params": {
+            "enabled": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.currentOnTop.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a boxHighlighting: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "boxHighlighting": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "boxHighlighting": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "boxHighlighting": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "boxHighlighting": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a outlineOnSelection: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "outlineOnSelection": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "outlineOnSelection": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "outlineOnSelection": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "outlineOnSelection": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a keepSelectionVisible: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "keepSelectionVisible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "keepSelectionVisible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "keepSelectionVisible": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "keepSelectionVisible": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a sceneBackground: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1402; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.background.set",
+          "params": {
+            "useSceneColour": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.background.set",
+            "params": {
+              "useSceneColour": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.background.set",
+          "params": {
+            "useSceneColour": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.background.set",
+            "params": {
+              "useSceneColour": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a lightTableShade: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1393; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.lightTableShade.set",
+          "params": {
+            "auto": false,
+            "static": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.lightTableShade.set",
+            "params": {
+              "auto": false,
+              "static": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.lightTableShade.set",
+          "params": {
+            "auto": true,
+            "static": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.lightTableShade.set",
+            "params": {
+              "auto": true,
+              "static": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a onionPrevious: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1391; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkinCycle.run",
+          "params": {
+            "direction": "previous"
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkinCycle.run",
+            "params": {
+              "direction": "previous"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a onionNext: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1391; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkinCycle.run",
+          "params": {
+            "direction": "next"
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkinCycle.run",
+            "params": {
+              "direction": "next"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a staticLightTablePanel: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1398; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.staticLightTablePanel.set",
+          "params": {
+            "visible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.staticLightTablePanel.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a staticLightTableAdd: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1394; 02 \u00a710.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.staticLightTable.add",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "drawAid.staticLightTable.add",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a staticLightTableShowAll: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1396; 02 \u00a710.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.staticLightTable.set",
+          "params": {
+            "all": true,
+            "visible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.staticLightTable.set",
+            "params": {
+              "all": true,
+              "visible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a staticLightTableClear: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1395; 02 \u00a710.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.staticLightTable.remove",
+          "params": {
+            "all": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.staticLightTable.remove",
+            "params": {
+              "all": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a symmetry: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1378; 02 \u00a76.2)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.symmetry.set",
+          "params": {
+            "mode": "mirror"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.symmetry.set",
+            "params": {
+              "mode": "mirror"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "tool.symmetry.set",
+          "params": {
+            "mode": "none"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.symmetry.set",
+            "params": {
+              "mode": "none"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView toolbar \u203a type camera: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1112; 01 \u00a75.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "view.type.set",
+          "params": {
+            "viewId": "drawingView",
+            "type": "camera"
+          }
+        },
+        "sent": [
+          {
+            "command": "view.type.set",
+            "params": {
+              "viewId": "drawingView",
+              "type": "camera"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 drawingView toolbar \u203a type drawing: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1112; 01 \u00a75.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "view.type.set",
+          "params": {
+            "viewId": "drawingView",
+            "type": "drawing"
+          }
+        },
+        "sent": [
+          {
+            "command": "view.type.set",
+            "params": {
+              "viewId": "drawingView",
+              "type": "drawing"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a grid: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1388; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.grid.set",
+          "params": {
+            "visible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.grid.set",
+          "params": {
+            "visible": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.grid.set",
+            "params": {
+              "visible": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a onionSkin: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1389; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkin.set",
+          "params": {
+            "enabled": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.onionSkin.set",
+          "params": {
+            "enabled": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkin.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a onionOutline: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1390; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkinStyle.set",
+          "params": {
+            "outline": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkinStyle.set",
+            "params": {
+              "outline": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.onionSkinStyle.set",
+          "params": {
+            "outline": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkinStyle.set",
+            "params": {
+              "outline": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a autoLightTable: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1392; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.autoLightTable.set",
+          "params": {
+            "enabled": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.autoLightTable.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.autoLightTable.set",
+          "params": {
+            "enabled": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.autoLightTable.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a strokes: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1399; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.strokes.set",
+          "params": {
+            "visible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.strokes.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.strokes.set",
+          "params": {
+            "visible": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.strokes.set",
+            "params": {
+              "visible": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a currentOnTop: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1400; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.currentOnTop.set",
+          "params": {
+            "enabled": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.currentOnTop.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.currentOnTop.set",
+          "params": {
+            "enabled": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.currentOnTop.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a boxHighlighting: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "boxHighlighting": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "boxHighlighting": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "boxHighlighting": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "boxHighlighting": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a outlineOnSelection: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "outlineOnSelection": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "outlineOnSelection": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "outlineOnSelection": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "outlineOnSelection": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a keepSelectionVisible: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "keepSelectionVisible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "keepSelectionVisible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.selectionDisplay.set",
+          "params": {
+            "keepSelectionVisible": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.selectionDisplay.set",
+            "params": {
+              "keepSelectionVisible": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a sceneBackground: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1402; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.background.set",
+          "params": {
+            "useSceneColour": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.background.set",
+            "params": {
+              "useSceneColour": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.background.set",
+          "params": {
+            "useSceneColour": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.background.set",
+            "params": {
+              "useSceneColour": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a lightTableShade: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1393; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.lightTableShade.set",
+          "params": {
+            "auto": false,
+            "static": false
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.lightTableShade.set",
+            "params": {
+              "auto": false,
+              "static": false
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "drawAid.lightTableShade.set",
+          "params": {
+            "auto": true,
+            "static": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.lightTableShade.set",
+            "params": {
+              "auto": true,
+              "static": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a onionPrevious: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1391; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkinCycle.run",
+          "params": {
+            "direction": "previous"
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkinCycle.run",
+            "params": {
+              "direction": "previous"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a onionNext: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1391; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.onionSkinCycle.run",
+          "params": {
+            "direction": "next"
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.onionSkinCycle.run",
+            "params": {
+              "direction": "next"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a staticLightTablePanel: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1398; 02 \u00a710)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.staticLightTablePanel.set",
+          "params": {
+            "visible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.staticLightTablePanel.set",
+            "params": {
+              "visible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a staticLightTableAdd: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1394; 02 \u00a710.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.staticLightTable.add",
+          "params": {}
+        },
+        "sent": [
+          {
+            "command": "drawAid.staticLightTable.add",
+            "params": {}
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a staticLightTableShowAll: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1396; 02 \u00a710.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.staticLightTable.set",
+          "params": {
+            "all": true,
+            "visible": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.staticLightTable.set",
+            "params": {
+              "all": true,
+              "visible": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a staticLightTableClear: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1395; 02 \u00a710.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "drawAid.staticLightTable.remove",
+          "params": {
+            "all": true
+          }
+        },
+        "sent": [
+          {
+            "command": "drawAid.staticLightTable.remove",
+            "params": {
+              "all": true
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a symmetry: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1378; 02 \u00a76.2)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.symmetry.set",
+          "params": {
+            "mode": "mirror"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.symmetry.set",
+            "params": {
+              "mode": "mirror"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      },
+      {
+        "expected": {
+          "command": "tool.symmetry.set",
+          "params": {
+            "mode": "none"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.symmetry.set",
+            "params": {
+              "mode": "none"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView toolbar \u203a type drawing: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1112; 01 \u00a75.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "view.type.set",
+          "params": {
+            "viewId": "cameraView",
+            "type": "drawing"
+          }
+        },
+        "sent": [
+          {
+            "command": "view.type.set",
+            "params": {
+              "viewId": "cameraView",
+              "type": "drawing"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 cameraView toolbar \u203a type camera: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1112; 01 \u00a75.3)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "view.type.set",
+          "params": {
+            "viewId": "cameraView",
+            "type": "camera"
+          }
+        },
+        "sent": [
+          {
+            "command": "view.type.set",
+            "params": {
+              "viewId": "cameraView",
+              "type": "camera"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a select: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "select"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "select"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a contourEditor: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "contourEditor"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "contourEditor"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a perspective: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "perspective"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "perspective"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a repositionAll: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "repositionAll"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "repositionAll"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a brush: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "brush"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "brush"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a pencil: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "pencil"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "pencil"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a rectangle: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "rectangle"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "rectangle"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a ellipse: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "ellipse"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "ellipse"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a polyline: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "polyline"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "polyline"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a line: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "line"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "line"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a paint: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "paint"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "paint"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a unpaint: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "unpaint"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "unpaint"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a paintUnpainted: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "paintUnpainted"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "paintUnpainted"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a dropper: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "dropper"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "dropper"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a closeGap: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "closeGap"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "closeGap"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a stroke: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "stroke"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "stroke"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a editTexture: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "editTexture"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "editTexture"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a eraser: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "eraser"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "eraser"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a cutter: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "cutter"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "cutter"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a scissor: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "scissor"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "scissor"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a zoom: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "zoom"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "zoom"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a grabber: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "grabber"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "grabber"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 tools palette \u203a text: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 \u00a77)",
+    "ok": true,
+    "detail": [
+      {
+        "expected": {
+          "command": "tool.active.set",
+          "params": {
+            "toolId": "text"
+          }
+        },
+        "sent": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "text"
+            }
+          }
+        ],
+        "effect": true,
+        "steps": [],
+        "expectedSteps": []
+      }
+    ]
+  },
+  {
+    "check": "D-39 shortcut editor \u203a Export: runs in the OS form only (its action is the operating system's own file dialog (a typed path), which only real input reaches)",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "D-39 shortcut editor \u203a Import: runs in the OS form only (its action is the operating system's own file dialog (a typed path), which only real input reaches)",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "D-39 File \u203a Open Backup \u203a Open: runs in the OS form only (the dialog that lists the backups opens only from the native menu, which only real input reaches)",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "D-39 status bar \u203a jobs: a running job shows and goes when it ends (01 \u00a79.1)",
+    "ok": true,
+    "detail": {
+      "name": "status bar \u203a jobs",
+      "spec": "spec/11_agent_interface_mcp.md:636; 01 \u00a79.1 (status bar: running jobs)",
+      "runningPerKernel": [
+        1
+      ],
+      "jobId": "job-2",
+      "shownWhileRunning": [
+        "1 job running"
+      ],
+      "afterEnd": "",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Flatten: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Flatten"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Optimize: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Optimize"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Smooth: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Smooth"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Convert Lines to Brush: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Convert Lines to Brush"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Break Text Apart: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Break Text Apart"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Extract Centre Line: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Extract Centre Line"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Bring to Front: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Arrange",
+          "Bring to Front"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Bring Forward: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Arrange",
+          "Bring Forward"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Send Backward: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Arrange",
+          "Send Backward"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Send to Back: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Arrange",
+          "Send to Back"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Flip Horizontal: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Flip Horizontal"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Flip Vertical: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Flip Vertical"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Rotate 90\u00b0 CW: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Rotate 90\u00b0 CW"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Rotate 90\u00b0 CCW: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Rotate 90\u00b0 CCW"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Rotate 180\u00b0: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Rotate 180\u00b0"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Group: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Group"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Ungroup: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Ungroup"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Delete Objects: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Delete Objects"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Lock Drawing: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Lock Drawing"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Drawing \u203a Unlock Drawing: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Drawing",
+          "Unlock Drawing"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 Edit \u203a Cut Special: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "Edit",
+          "Cut Special"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 File \u203a Project Info: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "File",
+          "Project Info"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 File \u203a Check Project: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "menu",
+        [
+          "File",
+          "Check Project"
+        ]
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 main toolbar \u203a drawAid.grid.set: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "mainToolbar.drawAid.grid.set"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 main toolbar \u203a gridOverlay: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "mainToolbar.gridOverlay"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 main toolbar \u203a drawAid.onionSkin.set: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "mainToolbar.drawAid.onionSkin.set"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 main toolbar \u203a drawAid.autoLightTable.set: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "mainToolbar.drawAid.autoLightTable.set"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 main toolbar \u203a Grid type: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "mainToolbar.gridType"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 main toolbar \u203a onionSkinPrevious: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "mainToolbar.onionSkinPrevious"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 main toolbar \u203a onionSkinNext: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "mainToolbar.onionSkinNext"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a grid: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.grid"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a onionSkin: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.onionSkin"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a onionOutline: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.onionOutline"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a autoLightTable: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.autoLightTable"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a strokes: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.strokes"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a currentOnTop: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.currentOnTop"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a boxHighlighting: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.boxHighlighting"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a outlineOnSelection: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.outlineOnSelection"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a keepSelectionVisible: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.keepSelectionVisible"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a sceneBackground: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.sceneBackground"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a lightTableShade: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.lightTableShade"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a onionPrevious: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.onionPrevious"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a onionNext: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.onionNext"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a staticLightTablePanel: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.staticLightTablePanel"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a staticLightTableAdd: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.staticLightTableAdd"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a staticLightTableShowAll: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.staticLightTableShowAll"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a staticLightTableClear: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.aid.staticLightTableClear"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView chrome \u203a symmetry: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.symmetry"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView toolbar \u203a type camera: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.type.camera"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 drawingView toolbar \u203a type drawing: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingView.type.drawing"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a grid: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.grid"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a onionSkin: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.onionSkin"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a onionOutline: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.onionOutline"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a autoLightTable: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.autoLightTable"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a strokes: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.strokes"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a currentOnTop: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.currentOnTop"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a boxHighlighting: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.boxHighlighting"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a outlineOnSelection: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.outlineOnSelection"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a keepSelectionVisible: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.keepSelectionVisible"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a sceneBackground: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.sceneBackground"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a lightTableShade: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.lightTableShade"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a onionPrevious: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.onionPrevious"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a onionNext: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.onionNext"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a staticLightTablePanel: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.staticLightTablePanel"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a staticLightTableAdd: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.staticLightTableAdd"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a staticLightTableShowAll: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.staticLightTableShowAll"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a staticLightTableClear: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.aid.staticLightTableClear"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView chrome \u203a symmetry: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.symmetry"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView toolbar \u203a type drawing: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.type.drawing"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 cameraView toolbar \u203a type camera: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "cameraView.type.camera"
+      ],
+      "present": true,
+      "enabled": false,
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a select: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.select"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a contourEditor: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.contourEditor"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a perspective: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.perspective"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a repositionAll: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.repositionAll"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a brush: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.brush"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a pencil: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.pencil"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a rectangle: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.rectangle"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a ellipse: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.ellipse"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a polyline: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.polyline"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a line: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.line"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a paint: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.paint"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a unpaint: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.unpaint"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a paintUnpainted: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.paintUnpainted"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a dropper: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.dropper"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a closeGap: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.closeGap"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a stroke: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.stroke"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a editTexture: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.editTexture"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a eraser: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.eraser"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a cutter: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.cutter"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a scissor: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.scissor"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a zoom: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.zoom"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a grabber: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.grabber"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  },
+  {
+    "check": "D-39 tools palette \u203a text: disabled in the window's tree while the precheck refuses (no project, 01 \u00a71.3 lines 71-75)",
+    "ok": true,
+    "detail": {
+      "target": [
+        "dom",
+        "drawingTools.text"
+      ],
+      "present": false,
+      "enabled": null,
+      "note": "gone with the project",
+      "ok": true
+    }
+  }
+]

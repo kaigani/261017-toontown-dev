@@ -293,119 +293,170 @@
       "surface": "main",
       "commands": [
         "drawAid.autoLightTable.set"
-      ]
+      ],
+      "params": {
+        "enabled": true
+      }
     },
     {
       "id": "cameraView.aid.boxHighlighting",
       "surface": "main",
       "commands": [
         "drawAid.selectionDisplay.set"
-      ]
+      ],
+      "params": {
+        "boxHighlighting": true
+      }
     },
     {
       "id": "cameraView.aid.currentOnTop",
       "surface": "main",
       "commands": [
         "drawAid.currentOnTop.set"
-      ]
+      ],
+      "params": {
+        "enabled": true
+      }
     },
     {
       "id": "cameraView.aid.grid",
       "surface": "main",
       "commands": [
         "drawAid.grid.set"
-      ]
+      ],
+      "params": {
+        "visible": true
+      }
     },
     {
       "id": "cameraView.aid.keepSelectionVisible",
       "surface": "main",
       "commands": [
         "drawAid.selectionDisplay.set"
-      ]
+      ],
+      "params": {
+        "keepSelectionVisible": true
+      }
     },
     {
       "id": "cameraView.aid.lightTableShade",
       "surface": "main",
       "commands": [
         "drawAid.lightTableShade.set"
-      ]
+      ],
+      "params": {
+        "auto": true,
+        "static": true
+      }
     },
     {
       "id": "cameraView.aid.onionNext",
       "surface": "main",
       "commands": [
         "drawAid.onionSkinCycle.run"
-      ]
+      ],
+      "params": {
+        "direction": "next"
+      }
     },
     {
       "id": "cameraView.aid.onionOutline",
       "surface": "main",
       "commands": [
         "drawAid.onionSkinStyle.set"
-      ]
+      ],
+      "params": {
+        "outline": true
+      }
     },
     {
       "id": "cameraView.aid.onionPrevious",
       "surface": "main",
       "commands": [
         "drawAid.onionSkinCycle.run"
-      ]
+      ],
+      "params": {
+        "direction": "previous"
+      }
     },
     {
       "id": "cameraView.aid.onionSkin",
       "surface": "main",
       "commands": [
         "drawAid.onionSkin.set"
-      ]
+      ],
+      "params": {
+        "enabled": true
+      }
     },
     {
       "id": "cameraView.aid.outlineOnSelection",
       "surface": "main",
       "commands": [
         "drawAid.selectionDisplay.set"
-      ]
+      ],
+      "params": {
+        "outlineOnSelection": true
+      }
     },
     {
       "id": "cameraView.aid.sceneBackground",
       "surface": "main",
       "commands": [
         "drawAid.background.set"
-      ]
+      ],
+      "params": {
+        "useSceneColour": true
+      }
     },
     {
       "id": "cameraView.aid.staticLightTableAdd",
       "surface": "main",
       "commands": [
         "drawAid.staticLightTable.add"
-      ]
+      ],
+      "params": {}
     },
     {
       "id": "cameraView.aid.staticLightTableClear",
       "surface": "main",
       "commands": [
         "drawAid.staticLightTable.remove"
-      ]
+      ],
+      "params": {
+        "all": true
+      }
     },
     {
       "id": "cameraView.aid.staticLightTablePanel",
       "surface": "main",
       "commands": [
         "drawAid.staticLightTablePanel.set"
-      ]
+      ],
+      "params": {
+        "visible": true
+      }
     },
     {
       "id": "cameraView.aid.staticLightTableShowAll",
       "surface": "main",
       "commands": [
         "drawAid.staticLightTable.set"
-      ]
+      ],
+      "params": {
+        "all": true,
+        "visible": true
+      }
     },
     {
       "id": "cameraView.aid.strokes",
       "surface": "main",
       "commands": [
         "drawAid.strokes.set"
-      ]
+      ],
+      "params": {
+        "visible": true
+      }
     },
     {
       "id": "cameraView.focus",
@@ -419,7 +470,10 @@
       "surface": "main",
       "commands": [
         "tool.symmetry.set"
-      ]
+      ],
+      "params": {
+        "mode": "mirror"
+      }
     },
     {
       "id": "cameraView.type.camera",

@@ -49,6 +49,13 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
         const staticLabel = ITEM_LABELS[item] ?? commandLabel(item);
         const label = facts?.label ?? staticLabel;
         const enabled = ref !== null && facts?.enabled === true;
+        // The parameters as the kernel completes them for the current state (O-10): a toggle's reference leaves its
+        // state open and the answer gives the next one (C43B-R1-08: sending the open reference changed nothing). The
+        // element declares what a click sends (11 §7.5: the command each widget invokes).
+        const run =
+          facts && facts.params !== null && typeof facts.params === 'object'
+            ? (facts.params as Record<string, unknown>)
+            : undefined;
         const why = owner ? `arrives with ${owner}` : facts?.reason;
         return (
           <button
@@ -62,17 +69,11 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
             data-tt-id={`mainToolbar.${item}`}
             data-tt-label={label}
             {...(ref
-              ? { 'data-tt-command': ref.commandId, 'data-tt-params': JSON.stringify(ref.params) }
+              ? { 'data-tt-command': ref.commandId, 'data-tt-params': JSON.stringify(run ?? ref.params) }
               : owner
                 ? { 'data-tt-gui-only': 'placeholder' }
                 : {})}
             onClick={() => {
-              // The parameters as the kernel completes them for the current state (O-10): a toggle's reference leaves
-              // its state open and the answer gives the next one (C43B-R1-08: sending the open reference changed nothing).
-              const run =
-                facts && facts.params !== null && typeof facts.params === 'object'
-                  ? (facts.params as Record<string, unknown>)
-                  : undefined;
               if (ref) void actions.perform(ref.commandId, run ?? ref.params);
             }}
           >

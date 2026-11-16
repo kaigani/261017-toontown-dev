@@ -1,6 +1,10 @@
 """M4 C4.3b ruling D-39: every GUI binding added in C4.3b exercised once through the real window (Windows).
 
-Usage: python scripts/c43-d39-bindings.py <toontown binary> <out dir> [--only NAME[,NAME...]]
+Usage: python scripts/c43-d39-bindings.py <toontown binary> <out dir> [--mode os|mcp] [--only NAME[,NAME...]]
+
+Two forms of the same table (rulings D-39, D-40). `--mode os` (Windows workstation): real OS input, the page's IPC
+requests observed through the webview's debugging port. `--mode mcp` (CI, both OSes): the attached MCP interface, see
+`McpTable`.
 
 D-27's "declared is not honoured", applied to GUI bindings (C43B-R1-07 and -08 were bindings declared and never
 exercised). One table: each row is a person's action in the running application through the operating system's real
@@ -20,9 +24,9 @@ spec lines. Receipts: `rows.json`, `transcript.json`, `manifest.json` (kind `too
 every row holds.
 
 The webview's debugging port is opened for this run only (`WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS`); the script carries
-its own small WebSocket client (standard library), so it needs only the MCP SDK. A workstation receipt
-(reviews/evidence/M4-C4.3b/d39-bindings), like the reviewer's case 8, which observes the page the same way: on the CI
-runners the webview never opened the port (runs 43822938737 and 43830431401, with and without a data folder of its own).
+its own small WebSocket client (standard library), so it needs only the MCP SDK. The OS form is a workstation receipt
+(reviews/evidence/M4-C4.3b/d39-bindings): on the CI runners the webview never opened the port (runs 43822938737 and
+43830431401, with and without a data folder of its own); CI runs the MCP form.
 """
 
 from __future__ import annotations
@@ -42,7 +46,10 @@ import tempfile
 import time
 import urllib.parse
 import urllib.request
-from ctypes import wintypes
+try:  # Windows only (the OS form); the MCP form runs on every OS
+    from ctypes import wintypes
+except (ImportError, ValueError):
+    wintypes = None
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -295,16 +302,17 @@ def key(vk: int, *mods: int) -> None:
     time.sleep(0.1)
 
 
-class KEYBDINPUT(ctypes.Structure):
-    _fields_ = [("wVk", wintypes.WORD), ("wScan", wintypes.WORD), ("dwFlags", wintypes.DWORD), ("time", wintypes.DWORD),
-                ("dwExtraInfo", ctypes.POINTER(ctypes.c_ulong))]
+if wintypes is not None:
+    class KEYBDINPUT(ctypes.Structure):
+        _fields_ = [("wVk", wintypes.WORD), ("wScan", wintypes.WORD), ("dwFlags", wintypes.DWORD), ("time", wintypes.DWORD),
+                    ("dwExtraInfo", ctypes.POINTER(ctypes.c_ulong))]
 
 
-class INPUT(ctypes.Structure):
-    class _U(ctypes.Union):
-        _fields_ = [("ki", KEYBDINPUT), ("pad", ctypes.c_byte * 32)]
-    _anonymous_ = ("u",)
-    _fields_ = [("type", wintypes.DWORD), ("u", _U)]
+    class INPUT(ctypes.Structure):
+        class _U(ctypes.Union):
+            _fields_ = [("ki", KEYBDINPUT), ("pad", ctypes.c_byte * 32)]
+        _anonymous_ = ("u",)
+        _fields_ = [("type", wintypes.DWORD), ("u", _U)]
 
 
 def type_text(text: str) -> None:
@@ -470,12 +478,7 @@ class Table:
         name = r["name"]
         rec = {"name": name, "spec": r["spec"], "action": list(r["action"])}
         try:
-            # A dialog a row before left open (a refusal's message box) would hold every later command.
-            for _ in range(3):
-                if not self.cdp.js("!!document.querySelector('[role=alertdialog],[role=dialog][data-tt-id]:not([data-tt-id=startScreen])')"):
-                    break
-                key(0x1B)
-                await asyncio.sleep(0.3)
+            await self.settle_dialogs()
             if r.get("setup"):
                 await r["setup"]()
             await asyncio.sleep(0.3)
@@ -486,26 +489,33 @@ class Table:
                 before = await r["state"]()
                 want = r["expect"](before) if callable(r["expect"]) else r["expect"]
                 pos = await self.position()
-                self.clear()
+                await self.mark()
+                self.want = want
                 how = await self.do(r["action"])
                 await asyncio.sleep(r.get("wait", 0.8))
-                sent = [c for c in self.recorded() if self.kinds.get(c.get("command")) != "query" or c.get("command") == want[0]]
+                sent = await self.observed(want)
                 after = await r["state"]()
                 steps = await self.steps_since(pos)
                 label = r.get("label")
-                expect_steps = [] if label is None else [[label, "user"]]
+                expect_steps = [] if label is None else [[label, self.WHO]]
                 got_steps = [list(s) for s in steps]
                 effect = bool(r["effect"](before, after, k))
                 click = {"input": how, "expected": {"command": want[0], "params": want[1]}, "sent": sent,
                          "effect": effect, "steps": got_steps, "expectedSteps": expect_steps,
                          "before": before, "after": after}
                 exact = sent == [{"command": want[0], "params": want[1]}]
+                if self.WHO == "agent":
+                    click["declared"] = self.declared
+                    exact = exact and self.declared == {"command": want[0], "params": want[1]}
+                    shown = await self.shows(r, after)
+                    click["shown"] = shown
+                    exact = exact and shown is not False
                 ok = exact and effect and got_steps == expect_steps
                 click["ok"] = ok
                 rec["clicks"].append(click)
                 ok_all = ok_all and ok
             rec["ok"] = ok_all
-            self.run.check(ok_all, f"D-39 {name}: the window sends exactly the command, changes the state and makes the spec's undo steps ({r['spec']})",
+            self.run.check(ok_all, f"D-39 {name}: {self.CLAIM} ({r['spec']})",
                            [{k: c[k] for k in ("expected", "sent", "effect", "steps", "expectedSteps")} for c in rec["clicks"]])
             if r.get("after"):
                 await r["after"]()
@@ -513,12 +523,37 @@ class Table:
             rec["ok"] = False
             rec["error"] = repr(ex)
             self.run.check(False, f"D-39 {name}: ran", repr(ex))
-            with contextlib.suppress(Exception):
-                key(0x1B)
-                key(0x1B)
+            await self.after_failure()
         rec["disabledTarget"] = r.get("disabled")
         self.rows.append(rec)
         self.run.save("rows.json", self.rows)
+
+    # The OS form's hooks: real input, the page's IPC requests observed.
+    WHO = "user"
+    CLAIM = "the window sends exactly the command, changes the state and makes the spec's undo steps"
+
+    async def shows(self, r: dict, after) -> bool | None:
+        """In the MCP form: whether the window's tree shows the state after the call (None: nothing to show)."""
+        return None
+
+    async def settle_dialogs(self) -> None:
+        # A dialog a row before left open (a refusal's message box) would hold every later command.
+        for _ in range(3):
+            if not self.cdp.js("!!document.querySelector('[role=alertdialog],[role=dialog][data-tt-id]:not([data-tt-id=startScreen])')"):
+                break
+            key(0x1B)
+            await asyncio.sleep(0.3)
+
+    async def mark(self) -> None:
+        self.clear()
+
+    async def observed(self, want) -> list:
+        return [c for c in self.recorded() if self.kinds.get(c.get("command")) != "query" or c.get("command") == want[0]]
+
+    async def after_failure(self) -> None:
+        with contextlib.suppress(Exception):
+            key(0x1B)
+            key(0x1B)
 
     async def disabled_checks(self) -> None:
         """After the project is closed (`project.none` refuses every control of the table): each is disabled or gone,
@@ -571,6 +606,136 @@ class Table:
         self.run.save("rows.json", self.rows)
 
 
+class McpTable(Table):
+    """The CI form (ruling D-40): the attached MCP interface the other e2e scripts use. `inspect_ui` finds each control
+    and reads the reference it declares (the command and the parameters its click sends: every control of the table
+    declares them, and the menu bar's items carry the parameters a click runs, D-38); the row checks that reference
+    against the spec's expectation, then invokes it through the application's command entry point (`key` with the
+    item's shortcut where it has one), and observes the call in the activity record and its effect through document
+    reads; after the call the window's tree must show the new state (an agent's change reflected). After the project is
+    closed, every control is disabled or gone in the window's tree. Rows whose action is the operating system's own UI
+    (a native file dialog) or a dialog only the native menu opens are named, with the reason, and run in the OS form."""
+
+    WHO = "agent"
+    CLAIM = "the window declares exactly the command, which changes the state and makes the spec's undo steps"
+
+    def __init__(self, *a, **k):
+        super().__init__(*a, **k)
+        self.seq = 0
+        self.declared = None
+
+    async def tree(self) -> dict:
+        answer = await e2e.call(self.s, "inspect_ui", {"target": "window", "depth": 32})
+        return (answer.get("result") or answer).get("root") or {}
+
+    @staticmethod
+    def node(tree: dict, ident: str):
+        stack = [tree]
+        while stack:
+            n = stack.pop()
+            if n.get("id") == ident:
+                return n
+            stack.extend(n.get("children") or [])
+        return None
+
+    @staticmethod
+    def menu_node(tree: dict, path: list):
+        node = next((c for c in tree.get("children") or [] if c.get("id") == "menuBar"), {})
+        for label in path:
+            node = next((c for c in node.get("children") or [] if (c.get("label") or "").rstrip("\u2026.").strip() == label), None)
+            if not node:
+                return None
+        return node
+
+    async def settle_dialogs(self) -> None:
+        return None
+
+    async def after_failure(self) -> None:
+        return None
+
+    async def shows(self, r: dict, after) -> bool | None:
+        """The window shows the state the call made: a toggle's pressed state, a list's value, the tools palette's
+        pressed tool, the view's type (the agent's change reflected, C43B-R1S-09). Rows without a shown state: None."""
+        show = r.get("shows")
+        if not show:
+            return None
+        await asyncio.sleep(0.5)
+        n = self.node(await self.tree(), show[0])
+        if n is None:
+            return False
+        return show[1](n, after)
+
+    async def activity(self) -> list:
+        res = (await e2e.run_cmd(self.s, "agent.activity.list", {"limit": 50})).get("result")
+        return res if isinstance(res, list) else (res or {}).get("entries") or []
+
+    async def mark(self) -> None:
+        self.seq = max([e.get("seq", 0) for e in await self.activity()] or [0])
+
+    async def observed(self, want) -> list:
+        """The calls this row's action made, from the activity record (the declared reference's, or the key's)."""
+        out = []
+        for e in sorted(await self.activity(), key=lambda e: e.get("seq", 0)):
+            if e.get("seq", 0) <= self.seq or e.get("tool") not in ("run_command", "key"):
+                continue
+            if self.kinds.get(e.get("commandId")) == "query" and e.get("commandId") != want[0]:
+                continue
+            out.append({"command": e.get("commandId"), "params": e.get("params") or {}})
+        return out
+
+    async def do(self, action) -> str:
+        kind = action[0]
+        tree = await self.tree()
+        if kind == "dom":
+            n = self.node(tree, action[1])
+            if not n:
+                raise RuntimeError(f"control absent from the window's tree: {action[1]}")
+            if n.get("enabled") is False:
+                raise RuntimeError(f"control disabled in the window's tree: {action[1]}")
+            ref = n.get("command") or {}
+            self.declared = {"command": ref.get("commandId"), "params": ref.get("params") or {}}
+        elif kind == "menu":
+            n = self.menu_node(tree, action[1])
+            if not n:
+                raise RuntimeError(f"menu item absent from the window's tree: {action[1]}")
+            if n.get("enabled") is False:
+                raise RuntimeError(f"menu item disabled in the window's tree: {action[1]}")
+            ref = n.get("command") or {}
+            self.declared = {"command": ref.get("commandId"), "params": ref.get("params") or {}}
+            if n.get("shortcut") and self.declared == {"command": self.want[0], "params": self.want[1]}:
+                env = await e2e.call(self.s, "key", {"keys": n["shortcut"]})
+                return f"the menu item's shortcut {n['shortcut']} through `key` ({env.get('status')})"
+        elif kind == "select":
+            n = self.node(tree, action[1])
+            if not n or n.get("enabled") is False:
+                raise RuntimeError(f"list absent or disabled in the window's tree: {action[1]}")
+            ref = n.get("command") or {}
+            # A list's members are its options; the member chosen is the row's (the next one).
+            self.declared = {"command": ref.get("commandId"), "params": self.want[1]}
+        else:
+            raise RuntimeError("an action the MCP form does not perform")
+        env = await e2e.run_cmd(self.s, self.declared["command"], self.declared["params"])
+        return f"the declared reference through run_command ({env.get('status')})"
+
+    async def disabled_checks(self) -> None:
+        tree = await self.tree()
+        seen = set()
+        for rec in self.rows:
+            target = rec.get("disabledTarget")
+            if not target or json.dumps(target) in seen:
+                continue
+            seen.add(json.dumps(target))
+            n = self.menu_node(tree, target[1]) if target[0] == "menu" else self.node(tree, target[1])
+            out = {"target": target, "present": n is not None, "enabled": (n or {}).get("enabled")}
+            ok = n is None or n.get("enabled") is False
+            if n is None:
+                out["note"] = "gone with the project"
+            out["ok"] = ok
+            rec["disabled"] = out
+            self.run.check(ok, f"D-39 {rec['name']}: disabled in the window's tree while the precheck refuses (no project, 01 §1.3 lines 71-75)", out)
+        self.run.save("rows.json", self.rows)
+
+
 # ----- the rows --------------------------------------------------------------------------------------------------------
 
 async def build_and_run(t: Table, only: set) -> None:
@@ -586,12 +751,13 @@ async def build_and_run(t: Table, only: set) -> None:
     for p in ("drawingView", "cameraView"):
         await cmd("window.panel.set", {"panelId": p, "visible": True})
     await asyncio.sleep(1.0)
-    t.cdp = Cdp(CDP_PORT)
-    t.cdp.record()
-    t.clear()
-    # The recorder sees the page's calls: one read-only call made by the page itself.
-    t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command: 'app.info.get', params: {}})}).then(() => true)")
-    t.run.check(any(c.get("command") == "app.info.get" for c in t.recorded()), "the IPC recorder sees the page's commands", t.recorded())
+    if not isinstance(t, McpTable):
+        t.cdp = Cdp(CDP_PORT)
+        t.cdp.record()
+        t.clear()
+        # The recorder sees the page's calls: one read-only call made by the page itself.
+        t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command: 'app.info.get', params: {}})}).then(() => true)")
+        t.run.check(any(c.get("command") == "app.info.get" for c in t.recorded()), "the IPC recorder sees the page's commands", t.recorded())
 
     async def drawing():
         return await cmd("draw.drawing.get", {})
@@ -733,16 +899,25 @@ async def build_and_run(t: Table, only: set) -> None:
         return t.cdp.js("Array.from(document.querySelectorAll('[role=dialog]')).map(d => d.getAttribute('data-tt-id') + ':' + d.textContent).join('|')") or ""
 
     async def close_dialogs():
+        if isinstance(t, McpTable):
+            return
         for _ in range(2):
             key(0x1B)
             await asyncio.sleep(0.2)
+
+    async def answers():
+        """In the MCP form: the activity record's calls (the query's answer stands for the dialog that shows it)."""
+        return [(e.get("seq"), e.get("commandId"), e.get("status")) for e in await t.activity()]
     for label, command, dlg, path in (("Project Info", "project.info.get", "projectInfo", ["File", "Project Info"]),
                                       ("Check Project", "doc.validate", "checkProject", ["File", "Check Project"]),
                                       ("About Toontown", "app.info.get", "about", ["Help", "About Toontown"])):
+        if isinstance(t, McpTable):
+            state, effect = answers, (lambda c: lambda b, a, k: any(x[1] == c and x[2] == "ok" for x in a if x not in b))(command)
+        else:
+            state, effect = dialog_text, (lambda d: lambda b, a, k: (d + ":") in a and len(a) > len(d) + 1)(dlg)
         rows.append({"name": f"{path[0]} › {label}", "spec": f"{spec_line(command)}; 01 §12.2",
-                     "action": ("menu", path), "expect": (command, {}), "label": None, "setup": None, "state": dialog_text,
-                     "effect": (lambda d: lambda b, a, k: (d + ":") in a and len(a) > len(d) + 1)(dlg),
-                     "after": close_dialogs, "disabled": ("menu", path) if command != "app.info.get" else None})
+                     "action": ("menu", path), "expect": (command, {}), "label": None, "setup": None, "state": state,
+                     "effect": effect, "after": close_dialogs, "disabled": ("menu", path) if command != "app.info.get" else None})
 
     # 4. The main toolbar's toggles and group items (01 §5.7; 02 §10), each toggle clicked twice.
     async def aids():
@@ -751,7 +926,8 @@ async def build_and_run(t: Table, only: set) -> None:
     def toggle_row(ident, command, field, read, spec):
         rows.append({"name": f"main toolbar › {ident}", "spec": f"{spec_line(command)}; {spec}", "action": ("dom", f"mainToolbar.{ident}"),
                      "expect": lambda b: (command, {field: not read(b)}), "label": None, "setup": None, "state": aids, "toggle": True,
-                     "effect": lambda b, a, k: read(a) == (not read(b)), "disabled": ("dom", f"mainToolbar.{ident}")})
+                     "effect": lambda b, a, k: read(a) == (not read(b)), "disabled": ("dom", f"mainToolbar.{ident}"),
+                     "shows": (f"mainToolbar.{ident}", lambda n, a: n.get("checked") == read(a))})
     toggle_row("drawAid.grid.set", "drawAid.grid.set", "visible", lambda s: s["grid"]["visible"], "01 §5.7 lines 451-456 (Grid on/off)")
     toggle_row("gridOverlay", "drawAid.grid.set", "overlay", lambda s: s["grid"]["overlay"], "01 §5.7 line 451 (grid overlay)")
     toggle_row("drawAid.onionSkin.set", "drawAid.onionSkin.set", "enabled", lambda s: s["onionSkin"]["enabled"], "01 §5.7 line 452 (onion skin on/off)")
@@ -762,14 +938,16 @@ async def build_and_run(t: Table, only: set) -> None:
                  "expect": lambda b: ("drawAid.grid.set", {"type": order_types[order_types.index(b["grid"]["type"]) + 1]}),
                  "label": None, "setup": None, "state": aids,
                  "effect": lambda b, a, k: a["grid"]["type"] == order_types[order_types.index(b["grid"]["type"]) + 1],
-                 "disabled": ("dom", "mainToolbar.gridType")})
+                 "disabled": ("dom", "mainToolbar.gridType"),
+                 "shows": ("mainToolbar.gridType", lambda n, a: n.get("value") == a["grid"]["type"])})
     for ident, field in (("onionSkinPrevious", "previous"), ("onionSkinNext", "next")):
         rows.append({"name": f"main toolbar › {ident}", "spec": f"{spec_line('drawAid.onionSkin.set')}; 01 §5.7 lines 452, 457-458",
                      "action": ("select", f"mainToolbar.{ident}", 1),
                      "expect": (lambda f: lambda b: ("drawAid.onionSkin.set", {f: b["onionSkin"][f] + 1}))(field),
                      "label": None, "setup": None, "state": aids,
                      "effect": (lambda f: lambda b, a, k: a["onionSkin"][f] == b["onionSkin"][f] + 1)(field),
-                     "disabled": ("dom", f"mainToolbar.{ident}")})
+                     "disabled": ("dom", f"mainToolbar.{ident}"),
+                     "shows": (f"mainToolbar.{ident}", (lambda f: lambda n, a: n.get("value") == str(a["onionSkin"][f]))(field))})
 
     # 5. The view chrome of both views (02 §10): every aid, symmetry, the type buttons.
     flag = lambda v: v is True  # noqa: E731
@@ -797,7 +975,8 @@ async def build_and_run(t: Table, only: set) -> None:
                          "action": ("dom", f"{view}.aid.{aid}"),
                          "expect": (lambda c, f, r: lambda b: (c, {f: not r(b)}))(commands[aid], field, read),
                          "label": None, "setup": into, "state": aids, "toggle": True,
-                         "effect": (lambda r: lambda b, a, k: r(a) == (not r(b)))(read), "disabled": ("dom", f"{view}.aid.{aid}")})
+                         "effect": (lambda r: lambda b, a, k: r(a) == (not r(b)))(read), "disabled": ("dom", f"{view}.aid.{aid}"),
+                         "shows": (f"{view}.aid.{aid}", (lambda r: lambda n, a: n.get("checked") == r(a))(read))})
         rows.append({"name": f"{view} chrome › lightTableShade", "spec": f"{spec_line('drawAid.lightTableShade.set')}; 02 §10",
                      "action": ("dom", f"{view}.aid.lightTableShade"),
                      "expect": lambda b: ("drawAid.lightTableShade.set", {"auto": not b["lightTableShade"]["auto"], "static": not b["lightTableShade"]["auto"]}),
@@ -836,7 +1015,8 @@ async def build_and_run(t: Table, only: set) -> None:
                      "action": ("dom", f"{view}.symmetry"),
                      "expect": lambda b: ("tool.symmetry.set", {"mode": "mirror" if b == "none" else "none"}),
                      "label": None, "setup": into, "state": symmetry, "toggle": True,
-                     "effect": lambda b, a, k: a == ("mirror" if b == "none" else "none"), "disabled": ("dom", f"{view}.symmetry")})
+                     "effect": lambda b, a, k: a == ("mirror" if b == "none" else "none"), "disabled": ("dom", f"{view}.symmetry"),
+                     "shows": (f"{view}.symmetry", lambda n, a: n.get("checked") == (a != "none"))})
 
         async def types(view=view):
             listed = await cmd("view.list", {})
@@ -848,7 +1028,8 @@ async def build_and_run(t: Table, only: set) -> None:
             rows.append({"name": f"{view} toolbar › type {ty}", "spec": f"{spec_line('view.type.set')}; 01 §5.3",
                          "action": ("dom", f"{view}.type.{ty}"), "expect": ("view.type.set", {"viewId": view, "type": ty}),
                          "label": None, "setup": into, "state": types, "effect": (lambda x: lambda b, a, k: a == x)(ty),
-                         "disabled": ("dom", f"{view}.type.{ty}")})
+                         "disabled": ("dom", f"{view}.type.{ty}"),
+                         "shows": (f"{view}.type.{ty}", lambda n, a: n.get("checked") is True)})
 
     # 6. The Drawing tools palette: each tool (02 §1.3, §7).
     async def active_tool():
@@ -858,7 +1039,8 @@ async def build_and_run(t: Table, only: set) -> None:
         rows.append({"name": f"tools palette › {tool}", "spec": f"{spec_line('tool.active.set')}; 02 §7",
                      "action": ("dom", f"drawingTools.{tool}"), "expect": ("tool.active.set", {"toolId": tool}), "label": None,
                      "setup": None, "state": active_tool, "effect": (lambda x: lambda b, a, k: a == x)(tool),
-                     "disabled": ("dom", f"drawingTools.{tool}")})
+                     "disabled": ("dom", f"drawingTools.{tool}"),
+                     "shows": (f"drawingTools.{tool}", lambda n, a: n.get("checked") is True)})
 
     # 7. The shortcut editor's Export and Import (01 §8.3 item 8): a real save and open dialog, a typed path.
     exported = t.work / "keymap-export.json"
@@ -949,6 +1131,13 @@ async def build_and_run(t: Table, only: set) -> None:
             continue
         if only and not any(o in r["name"] for o in only):
             continue
+        if isinstance(t, McpTable) and (r.get("custom") or r.get("post_click")):
+            reason = ("its action is the operating system's own file dialog (a typed path), which only real input reaches"
+                      if "shortcut editor" in r["name"] else
+                      "the dialog that lists the backups opens only from the native menu, which only real input reaches")
+            t.rows.append({"name": r["name"], "spec": r["spec"], "ok": True, "notRun": reason})
+            t.run.check(True, f"D-39 {r['name']}: runs in the OS form only ({reason})", None)
+            continue
         if r.get("custom"):
             await custom_row(t, r)
         else:
@@ -1029,8 +1218,13 @@ async def jobs_row(t: Table) -> None:
                                                            "createDirs": True, "onConflict": "overwrite"})
         jid = (env.get("result") or {}).get("jobId")
         shown, running = [], []
+        async def jobs_text():
+            if isinstance(t, McpTable):
+                n = t.node(await t.tree(), "status.jobs")
+                return (n or {}).get("label") or "" if n is not None else None
+            return t.cdp.js("document.querySelector('[data-tt-id=\"status.jobs\"]')?.textContent ?? null")
         for _ in range(100):
-            text = t.cdp.js("document.querySelector('[data-tt-id=\"status.jobs\"]')?.textContent ?? null")
+            text = await jobs_text()
             jobs = (await e2e.run_cmd(t.s, "job.list", {})).get("result")
             listed = jobs if isinstance(jobs, list) else (jobs or {}).get("jobs") or []
             running.append(sum(1 for j in listed if j.get("state") == "running"))
@@ -1042,7 +1236,7 @@ async def jobs_row(t: Table) -> None:
         if jid:
             await e2e.call(t.s, "job_wait", {"jobId": jid, "timeoutMs": 120000})
         await asyncio.sleep(1.0)
-        end = t.cdp.js("document.querySelector('[data-tt-id=\"status.jobs\"]')?.textContent ?? null")
+        end = await jobs_text()
         ok = any(x and "1 job running" in x for x in shown) and end == ""
         rec.update({"jobId": jid, "shownWhileRunning": [x for x in shown if x][-1:] or shown[-1:], "afterEnd": end, "ok": ok})
         t.run.check(ok, "D-39 status bar › jobs: a running job shows and goes when it ends (01 §9.1)", rec)
@@ -1053,18 +1247,19 @@ async def jobs_row(t: Table) -> None:
     t.run.save("rows.json", t.rows)
 
 
-async def session_all(app: str, run, out: Path, work: Path, only: set) -> list:
+async def session_all(app: str, run, out: Path, work: Path, only: set, mode: str = "os") -> list:
     user = work / "user"
     (user / "Settings").mkdir(parents=True)
     seed = {"agent.policy.defaults": {"policy": "autonomous", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048,
                                       "maxInlineBytes": 52428800, "askInApp": True, "letAgentMoveView": True, "highlightAgentChanges": True}}
     (user / "Settings" / "preferences.json").write_text(json.dumps({"format": "toontown-settings", "kind": "preferences", "formatVersion": "1.0", "data": seed}), encoding="utf-8")
     discovery = work / "discovery.json"
-    os.environ["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"] = f"--remote-debugging-port={CDP_PORT}"
+    if mode == "os":
+        os.environ["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"] = f"--remote-debugging-port={CDP_PORT}"
     # A webview browser process still running from an earlier launch with the same data folder (an earlier step of the
     # same CI job) would take this window and ignore the argument: this run gets a data folder of its own (WebView2's
     # environment variables override the application's values).
-    os.environ["WEBVIEW2_USER_DATA_FOLDER"] = str(work / "webview2")
+        os.environ["WEBVIEW2_USER_DATA_FOLDER"] = str(work / "webview2")
     proc = e2e.launch(app, user, discovery)
     try:
         d = e2e.wait_discovery(discovery, proc)
@@ -1079,7 +1274,7 @@ async def session_all(app: str, run, out: Path, work: Path, only: set) -> list:
             s = await stack.enter_async_context(e2e.ClientSession(streams[0], streams[1], list_roots_callback=roots))
             await s.initialize()
             await e2e.gui_tree(s, run, lambda r: e2e.by_id(r, "startScreen") is not None, "the GUI is up")
-            t = Table(s, run, out, work)
+            t = (McpTable if mode == "mcp" else Table)(s, run, out, work)
             await build_and_run(t, only)
             return t.rows
     finally:
@@ -1092,9 +1287,11 @@ def main() -> int:
     ap.add_argument("app")
     ap.add_argument("out")
     ap.add_argument("--only", default="")
+    ap.add_argument("--mode", choices=["os", "mcp"], default="os",
+                    help="os: real Windows input, the page's IPC observed (workstation); mcp: the attached MCP interface (CI)")
     a = ap.parse_args()
-    if sys.platform != "win32":
-        print("D-39's table drives the real window through Windows input; on this platform it does not run.")
+    if a.mode == "os" and sys.platform != "win32":
+        print("D-39's OS form drives the real window through Windows input; on this platform run --mode mcp.")
         return 0
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -1103,14 +1300,14 @@ def main() -> int:
     started = time.monotonic()
     rows: list = []
     try:
-        rows = asyncio.run(session_all(a.app, run, out, work, {x for x in a.only.split(",") if x}))
+        rows = asyncio.run(session_all(a.app, run, out, work, {x for x in a.only.split(",") if x}, a.mode))
     except Exception as ex:  # noqa: BLE001 - reported as a failure with its text
         import traceback
         traceback.print_exception(ex)
         run.check(False, "the table ran", repr(ex))
     finally:
         shutil.rmtree(work, ignore_errors=True)
-    manifest = {"kind": "toontown.c43b.d39-bindings", "seconds": round(time.monotonic() - started, 1), "rows": len(rows),
+    manifest = {"kind": "toontown.c43b.d39-bindings", "mode": a.mode, "seconds": round(time.monotonic() - started, 1), "rows": len(rows),
                 "failed": [r.get("name") for r in rows if not r.get("ok")], "failures": run.failures}
     run.save("rows.json", rows)
     run.save("transcript.json", run.transcript)

@@ -1041,6 +1041,19 @@ jobs:
             app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
           fi
           PYTHONIOENCODING=utf-8 $VPY scripts/c43-camera-e2e.py "$app" "desktop-gui/c43-camera"
+      # M4 C4.3b, rulings D-39 and D-40: every GUI binding added in C4.3b, through the attached MCP interface (the window's
+      # tree finds each control and its declared reference, the command entry point invokes it, the activity record and
+      # document reads observe it; disabled without a project). The OS-input form is a workstation receipt
+      # (reviews/evidence/M4-C4.3b/d39-bindings).
+      - name: GUI bindings table (C4.3b, D-39, MCP form)
+        if: always()
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; VPY=.venv-gui/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY scripts/c43-d39-bindings.py "$app" "desktop-gui/c43-d39" --mode mcp
       # M4 C4.2b (ruling D-5): the canvas's GPU and webview quantities, recorded on the runners with loose sanity bounds
       # (no GPU); the plan's numbers are asserted on the workstation with committed receipts.
       - name: Canvas measurements (C4.2b; loose bounds on CI)

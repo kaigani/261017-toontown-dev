@@ -255,6 +255,7 @@ export function ViewChrome({ viewId }: { viewId: string }) {
             data-tt-role="button"
             data-tt-id={`${viewId}.aid.${a.id}`}
             data-tt-command={a.command}
+            data-tt-params={JSON.stringify(params)}
             onClick={() => {
               void actions.run(a.command, params);
             }}
@@ -274,6 +275,7 @@ export function ViewChrome({ viewId }: { viewId: string }) {
         data-tt-role="button"
         data-tt-id={`${viewId}.symmetry`}
         data-tt-command="tool.symmetry.set"
+        data-tt-params={JSON.stringify(symmetryRef.params)}
         onClick={() => {
           // The shown state follows the kernel's `tool.options.changed`, not this click's answer.
           void actions.run('tool.symmetry.set', symmetryRef.params);
