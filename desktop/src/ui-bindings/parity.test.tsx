@@ -11,6 +11,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { App } from '../App';
 import { createHostApi, HostProvider } from '../ipc';
+import { COMMAND_INDEX } from '../ipc/generated/commands';
 import {
   createScriptedHost,
   DEFAULT_LAYOUT,
@@ -123,9 +124,25 @@ function mount(h: ScriptedHost, floatPanel?: string) {
 interface Surface {
   name: string;
   root: Element;
+  /** The queries sent from the moment the surface was opened until it settled (C43B-R3S-01, ruling D-48). */
+  reads: string[];
 }
 
-const snapshot = (name: string, el: Element): Surface => ({ name, root: el.cloneNode(true) as Element });
+/** C43B-R3S-01 (ruling D-48): each query is attributed to the rendered surface that sends it. `mark` is called just
+ *  before the action that opens a surface; the queries the host receives from then until the surface has settled are
+ *  that surface's reads, a `useQuery` hook's included. */
+let reading: { host: ScriptedHost; since: number } | null = null;
+function mark(host: ScriptedHost): void {
+  reading = { host, since: host.sent.length };
+}
+const isQueryCommand = (id: string) =>
+  (COMMAND_INDEX as Record<string, { kind?: string } | undefined>)[id]?.kind === 'query';
+
+const snapshot = (name: string, el: Element): Surface => {
+  const sent = reading ? reading.host.sent.slice(reading.since) : [];
+  const reads = [...new Set(sent.filter((x) => !x.dryRun && isQueryCommand(x.command)).map((x) => x.command))].sort();
+  return { name, root: el.cloneNode(true) as Element, reads };
+};
 
 /** The surface as rendered once the answers it asked for have arrived (a slow runner otherwise snapshots a loading
  *  state): pending promises and timers run first. */
@@ -145,13 +162,16 @@ const LOADED_ACTIONS: Readonly<Record<string, { selector: string; count: number 
 async function surfaces(): Promise<Surface[]> {
   const out: Surface[] = [];
   // The start screen (no project), with a recovery entry.
-  mount(host(false));
+  const start = host(false);
+  mark(start);
+  mount(start);
   out.push(await settled('startScreen', await screen.findByRole('dialog', { name: 'Start screen' })));
   cleanup();
 
   // The main window with a project: toolbars, tool palettes, the dock's panels (History with an entry) and view
   // chrome, the status bar with an agent connected.
   const h = host(true);
+  mark(h);
   mount(h);
   await screen.findByRole('toolbar', { name: 'Main toolbar' });
   await screen.findByText('brush');
@@ -159,6 +179,7 @@ async function surfaces(): Promise<Surface[]> {
   out.push(await settled('main', document.body));
 
   // The agent popover open.
+  mark(h);
   act(() => {
     fireEvent.click(screen.getByText(/Agent: mcp/));
   });
@@ -180,6 +201,7 @@ async function surfaces(): Promise<Surface[]> {
         cancellable: true,
       },
     ]);
+  mark(h);
   act(() => {
     h.event('job.progress', { jobId: 'job-7' });
   });
@@ -195,6 +217,7 @@ async function surfaces(): Promise<Surface[]> {
   // The dock tab's context menu.
   const tab = document.querySelector('[data-tt-id^="tab."]');
   if (!tab) throw new Error('no dock tab rendered');
+  mark(h);
   act(() => {
     fireEvent.contextMenu(tab);
   });
@@ -216,6 +239,7 @@ async function surfaces(): Promise<Surface[]> {
     ['Rename Workspace', 'workspace.rename'],
   ];
   for (const [title, command] of dialogs) {
+    mark(h);
     act(() => {
       h.menu(command, {});
     });
@@ -234,6 +258,7 @@ async function surfaces(): Promise<Surface[]> {
     });
   }
   // Help.
+  mark(h);
   act(() => {
     h.event('shell.help', {});
   });
@@ -243,24 +268,29 @@ async function surfaces(): Promise<Surface[]> {
     help.querySelector<HTMLElement>('[data-tt-id$=".cancel"]')?.click();
   });
   // A job's progress window (Cancel).
+  mark(h);
   act(() => {
     h.menu('project.open', { path: '/p/Walk.animpkg' });
   });
   const progress = await screen.findByRole('dialog', { name: 'Opening project' });
   out.push(await settled('dialog:Opening project', progress));
   // A message box (a refused command).
+  mark(h);
   act(() => {
     h.menu('project.close', {});
   });
   const message = await screen.findByRole('alertdialog');
   out.push(await settled('messageBox', message));
 
-  // Preferences: every category, and the shortcut editor with a command selected and with a conflict.
+  // Preferences: every category, and the shortcut editor with a command selected and with a conflict. The dialog's
+  // opening reads are its first category's.
+  mark(h);
   act(() => {
     h.event('shell.preferences', { category: 'general' });
   });
   const prefs = await screen.findByRole('dialog', { name: 'Preferences' });
-  for (const c of CATEGORIES) {
+  for (const [k, c] of CATEGORIES.entries()) {
+    if (k > 0) mark(h);
     act(() => {
       prefs.querySelector<HTMLElement>(`[data-tt-id="preferences.category.${c.id}"]`)?.click();
     });
@@ -274,12 +304,14 @@ async function surfaces(): Promise<Surface[]> {
     if (!el) throw new Error('no edit.undo in the shortcut editor');
     return el;
   });
+  mark(h);
   act(() => {
     undo.click();
   });
   out.push(await settled('preferences:keyboard:details', prefs));
   const capture = prefs.querySelector<HTMLElement>('[data-tt-id="keymap.capture"]');
   if (!capture) throw new Error('no capture control');
+  mark(h);
   act(() => {
     capture.click();
   });
@@ -292,7 +324,9 @@ async function surfaces(): Promise<Surface[]> {
   cleanup();
 
   // A floating window.
-  mount(host(true), 'history');
+  const floating = host(true);
+  mark(floating);
+  mount(floating, 'history');
   await screen.findByText('Rectangle Tool');
   out.push(await settled('float:history', document.body));
   cleanup();
@@ -436,6 +470,12 @@ describe('the parity manifest (parity note 9)', () => {
         commands: r.commands,
       })),
       callSites: callSites(),
+      // C43B-R3S-01 (ruling D-48): the queries each rendered surface sent while it opened and settled.
+      surfaceReads: [
+        ...new Map(
+          rendered.flatMap((s) => s.reads.map((q) => [`${s.name}\u0000${q}`, { surface: s.name, query: q }])),
+        ).values(),
+      ].sort((a, b) => a.surface.localeCompare(b.surface) || a.query.localeCompare(b.query)),
       uses: sourceUses(),
     };
     const text = `${JSON.stringify(manifest, null, 2)}\n`;
@@ -519,6 +559,16 @@ describe('the parity manifest (parity note 9)', () => {
       'view.list',
       'window.panel.list',
     ]);
+    // Ruling D-48 item 7: a `#[cfg(test)]` on anything but the trailing test module fails closed (the file is refused,
+    // not read only up to it): a test-only function followed by product code, and a test module with code after it.
+    const early = ['#[cfg(test)]', 'fn helper() {}', 'fn product() { host.run("job.list", json!({})); }'].join('
+');
+    expect(() => rustCallSites(early)).toThrow(/trailing test module/);
+    const notLast = ['#[cfg(test)]', 'mod tests { fn t() {} }', 'fn product() { host.run("job.list", json!({})); }'].join(
+      '
+',
+    );
+    expect(() => rustCallSites(notLast)).toThrow(/trailing test module/);
   });
 
   // C43B-R2S-01, C43B-R2-01: every surface key of `reads.json` is a surface the collector renders (or the native menu,

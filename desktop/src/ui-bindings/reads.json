@@ -74,36 +74,24 @@
     "dialog:About Toontown": {
       "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
       "reads": {
-        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"],
-        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"],
-        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"],
-        "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
+        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"]
       }
     },
     "dialog:Project Info": {
       "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
       "reads": {
-        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"],
-        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"],
-        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"],
-        "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
+        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"]
       }
     },
     "dialog:Check Project": {
       "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
       "reads": {
-        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"],
-        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"],
-        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"],
-        "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
+        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"]
       }
     },
     "dialog:Open Backup": {
       "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
       "reads": {
-        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"],
-        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"],
-        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"],
         "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
       }
     },

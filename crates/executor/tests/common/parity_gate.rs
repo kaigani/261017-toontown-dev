@@ -358,17 +358,21 @@ pub struct Reads {
     pub plumbing: BTreeSet<(String, String)>,
     /// The `surfaces` object's keys, in file order.
     pub surface_names: Vec<String>,
+    /// Every declared read with its surface: `(surface, query, file)` (C43B-R3S-01, ruling D-48).
+    pub triples: BTreeSet<(String, String, String)>,
 }
 
 pub fn reads(raw: &str) -> Reads {
     let doc: Value = serde_json::from_str(raw).unwrap();
     let mut surfaces = BTreeSet::new();
     let mut surface_names = Vec::new();
+    let mut triples = BTreeSet::new();
     for (name, s) in doc["surfaces"].as_object().unwrap() {
         surface_names.push(name.clone());
         for (q, files) in s["reads"].as_object().unwrap() {
             for f in files.as_array().unwrap() {
                 surfaces.insert((q.clone(), f.as_str().unwrap().to_owned()));
+                triples.insert((name.clone(), q.clone(), f.as_str().unwrap().to_owned()));
             }
         }
     }
@@ -378,7 +382,21 @@ pub fn reads(raw: &str) -> Reads {
             plumbing.insert((q.clone(), f.as_str().unwrap().to_owned()));
         }
     }
-    Reads { surfaces, plumbing, surface_names }
+    Reads { surfaces, plumbing, surface_names, triples }
+}
+
+/// The queries each rendered surface sent while it opened and settled: `(surface, query)` (the manifest's
+/// `surfaceReads`, collected by the parity test; C43B-R3S-01, ruling D-48).
+pub fn surface_reads(m: &Value) -> BTreeSet<(String, String)> {
+    m["surfaceReads"]
+        .as_array()
+        .map(Vec::as_slice)
+        .unwrap_or_default()
+        .iter()
+        .map(|c| {
+            (c["surface"].as_str().unwrap_or_default().to_owned(), c["query"].as_str().unwrap_or_default().to_owned())
+        })
+        .collect()
 }
 
 /// The manifest's call sites, `(command, file)`.
@@ -436,6 +454,25 @@ pub fn reads_problems(m: &Value, reads_raw: &str) -> Vec<String> {
         }
         if !sites.contains(&(q.clone(), f.clone())) {
             out.push(format!("reads.json declares `{q}` in {f}, where product code never calls it"));
+        }
+    }
+    // C43B-R3S-01 (ruling D-48): per rendered surface, both directions. A surface that declares a read it does not send
+    // fails, even when another surface in the same file sends it; a query a surface sends is declared under that surface
+    // (or is plumbing). The native menu (`menu`) is not rendered by the collector; its reads are checked against its
+    // call sites alone.
+    let sent = surface_reads(m);
+    let plumbed: BTreeSet<&str> = rd.plumbing.iter().map(|(q, _)| q.as_str()).collect();
+    for (surface, q, f) in &rd.triples {
+        if surface != "menu" && !sent.contains(&(surface.clone(), q.clone())) {
+            out.push(format!(
+                "reads.json: surface `{surface}` declares `{q}` ({f}), which it does not send when rendered"
+            ));
+        }
+    }
+    for (surface, q) in &sent {
+        let declared = rd.triples.iter().any(|(s, dq, _)| s == surface && dq == q);
+        if is_query(q) && !declared && !plumbed.contains(q.as_str()) {
+            out.push(format!("surface `{surface}` sends `{q}` when rendered but declares no read of it (reads.json)"));
         }
     }
     for pair in rd.surfaces.intersection(&rd.plumbing) {

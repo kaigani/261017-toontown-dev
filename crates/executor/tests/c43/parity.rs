@@ -109,7 +109,27 @@ fn d35_declared_reads_and_call_sites_agree_both_ways() {
     let moved = reads["surfaces"].as_object_mut().unwrap().remove("dialog:Help").unwrap();
     reads["surfaces"]["helpWindow"] = moved;
     let bad = reads_problems(&m, &reads.to_string());
-    assert_eq!(bad, vec!["reads.json: surface `helpWindow` is not a surface the collector renders".to_owned()]);
+    assert!(bad.iter().any(|p| p == "reads.json: surface `helpWindow` is not a surface the collector renders"), "{bad:?}");
+    // C43B-R3S-01 (ruling D-48): a surface that declares a read it does not send fails, even when another surface in the
+    // same file sends it (About declaring Project Info's query, both in infoDialogs.tsx); and a query a surface sends
+    // without declaring it fails.
+    let mut reads: Value = serde_json::from_str(READS).unwrap();
+    reads["surfaces"]["dialog:About Toontown"]["reads"]["project.info.get"] = json!(["desktop/src/shell/infoDialogs.tsx"]);
+    let bad = reads_problems(&m, &reads.to_string());
+    assert_eq!(
+        bad,
+        vec![
+            "reads.json: surface `dialog:About Toontown` declares `project.info.get` (desktop/src/shell/infoDialogs.tsx),              which it does not send when rendered"
+                .to_owned()
+        ]
+    );
+    let mut reads: Value = serde_json::from_str(READS).unwrap();
+    reads["surfaces"]["dialog:Project Info"]["reads"].as_object_mut().unwrap().remove("project.info.get");
+    let bad = reads_problems(&m, &reads.to_string());
+    assert!(
+        bad.iter().any(|p| p == "surface `dialog:Project Info` sends `project.info.get` when rendered but declares no read of it (reads.json)"),
+        "{bad:?}"
+    );
     // A call site removed from the manifest (an inert mention left behind) leaves its declared read without a call.
     let mut m2 = m.clone();
     m2["callSites"].as_array_mut().unwrap().retain(|c| c["command"] != "tool.list");
