@@ -13,6 +13,8 @@ use serde_json::{Value, json};
 use tt_executor::ExecutorConfig;
 
 const INTRO: &str = "scene:\"Intro\"";
+/// The bound of the 100 000-frame evaluation against the 10 000-frame one (C43B-R3S-04): four times the linear ratio.
+const EVALUATION_RATIO: f64 = 40.0;
 
 #[test]
 #[ignore = "release-only measurement; CI runs it in `measurements release`"]
@@ -66,6 +68,7 @@ fn long_range_evaluation_answers_within_the_watchdog() {
         ("path read back with passage frames", "anim.path.get", json!({ "nodeId": deepest })),
     ];
     let mut records = Vec::new();
+    let mut seconds_of = std::collections::BTreeMap::new();
     for (name, id, params) in cases {
         let t = Instant::now();
         let env = run(&h, id, params);
@@ -77,8 +80,22 @@ fn long_range_evaluation_answers_within_the_watchdog() {
         let bound = if std::env::var("TT_BUDGET_RECEIPT").is_ok_and(|v| v == "1") { 30.0 } else { 35.0 };
         assert!(seconds < bound, "{name} took {seconds} s: past {bound} s (ruling D-45)");
         assert_eq!(rev(&h), start, "{name}");
+        // C43B-R3S-04 (ruling D-48): the expected outcome, so an error answer cannot pass the timing checks.
+        assert_eq!(outcome, "completed", "{name}: {:?}", env.error);
+        seconds_of.insert(name, seconds);
         records.push(json!({ "case": name, "seconds": seconds, "outcome": outcome }));
     }
+    // C43B-R3S-04 (ruling D-48, D-45's shape): the same request on 100 000 frames against 10 000 frames, in this process.
+    // Linear cost gives a ratio near 10 (runners: 9.5 on Windows, run 43762197308; 11.6 on macOS); the bound leaves four
+    // times that, so a cost growing with the square of the frame count (a ratio near 100) fails whatever the runner.
+    let small = seconds_of["deepest node, 10 000 frames, world only"].max(0.01);
+    let large = seconds_of["deepest node, 100 000 frames, world only"];
+    let ratio = large / small;
+    println!("evaluation shape: 100 000 frames {large:.3} s against 10 000 frames {small:.3} s, ratio {ratio:.1}");
+    assert!(
+        ratio <= EVALUATION_RATIO,
+        "evaluation ratio {ratio:.1} over {EVALUATION_RATIO} (100 000 against 10 000 frames)"
+    );
     if std::env::var("TT_MEASURE").is_ok_and(|v| v == "1") {
         let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c32");
         std::fs::create_dir_all(&dir).unwrap();

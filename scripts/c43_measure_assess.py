@@ -38,6 +38,46 @@ def _n(stat) -> int:
     return (stat or {}).get("n", 0) if isinstance(stat, dict) else 0
 
 
+#: C43B-R3S-05 (ruling D-48): each scene summary and what its values must be: durations of work, feedback and commits
+#: are finite and non-negative; frame times are finite and positive; every summary is ordered (p50 <= p95 <= max).
+SUMMARIES = {"idle": "positive", "dragFrames": "positive", "idleWork": "nonNegative", "dragWork": "nonNegative",
+             "feedback": "nonNegative", "commits": "nonNegative"}
+#: The sample populations: every interval finite and positive; every commit sample finite and non-negative.
+POPULATIONS = {"idleIntervals": "positive", "dragIntervals": "positive"}
+
+
+def _ok_value(v, rule: str) -> bool:
+    if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v):
+        return False
+    return v > 0 if rule == "positive" else v >= 0
+
+
+def scene_problems(r: dict) -> list:
+    """Every impossible value of one scene's measurements (C43B-R3S-05), before any budget is applied."""
+    out = []
+    for key, rule in SUMMARIES.items():
+        stat = r.get(key)
+        if stat is None:
+            continue  # its absence is the completeness checks' failure
+        if not isinstance(stat, dict):
+            out.append(f"{key}: not a summary")
+            continue
+        vals = [stat.get(k) for k in ("p50", "p95", "max")]
+        bad = [k for k, v in zip(("p50", "p95", "max"), vals) if v is not None and not _ok_value(v, rule)]
+        if bad:
+            out.append(f"{key}: {', '.join(bad)} not finite and {'positive' if rule == 'positive' else 'non-negative'}")
+        elif all(v is not None for v in vals) and not (vals[0] <= vals[1] <= vals[2]):
+            out.append(f"{key}: p50 <= p95 <= max does not hold")
+        samples = stat.get("samples")
+        if isinstance(samples, list) and any(not _ok_value(v, rule) for v in samples):
+            out.append(f"{key}: a sample is not finite and {'positive' if rule == 'positive' else 'non-negative'}")
+    for key, rule in POPULATIONS.items():
+        values = r.get(key)
+        if isinstance(values, list) and any(not _ok_value(v, rule) for v in values):
+            out.append(f"{key}: an interval is not finite and positive")
+    return out
+
+
 def assess(record: dict, bounds: dict, drags: int) -> list:
     checks: list = []
 
@@ -52,6 +92,15 @@ def assess(record: dict, bounds: dict, drags: int) -> list:
     control = record.get("control") or {}
     check(_n(control.get("frameMs")) >= FULL and control.get("startScreen") is True,
           "D-33 control: 300 frames of the webview's cadence on the start screen", control.get("frameMs"))
+    # C43B-R3S-05 (ruling D-48): every scene's populations and summaries are physically possible before any budget.
+    valid = True
+    for scene in ("sample", "groups1k"):
+        r = record.get(scene)
+        if isinstance(r, dict):
+            bad = scene_problems(r)
+            valid = valid and not bad
+            check(not bad, f"{scene}: every measurement finite, durations non-negative, intervals positive, "
+                           "p50 <= p95 <= max", bad)
     resident = (record.get("groups1k") or {}).get("resident", 0)
     check(resident >= RESIDENT_1K, f"the 1,000-element scene has its {RESIDENT_1K} drawings resident", resident)
 
@@ -72,6 +121,8 @@ def assess(record: dict, bounds: dict, drags: int) -> list:
                             else "plan §6: frame time p95 <= 17.5 ms")
     for scene in ("sample", "groups1k"):
         r = record.get(scene)
+        if not valid:
+            break  # no budget is assessed on impossible measurements (the validation check above failed)
         if not isinstance(r, dict):
             check(False, f"{scene}: measured", None)
             continue

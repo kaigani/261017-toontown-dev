@@ -120,6 +120,31 @@ class Assess(unittest.TestCase):
         for median in (16.7, 33.3):
             self.assertFalse(any("plausible cadence" in n for n in failed(complete(median=median))), median)
 
+    def test_impossible_scene_measurements_are_refused_before_any_budget(self):
+        # C43B-R3S-05 (ruling D-48): the reviewer's record: a plausible control, complete counts, every scene timing -1.
+        def neg():
+            return {"n": 300, "p50": -1, "p95": -1, "max": -1}
+
+        def bad_scene():
+            return {"idle": neg(), "idleWork": neg(), "idleIntervals": [-1] * 300, "dragFrames": neg(),
+                    "dragWork": neg(), "dragIntervals": [-1] * 300, "feedback": neg(),
+                    "commits": {"n": DRAGS, "p50": -1, "p95": -1, "max": -1}, "input": "os", "drags": DRAGS}
+        r = complete()
+        r["sample"], r["groups1k"] = bad_scene(), {"resident": 1002, **bad_scene()}
+        names = failed(r)
+        self.assertTrue(any("every measurement finite" in n for n in names), names)
+        # No budget is assessed on them: the failures are the validation's (and nothing passes).
+        self.assertFalse(any("p95 <= 8 ms" in n or "frame time" in n for n in names), names)
+        # Each rule alone: a non-finite work figure, an unordered summary, a zero interval.
+        for mutate in (lambda s: s["idleWork"].update(p95=float("inf")),
+                       lambda s: s["feedback"].update(p50=5.0, p95=4.0),
+                       lambda s: s.__setitem__("dragIntervals", [16.7] * 299 + [0.0])):
+            r = complete()
+            mutate(r["sample"])
+            self.assertTrue(any("every measurement finite" in n for n in failed(r)))
+        # A valid record keeps passing the validation.
+        self.assertFalse(any("every measurement finite" in n for n in failed(complete())))
+
     def test_a_missing_scene_fails(self):
         r = complete()
         del r["sample"]
