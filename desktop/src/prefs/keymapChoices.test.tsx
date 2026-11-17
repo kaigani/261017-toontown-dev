@@ -55,6 +55,8 @@ describe('the shortcut editor asks with the application message box (C43B-R2-08,
       expect(Array.from(box.querySelectorAll('button')).map((b) => b.textContent)).toEqual(
         expect.arrayContaining(['Merge', 'Replace', 'Cancel']),
       );
+      // Ruling D-46 (SI-161): Merge, which destroys nothing, is the default button.
+      expect(box.querySelector('.button-default')?.getAttribute('data-tt-id')).toBe('message.merge');
       fireEvent.click(must(box.querySelector(`[data-tt-id="message.${choice}"]`)));
       await waitFor(() => {
         expect(screen.queryByRole('alertdialog')).toBeNull();

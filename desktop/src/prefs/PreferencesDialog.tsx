@@ -652,8 +652,9 @@ export function KeymapEditor({
                 title: 'Import Keymap',
                 text: `Merge the shortcuts of "${path}" into the keymap, or replace the whole keymap with them?`,
                 buttons: [
-                  { id: 'merge', label: 'Merge' },
-                  { id: 'replace', label: 'Replace', role: 'default' },
+                  // Ruling D-46 (SI-161): Merge, which destroys nothing, is the default; Replace has its own button.
+                  { id: 'merge', label: 'Merge', role: 'default' },
+                  { id: 'replace', label: 'Replace', role: 'destructive' },
                   { id: 'cancel', label: 'Cancel', role: 'cancel' },
                 ],
               });

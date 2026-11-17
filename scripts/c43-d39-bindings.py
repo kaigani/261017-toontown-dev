@@ -1127,7 +1127,9 @@ async def build_and_run(t: Table, only: set) -> None:
     async def import_flow():
         t.click("keymap.import")
         await type_path(edited)
-        key(0x0D)  # the application's message box: Enter takes its default button, Replace (C43B-R2-08)
+        # The application's message box (C43B-R2-08): Merge is its default (ruling D-46), Replace its own button.
+        await asyncio.sleep(1.0)
+        t.click("message.replace")
         await asyncio.sleep(0.6)
         t.click("preferences.submit")
         await asyncio.sleep(1.0)

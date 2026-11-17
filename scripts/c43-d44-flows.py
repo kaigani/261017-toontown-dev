@@ -439,6 +439,10 @@ def keymap_rows(t: Flows) -> list:
             key(VK_RETURN)
             if not await t.wait_for("message.keymap.importMode"):
                 raise RuntimeError("the Merge / Replace / Cancel question did not appear")
+            # Ruling D-46 (SI-161): Merge, which destroys nothing, is the default button (focused, Enter takes it).
+            focused = t.cdp.js("document.activeElement && document.activeElement.dataset.ttId")
+            if focused != "message.merge":
+                raise RuntimeError(f"the default button is {focused}, not Merge")
             t.click(f"message.{choice}")
             await asyncio.sleep(0.6)
             t.click("preferences.submit")
