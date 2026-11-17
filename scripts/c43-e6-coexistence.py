@@ -142,25 +142,53 @@ def os_drag(pid: int, pts: list, seconds: float, hold_s: float, times: dict) -> 
 
 # ---------------------------------------------------------------------------------------------------------------------
 
-async def locate_view(session, rc, target: str):
-    """Where a view's canvas is in the window's client area: its capture found in the window capture (device pixels)."""
+async def locate_view(session, rc, target: str, keep: Path | None = None):
+    """Where a view's canvas is in the window's client area: its capture found in the window capture (device pixels).
+
+    The two captures are taken one after the other, so a part of the view that changes between them (a selection's
+    outline redrawn, a cursor) would defeat an exact match at every attempt (the Camera e2e's PV drawing select move,
+    run 44140771607: 16 attempts in 30 s). A position is accepted when at least 90 % of the sampled pixels agree, the
+    best such position winning; the first row's samples pick the candidates. With `keep`, a failed search saves both
+    captures there for diagnosis."""
     shots = {}
+    raw = {}
     for tgt in ("window", target):
         r = (await rc(session, "inspect.screenshot", {"target": tgt})).get("result") or {}
         if not r.get("png"):
             return None
-        shots[tgt] = c42.png_rgba(base64.b64decode(r["png"]))
+        raw[tgt] = base64.b64decode(r["png"])
+        shots[tgt] = c42.png_rgba(raw[tgt])
     W, H, cw, wrows = shots["window"]
     w, h, cv, vrows = shots[target]
     if w > W or h > H:
         return None
-    first = [vrows[0][i:i + 3] for i in range(0, w * cv, cv)]
+    xs = list(range(0, w, max(1, w // 16)))
+    ys = list(range(0, h, max(1, h // 32)))
+    first = [vrows[0][i * cv:i * cv + 3] for i in xs]
+    best, best_score = None, 0.0
     for y in range(0, H - h + 1):
         row = wrows[y]
         for x in range(0, W - w + 1):
-            if all(row[(x + i) * cw:(x + i) * cw + 3] == first[i] for i in range(0, w, max(1, w // 16))):
-                if all(wrows[y + yy][x * cw:(x + w) * cw][::cw] == vrows[yy][::cv] for yy in range(0, h, max(1, h // 32))):
-                    return (x, y, w, h)
+            hits = sum(1 for k, i in enumerate(xs) if row[(x + i) * cw:(x + i) * cw + 3] == first[k])
+            if hits < 0.75 * len(xs):
+                continue
+            agree = total = 0
+            for yy in ys:
+                wr, vr = wrows[y + yy], vrows[yy]
+                for i in xs:
+                    total += 1
+                    agree += wr[(x + i) * cw:(x + i) * cw + 3] == vr[i * cv:i * cv + 3]
+            score = agree / total if total else 0.0
+            if score > best_score:
+                best, best_score = (x, y, w, h), score
+                if score == 1.0:
+                    return best
+    if best is not None and best_score >= 0.9:
+        return best
+    if keep is not None:
+        keep.mkdir(parents=True, exist_ok=True)
+        (keep / f"locate-failed-window-{target}.png").write_bytes(raw["window"])
+        (keep / f"locate-failed-{target}.png").write_bytes(raw[target])
     return None
 
 

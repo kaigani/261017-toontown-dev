@@ -277,7 +277,7 @@ async def preview_rows(session, run, ids) -> None:
         place, attempts, t_locate = None, 0, time.monotonic()
         while time.monotonic() - t_locate < 30.0:
             attempts += 1
-            place = await e6.locate_view(session, rc, view)
+            place = await e6.locate_view(session, rc, view, keep=Path(run.out))
             if place:
                 break
             await asyncio.sleep(0.5)
