@@ -272,14 +272,16 @@ async def preview_rows(session, run, ids) -> None:
         """An OS drag in `view` through view points, held 1.2 s at its end: the summary and the history while held."""
         await rc(session, "view.active.set", {"viewId": view})
         # The view is found in the window capture once the layout has settled (a workspace switched just before; a slow
-        # runner had not drawn it 0.8 s later, runs 43837502373 and 43847318713): looked for again for up to 5 s.
-        place = None
-        for _ in range(10):
+        # runner had not drawn it 0.8 s later, runs 43837502373 and 43847318713, nor 5 s later in run 44130018843): a
+        # wait for that state (ruling D-45), the 30 s bound only guarding a hang; the attempts are recorded.
+        place, attempts, t_locate = None, 0, time.monotonic()
+        while time.monotonic() - t_locate < 30.0:
+            attempts += 1
             place = await e6.locate_view(session, rc, view)
             if place:
                 break
             await asyncio.sleep(0.5)
-        out: dict = {"place": place}
+        out: dict = {"place": place, "locate": {"attempts": attempts, "seconds": round(time.monotonic() - t_locate, 1)}}
         if not place:
             return out
         client = [(place[0] + x, place[1] + y) for x, y in pts_view]
@@ -314,7 +316,7 @@ async def preview_rows(session, run, ids) -> None:
         after = await box_of(session, view)
         held = r.get("held") or {}
         t = held.get("transform")
-        run.check(r.get("place") is not None and "error" not in (r.get("times") or {}), f"PV {name}: the OS drag lands in the {view}", r.get("times"))
+        run.check(r.get("place") is not None and "error" not in (r.get("times") or {}), f"PV {name}: the OS drag lands in the {view}", {"times": r.get("times"), "locate": r.get("locate")})
         run.check(r.get("heldPosition") == r.get("pos0") and r.get("after") == r.get("pos0") + 1,
                   f"PV1 {name}: no command while the drag is held, one step after its release",
                   {k: r.get(k) for k in ("pos0", "heldPosition", "after")})

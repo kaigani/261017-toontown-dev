@@ -156,6 +156,8 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
     ("keymap.invalidSequence", "The key sequence is not valid."),
     ("keymap.reservedKey", "The key sequence is reserved by the system or the application."),
     ("keymap.conflict", "The key sequence is already bound to another command."),
+    ("keymap.importMode", "Merge adds the file's shortcuts to the keymap; Replace keeps only the file's."),
+    ("keymap.resetAll", "Reset All restores every shortcut to its default when Preferences is confirmed."),
     ("ui.unknownMessage", "There is no message with that id."),
     ("scene.noTarget", "There is no current scene and no scene was given."),
     ("render.noCamera", "The scene has no camera to render through; add a camera or name one."),
