@@ -60,7 +60,7 @@ VK_CONTROL, VK_SHIFT, VK_MENU, VK_RETURN, VK_ESCAPE = 0x11, 0x10, 0x12, 0x0D, 0x
 FLOW_COMMANDS = {
     "project.save", "project.saveAs", "project.create", "project.open", "project.backup.open", "project.recovery.open",
     "project.close", "app.quit", "keymap.set", "keymap.import", "keymap.reset", "keymap.remove", "workspace.create",
-    "workspace.rename", "prefs.set", "job.cancel",
+    "workspace.rename", "prefs.set", "job.cancel", "project.properties.set", "doc.repair",
 }
 
 
@@ -167,6 +167,12 @@ class Flows(d39.Table):
         p = s.get("project") or None
         return {"open": p is not None, "path": (p or {}).get("path"), "name": (p or {}).get("name"), "dirty": (p or {}).get("dirty"),
                 "flow": sha(self.fx["flow"]), "other": sha(self.fx["other"])}
+
+    async def prepare_clean(self, _ctx=None) -> None:
+        """The fixture project open from its file with no unsaved change (no unsaved-changes question comes first)."""
+        await self.prepare_dirty()
+        await self.cmd("project.save", {})
+        await asyncio.sleep(0.8)
 
     async def prepare_dirty(self, _ctx=None) -> None:
         """The fixture project open from its file, with one unsaved change."""
@@ -630,6 +636,191 @@ def preferences_rows(t: Flows) -> list:
     return rows
 
 
+# C43B-R3S-03 (ruling D-48): every choice of every form that sends a mutating command, from a project without unsaved
+# changes (the unsaved-changes question is its own rows), and one row per dismiss-only box asserting that dismissing it
+# sends nothing. `scripts/c43_d44_coverage.py` lists every dialog of the window with its rows or its reason.
+UNUSED_ASSET = {
+    "format": "animjson", "formatVersion": "1.0", "scenes": [], "elements": [], "drawingBanks": [], "palettes": [],
+    "pens": [], "blobs": {},
+    "assets": [{"id": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "type": "asset", "rev": 1, "name": "line.wav", "kind": "sound",
+                "mediaType": "audio/wav", "storage": "linked", "entry": None,
+                "link": {"kind": "file", "path": "elsewhere/line.wav", "absolutePath": "/nowhere/elsewhere/line.wav",
+                         "libraryId": None, "itemId": None, "versionId": None},
+                "size": 20, "sha256": "0" * 64, "importedAt": "2026-10-19T00:00:00.000Z", "sourcePath": None}],
+}
+
+
+def form_rows(t: Flows) -> list:
+    fx = t.fx
+    rows = []
+
+    async def props_state(_ctx):
+        props = await t.cmd("project.properties.get", {})
+        presets = await t.cmd("project.presets.list", {})
+        listed = presets if isinstance(presets, list) else presets.get("presets") or []
+        default = next((x for x in listed if x.get("kind") == "default" or x.get("id") == "default"), {})
+        return {"width": props.get("cameraWidth"), "defaultWidth": default.get("width")}
+
+    async def props_restore():
+        await t.cmd("project.properties.set", {"cameraWidth": 1920, "setAsDefault": True})
+
+    for choice, button in (("submit", "OK (set as default)"), ("cancel", "Cancel")):
+        async def flow(ctx, choice=choice, button=button):
+            choose_menu(["File", "Project Properties"])
+            if not await t.wait_for("projectProperties.width"):
+                raise RuntimeError("the Project Properties dialog did not open")
+            t.click("projectProperties.width")
+            select_field()
+            type_text("1280")
+            t.click("projectProperties.setAsDefault")
+            await asyncio.sleep(0.4)
+            t.click(f"projectProperties.{choice}")
+            await asyncio.sleep(1.2)
+            return f"real native menu File › Project Properties, width typed, Set as default checked, a real click on {button}"
+
+        rows.append({"name": f"Project Properties › {button}", "spec": f"01 §3.8; {spec_line('project.properties.set')}",
+                     "path": ["File", "Project Properties"], "choice": button, "setup": t.prepare_clean, "state": props_state,
+                     "flow": flow,
+                     "expect": (lambda c: lambda ctx: [("project.properties.set", {"cameraWidth": 1280, "setAsDefault": True}, [])]
+                                if c == "submit" else [])(choice),
+                     "effect": (lambda c: lambda b, a, ctx: (a["width"] == 1280 and a["defaultWidth"] == 1280) if c == "submit"
+                                else a == b)(choice),
+                     "cleanup": props_restore})
+
+    async def project_of(_ctx):
+        return await t.project_state()
+
+    for choice, button in (("create", "Create"), ("cancel", "Cancel")):
+        async def flow(ctx, choice=choice, button=button):
+            choose_menu(["File", "New Project"])
+            if not await t.wait_for("newProject.name"):
+                raise RuntimeError("the New Project dialog did not open")
+            t.click("newProject.name")
+            select_field()
+            type_text("FlowFresh")
+            await asyncio.sleep(0.3)
+            t.click(f"newProject.{choice}")
+            await asyncio.sleep(2.0)
+            return f"real native menu File › New Project (no unsaved changes), a typed name, a real click on {button}"
+
+        rows.append({"name": f"New Project › {button}", "spec": f"01 §3.1; {spec_line('project.create')}",
+                     "path": ["File", "New Project"], "choice": button, "setup": t.prepare_clean, "state": project_of,
+                     "flow": flow,
+                     "expect": (lambda c: lambda ctx: [("project.create", {"name": "FlowFresh"}, ["onUnsaved"])]
+                                if c == "create" else [])(choice),
+                     "effect": (lambda c: lambda b, a, ctx: (a["path"] is None and a["name"] == "FlowFresh") if c == "create"
+                                else same_path(a["path"], fx["flow"]))(choice)})
+
+    for choice, button in (("open", "Open"), ("cancel", "Cancel")):
+        async def flow(ctx, choice=choice, button=button):
+            choose_menu(["File", "Open Backup"])
+            if not await t.wait_for("openBackup.open.0"):
+                raise RuntimeError("the Open Backup dialog listed no backup")
+            ctx["backupId"] = json.loads(t.cdp.js("document.querySelector('[data-tt-id=\"openBackup.open.0\"]').dataset.ttParams")).get("backupId")
+            t.click("openBackup.open.0" if choice == "open" else "openBackup.cancel")
+            await asyncio.sleep(2.5)
+            return f"real native menu File › Open Backup (no unsaved changes), a real click on {button}"
+
+        rows.append({"name": f"backup chooser › {button}", "spec": f"01 §3.7; {spec_line('project.backup.open')}",
+                     "path": ["File", "Open Backup"], "choice": button, "setup": t.prepare_clean, "state": project_of,
+                     "flow": flow,
+                     "expect": (lambda c: lambda ctx: [("project.backup.open", {"backupId": ctx.get("backupId")}, ["onUnsaved"])]
+                                if c == "open" else [])(choice),
+                     "effect": (lambda c: lambda b, a, ctx: (a["open"] and a["path"] is None) if c == "open"
+                                else same_path(a["path"], fx["flow"]) and a["flow"] == b["flow"])(choice)})
+
+    async def issues_setup(ctx):
+        await t.prepare_clean()
+        await t.cmd("doc.import.json", {"source": UNUSED_ASSET, "idPolicy": "preserve"})
+        await asyncio.sleep(0.6)
+
+    async def issues(_ctx):
+        v = await t.cmd("doc.validate", {})
+        return sorted({i.get("code") for i in v.get("issues") or []})
+
+    for choice, button in (("repair", "Repair"), ("cancel", "Close")):
+        async def flow(ctx, choice=choice, button=button):
+            choose_menu(["File", "Check Project"])
+            if not await t.wait_for("checkProject.issues"):
+                raise RuntimeError("the Check Project dialog did not list its issues")
+            await asyncio.sleep(0.6)
+            t.click(f"checkProject.{choice}")
+            await asyncio.sleep(1.5)
+            if choice == "repair":
+                t.click("checkProject.cancel")
+                await asyncio.sleep(0.6)
+            return f"real native menu File › Check Project (an unused asset reported), a real click on {button}"
+
+        rows.append({"name": f"Check Project › {button}", "spec": f"01 §6.7; {spec_line('doc.repair')}",
+                     "path": ["File", "Check Project"], "choice": button, "setup": issues_setup, "state": issues,
+                     "flow": flow,
+                     "expect": (lambda c: lambda ctx: [("doc.repair", {"all": True}, [])] if c == "repair" else [])(choice),
+                     "effect": (lambda c: lambda b, a, ctx: ("unusedAssets" in b and "unusedAssets" not in a) if c == "repair"
+                                else a == b and "unusedAssets" in b)(choice)})
+    return rows
+
+
+def dismiss_rows(t: Flows) -> list:
+    """One row per dismiss-only box: opening it may read, dismissing it sends no mutating command."""
+    fx = t.fx
+    rows = []
+
+    async def nothing_state(_ctx):
+        return await t.project_state()
+
+    def box(name, path, ident, cancel, spec):
+        async def flow(ctx):
+            choose_menu(path)
+            if not await t.wait_for(ident):
+                raise RuntimeError(f"{name} did not open")
+            await asyncio.sleep(0.5)
+            t.clear()
+            t.click(cancel)
+            await asyncio.sleep(0.8)
+            return f"real native menu {' › '.join(path)}, a real click on its close button"
+        rows.append({"name": f"{name} › Close", "spec": spec, "path": path, "choice": "Close", "setup": t.prepare_clean,
+                     "state": nothing_state, "flow": flow, "expect": lambda ctx: [],
+                     "effect": lambda b, a, ctx: a == b})
+
+    box("About", ["Help", "About Toontown"], "about.cancel", "about.cancel", "01 §12.2 (About)")
+    box("Project Info", ["File", "Project Info"], "projectInfo.cancel", "projectInfo.cancel", "01 §3.8 (Project Info)")
+    box("Help", ["Help", "Documentation"], "help.text", "help.cancel", "01 §9.3 (Help)")
+
+    junk = t.work / "not-a-project.animpkg"
+
+    async def error_flow(ctx):
+        junk.write_bytes(b"this is not a project package")
+        choose_menu(["File", "Open"])
+        await asyncio.sleep(1.8)
+        type_text(str(junk))
+        key(VK_RETURN)
+        await asyncio.sleep(2.5)
+        ident = t.cdp.js("document.querySelector('[role=alertdialog]')?.dataset.ttId")
+        if not ident:
+            raise RuntimeError("no error box after opening a file that is not a project")
+        ctx["box"] = ident
+        t.clear()
+        t.click("message.ok")
+        await asyncio.sleep(0.8)
+        return f"File › Open on a file that is not a project, the error box {ident}, a real click on OK"
+
+    rows.append({"name": "error box › OK", "spec": "01 §9.5 (messages)", "path": ["File", "Open"], "choice": "OK",
+                 "setup": t.prepare_clean, "state": nothing_state, "flow": error_flow, "expect": lambda ctx: [],
+                 "effect": lambda b, a, ctx: same_path(a["path"], fx["flow"]) and a["flow"] == b["flow"]})
+
+    async def picker_flow(ctx):
+        choose_menu(["File", "Open"])
+        await asyncio.sleep(1.8)
+        key(VK_ESCAPE)
+        await asyncio.sleep(1.0)
+        return "File › Open, the native picker cancelled with a real Escape"
+
+    rows.append({"name": "native picker › Cancel", "spec": "01 §3.2 (Open)", "path": ["File", "Open"], "choice": "Cancel",
+                 "setup": t.prepare_clean, "state": nothing_state, "flow": picker_flow, "expect": lambda ctx: [],
+                 "effect": lambda b, a, ctx: a == b})
+    return rows
+
+
 def jobs_row(t: Flows) -> dict:
     async def flow(ctx):
         env = await e2e.run_cmd(t.s, "render.range.run", {"from": 1, "to": 2400, "scale": 2, "directory": str(t.work / "cancel-frames"),
@@ -714,7 +905,8 @@ async def session(app: str, run, out: Path, work: Path, group: str, only: set, s
             t.rows = sink
             await fixture(t)
             if group == "main":
-                rows = [*unsaved_rows(t, None), *save_as_rows(t), *keymap_rows(t), *workspace_rows(t), *preferences_rows(t), jobs_row(t)]
+                rows = [*unsaved_rows(t, None), *save_as_rows(t), *keymap_rows(t), *workspace_rows(t), *preferences_rows(t),
+                        *form_rows(t), *dismiss_rows(t), jobs_row(t)]
             else:
                 rows = unsaved_rows(t, group.removeprefix("quit-"))
             for r in rows:
@@ -769,6 +961,13 @@ def main() -> int:
             run.save("rows.json", rows)
     finally:
         shutil.rmtree(work, ignore_errors=True)
+    # C43B-R3S-03: every row the coverage names ran (a dialog's choice cannot be listed and not exercised).
+    if not only:
+        cov = _load("c43d44coverage", "c43_d44_coverage.py")
+        ran = {r.get("name") for r in rows}
+        missing = sorted(cov.covered_rows() - ran)
+        run.check(not missing and not cov.problems(), "D-44 coverage: every dialog has its rows or a reason, and every row ran",
+                  {"missing": missing, "problems": cov.problems()})
     manifest = {"kind": "toontown.c43b.d44-flows", "seconds": round(time.monotonic() - started, 1), "rows": len(rows),
                 "named": [r["name"] for r in rows if r.get("notRun")], "failed": [r.get("name") for r in rows if not r.get("ok")],
                 "failures": run.failures}
