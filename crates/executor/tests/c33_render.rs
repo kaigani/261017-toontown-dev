@@ -237,6 +237,7 @@ fn a_render_past_the_callers_budget_is_cancelled_and_frees_the_worker() {
     let e = run(&h, "render.frame.run", json!({ "frame": 1, "scale": 0.25 }));
     tt_vector::work::hooks::set_spin_micros(0);
     assert_eq!(e.error.as_ref().map(|x| x.code.as_str()), Some("command.timeout"), "{e:?}");
+    crate::common::timing::record("c33_render.rs:240", t.elapsed(), budget * 4);
     assert!(t.elapsed() < budget * 4, "{:?}", t.elapsed());
     assert!(run(&h, "doc.state.get", json!({})).is_ok(), "the worker answers");
     assert_eq!(rev(&h), rev0);

@@ -408,6 +408,7 @@ fn a_waiting_caller_leaves_reads_free_and_the_cancelled_record_keeps_its_receipt
         wait_until("staging", || !staged_of(&dir, ".Intro_").is_empty());
         let start = Instant::now();
         ok(h, "app.state.get", json!({}));
+        crate::common::timing::record("c33_round2.rs:411", start.elapsed(), Duration::from_millis(300));
         assert!(start.elapsed() < Duration::from_millis(300), "a document read waited {:?}", start.elapsed());
         t.join().unwrap()
     });

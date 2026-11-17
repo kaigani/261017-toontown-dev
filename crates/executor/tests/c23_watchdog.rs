@@ -36,11 +36,13 @@ fn an_overrunning_call_times_out_typed_and_the_worker_answers_the_next_request()
     let waited = t.elapsed();
     tt_vector::work::hooks::set_spin_micros(0);
     assert_eq!(e.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{e:?}");
+    crate::common::timing::record("c23_watchdog.rs:39", waited, budget + Duration::from_millis(400));
     assert!(waited < budget + Duration::from_millis(400), "the caller waited {waited:?}");
     // The worker stops at its next check and answers the queued read within the budget.
     let t = Instant::now();
     let state = run(&h, "doc.state.get", json!({}));
     assert!(state.is_ok(), "{state:?}");
+    crate::common::timing::record("c23_watchdog.rs:44", t.elapsed(), budget);
     assert!(t.elapsed() < budget, "the queued read waited {:?}", t.elapsed());
     // The cancelled call committed nothing.
     assert_eq!(rev(&h), start_rev);

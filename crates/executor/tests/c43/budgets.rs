@@ -126,6 +126,7 @@ fn the_camera_views_requests_keep_their_shape() {
         eprintln!("{what}: 20 elements {s:?}, 200 elements {l:?}, ratio {ratio:.1}");
     }
     for (what, s, l) in figures {
+        crate::common::timing::record(&format!("c43/budgets.rs 200 elements: {what}"), l, CEILING);
         assert!(
             l <= s.max(FLOOR) * RATIO && l <= CEILING,
             "{what}: 200 elements {l:?} against 20 elements {s:?} (at most {RATIO} x, ceiling {CEILING:?}; ruling D-45)"

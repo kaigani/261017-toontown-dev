@@ -151,6 +151,7 @@ fn jobs_run_off_the_document_thread() {
     std::thread::sleep(Duration::from_millis(30));
     let t = Instant::now();
     assert!(run(&h, "app.state.get", json!({})).is_ok());
+    crate::common::timing::record("c12_kernel_state.rs:154", t.elapsed(), Duration::from_millis(250));
     assert!(t.elapsed() < Duration::from_millis(250), "the document thread is not blocked by job.wait");
     let env = waiter.join().unwrap();
     assert!(env.is_ok(), "{:?}", env.error);
@@ -212,6 +213,7 @@ fn the_watchdog_answers_within_its_budget() {
             json!({ "drawingId": "drawingBank:#1/drawing:#1", "width": 2048,
                     "region": {"x": -60, "y": -60, "width": 170, "height": 170} }),
         ));
+        crate::common::timing::record("c12_kernel_state.rs:215", t.elapsed(), Duration::from_millis(500));
         assert!(t.elapsed() < Duration::from_millis(500));
         if env.error.as_ref().is_some_and(|e| e.code == "command.timeout") {
             timed_out = true;
@@ -436,6 +438,7 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
             }
             let t = Instant::now();
             let env = h.invoke(Invocation::user(e.id(), params));
+            crate::common::timing::record("c12_kernel_state.rs:439", t.elapsed(), Duration::from_secs(30));
             assert!(t.elapsed() < Duration::from_secs(30), "{}: `{}` took {:?}", e.id(), ex.title, t.elapsed());
             let code = env.error.as_ref().map(|x| x.code.clone());
             match (e.spec.kind, e.status()) {

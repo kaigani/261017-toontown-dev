@@ -74,3 +74,4 @@ pub fn first(h: &ExecutorHandle, ty: &str) -> String {
 
 /// The parity gate's checks (rulings D-25, D-31, D-35, D-36), shared with the reviewers' test files.
 pub mod parity_gate;
+pub mod timing;

@@ -37,6 +37,7 @@ fn view_commands_hold_the_document_thread_briefly() {
     }
     let (p, max) = p95(times);
     eprintln!("view commands: p95 {p:?}, max {max:?} (200 calls)");
+    crate::common::timing::record("c42/budgets.rs:40", p, Duration::from_millis(20));
     assert!(p <= Duration::from_millis(20), "plan §6: a view command holds the document thread at most 20 ms ({p:?})");
 }
 
@@ -65,7 +66,9 @@ fn a_gesture_reaches_its_command_quickly() {
     let ((np, nmax), (ip, imax)) = (p95(nav), p95(ink));
     eprintln!("gesture to command (100-sample Grabber): p95 {np:?}, max {nmax:?}");
     eprintln!("gesture to committed stroke (100-sample Brush): p95 {ip:?}, max {imax:?}");
+    crate::common::timing::record("c42/budgets.rs:68", np, Duration::from_millis(20));
     assert!(np <= Duration::from_millis(20), "the gesture path itself within the 20 ms hold ({np:?})");
+    crate::common::timing::record("c42/budgets.rs:69", ip, Duration::from_millis(250));
     assert!(ip <= Duration::from_millis(250), "a 100-sample brush gesture committed ({ip:?})");
 }
 
@@ -89,6 +92,7 @@ fn the_mapping_function_is_cheap_and_round_trips() {
         took.as_nanos() as f64 / f64::from(n)
     );
     assert!(worst < 1e-9, "{worst}");
+    crate::common::timing::record("c42/budgets.rs:92", took, Duration::from_millis(200));
     assert!(took < Duration::from_millis(200), "{took:?}");
 }
 
@@ -139,6 +143,7 @@ fn query_latency_during(id: &'static str, params: serde_json::Value, wait_for_jo
 fn a_capture_never_holds_the_document_thread_beyond_the_hold_budget() {
     let shot = query_latency_during("inspect.screenshot", json!({}), true);
     eprintln!("a user query during a 1920 x 1080 capture waited {shot:?}");
+    crate::common::timing::record("c42/budgets.rs:142", shot, Duration::from_millis(20));
     assert!(shot <= Duration::from_millis(20), "design note 5 S5: the capture runs off the document thread ({shot:?})");
     // For the record (M11 C11.1): the renders sharing the rasteriser still hold the document thread while they run.
     let render = query_latency_during(
@@ -282,6 +287,7 @@ fn the_canvas_holds_the_document_thread_briefly_and_its_large_payload_fits() {
     }
     let (p, max) = p95(scene);
     eprintln!("canvas_scene on the large drawing: p95 {p:?}, max {max:?} (40 calls)");
+    crate::common::timing::record("c42/budgets.rs:285", p, Duration::from_millis(20));
     assert!(p <= Duration::from_millis(20), "plan §6: the scene read holds the document thread at most 20 ms ({p:?})");
     // The payload: built off the document thread. While it is built, a user query still answers within the hold bound
     // (only the snapshot is taken on the document thread; design note 1 §6).
@@ -309,6 +315,7 @@ fn the_canvas_holds_the_document_thread_briefly_and_its_large_payload_fits() {
         "plan §6: at most 64 MB for 50,000 points ({} bytes)",
         payload.bytes.len()
     );
+    crate::common::timing::record("c42/budgets.rs:312", qp, Duration::from_millis(20));
     assert!(qp <= Duration::from_millis(20), "plan §6: the payload's document-thread hold stays within 20 ms ({qp:?})");
     let d = tt_render::canvas::decode(&payload.bytes).unwrap();
     let vertices: usize = d

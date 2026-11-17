@@ -159,6 +159,7 @@ fn asking_every_handler_stays_cheap() {
             assert_eq!(a.len(), refs.len());
         }
         eprintln!("{state}: {} references in {took:?}", refs.len());
+        crate::common::timing::record("c41/availability.rs:162", took, std::time::Duration::from_millis(50));
         assert!(took < std::time::Duration::from_millis(50), "{state}: {took:?}");
     }
 }
@@ -350,6 +351,7 @@ fn passes_stay_constant_on_a_large_project() {
     stop.store(true, std::sync::atomic::Ordering::Relaxed);
     worker.join().unwrap();
     eprintln!("slowest user command: {quiet:?} without passes, {slowest:?} during continuous passes");
+    crate::common::timing::record("c41/availability.rs:353", slowest, Duration::from_millis(100));
     assert!(slowest < Duration::from_millis(100), "{slowest:?}");
 }
 
