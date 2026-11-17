@@ -192,7 +192,7 @@ the panel marking fonts that are not bundled, and asks for the ruling.
   temporary-select modifier (`CanvasView.tsx:784`): the SI proposes that on macOS the temporary-select modifier is Command
   alone and Control-click is the context menu, as macOS applications behave.
 
-## 10. Spec issues raised before code (numbers from SI-161)
+## 10. Spec issues raised before code (numbers from SI-163)
 
 1. Two commands, one state: `tool.tablet.set` and `prefs.set` on `tablet.*`, the key mapping and the 01/02 mismatch (§5).
 2. `colour.gapClosing.set` and `prefs.set {paint.gapClosing}`; a staged preference emits `prefs.changed` (§2, §4).

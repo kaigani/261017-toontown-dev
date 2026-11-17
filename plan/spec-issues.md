@@ -2029,3 +2029,24 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   was requested; `crates/executor/src/jobs.rs`), so Cancel is offered only where it can take effect; the progress
   window in `desktop/src/shell/StatusBar.tsx`; `shell/jobsWindow.test.tsx`; the D-44 flow table's
   "progress window › Cancel" row through the real window.
+
+## SI-161 — keymap Import's default choice (found in M4 C4.3b round 2; ruled)
+
+- **Sections:** 01 §8.3 item 8 (import merges into or replaces the keymap), 01 §9.5 (specific verbs; the default and
+  cancel buttons follow platform conventions).
+- **Problem:** 01 says Import offers merge or replace but not which is the default. Round 2 fixed the question
+  (C43B-R2-08, the application's message box with Merge, Replace and Cancel) with Replace as the default button.
+- **Ruled (D-46 item 3):** Merge, the choice that destroys nothing, is the default button (focused; Enter takes it);
+  Replace has its own button and the destructive style; Cancel is the cancel button (Escape).
+- **Built:** `desktop/src/prefs/PreferencesDialog.tsx`; `keymapChoices.test.tsx` asserts the default; the D-44 Import rows
+  check that Merge is the focused default; the D-39 Import row clicks Replace.
+
+## SI-162 — Workspace Delete without a question (found in M4 C4.3b round 2; open)
+
+- **Sections:** 01 §5.5 (Window › Workspace › Delete Workspace), 01 §9.5 (messages).
+- **Problem:** Delete Workspace removes the current user workspace at once, as 01 §5.5 is written; the layout cannot
+  be recovered (no undo: workspace state is not document state). Every other destructive file-level action in 01 asks
+  first.
+- **Question for the spec owner:** should Delete Workspace ask ("Delete the workspace "Name"? This cannot be undone."
+  with Delete and Cancel)? Until answered the behaviour stays as 01 states it (ruling D-46 item 5); if a question is
+  added, it gets its rows in the D-44 flow table.

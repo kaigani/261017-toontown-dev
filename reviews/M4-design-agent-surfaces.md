@@ -223,7 +223,7 @@ reference to 11. With no project open nothing is persisted, and the Agent access
   supports `navigator.clipboard.writeText` on both OSes from a user gesture. The parity collector finds `clipboard`
   elements by their declared reason, and the gate fails if one does not call `copyText`.
 
-## 9. Spec issues and rulings before code (numbers follow note 1's, from SI-169)
+## 9. Spec issues and rulings before code (numbers follow note 1's, from SI-171)
 
 **For the orchestrator:**
 
