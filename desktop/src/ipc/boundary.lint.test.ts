@@ -74,6 +74,8 @@ const BYPASSES: Record<string, string> = {
   'bare confirm': `export const f = () => confirm('Replace?');\n`,
   'window.alert': `export const f = () => { window.alert('x'); };\n`,
   'globalThis.prompt': `export const f = () => globalThis.prompt('Name');\n`,
+  'aliased window.confirm': `const w = window;\nexport const f = () => w.confirm('Replace?');\n`,
+  'computed alias prompt': `const w: Window = window;\nexport const f = () => w['prompt']('Name');\n`,
   eval: `export const f = () => eval('1');\n`,
   'new Function': `export const f = new Function('return 1');\n`,
   'raw transport (static)': `import { createTauriTransport } from '../ipc/tauriTransport';\nexport const f = () => createTauriTransport().invoke('app_info');\n`,

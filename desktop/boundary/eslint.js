@@ -73,6 +73,13 @@ const baseSyntax = [
     selector: `${SOURCE}[value=/^\\./]:not([value=/${CANONICAL_RELATIVE}/])`,
     message: 'Relative specifiers must be canonical: ./x or ../x with no ./ or ../ segments after a name.',
   },
+  {
+    // Ruling D-48 item 7 (C43B-R2-08): the browser's dialogs reached through any object, an alias of `window`
+    // included (`const w = window; w.confirm(...)`); no product method has these names.
+    selector:
+      "CallExpression[callee.type='MemberExpression']:matches([callee.property.name=/^(alert|confirm|prompt)$/], [callee.property.value=/^(alert|confirm|prompt)$/])",
+    message: 'Use the application message box (useMessages().show), not the browser dialog (C43B-R2-08).',
+  },
 ];
 
 // Shipped application code only (src/, not tests, not the transport), C01-R4-01/02:

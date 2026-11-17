@@ -178,13 +178,37 @@ export function rustTokens(text: string): Token[] {
   return out;
 }
 
+/** Whether the tokens from `k` are `mod <name> { ... }` with nothing after its closing brace. */
+function isTrailingTestModule(all: Token[], k: number): boolean {
+  if (all[k]?.text !== 'mod' || all[k + 1]?.kind !== 'ident' || all[k + 2]?.text !== '{') return false;
+  let depth = 0;
+  for (let i = k + 2; i < all.length; i++) {
+    const t = all[i];
+    if (t?.kind !== 'punct') continue;
+    if (t.text === '{') depth++;
+    else if (t.text === '}') {
+      depth--;
+      if (depth === 0) return i === all.length - 1;
+    }
+  }
+  return false;
+}
+
 /** The command ids a Rust source calls, before its `#[cfg(test)]` module. */
 export function rustCallSites(text: string): string[] {
   const all = rustTokens(text);
   const tokens: Token[] = [];
   for (let k = 0; k < all.length; k++) {
     const seq = all.slice(k, k + 7).map((t) => t.text);
-    if (seq.join(' ') === '# [ cfg ( test ) ]' && all[k + 2]?.kind === 'ident') break;
+    if (seq.join(' ') === '# [ cfg ( test ) ]' && all[k + 2]?.kind === 'ident') {
+      // Ruling D-48 item 7: reading stops only at the trailing test module (`#[cfg(test)] mod name { ... }` and nothing
+      // after it). A `#[cfg(test)]` on anything else (a function, an item followed by product code) fails closed: the
+      // file is refused, never read only up to that point.
+      if (!isTrailingTestModule(all, k + 7)) {
+        throw new Error('#[cfg(test)] marks something other than the trailing test module: refused');
+      }
+      break;
+    }
     const token = all[k];
     if (token) tokens.push(token);
   }
