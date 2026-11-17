@@ -46,11 +46,17 @@ function payload(ulid: string, generation: number | bigint, rev: number | bigint
   return b.buffer;
 }
 
-function scene(generation: number | bigint, entries: [number, number | bigint][], stamp = 1) {
+function scene(
+  generation: number | bigint,
+  entries: [number, number | bigint][],
+  stamp = 1,
+  documentRev?: number,
+) {
   return {
     generation,
     scene: {
       viewId: 'drawingView',
+      ...(documentRev === undefined ? {} : { documentRev }),
       background: [240, 240, 240, 255],
       grid: { visible: false, type: 'normal', overlay: false },
       entries: entries.map(([i, rev]) => ({
@@ -155,7 +161,7 @@ describe('the canvas pull loop', () => {
   it('settledVersion follows only when every drawing is resident at its scene revision (C42B-R1-04)', async () => {
     const { host, model } = setup();
     model.frame();
-    host.scenes[0]?.resolve(scene(5, [[0, 10]]));
+    host.scenes[0]?.resolve(scene(5, [[0, 10]], 1, 40));
     await flush();
     model.frame();
     host.loads[0]?.resolve(payload(ULIDS[0] ?? '', 5, 10));
@@ -163,18 +169,22 @@ describe('the canvas pull loop', () => {
     model.frame();
     const settled = model.settledVersion;
     expect(settled).toBe(model.version);
+    // C43B-R3S-02: the settled scene's document revision goes with it.
+    expect(model.settledDocumentRev).toBe(40n);
     // A commit: the new revision's scene arrives first; the old geometry is still the one drawn.
     model.markDirty();
-    host.scenes[1]?.resolve(scene(5, [[0, 11]]));
+    host.scenes[1]?.resolve(scene(5, [[0, 11]], 1, 41));
     await flush();
     model.frame();
     expect(model.version).toBeGreaterThan(settled);
     expect(model.settledVersion).toBe(settled); // not the committed state yet
+    expect(model.settledDocumentRev).toBe(40n); // nor its revision
     host.loads[1]?.resolve(payload(ULIDS[0] ?? '', 5, 11));
     await flush();
     model.frame();
     expect(model.settledVersion).toBe(model.version); // the committed drawing is resident
     expect(model.settledVersion).toBeGreaterThan(settled);
+    expect(model.settledDocumentRev).toBe(41n);
   });
 
   it('a scene differing only in its selection rebuilds the overlay, not the static layers (frame-loop note §7.1)', async () => {

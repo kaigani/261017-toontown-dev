@@ -5,21 +5,30 @@
 // an answer that arrives after a later gesture began, or after the engine restarted, is obsolete and changes nothing.
 // Adopting a new generation and unmounting discard the preview's resources at once, whatever was pending.
 //
-// C43B-R2S-02 (preview note §4): after a successful answer that made an undo step, the overlay and preview are cleared
-// only by the frame that draws the committed state (the scene revision passed the one before the commit), however long
-// that takes: a slow redraw must not show the old state in between. A time fallback applies only to an answer without a
-// step: a refusal, an error (at once) or a commit that changed nothing (briefly).
+// C43B-R2S-02 and C43B-R3S-02 (preview note §4, ruling D-48): after a successful answer that made an undo step, the
+// overlay and preview are cleared only by a frame that draws a scene resident at the document revision the commit
+// answered with, however long that takes: a slow redraw must not show the old state in between, and a scene answer
+// that was in flight before the commit (built at an older revision) settles without clearing it. A time fallback
+// applies only to an answer without a step: a refusal, an error (at once) or a commit that changed nothing (briefly).
 
 export interface GestureToken {
   readonly gesture: number;
   readonly generation: number;
 }
 
-/** When the overlay and preview give way: the frame that draws a scene revision past `version`; or, for an answer
- *  without a step, the first frame after `deadline` (`null`: no deadline, only the drawn state clears). */
+/** When the overlay and preview give way. After a step: the frame that draws a scene resident at `documentRev` (the
+ *  revision the commit answered with) or later. Without a step: the first frame after `deadline`. `afterVersion`
+ *  serves only a step whose answer carries no revision (never a kernel answer): a scene settled after the answer. */
 export interface ClearAt {
-  readonly version: number;
+  readonly documentRev: bigint | null;
   readonly deadline: number | null;
+  readonly afterVersion: number;
+}
+
+/** What the window draws now: the latest scene fully resident, its local version and its document revision. */
+export interface Drawn {
+  readonly settledVersion: number;
+  readonly settledDocumentRev: bigint | null;
 }
 
 /** The part of a gesture commit's answer that says whether it made an undo step: the envelope's own `undo`, or that of
@@ -28,6 +37,15 @@ export interface CommitAnswer {
   readonly status: string;
   readonly result?: unknown;
   readonly undo?: unknown;
+  readonly documentRev?: number | bigint | null;
+}
+
+/** The document revision a commit answered with (exact), or null. */
+export function answerRevision(env: CommitAnswer): bigint | null {
+  const r = env.documentRev;
+  if (typeof r === 'bigint') return r;
+  if (typeof r === 'number' && Number.isSafeInteger(r) && r >= 0) return BigInt(r);
+  return null;
 }
 
 /** Whether a gesture commit's answer made an undo step (a successful change of the document). */
@@ -89,14 +107,20 @@ export class GestureLifecycle {
   }
 
   /** Once per frame: when the armed clearing is due, disarms it and discards. Returns whether it discarded. */
-  frame(settledVersion: number, now: number): boolean {
+  frame(drawn: Drawn, now: number): boolean {
     const c = this.clear;
     if (!c || this.gone) return false;
     if (!this.isCurrent(c.token)) {
       this.clear = null;
       return false;
     }
-    if (settledVersion > c.version || (c.deadline !== null && now > c.deadline)) {
+    const due =
+      c.documentRev !== null
+        ? drawn.settledDocumentRev !== null && drawn.settledDocumentRev >= c.documentRev
+        : c.deadline !== null
+          ? now > c.deadline
+          : drawn.settledVersion > c.afterVersion;
+    if (due) {
       this.clear = null;
       this.discard();
       return true;

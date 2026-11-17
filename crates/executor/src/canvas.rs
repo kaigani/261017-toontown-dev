@@ -273,6 +273,9 @@ pub struct SceneGrid {
 pub struct Scene {
     /// The scene answer's form (§11.2): `"1.1"`.
     pub scene_form: String,
+    /// The document revision the scene was built at (C43B-R3S-02, ruling D-48): the canvas lets a gesture's preview
+    /// go only when a scene at the revision its commit answered with is resident, never on an answer requested before.
+    pub document_rev: u64,
     /// The view (`drawingView`, `cameraView`, or a float of either).
     pub view_id: String,
     /// `drawing` or `camera`.
@@ -461,6 +464,7 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
     let (colours, palette_stamp) = colours_of(doc, None);
     Ok(Scene {
         scene_form: SCENE_FORM.to_owned(),
+        document_rev: doc.document_rev(),
         view_id: view_id.to_owned(),
         view_type: "drawing".to_owned(),
         background,
@@ -537,6 +541,7 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
     };
     let mut out = Scene {
         scene_form: SCENE_FORM.to_owned(),
+        document_rev: doc.document_rev(),
         view_id: view_id.to_owned(),
         view_type: "camera".to_owned(),
         background,

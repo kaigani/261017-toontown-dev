@@ -59,6 +59,8 @@ export interface SceneGrid {
 
 export interface Scene {
   viewId: string;
+  /** The document revision the scene was built at (u64, exact; C43B-R3S-02). `null` from an answer without it. */
+  documentRev: bigint | null;
   background: Rgba;
   grid: SceneGrid;
   entries: SceneEntry[];
@@ -304,6 +306,9 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
     generation,
     scene: {
       viewId: str(s['viewId'], 'viewId'),
+      // C43B-R3S-02: the revision the scene was built at (absent from an answer of an earlier form).
+      documentRev:
+        s['documentRev'] === undefined || s['documentRev'] === null ? null : u64(s['documentRev'], 'documentRev'),
       background: rgba(s['background'], 'background'),
       grid: {
         visible: bool(g['visible'], 'grid.visible'),

@@ -33,6 +33,7 @@ import { activeViewOf } from './activeView';
 import { decodeDrawing } from './format';
 import {
   answerMadeStep,
+  answerRevision,
   GestureLifecycle,
   type ClearAt,
   type CommitAnswer,
@@ -526,7 +527,10 @@ export function CanvasView({
       playAgent();
       // The committed state is drawn (or the commit was refused): the overlay and preview give way to it (preview
       // note §4).
-      life.frame(model.settledVersion, performance.now());
+      life.frame(
+        { settledVersion: model.settledVersion, settledDocumentRev: model.settledDocumentRev },
+        performance.now(),
+      );
       if (scene && scene.colours !== lastColours) {
         renderer.setColours(scene.colours);
         lastColours = scene.colours;
@@ -687,14 +691,18 @@ export function CanvasView({
         timeStamp: e.timeStamp,
       };
     };
-    /** When a commit's answer lets the overlay and preview go (C43B-R2S-02; preview note §4). */
-    const clearAt = (before: number, env: CommitAnswer): ClearAt => ({
-      version: before,
-      deadline: answerMadeStep(env) ? null : performance.now() + (env.status === 'error' ? 0 : 400),
-    });
+    /** When a commit's answer lets the overlay and preview go (C43B-R2S-02, C43B-R3S-02; preview note §4): after a step,
+     *  a scene resident at the revision the commit answered with; without one, a short deadline. */
+    const clearAt = (env: CommitAnswer): ClearAt => {
+      const step = answerMadeStep(env);
+      return {
+        documentRev: step ? answerRevision(env) : null,
+        deadline: step ? null : performance.now() + (env.status === 'error' ? 0 : 400),
+        afterVersion: model?.version ?? 0,
+      };
+    };
     const commit = (req: ReturnType<GestureCollector['up']>) => {
       if (!req) return;
-      const before = model?.version ?? 0;
       // The record names the tool that acted (a scene tool in the scene family), as the modal state does.
       const tool = actingTool();
       const mapping = d2v;
@@ -709,7 +717,7 @@ export function CanvasView({
         // The overlay stays until the committed drawing is drawn (C43B-R2S-02: no deadline after a step), briefly when
         // nothing changed, and not at all after a refusal; an answer for a gesture that is no longer current (a later
         // press, another generation, a closed window) clears nothing.
-        const armed = token !== null && life.answered(token, clearAt(before, env));
+        const armed = token !== null && life.answered(token, clearAt(env));
         if (armed && env.status === 'error') overlay = null;
       });
     };
@@ -743,7 +751,6 @@ export function CanvasView({
       const done = playing;
       playing = null;
       metrics?.released(performance.now(), model?.version ?? 0);
-      const before = model?.version ?? 0;
       const request = done.input.request as { view: string; events: WireEvent[]; tool?: unknown };
       const mapping = d2v;
       const token = done.token;
@@ -755,7 +762,7 @@ export function CanvasView({
           env.status === 'error'
             ? { status: 'error', code: env.error?.code ?? 'error' }
             : { status: env.status };
-        life.answered(token, clearAt(before, env));
+        life.answered(token, clearAt(env));
       });
     };
     const onDown = (e: PointerEvent) => {

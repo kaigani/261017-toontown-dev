@@ -90,6 +90,9 @@ export class CanvasModel {
    * committed stroke).
    */
   settledVersion = 0;
+  /** The document revision of the scene last fully resident (with `settledVersion`; C43B-R3S-02, ruling D-48): a
+   *  gesture's preview goes only when this reaches the revision its commit answered with. */
+  settledDocumentRev: bigint | null = null;
   /** Bumps whenever the selection or the drawing pivot changed (only the overlay is rebuilt then; note 2 §7.1). */
   selectionVersion = 0;
   private selectionText = '';
@@ -361,7 +364,10 @@ export class CanvasModel {
       }
     }
     this.peakInFlight = Math.max(this.peakInFlight, this.inFlight);
-    if (this.scene?.entries.every((e) => !this.wanted(residentKey(e)))) this.settledVersion = this.version;
+    if (this.scene?.entries.every((e) => !this.wanted(residentKey(e)))) {
+      this.settledVersion = this.version;
+      this.settledDocumentRev = this.scene.documentRev;
+    }
     return { applied, carried: this.inbox.length, spentMs, requested };
   }
 

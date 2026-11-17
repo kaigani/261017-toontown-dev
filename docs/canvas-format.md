@@ -246,6 +246,7 @@ The answer is `{generation, scene}`; `scene` has:
 |---|---|---|---|
 | `sceneForm` | string `"1.1"` | 1.1 | Absent in form 1.0. A reader of form 1.x reads the members it knows and ignores others (R1). |
 | `viewId` | string | 1.0 | The view (`drawingView`, `cameraView`, or a float of either). |
+| `documentRev` | u64 | 1.1 | The document revision the scene was built at (C43B-R3S-02): a gesture's preview gives way only when a scene at its commit's revision is resident. Absent from earlier answers (read as unknown). |
 | `viewType` | `"drawing"` or `"camera"` | 1.1 | Absent: `"drawing"`. |
 | `background` | RGBA8 | 1.0 | 02 §10.7. |
 | `grid` | `{visible: bool, type: "normal"\|"field12"\|"field16", overlay: bool}` | 1.0 | 02 §10.1. |
