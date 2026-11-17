@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import re
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -29,10 +30,12 @@ def main():
                   read=len((queries-actions) & rows.keys()), agent=sum(rows.values()), deferred=len(deferred))
     print(json.dumps(counts, sort_keys=True))
     assert counts == dict(total=347, action=122, read=32, agent=61, deferred=132)
-    # Same expression as parity.test.tsx TS_CALL, expressed as a Python raw regex.
-    pattern = r"(?:(?:\.|\b)(?:run|perform)\(\s*|\buseQuery\(\s*[\w.]+,\s*)['\"]([a-z][A-Za-z]*\.[A-Za-z][A-Za-z.]*[A-Za-z])['\"]"
+    # Ruling D-46 item 1: each fixture fed to the product's call-site extractor (scripts/call-sites.mjs, the parser the
+    # parity test uses) instead of a copied regex.
     fixtures = ["// engine.run('tool.settings.get', {})", 'const text = "engine.run(\'tool.settings.get\', {})";']
-    matched = [re.findall(pattern, text) for text in fixtures]
+    matched = [json.loads(subprocess.run(["node", str(ROOT / "scripts/call-sites.mjs"), "--as", "desktop/src/x.ts", "-"],
+                                         input=text, capture_output=True, text=True, check=True, cwd=ROOT).stdout)
+               for text in fixtures]
     print("C43B-R2S-01 excluded lexical contexts counted:", matched)
     return 1 if any(matched) else 0
 

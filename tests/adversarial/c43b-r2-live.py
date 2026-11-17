@@ -132,6 +132,7 @@ def a3():
  async def do(t,action):
   tree=await m.McpTable.tree(t)
   node=m.McpTable.node(tree,action[1]) if action[0] in ("dom","select") else None
+  if action[0]=="select" and node is not None:node=next((c for c in node.get("children") or [] if c.get("value")==action[2]),None)
   t.run.save("declared-"+str(action[1])+".json",node)
   ref=(node or {}).get("command") or {}
   t.review_declared={"command":ref.get("commandId"),"params":ref.get("params") or {}}
@@ -367,6 +368,7 @@ def b3():
  m=load("b3table","scripts/c43-d39-bindings.py")
  m.Table.tree=m.McpTable.tree;m.Table.node=staticmethod(m.McpTable.node)
  def merge_confirm(t):
+  t.click("message.merge");time.sleep(.6)
   state=t.cdp.js("({confirm:String(window.confirm),notice:document.querySelector('[data-tt-id=\"keymap.notice\"]')?.textContent})")
   t.run.save("b3-merge-confirm.json",state)
   t.run.check("(merge)" in (state.get("notice") or ""),"01 section 8.3 line 857 Import offers merge rather than always replacing",state)
@@ -487,7 +489,7 @@ def b3():
     m.choose_menu(["File","Preferences"]);await asyncio.sleep(.8);t.click("preferences.category.keyboard");await asyncio.sleep(.5)
     t.click("keymap.import");await asyncio.sleep(1.5);m.type_text(str(exported));m.key(0x0D);await asyncio.sleep(1)
 
-    if mode=="replace":m.key(0x0D)
+    if mode=="replace":t.click("message.replace")
     else:merge_confirm(t)
     await asyncio.sleep(.5);t.click("preferences.submit");await asyncio.sleep(1)
     after=await cmd("keymap.list",{})
