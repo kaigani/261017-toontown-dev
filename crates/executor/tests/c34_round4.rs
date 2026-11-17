@@ -222,12 +222,14 @@ fn answers_just_inside_the_bound_hold_the_thread_at_most_the_budget_plus_one_bou
         assert_eq!(e.code, "command.timeout", "{e:?}");
         assert_eq!(e.details["reason"], Value::Null, "a watchdog timeout, not a cancellation: {e:?}");
         assert!(work::asks() >= 3, "several questions answered inside the bound: {}", work::asks());
+        crate::common::timing::record("c34_round4.rs:225", took, budget + bound * 2);
         assert!(took <= budget + bound * 2, "the request ended by its watchdog within budget + 2 x bound: {took:?}");
         // Whole: every step that committed is one revision and one element; the rest changed nothing.
         let committed = rev(&h) - before;
         assert!(committed < 200, "the watchdog stopped the batch: {committed} steps committed");
         let validate = ok(&h, "doc.validate", json!({ "minSeverity": "error" }));
         assert_eq!(validate["issues"], json!([]), "{validate}");
+        crate::common::timing::record("c34_round4.rs:231", unrelated, bound);
         assert!(unrelated < bound, "an unrelated caller is served at once afterwards: {unrelated:?}");
         return;
     }
@@ -250,9 +252,13 @@ fn a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start() 
     };
     let (first_dir, second_dir) = (base.join("first"), base.join("second"));
     work::set_spin_micros(20_000);
-    let (first, second, queued_for) = std::thread::scope(|s| {
-        // The first batch holds the document thread for most of its budget, waiting on its job.
-        let first = s.spawn(|| h.batch(waited(&first_dir), Origin::User));
+    let (first, second, queued_for, queue_delay) = std::thread::scope(|s| {
+        // The first batch holds the document thread for most of its budget, waiting on its job; it records when it
+        // answered, which is when the second batch can start.
+        let first = s.spawn(|| {
+            let env = h.batch(waited(&first_dir), Origin::User);
+            (env, Instant::now())
+        });
         let start = Instant::now();
         while std::fs::read_dir(&first_dir).map_or(true, |mut d| d.next().is_none()) {
             assert!(start.elapsed() < Duration::from_secs(30));
@@ -262,7 +268,8 @@ fn a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start() 
         let enqueued = Instant::now();
         let second = h.batch(waited(&second_dir), Origin::User);
         let took = enqueued.elapsed();
-        (first.join().unwrap(), second, took)
+        let (first, first_answered) = first.join().unwrap();
+        (first, second, took, first_answered.saturating_duration_since(enqueued))
     });
     work::set_spin_micros(0);
     let mut jobs = Vec::new();
@@ -272,7 +279,21 @@ fn a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start() 
         assert_eq!(e.code, "job.waitTimeout", "{e:?}");
         jobs.push(e.details["jobId"].as_str().unwrap().to_owned());
     }
-    assert!(queued_for < budget, "the queued batch answered within its caller's budget: {queued_for:?}");
+    // Ruling D-46 item 4 (D-45): which instant the deadline counts from, not how fast the runner is. Counted from the
+    // caller's enqueue (the rule), the queued batch answers about `budget` after it was enqueued; counted from its
+    // start, it would answer about `budget + queue_delay` after (its start waits for the first batch's answer). The
+    // midpoint `budget + queue_delay / 2` separates the two whatever the runner's speed: a slow runner moves both
+    // instants together (a macOS runner overran the bare `budget` once, run 43772579796). The queue delay must be large
+    // enough to tell them apart.
+    assert!(
+        queue_delay >= Duration::from_millis(100),
+        "the second batch waited {queue_delay:?} behind the first: too little to tell the rules apart"
+    );
+    let midpoint = budget + queue_delay / 2;
+    assert!(
+        queued_for < midpoint,
+        "the queued batch answered {queued_for:?} after its enqueue: its deadline counted from its start (queue delay {queue_delay:?}, midpoint {midpoint:?})"
+    );
     for job in jobs {
         ok(&h, "job.cancel", json!({ "jobId": job }));
         h.jobs().wait(&job, Duration::from_secs(60)).unwrap();
