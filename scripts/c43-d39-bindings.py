@@ -1284,6 +1284,100 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": pen_shown, "state": pens_state,
                  "effect": lambda b, a, k: len(brush_pens(a)) == len(brush_pens(b)) - 1, "disabled": ("dom", "pen.delete")})
 
+    # ----- C4.4a: the Properties panel's Tool options page (02 §7.7, §8.8-§8.11; design note 1 §4) and Colour ›
+    # Auto Close Gap (03 §8.8) -----
+    opt_target: dict = {}
+
+    def tool_page(tool):
+        async def run():
+            await cmd("window.panel.set", {"panelId": "properties", "visible": True})
+            await cmd("tool.placeBehind.set", {"enabled": False})
+            await cmd("tool.active.set", {"toolId": tool})
+            if tool == "eraser":
+                erasers = [x for x in (await pens_state()).get("pens") or [] if x.get("type") == "eraser"]
+                if len(erasers) < 2:
+                    await cmd("tool.pen.create", {"type": "eraser"})
+            st = await pens_state()
+            fam = [x for x in st.get("pens") or [] if x.get("type") == ("eraser" if tool == "eraser" else "brush")]
+            cur = st.get("currentEraserPenId" if tool == "eraser" else "currentBrushPenId")
+            opt_target["pen"] = next((x["penId"] for x in fam if x["penId"] != cur), None)
+            opt = (await cmd("tool.options.get", {"toolId": tool})).get("options") or {}
+            opt_target["rectRule"] = "intersect" if opt.get("rectRule") != "intersect" else "inside"
+            opt_target["source"] = "fixed" if opt.get("thicknessSource") != "fixed" else "penMax"
+            gap = (await cmd("colour.gapClosing.get", {})).get("mode")
+            opt_target["gap"] = "medium" if gap != "medium" else "small"
+            await asyncio.sleep(0.6)
+        return run
+
+    def options_of(tool):
+        async def read():
+            return (await cmd("tool.options.get", {"toolId": tool})).get("options") or {}
+        return read
+
+    async def gap_state():
+        return await cmd("colour.gapClosing.get", {})
+
+    rows.append({"name": "Tool options › Select: rectangle rule", "spec": f"{spec_line('tool.select.options.set')}; 02 §7.7",
+                 "action": lambda: ("select", "toolOptions.rectRule", opt_target["rectRule"]),
+                 "expect": lambda b: ("tool.select.options.set", {"rectRule": opt_target["rectRule"]}), "label": None,
+                 "setup": tool_page("select"), "state": options_of("select"),
+                 "effect": lambda b, a, k: a.get("rectRule") == opt_target["rectRule"], "disabled": None})
+    for tool, command in (("brush", "tool.brush.options.set"), ("eraser", "tool.eraser.options.set")):
+        rows.append({"name": f"Tool options › {tool.title()}: pen", "spec": f"{spec_line(command)}; 02 §7.7",
+                     "action": lambda: ("select", "toolOptions.pen", opt_target["pen"]),
+                     "expect": (lambda c: lambda b: (c, {"penId": opt_target["pen"]}))(command), "label": None,
+                     "setup": tool_page(tool), "state": pens_state,
+                     "effect": (lambda t: lambda b, a, k: a.get("currentEraserPenId" if t == "eraser" else "currentBrushPenId") == opt_target["pen"])(tool),
+                     "disabled": None})
+    rows.append({"name": "Tool options › Pencil: line thickness source", "spec": f"{spec_line('tool.pencil.options.set')}; 02 §7.7",
+                 "action": lambda: ("select", "toolOptions.thicknessSource", opt_target["source"]),
+                 "expect": lambda b: ("tool.pencil.options.set", {"thicknessSource": "fixed", "thickness": b.get("thickness") if isinstance(b.get("thickness"), (int, float)) else 1}
+                                      if opt_target["source"] == "fixed" else {"thicknessSource": "penMax"}),
+                 "label": None, "setup": tool_page("pencil"), "state": options_of("pencil"),
+                 "effect": lambda b, a, k: a.get("thicknessSource") == opt_target["source"], "disabled": None})
+    rows.append({"name": "Tool options › Polyline: snapping", "spec": f"{spec_line('tool.polyline.options.set')}; 02 §7.7",
+                 "action": ("dom", "toolOptions.snap"),
+                 "expect": lambda b: ("tool.polyline.options.set", {"snap": not b.get("snap", True)}), "label": None,
+                 "setup": tool_page("polyline"), "state": options_of("polyline"), "toggle": True,
+                 "effect": lambda b, a, k: a.get("snap") == (not b.get("snap", True)), "disabled": None})
+    rows.append({"name": "Tool options › Paint: automatic gap closing", "spec": f"{spec_line('colour.gapClosing.set')}; 03 §8.8",
+                 "action": lambda: ("select", "toolOptions.gapClosing", opt_target["gap"]),
+                 "expect": lambda b: ("colour.gapClosing.set", {"mode": opt_target["gap"]}), "label": None,
+                 "setup": tool_page("paint"), "state": gap_state,
+                 "effect": lambda b, a, k: a.get("mode") == opt_target["gap"], "disabled": None})
+    for tid, command, setting in (("drawTopLayer", "tool.drawTopLayer.set", "drawTopLayer"),
+                              ("placeBehind", "tool.placeBehind.set", "placeBehind"),
+                              ("snapToContour", "tool.snapToContour.set", "snapToContour")):
+        rows.append({"name": f"Tool options › {tid}", "spec": f"{spec_line(command)}; 02 §8.9-§8.11",
+                     "action": ("dom", f"toolOptions.{tid}"),
+                     "expect": (lambda c, k_: lambda b: (c, {"enabled": not b.get(k_)}))(command, setting), "label": None,
+                     "setup": tool_page("brush"), "state": settings_state, "toggle": True,
+                     "effect": (lambda k_: lambda b, a, k: a.get(k_) == (not b.get(k_)))(setting),
+                     "disabled": ("dom", f"toolOptions.{tid}")})
+
+    async def thickness_flow():
+        """A real typed value in the fixed thickness field, then Enter."""
+        await cmd("tool.pencil.options.set", {"thicknessSource": "fixed", "thickness": 2})
+        await asyncio.sleep(0.6)
+        front()
+        t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=\"toolOptions.thickness\"]'); e.focus(); e.select(); return true; })()")
+        type_text("3.5")
+        key(0x0D)
+        return "the value typed in the focused field, then a real Enter"
+
+    rows.append({"name": "Tool options › Pencil: fixed thickness", "spec": f"{spec_line('tool.pencil.options.set')}; 02 §7.7",
+                 "action": ("none",), "custom": thickness_flow,
+                 "expect": lambda b: ("tool.pencil.options.set", {"thicknessSource": "fixed", "thickness": 3.5}), "label": None,
+                 "setup": tool_page("pencil"), "state": options_of("pencil"),
+                 "effect": lambda b, a, k: a.get("thickness") == 3.5, "disabled": None,
+                 "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+    for mode, label in (("small", "Small"), ("large", "Large"), ("off", "Off")):
+        rows.append({"name": f"Colour › Auto Close Gap › {label}", "spec": f"{spec_line('colour.gapClosing.set')}; 03 §8.8 (\"from the main menu\")",
+                     "action": ("menu", ["Colour", "Auto Close Gap", label]),
+                     "expect": (lambda m: lambda b: ("colour.gapClosing.set", {"mode": m}))(mode), "label": None,
+                     "setup": (lambda m: (lambda: cmd("colour.gapClosing.set", {"mode": "medium" if m != "medium" else "off"})))(mode),
+                     "state": gap_state, "effect": (lambda m: lambda b, a, k: a.get("mode") == m)(mode), "disabled": None})
+
     for r in rows:
         if r.get("skip"):
             await r["setup"]()

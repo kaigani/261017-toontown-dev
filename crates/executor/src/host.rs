@@ -506,6 +506,12 @@ fn checked_of(s: &crate::session::Session, command_id: &str, params: &Map<String
         let id = params.get("panelId").and_then(Value::as_str)?;
         return Some(s.ui.panels().into_iter().any(|p| p.panel_id == id && p.visible));
     }
+    // A radio item of Colour › Auto Close Gap (03 §8.8: exactly one mode is active): checked when it names the mode.
+    if command_id == "colour.gapClosing.set" {
+        let mode = params.get("mode").and_then(Value::as_str)?;
+        let now = crate::commands::colour::GapMode::of(s.env.pref(crate::commands::colour::GAP_PREF).as_ref());
+        return Some(serde_json::to_value(now).ok()?.as_str() == Some(mode));
+    }
     toggle_fill(s, command_id, params).map(|(_, next)| !next)
 }
 

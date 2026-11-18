@@ -149,8 +149,20 @@ function host(project: boolean): ScriptedHost {
         currentEraserPenId: 'pen_3',
       }),
     'tool.active.get': () => ok({ toolId: 'brush' }),
+    // The Properties panel's Tool options page (M4 C4.4a): each tool's options, the drawing settings, gap closing.
+    'tool.options.get': (p) => ok({ toolId: p['toolId'], options: TOOL_OPTIONS[String(p['toolId'])] ?? {} }),
+    'tool.settings.get': () =>
+      ok({ placeBehind: false, drawTopLayer: false, snapToContour: false, symmetry: { mode: 'none' } }),
+    'colour.gapClosing.get': () => ok({ mode: 'off', tolerancesPx: { small: 3, medium: 8, large: 16 } }),
   });
 }
+
+/** The tools' options as the kernel's defaults give them (`drawing.rs` `default_options`). */
+const TOOL_OPTIONS: Record<string, Record<string, unknown>> = {
+  select: { rectRule: 'inside' },
+  pencil: { thicknessSource: 'penMax', thickness: null },
+  polyline: { snap: true, snapRadius: 8, thicknessSource: 'penMax', thickness: null },
+};
 
 function mount(h: ScriptedHost, floatPanel?: string) {
   render(
@@ -386,6 +398,18 @@ async function surfaces(): Promise<Surface[]> {
   await screen.findByRole('textbox', { name: 'Rename Pen 2' });
   out.push(await settled('float:pen:rename', document.body));
   cleanup();
+
+  // The Properties panel in a floating window, its Tool options page for each kind of tool (M4 C4.4a).
+  for (const tool of ['brush', 'eraser', 'select', 'pencil', 'polyline', 'paint']) {
+    const props = host(true);
+    props.handlers['tool.active.get'] = () => ok({ toolId: tool });
+    mark(props);
+    mount(props, 'properties');
+    await screen.findByText('Draw on Top Layer');
+    if (tool === 'brush') await screen.findByText('Pen 2');
+    out.push(await settled(`float:properties:${tool}`, document.body));
+    cleanup();
+  }
   return out;
 }
 

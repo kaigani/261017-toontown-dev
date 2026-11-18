@@ -810,9 +810,10 @@ const PREVIEW_PREF: &str = "drawing.inspectorPreview";
     gui = "Properties view: Drawing tab, Show preview (M4 C4.1)",
 )]
 pub(crate) fn draw_inspector_preview_set(cx: &mut Cx, p: PreviewParams) -> Result<PreviewResult, CommandError> {
+    // Staged as `prefs.set` stages: it emits `prefs.changed` (design note 1 §2; SI-166).
     let mut prefs = serde_json::Map::new();
     prefs.insert(PREVIEW_PREF.into(), json!(p.visible));
-    cx.defer(crate::cx::Effect::Prefs(prefs));
+    super::prefs::stage(cx, prefs)?;
     Ok(PreviewResult { visible: p.visible })
 }
 

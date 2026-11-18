@@ -62,7 +62,7 @@
     { "key": "drawing.lightTable.staticShade", "type": "bool", "default": true, "applies": "live", "category": "drawingAids", "description": "Wash out drawings shown on the static light table." },
     { "key": "drawing.lightTable.autoShade", "type": "bool", "default": true, "applies": "live", "category": "drawingAids", "description": "Wash out drawings shown by the automatic light table." },
     { "key": "drawing.inspectorPreview", "type": "bool", "default": true, "applies": "live", "category": "drawingAids", "description": "Show the drawing preview in the Properties panel's Drawing tab (draw.inspectorPreview.set)." },
-    { "key": "paint.gapClosing", "type": "enum", "default": "off", "values": ["off", "small", "medium", "large"], "applies": "live", "category": "drawingAids", "description": "Automatic gap closing of the paint tools (colour.gap.mode.set)." },
+    { "key": "paint.gapClosing", "type": "enum", "default": "off", "values": ["off", "small", "medium", "large"], "applies": "live", "category": "drawingAids", "description": "Automatic gap closing of the paint tools (colour.gapClosing.set)." },
 
     { "key": "display.antiAliasing", "type": "bool", "default": true, "applies": "live", "category": "display", "description": "Anti-alias the whole view." },
     { "key": "display.smoothBitmaps", "type": "bool", "default": true, "applies": "live", "category": "display", "description": "Filtered sampling of bitmap images and texture fills on screen." },

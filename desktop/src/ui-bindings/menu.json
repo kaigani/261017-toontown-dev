@@ -600,6 +600,59 @@
       ]
     },
     {
+      "id": "colour",
+      "label": "Colour",
+      "items": [
+        {
+          "kind": "submenu",
+          "id": "autoCloseGap",
+          "label": "Auto Close Gap",
+          "items": [
+            {
+              "kind": "command",
+              "command": "colour.gapClosing.set",
+              "label": "Off",
+              "params": {
+                "mode": "off"
+              },
+              "enabledWithoutProject": true,
+              "check": "gapClosing"
+            },
+            {
+              "kind": "command",
+              "command": "colour.gapClosing.set",
+              "label": "Small",
+              "params": {
+                "mode": "small"
+              },
+              "enabledWithoutProject": true,
+              "check": "gapClosing"
+            },
+            {
+              "kind": "command",
+              "command": "colour.gapClosing.set",
+              "label": "Medium",
+              "params": {
+                "mode": "medium"
+              },
+              "enabledWithoutProject": true,
+              "check": "gapClosing"
+            },
+            {
+              "kind": "command",
+              "command": "colour.gapClosing.set",
+              "label": "Large",
+              "params": {
+                "mode": "large"
+              },
+              "enabledWithoutProject": true,
+              "check": "gapClosing"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "window",
       "label": "Window",
       "items": [

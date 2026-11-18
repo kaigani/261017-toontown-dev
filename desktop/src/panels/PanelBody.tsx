@@ -10,11 +10,13 @@ import { useShell, useSlice } from '../state/context';
 import type { History } from '../state/types';
 import { panelInfo } from './catalogue';
 import { PenPanel } from './PenPanel';
+import { PropertiesPanel } from './PropertiesPanel';
 
 export function PanelBody({ panelId }: { panelId: string }) {
   const info = panelInfo(panelId);
   if (panelId === 'history') return <HistoryPanel />;
   if (panelId === 'pen') return <PenPanel />;
+  if (panelId === 'properties') return <PropertiesPanel />;
   if (info?.view) return <ViewPanel panelId={panelId} />;
   return (
     <div
@@ -24,7 +26,6 @@ export function PanelBody({ panelId }: { panelId: string }) {
       data-tt-label={info?.title ?? panelId}
     >
       <h2>{info?.title ?? panelId}</h2>
-      {panelId === 'properties' && <p className="no-properties">No properties</p>}
       <p data-tt-role="text" data-tt-id={`${panelId}.owner`}>
         {info?.owner ? `This panel's content arrives with ${info.owner}.` : ''}
       </p>

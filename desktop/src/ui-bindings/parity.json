@@ -35,7 +35,13 @@
     "preferences:keyboard:conflict",
     "float:history",
     "float:pen",
-    "float:pen:rename"
+    "float:pen:rename",
+    "float:properties:brush",
+    "float:properties:eraser",
+    "float:properties:select",
+    "float:properties:pencil",
+    "float:properties:polyline",
+    "float:properties:paint"
   ],
   "dom": [
     {
@@ -670,6 +676,402 @@
       "params": {
         "penId": "pen_2",
         "tipShape": "square"
+      }
+    },
+    {
+      "id": "toolOptions.drawTopLayer",
+      "surface": "float:properties:brush",
+      "commands": [
+        "tool.drawTopLayer.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.pen",
+      "surface": "float:properties:brush",
+      "commands": [
+        "tool.brush.options.set"
+      ]
+    },
+    {
+      "id": "toolOptions.pen.pen_1",
+      "surface": "float:properties:brush",
+      "commands": [
+        "tool.brush.options.set"
+      ],
+      "params": {
+        "penId": "pen_1"
+      }
+    },
+    {
+      "id": "toolOptions.pen.pen_2",
+      "surface": "float:properties:brush",
+      "commands": [
+        "tool.brush.options.set"
+      ],
+      "params": {
+        "penId": "pen_2"
+      }
+    },
+    {
+      "id": "toolOptions.placeBehind",
+      "surface": "float:properties:brush",
+      "commands": [
+        "tool.placeBehind.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.snapToContour",
+      "surface": "float:properties:brush",
+      "commands": [
+        "tool.snapToContour.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.drawTopLayer",
+      "surface": "float:properties:eraser",
+      "commands": [
+        "tool.drawTopLayer.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.pen",
+      "surface": "float:properties:eraser",
+      "commands": [
+        "tool.eraser.options.set"
+      ]
+    },
+    {
+      "id": "toolOptions.pen.pen_3",
+      "surface": "float:properties:eraser",
+      "commands": [
+        "tool.eraser.options.set"
+      ],
+      "params": {
+        "penId": "pen_3"
+      }
+    },
+    {
+      "id": "toolOptions.placeBehind",
+      "surface": "float:properties:eraser",
+      "commands": [
+        "tool.placeBehind.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.snapToContour",
+      "surface": "float:properties:eraser",
+      "commands": [
+        "tool.snapToContour.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.drawTopLayer",
+      "surface": "float:properties:paint",
+      "commands": [
+        "tool.drawTopLayer.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.gapClosing",
+      "surface": "float:properties:paint",
+      "commands": [
+        "colour.gapClosing.set"
+      ]
+    },
+    {
+      "id": "toolOptions.gapClosing.large",
+      "surface": "float:properties:paint",
+      "commands": [
+        "colour.gapClosing.set"
+      ],
+      "params": {
+        "mode": "large"
+      }
+    },
+    {
+      "id": "toolOptions.gapClosing.medium",
+      "surface": "float:properties:paint",
+      "commands": [
+        "colour.gapClosing.set"
+      ],
+      "params": {
+        "mode": "medium"
+      }
+    },
+    {
+      "id": "toolOptions.gapClosing.off",
+      "surface": "float:properties:paint",
+      "commands": [
+        "colour.gapClosing.set"
+      ],
+      "params": {
+        "mode": "off"
+      }
+    },
+    {
+      "id": "toolOptions.gapClosing.small",
+      "surface": "float:properties:paint",
+      "commands": [
+        "colour.gapClosing.set"
+      ],
+      "params": {
+        "mode": "small"
+      }
+    },
+    {
+      "id": "toolOptions.placeBehind",
+      "surface": "float:properties:paint",
+      "commands": [
+        "tool.placeBehind.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.snapToContour",
+      "surface": "float:properties:paint",
+      "commands": [
+        "tool.snapToContour.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.drawTopLayer",
+      "surface": "float:properties:pencil",
+      "commands": [
+        "tool.drawTopLayer.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.placeBehind",
+      "surface": "float:properties:pencil",
+      "commands": [
+        "tool.placeBehind.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.snapToContour",
+      "surface": "float:properties:pencil",
+      "commands": [
+        "tool.snapToContour.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.thickness",
+      "surface": "float:properties:pencil",
+      "commands": [
+        "tool.pencil.options.set"
+      ],
+      "params": {
+        "thicknessSource": "fixed",
+        "thickness": 1
+      }
+    },
+    {
+      "id": "toolOptions.thicknessSource",
+      "surface": "float:properties:pencil",
+      "commands": [
+        "tool.pencil.options.set"
+      ]
+    },
+    {
+      "id": "toolOptions.thicknessSource.fixed",
+      "surface": "float:properties:pencil",
+      "commands": [
+        "tool.pencil.options.set"
+      ],
+      "params": {
+        "thicknessSource": "fixed",
+        "thickness": 1
+      }
+    },
+    {
+      "id": "toolOptions.thicknessSource.penMax",
+      "surface": "float:properties:pencil",
+      "commands": [
+        "tool.pencil.options.set"
+      ],
+      "params": {
+        "thicknessSource": "penMax"
+      }
+    },
+    {
+      "id": "toolOptions.drawTopLayer",
+      "surface": "float:properties:polyline",
+      "commands": [
+        "tool.drawTopLayer.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.placeBehind",
+      "surface": "float:properties:polyline",
+      "commands": [
+        "tool.placeBehind.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.snap",
+      "surface": "float:properties:polyline",
+      "commands": [
+        "tool.polyline.options.set"
+      ],
+      "params": {
+        "snap": false
+      }
+    },
+    {
+      "id": "toolOptions.snapRadius",
+      "surface": "float:properties:polyline",
+      "commands": [
+        "tool.polyline.options.set"
+      ],
+      "params": {
+        "snapRadius": 8
+      }
+    },
+    {
+      "id": "toolOptions.snapToContour",
+      "surface": "float:properties:polyline",
+      "commands": [
+        "tool.snapToContour.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.thickness",
+      "surface": "float:properties:polyline",
+      "commands": [
+        "tool.pencil.options.set"
+      ],
+      "params": {
+        "thicknessSource": "fixed",
+        "thickness": 1
+      }
+    },
+    {
+      "id": "toolOptions.thicknessSource",
+      "surface": "float:properties:polyline",
+      "commands": [
+        "tool.pencil.options.set"
+      ]
+    },
+    {
+      "id": "toolOptions.thicknessSource.fixed",
+      "surface": "float:properties:polyline",
+      "commands": [
+        "tool.pencil.options.set"
+      ],
+      "params": {
+        "thicknessSource": "fixed",
+        "thickness": 1
+      }
+    },
+    {
+      "id": "toolOptions.thicknessSource.penMax",
+      "surface": "float:properties:polyline",
+      "commands": [
+        "tool.pencil.options.set"
+      ],
+      "params": {
+        "thicknessSource": "penMax"
+      }
+    },
+    {
+      "id": "toolOptions.drawTopLayer",
+      "surface": "float:properties:select",
+      "commands": [
+        "tool.drawTopLayer.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.placeBehind",
+      "surface": "float:properties:select",
+      "commands": [
+        "tool.placeBehind.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.rectRule",
+      "surface": "float:properties:select",
+      "commands": [
+        "tool.select.options.set"
+      ]
+    },
+    {
+      "id": "toolOptions.rectRule.inside",
+      "surface": "float:properties:select",
+      "commands": [
+        "tool.select.options.set"
+      ],
+      "params": {
+        "rectRule": "inside"
+      }
+    },
+    {
+      "id": "toolOptions.rectRule.intersect",
+      "surface": "float:properties:select",
+      "commands": [
+        "tool.select.options.set"
+      ],
+      "params": {
+        "rectRule": "intersect"
+      }
+    },
+    {
+      "id": "toolOptions.snapToContour",
+      "surface": "float:properties:select",
+      "commands": [
+        "tool.snapToContour.set"
+      ],
+      "params": {
+        "enabled": true
       }
     },
     {
@@ -1908,6 +2310,66 @@
       "id": "workspaceRename.name",
       "surface": "dialog:Rename Workspace",
       "reason": "typing"
+    },
+    {
+      "id": "properties.page.pen",
+      "surface": "float:properties:brush",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.toolOptions",
+      "surface": "float:properties:brush",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.pen",
+      "surface": "float:properties:eraser",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.toolOptions",
+      "surface": "float:properties:eraser",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.pen",
+      "surface": "float:properties:paint",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.toolOptions",
+      "surface": "float:properties:paint",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.pen",
+      "surface": "float:properties:pencil",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.toolOptions",
+      "surface": "float:properties:pencil",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.pen",
+      "surface": "float:properties:polyline",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.toolOptions",
+      "surface": "float:properties:polyline",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.pen",
+      "surface": "float:properties:select",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.toolOptions",
+      "surface": "float:properties:select",
+      "reason": "navigate"
     },
     {
       "id": "jobsWindow.close",
@@ -14474,6 +14936,46 @@
       }
     },
     {
+      "id": "menu:Colour/Auto Close Gap/Off",
+      "surface": "menu",
+      "commands": [
+        "colour.gapClosing.set"
+      ],
+      "params": {
+        "mode": "off"
+      }
+    },
+    {
+      "id": "menu:Colour/Auto Close Gap/Small",
+      "surface": "menu",
+      "commands": [
+        "colour.gapClosing.set"
+      ],
+      "params": {
+        "mode": "small"
+      }
+    },
+    {
+      "id": "menu:Colour/Auto Close Gap/Medium",
+      "surface": "menu",
+      "commands": [
+        "colour.gapClosing.set"
+      ],
+      "params": {
+        "mode": "medium"
+      }
+    },
+    {
+      "id": "menu:Colour/Auto Close Gap/Large",
+      "surface": "menu",
+      "commands": [
+        "colour.gapClosing.set"
+      ],
+      "params": {
+        "mode": "large"
+      }
+    },
+    {
       "id": "menu:Window/Panels/Camera View",
       "surface": "menu",
       "commands": [
@@ -15784,6 +16286,10 @@
       "file": "desktop/src/state/store.ts"
     },
     {
+      "command": "colour.gapClosing.get",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
+    },
+    {
       "command": "doc.repair",
       "file": "desktop/src/shell/infoDialogs.tsx"
     },
@@ -15980,12 +16486,20 @@
       "file": "desktop/src/panels/PenPanel.tsx"
     },
     {
+      "command": "tool.active.get",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
+    },
+    {
       "command": "tool.active.set",
       "file": "desktop/src/shell/Toolbars.tsx"
     },
     {
       "command": "tool.list",
       "file": "desktop/src/shell/Toolbars.tsx"
+    },
+    {
+      "command": "tool.options.get",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
     },
     {
       "command": "tool.pen.create",
@@ -16004,6 +16518,10 @@
       "file": "desktop/src/panels/PenPanel.tsx"
     },
     {
+      "command": "tool.pen.list",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
+    },
+    {
       "command": "tool.pen.rename",
       "file": "desktop/src/panels/PenPanel.tsx"
     },
@@ -16016,12 +16534,24 @@
       "file": "desktop/src/panels/PenPanel.tsx"
     },
     {
+      "command": "tool.pencil.options.set",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
+    },
+    {
       "command": "tool.placeBehind.set",
       "file": "desktop/src/panels/PenPanel.tsx"
     },
     {
+      "command": "tool.polyline.options.set",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
+    },
+    {
       "command": "tool.settings.get",
       "file": "desktop/src/panels/PenPanel.tsx"
+    },
+    {
+      "command": "tool.settings.get",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
     },
     {
       "command": "tool.settings.get",
@@ -16302,6 +16832,486 @@
       "query": "workspace.list"
     },
     {
+      "surface": "float:properties:brush",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "colour.gapClosing.get"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "tool.options.get"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:properties:brush",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "colour.gapClosing.get"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "tool.options.get"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:properties:eraser",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "colour.gapClosing.get"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "tool.options.get"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:properties:paint",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "colour.gapClosing.get"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "tool.options.get"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:properties:pencil",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "colour.gapClosing.get"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "tool.options.get"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:properties:polyline",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "colour.gapClosing.get"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "tool.options.get"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:properties:select",
+      "query": "workspace.list"
+    },
+    {
       "surface": "jobsWindow",
       "query": "job.list"
     },
@@ -16316,6 +17326,10 @@
     {
       "surface": "main",
       "query": "app.state.get"
+    },
+    {
+      "surface": "main",
+      "query": "colour.gapClosing.get"
     },
     {
       "surface": "main",
@@ -16372,6 +17386,10 @@
     {
       "surface": "main",
       "query": "tool.list"
+    },
+    {
+      "surface": "main",
+      "query": "tool.options.get"
     },
     {
       "surface": "main",
@@ -16431,6 +17449,10 @@
     },
     {
       "surface": "startScreen",
+      "query": "colour.gapClosing.get"
+    },
+    {
+      "surface": "startScreen",
       "query": "draw.viewMapping.get"
     },
     {
@@ -16484,6 +17506,10 @@
     {
       "surface": "startScreen",
       "query": "tool.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "tool.options.get"
     },
     {
       "surface": "startScreen",
@@ -16721,6 +17747,18 @@
       "command": "colour.current.changed",
       "files": [
         "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
+      "command": "colour.gapClosing.get",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "colour.gapClosing.set",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
@@ -17434,6 +18472,7 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src-tauri/src/shell.rs",
         "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -17512,6 +18551,7 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/App.tsx",
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
@@ -17568,6 +18608,7 @@
         "desktop/src/App.tsx",
         "desktop/src/panels/PanelBody.tsx",
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
@@ -17889,6 +18930,7 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/state/store.ts"
       ]
@@ -17898,13 +18940,32 @@
       "files": [
         "desktop/src-tauri/src/host.rs",
         "desktop/src/canvas/CanvasView.tsx",
-        "desktop/src/panels/PenPanel.tsx"
+        "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
       "command": "tool.active.set",
       "files": [
         "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "tool.brush.options.set",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "tool.drawTopLayer.set",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "tool.eraser.options.set",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
@@ -17918,15 +18979,23 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "tool.options.get",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
       "command": "tool.pen.changed",
       "files": [
         "desktop/src/canvas/CanvasView.tsx",
-        "desktop/src/panels/PenPanel.tsx"
+        "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
@@ -17945,7 +19014,8 @@
       "command": "tool.pen.list",
       "files": [
         "desktop/src/canvas/CanvasView.tsx",
-        "desktop/src/panels/PenPanel.tsx"
+        "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
@@ -17967,22 +19037,90 @@
       ]
     },
     {
+      "command": "tool.pencil.options.set",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
       "command": "tool.placeBehind.set",
       "files": [
-        "desktop/src/panels/PenPanel.tsx"
+        "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "tool.polyline.options.set",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "tool.select.options.set",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
       "command": "tool.settings.get",
       "files": [
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx"
+      ]
+    },
+    {
+      "command": "tool.snapToContour.set",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
       "command": "tool.symmetry.set",
       "files": [
         "desktop/src/panels/ViewChrome.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.gapClosing",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.pen",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.rectRule",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.snap",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.snapRadius",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.thickness",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.thicknessSource",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {

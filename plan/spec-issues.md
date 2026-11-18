@@ -2084,3 +2084,26 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `tool.pen.changed {penId, change: "selected"}` after the deletion's own event. Deleting a pen that is not current
   leaves the current pen. Undo restores the pen, not the selection (selection is UI state, 02 §12.1).
 - **Built:** `tool.pen.delete` (`crates/executor/src/commands/tool.rs`); `c44a_panels.rs`.
+## SI-166 — one state for automatic gap closing, written by two commands; staged preferences announce themselves (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 03 §8.8 (Auto Close Gap: "reachable from the main menu and the paint tools' options"), 01 §7.3
+  (preferences), 11 §9 (events).
+- **Problem:** `colour.gapClosing.set` and `prefs.set {paint.gapClosing}` write the same preference, but the first
+  staged it without `prefs.changed`, so a surface showing the mode could not follow an agent's change. The same held
+  for `draw.inspectorPreview.set`. `prefs.json` named a command that does not exist (`colour.gap.mode.set`).
+- **Decided:** both commands stage their preference as `prefs.set` does (`prefs::stage`): only a changed value is
+  written, and it emits `prefs.changed {keys, source}`. `colour.gapClosing.get` is a declared read of the Tool options
+  page, no longer agent-only (D-40 answer 5). The main menu's Colour › Auto Close Gap has four radio items; availability
+  checks the one naming the current mode. The description in `prefs.json` names `colour.gapClosing.set`.
+- **Built:** `colour.rs`, `draw_select.rs`, `host.rs` (`checked_of`), `menu.json`; `c44a_panels.rs`; the D-39 rows of
+  the Paint page and the three menu items.
+
+## SI-183 — the generic `tool.options.set` and the GUI (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 02 §7.7 (tool options), A (`tool.options.set`, `tool.select.options.set`, `tool.pencil.options.set`,
+  `tool.polyline.options.set`, `tool.text.options.set`).
+- **Problem:** every tool with options has its own command, so the GUI never needs the generic setter, which C4.4 owned
+  as deferred (D-31: no deferred entry owned by C4.4a at its handoff).
+- **Decided:** `tool.options.set` is agent-only, the structured generic equivalent of the per-tool commands (as D-40
+  answer 1 declares `tool.tablet.set`). The Tool options page reads `tool.options.get` and writes through each tool's own
+  command.

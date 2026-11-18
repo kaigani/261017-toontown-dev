@@ -1956,10 +1956,11 @@ pub(crate) struct GapClosingSetResult {
 )]
 pub(crate) fn colour_gap_closing_set(cx: &mut Cx, p: GapClosingSetParams) -> Result<GapClosingSetResult, CommandError> {
     // A persisted user preference (03 §8.8; C22-R1-07 ruling): the `prefs` scope, written as a staged effect after the
-    // invocation succeeds (nothing is written by a dry run or a failed batch).
+    // invocation succeeds (nothing is written by a dry run or a failed batch). Staged as `prefs.set` stages, so it
+    // emits `prefs.changed` and every surface showing the mode follows (design note 1 §2; SI-166).
     let mut prefs = serde_json::Map::new();
     prefs.insert(GAP_PREF.into(), json!(p.mode));
-    cx.defer(crate::cx::Effect::Prefs(prefs));
+    super::prefs::stage(cx, prefs)?;
     Ok(GapClosingSetResult { mode: p.mode })
 }
 
@@ -1990,7 +1991,6 @@ pub(crate) struct GapClosingGetResult {
     label = "Get automatic gap closing",
     scopes = [read],
     example(title = "Current gap closing mode", params = "{}"),
-    agent_only = "the GUI shows the mode in the paint tool options",
 )]
 pub(crate) fn colour_gap_closing_get(
     cx: &mut Cx,

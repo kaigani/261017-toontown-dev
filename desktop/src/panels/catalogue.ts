@@ -23,7 +23,7 @@ export const PANEL_CATALOGUE: readonly PanelInfo[] = [
   { id: 'timeline', title: 'Timeline', owner: 'M5 C5.1' },
   { id: 'xsheet', title: 'Exposure sheet', owner: 'M5 C5.2' },
   { id: 'functionEditor', title: 'Function editor', owner: 'M6' },
-  { id: 'properties', title: 'Properties', owner: 'M4 C4.2' },
+  { id: 'properties', title: 'Properties', owner: 'M4 C4.4a' },
   { id: 'colour', title: 'Colour', owner: 'M7 C7.1' },
   { id: 'pen', title: 'Pen', owner: 'M4 C4.4a' },
   { id: 'text', title: 'Text', owner: 'M4 C4.2' },

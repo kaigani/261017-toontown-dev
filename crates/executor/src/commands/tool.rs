@@ -495,6 +495,7 @@ pub(crate) struct OptionsParams {
     needs_project,
     example(title = "Polyline snapping radius", params = r#"{"toolId": "polyline", "options": {"snapRadius": 12}}"#),
     gui = "the Tools toolbar and tool properties (02, 05); wired in M4 C4.2",
+    agent_only = "the GUI edits each tool's options through the tool's own command (SI-183)",
 )]
 pub(crate) fn tool_options_set(cx: &mut Cx, p: OptionsParams) -> Result<ToolOptions, CommandError> {
     let options = set_options(cx, &p.tool_id, &p.options)?;

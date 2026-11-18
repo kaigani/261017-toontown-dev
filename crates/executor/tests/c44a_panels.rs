@@ -93,3 +93,23 @@ fn delete_is_unavailable_for_the_last_pen_of_a_type() {
     assert!(last.reason.as_deref().unwrap_or_default().contains("last eraser pen"), "{:?}", last.reason);
     assert_eq!(err(&h, "tool.pen.delete", json!({ "penId": erasers[0] })).code, "pen.lastPen");
 }
+
+/// Design note 1 §2 (SI-166): a command that writes a preference stages it as `prefs.set` does and emits
+/// `prefs.changed` with its key, so a panel showing it follows an agent's change; the same value again emits nothing.
+#[test]
+fn preference_commands_announce_their_change() {
+    let h = fixture();
+    for (command, params, key) in [
+        ("colour.gapClosing.set", json!({ "mode": "medium" }), "paint.gapClosing"),
+        ("draw.inspectorPreview.set", json!({ "visible": false }), "drawing.inspectorPreview"),
+    ] {
+        let rx = h.subscribe();
+        ok(&h, command, params.clone());
+        let changed: Vec<Value> = rx.try_iter().filter(|e| e.name == "prefs.changed").map(|e| e.payload).collect();
+        assert_eq!(changed.len(), 1, "{command}: {changed:?}");
+        assert_eq!(changed[0]["keys"], json!([key]), "{command}");
+        ok(&h, command, params);
+        assert!(!rx.try_iter().any(|e| e.name == "prefs.changed"), "{command}: an unchanged value emits nothing");
+    }
+    assert_eq!(ok(&h, "colour.gapClosing.get", json!({}))["mode"], "medium");
+}

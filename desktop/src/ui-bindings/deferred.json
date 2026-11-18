@@ -256,11 +256,6 @@
       "section": "03 §6.6, §8.7 (texture properties, the edit texture tool)",
       "location": "the Edit Texture tool"
     },
-    "colour.gapClosing.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §7.3.5 (Close Gap; the paint tools' gap closing option)",
-      "location": "the paint tools' options"
-    },
     "colour.missing.list": {
       "owner": "M7 C7.1",
       "section": "03 §16.3 (Command table)",
@@ -565,51 +560,6 @@
       "owner": "M10 C10.1",
       "section": "09 §11.2 (Command table)",
       "location": "File > Export > Image Sequence"
-    },
-    "tool.brush.options.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.drawTopLayer.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.eraser.options.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.options.get": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.options.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.pencil.options.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.polyline.options.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.select.options.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.snapToContour.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
     },
     "tool.tablet.set": {
       "owner": "M4 C4.4",
