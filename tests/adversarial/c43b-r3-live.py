@@ -695,7 +695,7 @@ async def closure_body(t):
  if step=='5':
   before=content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));state=await c('app.state.get');t.clear();await open_error()
   text=t.cdp.js("document.querySelector('[role=alertdialog]').innerText");focus=await focusid();t.click('message.ok');await asyncio.sleep(.4)
-  after=content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));now=await c('app.state.get')
+  now=await c('app.state.get');after=content(await c('doc.export.json',{'scope':'project','binaries':'omit'})) if now.get('project') else None
   t.run.check(before==after and state['project']==now['project'] and len(text)>15 and focus=='message.ok','Invalid project job error',{'text':text,'focus':focus,'sent':t.recorded(),'unchanged':before==after})
  elif step=='3':
   kind=sys.argv[4];vk=int(sys.argv[5]);expected={'unsaved':'message.save','import':'message.merge','reset':'message.cancel','conflict':'keymap.conflict.cancel','error':'message.ok','information':'message.ok'}[kind]
@@ -725,26 +725,29 @@ async def closure_body(t):
   if kind=='message':
    await c('element.create',{'type':'drawing','name':'Dirty'});d.choose_menu(['File','New Project']);await wait(t,'message.project.unsavedChanges');ident='message.project.unsavedChanges'
   elif kind=='progress':
+   progressBefore=content(await c('doc.export.json',{'scope':'project','binaries':'omit'}))
    import zipfile
    source=t.work/'closure.animpkg';target=t.work/'slow.animpkg';block=bytes(1<<20);digest=hashlib.sha256(block*64).hexdigest()
-   with zipfile.ZipFile(source) as z:entries={n:z.read(n) for n in z.namelist()}
-   manifest=json.loads(entries['manifest.json'])
-   with zipfile.ZipFile(target,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as z:
-    for n,data in entries.items():
-     if n!='manifest.json':z.writestr(n,data)
-    for i in range(256):
-     n='review-payload/'+str(i)+'.bin'
-     with z.open(n,'w') as f:
-      for _ in range(64):f.write(block)
-     manifest['entries'].append({'path':n,'size':64<<20,'sha256':digest})
-    z.writestr('manifest.json',json.dumps(manifest))
+   if os.environ.get('REVIEW_PROGRESS_PACKAGE'):target=Path(os.environ['REVIEW_PROGRESS_PACKAGE'])
+   else:
+    with zipfile.ZipFile(source) as z:entries={n:z.read(n) for n in z.namelist()}
+    manifest=json.loads(entries['manifest.json'])
+    with zipfile.ZipFile(target,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as z:
+     for n,data in entries.items():
+      if n!='manifest.json':z.writestr(n,data,compress_type=zipfile.ZIP_STORED if n=='mimetype' else zipfile.ZIP_DEFLATED)
+     for i in range(256):
+      n='review-payload/'+str(i)+'.bin'
+      with z.open(n,'w') as f:
+       for _ in range(64):f.write(block)
+      manifest['entries'].append({'path':n,'size':64<<20,'sha256':digest})
+     z.writestr('manifest.json',json.dumps(manifest))
    d.choose_menu(['File','Open']);await asyncio.sleep(1.5);d.key(0x4E,0x12);d.key(0x41,0x11);d.type_text(str(target));d.key(0x0D);await wait(t,'progress');ident='progress'
   else:
    path={'preferences':['File','Preferences'],'new':['File','New Project'],'properties':['File','Project Properties'],'check':['File','Check Project'],'backup':['File','Open Backup']}[kind]
    ident={'preferences':'preferences','new':'newProject','properties':'projectProperties','check':'checkProject','backup':'openBackup'}[kind]
    d.choose_menu(path);await wait(t,ident)
   await asyncio.sleep(.4)
-  before=content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));t.clear()
+  before=progressBefore if kind=='progress' else content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));t.clear()
   expr="(() => {const r=document.querySelector('[data-tt-id='+JSON.stringify(%s)+']');const a=[...r.querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex=\"-1\"])')].filter(e=>e.getClientRects().length&&!e.closest('[inert]'));return {items:a.map(e=>e.dataset.ttId||e.tagName),focus:document.activeElement?.dataset.ttId,inside:r.contains(document.activeElement)}})()"%json.dumps(ident)
   initial=t.cdp.js(expr);route=[]
   for _ in range(len(initial['items'])+2):d.key(0x09);route.append(t.cdp.js(expr))
@@ -754,16 +757,19 @@ async def closure_body(t):
   keyFocus=t.cdp.js("({id:document.activeElement?.dataset.ttId,tag:document.activeElement?.tagName})")
   for vk,mods in [(0x42,()),(0x5A,(0x11,)),(0x20,()),(0x0D,())]:d.key(vk,*mods)
   d.click_screen(origin.x+10,origin.y+100);await asyncio.sleep(.3)
-  after=content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));sent=t.recorded();bad=[x for x in sent if x.get('command') not in SPEC_QUERIES]
+  after=before if kind=='progress' else content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));sent=t.recorded();bad=[x for x in sent if x.get('command') not in SPEC_QUERIES]
   present=t.cdp.js("!!document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')"%json.dumps(ident));d.key(0x1B);await asyncio.sleep(.4);closed=t.cdp.js("!document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')"%json.dumps(ident))
   if kind=='progress':
    for _ in range(300):
     if t.cdp.js("!document.querySelector('[data-tt-id=progress]')"):break
     await asyncio.sleep(.1)
-   closed=t.cdp.js("!document.querySelector('[data-tt-id=progress]')");status=t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent");box=t.cdp.js("!!document.querySelector('[role=alertdialog]')")
+   closed=t.cdp.js("!document.querySelector('[data-tt-id=progress]')");finalState=await c('app.state.get');after=content(await c('doc.export.json',{'scope':'project','binaries':'omit'})) if finalState.get('project') else None;status=t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent");box=t.cdp.js("!!document.querySelector('[role=alertdialog]')")
    t.run.check('cancelled' in (status or '') and not box,'Cancelled job status line',{'status':status,'errorBox':box})
    bad=[x for x in bad if x.get('command')=='review.dispatch_key' or x.get('command')!='job.cancel']
   rec={'initial':initial,'keyFocus':keyFocus,'route':route,'sent':sent,'unchanged':before==after,'presentBeforeEscape':present,'closed':closed}
+  rec['finalState']=finalState if kind=='progress' else None
+  rec['beforeDocumentHash']=hashlib.sha256(json.dumps(before,sort_keys=True).encode()).hexdigest()
+  rec['afterDocumentHash']=hashlib.sha256(json.dumps(after,sort_keys=True).encode()).hexdigest()
   t.run.check(all(x['inside'] for x in route) and before==after and not bad and present and closed,'Modal '+kind,rec)
 
 def closure():return bcase(closure_body,'closure')

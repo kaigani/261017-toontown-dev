@@ -1,0 +1,2654 @@
+[
+ {
+  "check": "Modal message",
+  "ok": true,
+  "detail": {
+   "initial": {
+    "items": [
+     "message.save",
+     "message.discard",
+     "message.cancel"
+    ],
+    "focus": "message.save",
+    "inside": true
+   },
+   "keyFocus": {
+    "id": "message.project.unsavedChanges",
+    "tag": "DIV"
+   },
+   "route": [
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "focus": "message.discard",
+     "inside": true
+    },
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "focus": "message.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "inside": true
+    },
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "focus": "message.save",
+     "inside": true
+    },
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "focus": "message.discard",
+     "inside": true
+    },
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "focus": "message.save",
+     "inside": true
+    },
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "inside": true
+    },
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "focus": "message.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "focus": "message.discard",
+     "inside": true
+    },
+    {
+     "items": [
+      "message.save",
+      "message.discard",
+      "message.cancel"
+     ],
+     "focus": "message.save",
+     "inside": true
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "unchanged": true,
+   "presentBeforeEscape": true,
+   "closed": true
+  }
+ },
+ {
+  "check": "Modal preferences",
+  "ok": true,
+  "detail": {
+   "initial": {
+    "items": [
+     "preferences.search",
+     "preferences.category.general",
+     "preferences.category.files",
+     "preferences.category.newProject",
+     "preferences.category.interface",
+     "preferences.category.drawingAids",
+     "preferences.category.display",
+     "preferences.category.tablet",
+     "preferences.category.staging",
+     "preferences.category.timing",
+     "preferences.category.edit",
+     "preferences.category.agent",
+     "preferences.category.keyboard",
+     "preferences.category.tips",
+     "pref.user.name",
+     "pref.user.copyright",
+     "pref.library.globalPath",
+     "pref.general.startup.behaviour",
+     "pref.general.language",
+     "pref.general.recentProjects.maxCount",
+     "pref.general.workspace.autoSave",
+     "preferences.general.restore",
+     "preferences.cancel",
+     "preferences.submit"
+    ],
+    "focus": "preferences",
+    "inside": true
+   },
+   "keyFocus": {
+    "id": "preferences",
+    "tag": "DIV"
+   },
+   "route": [
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.search",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.general",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.files",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.newProject",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.interface",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.drawingAids",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.display",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.tablet",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.staging",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.timing",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.edit",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.agent",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.keyboard",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.tips",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.user.name",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.user.copyright",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.library.globalPath",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.general.startup.behaviour",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.general.language",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.general.recentProjects.maxCount",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.general.workspace.autoSave",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.general.restore",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.submit",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.search",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.general",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.search",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.submit",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.general.restore",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.general.workspace.autoSave",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.general.recentProjects.maxCount",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.general.language",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.general.startup.behaviour",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.library.globalPath",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.user.copyright",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "pref.user.name",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.tips",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.keyboard",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.agent",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.edit",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.timing",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.staging",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.tablet",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.display",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.drawingAids",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.interface",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.newProject",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.files",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.category.general",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.search",
+     "inside": true
+    },
+    {
+     "items": [
+      "preferences.search",
+      "preferences.category.general",
+      "preferences.category.files",
+      "preferences.category.newProject",
+      "preferences.category.interface",
+      "preferences.category.drawingAids",
+      "preferences.category.display",
+      "preferences.category.tablet",
+      "preferences.category.staging",
+      "preferences.category.timing",
+      "preferences.category.edit",
+      "preferences.category.agent",
+      "preferences.category.keyboard",
+      "preferences.category.tips",
+      "pref.user.name",
+      "pref.user.copyright",
+      "pref.library.globalPath",
+      "pref.general.startup.behaviour",
+      "pref.general.language",
+      "pref.general.recentProjects.maxCount",
+      "pref.general.workspace.autoSave",
+      "preferences.general.restore",
+      "preferences.cancel",
+      "preferences.submit"
+     ],
+     "focus": "preferences.submit",
+     "inside": true
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "unchanged": true,
+   "presentBeforeEscape": true,
+   "closed": true
+  }
+ },
+ {
+  "check": "Modal new",
+  "ok": true,
+  "detail": {
+   "initial": {
+    "items": [
+     "newProject.name",
+     "newProject.preset",
+     "newProject.frameRate",
+     "newProject.width",
+     "newProject.height",
+     "newProject.create",
+     "newProject.cancel"
+    ],
+    "focus": "newProject",
+    "inside": true
+   },
+   "keyFocus": {
+    "id": "newProject",
+    "tag": "DIV"
+   },
+   "route": [
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.name",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.preset",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.frameRate",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.width",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.height",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.create",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.name",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.preset",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.name",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.create",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.height",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.width",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.frameRate",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.preset",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.name",
+     "inside": true
+    },
+    {
+     "items": [
+      "newProject.name",
+      "newProject.preset",
+      "newProject.frameRate",
+      "newProject.width",
+      "newProject.height",
+      "newProject.create",
+      "newProject.cancel"
+     ],
+     "focus": "newProject.cancel",
+     "inside": true
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "unchanged": true,
+   "presentBeforeEscape": true,
+   "closed": true
+  }
+ },
+ {
+  "check": "Modal properties",
+  "ok": true,
+  "detail": {
+   "initial": {
+    "items": [
+     "projectProperties.frameRate",
+     "projectProperties.width",
+     "projectProperties.height",
+     "projectProperties.setAsDefault",
+     "projectProperties.cancel",
+     "projectProperties.submit"
+    ],
+    "focus": "projectProperties",
+    "inside": true
+   },
+   "keyFocus": {
+    "id": "projectProperties",
+    "tag": "DIV"
+   },
+   "route": [
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.frameRate",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.width",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.height",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.setAsDefault",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.submit",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.frameRate",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.width",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.frameRate",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.submit",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.setAsDefault",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.height",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.width",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.frameRate",
+     "inside": true
+    },
+    {
+     "items": [
+      "projectProperties.frameRate",
+      "projectProperties.width",
+      "projectProperties.height",
+      "projectProperties.setAsDefault",
+      "projectProperties.cancel",
+      "projectProperties.submit"
+     ],
+     "focus": "projectProperties.submit",
+     "inside": true
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "unchanged": true,
+   "presentBeforeEscape": true,
+   "closed": true
+  }
+ },
+ {
+  "check": "Modal check",
+  "ok": true,
+  "detail": {
+   "initial": {
+    "items": [
+     "checkProject.repair",
+     "checkProject.cancel"
+    ],
+    "focus": "checkProject",
+    "inside": true
+   },
+   "keyFocus": {
+    "id": "checkProject",
+    "tag": "DIV"
+   },
+   "route": [
+    {
+     "items": [
+      "checkProject.repair",
+      "checkProject.cancel"
+     ],
+     "focus": "checkProject.repair",
+     "inside": true
+    },
+    {
+     "items": [
+      "checkProject.repair",
+      "checkProject.cancel"
+     ],
+     "focus": "checkProject.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "checkProject.repair",
+      "checkProject.cancel"
+     ],
+     "focus": "checkProject.repair",
+     "inside": true
+    },
+    {
+     "items": [
+      "checkProject.repair",
+      "checkProject.cancel"
+     ],
+     "focus": "checkProject.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "checkProject.repair",
+      "checkProject.cancel"
+     ],
+     "focus": "checkProject.repair",
+     "inside": true
+    },
+    {
+     "items": [
+      "checkProject.repair",
+      "checkProject.cancel"
+     ],
+     "focus": "checkProject.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "checkProject.repair",
+      "checkProject.cancel"
+     ],
+     "focus": "checkProject.repair",
+     "inside": true
+    },
+    {
+     "items": [
+      "checkProject.repair",
+      "checkProject.cancel"
+     ],
+     "focus": "checkProject.cancel",
+     "inside": true
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "unchanged": true,
+   "presentBeforeEscape": true,
+   "closed": true
+  }
+ },
+ {
+  "check": "Modal backup",
+  "ok": true,
+  "detail": {
+   "initial": {
+    "items": [
+     "openBackup.cancel"
+    ],
+    "focus": "openBackup",
+    "inside": true
+   },
+   "keyFocus": {
+    "id": "openBackup",
+    "tag": "DIV"
+   },
+   "route": [
+    {
+     "items": [
+      "openBackup.cancel"
+     ],
+     "focus": "openBackup.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "openBackup.cancel"
+     ],
+     "focus": "openBackup.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "openBackup.cancel"
+     ],
+     "focus": "openBackup.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "openBackup.cancel"
+     ],
+     "focus": "openBackup.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "openBackup.cancel"
+     ],
+     "focus": "openBackup.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "openBackup.cancel"
+     ],
+     "focus": "openBackup.cancel",
+     "inside": true
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "unchanged": true,
+   "presentBeforeEscape": true,
+   "closed": true
+  }
+ },
+ {
+  "check": "Cancelled job status line",
+  "ok": true,
+  "detail": {
+   "status": "Opening project: cancelled",
+   "errorBox": false
+  }
+ },
+ {
+  "check": "Modal progress",
+  "ok": false,
+  "detail": {
+   "initial": {
+    "items": [
+     "progress.cancel"
+    ],
+    "focus": "progress",
+    "inside": true
+   },
+   "keyFocus": {
+    "id": "progress",
+    "tag": "DIV"
+   },
+   "route": [
+    {
+     "items": [
+      "progress.cancel"
+     ],
+     "focus": "progress.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "progress.cancel"
+     ],
+     "focus": "progress.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "progress.cancel"
+     ],
+     "focus": "progress.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "progress.cancel"
+     ],
+     "focus": "progress.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "progress.cancel"
+     ],
+     "focus": "progress.cancel",
+     "inside": true
+    },
+    {
+     "items": [
+      "progress.cancel"
+     ],
+     "focus": "progress.cancel",
+     "inside": true
+    }
+   ],
+   "sent": [
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    }
+   ],
+   "unchanged": false,
+   "presentBeforeEscape": true,
+   "closed": true,
+   "finalState": {
+    "project": null,
+    "scene": null,
+    "frame": null,
+    "element": null,
+    "drawing": null,
+    "mode": null,
+    "activeView": null,
+    "focusedPanel": "cameraView",
+    "activeTool": null,
+    "selection": {
+     "context": "staging",
+     "ids": [],
+     "kinds": []
+    },
+    "workspace": {
+     "name": "Drawing",
+     "modified": false
+    },
+    "playback": {
+     "playing": false
+    },
+    "startScreenVisible": true,
+    "modal": null,
+    "agentSessions": [
+     {
+      "sessionId": "s1-6002c8",
+      "name": "mcp",
+      "acting": false
+     }
+    ],
+    "fullScreen": false,
+    "agent": {
+     "sessionId": "s1-6002c8",
+     "client": "mcp",
+     "policy": "autonomous",
+     "scopes": [
+      "read",
+      "edit",
+      "ui",
+      "input",
+      "files.read",
+      "files.write",
+      "prefs",
+      "library.global"
+     ],
+     "paused": false,
+     "limits": {
+      "policy": "autonomous",
+      "maxJobs": 2,
+      "maxBatchSteps": 1000,
+      "maxInlineImagePx": 2048,
+      "maxInlineBytes": 52428800,
+      "askInApp": true,
+      "letAgentMoveView": true,
+      "highlightAgentChanges": true
+     }
+    }
+   },
+   "beforeDocumentHash": "ba27df93cc16a714669ffcd0f18eb52763670eaf7048b212ce46e772ba6158ed",
+   "afterDocumentHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+  }
+ }
+]
