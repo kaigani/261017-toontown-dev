@@ -1823,10 +1823,10 @@ async def build_and_run(t: Table, only: set) -> None:
         ("persist", clicked("agentAccess.persist"), ("agent.activity.persist.set", {"enabled": True}),
          lambda b, a, k: a.get("agent.activity.persist") is True),
     ]
-    for ident, edit, expect, eff in agent_rows:
-        rows.append({"name": f"Preferences › Agent access › {ident}", "spec": f"{spec_line(expect[0])}; 01 §7.3 (Agent access); 11 §15.1",
-                     "action": ("none",), "custom": agent_flow(edit, ident), "expect": expect, "label": None,
-                     "setup": agent_defaults, "state": agent_prefs, "effect": eff, "disabled": None, "after": agent_defaults,
+    for a_ident, a_edit, a_expect, a_eff in agent_rows:
+        rows.append({"name": f"Preferences › Agent access › {a_ident}", "spec": f"{spec_line(a_expect[0])}; 01 §7.3 (Agent access); 11 §15.1",
+                     "action": ("none",), "custom": agent_flow(a_edit, a_ident), "expect": a_expect, "label": None,
+                     "setup": agent_defaults, "state": agent_prefs, "effect": a_eff, "disabled": None, "after": agent_defaults,
                      "mcpReason": "the controls are staged in the Preferences dialog and sent by its OK"})
 
     async def typed_on():
@@ -1905,10 +1905,10 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": with_second, "state": session_state,
                  "effect": lambda b, a, k: ("ui" in (a.get("scopes") or [])) != ("ui" in (b.get("scopes") or [])),
                  "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE})
-    for verb, command in (("pause", "agent.session.pause"), ("resume", "agent.session.resume")):
-        rows.append({"name": f"Activity › session {verb}", "spec": f"{spec_line(command)}; 11 §6.4",
+    for verb, session_cmd in (("pause", "agent.session.pause"), ("resume", "agent.session.resume")):
+        rows.append({"name": f"Activity › session {verb}", "spec": f"{spec_line(session_cmd)}; 11 §6.4",
                      "action": (lambda v: lambda: ("dom", f"activity.session.{second['id']}.{v}"))(verb),
-                     "expect": (lambda c: lambda b: (c, {"sessionId": second["id"]}))(command), "label": None,
+                     "expect": (lambda c: lambda b: (c, {"sessionId": second["id"]}))(session_cmd), "label": None,
                      "setup": with_second, "state": session_state,
                      "effect": (lambda v: lambda b, a, k: a.get("paused") is (v == "pause"))(verb),
                      "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE})
@@ -1946,22 +1946,22 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": agent_step, "state": history_position, "effect": lambda b, a, k: a == second["index"] - 1,
                  "disabled": None, "mcpReason": "the entry is selected in the panel first (window state a click sets)"})
 
-    exported = t.work / "D39-activity.jsonl"
+    activity_log = t.work / "D39-activity.jsonl"
 
     async def export_flow():
         t.click("activity.export")
         await asyncio.sleep(1.8)
-        type_text(str(exported))
+        type_text(str(activity_log))
         key(0x0D)
         await asyncio.sleep(1.5)
         return "a real click on Export…, the path typed in the platform's save dialog, Enter"
 
-    async def exported_state():
-        return exported.exists() and exported.stat().st_size > 0
+    async def activity_log_state():
+        return activity_log.exists() and activity_log.stat().st_size > 0
     rows.append({"name": "Activity › Export", "spec": f"{spec_line('agent.activity.export')}; 11 §11",
                  "action": ("none",), "custom": export_flow,
-                 "expect": ("agent.activity.export", {"path": str(exported), "format": "jsonl", "onExists": "overwrite"}),
-                 "label": None, "setup": activity_open, "state": exported_state, "effect": lambda b, a, k: a is True,
+                 "expect": ("agent.activity.export", {"path": str(activity_log), "format": "jsonl", "onExists": "overwrite"}),
+                 "label": None, "setup": activity_open, "state": activity_log_state, "effect": lambda b, a, k: a is True,
                  "disabled": None, "mcpReason": "the path is chosen in the platform's save dialog"})
 
     async def panel_state():
