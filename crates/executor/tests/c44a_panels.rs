@@ -113,3 +113,28 @@ fn preference_commands_announce_their_change() {
     }
     assert_eq!(ok(&h, "colour.gapClosing.get", json!({}))["mode"], "medium");
 }
+
+/// SI-165 (D-40 answer 1): `tool.tablet.set` and the Tablet category's `prefs.set` write one state and raise the same
+/// event, so the Preferences dialog and an agent see the same tablet settings.
+#[test]
+fn the_tablet_command_and_the_tablet_preferences_are_one_state() {
+    let h = fixture();
+    let rx = h.subscribe();
+    let r = ok(&h, "tool.tablet.set", json!({ "ignoreTablet": true, "inputInterface": "wintab" }));
+    assert_eq!(r["restartRequired"], true, "{r}");
+    let ev: Vec<Value> = rx.try_iter().filter(|e| e.name == "prefs.changed").map(|e| e.payload).collect();
+    assert_eq!(ev.len(), 1, "{ev:?}");
+    let mut keys: Vec<String> =
+        ev[0]["keys"].as_array().unwrap().iter().map(|k| k.as_str().unwrap().to_owned()).collect();
+    keys.sort();
+    assert_eq!(keys, ["tablet.ignore", "tablet.inputInterface"]);
+    let prefs = |k: &str| ok(&h, "prefs.get", json!({ "keys": [k] }))["values"][k].clone();
+    assert_eq!(prefs("tablet.ignore"), true);
+    assert_eq!(prefs("tablet.inputInterface"), "wintab");
+    // The other way: the preference written by `prefs.set` is the command's state.
+    ok(&h, "prefs.set", json!({ "values": { "tablet.portraitCorrection": true, "tablet.inputInterface": "" } }));
+    let tablet = ok(&h, "tool.settings.get", json!({}))["tablet"].clone();
+    assert_eq!(tablet["ignoreTablet"], true);
+    assert_eq!(tablet["portraitCorrection"], true);
+    assert_eq!(tablet["inputInterface"], Value::Null, "empty is the platform default: {tablet}");
+}

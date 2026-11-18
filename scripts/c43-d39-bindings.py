@@ -1144,6 +1144,47 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": prepare_import, "state": keys_of_save, "custom": import_flow,
                  "effect": lambda b, a, k: "Primary+Shift+F11" in a, "disabled": None,
                  "after": lambda: cmd("keymap.reset", {"all": True})})
+    # ----- C4.4a: the Preferences dialog's Tablet category (01 §7.3; 02 §6.3; D-40 answer 1, SI-165): each key edited,
+    # then OK, which sends one `prefs.set` -----
+    TABLET_KEYS = ("tablet.ignore", "tablet.portraitCorrection", "tablet.compatibilityMode", "tablet.inputInterface")
+
+    async def tablet_state():
+        return (await cmd("prefs.get", {"keys": list(TABLET_KEYS)})).get("values") or {}
+
+    def tablet_flow(k):
+        async def flow():
+            choose_menu(["File", "Preferences"])
+            await asyncio.sleep(0.8)
+            t.click("preferences.category.tablet")
+            await asyncio.sleep(0.5)
+            # Opening the dialog is the menu item's own command (`ui.preferences.open`, bound in the menu's row): the row
+            # records what the Tablet edit and OK send.
+            t.clear()
+            if k == "tablet.inputInterface":
+                front()
+                t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=\"pref.tablet.inputInterface\"]'); e.focus(); e.select(); return true; })()")
+                type_text("wintab")
+            else:
+                t.click(f"pref.{k}")
+            await asyncio.sleep(0.3)
+            t.click("preferences.submit")
+            await asyncio.sleep(1.0)
+            return f"real clicks in Preferences › Tablet ({k}), then OK"
+        return flow
+
+    async def tablet_defaults():
+        await cmd("prefs.reset", {"keys": list(TABLET_KEYS)})
+
+    for k in TABLET_KEYS:
+        value = "wintab" if k == "tablet.inputInterface" else True
+        rows.append({"name": f"Preferences › Tablet › {k}", "spec": f"{spec_line('prefs.set')}; 01 §7.3 (Tablet); 02 §6.3",
+                     "action": ("none",), "custom": tablet_flow(k),
+                     "expect": (lambda k_, v_: lambda b: ("prefs.set", {"values": {k_: v_}}))(k, value), "label": None,
+                     "setup": tablet_defaults, "state": tablet_state,
+                     "effect": (lambda k_, v_: lambda b, a, kk: a.get(k_) == v_)(k, value), "disabled": None,
+                     "after": tablet_defaults,
+                     "mcpReason": "the Preferences dialog opens from the native menu, which only real input reaches"})
+
     # A Preferences dialog left open by a failed row would hold the native menu: closed before the next rows.
     rows.append({"name": "(close dialogs)", "spec": "", "action": ("none",), "expect": ("", {}), "skip": True,
                  "setup": close_dialogs})

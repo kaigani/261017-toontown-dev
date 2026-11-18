@@ -1409,6 +1409,7 @@ pub(crate) struct TabletResult {
     needs_project,
     example(title = "Ignore tablet input", params = r#"{"ignoreTablet": true}"#),
     gui = "the Tools toolbar and tool properties (02, 05); wired in M4 C4.2",
+    agent_only = "the structured equivalent of the Tablet category's `prefs.set` on `tablet.*` (D-40 answer 1, SI-165)",
 )]
 pub(crate) fn tool_tablet_set(cx: &mut Cx, p: TabletParams) -> Result<TabletResult, CommandError> {
     if p.input_interface.as_ref().is_some_and(|s| s.is_empty() || s.len() > 64) {
@@ -1418,26 +1419,49 @@ pub(crate) fn tool_tablet_set(cx: &mut Cx, p: TabletParams) -> Result<TabletResu
             json!({ "pointer": "/inputInterface" }),
         ));
     }
-    let before = cx.ui().drawing().tablet.clone();
-    let t = &mut cx.ui_mut().drawing_mut().tablet;
+    // SI-165 (D-40 answer 1): the tablet settings are the Tablet category's `tablet.*` preferences; this command stages
+    // them as `prefs.set` does (one state, one `prefs.changed`), its structured equivalent for agents.
+    let before = tablet_of(cx);
+    let mut after = before.clone();
+    let mut values = Map::new();
     if let Some(v) = p.ignore_tablet {
-        t.ignore_tablet = v;
+        after.ignore_tablet = v;
+        values.insert(TABLET_IGNORE.into(), json!(v));
     }
     if let Some(v) = p.portrait_correction {
-        t.portrait_correction = v;
+        after.portrait_correction = v;
+        values.insert(TABLET_PORTRAIT.into(), json!(v));
     }
     if let Some(v) = p.compatibility_mode {
-        t.compatibility_mode = v;
+        after.compatibility_mode = v;
+        values.insert(TABLET_COMPATIBILITY.into(), json!(v));
     }
-    if p.input_interface.is_some() {
-        t.input_interface = p.input_interface;
+    if let Some(v) = p.input_interface {
+        values.insert(TABLET_INTERFACE.into(), json!(v));
+        after.input_interface = Some(v);
     }
-    let after = t.clone();
+    super::prefs::stage(cx, values)?;
     let restart_required = after.input_interface != before.input_interface;
-    if after != before {
-        emit_options(cx, None);
-    }
     Ok(TabletResult { settings: after, restart_required })
+}
+
+const TABLET_IGNORE: &str = "tablet.ignore";
+const TABLET_PORTRAIT: &str = "tablet.portraitCorrection";
+const TABLET_COMPATIBILITY: &str = "tablet.compatibilityMode";
+const TABLET_INTERFACE: &str = "tablet.inputInterface";
+
+/// The tablet settings: the Tablet category's preferences (SI-165).
+pub(crate) fn tablet_of(cx: &Cx) -> crate::drawing::TabletSetting {
+    let flag = |k: &str| cx.pref(k).and_then(|v| v.as_bool()).unwrap_or(false);
+    crate::drawing::TabletSetting {
+        ignore_tablet: flag(TABLET_IGNORE),
+        portrait_correction: flag(TABLET_PORTRAIT),
+        compatibility_mode: flag(TABLET_COMPATIBILITY),
+        input_interface: cx
+            .pref(TABLET_INTERFACE)
+            .and_then(|v| v.as_str().map(str::to_owned))
+            .filter(|s| !s.is_empty()),
+    }
 }
 
 fn settings_map(cx: &Cx) -> Map<String, Value> {
@@ -1448,7 +1472,7 @@ fn settings_map(cx: &Cx) -> Map<String, Value> {
         "drawTopLayer": d.draw_top_layer,
         "snapToContour": d.snap_to_contour,
         "symmetry": d.symmetry,
-        "tablet": d.tablet,
+        "tablet": tablet_of(cx),
         "gapClosing": gap,
     });
     v.as_object().cloned().unwrap_or_default()
@@ -1470,7 +1494,7 @@ pub(crate) fn tool_settings_get(cx: &mut Cx, _p: NoParams) -> Result<SettingsRes
         draw_top_layer: d.draw_top_layer,
         snap_to_contour: d.snap_to_contour,
         symmetry: d.symmetry.clone(),
-        tablet: d.tablet.clone(),
+        tablet: tablet_of(cx),
         gap_closing: super::colour::GapMode::of(cx.pref(super::colour::GAP_PREF).as_ref()),
     })
 }

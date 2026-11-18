@@ -2107,3 +2107,20 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decided:** `tool.options.set` is agent-only, the structured generic equivalent of the per-tool commands (as D-40
   answer 1 declares `tool.tablet.set`). The Tool options page reads `tool.options.get` and writes through each tool's own
   command.
+## SI-165 — the tablet settings: one state for `tool.tablet.set` and the Tablet preferences, and their keys (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §7.3 lines 743-749 (Tablet: `tablet.ignore`, `tablet.alternativeInput` bool, restart,
+  `tablet.portraitCorrection`), 02 §6.3 lines 400-407 (four options, with "Compatibility tablet handling" and "Tablet
+  input interface", a choice), A (`tool.tablet.set {ignoreTablet, portraitCorrection, compatibilityMode,
+  inputInterface}`), D-40 answer 1.
+- **Problem:** `tool.tablet.set` wrote its own state and emitted `tool.options.changed`, while the Preferences dialog
+  wrote the `tablet.*` keys with `prefs.set`: two states for one setting. 01 and 02 also name different options.
+- **Decided:** the keys are `tablet.ignore`, `tablet.portraitCorrection` (live), `tablet.compatibilityMode` (bool,
+  restart, new) and `tablet.inputInterface` (a string of at most 64 characters, empty for the platform default, restart,
+  replacing the boolean `tablet.alternativeInput`). `tool.tablet.set` stages them as `prefs.set` does and emits
+  `prefs.changed`; the tablet settings `tool.settings.get` reports are read from them; `tool.tablet.set` is agent-only,
+  the structured equivalent of the Tablet category (D-40 answer 1). No consumer of the tablet state exists yet (the
+  canvas sends raw pressure); that stays so in M4.
+- **Built:** `tool.rs` (`tool_tablet_set`, `tablet_of`), `prefs.json`; `c44a_panels.rs`
+  (`the_tablet_command_and_the_tablet_preferences_are_one_state`); D-39 rows for the four keys through the Preferences
+  dialog (OS form).
