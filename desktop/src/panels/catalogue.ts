@@ -25,7 +25,7 @@ export const PANEL_CATALOGUE: readonly PanelInfo[] = [
   { id: 'functionEditor', title: 'Function editor', owner: 'M6' },
   { id: 'properties', title: 'Properties', owner: 'M4 C4.2' },
   { id: 'colour', title: 'Colour', owner: 'M7 C7.1' },
-  { id: 'pen', title: 'Pen', owner: 'M4 C4.2' },
+  { id: 'pen', title: 'Pen', owner: 'M4 C4.4a' },
   { id: 'text', title: 'Text', owner: 'M4 C4.2' },
   { id: 'cells', title: 'Cells', owner: 'M5 C5.2' },
   { id: 'library', title: 'Library', owner: 'M9' },

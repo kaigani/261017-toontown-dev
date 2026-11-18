@@ -9,10 +9,12 @@ import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell, useSlice } from '../state/context';
 import type { History } from '../state/types';
 import { panelInfo } from './catalogue';
+import { PenPanel } from './PenPanel';
 
 export function PanelBody({ panelId }: { panelId: string }) {
   const info = panelInfo(panelId);
   if (panelId === 'history') return <HistoryPanel />;
+  if (panelId === 'pen') return <PenPanel />;
   if (info?.view) return <ViewPanel panelId={panelId} />;
   return (
     <div

@@ -591,37 +591,7 @@
       "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
       "location": "the tool options and pens bar"
     },
-    "tool.pen.create": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.pen.delete": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.pen.rename": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.pen.select": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.pen.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
     "tool.pencil.options.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
-    "tool.placeBehind.set": {
       "owner": "M4 C4.4",
       "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
       "location": "the tool options and pens bar"

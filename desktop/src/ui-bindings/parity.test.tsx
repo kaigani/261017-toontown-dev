@@ -110,6 +110,45 @@ function host(project: boolean): ScriptedHost {
     'job.wait': () => new Promise(() => undefined),
     // A refusal shows its message box.
     'project.close': () => fail('project.busy', 'the project is busy'),
+    // The Pen panel (M4 C4.4a): two brush pens and an eraser, the second brush pen current.
+    'tool.pen.list': () =>
+      ok({
+        pens: [
+          {
+            penId: 'pen_1',
+            name: 'Pen 1',
+            type: 'brush',
+            tipShape: 'round',
+            minSize: 1,
+            maxSize: 4,
+            smoothness: 3,
+            tipAngle: 0,
+          },
+          {
+            penId: 'pen_2',
+            name: 'Pen 2',
+            type: 'brush',
+            tipShape: 'flat',
+            minSize: 2,
+            maxSize: 8,
+            smoothness: 5,
+            tipAngle: 30,
+          },
+          {
+            penId: 'pen_3',
+            name: 'Eraser 1',
+            type: 'eraser',
+            tipShape: 'round',
+            minSize: 4,
+            maxSize: 12,
+            smoothness: 0,
+            tipAngle: 0,
+          },
+        ],
+        currentBrushPenId: 'pen_2',
+        currentEraserPenId: 'pen_3',
+      }),
+    'tool.active.get': () => ok({ toolId: 'brush' }),
   });
 }
 
@@ -331,6 +370,21 @@ async function surfaces(): Promise<Surface[]> {
   mount(floating, 'history');
   await screen.findByText('Rectangle Tool');
   out.push(await settled('float:history', document.body));
+  cleanup();
+
+  // The Pen panel in a floating window (M4 C4.4a): the brush pens, the current one's settings, the advanced options.
+  const pen = host(true);
+  mark(pen);
+  mount(pen, 'pen');
+  await screen.findByText('Pen 2');
+  out.push(await settled('float:pen', document.body));
+  // Its in-place rename (a double click on a pen).
+  mark(pen);
+  act(() => {
+    fireEvent.doubleClick(screen.getByText('Pen 2'));
+  });
+  await screen.findByRole('textbox', { name: 'Rename Pen 2' });
+  out.push(await settled('float:pen:rename', document.body));
   cleanup();
   return out;
 }

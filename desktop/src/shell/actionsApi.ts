@@ -19,8 +19,9 @@ export const BUSY_AFTER_MS = 400;
 export interface ActionsApi {
   /** Performs a command as the user would: dialogs, unsaved-changes rule, jobs, errors surfaced. */
   perform(command: string, params?: Record<string, unknown>): Promise<Envelope | null>;
-  /** Runs a command with no dialog; failures are surfaced; long actions offer Cancel. */
-  run(command: string, params?: Record<string, unknown>): Promise<Envelope>;
+  /** Runs a command with no dialog; failures are surfaced (except the codes in `handled`, which the caller shows itself,
+   *  such as a rename field's `pen.nameExists` under the field); long actions offer Cancel. */
+  run(command: string, params?: Record<string, unknown>, handled?: readonly string[]): Promise<Envelope>;
 }
 
 /** A running action that offers Cancel. */

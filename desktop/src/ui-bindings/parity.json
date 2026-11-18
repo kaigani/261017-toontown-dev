@@ -33,7 +33,9 @@
     "preferences:tips",
     "preferences:keyboard:details",
     "preferences:keyboard:conflict",
-    "float:history"
+    "float:history",
+    "float:pen",
+    "float:pen:rename"
   ],
   "dom": [
     {
@@ -287,6 +289,387 @@
       ],
       "params": {
         "position": 2
+      }
+    },
+    {
+      "id": "pen.delete",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.delete"
+      ],
+      "params": {
+        "penId": "pen_2"
+      }
+    },
+    {
+      "id": "pen.maxSize",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "maxSize": 8
+      }
+    },
+    {
+      "id": "pen.maxSize.field",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "maxSize": 8
+      }
+    },
+    {
+      "id": "pen.minSize",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "minSize": 2
+      }
+    },
+    {
+      "id": "pen.minSize.field",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "minSize": 2
+      }
+    },
+    {
+      "id": "pen.new",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.create"
+      ],
+      "params": {
+        "type": "brush",
+        "fromPenId": "pen_2"
+      }
+    },
+    {
+      "id": "pen.placeBehind",
+      "surface": "float:pen",
+      "commands": [
+        "tool.placeBehind.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "pen.row.pen_1",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.select"
+      ],
+      "params": {
+        "penId": "pen_1"
+      }
+    },
+    {
+      "id": "pen.row.pen_2",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.select"
+      ],
+      "params": {
+        "penId": "pen_2"
+      }
+    },
+    {
+      "id": "pen.smoothness",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "smoothness": 5
+      }
+    },
+    {
+      "id": "pen.smoothness.field",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "smoothness": 5
+      }
+    },
+    {
+      "id": "pen.tipAngle",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipAngle": 30
+      }
+    },
+    {
+      "id": "pen.tipAngle.field",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipAngle": 30
+      }
+    },
+    {
+      "id": "pen.tipShape",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ]
+    },
+    {
+      "id": "pen.tipShape.flat",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipShape": "flat"
+      }
+    },
+    {
+      "id": "pen.tipShape.oval",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipShape": "oval"
+      }
+    },
+    {
+      "id": "pen.tipShape.round",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipShape": "round"
+      }
+    },
+    {
+      "id": "pen.tipShape.square",
+      "surface": "float:pen",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipShape": "square"
+      }
+    },
+    {
+      "id": "pen.delete",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.delete"
+      ],
+      "params": {
+        "penId": "pen_2"
+      }
+    },
+    {
+      "id": "pen.maxSize",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "maxSize": 8
+      }
+    },
+    {
+      "id": "pen.maxSize.field",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "maxSize": 8
+      }
+    },
+    {
+      "id": "pen.minSize",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "minSize": 2
+      }
+    },
+    {
+      "id": "pen.minSize.field",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "minSize": 2
+      }
+    },
+    {
+      "id": "pen.new",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.create"
+      ],
+      "params": {
+        "type": "brush",
+        "fromPenId": "pen_2"
+      }
+    },
+    {
+      "id": "pen.placeBehind",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.placeBehind.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "pen.rename",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.rename"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "name": "Pen 2"
+      }
+    },
+    {
+      "id": "pen.row.pen_1",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.select"
+      ],
+      "params": {
+        "penId": "pen_1"
+      }
+    },
+    {
+      "id": "pen.smoothness",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "smoothness": 5
+      }
+    },
+    {
+      "id": "pen.smoothness.field",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "smoothness": 5
+      }
+    },
+    {
+      "id": "pen.tipAngle",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipAngle": 30
+      }
+    },
+    {
+      "id": "pen.tipAngle.field",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipAngle": 30
+      }
+    },
+    {
+      "id": "pen.tipShape",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ]
+    },
+    {
+      "id": "pen.tipShape.flat",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipShape": "flat"
+      }
+    },
+    {
+      "id": "pen.tipShape.oval",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipShape": "oval"
+      }
+    },
+    {
+      "id": "pen.tipShape.round",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipShape": "round"
+      }
+    },
+    {
+      "id": "pen.tipShape.square",
+      "surface": "float:pen:rename",
+      "commands": [
+        "tool.pen.set"
+      ],
+      "params": {
+        "penId": "pen_2",
+        "tipShape": "square"
       }
     },
     {
@@ -15593,6 +15976,10 @@
       "file": "desktop/src/canvas/CanvasView.tsx"
     },
     {
+      "command": "tool.active.get",
+      "file": "desktop/src/panels/PenPanel.tsx"
+    },
+    {
       "command": "tool.active.set",
       "file": "desktop/src/shell/Toolbars.tsx"
     },
@@ -15601,8 +15988,40 @@
       "file": "desktop/src/shell/Toolbars.tsx"
     },
     {
+      "command": "tool.pen.create",
+      "file": "desktop/src/panels/PenPanel.tsx"
+    },
+    {
+      "command": "tool.pen.delete",
+      "file": "desktop/src/panels/PenPanel.tsx"
+    },
+    {
       "command": "tool.pen.list",
       "file": "desktop/src/canvas/CanvasView.tsx"
+    },
+    {
+      "command": "tool.pen.list",
+      "file": "desktop/src/panels/PenPanel.tsx"
+    },
+    {
+      "command": "tool.pen.rename",
+      "file": "desktop/src/panels/PenPanel.tsx"
+    },
+    {
+      "command": "tool.pen.select",
+      "file": "desktop/src/panels/PenPanel.tsx"
+    },
+    {
+      "command": "tool.pen.set",
+      "file": "desktop/src/panels/PenPanel.tsx"
+    },
+    {
+      "command": "tool.placeBehind.set",
+      "file": "desktop/src/panels/PenPanel.tsx"
+    },
+    {
+      "command": "tool.settings.get",
+      "file": "desktop/src/panels/PenPanel.tsx"
     },
     {
       "command": "tool.settings.get",
@@ -15808,6 +16227,78 @@
     },
     {
       "surface": "float:history",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:pen",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:pen",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:pen",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "float:pen",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "float:pen",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:pen",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:pen",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:pen",
       "query": "workspace.list"
     },
     {
@@ -16313,6 +16804,7 @@
       "command": "doc.redone",
       "files": [
         "desktop/src-tauri/src/menu.rs",
+        "desktop/src/panels/PenPanel.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -16326,6 +16818,7 @@
       "command": "doc.undone",
       "files": [
         "desktop/src-tauri/src/menu.rs",
+        "desktop/src/panels/PenPanel.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -16858,6 +17351,66 @@
       ]
     },
     {
+      "command": "pen.advanced",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "pen.delete",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "pen.nameExists",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "pen.new",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "pen.placeBehind",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "pen.preview",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "pen.rename",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "pen.renameProblem",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "pen.settings",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "pen.tipShape",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
       "command": "preferences.categories",
       "files": [
         "desktop/src/prefs/PreferencesDialog.tsx"
@@ -16958,6 +17511,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/App.tsx",
+        "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
@@ -17013,6 +17567,7 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/App.tsx",
         "desktop/src/panels/PanelBody.tsx",
+        "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
@@ -17333,6 +17888,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/panels/PenPanel.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/state/store.ts"
       ]
@@ -17341,7 +17897,8 @@
       "command": "tool.active.get",
       "files": [
         "desktop/src-tauri/src/host.rs",
-        "desktop/src/canvas/CanvasView.tsx"
+        "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/panels/PenPanel.tsx"
       ]
     },
     {
@@ -17360,6 +17917,7 @@
       "command": "tool.options.changed",
       "files": [
         "desktop/src-tauri/src/menu.rs",
+        "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/state/store.ts"
       ]
@@ -17367,18 +17925,57 @@
     {
       "command": "tool.pen.changed",
       "files": [
-        "desktop/src/canvas/CanvasView.tsx"
+        "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "tool.pen.create",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "tool.pen.delete",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
       ]
     },
     {
       "command": "tool.pen.list",
       "files": [
-        "desktop/src/canvas/CanvasView.tsx"
+        "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "tool.pen.rename",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "tool.pen.select",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "tool.pen.set",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
+      ]
+    },
+    {
+      "command": "tool.placeBehind.set",
+      "files": [
+        "desktop/src/panels/PenPanel.tsx"
       ]
     },
     {
       "command": "tool.settings.get",
       "files": [
+        "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/ViewChrome.tsx"
       ]
     },

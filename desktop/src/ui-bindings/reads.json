@@ -19,10 +19,10 @@
         "project.presets.list": ["desktop/src/state/store.ts"],
         "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
         "project.recovery.list": ["desktop/src/state/store.ts"],
-        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/PenPanel.tsx"],
         "tool.list": ["desktop/src/shell/Toolbars.tsx"],
-        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx"],
-        "tool.settings.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/PenPanel.tsx"],
+        "tool.settings.get": ["desktop/src/panels/PenPanel.tsx", "desktop/src/panels/ViewChrome.tsx"],
         "ui.statusBar.get": ["desktop/src/state/store.ts"],
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
@@ -52,10 +52,10 @@
         "project.presets.list": ["desktop/src/state/store.ts"],
         "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
         "project.recovery.list": ["desktop/src/state/store.ts"],
-        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/PenPanel.tsx"],
         "tool.list": ["desktop/src/shell/Toolbars.tsx"],
-        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx"],
-        "tool.settings.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/PenPanel.tsx"],
+        "tool.settings.get": ["desktop/src/panels/PenPanel.tsx", "desktop/src/panels/ViewChrome.tsx"],
         "ui.statusBar.get": ["desktop/src/state/store.ts"],
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
@@ -141,6 +141,29 @@
       "description": "the progress window: the running jobs of every session (01 §9.5)",
       "reads": {
         "job.list": ["desktop/src/shell/StatusBar.tsx"]
+      }
+    },
+    "float:pen": {
+      "description": "the Pen panel in a floating window: its pens, the active tool and the drawing settings, and the store's slices (02 §6.1, 01 §5.4)",
+      "reads": {
+        "agent.server.status": ["desktop/src/state/store.ts"],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/PenPanel.tsx"],
+        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/PenPanel.tsx"],
+        "tool.settings.get": ["desktop/src/panels/PenPanel.tsx", "desktop/src/panels/ViewChrome.tsx"],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
     }
   },
