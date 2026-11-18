@@ -2165,6 +2165,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   it. The three camera commands' `gui` strings name the main toolbar's camera list (M4 C4.4a) instead of M6 C6.2.
 - **Built:** `Toolbars.tsx` (`CameraList`, reading `anim.camera.list` and `anim.camera.current.get`); `cameraList.test.tsx`;
   the D-39 row "main toolbar › camera list" in both forms.
+
 ## SI-170 — toolbar items with fixed parameters (found in M4 C4.4a; decided by the builder)
 
 - **Sections:** 01 §5.7 lines 445-464 (the main toolbar's customisation; "every toolbar item is a command reference
@@ -2202,4 +2203,21 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `contextMenu.test.tsx`; the parity collector's `viewContextMenu:scene` and `viewContextMenu:drawing`; D-39 rows in both
   forms for the 22 Drawing-family items, the five scene-family items and 20 checklist items (OS form only: the checklist
   opens with a secondary click; its reference is the Window menu's panel item's).
+
+## SI-180 — the `clipboard` GUI-only reason, and the load report window's read (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 10 §7.3 (the load report, shown once as a summary), 11 §11 (copy as batch JSON), SI-155 (GUI-only
+  reasons), D-40 answers 5 and 6, `reviews/M4-design-agent-surfaces.md` §7, §8.
+- **Problem:** two actions write the system clipboard and change no document or application state (the load report's
+  Copy details, the Activity panel's Copy as batch JSON): no GUI-only reason fitted, and the gate had no check that such
+  an element runs nothing.
+- **Decided:** `clipboard` joins the GUI-only reasons (`parity.ts`). Every write goes through one function, `copyText`
+  (`shell/clipboard.ts`). The check: each element declared `clipboard` writes exactly once and runs no command, and the
+  check fails on a fixture that also runs one. The load report window is non-modal, shown once per `project.opened` whose
+  report has a warning or an error, a repair, a migration or a read-only state, whoever opened the project; its read
+  `doc.loadReport.get` leaves the deferred table (D-40 answer 5).
+- **Built:** `clipboard.ts`, `loadReport.ts`, `LoadReportWindow.tsx`; `loadReport.test.tsx` (once per open, none for
+  information only, Copy details, the `clipboard` check and its failing fixture); the parity collector's `loadReport`;
+  its D-44 reason; the D-39 check "load report window" in both forms (a folder of a newer minor format with an unknown
+  value shows one window; the clean project opened next shows none).
 

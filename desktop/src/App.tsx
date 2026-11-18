@@ -8,6 +8,7 @@ import { maybeRunIpcBench } from './diagnostics/ipcBench';
 import { DockArea } from './dock/DockArea';
 import { useHost, type Envelope, type SpikeMode } from './ipc';
 import { isMac } from './keys/sequence';
+import { LoadReportWindow } from './shell/LoadReportWindow';
 import { panelInfo } from './panels/catalogue';
 import { PanelBody } from './panels/PanelBody';
 import { PreferencesDialog } from './prefs/PreferencesDialog';
@@ -396,6 +397,7 @@ function Window() {
       <StatusBar />
       {appState?.startScreenVisible && <StartScreen />}
       <EngineBanner />
+      <LoadReportWindow />
       <RefreshErrors errors={state.errors} />
       <CadenceProbe enabled={measuring} />
     </div>

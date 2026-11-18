@@ -9,6 +9,7 @@
     "dockTabContextMenu",
     "viewContextMenu:scene",
     "viewContextMenu:drawing",
+    "loadReport",
     "dialog:About Toontown",
     "dialog:Project Info",
     "dialog:Check Project",
@@ -3054,6 +3055,21 @@
       "id": "jobsWindow.close",
       "surface": "jobsWindow",
       "reason": "dismiss"
+    },
+    {
+      "id": "loadReport.close",
+      "surface": "loadReport",
+      "reason": "dismiss"
+    },
+    {
+      "id": "loadReport.copy",
+      "surface": "loadReport",
+      "reason": "clipboard"
+    },
+    {
+      "id": "loadReport.group.warning.ref.dangling",
+      "surface": "loadReport",
+      "reason": "disclose"
     },
     {
       "id": "agent.toggle",
@@ -16979,6 +16995,10 @@
       "file": "desktop/src/panels/ToolOptionsPage.tsx"
     },
     {
+      "command": "doc.loadReport.get",
+      "file": "desktop/src/shell/LoadReportWindow.tsx"
+    },
+    {
       "command": "doc.repair",
       "file": "desktop/src/shell/infoDialogs.tsx"
     },
@@ -18121,6 +18141,78 @@
       "query": "job.list"
     },
     {
+      "surface": "loadReport",
+      "query": "anim.camera.current.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "anim.camera.list"
+    },
+    {
+      "surface": "loadReport",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "colour.gapClosing.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "doc.loadReport.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "drawAid.state.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "drawAid.staticLightTable.list"
+    },
+    {
+      "surface": "loadReport",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "loadReport",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "loadReport",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "tool.list"
+    },
+    {
+      "surface": "loadReport",
+      "query": "tool.options.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "loadReport",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "view.list"
+    },
+    {
+      "surface": "loadReport",
+      "query": "view.transform.get"
+    },
+    {
       "surface": "main",
       "query": "agent.server.status"
     },
@@ -18712,6 +18804,12 @@
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "doc.loadReport.get",
+      "files": [
+        "desktop/src/shell/LoadReportWindow.tsx"
       ]
     },
     {
@@ -19377,6 +19475,24 @@
       ]
     },
     {
+      "command": "loadReport.close",
+      "files": [
+        "desktop/src/shell/LoadReportWindow.tsx"
+      ]
+    },
+    {
+      "command": "loadReport.copy",
+      "files": [
+        "desktop/src/shell/LoadReportWindow.tsx"
+      ]
+    },
+    {
+      "command": "loadReport.summary",
+      "files": [
+        "desktop/src/shell/LoadReportWindow.tsx"
+      ]
+    },
+    {
       "command": "mainToolbar.cameraList",
       "files": [
         "desktop/src/shell/Toolbars.tsx"
@@ -19641,6 +19757,7 @@
         "desktop/src/panels/TextPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
+        "desktop/src/shell/LoadReportWindow.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
         "desktop/src/state/store.ts"
@@ -19700,6 +19817,7 @@
         "desktop/src/panels/TextPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
+        "desktop/src/shell/LoadReportWindow.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
         "desktop/src/state/store.ts"

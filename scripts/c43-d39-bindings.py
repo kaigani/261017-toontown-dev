@@ -1766,9 +1766,61 @@ async def build_and_run(t: Table, only: set) -> None:
     # Saved first: the agent's session may not discard (its policy), and the close must not ask.
     await e2e.run_cmd(t.s, "project.saveAs", {"path": str(t.work / "D39-final.animpkg"), "onExists": "overwrite"})
     await asyncio.sleep(1.0)
+    if not only or any("load report" in o for o in only):
+        await load_report_row(t, t.work / "D39-final.animpkg")
     await cmd("project.close", {"onUnsaved": "fail"})
     await asyncio.sleep(1.5)
     await t.disabled_checks()
+
+
+async def load_report_row(t: Table, clean: Path) -> None:
+    """The load report window (10 §7.3; plan §4.7; design note 2 §7): opening a project that needs repair (a folder of
+    a newer minor format whose element uses a value this version does not know: the C1.3 recipe) shows one window; the
+    clean project opened next shows none. MCP form: the window tree; OS form: the page."""
+    rec = {"name": "load report window", "spec": f"{spec_line('doc.loadReport.get')}; 10 §7.3"}
+    try:
+        folder = t.work / "D39-repair.animpkg"
+        await t.cmd("project.create", {"name": "D39 repair", "onUnsaved": "fail"})
+        await t.cmd("element.create", {"type": "drawing", "name": "Old"})
+        await t.cmd("project.saveAs", {"path": f"{folder}/", "onExists": "overwrite"})
+        await t.cmd("project.close", {"onUnsaved": "fail"})
+        m = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
+        m["formatVersion"] = "1.3"
+        (folder / "manifest.json").write_text(json.dumps(m), encoding="utf-8")
+        element = next(q for q in sorted(folder.rglob("*.json")) if "elements" in q.parts)
+        el = json.loads(element.read_text(encoding="utf-8"))
+        el["loopType"] = "pingPong"
+        element.write_text(json.dumps(el, indent=2), encoding="utf-8")
+
+        async def windows():
+            if isinstance(t, McpTable):
+                tree = await t.tree()
+                n = t.node(tree, "loadReport")
+                return (1 if n is not None else 0), (t.node(tree, "loadReport.summary") or {}).get("label")
+            return (t.cdp.js("document.querySelectorAll('[data-tt-id=\"loadReport\"]').length"),
+                    t.cdp.js("document.querySelector('[data-tt-id=\"loadReport.summary\"]')?.textContent ?? null"))
+
+        await t.cmd("project.open", {"path": str(folder), "onUnsaved": "fail"})
+        shown = (0, None)
+        for _ in range(50):
+            shown = await windows()
+            if shown[0]:
+                break
+            await asyncio.sleep(0.1)
+        report = await t.cmd("doc.loadReport.get", {})
+        await t.cmd("project.open", {"path": str(clean), "onUnsaved": "fail"})
+        await asyncio.sleep(1.5)
+        after = await windows()
+        ok = shown[0] == 1 and bool(shown[1]) and after[0] == 0
+        rec.update({"shownAfterRepairOpen": shown, "issues": [i.get("code") for i in report.get("issues") or []][:10],
+                    "readOnly": report.get("readOnly"), "afterCleanOpen": after, "ok": ok})
+        t.run.check(ok, f"D-39 {rec['name']}: one window after an open that needed repair, none after a clean open "
+                        f"({rec['spec']})", rec)
+    except Exception as ex:  # noqa: BLE001
+        rec.update({"ok": False, "error": repr(ex)})
+        t.run.check(False, f"D-39 {rec['name']}: ran", repr(ex))
+    t.rows.append(rec)
+    t.run.save("rows.json", t.rows)
 
 
 async def custom_row(t: Table, r: dict, own_action: bool = False) -> None:

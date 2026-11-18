@@ -472,6 +472,41 @@
       "reads": {
         "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"]
       }
+    },
+    "loadReport": {
+      "description": "loadReport",
+      "reads": {
+        "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
+        "anim.camera.list": ["desktop/src/shell/Toolbars.tsx"],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "doc.loadReport.get": ["desktop/src/shell/LoadReportWindow.tsx"],
+        "drawAid.state.get": ["desktop/src/panels/ViewChrome.tsx", "desktop/src/shell/toolbarGroups.tsx"],
+        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.list": ["desktop/src/shell/Toolbars.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "view.list": ["desktop/src/panels/PanelBody.tsx"],
+        "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"]
+      }
     }
   },
   "plumbing": {

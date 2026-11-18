@@ -104,6 +104,8 @@ COVERAGE: dict[str, dict] = {
     "inline:keymap.conflict": {"rows": ["shortcut editor › conflict › Override", "shortcut editor › conflict › Cancel"],
                                "default": "Cancel"},
     "popover:Jobs": {"rows": ["progress window › Cancel"]},
+    "popover:Load report": {"reason": "no question: non-modal and informational (10 §7.3); Copy details writes the clipboard "
+                                      "and Close dismisses, neither a command (GUI-only `clipboard`, `dismiss`; loadReport.test.tsx)"},
     "popover:Agent sessions": {"reason": "no question: Pause, Resume and Stop are single actions, each a D-39 row"},
     "popover:Start screen": {"reason": "no question: each entry is a single action (New, Open, a recent project, a "
                                        "recovery entry), each a D-39 row"},

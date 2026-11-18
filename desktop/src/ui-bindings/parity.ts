@@ -23,6 +23,9 @@ export const GUI_ONLY_REASONS = [
   // A message box's button answers the question of the action that asked it (01 §12.1): the action's own command is
   // bound where the action is; an informational message's OK changes nothing (`dismiss`).
   'answer',
+  // Writes text to the system clipboard through `copyText` (`shell/clipboard.ts`) and changes no document or application
+  // state (D-40 answer 6; design note 2 §8): the load report's Copy details, the Activity panel's Copy as batch JSON.
+  'clipboard',
 ] as const;
 export type GuiOnlyReason = (typeof GUI_ONLY_REASONS)[number];
 

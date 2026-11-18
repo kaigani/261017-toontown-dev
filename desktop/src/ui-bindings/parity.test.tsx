@@ -341,6 +341,34 @@ async function surfaces(): Promise<Surface[]> {
     });
   }
 
+  // The load report window (M4 C4.4a, design note 2 §7): an open with repairs and warnings.
+  h.handlers['doc.loadReport.get'] = () =>
+    ok({
+      projectId: 'pr_1',
+      path: '/p/Walk.animpkg',
+      formatVersion: '1.0',
+      migratedFrom: null,
+      readOnly: false,
+      repairedCount: 1,
+      issues: [
+        {
+          issueId: 'is_1',
+          code: 'ref.dangling',
+          severity: 'warning',
+          path: 'scene:"Intro"',
+          message: 'A reference was cut.',
+        },
+      ],
+    });
+  mark(h);
+  act(() => {
+    h.event('project.opened', { projectId: 'pr_1' });
+  });
+  out.push(await settled('loadReport', await screen.findByRole('dialog', { name: 'Load report' })));
+  act(() => {
+    screen.getByRole('button', { name: 'Close' }).click();
+  });
+
   // Each dialog the menus and events open.
   const dialogs: [string, string][] = [
     ['About Toontown', 'app.info.get'],
