@@ -62,6 +62,28 @@ export function answerMadeStep(env: CommitAnswer): boolean {
   );
 }
 
+/** The view a gesture was made in (ruling D-53, preview note PV5): the view window's type when it was pressed and the
+ *  mapping its preview and overlay are drawn with (the Drawing type's drawing-to-view, the Camera type's
+ *  camera-to-view), in view pixels. */
+export interface GestureView {
+  readonly viewType: string | null;
+  readonly mapping: readonly number[] | null;
+}
+
+/** Whether a pending preview or overlay is drawn in the view as it is now (D-53): only in the view its gesture was made
+ *  in, with that view's own mapping. Under another view type (the window switched to the Camera view) or another
+ *  mapping it is not drawn; back in its own view before the answer it is drawn again. */
+export function drawnInView(owner: GestureView | null, now: GestureView): boolean {
+  if (owner === null) return true;
+  if (owner.viewType !== now.viewType) return false;
+  const a = owner.mapping;
+  const b = now.mapping;
+  if (a === null || b === null) return a === b;
+  return (
+    a.length === b.length && a.every((v, i) => Math.abs(v - (b[i] ?? Number.NaN)) <= 1e-9 * (1 + Math.abs(v)))
+  );
+}
+
 export class GestureLifecycle {
   private seq = 0;
   private latest: GestureToken | null = null;

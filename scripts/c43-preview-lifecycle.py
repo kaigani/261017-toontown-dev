@@ -17,7 +17,8 @@ recorded commands directly (ruling D-32; exact equality, ruling D-4):
 (c) undo by keyboard (a real Ctrl+Z) right after the release;
 (d) a second gesture pressed before the first's answer: both commit, nothing is left drawn;
 (e) a refusal (the drawing locked) clears the overlay at its answer, the drawing unchanged;
-(f) the active view switched to the Camera view and back while the answer is pending.
+(f) the window switched to the Camera view and back while the answer is pending: the overlay is not drawn
+    in the Camera view and is drawn again back in the Drawing view (D-53).
 
 Output in <out dir>: `rows.json`, `transcript.json`, `manifest.json` (kind `toontown.c43b.preview-lifecycle`); the
 committed receipt is their summary (D-42). Exit 0 when every row holds.
@@ -50,6 +51,7 @@ def _load(name: str, file: str):
 
 eq = _load("c42equivpl", "c42-gesture-equivalence.py")
 e6 = _load("c43e6pl", "c43-e6-coexistence.py")
+d39 = _load("c43d39pl", "c43-d39-bindings.py")
 c42, e2e = eq.c42, eq.e2e
 Engine = eq.Engine
 
@@ -62,6 +64,24 @@ VIEW = "drawingView"
 def pending(st: dict) -> bool:
     """A gesture's preview (Select) or overlay (a drawing tool's stroke) is drawn."""
     return bool(st.get("preview")) or st.get("overlay") is True
+
+
+def os_click_client(x: float, y: float) -> None:
+    """A real left click at a client point (CSS pixels times the device ratio) of the application's main window, which
+    must own the foreground (D-49 item 5)."""
+    import ctypes
+    from ctypes import wintypes
+    u = ctypes.windll.user32
+    h = e6._main_window(e2e.APP_PID["pid"])
+    if h is None or not c42.ensure_foreground(h):
+        raise RuntimeError("the application window is not in the foreground: no input is sent (D-49 item 5)")
+    origin = wintypes.POINT(0, 0)
+    u.ClientToScreen(h, ctypes.byref(origin))
+    u.SetCursorPos(int(origin.x + x), int(origin.y + y))
+    time.sleep(0.05)
+    e6._send_button(True)
+    time.sleep(0.03)
+    e6._send_button(False)
 
 
 def ctrl_z() -> None:
@@ -84,6 +104,19 @@ class Lifecycle:
         self.n = 0
         self.offset = None
         self.ratio = 1.0
+        self.cdp = None
+
+    def click_dom(self, ident: str) -> None:
+        """A real OS click on the page's element `ident` (its centre from the webview's debugging port)."""
+        if self.cdp is None:
+            self.cdp = d39.Cdp(d39.CDP_PORT)
+        r = self.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                        " if (!e) return null; const b = e.getBoundingClientRect();"
+                        " return {x: b.x + b.width / 2, y: b.y + b.height / 2, dpr: window.devicePixelRatio || 1}; })()"
+                        % json.dumps(ident))
+        if not r:
+            raise RuntimeError(f"no element {ident}")
+        os_click_client(r["x"] * r["dpr"], r["y"] * r["dpr"])
 
     async def cmd(self, n: str, p: dict | None = None) -> dict:
         env = await eq.job(self.app, await self.app.run(n, p or {}))
@@ -336,15 +369,32 @@ class Lifecycle:
             self.check(f"{name}: ran", False, repr(ex))
 
     async def state_f(self) -> None:
-        name = "(f) the active view switched to the Camera view and back while pending"
+        name = "(f) the window switched to the Camera view and back while pending"
         try:
             await self.start_row("brush")
+            seen: list = []
 
             async def switch():
-                await self.app.run("view.active.set", {"viewId": "cameraView"})
-                await asyncio.sleep(0.2)
-                await self.app.run("view.active.set", {"viewId": VIEW})
+                # Ruling D-53 (C43B-R4-01): real OS clicks on the window's type buttons show the Camera view, then the
+                # Drawing view again, both before the delayed answer (an agent's `view.type.set` would wait for the
+                # user's gesture to end). Each time the canvas is sampled once its scene shows the new type.
+                for view_type in ("camera", "drawing"):
+                    self.click_dom(f"{VIEW}.type.{view_type}")
+                    st = await c42.wait_canvas(self.app.s, lambda s_, v=view_type: s_.get("viewType") == v, 5)
+                    await asyncio.sleep(0.15)
+                    st = await self.state()
+                    seen.append({"type": view_type, "viewType": st.get("viewType"), "overlay": st.get("overlay"),
+                                 "preview": bool(st.get("preview")), "answered": json.dumps(st.get("lastGesture")) != before[0]})
+            before = [json.dumps((await self.state()).get("lastGesture"))]
             r = await self.drag([(-80, -80), (-40, -70), (0, -75)], after_release=switch)
+            cam = next((x for x in seen if x["type"] == "camera"), {})
+            back = next((x for x in seen if x["type"] == "drawing"), {})
+            # In the Camera view: not drawn (never with another view's mapping); back in its own view before the
+            # answer: drawn again; after the committed frame: gone.
+            ok_cam = cam.get("viewType") == "camera" and cam.get("overlay") is False and not cam.get("preview") and not cam.get("answered")
+            ok_back = back.get("viewType") == "drawing" and back.get("overlay") is True and not back.get("answered")
+            self.check(f"{name}: the pending overlay is not drawn in the Camera view, and is drawn again back in the "
+                       "Drawing view, both before the answer (D-53)", ok_cam and ok_back, {"samples": seen, "answeredAt": r["answeredAt"]})
             st = await self.state()
             self.check(f"{name}: the commit answered, nothing left drawn",
                        (r["record"] or {}).get("status") == "ok" and not pending(st),
@@ -368,6 +418,8 @@ async def session(app_bin: str, headless: str, run, work: Path, commit_ms: int, 
         return types.ListRootsResult(roots=[types.Root(uri=work.resolve().as_uri(), name="work")])
 
     os.environ["TT_TEST_COMMIT_DELAY_MS"] = str(commit_ms)
+    # The webview's debugging port, for row (f)'s real clicks on page elements (this run only).
+    os.environ["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"] = f"--remote-debugging-port={d39.CDP_PORT}"
     os.environ["TT_TEST_SCENE_DELAY_MS"] = str(scene_ms)
     discovery = work / f"discovery-{tag}.json"
     proc = e2e.launch(app_bin, user, discovery)
@@ -393,7 +445,7 @@ async def session(app_bin: str, headless: str, run, work: Path, commit_ms: int, 
     finally:
         with contextlib.suppress(Exception):
             e2e.stop(proc)
-        for k in ("TT_TEST_COMMIT_DELAY_MS", "TT_TEST_SCENE_DELAY_MS"):
+        for k in ("TT_TEST_COMMIT_DELAY_MS", "TT_TEST_SCENE_DELAY_MS", "WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"):
             os.environ.pop(k, None)
 
 

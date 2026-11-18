@@ -4,7 +4,13 @@
 // when the test says, the clock is the test's (the answer arrives at time 0, as CanvasView's `clearAt` computes it).
 import { describe, expect, it } from 'vitest';
 
-import { answerMadeStep, answerRevision, GestureLifecycle, type GestureToken } from './gestureLifecycle';
+import {
+  answerMadeStep,
+  answerRevision,
+  drawnInView,
+  GestureLifecycle,
+  type GestureToken,
+} from './gestureLifecycle';
 
 /** How an answer lets the preview go, as CanvasView's `clearAt` does at the answer's arrival (time 0). */
 type Outcome = 'step' | 'noStep' | 'refused';
@@ -203,5 +209,32 @@ describe('gesture lifecycle (C43B-R1S-06)', () => {
     c.answerOldest();
     expect(c.life.isCurrent(g)).toBe(false);
     expect(c.life.frame(drawn(99), 5000)).toBe(false);
+  });
+});
+
+// C43B-R4-01 (ruling D-53, preview note PV5): a pending preview or overlay belongs to the view its gesture was made in.
+describe('a pending preview belongs to its view (D-53)', () => {
+  const drawing = { viewType: 'drawing', mapping: [2, 0, 0, 2, 400, 300] };
+  it('is drawn in its own view, with its own mapping', () => {
+    expect(drawnInView(drawing, { viewType: 'drawing', mapping: [2, 0, 0, 2, 400, 300] })).toBe(true);
+  });
+  it('is not drawn when the window shows the Camera view, whatever its mapping', () => {
+    expect(drawnInView(drawing, { viewType: 'camera', mapping: [2, 0, 0, 2, 400, 300] })).toBe(false);
+    expect(drawnInView(drawing, { viewType: 'camera', mapping: [0.5, 0, 0, 0.5, 10, 10] })).toBe(false);
+  });
+  it('is drawn again back in its own view, and never with another mapping', () => {
+    const states = [
+      { viewType: 'camera', mapping: [0.5, 0, 0, 0.5, 10, 10] },
+      { viewType: 'drawing', mapping: [2, 0, 0, 2, 400, 300] },
+      { viewType: 'drawing', mapping: [4, 0, 0, 4, 400, 300] },
+    ];
+    expect(states.map((s) => drawnInView(drawing, s))).toEqual([false, true, false]);
+  });
+  it('a Camera view gesture is not drawn in the Drawing view', () => {
+    const camera = { viewType: 'camera', mapping: [0.5, 0, 0, 0.5, 10, 10] };
+    expect(drawnInView(camera, { viewType: 'drawing', mapping: [0.5, 0, 0, 0.5, 10, 10] })).toBe(false);
+  });
+  it('without a gesture there is nothing to hide', () => {
+    expect(drawnInView(null, { viewType: 'camera', mapping: null })).toBe(true);
   });
 });

@@ -34,10 +34,12 @@ import { decodeDrawing } from './format';
 import {
   answerMadeStep,
   answerRevision,
+  drawnInView,
   GestureLifecycle,
   type ClearAt,
   type CommitAnswer,
   type GestureToken,
+  type GestureView,
 } from './gestureLifecycle';
 import { gestureOrder } from './gestureOrder';
 import { drawingPreview, grabberPreview, scenePreview, type Box } from './preview';
@@ -96,6 +98,9 @@ export function CanvasView({
     let size = { width: 0, height: 0 };
     let dpr = typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1;
     let overlay: ViewTris | null = null;
+    // D-53 (C43B-R4-01; preview note PV5): the view the current gesture was made in. Its preview and overlay are drawn
+    // only there, with that view's mapping: not under the Camera type after a Drawing-type press, again on return.
+    let owner: GestureView | null = null;
     let viewVersion = 1;
     let drawnVersion = -1;
     let drawnView = -1;
@@ -236,6 +241,11 @@ export function CanvasView({
     const order = gestureOrder(engine);
     /** The tool a gesture of this view is made with: in a Camera view running the scene family, the scene tool
      *  (05 §5.0); otherwise the drawing tool. */
+    const viewNow = (): GestureView => {
+      const sc = model?.scene ?? null;
+      if (sc?.viewType === 'camera') return { viewType: 'camera', mapping: sc.camera?.cameraToView ?? null };
+      return { viewType: sc?.viewType ?? null, mapping: d2v };
+    };
     const actingTool = () => (model?.scene?.viewType === 'camera' && sceneFamily ? sceneTool : style.tool);
     const reportGesture = (on: boolean) => {
       order.report(on ? { kind: 'gesture', title: actingTool() } : null);
@@ -536,6 +546,10 @@ export function CanvasView({
         lastColours = scene.colours;
       }
       const camera = scene?.viewType === 'camera' ? scene : null;
+      // D-53: the gesture's preview and overlay, as drawn in this view now (none under another view type or mapping).
+      const here = drawnInView(owner, viewNow());
+      const pv = here ? preview : null;
+      const ov = here ? overlay : null;
       // The Camera view's drawing mapping depends on the composition (the current element, the frame, the camera):
       // asked again once per scene revision (C43A-R1-01).
       if (camera && model.version !== mappedVersion) {
@@ -573,7 +587,7 @@ export function CanvasView({
           // The Camera view's field guide lies on the camera frame (SI-153).
           const g0 = camera ? cameraGridMatrix(camera, scene.grid) : d2v;
           // The Grabber's preview pans everything drawn, the grid included (preview note §3).
-          const g = g0 && previewKind === 'grab' && preview ? compose(preview, g0) : g0;
+          const g = g0 && previewKind === 'grab' && pv ? compose(pv, g0) : g0;
           if (g) {
             grid = new ViewTris();
             gridGeometry(scene.grid, g, size.width, size.height, grid);
@@ -584,20 +598,20 @@ export function CanvasView({
       }
       // The preview (preview note §3): the Grabber pans both mappings; a scene-tool drag moves the selected
       // occurrences; the selection's overlay moves with a scene or Select drag.
-      const grab = previewKind === 'grab' && preview ? preview : null;
+      const grab = previewKind === 'grab' && pv ? pv : null;
       const c2v = camera?.camera?.cameraToView ?? null;
       let overlayNow = selection.tris;
-      if (preview && (previewKind === 'scene' || previewKind === 'drawing') && overlayParts.selection) {
-        overlayNow = combine(overlayParts.frame, mapTris(overlayParts.selection, preview));
+      if (pv && (previewKind === 'scene' || previewKind === 'drawing') && overlayParts.selection) {
+        overlayNow = combine(overlayParts.frame, mapTris(overlayParts.selection, pv));
       }
       renderer.frame({
         scene,
         drawingToView: grab ? compose(grab, d2v) : d2v,
         cameraToView: grab && c2v ? compose(grab, c2v) : c2v,
-        preview: previewKind === 'scene' && preview ? { transform: preview, elements: selectedIds } : null,
+        preview: previewKind === 'scene' && pv ? { transform: pv, elements: selectedIds } : null,
         split:
-          previewKind === 'drawing' && preview && parts?.ready === 2
-            ? { drawingId: parts.drawingId, rest: parts.rest, selection: parts.selection, transform: preview }
+          previewKind === 'drawing' && pv && parts?.ready === 2
+            ? { drawingId: parts.drawingId, rest: parts.rest, selection: parts.selection, transform: pv }
             : null,
         width: size.width,
         height: size.height,
@@ -605,14 +619,14 @@ export function CanvasView({
         staticDirty,
         grid,
         // The selection under the gesture in progress (the drag's own feedback on top).
-        overlay: combine(overlayNow, overlay),
+        overlay: combine(overlayNow, ov),
       });
       if (metrics) {
         const now = performance.now();
         // The frame time is the interval between frames (the rAF timestamps); the work is this callback's.
         metrics.frame(frameAt, now - began, collector.active || playing !== null);
         // Input-to-ink, and for a previewed drag its feedback: the frame that draws the samples so far (plan §6).
-        if (overlay || preview) metrics.inkDrawn(now);
+        if (ov || pv) metrics.inkDrawn(now);
         // Committed when the window shows the committed state: every drawing resident at its scene revision.
         metrics.drawn(model.settledVersion, now);
       }
@@ -629,8 +643,8 @@ export function CanvasView({
         selection.shown,
         scene?.viewType ?? null,
         previewKind,
-        preview,
-        overlay !== null,
+        pv,
+        ov !== null,
         cameraShown,
         stats.drawn,
         stats.residentDrawings,
@@ -651,9 +665,10 @@ export function CanvasView({
         selection: selection.shown,
         viewType: scene?.viewType ?? null,
         // The preview's affine and corners of the selection box under it, for the e2e (PV2).
-        ...(preview ? { preview: { kind: previewKind, transform: preview } } : {}),
-        // Whether a gesture's overlay is drawn (a drawing tool's stroke until its commit is drawn; ruling D-50's e2e).
-        overlay: overlay !== null,
+        ...(pv ? { preview: { kind: previewKind, transform: pv } } : {}),
+        // Whether a gesture's overlay is drawn in this view (a drawing tool's stroke until its commit is drawn; rulings
+        // D-50, D-53: not under another view type or mapping).
+        overlay: ov !== null,
         ...(cameraShown ? { camera: cameraShown } : {}),
         ...(({ drawn, residentDrawings, residentBytes, lastError }) => ({
           drawn,
@@ -736,6 +751,7 @@ export function CanvasView({
         // The agent's gesture is a gesture of its own from its first frame: an earlier commit's answer does not clear
         // its overlay, and a user press makes its own answer obsolete.
         playing = { input: next, shown: 0, points: [], token: life.begin() };
+        owner = viewNow();
         reportGesture(true);
       }
       const events = Array.isArray(playing.input.request['events'])
@@ -786,6 +802,7 @@ export function CanvasView({
       canvas.setPointerCapture(e.pointerId);
       // A new gesture: an earlier commit still unanswered no longer clears anything (its overlay gives way here).
       gestureToken = life.begin();
+      owner = viewNow();
       reportGesture(true);
       overlay = gestureOverlay(collector.points, style);
       // Which preview this drag takes (preview note §3).
