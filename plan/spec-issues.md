@@ -2050,3 +2050,27 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Question for the spec owner:** should Delete Workspace ask ("Delete the workspace "Name"? This cannot be undone."
   with Delete and Cancel)? Until answered the behaviour stays as 01 states it (ruling D-46 item 5); if a question is
   added, it gets its rows in the D-44 flow table.
+
+## SI-163 — no single MCP answer or event over 1 MiB (found in M4 C4.3b round 4; ruled)
+
+- **Sections:** 11 §6.5 (inline limits), 11 §7.2 (the result envelope), 11 §8 (jobs and `job_wait`).
+- **Problem:** a completed `render.range.run` of 12 000 frames answers `job_wait` with a 4.1 MB record: its `result`
+  lists every output. Over the streamable HTTP transport that answer is one server-sent event, and a common client
+  (Python `mcp` 2.0.0 over `httpx2` 2.12.0) refuses any event over 1 MiB, reporting "SSE stream ended without a
+  response" although the server wrote the whole answer (D-49 item 4; `reviews/evidence/M4-C4.3b-r4/job-wait`).
+- **Ruled (D-51 item 2):** no single MCP answer or event may exceed 1 MiB. A job record's `result` that enumerates
+  outputs carries the count, the output location and naming pattern, the first and last entries and a `truncated`
+  flag; the full list is read in pages.
+- **Built:** not yet. The design (the commands that can exceed the cap, the bounded shape, the paged read, and a gate
+  test that measures the largest answer of each command's example) goes in `reviews/M4-design-agent-surfaces.md` as an
+  item of C4.4a.
+
+## SI-164 — a failed or cancelled Open and the previous project (found in M4 C4.3b closure; open)
+
+- **Sections:** 01 §3.2 (Open: "the current project is closed before the new one is loaded"; cancelling "leaves no
+  project open"; on an error "the project is not opened"), 10 LOAD-02.
+- **Problem:** after Open fails (a file that is not a project) or is cancelled, no project is open: the one that was
+  open before is gone, though nothing replaced it. The closure check expected it to stay open; the spec says otherwise.
+- **Question for the spec owner:** should a failed or cancelled Open return to the previous project (for instance by
+  loading the new one before closing the old)? Until answered the behaviour is the spec as written (ruling D-53
+  context); the D-44 "error box › OK" row checks it.
