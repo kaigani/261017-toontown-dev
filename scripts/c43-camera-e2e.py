@@ -317,6 +317,8 @@ async def preview_rows(session, run, ids) -> None:
         held = r.get("held") or {}
         t = held.get("transform")
         run.check(r.get("place") is not None and "error" not in (r.get("times") or {}), f"PV {name}: the OS drag lands in the {view}", {"times": r.get("times"), "locate": r.get("locate")})
+        if r.get("place") is None or "pos0" not in r:
+            return  # no drag was made: nothing further of this row can be checked (the failure is above)
         run.check(r.get("heldPosition") == r.get("pos0") and r.get("after") == r.get("pos0") + 1,
                   f"PV1 {name}: no command while the drag is held, one step after its release",
                   {k: r.get(k) for k in ("pos0", "heldPosition", "after")})
@@ -377,6 +379,8 @@ async def preview_rows(session, run, ids) -> None:
         await rc(session, "app.context.set", {"elementId": ids["Bob"], "frame": 1})
         await rc(session, "tool.active.set", {"toolId": "select"})
         await rc(session, "draw.selection.set", {"by": "all"})
+        # The Drawing view laid out and drawing before it is looked for (a wait for the state, D-45; 30 s guard).
+        await c42.wait_canvas(session, lambda s_: bool(s_.get("drawings")) and s_.get("viewType") == "drawing", 30)
     await row("drawing select move", "drawingView", drawing_setup,
               lambda b: [((b[0] + b[2]) / 2 + 10, (b[1] + b[3]) / 2 + 10), ((b[0] + b[2]) / 2 + 40, (b[1] + b[3]) / 2 + 25)])
 

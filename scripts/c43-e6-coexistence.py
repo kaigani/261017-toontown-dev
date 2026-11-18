@@ -155,15 +155,26 @@ async def locate_view(session, rc, target: str, keep: Path | None = None):
     captures there for diagnosis."""
     shots = {}
     raw = {}
+
+    def why(reason: str, **facts) -> None:
+        # A failed search says why (run 44262831543: 13 quick failures that never reached the pixel search).
+        if keep is not None:
+            keep.mkdir(parents=True, exist_ok=True)
+            (keep / f"locate-why-{target}.json").write_text(json.dumps({"reason": reason, **facts}), encoding="utf-8")
+            for t, b in raw.items():
+                (keep / f"locate-failed-{'window-' if t == 'window' else ''}{target}.png").write_bytes(b)
     for tgt in ("window", target):
-        r = (await rc(session, "inspect.screenshot", {"target": tgt})).get("result") or {}
+        env = await rc(session, "inspect.screenshot", {"target": tgt})
+        r = env.get("result") or {}
         if not r.get("png"):
+            why(f"no capture of {tgt}", status=env.get("status"), error=env.get("error"))
             return None
         raw[tgt] = base64.b64decode(r["png"])
         shots[tgt] = c42.png_rgba(raw[tgt])
     W, H, cw, wrows = shots["window"]
     w, h, cv, vrows = shots[target]
     if w > W or h > H:
+        why("the view's capture is larger than the window's", view=[w, h], window=[W, H])
         return None
     xs = list(range(0, w, max(1, w // 16)))
     ys = list(range(0, h, max(1, h // 32)))
