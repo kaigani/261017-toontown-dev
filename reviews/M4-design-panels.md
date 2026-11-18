@@ -225,3 +225,28 @@ the panel marking fonts that are not bundled, and asks for the ruling.
 A committed edit's redraw of its panel within one frame of its answer (work per frame p95 at most 8 ms, D-33); the
 inspector's thumbnail rendered off the document thread's critical path (a query answered within the availability
 budgets of O-23, measured in the workstation receipt).
+
+## 13. Open Recent's full path (01 §3.3 line 190; D-48 item 8; the first item of C4.4a)
+
+01 §3.3: "Each menu entry shows the project name; the full path is shown in the status bar or tooltip." The start
+screen's entries show it as a tooltip; the native Open Recent menu did not. Tauri's menu API gives a native item
+neither a tooltip nor a highlight event, so the host adds a little platform code.
+
+- **One model.** Each Open Recent node of the menu model (`menu_model.rs`, D-38) carries `hint`: the entry's full path.
+  The window tree's menu bar reports it, so the D-39 MCP form reads what the host shows, on both OSes.
+- **Windows: the status bar.** The host subclasses the main window (`SetWindowSubclass`) and watches `WM_MENUSELECT`.
+  A highlighted item of the menu whose leading items are exactly the current Open Recent labels, at position `i`, is
+  entry `i` (`dyn:recent:i` is inserted at position `i`): the host emits `menu-hint {text: path}`. Any other highlighted
+  item, and the menu closing (`flags 0xFFFF`, no menu), emit `menu-hint {text: null}`. Tauri does not expose the menu
+  bar's own handle of the submenu (only the popup copy's), hence the label match.
+- **The status bar.** While a hint is set, the left line shows it; when it clears, the left line shows its status line
+  again (a menu hint never replaces the last status message). The front end listens through the transport layer
+  (`hostApi.onMenuHint`), as for host notices.
+- **macOS: the tooltip.** After each rebuild of Open Recent the host sets each entry's `NSMenuItem` tool tip to its path
+  (found under the application's main menu by the same label match). The macOS runner checks the model's `hint` in the
+  MCP form; the native tool tip is a manual script line (`reviews/manual/M4/`).
+- **D-39 row.** OS form (Windows workstation): real keys open File › Open Recent and highlight the first entry; the
+  window tree's `status.line` is its full path; Escape twice closes the menu and the line returns to what it was. MCP
+  form (CI, both OSes): the menu bar's Open Recent node `dyn:recent:0` has `hint` equal to `project.recent.list`'s path.
+- **No command, no state:** a highlight changes nothing in the document or the application; the parity gate is
+  unchanged (the entry's binding is `project.open {path}`, already declared).
