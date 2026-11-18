@@ -1,0 +1,178 @@
+[
+ {
+  "check": "modal keys and Tab message.keymap.importMode",
+  "ok": true
+ },
+ {
+  "check": "Import merge",
+  "ok": true
+ },
+ {
+  "check": "Import complete binding set merge",
+  "ok": true
+ },
+ {
+  "check": "modal keys and Tab message.keymap.importMode",
+  "ok": true
+ },
+ {
+  "check": "Import replace",
+  "ok": true
+ },
+ {
+  "check": "Import complete binding set replace",
+  "ok": true
+ },
+ {
+  "check": "modal keys and Tab message.keymap.importMode",
+  "ok": true
+ },
+ {
+  "check": "Import cancel",
+  "ok": true
+ },
+ {
+  "check": "Import complete binding set cancel",
+  "ok": true
+ },
+ {
+  "check": "Import enter",
+  "ok": true
+ },
+ {
+  "check": "Import complete binding set enter",
+  "ok": true
+ },
+ {
+  "check": "Import space",
+  "ok": true
+ },
+ {
+  "check": "Import complete binding set space",
+  "ok": true
+ },
+ {
+  "check": "Import escape",
+  "ok": true
+ },
+ {
+  "check": "Import complete binding set escape",
+  "ok": true
+ },
+ {
+  "check": "modal keys and Tab message.keymap.resetAll",
+  "ok": true
+ },
+ {
+  "check": "Reset reset",
+  "ok": true
+ },
+ {
+  "check": "modal keys and Tab message.keymap.resetAll",
+  "ok": true
+ },
+ {
+  "check": "Reset cancel",
+  "ok": true
+ },
+ {
+  "check": "Reset focused default answers enter",
+  "ok": true
+ },
+ {
+  "check": "Reset enter",
+  "ok": true
+ },
+ {
+  "check": "Reset focused default answers space",
+  "ok": true
+ },
+ {
+  "check": "Reset space",
+  "ok": true
+ },
+ {
+  "check": "Reset escape",
+  "ok": true
+ },
+ {
+  "check": "modal keys and Tab keymap.conflict",
+  "ok": true
+ },
+ {
+  "check": "Conflict override",
+  "ok": true
+ },
+ {
+  "check": "modal keys and Tab keymap.conflict",
+  "ok": true
+ },
+ {
+  "check": "Conflict cancel",
+  "ok": true
+ },
+ {
+  "check": "modal keys and Tab keymap.conflict",
+  "ok": true
+ },
+ {
+  "check": "Conflict override-space",
+  "ok": true
+ },
+ {
+  "check": "modal keys and Tab keymap.conflict",
+  "ok": true
+ },
+ {
+  "check": "Conflict cancel-space",
+  "ok": true
+ },
+ {
+  "check": "Save As one native question yes",
+  "ok": true
+ },
+ {
+  "check": "Save As bytes yes",
+  "ok": true
+ },
+ {
+  "check": "Save As one native question no",
+  "ok": true
+ },
+ {
+  "check": "Save As bytes no",
+  "ok": true
+ },
+ {
+  "check": "Agent progress cancel",
+  "ok": true
+ },
+ {
+  "check": "Job past commit is not cancellable",
+  "ok": true
+ },
+ {
+  "check": "modal keys and Tab message.project.unsavedChanges",
+  "ok": true
+ },
+ {
+  "check": "Escape cancels unsaved question after Tab New",
+  "ok": true
+ },
+ {
+  "check": "Unsaved modal keys and Cancel preserve dirty content",
+  "ok": true
+ },
+ {
+  "check": "Escape cancels unsaved question after Tab Open",
+  "ok": true
+ },
+ {
+  "check": "Unsaved focused Space saves without background playback",
+  "ok": true
+ },
+ {
+  "check": "Native overwrite modal keys and No preserve document",
+  "ok": true
+ }
+]
