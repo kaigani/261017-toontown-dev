@@ -1,0 +1,29 @@
+[
+ {
+  "name": "measured stale scene order and preview held",
+  "ok": true,
+  "detail": {
+   "orderMs": {
+    "release": 608175502.5674,
+    "sceneAsked": 608174175.1493,
+    "sceneAnswer": 608175976.6754,
+    "commitAnswer": 608177996.4979
+   },
+   "answeredAt": 2.592851300025359,
+   "heldSamples": 20,
+   "heldAll": true,
+   "afterSamples": 9,
+   "afterNone": true,
+   "status": "ok"
+  }
+ },
+ {
+  "name": "stale scene D-32",
+  "ok": true,
+  "detail": {
+   "statuses": [
+    "ok"
+   ]
+  }
+ }
+]

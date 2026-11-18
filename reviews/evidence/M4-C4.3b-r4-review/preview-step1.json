@@ -1,0 +1,10 @@
+{
+  "kind": "toontown.c43b.preview-lifecycle",
+  "commitDelayMs": 2500,
+  "sceneDelayMs": 1800,
+  "seconds": 68.1,
+  "rows": 18,
+  "passed": 18,
+  "failed": [],
+  "failures": []
+}

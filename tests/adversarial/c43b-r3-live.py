@@ -191,8 +191,9 @@ async def modal(t,ident):
  for _ in range(20):
   d.key(0x09);await asyncio.sleep(.03)
   focus.append(t.cdp.js("(() => {const e=document.querySelector('[data-tt-id='+JSON.stringify(%s)+']');const root=e?.closest('[role=alertdialog],[role=dialog]')||e;return !!root?.contains(document.activeElement)})()"%json.dumps(ident)))
- d.key(0x42)
- d.key(0x5A,0x11)
+ if ident!='keymap.conflict':
+  d.key(0x42)
+  d.key(0x5A,0x11)
  route=[]
  for _ in range(100):
   a=t.cdp.js("({id:document.activeElement?.dataset.ttId,command:document.activeElement?.dataset.ttCommand,disabled:document.activeElement?.disabled})")
@@ -226,33 +227,22 @@ def native_dialogs():
  return out
 async def overwrite(t):
  c=t.cmd
- for choice in ('replace','cancel','enter','space','escape'):
+ for choice in ('yes','no'):
   await preserve_fixture(t)
   await c('project.create',{'name':'Existing','onUnsaved':'fail'});target=t.work/('overwrite-'+choice+'.animpkg');await c('project.saveAs',{'path':str(target)})
   await modal_fixture(t,'Replacement');before=target.read_bytes();t.clear()
   d.choose_menu(['File','Save As']);await asyncio.sleep(1.8);d.key(0x4E,0x12);d.key(0x41,0x11);d.type_text(str(target));d.key(0x0D);await asyncio.sleep(.7)
   native=native_dialogs()
-  from PIL import ImageGrab
-  ImageGrab.grab().save(OUT/('overwrite-'+choice+'-native.png'))
-  native_question=any('confirm save' in x['title'].lower() or any('already exists' in y.lower() for y in x['children']) for x in native)
-  if native_question:d.key(0x59)
-  await wait(t,'message.project.exists')
-  ImageGrab.grab().save(OUT/('overwrite-'+choice+'-application.png'))
-  focused=t.cdp.js('document.activeElement?.dataset.ttId')
-  effective=choice
-  if choice in ('replace','cancel'):
-   await modal(t,'message.project.exists');t.click('message.'+choice)
-  else:
-   d.key(0x0D if choice=='enter' else 0x20 if choice=='space' else 0x1B);await asyncio.sleep(.3)
-   stuck=t.cdp.js("!!document.querySelector('[data-tt-id=\"message.project.exists\"]')")
-   t.run.check(not stuck,'Save As focused default answers '+choice,{'focus':focused,'stuck':stuck})
-   if stuck:d.key(0x1B)
-   effective='cancel' if focused!='message.replace' or choice=='escape' or stuck else 'replace'
-  await asyncio.sleep(1.5)
-  rec={'choice':choice,'native':native,'nativeQuestion':native_question,'applicationQuestion':True,'questionCount':2 if native_question else 1,'focused':focused,'beforeHash':hashlib.sha256(before).hexdigest(),'afterHash':sha(target),'sent':t.recorded()}
+  questions=[x for x in native if 'confirm save' in x['title'].lower() or any('already exists' in y.lower() for y in x['children'])]
+  d.key(0x59 if choice=='yes' else 0x4E);await asyncio.sleep(1.5)
+  application=t.cdp.js("!!document.querySelector('[role=alertdialog]')")
+  if choice=='no':d.key(0x1B);await asyncio.sleep(.3)
+  sent=[x for x in t.recorded() if x.get('command') not in SPEC_QUERIES and x.get('command')!='review.dispatch_key']
+  expected=[{'command':'project.saveAs','params':{'path':str(target),'onExists':'overwrite'}}] if choice=='yes' else []
+  rec={'choice':choice,'native':native,'questionCount':len(questions),'applicationQuestion':application,'beforeHash':hashlib.sha256(before).hexdigest(),'afterHash':sha(target),'sent':sent}
   t.run.save('overwrite-'+choice+'.json',rec)
-  t.run.check(not native_question,'Save As exactly one question '+choice,rec)
-  t.run.check((target.read_bytes()!=before)==(effective=='replace'),'Save As bytes '+choice,rec)
+  t.run.check(len(questions)==1 and not application and sent==expected,'Save As one native question '+choice,rec)
+  t.run.check((target.read_bytes()!=before)==(choice=='yes'),'Save As bytes '+choice,rec)
 async def overwrite_only(t):
  t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();await overwrite(t)
 async def jobs_only(t):
@@ -605,88 +595,215 @@ async def b2_body(t):
 def b2():return bcase(b2_body,'b2')
 
 
-async def b3_body(t):
- # Fresh fixture and real OS input; all raw frame captures remain outside the repository.
- import ctypes, threading
- from ctypes import wintypes
- cam=load('b3camera','scripts/c43-camera-e2e.py')
- t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
- await modal_fixture(t,'B3 preview lifecycle')
- eid=(await t.cmd('app.state.get')).get('element',{}).get('id')
- for g in range(int(os.environ.get('B3_GROUPS','10'))):
-  steps=[]
-  for i in range(100):
-   n=g*100+i
-   steps += [{'id':'element.create','params':{'type':'drawing','name':'B3 '+str(n)},'as':'e'+str(i)},
-    {'id':'element.drawing.create','params':{'elementId':'$e'+str(i)+'.result.elementIds.0','name':'1','exposeFrom':1,'exposeTo':24},'as':'d'+str(i)},
-    {'id':'draw.rectangle.add','params':{'drawingId':'$d'+str(i)+'.result.drawingId','from':{'x':500+n%40*3,'y':500+n//40*3},'to':{'x':502+n%40*3,'y':502+n//40*3}}}]
-  env=await d.e2e.call(t.s,'batch',{'steps':steps,'label':'B3 heavy fixture'})
-  if env.get('status') not in ('ok',None):raise RuntimeError(env)
-  print('B3 fixture',g+1,flush=True)
- await t.cmd('app.context.set',{'elementId':eid,'frame':1})
- await t.cmd('view.pan.set',{'viewId':'drawingView','centre':{'x':0,'y':0}})
- await t.cmd('drawAid.autoLightTable.set',{'enabled':True})
- await t.cmd('view.zoom.set',{'viewId':'drawingView','zoom':1})
- await t.cmd('draw.selection.set',{'by':'all'})
- await asyncio.sleep(3)
- def summary():
-  return t.cdp.js("JSON.parse(document.querySelector('[data-tt-id=\"drawingView.canvas\"]').getAttribute('data-tt-value'))")
- async def document():
-  path=t.work/'B3-document.json'
-  await t.cmd('doc.export.json',{'scope':'project','binaries':'omit','path':str(path),'onExists':'overwrite'})
-  return content({'bundle':json.loads(path.read_text(encoding='utf-8'))})
- results=[]
- for attempt,tool in enumerate(('move','scale','brush','rectangle')):
-  await t.cmd('draw.selection.set',{'by':'all'})
-  await t.cmd('tool.active.set',{'toolId':'select' if tool in ('move','scale') else tool})
-  await asyncio.sleep(.4)
-  place=await d.e6.locate_view(t.s,d.e2e.run_cmd,'drawingView');b=await cam.box_of(t.s,'drawingView')
-  if not place or not b:raise RuntimeError('missing view or selection')
-  x,y=((b[0]+b[2])/2+10,(b[1]+b[3])/2+10) if tool=='move' else (b[2],b[3]) if tool=='scale' else (b[2]+35,b[3]+35)
-  pts=[(place[0]+x,place[1]+y),(place[0]+x+32,place[1]+y+17)]
-  # Capture the rendered page for every compositor frame, with acknowledgements in a dedicated reader.
-  from websocket import create_connection
-  import urllib.request,base64
-  pages=json.load(urllib.request.urlopen('http://127.0.0.1:'+str(d.CDP_PORT)+'/json'))
-  page=next(p for p in pages if p.get('type')=='page' and 'float' not in p.get('url',''))
-  ws=create_connection(page['webSocketDebuggerUrl']);frames=[];stop=threading.Event()
-  def read_frames():
-   try:
-    while not stop.is_set():
-     msg=json.loads(ws.recv())
-     if msg.get('method')=='Page.screencastFrame':
-      p=msg['params'];idx=len(frames);path=OUT/('baseline-'+str(attempt)+'-'+tool+'-'+str(idx)+'.png');path.write_bytes(base64.b64decode(p['data']))
-      frames.append({'time':time.monotonic(),'metadata':p.get('metadata'),'file':str(path)})
-      ws.send(json.dumps({'id':10000+idx,'method':'Page.screencastFrameAck','params':{'sessionId':p['sessionId']}}))
-   except Exception:pass
-  reader=threading.Thread(target=read_frames,daemon=True);reader.start()
-  ws.send(json.dumps({'id':1,'method':'Page.startScreencast','params':{'format':'png','everyNthFrame':1}}))
-  times={};before=await document();h0=await t.position()
-  th=threading.Thread(target=d.e6.os_drag,args=(d.e2e.APP_PID['pid'],pts,.15,.8,times));th.start()
-  samples=[]
-  while th.is_alive():
-   samples.append({'time':time.monotonic(),'summary':summary()});await asyncio.sleep(.01)
-  await asyncio.to_thread(th.join)
-  for i in range(150):
-   samples.append({'time':time.monotonic(),'summary':summary()});await asyncio.sleep(.01)
-  ws.send(json.dumps({'id':2,'method':'Page.stopScreencast'}));stop.set();ws.close();reader.join(timeout=2)
-  after=await document();h1=await t.position();last=summary().get('lastGesture') or {}
-  row={'tool':tool,'times':times,'frames':frames,'samples':samples,'lastGesture':last,'steps':h1-h0,'attempt':attempt}
-  t.run.save('b3-'+'baseline-'+str(attempt)+'-'+tool+'.json',row)
-  t.run.check(not times.get('error') and h1==h0+1,'B3 preliminary input history '+tool,row['times'])
-  await t.cmd('edit.undo')
-  restored=await document()
-  commands=last.get('commands') or []
-  for c in commands:await t.cmd(c['commandId'],c.get('params',{}))
-  direct=await document()
-  # Revisions and generated object ids can differ after undo/reissue; preserve full exports for review.
-  t.run.save('b3-'+tool+'-documents.json',{'before':before,'after':after,'restored':restored,'direct':direct})
-  results.append({'tool':tool,'frames':len(frames),'steps':h1-h0,'commands':commands})
-  await t.cmd('edit.undo');await asyncio.sleep(.5)
- t.run.save('b3-baseline.json',results)
- raise RuntimeError('B3 incomplete: heavy pending interval, frame analysis, and steps 2-6 remain unverified')
+def b3():
+ step=int(os.environ.get('B3_STEP','1'))
+ lc=load('review_lifecycle','scripts/c43-preview-lifecycle.py')
+ head=str(ROOT/'target/release/toontown-headless.exe')
+ if step==1:
+  return subprocess.run([sys.executable,str(ROOT/'scripts/c43-preview-lifecycle.py'),APP,head,str(OUT)],cwd=ROOT).returncode
+ import inspect,textwrap
+ reader=textwrap.dedent(inspect.getsource(load('timing_source','scripts/c43-d39-bindings.py').Cdp._read))
+ reader=reader.replace('    while True:', '    self.trace=[];self.trace_requests={}\n    while True:',1)
+ marker='        if r.get("method") == "Network.requestWillBeSent":'
+ observe='''        if r.get("method") == "Network.requestWillBeSent":
+            req=r['params'].get('request') or {};url=req.get('url','')
+            for cmd in ('canvas_scene','gesture_commit'):
+                if cmd in url:
+                    e={'cmd':cmd,'asked':time.monotonic()*1000,'args':req.get('postData')}
+                    self.trace.append(e);self.trace_requests[r['params']['requestId']]=e
+        if r.get('method') == 'Network.loadingFinished':
+            e=self.trace_requests.get(r['params']['requestId'])
+            if e is not None:e['answered']=time.monotonic()*1000
+'''
+ reader=reader.replace(marker,observe+marker)
+ exec(compile(reader,'<review timing observer>','exec'),d.__dict__);d.Cdp._read=d.__dict__['_read']
+ class Review(lc.Lifecycle):
+  async def fixture(self):
+   await super().fixture()
+   d.e2e.APP_PID=lc.e2e.APP_PID
+   self.cdp=d.Cdp(d.CDP_PORT)
+   self.cdp.record()
+  async def start_row(self,*args):
+   await super().start_row(*args)
+   if self.scene_ms:await asyncio.sleep(2*self.scene_ms/1000+.3)
+   self.cdp.trace=[]
+  async def press(self,*args,**kwargs):
+   r=await super().press(*args,**kwargs)
+   self.release_page=time.monotonic()*1000
+   return r
+  async def settle(self, pressed, extra_s=2.0):
+   rel=pressed['times']['release']; before=pressed['before']; samples=[]; answer=None; record=None
+   while time.monotonic()-rel < self.commit_ms/1000+14:
+    st=await self.state();now=time.monotonic()-rel;raw=st.get('lastGesture')
+    if answer is None and raw is not None and json.dumps(raw)!=before:answer=now;record=raw
+    samples.append((now,lc.pending(st)))
+    import base64
+    capture=self.cdp.call('Page.captureScreenshot',{'format':'png','captureBeyondViewport':False})
+    data=capture.get('result',{}).get('data')
+    if data:(OUT/('frame-'+str(self.n)+'-'+str(len(samples))+'.png')).write_bytes(base64.b64decode(data))
+    self.run.save('sample-'+str(self.n)+'.json',{'samples':samples,'latest':st,'record':record})
+    if answer is not None and now>=answer+extra_s:break
+    await asyncio.sleep(.02)
+   trace=self.cdp.trace
+   self.run.save('trace-'+str(self.n)+'.json',trace)
+   return {'samples':samples,'record':record,'answeredAt':answer,'trace':trace}
+  async def state_b(self):
+   await self.start_row('select',True)
+   async def ask():
+    await self.cmd('drawAid.grid.set',{'visible':True});await asyncio.sleep(.15)
+   r=await self.drag([(-120,40),(-90,50),(-60,60)],prepare=ask)
+   trace=r['trace'];commits=[e for e in trace if e['cmd']=='gesture_commit'];scenes=[e for e in trace if e['cmd']=='canvas_scene' and e['asked']<self.release_page<e.get('answered',0)]
+   commit=commits[-1] if commits else {};scene=next((e for e in scenes if e['answered']<commit.get('answered',0)),{})
+   order={'release':self.release_page,'sceneAsked':scene.get('asked'),'sceneAnswer':scene.get('answered'),'commitAnswer':commit.get('answered')}
+   ok,detail=self.held_while_pending(r);self.check('measured stale scene order and preview held',bool(scene) and ok,{'orderMs':order,**detail})
+   await self.head.run('drawAid.grid.set',{'visible':True})
+   same,diff=await self.same_as_direct([r['record']]);self.check('stale scene D-32',same,diff)
+  async def state_c(self):
+   await self.start_row('brush')
+   p=await self.press([(-80,50),(-40,60),(0,55)])
+   await asyncio.sleep(.05);d.front();lc.ctrl_z();await asyncio.sleep(.65)
+   early=await self.state()
+   self.run.save('undo-pending-observation.json',early)
+   r=await self.settle(p)
+   same,diff=await self.same_as_direct([r['record']],extra=[('edit.undo',{})])
+   self.check('undo D-32',same and not lc.pending(await self.state()),diff)
+  async def state_f(self):
+   await self.start_row('brush')
+   p=await self.press([(-80,-80),(-40,-70),(0,-75)])
+   states=[]
+   for view in ('camera','drawing'):
+    rect=self.cdp.js("(() => {const r=document.querySelector('[data-tt-id=\"drawingView.type."+view+"\"]').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,dpr:devicePixelRatio}})()")
+    h=d.front();origin=d.wintypes.POINT(0,0);d.u32.ClientToScreen(h,d.ctypes.byref(origin))
+    d.u32.SetCursorPos(int(origin.x+rect['x']*rect['dpr']),int(origin.y+rect['y']*rect['dpr']));d.e6._send_button(True);await asyncio.sleep(.03);d.e6._send_button(False)
+    await asyncio.sleep(.55)
+    import base64
+    shot=self.cdp.call('Page.captureScreenshot',{'format':'png'})
+    (OUT/('switch-'+view+'.png')).write_bytes(base64.b64decode(shot['result']['data']))
+    state=await self.state()
+    states.append({'view':view,'afterRelease':time.monotonic()-p['times']['release'],'state':state})
+   r=await self.settle(p)
+   self.check('Camera and back while pending have no stale preview',all(not lc.pending(x['state']) and x['afterRelease']<2.5 for x in states),states)
+   same,diff=await self.same_as_direct([r['record']]);self.check('view switch D-32',same and not lc.pending(await self.state()),diff)
+  async def state_a(self):
+   if step!=2:
+    for name,tool,pts in [('move','select',[(-120,40),(-90,50),(-60,60)]),('scale','select',[(180,110),(190,116),(200,122)]),('Brush','brush',[(-80,-40),(-40,-20),(0,-30)]),('Rectangle','rectangle',[(-50,-60),(-20,-40),(10,-20)])]:
+     await self.start_row(tool,tool=='select')
+     r=await self.drag(pts);ok,detail=self.held_while_pending(r)
+     commands=[x['commandId'] for x in (r['record'] or {}).get('commands',[])]
+     self.check(name+' lifecycle and actual geometry command',ok and ('draw.transform.apply' in commands if tool=='select' else bool(commands)),{'commands':commands,**detail})
+     same,diff=await self.same_as_direct([r['record']]);self.check(name+' D-32',same,diff)
+    return
+   await self.start_row('brush')
+   r=await self.drag([(-80,-40),(-40,-20),(0,-30)])
+   self.check('PRODUCT ignores both 3000 ms hooks',r['answeredAt'] is not None and r['answeredAt']<.8, r)
+   same,diff=await self.same_as_direct([r['record']]);self.check('PRODUCT D-32',same,diff)
+ os.environ['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS']='--remote-debugging-port='+str(d.CDP_PORT)
+ os.environ['WEBVIEW2_USER_DATA_FOLDER']=str(OUT/'webview2')
+ lc.Lifecycle=Review
+ run=lc.e2e.Run(OUT);work=Path(tempfile.mkdtemp(prefix='r4-preview-'))
+ lc.e6.dpi_aware()
+ states={2:'a',3:'a',4:'b',5:'cd',6:'ef'}[step]
+ rows=asyncio.run(lc.session(APP,head,run,work,3000 if step==2 else 2500,3000 if step==2 else 1800 if step==4 else 0,states))
+ run.save('rows.json',rows);run.save('transcript.json',run.transcript)
+ return int(bool(run.failures))
 
-def b3():return bcase(b3_body,'b3')
+async def closure_body(t):
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
+ await modal_fixture(t,'Closure')
+ await c('project.saveAs',{'path':str(t.work/'closure.animpkg')})
+ step=sys.argv[3]
+ async def open_error():
+  f=t.work/'invalid.animpkg';f.write_text('This is not a project.');d.choose_menu(['File','Open']);await asyncio.sleep(1.5);d.key(0x4E,0x12);d.key(0x41,0x11);d.type_text(str(f));d.key(0x0D)
+  for _ in range(100):
+   if t.cdp.js("!!document.querySelector('[role=alertdialog]')"):return
+   await asyncio.sleep(.1)
+  raise RuntimeError('error box absent')
+ async def prefs():
+  d.choose_menu(['File','Preferences']);await wait(t,'preferences.category.keyboard');t.click('preferences.category.keyboard');await asyncio.sleep(.3)
+ async def focusid():return t.cdp.js('document.activeElement?.dataset.ttId')
+ if step=='5':
+  before=content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));state=await c('app.state.get');t.clear();await open_error()
+  text=t.cdp.js("document.querySelector('[role=alertdialog]').innerText");focus=await focusid();t.click('message.ok');await asyncio.sleep(.4)
+  now=await c('app.state.get');after=content(await c('doc.export.json',{'scope':'project','binaries':'omit'})) if now.get('project') else None
+  dismissed=t.cdp.js("!document.querySelector('[role=alertdialog]')")
+  records='job.wait observed in GUI IPC; all-session listing is GUI-only'
+  t.run.check(before==after and state['project']==now['project'] and len(text)>15 and focus=='message.ok' and dismissed,'Invalid project job error',{'text':text,'focus':focus,'dismissed':dismissed,'jobs':records,'beforeProject':state.get('project'),'afterProject':now.get('project'),'sent':t.recorded(),'unchanged':before==after})
+ elif step=='3':
+  kind=sys.argv[4];vk=int(sys.argv[5]);expected={'unsaved':'message.save','import':'message.merge','reset':'message.cancel','conflict':'keymap.conflict.cancel','error':'message.ok','information':'message.ok'}[kind]
+  if kind=='unsaved':
+   await c('element.create',{'type':'drawing','name':'Dirty'});d.choose_menu(['File','New Project']);await wait(t,'message.project.unsavedChanges')
+  elif kind in ('import','reset','conflict'):
+   await prefs()
+   if kind=='reset':t.click('keymap.resetAll');await wait(t,'message.keymap.resetAll')
+   elif kind=='conflict':
+    t.click('keymap.filter');d.type_text('app.info.get');await asyncio.sleep(.3);t.click('keymap.command.app.info.get');t.click('keymap.capture');d.key(0x0D,0x10);await wait(t,'keymap.conflict')
+   else:
+    path=t.work/'keys.json';await c('keymap.export',{'path':str(path)});t.click('keymap.import');await asyncio.sleep(1.5);d.key(0x4E,0x12);d.key(0x41,0x11);d.type_text(str(path));d.key(0x0D);await wait(t,'message.keymap.importMode')
+  elif kind=='error':await open_error()
+  else:
+   # Open a real configured tip through Preferences, not a synthetic message.
+   await prefs();t.click('preferences.category.messages');await asyncio.sleep(.4)
+   t.run.save('information-discovery.json',t.cdp.js('document.body.innerText'))
+   buttons=t.cdp.js("[...document.querySelectorAll('button[data-tt-id]')].map(e=>({id:e.dataset.ttId,text:e.textContent}))")
+   tip=next((b['id'] for b in buttons if 'show' in b['text'].lower()),None)
+   if not tip:raise RuntimeError('No information tip Show button: '+json.dumps(buttons))
+   t.click(tip);await asyncio.sleep(.4)
+  focus=await focusid();t.clear();d.key(vk);await asyncio.sleep(.5)
+  still=t.cdp.js("!!document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')"%json.dumps('keymap.conflict')) if kind=='conflict' else t.cdp.js("!!document.querySelector('[role=alertdialog]')")
+  t.run.check(focus==expected and not still,'Default '+kind+' '+str(vk),{'focused':focus,'expected':expected,'stillOpen':still,'sent':t.recorded()})
+ elif step=='4':
+  kind=sys.argv[4]
+  if kind=='message':
+   await c('element.create',{'type':'drawing','name':'Dirty'});d.choose_menu(['File','New Project']);await wait(t,'message.project.unsavedChanges');ident='message.project.unsavedChanges'
+  elif kind=='progress':
+   progressBefore=content(await c('doc.export.json',{'scope':'project','binaries':'omit'}))
+   import zipfile
+   source=t.work/'closure.animpkg';target=t.work/'slow.animpkg';block=bytes(1<<20);digest=hashlib.sha256(block*64).hexdigest()
+   if os.environ.get('REVIEW_PROGRESS_PACKAGE'):target=Path(os.environ['REVIEW_PROGRESS_PACKAGE'])
+   else:
+    with zipfile.ZipFile(source) as z:entries={n:z.read(n) for n in z.namelist()}
+    manifest=json.loads(entries['manifest.json'])
+    with zipfile.ZipFile(target,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as z:
+     for n,data in entries.items():
+      if n!='manifest.json':z.writestr(n,data,compress_type=zipfile.ZIP_STORED if n=='mimetype' else zipfile.ZIP_DEFLATED)
+     for i in range(256):
+      n='review-payload/'+str(i)+'.bin'
+      with z.open(n,'w') as f:
+       for _ in range(64):f.write(block)
+      manifest['entries'].append({'path':n,'size':64<<20,'sha256':digest})
+     z.writestr('manifest.json',json.dumps(manifest))
+   d.choose_menu(['File','Open']);await asyncio.sleep(1.5);d.key(0x4E,0x12);d.key(0x41,0x11);d.type_text(str(target));d.key(0x0D);await wait(t,'progress');ident='progress'
+  else:
+   path={'preferences':['File','Preferences'],'new':['File','New Project'],'properties':['File','Project Properties'],'check':['File','Check Project'],'backup':['File','Open Backup']}[kind]
+   ident={'preferences':'preferences','new':'newProject','properties':'projectProperties','check':'checkProject','backup':'openBackup'}[kind]
+   d.choose_menu(path);await wait(t,ident)
+  await asyncio.sleep(.4)
+  before=progressBefore if kind=='progress' else content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));t.clear()
+  expr="(() => {const r=document.querySelector('[data-tt-id='+JSON.stringify(%s)+']');const a=[...r.querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex=\"-1\"])')].filter(e=>e.getClientRects().length&&!e.closest('[inert]'));return {items:a.map(e=>e.dataset.ttId||e.tagName),focus:document.activeElement?.dataset.ttId,inside:r.contains(document.activeElement)}})()"%json.dumps(ident)
+  initial=t.cdp.js(expr);route=[]
+  for _ in range(len(initial['items'])+2):d.key(0x09);route.append(t.cdp.js(expr))
+  for _ in range(len(initial['items'])+2):d.key(0x09,0x10);route.append(t.cdp.js(expr))
+  # Place focus on root through real click on its title, so Enter/Space cannot submit a button.
+  r=t.rect(ident);h=d.front();origin=d.wintypes.POINT(0,0);d.u32.ClientToScreen(h,d.ctypes.byref(origin));d.click_screen(origin.x+r['x']*r['dpr'],origin.y+(r['y']-t.cdp.js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']').getBoundingClientRect().height"%json.dumps(ident))/2+15)*r['dpr'])
+  keyFocus=t.cdp.js("({id:document.activeElement?.dataset.ttId,tag:document.activeElement?.tagName})")
+  for vk,mods in [(0x42,()),(0x5A,(0x11,)),(0x20,()),(0x0D,())]:d.key(vk,*mods)
+  d.click_screen(origin.x+10,origin.y+100);await asyncio.sleep(.3)
+  after=before if kind=='progress' else content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));sent=t.recorded();bad=[x for x in sent if x.get('command') not in SPEC_QUERIES]
+  present=t.cdp.js("!!document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')"%json.dumps(ident));d.key(0x1B);await asyncio.sleep(.4);closed=t.cdp.js("!document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')"%json.dumps(ident))
+  if kind=='progress':
+   for _ in range(300):
+    if t.cdp.js("!document.querySelector('[data-tt-id=progress]')"):break
+    await asyncio.sleep(.1)
+   closed=t.cdp.js("!document.querySelector('[data-tt-id=progress]')");finalState=await c('app.state.get');after=content(await c('doc.export.json',{'scope':'project','binaries':'omit'})) if finalState.get('project') else None;status=t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent");box=t.cdp.js("!!document.querySelector('[role=alertdialog]')")
+   t.run.check('cancelled' in (status or '') and not box,'Cancelled job status line',{'status':status,'errorBox':box})
+   bad=[x for x in bad if x.get('command')=='review.dispatch_key' or x.get('command')!='job.cancel']
+  rec={'initial':initial,'keyFocus':keyFocus,'route':route,'sent':sent,'unchanged':before==after,'presentBeforeEscape':present,'closed':closed}
+  rec['finalState']=finalState if kind=='progress' else None
+  rec['beforeDocumentHash']=hashlib.sha256(json.dumps(before,sort_keys=True).encode()).hexdigest()
+  rec['afterDocumentHash']=hashlib.sha256(json.dumps(after,sort_keys=True).encode()).hexdigest()
+  t.run.check(all(x['inside'] for x in route) and before==after and not bad and present and closed,'Modal '+kind,rec)
+
+def closure():return bcase(closure_body,'closure')
 
 if __name__=='__main__':
  if len(sys.argv)<3:sys.exit(0)
@@ -706,7 +823,7 @@ if __name__=='__main__':
  stop=threading.Event();worker=None
  if '--first-click' not in sys.argv:
   worker=threading.Thread(target=activate_new_windows,args=(stop,),daemon=True);worker.start()
- try:sys.exit({'a1':a1,'a2':a2,'a3':a3,'b1':b1,'b2':b2,'b3':b3}[sys.argv[2]]())
+ try:sys.exit({'a1':a1,'a2':a2,'a3':a3,'b1':b1,'b2':b2,'b3':b3,'closure':closure}[sys.argv[2]]())
  finally:
   stop.set()
   if worker:worker.join()
