@@ -241,6 +241,10 @@ function PenRow({ pen, current }: { pen: Pen; current: boolean }) {
       <li className="pen-row editing">
         <input
           autoFocus
+          // The name is selected, so typing replaces it.
+          onFocus={(e) => {
+            e.target.select();
+          }}
           value={draft}
           aria-label={`Rename ${pen.name}`}
           data-tt-role="textField"
@@ -282,7 +286,8 @@ function PenRow({ pen, current }: { pen: Pen; current: boolean }) {
         data-tt-command="tool.pen.select"
         data-tt-params={JSON.stringify({ penId: pen.penId })}
         onClick={() => {
-          void actions.run('tool.pen.select', { penId: pen.penId });
+          // The current pen is already selected: a click (the first of a double click among them) sends nothing.
+          if (!current) void actions.run('tool.pen.select', { penId: pen.penId });
         }}
         onDoubleClick={() => {
           done.current = false;

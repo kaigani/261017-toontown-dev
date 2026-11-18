@@ -484,11 +484,15 @@ class Table:
 
     async def row(self, r: dict) -> None:
         name = r["name"]
-        rec = {"name": name, "spec": r["spec"], "action": list(r["action"])}
+        rec = {"name": name, "spec": r["spec"], "action": [] if callable(r["action"]) else list(r["action"])}
         try:
             await self.settle_dialogs()
             if r.get("setup"):
                 await r["setup"]()
+            # An action known only after the setup (C4.4a: a pen's id) is resolved here.
+            if callable(r["action"]):
+                r = {**r, "action": r["action"]()}
+                rec["action"] = list(r["action"])
             await asyncio.sleep(0.3)
             clicks = 2 if r.get("toggle") else 1
             rec["clicks"] = []
@@ -1172,6 +1176,114 @@ async def build_and_run(t: Table, only: set) -> None:
                  "label": None, "setup": setup(backups_ready), "state": app_project, "late_expect": True,
                  "effect": lambda b, a, k: backups.get("buttons", 0) >= 2 and a != b, "disabled": None})
 
+    # ----- C4.4a: the Pen panel (02 §6.1, §6.2; design note 1 §3), shown docked, the Brush active -----
+    pen_target: dict = {}
+
+    async def pens_state():
+        return await cmd("tool.pen.list", {})
+
+    def brush_pens(st):
+        return [x for x in st.get("pens") or [] if x.get("type") == "brush"]
+
+    async def pen_shown():
+        await cmd("window.panel.set", {"panelId": "pen", "visible": True})
+        await cmd("tool.active.set", {"toolId": "brush"})
+        st = await pens_state()
+        if len(brush_pens(st)) < 2:
+            await cmd("tool.pen.create", {"type": "brush"})
+            st = await pens_state()
+        cur = st.get("currentBrushPenId")
+        pen_target["other"] = next(x["penId"] for x in brush_pens(st) if x["penId"] != cur)
+        shape = next((x.get("tipShape") for x in brush_pens(st) if x["penId"] == cur), "round")
+        pen_target["shape"] = "square" if shape != "square" else "round"
+        await asyncio.sleep(0.6)
+
+    async def settings_state():
+        return await cmd("tool.settings.get", {})
+
+    async def pen_shown_advanced():
+        await pen_shown()
+        if isinstance(t, McpTable):
+            return  # the tree reports a closed disclosure's controls
+        t.cdp.js("(() => { const d = document.querySelector('.pen-advanced'); if (d && !d.open) d.open = true; return true; })()")
+        await asyncio.sleep(0.3)
+
+    def cur_of(st):
+        return st.get("currentBrushPenId")
+
+    def pen_of(st, pid):
+        return next((x for x in st.get("pens") or [] if x.get("penId") == pid), {})
+
+    rows.append({"name": "Pen panel › select a pen", "spec": f"{spec_line('tool.pen.select')}; 02 §6.1",
+                 "action": lambda: ("dom", f"pen.row.{pen_target['other']}"),
+                 "expect": lambda b: ("tool.pen.select", {"penId": pen_target["other"]}), "label": None,
+                 "setup": pen_shown, "state": pens_state,
+                 "effect": lambda b, a, k: cur_of(a) == pen_target["other"] != cur_of(b), "disabled": None})
+    rows.append({"name": "Pen panel › New", "spec": f"{spec_line('tool.pen.create')} (label \"New Pen\"); 02 §6.1",
+                 "action": ("dom", "pen.new"),
+                 "expect": lambda b: ("tool.pen.create", {"type": "brush", "fromPenId": cur_of(b)}), "label": "New Pen",
+                 "setup": pen_shown, "state": pens_state,
+                 "effect": lambda b, a, k: len(brush_pens(a)) == len(brush_pens(b)) + 1, "disabled": ("dom", "pen.new")})
+    rows.append({"name": "Pen panel › tip shape", "spec": f"{spec_line('tool.pen.set')} (label \"Set Pen Style\"); 02 §6.1",
+                 "action": lambda: ("select", "pen.tipShape", pen_target["shape"]),
+                 "expect": lambda b: ("tool.pen.set", {"penId": cur_of(b), "tipShape": pen_target["shape"]}),
+                 "label": "Set Pen Style", "setup": pen_shown, "state": pens_state,
+                 "effect": lambda b, a, k: pen_of(a, cur_of(b)).get("tipShape") == pen_target["shape"], "disabled": None})
+    rows.append({"name": "Pen panel › Draw Behind", "spec": f"{spec_line('tool.placeBehind.set')}; 02 §6.2",
+                 "action": ("dom", "pen.placeBehind"),
+                 "expect": lambda b: ("tool.placeBehind.set", {"enabled": not b.get("placeBehind")}), "label": None,
+                 "setup": pen_shown_advanced, "state": settings_state, "toggle": True,
+                 "effect": lambda b, a, k: a.get("placeBehind") == (not b.get("placeBehind")),
+                 "disabled": ("dom", "pen.placeBehind")})
+
+    async def max_size_flow():
+        """A real key on the focused Maximum size slider: one step up, sent at the key's release (02 §6.1)."""
+        front()
+        t.cdp.js("document.querySelector('[data-tt-id=\"pen.maxSize\"]').focus()")
+        key(0x27)  # Right arrow: one step
+        return "focus, then a real Right arrow key (sent at its release)"
+
+    rows.append({"name": "Pen panel › Maximum size (slider)", "spec": f"{spec_line('tool.pen.set')} (label \"Set Pen Style\"); 02 §6.1",
+                 "action": ("none",), "custom": max_size_flow,
+                 "expect": lambda b: ("tool.pen.set", {"penId": cur_of(b), "maxSize": pen_of(b, cur_of(b)).get("maxSize", 0) + 0.5}),
+                 "label": "Set Pen Style", "setup": pen_shown, "state": pens_state,
+                 "effect": lambda b, a, k: pen_of(a, cur_of(b)).get("maxSize") == pen_of(b, cur_of(b)).get("maxSize", 0) + 0.5,
+                 "disabled": None,
+                 "mcpReason": "a slider's value is chosen by the person's drag or key; the MCP form has no input to move it (its declared reference is the current value)"})
+
+    async def rename_flow():
+        """A real double click on the current pen, a typed name, Enter (02 §12.1 "Rename Pen")."""
+        st = await pens_state()
+        ident = f"pen.row.{cur_of(st)}"
+        r = t.rect(ident)
+        h = front()
+        origin = wintypes.POINT(0, 0)
+        u32.ClientToScreen(h, ctypes.byref(origin))
+        x, y = int(origin.x + r["x"] * r["dpr"]), int(origin.y + r["y"] * r["dpr"])
+        u32.SetCursorPos(x, y)
+        time.sleep(0.1)
+        for _ in range(2):
+            e6._send_button(True)
+            time.sleep(0.02)
+            e6._send_button(False)
+            time.sleep(0.05)
+        time.sleep(0.4)
+        type_text("Renamed D39")
+        key(0x0D)
+        return "a real double click on the pen, the name typed, Enter"
+
+    rows.append({"name": "Pen panel › rename", "spec": f"{spec_line('tool.pen.rename')} (label \"Rename Pen\"); 02 §12.1",
+                 "action": ("none",), "custom": rename_flow,
+                 "expect": lambda b: ("tool.pen.rename", {"penId": cur_of(b), "name": "Renamed D39"}),
+                 "label": "Rename Pen", "setup": pen_shown, "state": pens_state,
+                 "effect": lambda b, a, k: pen_of(a, cur_of(b)).get("name") == "Renamed D39", "disabled": None,
+                 "mcpReason": "the rename field opens on a double click or F2 on the pen, real input the MCP form does not perform"})
+    rows.append({"name": "Pen panel › Delete", "spec": f"{spec_line('tool.pen.delete')} (label \"Delete Pen\"); 02 §6.1",
+                 "action": ("dom", "pen.delete"),
+                 "expect": lambda b: ("tool.pen.delete", {"penId": cur_of(b)}), "label": "Delete Pen",
+                 "setup": pen_shown, "state": pens_state,
+                 "effect": lambda b, a, k: len(brush_pens(a)) == len(brush_pens(b)) - 1, "disabled": ("dom", "pen.delete")})
+
     for r in rows:
         if r.get("skip"):
             await r["setup"]()
@@ -1179,9 +1291,10 @@ async def build_and_run(t: Table, only: set) -> None:
         if only and not any(o in r["name"] for o in only):
             continue
         if isinstance(t, McpTable) and (r.get("custom") or r.get("post_click")):
-            reason = ("its action is the operating system's own file dialog (a typed path), which only real input reaches"
-                      if "shortcut editor" in r["name"] else
-                      "the dialog that lists the backups opens only from the native menu, which only real input reaches")
+            reason = r.get("mcpReason") or (
+                "its action is the operating system's own file dialog (a typed path), which only real input reaches"
+                if "shortcut editor" in r["name"] else
+                "the dialog that lists the backups opens only from the native menu, which only real input reaches")
             t.rows.append({"name": r["name"], "spec": r["spec"], "ok": True, "notRun": reason})
             t.run.check(True, f"D-39 {r['name']}: runs in the OS form only ({reason})", None)
             continue

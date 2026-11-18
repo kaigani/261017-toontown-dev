@@ -153,6 +153,10 @@ describe('the Pen panel (02 §6.1)', () => {
       fireEvent.doubleClick(el('pen.row.pen_2'));
     });
     const field = await screen.findByRole('textbox', { name: 'Rename Pen 2' });
+    // The name is selected, so typing replaces it; the double click on the current pen sent no selection.
+    const input = field as HTMLInputElement;
+    expect([input.selectionStart, input.selectionEnd]).toEqual([0, 'Pen 2'.length]);
+    expect(sent(h, 'tool.pen.select')).toEqual([]);
     act(() => {
       fireEvent.change(field, { target: { value: 'Pen 1' } });
       fireEvent.keyDown(field, { key: 'Enter' });
