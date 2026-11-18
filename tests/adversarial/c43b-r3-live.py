@@ -682,7 +682,8 @@ def b3():
     state=await self.state()
     states.append({'view':view,'afterRelease':time.monotonic()-p['times']['release'],'state':state})
    r=await self.settle(p)
-   self.check('Camera and back while pending have no stale preview',all(not lc.pending(x['state']) and x['afterRelease']<2.5 for x in states),states)
+   after=await self.state()
+   self.check('Camera and back while pending: none in the Camera view, drawn again on return before the answer, none after the committed frame (D-54)',[x['view'] for x in states]==['camera','drawing'] and not lc.pending(states[0]['state']) and lc.pending(states[1]['state']) and all(x['afterRelease']<2.5 for x in states) and not lc.pending(after),{'states':states,'after':after})
    same,diff=await self.same_as_direct([r['record']]);self.check('view switch D-32',same and not lc.pending(await self.state()),diff)
   async def state_a(self):
    if step!=2:

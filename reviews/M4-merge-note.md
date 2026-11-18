@@ -1,0 +1,20 @@
+# M4 merge note: desktop shell (draft)
+
+**Draft, not a merge candidate.** The merge note and the M4 merge to `main` come after C4.4b passes (ruling D-30).
+Branch `m4-desktop-shell`. Builder: Claude Opus 5.5. The orchestrator merges and tags; the builder does not.
+
+## 1. Checkpoints and closures
+
+| Checkpoint | Scope | Closure |
+|---|---|---|
+| C4.1 | the desktop shell front end and host wiring | passed (`reviews/M4-C4.1-plan.md`) |
+| C4.2 | the Drawing view canvas, the gesture driver, gesture equivalence (C4.2b passed 2026-11-15) | passed (`reviews/M4-C4.2-plan.md`) |
+| C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
+| C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | **passed** on product head `f5eb9e84`, run 44286651371 (36 of 36 green), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
+| C4.4a | panels and settings (`reviews/M4-C4.4-plan.md`, D-40) | in progress |
+| C4.4b | the four drawing tools; the zero-M4 deferred check | not started |
+
+## 2. Still to write at the end of C4.4b
+
+The inventory and counts, the deferred list by owner (none owned by M4, D-31), the receipt folders over 5 MB for the
+orchestrator's trim (D-40), the open spec issues, and the final head with its run.
