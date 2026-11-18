@@ -1,0 +1,192 @@
+{
+ "checks": 620,
+ "failures": [],
+ "activations": [
+  {
+   "check": "B2 native activation File/Save",
+   "declared": {
+    "command": "project.save",
+    "params": {}
+   },
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "B2 native activation Edit/Undo Rectangle Tool \u2014 agent: mcp",
+   "declared": {
+    "command": "edit.undo",
+    "params": {}
+   },
+   "sent": [
+    {
+     "command": "edit.undo",
+     "params": {}
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "B2 native activation View/Zoom In",
+   "declared": {
+    "command": "view.zoom.set",
+    "params": {
+     "steps": 1
+    }
+   },
+   "sent": [
+    {
+     "command": "view.zoom.set",
+     "params": {
+      "steps": 1
+     }
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "B2 native activation View/Zoom Out",
+   "declared": {
+    "command": "view.zoom.set",
+    "params": {
+     "steps": -1
+    }
+   },
+   "sent": [
+    {
+     "command": "view.zoom.set",
+     "params": {
+      "steps": -1
+     }
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "B2 native activation Drawing/Flip Horizontal",
+   "declared": {
+    "command": "draw.flip.apply",
+    "params": {
+     "axis": "horizontal"
+    }
+   },
+   "sent": [
+    {
+     "command": "draw.flip.apply",
+     "params": {
+      "axis": "horizontal"
+     }
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "B2 native activation Drawing/Flip Vertical",
+   "declared": {
+    "command": "draw.flip.apply",
+    "params": {
+     "axis": "vertical"
+    }
+   },
+   "sent": [
+    {
+     "command": "draw.flip.apply",
+     "params": {
+      "axis": "vertical"
+     }
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "B2 native activation Window/Extend Side Panels",
+   "declared": {
+    "command": "window.sidePanelsExtended.set",
+    "params": {
+     "enabled": false
+    }
+   },
+   "sent": [
+    {
+     "command": "window.sidePanelsExtended.set",
+     "params": {
+      "enabled": false
+     }
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "B2 native activation Help/Context Help",
+   "declared": {
+    "command": "ui.contextHelpMode.set",
+    "params": {
+     "enabled": true
+    }
+   },
+   "sent": [
+    {
+     "command": "ui.contextHelpMode.set",
+     "params": {
+      "enabled": true
+     }
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "B2 native activation Window/Workspace/Default",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Default"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Default"
+     }
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "B2 native activation File/Open Recent/Menu review",
+   "declared": {
+    "command": "project.open",
+    "params": {
+     "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-b2-y3r9w2xf\\Menu.animpkg"
+    }
+   },
+   "sent": [
+    {
+     "command": "project.open",
+     "params": {
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-b2-y3r9w2xf\\Menu.animpkg"
+     }
+    }
+   ],
+   "ok": true
+  }
+ ],
+ "menus": {
+  "no-project": {
+   "sha256": "c8bfd5995fc723b1cdf9bff901c615893e3ca6222df24b677fb3ab50f7e74cec"
+  },
+  "clean": {
+   "sha256": "790bf03451910dbed300a96e7f0768cd7278a501b9dd8b701f599590c4ced39f"
+  },
+  "dirty-selection": {
+   "sha256": "0b1f0802ffb7238c989958fb48ba7a0a5b3271d24e7f77e5846901437723b1dc"
+  },
+  "workspace-recent": {
+   "sha256": "8518d44c0ff0bdcebff8d8a4168fa97449db29829118b806555e0ce4d3ff3b44"
+  }
+ }
+}

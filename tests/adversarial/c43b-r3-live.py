@@ -585,11 +585,14 @@ async def b2_body(t):
  await t.cmd('draw.rectangle.add',{'from':{'x':60,'y':60},'to':{'x':100,'y':100}})
  await t.cmd('draw.selection.set',{'by':'all'})
  await menus(t,'dirty-selection')
- paths=[['File','Save'],['Edit','Copy'],['View','Zoom In'],['View','Zoom Out'],['Drawing','Flip Horizontal'],['Drawing','Flip Vertical'],['Window','Extend Side Panels'],['Help','Context Help'],['Window','Workspace','Default'],['File','Open Recent','Menu']]
+ paths=[['File','Save'],['Edit','Undo'],['View','Zoom In'],['View','Zoom Out'],['Drawing','Flip Horizontal'],['Drawing','Flip Vertical'],['Window','Extend Side Panels'],['Help','Context Help'],['Window','Workspace','Default'],['File','Open Recent','Menu review']]
  for path in paths:
   if path[0]=='File' and len(path)>2:await t.cmd('project.save',{})
-  node=d.McpTable.menu_node(await d.McpTable.tree(t),path);ref=node.get('command',{})
-  t.clear();d.choose_menu(path);await asyncio.sleep(.5)
+  tree=await d.McpTable.tree(t)
+  if path==['Edit','Undo']:
+   bar=d.McpTable.node(tree,'menuBar');edit=next(x for x in bar['children'] if x.get('label')=='Edit');path=['Edit',next(x['label'] for x in edit['children'] if x.get('commandId')=='edit.undo')]
+  node=d.McpTable.menu_node(tree,path);ref=node.get('command',{})
+  t.clear();await t.do(('menu',path));await asyncio.sleep(1)
   sent=[c for c in t.recorded() if c['command']!='review.dispatch_key']
   t.run.check({'command':ref.get('commandId'),'params':ref.get('params',{})} in sent,'B2 native activation '+'/'.join(path),{'tree':node,'sent':sent})
  await t.cmd('workspace.create',{'name':'Review workspace'})
