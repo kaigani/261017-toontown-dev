@@ -315,6 +315,31 @@ fn offer(tx: &SyncSender<String>, line: &str) -> bool {
     }
 }
 
+/// How long a request's answer waits for room in its stream's queue (the client reading the progress before it).
+const ANSWER_WAIT: Duration = Duration::from_secs(10);
+
+/// Queues a request's answer, waiting while its queue is full (a burst of progress before it), for at most
+/// [`ANSWER_WAIT`]; `false` when the subscriber is gone or never made room. An answer is never dropped for a full queue
+/// while its client still reads (D-49 item 4: a 12 000-frame job's progress filled the queue and the stream ended
+/// without its answer).
+fn offer_answer(tx: &SyncSender<String>, line: &str) -> bool {
+    let deadline = Instant::now() + ANSWER_WAIT;
+    let mut text = line.to_owned();
+    loop {
+        match tx.try_send(text) {
+            Ok(()) => return true,
+            Err(TrySendError::Disconnected(_)) => return false,
+            Err(TrySendError::Full(t)) => {
+                if Instant::now() >= deadline {
+                    return false;
+                }
+                text = t;
+                std::thread::sleep(Duration::from_millis(5));
+            }
+        }
+    }
+}
+
 fn route(routes: &Mutex<Routes>, line: &str) {
     let Ok(msg) = serde_json::from_str::<Value>(line) else { return };
     let mut r = routes.lock().unwrap_or_else(PoisonError::into_inner);
@@ -323,7 +348,9 @@ fn route(routes: &Mutex<Routes>, line: &str) {
         let id = id_text(msg.get("id").unwrap_or(&Value::Null));
         if let Some(pos) = r.requests.iter().position(|(rid, _, _)| *rid == id) {
             let (_, _, tx) = r.requests.remove(pos);
-            let _ = offer(&tx, line);
+            // The routes are released while the answer waits for room.
+            drop(r);
+            let _ = offer_answer(&tx, line);
         }
         return;
     }
@@ -333,9 +360,14 @@ fn route(routes: &Mutex<Routes>, line: &str) {
     {
         let token = id_text(token);
         if let Some(pos) = r.requests.iter().position(|(_, t, _)| t.as_deref() == Some(token.as_str())) {
-            if !offer(&r.requests[pos].2, line) {
-                // A request stream that does not read is dropped.
-                r.requests.remove(pos);
+            match r.requests[pos].2.try_send(line.to_owned()) {
+                // Progress is advisory: a burst the client has not read yet loses this notification, never the stream
+                // (its answer follows; D-49 item 4).
+                Ok(()) | Err(TrySendError::Full(_)) => {}
+                // The subscriber is gone.
+                Err(TrySendError::Disconnected(_)) => {
+                    r.requests.remove(pos);
+                }
             }
             return;
         }

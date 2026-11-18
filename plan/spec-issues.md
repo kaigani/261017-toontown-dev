@@ -2296,3 +2296,29 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   its D-44 reason; the D-39 check "load report window" in both forms (a folder of a newer minor format with an unknown
   value shows one window; the clean project opened next shows none).
 
+## SI-181 — a range job's bounded answer and the paged read of its outputs (found in M4 C4.4a; partly built, a ruling asked)
+
+- **Sections:** 09 §11.4 (the range manifest, `files` one entry per frame), 11 §8 (jobs), A (`render.range.run`).
+- **Problem:** D-51 (SI-163) caps every MCP answer at 1 MiB; a range's manifest lists every frame, 4.1 MB at 12 000
+  frames.
+- **Built:** the job's answer always carries `outputs {count, location, pattern, first, last, truncated}`; it lists
+  `files` only up to 100 frames. The companion manifest file at `manifestPath` still lists every frame and has no
+  `outputs` (`crates/executor/src/commands/render.rs`; `c33_range.rs`).
+- **Asked:** "the full list is read in pages" needs a query, `job.outputs.list {jobId, offset = 0, limit = 1000 (1-1000)}`
+  answering `{total, offset, items}`. Spec A is a read-only copy, and the registry refuses a command spec A does not
+  declare (`crates/registry/src/lib.rs` assembly). Until a ruling adds the row, the full list is the companion manifest
+  file, which `manifestPath` names.
+
+## SI-182 — inline payloads and every other answer within 1 MiB (found in M4 C4.4a; built)
+
+- **Sections:** 11 §6.5 (inline image limit, default 8 MB encoded), 09 §8 item 3 (inline vs. file output),
+  10 / A `doc.blob.get` (`maxBytes` default 8 388 608, up to 67 108 864).
+- **Problem:** base64 adds a third, so an 8 MB inline image or blob is about 10.7 MB in one answer; D-51 caps each
+  answer at 1 MiB.
+- **Built:** whatever the session's limits or `maxBytes`, at most 750 KiB of encoded bytes are returned inline
+  (`render::INLINE_ANSWER_BYTES`): a larger image fails with `render.inlineTooLarge` (09 §8: use `output: "file"`), and a
+  larger blob is refused with its `maxBytes`. At the MCP server's writer, any response over 1 MiB becomes
+  `limit.exceeded {limit: "answerBytes", value, size}` (a tool call's as its error envelope) and any notification over
+  it is replaced by a warning notification naming its size. An event's lists over 10 000 entries become `{count, truncated: true}`. Declared
+  behaviour change: inline images between 750 KiB and 8 MB are now written to a file instead. None of the 6 879 PNGs of
+  the M4 GUI runs exceeds 700 KB; a window capture is about 45 KB.

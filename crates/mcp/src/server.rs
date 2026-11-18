@@ -152,6 +152,52 @@ struct Shared {
     roots_again: AtomicBool,
 }
 
+/// Ruling D-51 (SI-163): the largest single MCP message, in bytes of its JSON-RPC text, on either transport. A common
+/// client refuses a larger server-sent event (D-49 item 4).
+pub const MAX_MESSAGE_BYTES: usize = 1 << 20;
+
+/// D-51's backstop: a message over [`MAX_MESSAGE_BYTES`] is never sent. A response is replaced by `limit.exceeded`
+/// (`{limit: "answerBytes", value, size}`; a tool call's as its error envelope, any other request's as a JSON-RPC
+/// error), so the caller learns why; a notification or a request to the client is replaced by a warning notification
+/// naming its size (the client learns something was not sent).
+fn within_cap(v: &Value, text: String) -> Option<String> {
+    let size = text.len();
+    if size <= MAX_MESSAGE_BYTES {
+        return Some(text);
+    }
+    let id = v.get("id").filter(|_| v.get("method").is_none());
+    let Some(id) = id else {
+        let method = v.get("method").and_then(Value::as_str).unwrap_or("message");
+        let warning = jsonrpc::notification(
+            "notifications/message",
+            json!({ "level": "warning", "logger": "limits", "data": {
+                "message": format!("a `{method}` of {size} bytes was not sent: over the {MAX_MESSAGE_BYTES}-byte limit of one MCP message"),
+                "limit": "answerBytes", "value": MAX_MESSAGE_BYTES, "size": size } }),
+        );
+        return serde_json::to_string(&warning).ok();
+    };
+    let details = json!({ "limit": "answerBytes", "value": MAX_MESSAGE_BYTES, "size": size });
+    let message = format!("the answer is {size} bytes, over the {MAX_MESSAGE_BYTES}-byte limit of one MCP message");
+    let replacement = if v.pointer("/result/structuredContent").is_some() {
+        let env = envelope_error(
+            "limit.exceeded",
+            message.clone(),
+            details,
+            Some(
+                "ask for less: a narrower query, a region, a smaller depth or frame range, or a command that writes a file",
+            ),
+        );
+        let structured = serde_json::to_value(&env).unwrap_or_else(|_| json!({ "status": "error" }));
+        jsonrpc::result(
+            id,
+            json!({ "content": [{ "type": "text", "text": message }], "structuredContent": structured, "isError": true }),
+        )
+    } else {
+        jsonrpc::error(id, jsonrpc::INTERNAL_ERROR, &message, Some(details))
+    };
+    serde_json::to_string(&replacement).ok()
+}
+
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
     m.lock().unwrap_or_else(PoisonError::into_inner)
 }
@@ -164,7 +210,7 @@ impl Shared {
     /// Queues a message for the writer. A queue that stays full for [`STALL`] means the client stopped reading: the
     /// session closes. Never called with the state lock held.
     fn send(&self, v: &Value) {
-        let Ok(mut text) = serde_json::to_string(v) else { return };
+        let Some(mut text) = serde_json::to_string(v).ok().and_then(|t| within_cap(v, t)) else { return };
         let deadline = Instant::now() + STALL;
         loop {
             self.queued.fetch_add(1, Ordering::Relaxed);
@@ -190,7 +236,7 @@ impl Shared {
 
     /// Queues an advisory notification without waiting (used under the state lock): dropped when the queue is full.
     fn send_now(&self, v: &Value) {
-        let Ok(text) = serde_json::to_string(v) else { return };
+        let Some(text) = serde_json::to_string(v).ok().and_then(|t| within_cap(v, t)) else { return };
         self.queued.fetch_add(1, Ordering::Relaxed);
         if self.out.try_send(text).is_err() {
             self.queued.fetch_sub(1, Ordering::Relaxed);
@@ -1665,6 +1711,20 @@ fn pump_events(shared: &Shared, rx: &mpsc::Receiver<tt_executor::Event>) {
     }
 }
 
+/// Ruling D-51: an event's lists longer than this many entries are summarised in what an agent receives.
+const EVENT_LIST_MAX: usize = 10_000;
+
+/// D-51: an event payload with every list longer than [`EVENT_LIST_MAX`] replaced by `{count, truncated: true}` (the
+/// client re-reads the subject, which the event names); everything else as it was.
+fn bounded_payload(v: &Value) -> Value {
+    match v {
+        Value::Array(a) if a.len() > EVENT_LIST_MAX => json!({ "count": a.len(), "truncated": true }),
+        Value::Array(a) => Value::Array(a.iter().map(bounded_payload).collect()),
+        Value::Object(m) => Value::Object(m.iter().map(|(k, x)| (k.clone(), bounded_payload(x))).collect()),
+        other => other.clone(),
+    }
+}
+
 fn on_event(shared: &Shared, ev: &tt_executor::Event) {
     let origin = ev
         .payload
@@ -1684,7 +1744,7 @@ fn on_event(shared: &Shared, ev: &tt_executor::Event) {
     let (record, log) = {
         let mut st = lock(&shared.st);
         st.next_seq += 1;
-        let record = json!({ "seq": st.next_seq, "time": tt_persist::time::now_iso(), "type": ev.name, "origin": origin, "payload": ev.payload });
+        let record = json!({ "seq": st.next_seq, "time": tt_persist::time::now_iso(), "type": ev.name, "origin": origin, "payload": bounded_payload(&ev.payload) });
         st.events.push_back(record.clone());
         while st.events.len() > EVENT_BUFFER {
             st.events.pop_front();
@@ -1757,5 +1817,60 @@ mod tests {
         n.fetch_sub(1, Ordering::AcqRel);
         assert!(take_slot(&n, MAX_JOB_WAITS), "a released slot is taken again");
         assert_eq!(SESSION_THREADS, 20);
+    }
+
+    fn big() -> String {
+        "x".repeat(MAX_MESSAGE_BYTES)
+    }
+
+    /// Ruling D-51: a tool answer over the cap becomes the `limit.exceeded` envelope, within the cap.
+    #[test]
+    fn an_oversize_tool_answer_becomes_limit_exceeded() {
+        let v = jsonrpc::result(
+            &json!(7),
+            json!({ "content": [], "structuredContent": { "status": "ok", "result": big() } }),
+        );
+        let text = within_cap(&v, serde_json::to_string(&v).unwrap()).expect("a response is always answered");
+        assert!(text.len() <= MAX_MESSAGE_BYTES);
+        let r: Value = serde_json::from_str(&text).unwrap();
+        assert_eq!(r["id"], 7);
+        assert_eq!(r["result"]["isError"], true);
+        assert_eq!(r["result"]["structuredContent"]["error"]["code"], "limit.exceeded");
+        assert_eq!(r["result"]["structuredContent"]["error"]["details"]["limit"], "answerBytes");
+        assert_eq!(r["result"]["structuredContent"]["error"]["details"]["value"], MAX_MESSAGE_BYTES);
+        assert!(
+            r["result"]["structuredContent"]["error"]["details"]["size"].as_u64().unwrap() > MAX_MESSAGE_BYTES as u64
+        );
+    }
+
+    /// Any other oversize response becomes a JSON-RPC error with the same details; a notification is not sent.
+    #[test]
+    fn an_oversize_resource_or_notification_is_never_sent_whole() {
+        let v = jsonrpc::result(&json!("r1"), json!({ "contents": [{ "uri": "app://x", "text": big() }] }));
+        let r: Value = serde_json::from_str(&within_cap(&v, serde_json::to_string(&v).unwrap()).unwrap()).unwrap();
+        assert_eq!(r["id"], "r1");
+        assert_eq!(r["error"]["data"]["limit"], "answerBytes");
+        let n = jsonrpc::notification("notifications/message", json!({ "data": big() }));
+        let w: Value = serde_json::from_str(&within_cap(&n, serde_json::to_string(&n).unwrap()).unwrap()).unwrap();
+        assert_eq!(w["method"], "notifications/message");
+        assert_eq!(w["params"]["level"], "warning");
+        assert_eq!(w["params"]["data"]["limit"], "answerBytes");
+        assert!(w.get("id").is_none());
+        // Within the cap nothing changes.
+        let small = jsonrpc::result(&json!(1), json!({ "ok": true }));
+        let t = serde_json::to_string(&small).unwrap();
+        assert_eq!(within_cap(&small, t.clone()), Some(t));
+    }
+
+    /// D-51: an event's id list over 10 000 entries is summarised; shorter lists and other values are kept.
+    #[test]
+    fn an_events_long_list_is_summarised() {
+        let ids: Vec<String> = (0..=EVENT_LIST_MAX).map(|i| format!("ob_{i:026}")).collect();
+        let p = json!({ "drawingId": "dr_1", "rev": 9, "removedIds": ids, "createdIds": ["ob_a"] });
+        let b = bounded_payload(&p);
+        assert_eq!(b["removedIds"], json!({ "count": EVENT_LIST_MAX + 1, "truncated": true }));
+        assert_eq!(b["createdIds"], json!(["ob_a"]));
+        assert_eq!((b["drawingId"].as_str(), b["rev"].as_u64()), (Some("dr_1"), Some(9)));
+        assert!(serde_json::to_string(&b).unwrap().len() < 1024);
     }
 }

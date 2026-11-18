@@ -45,7 +45,7 @@ fn sizes_scale_and_limits() {
     let l = ok(&h, "render.limits.get", json!({}));
     assert_eq!(
         l,
-        json!({ "maxInlinePixels": 2048, "maxInlineBytes": 8_388_608, "maxWidth": 8192, "maxHeight": 8192, "formats": ["png", "jpeg", "tga", "bmp"] })
+        json!({ "maxInlinePixels": 2048, "maxInlineBytes": 768_000, "maxWidth": 8192, "maxHeight": 8192, "formats": ["png", "jpeg", "tga", "bmp"] })
     );
     // Over the inline limit: a typed refusal with the limits, before anything is written.
     let e = err(&h, "render.frame.run", json!({ "frame": 1, "width": 3000 }));

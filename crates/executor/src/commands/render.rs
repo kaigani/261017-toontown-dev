@@ -33,6 +33,10 @@ use crate::cx::Cx;
 pub(crate) const MAX_SIDE: u32 = tt_render::MAX_SIDE;
 /// The default inline image limit (09 §11.1 item 3): 8 MB encoded.
 pub(crate) const INLINE_IMAGE_BYTES: u64 = 8 * 1024 * 1024;
+/// Ruling D-51 (SI-163): no single MCP answer over 1 MiB. An inline payload is base64 (4/3 of its bytes) inside the
+/// envelope, so at most this many encoded bytes are returned inline, whatever the session's limits say; a larger image
+/// is written to a file (`output: "file"`) and a larger blob is refused with its `maxBytes`.
+pub(crate) const INLINE_ANSWER_BYTES: u64 = 750 * 1024;
 /// Work units one frame may spend (path elements and pixels / 1024), as a drawing render.
 const FRAME_WORK_BUDGET: u64 = 200_000_000;
 /// Wall-clock limit of one frame's rasterisation (under the executor's watchdog budget).
@@ -383,7 +387,7 @@ pub(crate) fn sha256_hex(bytes: &[u8]) -> String {
 /// The session's inline limits: the long side and the encoded bytes.
 pub(crate) fn inline_limits(cx: &Cx) -> (u32, u64) {
     let l = &cx.session().agents.limits;
-    (l.max_inline_image_px, INLINE_IMAGE_BYTES.min(l.max_inline_bytes))
+    (l.max_inline_image_px, INLINE_IMAGE_BYTES.min(l.max_inline_bytes).min(INLINE_ANSWER_BYTES))
 }
 
 /// `path` with ` (n)` before the extension, the first that does not exist.
@@ -997,12 +1001,62 @@ pub(crate) struct Manifest {
     range: Value,
     /// The document revision rendered.
     document_revision: u64,
-    /// One entry per frame file.
-    files: Vec<ManifestFile>,
+    /// One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to
+    /// [`OUTPUTS_INLINE`] frames (ruling D-51, SI-163: no MCP answer over 1 MiB), `outputs` summarising them always.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    files: Option<Vec<ManifestFile>>,
     /// The companion manifest file written with the frames (this manifest without itself).
     manifest_path: String,
     /// Objects not drawn and why.
     warnings: Vec<Value>,
+    /// The frames written, summarised (D-51): in the job's answer, never in the companion file.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    outputs: Option<Outputs>,
+}
+
+/// At most this many frame entries are listed in a range job's answer (D-51); the companion manifest lists them all.
+pub(crate) const OUTPUTS_INLINE: usize = 100;
+
+/// A job's outputs, summarised (ruling D-51, SI-163): the count, where they are and how they are named, the first and
+/// the last in full, and whether the list itself was left out.
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct Outputs {
+    /// How many outputs.
+    count: u32,
+    /// Where they are: the output directory.
+    location: String,
+    /// How they are named (the name pattern with the scene's name, `{frame}` or `{frame:N}` for the frame).
+    pattern: String,
+    /// The first output.
+    first: Option<ManifestFile>,
+    /// The last output.
+    last: Option<ManifestFile>,
+    /// The list itself is not in this answer (the companion manifest file at `manifestPath` has every entry).
+    truncated: bool,
+}
+
+impl Manifest {
+    /// The job's answer (D-51): the manifest with `outputs`, its file list left out above [`OUTPUTS_INLINE`] entries.
+    fn bounded(mut self, pattern: &str) -> Self {
+        let files = self.files.take().unwrap_or_default();
+        let truncated = files.len() > OUTPUTS_INLINE;
+        self.outputs = Some(Outputs {
+            count: u32::try_from(files.len()).unwrap_or(u32::MAX),
+            location: self.output_path.clone(),
+            pattern: pattern.to_owned(),
+            first: files.first().cloned(),
+            last: files.last().cloned(),
+            truncated,
+        });
+        self.files = (!truncated).then_some(files);
+        self
+    }
+}
+
+/// The name pattern as the frames' names follow it: the scene's name in place, the frame tokens kept (D-51 `pattern`).
+fn display_pattern(pattern: &str, name: &str, ext: &str) -> String {
+    format!("{}.{ext}", pattern.replace("{name}", name).replace("{scene}", name))
 }
 
 /// The file name of a frame.
@@ -1076,6 +1130,8 @@ struct RangeJob {
     range: Value,
     /// The staging token of this job: its staged files are `.<target>.tt-partial-<token>` (ADR-0020 decision 11).
     token: String,
+    /// How the frames are named, for the answer's `outputs` (D-51).
+    pattern: String,
 }
 
 impl RangeJob {
@@ -1158,9 +1214,10 @@ impl RangeJob {
             height: self.height,
             range: self.range.clone(),
             document_revision: self.doc.document_rev(),
-            files,
+            files: Some(files),
             manifest_path: self.manifest_target.to_string_lossy().into_owned(),
             warnings,
+            outputs: None,
         };
         let text =
             serde_json::to_string_pretty(&manifest).map_err(|e| err("render.failed", e.to_string(), json!({})))?;
@@ -1666,6 +1723,7 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
         format_name,
         quality: p.quality,
         range: json!({ "from": from, "to": to, "step": step }),
+        pattern: display_pattern(&p.name_pattern, &name, ext),
     };
     let origin = cx.origin().clone();
     let id = cx.session().jobs.submit("render.range.run", &origin.session_key(), move |progress| {
@@ -1674,7 +1732,8 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
         let mut sidecar = job.sidecar(progress.job_id());
         let mut staged: Vec<Staged> = Vec::new();
         match job.run(progress, &mut sidecar, &mut staged) {
-            Ok(m) => Ok(serde_json::to_value(m).unwrap_or(Value::Null)),
+            // D-51: the answer summarises the frames; the companion manifest written with them lists every one.
+            Ok(m) => Ok(serde_json::to_value(m.bounded(&job.pattern)).unwrap_or(Value::Null)),
             Err(e) => {
                 // A failed or cancelled job recovers its own staging and only its own (C33-R2-01); the receipt stays in
                 // the job record with the state and, when failed, the error (C33-R2-02).

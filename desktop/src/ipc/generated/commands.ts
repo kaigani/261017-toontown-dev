@@ -74011,8 +74011,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
       },
       files: {
-        description: "One entry per frame file.",
-        type: "array",
+        description: "One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to\n[`OUTPUTS_INLINE`] frames (ruling D-51, SI-163: no MCP answer over 1 MiB), `outputs` summarising them always.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           $ref: "#/$defs/render.range.run.ManifestFile",
         },
@@ -74026,6 +74029,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "array",
         items: true,
       },
+      outputs: {
+        description: "The frames written, summarised (D-51): in the job's answer, never in the companion file.",
+        anyOf: [
+          {
+            $ref: "#/$defs/render.range.run.Outputs",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
     },
     required: [
       "status",
@@ -74038,7 +74052,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "height",
       "range",
       "documentRevision",
-      "files",
       "manifestPath",
       "warnings",
     ],
@@ -74092,6 +74105,58 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "width",
       "height",
       "frame",
+    ],
+  },
+  "render.range.run.Outputs": {
+    description: "A job's outputs, summarised (ruling D-51, SI-163): the count, where they are and how they are named, the first and\nthe last in full, and whether the list itself was left out.",
+    type: "object",
+    properties: {
+      count: {
+        description: "How many outputs.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      location: {
+        description: "Where they are: the output directory.",
+        type: "string",
+      },
+      pattern: {
+        description: "How they are named (the name pattern with the scene's name, `{frame}` or `{frame:N}` for the frame).",
+        type: "string",
+      },
+      first: {
+        description: "The first output.",
+        anyOf: [
+          {
+            $ref: "#/$defs/render.range.run.ManifestFile",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      last: {
+        description: "The last output.",
+        anyOf: [
+          {
+            $ref: "#/$defs/render.range.run.ManifestFile",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      truncated: {
+        description: "The list itself is not in this answer (the companion manifest file at `manifestPath` has every entry).",
+        type: "boolean",
+      },
+    },
+    required: [
+      "count",
+      "location",
+      "pattern",
+      "truncated",
     ],
   },
   "render.range.run.result": {
@@ -103433,12 +103498,14 @@ export interface render_range_run_Manifest {
   range: unknown;
   /** The document revision rendered. */
   documentRevision: number | bigint;
-  /** One entry per frame file. */
-  files: render_range_run_ManifestFile[];
+  /** One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to [`OUTPUTS_INLINE`] frames (ruling D-51, SI-163: no MCP answer over 1 MiB), `outputs` summarising them always. */
+  files?: render_range_run_ManifestFile[] | null;
   /** The companion manifest file written with the frames (this manifest without itself). */
   manifestPath: string;
   /** Objects not drawn and why. */
   warnings: unknown[];
+  /** The frames written, summarised (D-51): in the job's answer, never in the companion file. */
+  outputs?: render_range_run_Outputs | null;
 }
 
 /** One file of a manifest (09 §11.4). */
@@ -103457,6 +103524,22 @@ export interface render_range_run_ManifestFile {
   height: number;
   /** Scene frame. */
   frame: number;
+}
+
+/** A job's outputs, summarised (ruling D-51, SI-163): the count, where they are and how they are named, the first and the last in full, and whether the list itself was left out. */
+export interface render_range_run_Outputs {
+  /** How many outputs. */
+  count: number;
+  /** Where they are: the output directory. */
+  location: string;
+  /** How they are named (the name pattern with the scene's name, `{frame}` or `{frame:N}` for the frame). */
+  pattern: string;
+  /** The first output. */
+  first?: render_range_run_ManifestFile | null;
+  /** The last output. */
+  last?: render_range_run_ManifestFile | null;
+  /** The list itself is not in this answer (the companion manifest file at `manifestPath` has every entry). */
+  truncated: boolean;
 }
 
 export interface render_range_run_result {

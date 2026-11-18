@@ -75,10 +75,14 @@ fn long_and_refused_evaluations_answer_their_own_requests_only() {
     let b_read = b.send("tools/call", run_request("doc.state.get"));
     let (got, notes) = collect(&mut a, &[id_long, id_refused, id_read], Duration::from_millis(300));
     assert_eq!(got.keys().copied().collect::<Vec<_>>(), vec![id_long, id_refused, id_read], "exactly these answers");
-    // Each answer is its own request's.
+    // Each answer is its own request's. The long range's 100 000 world matrices are over the 1 MiB limit of one MCP
+    // message (ruling D-51, SI-163): its answer is `limit.exceeded` for `answerBytes`, the refused one's for its size.
     let env = envelope(&got[&id_long]);
-    assert_eq!(env["status"], "ok", "{env}");
-    assert_eq!(env["result"]["frames"].as_array().unwrap().len(), 100_000);
+    assert_eq!(
+        (env["status"].as_str(), env["error"]["code"].as_str(), env["error"]["details"]["limit"].as_str()),
+        (Some("error"), Some("limit.exceeded"), Some("answerBytes")),
+        "{env}"
+    );
     let env = envelope(&got[&id_refused]);
     assert_eq!(
         (env["status"].as_str(), env["error"]["code"].as_str()),

@@ -43,6 +43,37 @@ fn run_range(h: &ExecutorHandle, params: Value) -> Value {
     c13_support::job_ok(h, "render.range.run", params)
 }
 
+/// Ruling D-51 (SI-163): no MCP answer over 1 MiB. A range of more than 100 frames answers with its frames summarised
+/// (count, directory, naming, first and last) and no list; the companion manifest written with them lists every frame.
+#[test]
+fn a_long_range_answers_with_its_frames_summarised() {
+    let _t = turn();
+    let h = animated();
+    let dir = c13_support::tmp();
+    let m = run_range(
+        &h,
+        json!({ "from": 1, "to": 150, "scale": 0.05, "directory": dir.to_string_lossy(), "createDirs": true }),
+    );
+    assert!(
+        m.get("files").is_none(),
+        "the answer leaves the list out: {}",
+        &m.to_string()[..300.min(m.to_string().len())]
+    );
+    let o = &m["outputs"];
+    assert_eq!((o["count"].as_u64(), o["truncated"].as_bool()), (Some(150), Some(true)));
+    assert_eq!(o["location"], m["outputPath"]);
+    assert_eq!((o["first"]["frame"].as_u64(), o["last"]["frame"].as_u64()), (Some(1), Some(150)));
+    assert!(std::path::Path::new(o["last"]["path"].as_str().unwrap()).exists());
+    assert!(m.to_string().len() < 16 * 1024, "the answer is small whatever the count: {} bytes", m.to_string().len());
+    let companion: Value =
+        serde_json::from_slice(&std::fs::read(m["manifestPath"].as_str().unwrap()).unwrap()).unwrap();
+    let all = companion["files"].as_array().unwrap();
+    assert_eq!(all.len(), 150);
+    assert_eq!(all[0], o["first"]);
+    assert_eq!(all[149], o["last"]);
+    assert!(companion.get("outputs").is_none());
+}
+
 #[test]
 fn a_range_writes_named_frames_equal_to_single_renders_and_a_companion_manifest() {
     let _t = turn();
@@ -65,10 +96,19 @@ fn a_range_writes_named_frames_equal_to_single_renders_and_a_companion_manifest(
         assert_eq!(bytes, single.png, "frame {f}: the same bytes as render.frame.run");
         assert_eq!(entry["sha256"], single.result["sha256"]);
     }
-    // The companion is the manifest itself.
+    // The companion is the manifest itself, without the answer's `outputs` summary (ruling D-51).
     let companion: Value =
         serde_json::from_slice(&std::fs::read(dir.join("Intro_0001-0009.manifest.json")).unwrap()).unwrap();
-    assert_eq!(companion, m);
+    let mut answer = m.clone();
+    let outputs = answer.as_object_mut().unwrap().remove("outputs").expect("the answer summarises its frames");
+    assert_eq!(companion, answer);
+    // D-51: three frames are listed in full and summarised: the count, the directory, the naming, the first and last.
+    assert_eq!(outputs["count"], 3);
+    assert_eq!(outputs["truncated"], false);
+    assert_eq!(outputs["location"], m["outputPath"]);
+    assert!(outputs["pattern"].as_str().unwrap().ends_with(".png"), "{outputs}");
+    assert_eq!(outputs["first"], m["files"][0]);
+    assert_eq!(outputs["last"], m["files"][2]);
     // Repeated: the same bytes, the same manifest.
     let again = c13_support::tmp();
     let m2 =

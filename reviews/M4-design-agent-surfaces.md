@@ -315,7 +315,21 @@ Already paged and within the cap: `doc.object.find`, `edit.history.get` (`offset
    the same `limit.exceeded` envelope, and a notification over the cap is not sent and is recorded in the audit log.
    This holds for commands not listed above and for any future one.
 
-**The gate test** (`crates/mcp/tests/c44a_answer_cap.rs`; no wall-clock assertion, D-45):
+**As built (C4.4a).** Inline payloads: at most 750 KiB encoded (`render::INLINE_ANSWER_BYTES`), so the base64 answer
+fits one message. A notification over the cap is replaced by a warning notification naming its size (the MCP
+server has no log of its own). The paged read waits for a ruling: spec A is a read-only copy, and the registry refuses an
+undeclared command (SI-181). Until then, the full list is the companion manifest file at `manifestPath`. The gate is
+implemented as follows:
+
+- `c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog` measures every example's answer and every
+  job example's final record against 1 MiB less 8 KiB for the tool-result wrapper; the largest is `doc.blob.get`, at
+  470 655 bytes;
+- `c33_range::a_long_range_answers_with_its_frames_summarised` runs 150 frames and checks the summary, the answer's
+  size and the full companion file;
+- the server's unit tests cover the backstop and the event lists;
+- the 12 000-frame wait over HTTP is checked end to end (receipt).
+
+**The gate test as designed** (no wall-clock assertion, D-45):
 
 - every command with a worked example (`crates/mcp/src/worked-examples.json`, `crates/registry/src/example-results.json`)
   runs on a fixture project, and its serialised answer is at most 1 MiB; the test reports the largest;

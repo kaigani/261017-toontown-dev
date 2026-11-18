@@ -10046,7 +10046,7 @@
       "title": "The inline and output limits",
       "result": {
         "maxInlinePixels": 2048,
-        "maxInlineBytes": 8388608,
+        "maxInlineBytes": 768000,
         "maxWidth": 8192,
         "maxHeight": 8192,
         "formats": [

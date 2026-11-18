@@ -411,6 +411,11 @@ fn clipboard_for(h: &ExecutorHandle, id: &str) {
     }
 }
 
+/// Ruling D-51 (SI-163): no single MCP message over 1 MiB (`tt_mcp::server::MAX_MESSAGE_BYTES`, the server's
+/// backstop). An answer reaches the client inside a tool result (a text summary and the structured envelope), so the
+/// envelope and a job's final record must leave room for that wrapper.
+const ANSWER_CAP: usize = (1 << 20) - 8 * 1024;
+
 #[test]
 fn every_example_runs_on_the_fixture_under_the_watchdog() {
     let registry = tt_executor::registry().unwrap();
@@ -418,6 +423,16 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
     let mut schema_checked = 0;
     let mut ran = 0;
     let mut failures = Vec::new();
+    // D-51's gate: the largest answer of every command's example, and of every job example's final record.
+    let mut largest: (usize, String) = (0, String::new());
+    let mut measure = |what: String, bytes: usize, failures: &mut Vec<String>| {
+        if bytes > largest.0 {
+            largest = (bytes, what.clone());
+        }
+        if bytes > ANSWER_CAP {
+            failures.push(format!("{what}: {bytes} bytes, over the {ANSWER_CAP}-byte answer cap (D-51)"));
+        }
+    };
     for e in registry.entries() {
         let Some(c) = e.command else { continue };
         for ex in c.decl.examples {
@@ -441,6 +456,11 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
             let env = h.invoke(Invocation::user(e.id(), params));
             crate::common::timing::record("c12_kernel_state.rs:439", t.elapsed(), Duration::from_secs(30));
             assert!(t.elapsed() < Duration::from_secs(30), "{}: `{}` took {:?}", e.id(), ex.title, t.elapsed());
+            measure(
+                format!("{} example `{}`", e.id(), ex.title),
+                serde_json::to_string(&env).unwrap().len(),
+                &mut failures,
+            );
             let code = env.error.as_ref().map(|x| x.code.clone());
             match (e.spec.kind, e.status()) {
                 (tt_registry::Kind::Event, _) => assert_eq!(code.as_deref(), Some("command.disabled"), "{}", e.id()),
@@ -474,6 +494,10 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
                             && let Some(job) = v.get("jobId").and_then(Value::as_str).filter(|j| *j != "dryRun")
                         {
                             let rec = h.jobs().wait(job, Duration::from_secs(30)).map(|(r, _)| r);
+                            if let Ok(r) = &rec {
+                                let what = format!("{} example `{}` job record", e.id(), ex.title);
+                                measure(what, serde_json::to_string(r).unwrap().len(), &mut failures);
+                            }
                             match rec {
                                 Ok(r) if r.state == tt_executor::JobState::Succeeded => schema_checked += 1,
                                 other => failures.push(format!("{} example `{}`: job {other:?}", e.id(), ex.title)),
@@ -500,6 +524,7 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
         )
     );
     println!("examples run: {ran}; successful results schema-checked: {schema_checked}");
+    println!("largest answer (D-51): {} bytes, {}", largest.0, largest.1);
     assert!(ran >= 140, "examples: {ran}");
 }
 
