@@ -808,6 +808,11 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `element.drawing.delete` | `drawing.inUse` | parameter | a drawing the caller names is exposed in a cell |  |
 | `element.drawing.delete` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
 | `element.drawing.delete` | `element.notFound` | parameter | an element the caller names does not exist (selected and current elements always exist: the context is repaired) |  |
+| `element.drawing.list` | `arg.invalid` | parameter | the thumbnail size the caller gives is out of the render's range |  |
+| `element.drawing.list` | `drawing.noTarget` | unreachable | a thumbnail renders its drawing by `drawingId`, so the render never looks the target up from the context |  |
+| `element.drawing.list` | `drawing.notVectorElement` | unreachable | a thumbnail renders its drawing by `drawingId`, so the render never resolves an element |  |
+| `element.drawing.list` | `element.notCellBased` | parameter | the element the caller names has no drawing bank |  |
+| `element.drawing.list` | `element.notFound` | parameter | an element the caller names does not exist |  |
 | `element.drawing.duplicate` | `drawing.nameDuplicate` | parameter | the name the caller gives is taken |  |
 | `element.drawing.duplicate` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
 | `element.drawing.rename` | `drawing.nameDuplicate` | parameter | the name the caller gives is taken |  |
@@ -922,7 +927,6 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `tool.pen.select` | `tool.notApplicable` | unreachable | `tool.pen.select` passes no family, so `select_pen` never compares one |  |
 | `tool.pen.set` | `pen.notFound` | parameter | the pen the caller names does not exist |  |
 | `tool.symmetry.set` | `tool.valueOutOfRange` | parameter | a tool value is out of range |  |
-| `tool.tablet.set` | `arg.invalid` | parameter | the input interface name the caller gives is empty or longer than 64 characters |  |
 | `ui.help.get` | `command.unknown` | parameter | the command the caller names does not exist |  |
 | `ui.help.get` | `ui.unknownMessage` | parameter | the message the caller names does not exist |  |
 | `ui.help.get` | `window.panelNotFound` | parameter | the panel the caller names does not exist |  |
