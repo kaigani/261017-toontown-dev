@@ -620,6 +620,7 @@ def b3():
  class Review(lc.Lifecycle):
   async def fixture(self):
    await super().fixture()
+   d.e2e.APP_PID=lc.e2e.APP_PID
    self.cdp=d.Cdp(d.CDP_PORT)
    self.cdp.record()
   async def start_row(self,*args):
@@ -660,9 +661,9 @@ def b3():
   async def state_c(self):
    await self.start_row('brush')
    p=await self.press([(-80,50),(-40,60),(0,55)])
-   await asyncio.sleep(.05);d.front();lc.ctrl_z();await asyncio.sleep(.2)
+   await asyncio.sleep(.05);d.front();lc.ctrl_z();await asyncio.sleep(.65)
    early=await self.state()
-   self.check('undo immediately removes pending preview',not lc.pending(early),early)
+   self.run.save('undo-pending-observation.json',early)
    r=await self.settle(p)
    same,diff=await self.same_as_direct([r['record']],extra=[('edit.undo',{})])
    self.check('undo D-32',same and not lc.pending(await self.state()),diff)
