@@ -1,0 +1,86 @@
+[
+ {
+  "name": "(a) Select move: drawn until the committed frame (answer 2500 ms late)",
+  "ok": true,
+  "detail": {
+   "answeredAt": 2.5908952000318095,
+   "heldSamples": 20,
+   "heldAll": true,
+   "afterSamples": 9,
+   "afterNone": true,
+   "status": "ok"
+  }
+ },
+ {
+  "name": "(a) Select move: the drawing equals the direct commands' (D-32)",
+  "ok": true,
+  "detail": {
+   "statuses": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "name": "(a) Select corner scale: drawn until the committed frame (answer 2500 ms late)",
+  "ok": true,
+  "detail": {
+   "answeredAt": 2.608371799928136,
+   "heldSamples": 20,
+   "heldAll": true,
+   "afterSamples": 9,
+   "afterNone": true,
+   "status": "ok"
+  }
+ },
+ {
+  "name": "(a) Select corner scale: the drawing equals the direct commands' (D-32)",
+  "ok": true,
+  "detail": {
+   "statuses": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "name": "(a) Brush: drawn until the committed frame (answer 2500 ms late)",
+  "ok": true,
+  "detail": {
+   "answeredAt": 2.5780515000224113,
+   "heldSamples": 20,
+   "heldAll": true,
+   "afterSamples": 9,
+   "afterNone": true,
+   "status": "ok"
+  }
+ },
+ {
+  "name": "(a) Brush: the drawing equals the direct commands' (D-32)",
+  "ok": true,
+  "detail": {
+   "statuses": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "name": "(a) Rectangle: drawn until the committed frame (answer 2500 ms late)",
+  "ok": true,
+  "detail": {
+   "answeredAt": 2.563811899977736,
+   "heldSamples": 20,
+   "heldAll": true,
+   "afterSamples": 9,
+   "afterNone": true,
+   "status": "ok"
+  }
+ },
+ {
+  "name": "(a) Rectangle: the drawing equals the direct commands' (D-32)",
+  "ok": true,
+  "detail": {
+   "statuses": [
+    "ok"
+   ]
+  }
+ }
+]

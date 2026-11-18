@@ -639,6 +639,26 @@ def b3():
    ok,detail=self.held_while_pending(r);self.check('measured stale scene order and preview held',bool(scene) and ok,{'orderMs':order,**detail})
    await self.head.run('drawAid.grid.set',{'visible':True})
    same,diff=await self.same_as_direct([r['record']]);self.check('stale scene D-32',same,diff)
+  async def state_c(self):
+   await self.start_row('brush')
+   p=await self.press([(-80,50),(-40,60),(0,55)])
+   await asyncio.sleep(.05);d.front();lc.ctrl_z();await asyncio.sleep(.2)
+   early=await self.state()
+   self.check('undo immediately removes pending preview',not lc.pending(early),early)
+   r=await self.settle(p)
+   same,diff=await self.same_as_direct([r['record']],extra=[('edit.undo',{})])
+   self.check('undo D-32',same and not lc.pending(await self.state()),diff)
+  async def state_f(self):
+   await self.start_row('brush')
+   p=await self.press([(-80,-80),(-40,-70),(0,-75)])
+   states=[]
+   for view in ('cameraView',lc.VIEW):
+    await self.app.run('view.active.set',{'viewId':view});await asyncio.sleep(.2)
+    state=self.cdp.js("JSON.parse(document.querySelector('[data-tt-id=\""+view+".canvas\"]').getAttribute('data-tt-value'))")
+    states.append({'view':view,'afterRelease':time.monotonic()-p['times']['release'],'state':state})
+   r=await self.settle(p)
+   self.check('Camera and back while pending have no stale preview',all(not lc.pending(x['state']) and x['afterRelease']<2.5 for x in states),states)
+   same,diff=await self.same_as_direct([r['record']]);self.check('view switch D-32',same and not lc.pending(await self.state()),diff)
   async def state_a(self):
    if step!=2:return await super().state_a()
    await self.start_row('brush')
