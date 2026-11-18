@@ -243,7 +243,7 @@ pub(crate) struct CameraListResult {
     scopes = [read],
     needs_project,
     example(title = "Cameras of the current scene", params = "{}"),
-    gui = "Scene views: camera list (M6 C6.2)",
+    gui = "Main toolbar: camera list (M4 C4.4a)",
 )]
 pub(crate) fn anim_camera_list(cx: &mut Cx, p: SceneParam) -> Result<CameraListResult, CommandError> {
     let doc = cx.document()?.clone();
@@ -452,7 +452,7 @@ pub(crate) struct CurrentResult {
     scopes = [read],
     needs_project,
     example(title = "The current camera of the current scene", params = "{}"),
-    gui = "Scene views: camera list (M6 C6.2)",
+    gui = "Main toolbar: camera list (M4 C4.4a)",
 )]
 pub(crate) fn anim_camera_current_get(cx: &mut Cx, p: SceneParam) -> Result<CurrentResult, CommandError> {
     let doc = cx.document()?.clone();
@@ -469,7 +469,7 @@ pub(crate) fn anim_camera_current_get(cx: &mut Cx, p: SceneParam) -> Result<Curr
     undo = "Set Current Camera",
     needs_project,
     example(title = "Make the Intro camera current", params = r#"{"cameraId": "scene:\"Intro\"/element:\"Camera\""}"#),
-    gui = "Scene views: camera list (M6 C6.2)",
+    gui = "Main toolbar: camera list (M4 C4.4a)",
 )]
 pub(crate) fn anim_camera_current_set(cx: &mut Cx, p: CameraParam) -> Result<CameraResult, CommandError> {
     let doc = cx.document()?.clone();

@@ -1733,6 +1733,33 @@
       }
     },
     {
+      "id": "mainToolbar.cameraList",
+      "surface": "main",
+      "commands": [
+        "anim.camera.current.set"
+      ]
+    },
+    {
+      "id": "mainToolbar.cameraList.cam_1",
+      "surface": "main",
+      "commands": [
+        "anim.camera.current.set"
+      ],
+      "params": {
+        "cameraId": "cam_1"
+      }
+    },
+    {
+      "id": "mainToolbar.cameraList.cam_2",
+      "surface": "main",
+      "commands": [
+        "anim.camera.current.set"
+      ],
+      "params": {
+        "cameraId": "cam_2"
+      }
+    },
+    {
       "id": "mainToolbar.drawAid.autoLightTable.set",
       "surface": "main",
       "commands": [
@@ -2647,11 +2674,6 @@
       "id": "agent.toggle",
       "surface": "main",
       "reason": "disclose"
-    },
-    {
-      "id": "mainToolbar.cameraList",
-      "surface": "main",
-      "reason": "placeholder"
     },
     {
       "id": "mainToolbar.lastFrame",
@@ -16525,6 +16547,14 @@
       "file": "desktop/src-tauri/src/host.rs"
     },
     {
+      "command": "anim.camera.current.get",
+      "file": "desktop/src/shell/Toolbars.tsx"
+    },
+    {
+      "command": "anim.camera.list",
+      "file": "desktop/src/shell/Toolbars.tsx"
+    },
+    {
       "command": "anim.tool.get",
       "file": "desktop/src/canvas/CanvasView.tsx"
     },
@@ -17692,6 +17722,14 @@
     },
     {
       "surface": "main",
+      "query": "anim.camera.current.get"
+    },
+    {
+      "surface": "main",
+      "query": "anim.camera.list"
+    },
+    {
+      "surface": "main",
       "query": "anim.tool.get"
     },
     {
@@ -17809,6 +17847,14 @@
     {
       "surface": "startScreen",
       "query": "agent.server.status"
+    },
+    {
+      "surface": "startScreen",
+      "query": "anim.camera.current.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "anim.camera.list"
     },
     {
       "surface": "startScreen",
@@ -18013,6 +18059,30 @@
       ]
     },
     {
+      "command": "anim.camera.current.get",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "anim.camera.current.set",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "anim.camera.currentChanged",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "anim.camera.list",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
       "command": "anim.tool.changed",
       "files": [
         "desktop/src/canvas/CanvasView.tsx"
@@ -18060,6 +18130,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src-tauri/src/shell.rs",
+        "desktop/src/shell/Toolbars.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -18207,6 +18278,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/panels/DrawingInspectorPage.tsx",
+        "desktop/src/shell/Toolbars.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -18216,6 +18288,7 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/shell/Toolbars.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -18231,6 +18304,7 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/shell/Toolbars.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -18760,6 +18834,12 @@
       "command": "limit.exceeded",
       "files": [
         "desktop/src/ipc/mockTransport.ts"
+      ]
+    },
+    {
+      "command": "mainToolbar.cameraList",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
       ]
     },
     {

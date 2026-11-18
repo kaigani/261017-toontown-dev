@@ -5,6 +5,8 @@
       "description": "the main window with a project as it opens: title, dock, toolbars, palettes, status bar, history, view chrome and canvas, and the store's slices (01 §5, 02 §4)",
       "reads": {
         "agent.server.status": ["desktop/src/state/store.ts"],
+        "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
+        "anim.camera.list": ["desktop/src/shell/Toolbars.tsx"],
         "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
@@ -52,6 +54,8 @@
       "description": "the start screen window as it opens: the start screen with the shell beneath it (the store loads every slice at launch; 01 §1.1, §2, §3.7)",
       "reads": {
         "agent.server.status": ["desktop/src/state/store.ts"],
+        "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
+        "anim.camera.list": ["desktop/src/shell/Toolbars.tsx"],
         "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],

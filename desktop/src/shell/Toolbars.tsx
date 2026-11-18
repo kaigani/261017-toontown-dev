@@ -3,7 +3,7 @@
 // drop-downs show their members. Whether an item is enabled, checked and how it is labelled comes from the kernel's
 // availability (ruling O-10), the source the native menu and the key dispatch use too; until it has answered, an
 // item is disabled. Items whose command belongs to a later checkpoint stay visible and disabled, with the reason.
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { TOOL_PALETTES } from '../panels/catalogue';
@@ -43,6 +43,7 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
         if (item === 'space') return <span key={i} className="toolbar-space" />;
         if (item === 'flexibleSpace') return <span key={i} className="toolbar-flex" />;
         if (item === 'workspaceList') return <WorkspaceList key={i} />;
+        if (item === 'cameraList') return <CameraList key={i} />;
         if (AID_GROUPS.has(item)) return <AidGroupItem key={i} item={item} />;
         const ref = itemRef(item);
         const facts = ref ? availability[refKey(ref)] : undefined;
@@ -114,6 +115,82 @@ function WorkspaceList() {
             </option>
           );
         })}
+    </select>
+  );
+}
+
+/** The camera list (01 §5.7 lines 453-460; M4 C4.4a, design note 1 §8): the current scene's cameras, the current one
+ *  selected; a choice sends `anim.camera.current.set` ("Set Current Camera", undoable, D-40 answer 10). Disabled
+ *  without a project or a camera; re-read on the camera, document, undo and project events. */
+function CameraList() {
+  const { engine } = useShell();
+  const actions = useActions();
+  const [cameras, setCameras] = useState<{ id: string; name: string }[]>([]);
+  const [currentId, setCurrentId] = useState<string | null>(null);
+  const refresh = useCallback(() => {
+    void engine
+      .run('anim.camera.list', {})
+      .done.then((env) => {
+        const list = (env.result as { cameras?: unknown } | undefined)?.cameras;
+        setCameras(env.status === 'ok' && Array.isArray(list) ? (list as typeof cameras) : []);
+      })
+      .catch(() => undefined);
+    void engine
+      .run('anim.camera.current.get', {})
+      .done.then((env) => {
+        const id = (env.result as { cameraId?: unknown } | undefined)?.cameraId;
+        setCurrentId(env.status === 'ok' && typeof id === 'string' ? id : null);
+      })
+      .catch(() => undefined);
+  }, [engine]);
+  useEffect(() => {
+    refresh();
+    let off: (() => void) | null = null;
+    let stopped = false;
+    void engine
+      .onEvent((e) => {
+        if (
+          e.name === 'anim.camera.currentChanged' ||
+          e.name === 'doc.changed' ||
+          e.name === 'doc.undone' ||
+          e.name === 'doc.redone' ||
+          e.name === 'app.state.changed' ||
+          e.name === 'project.opened' ||
+          e.name === 'project.closed'
+        )
+          refresh();
+      })
+      .then((u) => {
+        if (stopped) u();
+        else off = u;
+      });
+    return () => {
+      stopped = true;
+      off?.();
+    };
+  }, [engine, refresh]);
+  return (
+    <select
+      aria-label="Camera"
+      value={currentId ?? ''}
+      disabled={cameras.length === 0}
+      title={cameras.length === 0 ? 'No camera in the current scene' : 'Current camera'}
+      data-tt-role="field"
+      data-tt-id="mainToolbar.cameraList"
+      data-tt-command="anim.camera.current.set"
+      onChange={runChosen(actions)}
+    >
+      {cameras.map((c) => (
+        <option
+          key={c.id}
+          value={c.id}
+          {...optionRef('mainToolbar.cameraList', c.id, c.name, 'anim.camera.current.set', {
+            cameraId: c.id,
+          })}
+        >
+          {c.name}
+        </option>
+      ))}
     </select>
   );
 }

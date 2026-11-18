@@ -149,6 +149,15 @@ function host(project: boolean): ScriptedHost {
         currentEraserPenId: 'pen_3',
       }),
     'tool.active.get': () => ok({ toolId: 'brush' }),
+    // The main toolbar's camera list (M4 C4.4a): two cameras, the first current.
+    'anim.camera.list': () =>
+      ok({
+        cameras: [
+          { id: 'cam_1', name: 'Camera', current: true },
+          { id: 'cam_2', name: 'Wide', current: false },
+        ],
+      }),
+    'anim.camera.current.get': () => ok({ cameraId: 'cam_1' }),
     // The Properties panel's Tool options page (M4 C4.4a): each tool's options, the drawing settings, gap closing.
     'tool.options.get': (p) => ok({ toolId: p['toolId'], options: TOOL_OPTIONS[String(p['toolId'])] ?? {} }),
     'tool.settings.get': () =>

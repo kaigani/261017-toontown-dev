@@ -46,21 +46,6 @@
       "section": "05 §19.3 (Command table)",
       "location": "Scene views, Element menu: Add Camera"
     },
-    "anim.camera.current.get": {
-      "owner": "M4 C4.4",
-      "section": "01 §5.7 (Toolbars and customisation: the main toolbar's camera list, lines 453-460)",
-      "location": "the main toolbar's camera list (C43B-R1S-05)"
-    },
-    "anim.camera.current.set": {
-      "owner": "M4 C4.4",
-      "section": "01 §5.7 (Toolbars and customisation: the main toolbar's camera list, lines 453-460)",
-      "location": "the main toolbar's camera list (C43B-R1S-05)"
-    },
-    "anim.camera.list": {
-      "owner": "M4 C4.4",
-      "section": "01 §5.7 (Toolbars and customisation: the main toolbar's camera list, lines 453-460)",
-      "location": "the main toolbar's camera list (C43B-R1S-05)"
-    },
     "anim.camera.set": {
       "owner": "M6 C6.2",
       "section": "05 §19.1 (item 1: FOV wedge dragging, lines 1174-1177)",

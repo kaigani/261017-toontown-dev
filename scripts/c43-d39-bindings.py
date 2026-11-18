@@ -1507,6 +1507,27 @@ async def build_and_run(t: Table, only: set) -> None:
                  "effect": lambda b, a, k: first_drawing(a).get("name") == "D39 key", "disabled": None,
                  "mcpReason": "the Drawing page opens with a click on its tab, and the name is typed"})
 
+    # ----- C4.4a: the main toolbar's camera list (01 §5.7; design note 1 §8) -----
+    cam_target: dict = {}
+
+    async def cameras_state():
+        listed = (await cmd("anim.camera.list", {})).get("cameras") or []
+        return {"cameras": listed, "current": (await cmd("anim.camera.current.get", {})).get("cameraId")}
+
+    async def two_cameras():
+        st = await cameras_state()
+        if len(st["cameras"]) < 2:
+            await cmd("anim.camera.create", {"name": "D39 Wide"})
+            st = await cameras_state()
+        cam_target["id"] = next(c["id"] for c in st["cameras"] if c["id"] != st["current"])
+        await asyncio.sleep(0.6)
+
+    rows.append({"name": "main toolbar › camera list", "spec": f"{spec_line('anim.camera.current.set')} (label \"Set Current Camera\"); 01 §5.7",
+                 "action": lambda: ("select", "mainToolbar.cameraList", cam_target["id"]),
+                 "expect": lambda b: ("anim.camera.current.set", {"cameraId": cam_target["id"]}), "label": "Set Current Camera",
+                 "setup": two_cameras, "state": cameras_state,
+                 "effect": lambda b, a, k: a["current"] == cam_target["id"] != b["current"], "disabled": None})
+
     for r in rows:
         if r.get("skip"):
             await r["setup"]()

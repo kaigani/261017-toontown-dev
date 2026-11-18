@@ -2151,3 +2151,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   equivalent. `element.drawing.list` is the inspector's declared read and leaves agent-only (D-40 answer 5).
   `draw.drawing.get` stays agent-only: the inspector does not need it.
 - **Built:** `desktop/src/panels/DrawingInspectorPage.tsx`; `DrawingInspectorPage.test.tsx`; D-39 rows (OS form).
+
+## SI-171 — the camera list's undo label (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §5.7 lines 453-460 (the main toolbar's camera list), 05 line 1282 (`anim.camera.current.set`
+  undoable, no label given), D-40 answer 10, D-23 (spec-stated labels in every equivalence test).
+- **Problem:** 05 says choosing the current camera makes an undo step but names no label.
+- **Decided:** the registry's label "Set Current Camera" is the step's label; the D-39 row of the camera list checks
+  it. The three camera commands' `gui` strings name the main toolbar's camera list (M4 C4.4a) instead of M6 C6.2.
+- **Built:** `Toolbars.tsx` (`CameraList`, reading `anim.camera.list` and `anim.camera.current.get`); `cameraList.test.tsx`;
+  the D-39 row "main toolbar › camera list" in both forms.

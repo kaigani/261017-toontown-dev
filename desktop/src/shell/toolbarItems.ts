@@ -20,12 +20,11 @@ export const ITEM_LABELS: Readonly<Record<string, string>> = {
 };
 
 /** Group items whose behaviour belongs to a later checkpoint (shown disabled with the owner; they run no command): the
- *  owners of their commands (`timeline.currentFrame.move` and playback: M5 C5.1; the camera list: M4 C4.4, ruling
- *  C43B-R1S-05; the scene list: M9). The drawing aids' group items are built (`toolbarGroups.tsx`). */
+ *  owners of their commands (`timeline.currentFrame.move` and playback: M5 C5.1; the scene list: M9). The drawing aids'
+ *  group items and the camera list (M4 C4.4a) are built (`toolbarGroups.tsx`, `Toolbars.tsx`). */
 export const ITEM_OWNERS: Readonly<Record<string, string>> = {
   playStop: 'M5 C5.1',
   lastFrame: 'M5 C5.1',
-  cameraList: 'M4 C4.4',
   sceneList: 'M9',
 };
 
