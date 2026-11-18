@@ -4,7 +4,11 @@
     "main": {
       "description": "the main window with a project as it opens: title, dock, toolbars, palettes, status bar, history, view chrome and canvas, and the store's slices (01 §5, 02 §4)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
         "anim.camera.list": ["desktop/src/shell/Toolbars.tsx"],
         "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
@@ -53,7 +57,11 @@
     "startScreen": {
       "description": "the start screen window as it opens: the start screen with the shell beneath it (the store loads every slice at launch; 01 §1.1, §2, §3.7)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
         "anim.camera.list": ["desktop/src/shell/Toolbars.tsx"],
         "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
@@ -110,7 +118,11 @@
     "float:history": {
       "description": "a floating History window as it opens: its own store with every slice (01 §5.4, §10)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "edit.history.get": ["desktop/src/state/store.ts"],
         "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
@@ -166,7 +178,7 @@
     "agentPopover": {
       "description": "the agent sessions popover: the recent activity it reads when opened (11 §6.4)",
       "reads": {
-        "agent.activity.list": ["desktop/src/shell/StatusBar.tsx"]
+        "agent.activity.list": ["desktop/src/panels/ActivityPanel.tsx", "desktop/src/shell/StatusBar.tsx"]
       }
     },
     "jobsWindow": {
@@ -178,7 +190,11 @@
     "float:pen": {
       "description": "the Pen panel in a floating window: its pens, the active tool and the drawing settings, and the store's slices (02 §6.1, 01 §5.4)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "edit.history.get": ["desktop/src/state/store.ts"],
         "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
@@ -213,7 +229,11 @@
     "float:properties:brush": {
       "description": "the Properties panel in a floating window, its Tool options page for the brush tool (02 §7.7, §8.8-§8.11)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
         "edit.history.get": ["desktop/src/state/store.ts"],
@@ -250,7 +270,11 @@
     "float:properties:paint": {
       "description": "the Properties panel in a floating window, its Tool options page for the paint tool (02 §7.7, §8.8-§8.11)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
         "edit.history.get": ["desktop/src/state/store.ts"],
@@ -287,7 +311,11 @@
     "float:properties:pencil": {
       "description": "the Properties panel in a floating window, its Tool options page for the pencil tool (02 §7.7, §8.8-§8.11)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
         "edit.history.get": ["desktop/src/state/store.ts"],
@@ -324,7 +352,11 @@
     "float:properties:polyline": {
       "description": "the Properties panel in a floating window, its Tool options page for the polyline tool (02 §7.7, §8.8-§8.11)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
         "edit.history.get": ["desktop/src/state/store.ts"],
@@ -361,7 +393,11 @@
     "float:properties:select": {
       "description": "the Properties panel in a floating window, its Tool options page for the select tool (02 §7.7, §8.8-§8.11)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
         "edit.history.get": ["desktop/src/state/store.ts"],
@@ -398,7 +434,11 @@
     "float:properties:eraser": {
       "description": "the Properties panel in a floating window, its Tool options page for the eraser tool (02 §7.7, §8.8-§8.11)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
         "edit.history.get": ["desktop/src/state/store.ts"],
@@ -435,7 +475,11 @@
     "float:text": {
       "description": "the Text panel in a floating window: the defaults for new text, and the store's slices (02 §7.6.1, 01 §5.4)",
       "reads": {
-        "agent.server.status": ["desktop/src/state/store.ts"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
         "edit.history.get": ["desktop/src/state/store.ts"],
         "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
@@ -506,6 +550,41 @@
         "ui.statusBar.get": ["desktop/src/state/store.ts"],
         "view.list": ["desktop/src/panels/PanelBody.tsx"],
         "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"]
+      }
+    },
+    "preferences:agent": {
+      "description": "preferences:agent",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ]
+      }
+    },
+    "float:activity": {
+      "description": "float:activity",
+      "reads": {
+        "agent.activity.list": ["desktop/src/panels/ActivityPanel.tsx", "desktop/src/shell/StatusBar.tsx"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
     }
   },

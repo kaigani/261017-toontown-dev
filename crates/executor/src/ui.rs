@@ -33,6 +33,8 @@ pub const PANELS: &[(&str, &str)] = &[
     ("motionRecording", "Motion recording"),
     ("lipSync", "Lip-sync"),
     ("history", "History"),
+    // 11 §6.4, §11 (SI-174): the agent activity log and the connected sessions.
+    ("activity", "Activity"),
     ("soundEditor", "Sound element editor"),
     ("capture", "Capture window"),
 ];

@@ -11,6 +11,8 @@ import { useMessages } from '../shell/messagesApi';
 import type { ShellServices } from '../state/context';
 import type { Binding, PrefEntry, Theme, Tip } from '../state/types';
 import { applyTheme } from '../theme/theme';
+import { AgentAccessPage } from './AgentAccessPage';
+import { agentCommands, draftOf, withGroup, type AgentDraft } from './agentAccess';
 import { CATEGORIES, categoryOf, valueProblem } from './categories';
 
 function coerce(p: PrefEntry, raw: unknown): unknown {
@@ -60,6 +62,13 @@ export function PreferencesDialog({
   const [refusal, setRefusal] = useState<string | null>(null);
   const fields = useRef(new Map<string, HTMLElement>());
   const originalTheme = useRef(prefs.find((p) => p.key === 'interface.theme')?.value);
+  // Agent access (design note 2 §2): its own staged settings, sent at OK as one command per changed group; `agentBase`
+  // follows what has been applied, so a refusal part-way leaves the later groups staged and the earlier ones done.
+  const [agentBase, setAgentBase] = useState<AgentDraft>(() => draftOf(prefs));
+  const [agentDraft, setAgentDraft] = useState<AgentDraft>(agentBase);
+  const projectOpen = Boolean(
+    (services.store.getState().slices.appState as { project?: unknown } | undefined)?.project,
+  );
 
   const value = (p: PrefEntry): unknown => {
     if (Object.prototype.hasOwnProperty.call(edits, p.key)) return edits[p.key];
@@ -124,6 +133,19 @@ export function PreferencesDialog({
         return;
       }
     }
+    let base = agentBase;
+    for (const c of agentCommands(base, agentDraft)) {
+      const env = await services.engine.run(c.command, c.params).done;
+      if (env.status !== 'ok') {
+        const done = base === agentBase ? '' : ' The Agent access settings before it were applied.';
+        setRefusal(`${env.error?.code ?? 'error'}: ${env.error?.message ?? ''}${done}`);
+        setCategory('agent');
+        setSearch('');
+        return;
+      }
+      base = withGroup(base, agentDraft, c.command);
+      setAgentBase(base);
+    }
     for (const op of keyOps) {
       const env = await services.engine.run(op.command, op.params).done;
       if (env.status !== 'ok') {
@@ -136,6 +158,8 @@ export function PreferencesDialog({
 
   const shown = prefs.filter((p) => {
     if (search.trim()) {
+      // The `agent.*` keys are edited on the Agent access page only, through their commands (design note 2 §2).
+      if (categoryOf(p.key) === 'agent') return false;
       const s = search.toLowerCase();
       return p.key.toLowerCase().includes(s) || p.description.toLowerCase().includes(s);
     }
@@ -203,6 +227,13 @@ export function PreferencesDialog({
             />
           ) : category === 'tips' && !search ? (
             <TipsList services={services} tips={tips} />
+          ) : category === 'agent' && !search ? (
+            <AgentAccessPage
+              services={services}
+              draft={agentDraft}
+              projectOpen={projectOpen}
+              onChange={setAgentDraft}
+            />
           ) : (
             <>
               {shown.map((p) => (

@@ -59,8 +59,9 @@ describe('menu bindings manifest', () => {
     );
   });
 
-  it('every panel of 01 §5.2 has a checkable Window item', () => {
+  it('every panel of 01 §5.2, and the Activity panel (SI-174), has a checkable Window item', () => {
     const checks = commandItems.map((c) => c.check).filter((c): c is string => typeof c === 'string');
-    expect(checks.filter((c) => c.startsWith('panel:'))).toHaveLength(21);
+    expect(checks.filter((c) => c.startsWith('panel:'))).toHaveLength(22);
+    expect(checks).toContain('panel:activity');
   });
 });

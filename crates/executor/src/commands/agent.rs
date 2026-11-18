@@ -95,7 +95,12 @@ pub(crate) fn agent_server_set(cx: &mut Cx, p: ServerSetParams) -> Result<Server
         // Remote binding needs the MCP authorization flow (11 §4); it is stored as asked and applies with HTTP (M4).
         prefs.insert("agent.server.allowRemote".into(), json!(remote));
     }
-    cx.defer(Effect::Prefs(prefs));
+    // SI-173: written as `prefs.set` writes them (validated, staged, announced by `prefs.changed`), so the Agent access
+    // category and every other reader follow a change made by either route.
+    for (k, v) in &mut prefs {
+        *v = crate::prefs::validate(k, v, &[])?;
+    }
+    super::prefs::stage_stored(cx, prefs)?;
     // The desktop host starts or stops the server as the command says, whatever started it (ruling O-21): a
     // host-only notice, sent even when the stored preference already had this value (a run started with
     // `--mcp-http` serves while the preference may be off).
@@ -200,6 +205,9 @@ pub(crate) fn agent_session_grant(cx: &mut Cx, p: GrantParams) -> Result<Map<Str
     m.insert("policy".into(), json!(a.policy.as_str()));
     m.insert("scopes".into(), json!(a.scopes.iter().map(|x| scope_name(*x)).collect::<Vec<_>>()));
     m.insert("roots".into(), json!(a.roots));
+    // The Activity panel's sessions strip and the indicator re-read the sessions (host-only; SI-176). Pause and resume
+    // have their own events (`agent.paused`, `agent.resumed`).
+    cx.emit("shell.agentSession", json!({ "sessionId": a.session_id }));
     Ok(m)
 }
 
@@ -426,6 +434,10 @@ pub(crate) fn agent_token_regenerate(cx: &mut Cx, _p: NoParams) -> Result<Discov
     let mut write = crate::cx::FileWrite::new(path.clone(), text);
     write.private = true;
     cx.defer(Effect::WriteFile(Box::new(write)));
+    // 11 §15.1: connected HTTP clients are disconnected. The desktop host restarts its server on this host-only notice
+    // (after the commit, so it reads the new token), which ends the HTTP sessions and rewrites the discovery file with
+    // the endpoint as well as the token (SI-178).
+    cx.emit("shell.agentToken", json!({}));
     Ok(Discovery { discovery_file: path.to_string_lossy().into_owned() })
 }
 
@@ -459,9 +471,14 @@ pub(crate) struct ToolCount {
 pub(crate) fn agent_typed_tools_set(cx: &mut Cx, p: TypedToolsParams) -> Result<ToolCount, CommandError> {
     let namespaces = p.namespaces.unwrap_or_default();
     let count = typed_tool_count(p.enabled, &namespaces);
-    let hub = &mut cx.session_mut().agents;
-    hub.typed_tools = p.enabled.then_some(namespaces);
-    hub.typed_tools_version += 1;
+    // SI-179: staged as the `agent.typedTools` preference (its consequence sets the hub), so it survives a restart.
+    let mut prefs = Map::new();
+    let value = json!({ "enabled": p.enabled, "namespaces": namespaces });
+    prefs.insert(
+        crate::agents::TYPED_TOOLS_PREF.into(),
+        crate::prefs::validate(crate::agents::TYPED_TOOLS_PREF, &value, &[])?,
+    );
+    super::prefs::stage(cx, prefs)?;
     Ok(ToolCount { tool_count: count })
 }
 
@@ -846,7 +863,11 @@ pub(crate) struct Enabled {
     gui = "Preferences › Agent access (M4)",
 )]
 pub(crate) fn agent_activity_persist_set(cx: &mut Cx, p: Enabled) -> Result<Enabled, CommandError> {
-    cx.session_mut().agents.persist = p.enabled;
+    // SI-179: staged as the `agent.activity.persist` preference (its consequence sets the hub), so it survives a
+    // restart and `prefs.changed` announces it.
+    let mut prefs = Map::new();
+    prefs.insert(crate::agents::PERSIST_PREF.into(), json!(p.enabled));
+    super::prefs::stage(cx, prefs)?;
     Ok(Enabled { enabled: p.enabled })
 }
 

@@ -854,6 +854,16 @@
             {
               "kind": "command",
               "command": "window.panel.set",
+              "label": "Activity",
+              "params": {
+                "panelId": "activity"
+              },
+              "enabledWithoutProject": true,
+              "check": "panel:activity"
+            },
+            {
+              "kind": "command",
+              "command": "window.panel.set",
               "label": "Sound Element Editor",
               "params": {
                 "panelId": "soundEditor"

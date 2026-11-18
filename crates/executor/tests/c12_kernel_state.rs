@@ -16,7 +16,8 @@ fn window_and_panel_state_is_queryable_and_settable() {
     let h = fixture();
     let panels = ok(&h, "window.panel.list", json!({}));
     let panels = panels.as_array().unwrap();
-    assert_eq!(panels.len(), 21, "01 §5.2 panel catalogue");
+    // 01 §5.2's 21 panels and the Activity panel of 11 §6.4, §11 (SI-174).
+    assert_eq!(panels.len(), 22, "01 §5.2 panel catalogue and the Activity panel");
     let find = |list: &Value, id: &str| list.as_array().unwrap().iter().find(|p| p["panelId"] == id).cloned().unwrap();
     let list = json!(panels);
     assert_eq!(find(&list, "cameraView")["area"], "central");

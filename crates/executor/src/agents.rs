@@ -301,6 +301,24 @@ pub struct ActivityEntry {
     pub duration_ms: u64,
 }
 
+/// The preference that keeps the activity log beside the project (11 §11; SI-179).
+pub(crate) const PERSIST_PREF: &str = "agent.activity.persist";
+/// The preference of the typed tools, `{enabled, namespaces}` (11 §5; SI-179).
+pub(crate) const TYPED_TOOLS_PREF: &str = "agent.typedTools";
+
+/// The typed tools a preference value exposes: the namespaces when enabled (all when empty), `None` when off.
+pub(crate) fn typed_tools_of(v: &Value) -> Option<Vec<String>> {
+    if v.get("enabled").and_then(Value::as_bool) != Some(true) {
+        return None;
+    }
+    Some(
+        v.get("namespaces")
+            .and_then(Value::as_array)
+            .map(|a| a.iter().filter_map(Value::as_str).map(str::to_owned).collect())
+            .unwrap_or_default(),
+    )
+}
+
 /// The hub.
 #[derive(Debug, Clone, Default)]
 pub(crate) struct AgentHub {

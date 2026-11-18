@@ -174,6 +174,19 @@ fn apply_consequences(cx: &mut Cx, values: &Map<String, Value>) -> Result<(), Co
     {
         cx.session_mut().agents.limits = limits;
     }
+    // SI-179: the activity log's persistence and the typed tools are preferences, so they survive a restart; the
+    // command and `prefs.set` write the one state.
+    if let Some(v) = values.get(crate::agents::PERSIST_PREF).and_then(Value::as_bool) {
+        cx.session_mut().agents.persist = v;
+    }
+    if let Some(v) = values.get(crate::agents::TYPED_TOOLS_PREF) {
+        let tools = crate::agents::typed_tools_of(v);
+        let hub = &mut cx.session_mut().agents;
+        if hub.typed_tools != tools {
+            hub.typed_tools = tools;
+            hub.typed_tools_version += 1;
+        }
+    }
     Ok(())
 }
 

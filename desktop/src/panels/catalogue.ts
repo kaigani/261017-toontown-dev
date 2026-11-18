@@ -35,6 +35,8 @@ export const PANEL_CATALOGUE: readonly PanelInfo[] = [
   { id: 'motionRecording', title: 'Motion recording', owner: 'M6' },
   { id: 'lipSync', title: 'Lip-sync', owner: 'M8' },
   { id: 'history', title: 'History', owner: null },
+  // 11 §6.4, §11 (SI-174): the agent activity log and the connected sessions.
+  { id: 'activity', title: 'Activity', owner: null },
   { id: 'soundEditor', title: 'Sound element editor', owner: 'M8' },
   { id: 'capture', title: 'Capture window', owner: 'M10 C10.3' },
 ];

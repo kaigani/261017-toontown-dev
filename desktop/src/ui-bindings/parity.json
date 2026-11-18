@@ -38,6 +38,8 @@
     "preferences:keyboard:details",
     "preferences:keyboard:conflict",
     "float:history",
+    "float:activity",
+    "float:activity:scopes",
     "float:pen",
     "float:pen:rename",
     "float:properties:brush",
@@ -50,6 +52,18 @@
     "float:properties:drawing"
   ],
   "dom": [
+    {
+      "id": "agent.openActivity",
+      "surface": "agentPopover",
+      "commands": [
+        "window.panel.set"
+      ],
+      "params": {
+        "panelId": "activity",
+        "visible": true,
+        "focus": true
+      }
+    },
     {
       "id": "agent.s1.pause",
       "surface": "agentPopover",
@@ -150,6 +164,16 @@
       "commands": [
         "workspace.rename"
       ]
+    },
+    {
+      "id": "panelChecklist.activity",
+      "surface": "dockTabContextMenu",
+      "commands": [
+        "window.panel.set"
+      ],
+      "params": {
+        "panelId": "activity"
+      }
     },
     {
       "id": "panelChecklist.cameraView",
@@ -360,6 +384,161 @@
       "params": {
         "panelId": "xsheet"
       }
+    },
+    {
+      "id": "activity.export",
+      "surface": "float:activity",
+      "commands": [
+        "agent.activity.export"
+      ]
+    },
+    {
+      "id": "activity.session.s1.disconnect",
+      "surface": "float:activity",
+      "commands": [
+        "agent.session.disconnect"
+      ],
+      "params": {
+        "sessionId": "s1"
+      }
+    },
+    {
+      "id": "activity.session.s1.pause",
+      "surface": "float:activity",
+      "commands": [
+        "agent.session.pause"
+      ],
+      "params": {
+        "sessionId": "s1"
+      }
+    },
+    {
+      "id": "activity.session.s1.policy",
+      "surface": "float:activity",
+      "commands": [
+        "agent.session.grant"
+      ]
+    },
+    {
+      "id": "activity.session.s1.policy.assist",
+      "surface": "float:activity",
+      "commands": [
+        "agent.session.grant"
+      ],
+      "params": {
+        "sessionId": "s1",
+        "policy": "assist"
+      }
+    },
+    {
+      "id": "activity.session.s1.policy.autonomous",
+      "surface": "float:activity",
+      "commands": [
+        "agent.session.grant"
+      ],
+      "params": {
+        "sessionId": "s1",
+        "policy": "autonomous"
+      }
+    },
+    {
+      "id": "activity.session.s1.policy.observe",
+      "surface": "float:activity",
+      "commands": [
+        "agent.session.grant"
+      ],
+      "params": {
+        "sessionId": "s1",
+        "policy": "observe"
+      }
+    },
+    {
+      "id": "activity.undoBack",
+      "surface": "float:activity",
+      "commands": [
+        "edit.history.move"
+      ]
+    },
+    {
+      "id": "activity.export",
+      "surface": "float:activity:scopes",
+      "commands": [
+        "agent.activity.export"
+      ]
+    },
+    {
+      "id": "activity.session.s1.disconnect",
+      "surface": "float:activity:scopes",
+      "commands": [
+        "agent.session.disconnect"
+      ],
+      "params": {
+        "sessionId": "s1"
+      }
+    },
+    {
+      "id": "activity.session.s1.pause",
+      "surface": "float:activity:scopes",
+      "commands": [
+        "agent.session.pause"
+      ],
+      "params": {
+        "sessionId": "s1"
+      }
+    },
+    {
+      "id": "activity.session.s1.policy",
+      "surface": "float:activity:scopes",
+      "commands": [
+        "agent.session.grant"
+      ]
+    },
+    {
+      "id": "activity.session.s1.policy.assist",
+      "surface": "float:activity:scopes",
+      "commands": [
+        "agent.session.grant"
+      ],
+      "params": {
+        "sessionId": "s1",
+        "policy": "assist"
+      }
+    },
+    {
+      "id": "activity.session.s1.policy.autonomous",
+      "surface": "float:activity:scopes",
+      "commands": [
+        "agent.session.grant"
+      ],
+      "params": {
+        "sessionId": "s1",
+        "policy": "autonomous"
+      }
+    },
+    {
+      "id": "activity.session.s1.policy.observe",
+      "surface": "float:activity:scopes",
+      "commands": [
+        "agent.session.grant"
+      ],
+      "params": {
+        "sessionId": "s1",
+        "policy": "observe"
+      }
+    },
+    {
+      "id": "activity.session.s1.scopes.ok",
+      "surface": "float:activity:scopes",
+      "commands": [
+        "agent.session.grant"
+      ]
+    },
+    {
+      "id": "activity.undoBack",
+      "surface": "float:activity:scopes",
+      "commands": [
+        "edit.history.move"
+      ]
     },
     {
       "id": "history.0",
@@ -2176,10 +2355,376 @@
       }
     },
     {
-      "id": "preferences.agent.restore",
+      "id": "agentAccess.allowRemote",
       "surface": "preferences:agent",
       "commands": [
-        "prefs.reset"
+        "agent.server.set"
+      ]
+    },
+    {
+      "id": "agentAccess.askInApp",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ]
+    },
+    {
+      "id": "agentAccess.highlightAgentChanges",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ]
+    },
+    {
+      "id": "agentAccess.letAgentMoveView",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ]
+    },
+    {
+      "id": "agentAccess.maxBatchSteps",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ]
+    },
+    {
+      "id": "agentAccess.maxInlineBytes",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ]
+    },
+    {
+      "id": "agentAccess.maxInlineImagePx",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ]
+    },
+    {
+      "id": "agentAccess.maxJobs",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.agent",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.anim",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.app",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.capture",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.cell",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.checkpoint",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.colour",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.doc",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.draw",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.drawAid",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.edit",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.element",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.export",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.fx",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.import",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.inspect",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.job",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.keymap",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.library",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.lipsync",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.media",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.playback",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.prefs",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.print",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.project",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.render",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.sound",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.storyline",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.timeline",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.tool",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.ui",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.view",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.window",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.workspace",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.namespace.xsheet",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
+      ]
+    },
+    {
+      "id": "agentAccess.persist",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.activity.persist.set"
+      ]
+    },
+    {
+      "id": "agentAccess.policy",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ]
+    },
+    {
+      "id": "agentAccess.policy.assist",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ],
+      "params": {
+        "policy": "assist"
+      }
+    },
+    {
+      "id": "agentAccess.policy.autonomous",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ],
+      "params": {
+        "policy": "autonomous"
+      }
+    },
+    {
+      "id": "agentAccess.policy.observe",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.policy.defaults.set"
+      ],
+      "params": {
+        "policy": "observe"
+      }
+    },
+    {
+      "id": "agentAccess.port",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.server.set"
+      ]
+    },
+    {
+      "id": "agentAccess.regenerate",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.token.regenerate"
+      ]
+    },
+    {
+      "id": "agentAccess.server",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.server.set"
+      ]
+    },
+    {
+      "id": "agentAccess.typedTools",
+      "surface": "preferences:agent",
+      "commands": [
+        "agent.typedTools.set"
       ]
     },
     {
@@ -2940,6 +3485,91 @@
       "id": "workspaceRename.name",
       "surface": "dialog:Rename Workspace",
       "reason": "typing"
+    },
+    {
+      "id": "activity.copyBatch",
+      "surface": "float:activity",
+      "reason": "clipboard"
+    },
+    {
+      "id": "activity.entry.1",
+      "surface": "float:activity",
+      "reason": "navigate"
+    },
+    {
+      "id": "activity.session.s1.scopes",
+      "surface": "float:activity",
+      "reason": "disclose"
+    },
+    {
+      "id": "activity.copyBatch",
+      "surface": "float:activity:scopes",
+      "reason": "clipboard"
+    },
+    {
+      "id": "activity.entry.1",
+      "surface": "float:activity:scopes",
+      "reason": "navigate"
+    },
+    {
+      "id": "activity.session.s1.scope.edit",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scope.files.read",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scope.files.write",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scope.input",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scope.library.global",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scope.network",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scope.prefs",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scope.print",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scope.read",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scope.ui",
+      "surface": "float:activity:scopes",
+      "reason": "typing"
+    },
+    {
+      "id": "activity.session.s1.scopes",
+      "surface": "float:activity:scopes",
+      "reason": "disclose"
+    },
+    {
+      "id": "activity.session.s1.scopes.cancel",
+      "surface": "float:activity:scopes",
+      "reason": "dismiss"
     },
     {
       "id": "properties.page.drawing",
@@ -15856,6 +16486,16 @@
       }
     },
     {
+      "id": "menu:Window/Panels/Activity",
+      "surface": "menu",
+      "commands": [
+        "window.panel.set"
+      ],
+      "params": {
+        "panelId": "activity"
+      }
+    },
+    {
       "id": "menu:Window/Panels/Sound Element Editor",
       "surface": "menu",
       "commands": [
@@ -16931,8 +17571,24 @@
   ],
   "callSites": [
     {
+      "command": "agent.activity.export",
+      "file": "desktop/src/panels/ActivityPanel.tsx"
+    },
+    {
+      "command": "agent.activity.list",
+      "file": "desktop/src/panels/ActivityPanel.tsx"
+    },
+    {
       "command": "agent.activity.list",
       "file": "desktop/src/shell/StatusBar.tsx"
+    },
+    {
+      "command": "agent.server.status",
+      "file": "desktop/src/panels/ActivityPanel.tsx"
+    },
+    {
+      "command": "agent.server.status",
+      "file": "desktop/src/prefs/AgentAccessPage.tsx"
     },
     {
       "command": "agent.server.status",
@@ -16940,7 +17596,15 @@
     },
     {
       "command": "agent.session.disconnect",
+      "file": "desktop/src/panels/ActivityPanel.tsx"
+    },
+    {
+      "command": "agent.session.disconnect",
       "file": "desktop/src/shell/StatusBar.tsx"
+    },
+    {
+      "command": "agent.session.grant",
+      "file": "desktop/src/panels/ActivityPanel.tsx"
     },
     {
       "command": "agent.session.pause",
@@ -16953,6 +17617,10 @@
     {
       "command": "agent.token.regenerate",
       "file": "desktop/src-tauri/src/host.rs"
+    },
+    {
+      "command": "agent.token.regenerate",
+      "file": "desktop/src/prefs/AgentAccessPage.tsx"
     },
     {
       "command": "anim.camera.current.get",
@@ -17041,6 +17709,10 @@
     {
       "command": "edit.history.get",
       "file": "desktop/src/state/store.ts"
+    },
+    {
+      "command": "edit.history.move",
+      "file": "desktop/src/panels/ActivityPanel.tsx"
     },
     {
       "command": "edit.history.move",
@@ -17387,6 +18059,10 @@
       "file": "desktop/src/panels/PanelBody.tsx"
     },
     {
+      "command": "window.panel.set",
+      "file": "desktop/src/shell/StatusBar.tsx"
+    },
+    {
       "command": "window.toolbar.items.reset",
       "file": "desktop/src/shell/toolbarSheet.tsx"
     },
@@ -17447,6 +18123,70 @@
     {
       "surface": "dialog:Project Properties",
       "query": "project.properties.get"
+    },
+    {
+      "surface": "float:activity",
+      "query": "agent.activity.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:activity",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:activity",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:activity",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:activity",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:activity",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:activity",
+      "query": "workspace.list"
     },
     {
       "surface": "float:history",
@@ -18341,6 +19081,10 @@
       "query": "workspace.list"
     },
     {
+      "surface": "preferences:agent",
+      "query": "agent.server.status"
+    },
+    {
       "surface": "startScreen",
       "query": "agent.server.status"
     },
@@ -18475,15 +19219,84 @@
   ],
   "uses": [
     {
+      "command": "activity.copyBatch",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
+      "command": "activity.export",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
+      "command": "activity.notice",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
+      "command": "activity.undoBack",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
       "command": "agent.activity",
       "files": [
         "desktop/src/shell/StatusBar.tsx"
       ]
     },
     {
+      "command": "agent.activity.export",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
       "command": "agent.activity.list",
       "files": [
+        "desktop/src/panels/ActivityPanel.tsx",
         "desktop/src/shell/StatusBar.tsx"
+      ]
+    },
+    {
+      "command": "agent.activity.persist",
+      "files": [
+        "desktop/src/prefs/agentAccess.ts"
+      ]
+    },
+    {
+      "command": "agent.activity.persist.set",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx",
+        "desktop/src/prefs/agentAccess.ts"
+      ]
+    },
+    {
+      "command": "agent.openActivity",
+      "files": [
+        "desktop/src/shell/StatusBar.tsx"
+      ]
+    },
+    {
+      "command": "agent.paused",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
+      "command": "agent.policy.defaults",
+      "files": [
+        "desktop/src/prefs/agentAccess.ts"
+      ]
+    },
+    {
+      "command": "agent.policy.defaults.set",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx",
+        "desktop/src/prefs/agentAccess.ts"
       ]
     },
     {
@@ -18493,20 +19306,43 @@
       ]
     },
     {
+      "command": "agent.resumed",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
+      "command": "agent.server.allowRemote",
+      "files": [
+        "desktop/src/prefs/agentAccess.ts"
+      ]
+    },
+    {
       "command": "agent.server.enabled",
       "files": [
-        "desktop/src-tauri/src/shell.rs"
+        "desktop/src-tauri/src/shell.rs",
+        "desktop/src/prefs/agentAccess.ts"
       ]
     },
     {
       "command": "agent.server.port",
       "files": [
-        "desktop/src-tauri/src/host.rs"
+        "desktop/src-tauri/src/host.rs",
+        "desktop/src/prefs/agentAccess.ts"
+      ]
+    },
+    {
+      "command": "agent.server.set",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx",
+        "desktop/src/prefs/agentAccess.ts"
       ]
     },
     {
       "command": "agent.server.status",
       "files": [
+        "desktop/src/panels/ActivityPanel.tsx",
+        "desktop/src/prefs/AgentAccessPage.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -18519,30 +19355,43 @@
     {
       "command": "agent.session.connected",
       "files": [
+        "desktop/src/panels/ActivityPanel.tsx",
+        "desktop/src/prefs/AgentAccessPage.tsx",
         "desktop/src/state/store.ts"
       ]
     },
     {
       "command": "agent.session.disconnect",
       "files": [
+        "desktop/src/panels/ActivityPanel.tsx",
         "desktop/src/shell/StatusBar.tsx"
       ]
     },
     {
       "command": "agent.session.disconnected",
       "files": [
+        "desktop/src/panels/ActivityPanel.tsx",
+        "desktop/src/prefs/AgentAccessPage.tsx",
         "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "agent.session.grant",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
       ]
     },
     {
       "command": "agent.session.pause",
       "files": [
+        "desktop/src/panels/ActivityPanel.tsx",
         "desktop/src/shell/StatusBar.tsx"
       ]
     },
     {
       "command": "agent.session.resume",
       "files": [
+        "desktop/src/panels/ActivityPanel.tsx",
         "desktop/src/shell/StatusBar.tsx"
       ]
     },
@@ -18555,7 +19404,81 @@
     {
       "command": "agent.token.regenerate",
       "files": [
-        "desktop/src-tauri/src/host.rs"
+        "desktop/src-tauri/src/host.rs",
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agent.tokenRegenerate",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agent.typedTools",
+      "files": [
+        "desktop/src/prefs/agentAccess.ts"
+      ]
+    },
+    {
+      "command": "agent.typedTools.set",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx",
+        "desktop/src/prefs/agentAccess.ts"
+      ]
+    },
+    {
+      "command": "agent.undoBack",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.allowRemote",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.persist",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.policy",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.port",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.regenerate",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.server",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.status",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.typedTools",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
       ]
     },
     {
@@ -19114,6 +20037,7 @@
     {
       "command": "edit.history.move",
       "files": [
+        "desktop/src/panels/ActivityPanel.tsx",
         "desktop/src/panels/PanelBody.tsx"
       ]
     },
@@ -19177,6 +20101,18 @@
       "command": "envelope.root",
       "files": [
         "desktop/src/ipc/engine.ts"
+      ]
+    },
+    {
+      "command": "files.read",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
+      "command": "files.write",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
       ]
     },
     {
@@ -19469,6 +20405,12 @@
       ]
     },
     {
+      "command": "library.global",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
       "command": "limit.exceeded",
       "files": [
         "desktop/src/ipc/mockTransport.ts"
@@ -19674,6 +20616,7 @@
         "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
+        "desktop/src/prefs/AgentAccessPage.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -19752,6 +20695,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/App.tsx",
+        "desktop/src/panels/ActivityPanel.tsx",
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/TextPanel.tsx",
@@ -19811,6 +20755,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/App.tsx",
+        "desktop/src/panels/ActivityPanel.tsx",
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PanelBody.tsx",
         "desktop/src/panels/PenPanel.tsx",
@@ -19935,7 +20880,25 @@
       ]
     },
     {
+      "command": "shell.agentActivity",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
       "command": "shell.agentServer",
+      "files": [
+        "desktop/src-tauri/src/shell.rs"
+      ]
+    },
+    {
+      "command": "shell.agentSession",
+      "files": [
+        "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
+      "command": "shell.agentToken",
       "files": [
         "desktop/src-tauri/src/shell.rs"
       ]
@@ -20522,7 +21485,8 @@
         "desktop/src-tauri/src/floats.rs",
         "desktop/src/App.tsx",
         "desktop/src/dock/DockArea.tsx",
-        "desktop/src/panels/PanelBody.tsx"
+        "desktop/src/panels/PanelBody.tsx",
+        "desktop/src/shell/StatusBar.tsx"
       ]
     },
     {

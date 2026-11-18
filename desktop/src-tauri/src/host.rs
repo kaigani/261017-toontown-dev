@@ -516,6 +516,17 @@ impl Host {
         Err(format!("cannot bind the agent server: {last}"))
     }
 
+    /// After `agent.token.regenerate` (SI-178): a running server is stopped, which ends its HTTP sessions, and started
+    /// again with the new token, which rewrites the discovery file with the endpoint. `None` when it was not running.
+    pub fn restart_http(&self) -> Option<Result<String, String>> {
+        let running = self.http.lock().unwrap_or_else(PoisonError::into_inner).is_some();
+        if !running {
+            return None;
+        }
+        self.stop_http();
+        Some(self.start_http())
+    }
+
     /// Stops the attached-mode server; its sessions end and the discovery file no longer advertises an endpoint
     /// (ruling O-8). Also called when the server is off at start, so a stale file of a dead process is replaced.
     pub fn stop_http(&self) {

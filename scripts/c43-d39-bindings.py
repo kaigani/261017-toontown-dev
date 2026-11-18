@@ -1739,6 +1739,261 @@ async def build_and_run(t: Table, only: set) -> None:
                      "mcpReason": "the checklist opens with a secondary click on a tab; its reference is the Window menu's "
                                   "panel item's, completed by the kernel as a toggle"})
 
+    # ----- C4.4a: Preferences › Agent access (01 §7.3; 11 §15.1; design note 2 §2): each control edited, then OK, which
+    # sends that group's one command (never prefs.set). The server's own check box is not a row here: switching it off
+    # ends this table's HTTP session (the agent e2e switches it off and on); Allow remote connections is disabled. -----
+    SEED_POLICY = {"policy": "autonomous", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048,
+                   "maxInlineBytes": 52428800, "askInApp": True, "letAgentMoveView": True, "highlightAgentChanges": True}
+    AGENT_KEYS = ["agent.server.port", "agent.policy.defaults", "agent.typedTools", "agent.activity.persist"]
+
+    async def agent_prefs():
+        return (await cmd("prefs.get", {"keys": AGENT_KEYS})).get("values") or {}
+
+    async def agent_defaults():
+        await cmd("agent.policy.defaults.set", SEED_POLICY)
+        await cmd("agent.typedTools.set", {"enabled": False, "namespaces": []})
+        await cmd("agent.activity.persist.set", {"enabled": False})
+
+    def agent_flow(edit, label):
+        async def flow():
+            choose_menu(["File", "Preferences"])
+            await asyncio.sleep(0.8)
+            t.click("preferences.category.agent")
+            await asyncio.sleep(0.6)
+            # Opening the dialog is the menu item's own command (its own row): the row records what OK sends.
+            t.clear()
+            await edit()
+            await asyncio.sleep(0.3)
+            t.click("preferences.submit")
+            await asyncio.sleep(1.2)
+            return f"real input in Preferences › Agent access ({label}), then OK"
+        return flow
+
+    def typed_into(ident, text):
+        async def edit():
+            front()
+            t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']'); e.focus(); e.select(); return true; })()"
+                     % json.dumps(ident))
+            type_text(text)
+        return edit
+
+    def clicked(ident):
+        async def edit():
+            t.click(ident)
+        return edit
+
+    async def choose_observe():
+        # The policy list: a real click, then the arrow keys to Observe (the first option) and Enter.
+        t.click("agentAccess.policy")
+        await asyncio.sleep(0.3)
+        for _ in range(3):
+            key(0x26)
+        key(0x0D)
+
+    pol = lambda v: v.get("agent.policy.defaults") or {}  # noqa: E731
+    agent_rows = [
+        ("port", typed_into("agentAccess.port", "47300"), ("agent.server.set", {"enabled": True, "port": 47300}),
+         lambda b, a, k: a.get("agent.server.port") == 47300),
+        ("policy", choose_observe, ("agent.policy.defaults.set", {"policy": "observe"}),
+         lambda b, a, k: pol(a).get("policy") == "observe"),
+        ("maxJobs", typed_into("agentAccess.maxJobs", "3"), ("agent.policy.defaults.set", {"maxJobs": 3}),
+         lambda b, a, k: pol(a).get("maxJobs") == 3),
+        ("maxBatchSteps", typed_into("agentAccess.maxBatchSteps", "500"), ("agent.policy.defaults.set", {"maxBatchSteps": 500}),
+         lambda b, a, k: pol(a).get("maxBatchSteps") == 500),
+        ("maxInlineImagePx", typed_into("agentAccess.maxInlineImagePx", "1024"),
+         ("agent.policy.defaults.set", {"maxInlineImagePx": 1024}), lambda b, a, k: pol(a).get("maxInlineImagePx") == 1024),
+        ("maxInlineBytes", typed_into("agentAccess.maxInlineBytes", "8"), ("agent.policy.defaults.set", {"maxInlineBytes": 8388608}),
+         lambda b, a, k: pol(a).get("maxInlineBytes") == 8388608),
+        ("askInApp", clicked("agentAccess.askInApp"), ("agent.policy.defaults.set", {"askInApp": False}),
+         lambda b, a, k: pol(a).get("askInApp") is False),
+        ("letAgentMoveView", clicked("agentAccess.letAgentMoveView"), ("agent.policy.defaults.set", {"letAgentMoveView": False}),
+         lambda b, a, k: pol(a).get("letAgentMoveView") is False),
+        ("highlightAgentChanges", clicked("agentAccess.highlightAgentChanges"),
+         ("agent.policy.defaults.set", {"highlightAgentChanges": False}), lambda b, a, k: pol(a).get("highlightAgentChanges") is False),
+        ("typedTools", clicked("agentAccess.typedTools"), ("agent.typedTools.set", {"enabled": True, "namespaces": []}),
+         lambda b, a, k: (a.get("agent.typedTools") or {}).get("enabled") is True),
+        ("persist", clicked("agentAccess.persist"), ("agent.activity.persist.set", {"enabled": True}),
+         lambda b, a, k: a.get("agent.activity.persist") is True),
+    ]
+    for ident, edit, expect, eff in agent_rows:
+        rows.append({"name": f"Preferences › Agent access › {ident}", "spec": f"{spec_line(expect[0])}; 01 §7.3 (Agent access); 11 §15.1",
+                     "action": ("none",), "custom": agent_flow(edit, ident), "expect": expect, "label": None,
+                     "setup": agent_defaults, "state": agent_prefs, "effect": eff, "disabled": None, "after": agent_defaults,
+                     "mcpReason": "the controls are staged in the Preferences dialog and sent by its OK"})
+
+    async def typed_on():
+        await agent_defaults()
+        await cmd("agent.typedTools.set", {"enabled": True, "namespaces": []})
+    rows.append({"name": "Preferences › Agent access › namespace", "spec": f"{spec_line('agent.typedTools.set')}; 11 §5",
+                 "action": ("none",), "custom": agent_flow(clicked("agentAccess.namespace.doc"), "the doc namespace"),
+                 "expect": ("agent.typedTools.set", {"enabled": True, "namespaces": ["doc"]}), "label": None,
+                 "setup": typed_on, "state": agent_prefs,
+                 "effect": lambda b, a, k: (a.get("agent.typedTools") or {}).get("namespaces") == ["doc"],
+                 "disabled": None, "after": agent_defaults,
+                 "mcpReason": "the controls are staged in the Preferences dialog and sent by its OK"})
+
+    # ----- C4.4a: the Activity panel (11 §11, §6.4; design note 2 §3; SI-174). Its session controls are `app` scope (an
+    # agent cannot grant, pause or disconnect: 11 §15.1), so the MCP form names them; the OS form acts on a second,
+    # test-only session so this table's own session goes on. -----
+    second = {}
+
+    async def second_session():
+        if second.get("id"):
+            return second["id"]
+        d = json.loads((t.work / "discovery.json").read_text(encoding="utf-8"))
+        before = {x.get("sessionId") for x in (await cmd("agent.server.status", {})).get("sessions") or []}
+        stack = contextlib.AsyncExitStack()
+        client = await stack.enter_async_context(
+            e2e.httpx2.AsyncClient(headers={"Authorization": f"Bearer {d['token']}"}, timeout=e2e.httpx2.Timeout(30.0)))
+        streams = await stack.enter_async_context(e2e.streamable_http_client(d["endpoint"], http_client=client))
+        s2 = await stack.enter_async_context(e2e.ClientSession(streams[0], streams[1]))
+        await s2.initialize()
+        await asyncio.sleep(0.5)
+        after = {x.get("sessionId") for x in (await cmd("agent.server.status", {})).get("sessions") or []}
+        fresh = sorted(after - before)
+        if not fresh:
+            raise RuntimeError("the second session did not register")
+        second.update({"id": fresh[0], "stack": stack})
+        return fresh[0]
+
+    async def activity_open():
+        await cmd("window.panel.set", {"panelId": "activity", "visible": True, "focus": True})
+        await asyncio.sleep(0.8)
+
+    async def with_second():
+        await second_session()
+        await activity_open()
+
+    async def session_state():
+        sid = second.get("id")
+        return next((x for x in (await cmd("agent.server.status", {})).get("sessions") or [] if x.get("sessionId") == sid), {})
+
+    APP_SCOPE = "scope `app`: an agent cannot grant, pause or disconnect agent sessions (11 §15.1)"
+    rows.append({"name": "Activity › session policy", "spec": f"{spec_line('agent.session.grant')}; 11 §11",
+                 "action": lambda: ("select", f"activity.session.{second['id']}.policy", "observe"),
+                 "expect": lambda b: ("agent.session.grant", {"sessionId": second["id"], "policy": "observe"}), "label": None,
+                 "setup": with_second, "state": session_state, "effect": lambda b, a, k: a.get("policy") == "observe",
+                 "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE})
+
+    async def scopes_flow():
+        sid = second["id"]
+        t.click(f"activity.session.{sid}.scopes")
+        await asyncio.sleep(0.4)
+        t.click(f"activity.session.{sid}.scope.ui")
+        await asyncio.sleep(0.2)
+        t.clear()
+        t.click(f"activity.session.{sid}.scopes.ok")
+        await asyncio.sleep(0.8)
+        return "real clicks: Scopes…, the ui scope, OK"
+
+    def scopes_after(b):
+        order = ["read", "edit", "ui", "input", "files.read", "files.write", "prefs", "library.global", "network", "print"]
+        have = set(b.get("scopes") or [])
+        have ^= {"ui"}
+        return [x for x in order if x in have]
+    rows.append({"name": "Activity › session scopes", "spec": f"{spec_line('agent.session.grant')}; 01 §12 (per-session grant)",
+                 "action": ("none",), "custom": scopes_flow,
+                 "expect": lambda b: ("agent.session.grant", {"sessionId": second["id"], "scopes": scopes_after(b)}), "label": None,
+                 "setup": with_second, "state": session_state,
+                 "effect": lambda b, a, k: ("ui" in (a.get("scopes") or [])) != ("ui" in (b.get("scopes") or [])),
+                 "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE})
+    for verb, command in (("pause", "agent.session.pause"), ("resume", "agent.session.resume")):
+        rows.append({"name": f"Activity › session {verb}", "spec": f"{spec_line(command)}; 11 §6.4",
+                     "action": (lambda v: lambda: ("dom", f"activity.session.{second['id']}.{v}"))(verb),
+                     "expect": (lambda c: lambda b: (c, {"sessionId": second["id"]}))(command), "label": None,
+                     "setup": with_second, "state": session_state,
+                     "effect": (lambda v: lambda b, a, k: a.get("paused") is (v == "pause"))(verb),
+                     "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE})
+
+    async def agent_step():
+        await cmd("app.context.set", {"elementId": bob, "frame": 1})
+        await cmd("draw.rectangle.add", {"from": {"x": -20, "y": -20}, "to": {"x": 20, "y": 20}})
+        log = await cmd("agent.activity.list", {"limit": 50})
+        mine = [e for e in (log if isinstance(log, list) else []) if e.get("commandId") == "draw.rectangle.add" and e.get("undoStepId")]
+        history = await cmd("edit.history.get", {"limit": 1000})
+        second["seq"] = mine[-1]["seq"]
+        second["index"] = next(h.get("index") for h in history.get("entries") or [] if h.get("stepId") == mine[-1]["undoStepId"])
+        await activity_open()
+
+    async def undo_back_flow():
+        t.click(f"activity.entry.{second['seq']}")
+        await asyncio.sleep(0.4)
+        t.clear()
+        t.click("activity.undoBack")
+        await asyncio.sleep(0.8)
+        return "real clicks: the agent's entry, then Undo back to before this entry (no step of yours after it: no question)"
+
+    async def history_position():
+        return (await cmd("edit.history.get", {"limit": 1})).get("position")
+    rows.append({"name": "Activity › Undo back to before an entry", "spec": f"{spec_line('edit.history.move')}; 11 §11",
+                 "action": ("none",), "custom": undo_back_flow,
+                 "expect": lambda b: ("edit.history.move", {"position": second["index"]}), "label": None,
+                 "setup": agent_step, "state": history_position, "effect": lambda b, a, k: a == second["index"],
+                 "disabled": None, "mcpReason": "the entry is selected in the panel first (window state a click sets)"})
+
+    exported = t.work / "D39-activity.jsonl"
+
+    async def export_flow():
+        t.click("activity.export")
+        await asyncio.sleep(1.8)
+        type_text(str(exported))
+        key(0x0D)
+        await asyncio.sleep(1.5)
+        return "a real click on Export…, the path typed in the platform's save dialog, Enter"
+
+    async def exported_state():
+        return exported.exists() and exported.stat().st_size > 0
+    rows.append({"name": "Activity › Export", "spec": f"{spec_line('agent.activity.export')}; 11 §11",
+                 "action": ("none",), "custom": export_flow,
+                 "expect": ("agent.activity.export", {"path": str(exported), "format": "jsonl", "onExists": "overwrite"}),
+                 "label": None, "setup": activity_open, "state": exported_state, "effect": lambda b, a, k: a is True,
+                 "disabled": None, "mcpReason": "the path is chosen in the platform's save dialog"})
+
+    async def panel_state():
+        return next((x for x in await cmd("window.panel.list", {}) or [] if x.get("panelId") == "activity"), {})
+
+    async def activity_hidden():
+        await cmd("window.panel.set", {"panelId": "activity", "visible": False})
+        await asyncio.sleep(0.5)
+
+    async def indicator_flow():
+        t.click("agent.toggle")
+        await asyncio.sleep(0.5)
+        t.clear()
+        t.click("agent.openActivity")
+        await asyncio.sleep(0.8)
+        return "real clicks: the agent indicator, then Activity…"
+    rows.append({"name": "agent indicator › Activity…", "spec": f"{spec_line('window.panel.set')}; 11 §6.4",
+                 "action": ("none",), "custom": indicator_flow,
+                 "expect": ("window.panel.set", {"panelId": "activity", "visible": True, "focus": True}), "label": None,
+                 "setup": activity_hidden, "state": panel_state, "effect": lambda b, a, k: a.get("visible") is True,
+                 "disabled": None, "mcpReason": "the popover opens with a click on the indicator (window state)"})
+    rows.append({"name": "Window › Activity", "spec": f"{spec_line('window.panel.set')}; 11 §6.4 (SI-174)",
+                 "action": ("menu", ["Window", "Activity"]),
+                 "expect": ("window.panel.set", {"panelId": "activity", "visible": True}), "label": None,
+                 "setup": activity_hidden, "state": panel_state, "effect": lambda b, a, k: a.get("visible") is True,
+                 "disabled": None})
+
+    async def close_second():
+        stack = second.pop("stack", None)
+        if stack:
+            with contextlib.suppress(Exception):
+                await stack.aclose()
+
+    async def disconnect_flow():
+        t.clear()
+        t.click(f"activity.session.{second['id']}.disconnect")
+        await asyncio.sleep(1.0)
+        return "a real click on Disconnect"
+
+    async def second_gone():
+        return any(x.get("sessionId") == second.get("id") for x in (await cmd("agent.server.status", {})).get("sessions") or [])
+    rows.append({"name": "Activity › session disconnect", "spec": f"{spec_line('agent.session.disconnect')}; 11 §6.4",
+                 "action": ("none",), "custom": disconnect_flow,
+                 "expect": lambda b: ("agent.session.disconnect", {"sessionId": second["id"]}), "label": None,
+                 "setup": with_second, "state": second_gone, "effect": lambda b, a, k: b is True and a is False,
+                 "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE, "after": close_second})
+
     for r in rows:
         if r.get("skip"):
             await r["setup"]()

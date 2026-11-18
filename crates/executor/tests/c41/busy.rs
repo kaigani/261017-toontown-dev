@@ -212,7 +212,8 @@ fn the_ui_tree_is_virtual_headless_and_reported_when_attached() {
     assert_eq!(t["source"], "virtual");
     let panels: Vec<&Value> =
         t["root"]["children"].as_array().unwrap().iter().filter(|n| n["role"] == "panel").collect();
-    assert_eq!(panels.len(), 21);
+    // 01 §5.2's 21 panels and the Activity panel (SI-174).
+    assert_eq!(panels.len(), 22);
     let camera = panels.iter().find(|p| p["id"] == "cameraView").unwrap();
     assert_eq!(camera["view"]["type"], "camera");
     let shallow = ok(&h, "inspect.ui.tree", json!({ "depth": 1 }));

@@ -319,6 +319,19 @@ export function AgentIndicator() {
           ))}
           <span className="agent-activity" data-tt-role="list" data-tt-id="agent.activity">
             <strong>Activity</strong>
+            <button
+              type="button"
+              data-tt-role="button"
+              data-tt-id="agent.openActivity"
+              data-tt-command="window.panel.set"
+              data-tt-params={JSON.stringify({ panelId: 'activity', visible: true, focus: true })}
+              onClick={() => {
+                setOpen(false);
+                void actions.run('window.panel.set', { panelId: 'activity', visible: true, focus: true });
+              }}
+            >
+              Activity…
+            </button>
             {activity.map((a) => (
               <span key={String(a['seq'])} className="activity-entry" data-tt-role="text">
                 {typeof a['commandId'] === 'string' ? a['commandId'] : ''} —{' '}

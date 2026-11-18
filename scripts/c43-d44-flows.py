@@ -39,6 +39,8 @@ import shutil
 import sys
 import tempfile
 import time
+import urllib.error
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -61,8 +63,10 @@ FLOW_COMMANDS = {
     "project.save", "project.saveAs", "project.create", "project.open", "project.backup.open", "project.recovery.open",
     "project.close", "app.quit", "keymap.set", "keymap.import", "keymap.reset", "keymap.remove", "workspace.create",
     "workspace.rename", "prefs.set", "job.cancel", "project.properties.set", "doc.repair",
-    # M4 C4.4a: the toolbar customisation sheet.
-    "window.toolbar.items.set", "window.toolbar.items.reset",
+    # M4 C4.4a: the toolbar customisation sheet; Preferences › Agent access's Regenerate token.
+    "window.toolbar.items.set", "window.toolbar.items.reset", "agent.token.regenerate",
+    # The Activity panel's Undo back to before an entry.
+    "edit.history.move",
 }
 
 
@@ -768,6 +772,115 @@ UNUSED_ASSET = {
 }
 
 
+def token_rows(t: Flows) -> list:
+    """Preferences › Agent access › Regenerate token (11 §15.1; M4 C4.4a, design note 2 §2; SI-178), in a session of its
+    own: Regenerate ends this runner's HTTP session, so it runs last and its effect is read without it, from the
+    discovery file and two HTTP requests (the old token refused, the new one accepted, at the same endpoint)."""
+    rows = []
+
+    async def setup(ctx):
+        await t.open_preferences("agent")
+
+    async def discovery(_ctx):
+        d = json.loads(t.discovery.read_text(encoding="utf-8"))
+        return {"endpoint": d.get("endpoint"), "token": d.get("token")}
+
+    def accepted(endpoint, token) -> int:
+        body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {
+            "protocolVersion": "2025-06-18", "capabilities": {}, "clientInfo": {"name": "d44-probe", "version": "1"}}}).encode()
+        req = urllib.request.Request(endpoint, data=body, method="POST", headers={
+            "Authorization": f"Bearer {token}", "Content-Type": "application/json",
+            "Accept": "application/json, text/event-stream"})
+        try:
+            with urllib.request.urlopen(req, timeout=10) as r:
+                return r.status
+        except urllib.error.HTTPError as e:
+            return e.code
+
+    async def ask(ctx):
+        t.click("agentAccess.regenerate")
+        if not await t.wait_for("message.agent.tokenRegenerate"):
+            raise RuntimeError("the Regenerate token question did not appear")
+        ctx["default"] = t.cdp.js("document.activeElement && document.activeElement.dataset.ttId")
+
+    for choice, button in (("cancel", "Cancel"), ("enter", "Enter (default Cancel)"), ("regenerate", "Regenerate")):
+        async def flow(ctx, choice=choice, button=button):
+            await ask(ctx)
+            if choice == "enter":
+                key(VK_RETURN)
+            else:
+                t.click(f"message.{choice}")
+            await asyncio.sleep(2.0)
+            return f"Preferences › Agent access › Regenerate token…, then {'a real Enter' if choice == 'enter' else 'a real click on ' + button}"
+
+        def effect(b, a, ctx, choice=choice):
+            if choice != "regenerate":
+                return a == b and (choice != "enter" or ctx.get("default") == "message.cancel")
+            ctx["probe"] = {"oldToken": accepted(a["endpoint"], b["token"]), "newToken": accepted(a["endpoint"], a["token"])}
+            return (a["endpoint"] == b["endpoint"] and a["endpoint"] and a["token"] != b["token"]
+                    and ctx["probe"]["oldToken"] == 401 and ctx["probe"]["newToken"] == 200)
+
+        rows.append({"name": f"Agent access › Regenerate token › {button}", "spec": f"11 §15.1; {spec_line('agent.token.regenerate')}",
+                     "path": ["File", "Preferences", "Agent access", "Regenerate token"], "choice": button, "setup": setup,
+                     "state": discovery, "flow": flow, "wait": 2.5,
+                     "expect": (lambda c: lambda ctx: [("agent.token.regenerate", {}, [])] if c == "regenerate" else [])(choice),
+                     "effect": effect})
+    return rows
+
+
+def undo_back_rows(t: Flows) -> list:
+    """The Activity panel's Undo back to before an entry (11 §11; M4 C4.4a, design note 2 §3): an agent's step (this
+    runner's call) with a step of the person's after it, so the question names one of yours. Undo moves the history to
+    just before the agent's step; Cancel and Enter (its default) leave it."""
+    rows = []
+
+    async def setup(ctx):
+        await t.cmd("draw.rectangle.add", {"from": {"x": -20, "y": -20}, "to": {"x": 20, "y": 20}})
+        log = await t.cmd("agent.activity.list", {"limit": 50})
+        mine = [e for e in (log if isinstance(log, list) else []) if e.get("commandId") == "draw.rectangle.add" and e.get("undoStepId")]
+        if not mine:
+            raise RuntimeError("the agent's step is not in the activity log")
+        ctx["seq"] = mine[-1]["seq"]
+        step = mine[-1]["undoStepId"]
+        # The person's step after it, from the page (user origin).
+        t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command: 'draw.rectangle.add', params:"
+                 " {from: {x: 30, y: 30}, to: {x: 60, y: 60}}})}).then(() => true)")
+        await asyncio.sleep(0.8)
+        history = await t.cmd("edit.history.get", {"limit": 1000})
+        index = next((h.get("index") for h in history.get("entries") or [] if h.get("stepId") == step), None)
+        if index is None:
+            raise RuntimeError("the agent's step is not in the history")
+        ctx["index"] = index
+        await t.cmd("window.panel.set", {"panelId": "activity", "visible": True, "focus": True})
+        if not await t.wait_for(f"activity.entry.{ctx['seq']}"):
+            raise RuntimeError("the Activity panel does not show the agent's entry")
+
+    async def position(_ctx):
+        return (await t.cmd("edit.history.get", {"limit": 1})).get("position")
+
+    for choice, button in (("undo", "Undo"), ("cancel", "Cancel"), ("enter", "Enter (default Cancel)")):
+        async def flow(ctx, choice=choice, button=button):
+            t.click(f"activity.entry.{ctx['seq']}")
+            await asyncio.sleep(0.4)
+            t.click("activity.undoBack")
+            if not await t.wait_for("message.agent.undoBack"):
+                raise RuntimeError("the Undo back question did not appear")
+            ctx["default"] = t.cdp.js("document.activeElement && document.activeElement.dataset.ttId")
+            if choice == "enter":
+                key(VK_RETURN)
+            else:
+                t.click(f"message.{choice}")
+            return f"Activity panel: the agent's entry, Undo back to before this entry, then {'a real Enter' if choice == 'enter' else 'a real click on ' + button}"
+
+        rows.append({"name": f"Activity › Undo back › {button}", "spec": f"11 §11; {spec_line('edit.history.move')}",
+                     "path": ["Window", "Activity", "Undo back to before this entry"], "choice": button, "setup": setup,
+                     "state": position, "flow": flow,
+                     "expect": (lambda c: lambda ctx: [("edit.history.move", {"position": ctx["index"]}, [])] if c == "undo" else [])(choice),
+                     "effect": (lambda c: lambda b, a, ctx: (a == ctx["index"]) if c == "undo"
+                                else (a == b and (c != "enter" or ctx.get("default") == "message.cancel")))(choice)})
+    return rows
+
+
 def toolbar_rows(t: Flows) -> list:
     """The toolbar customisation sheet (01 §5.7; M4 C4.4a, design note 1 §7): Apply sends the staged items, Cancel
     nothing, Restore Default the reset at once."""
@@ -1077,11 +1190,14 @@ async def session(app: str, run, out: Path, work: Path, group: str, only: set, s
             await s.initialize()
             await e2e.gui_tree(s, run, lambda r: e2e.by_id(r, "startScreen") is not None, f"the GUI is up ({group})")
             t = Flows(s, run, out, sub, proc)
+            t.discovery = discovery
             t.rows = sink
             await fixture(t)
             if group == "main":
-                rows = [*unsaved_rows(t, None), *save_as_rows(t), *keymap_rows(t), *workspace_rows(t), *toolbar_rows(t), *preferences_rows(t),
+                rows = [*unsaved_rows(t, None), *save_as_rows(t), *keymap_rows(t), *workspace_rows(t), *toolbar_rows(t), *undo_back_rows(t), *preferences_rows(t),
                         *form_rows(t), *dismiss_rows(t), *default_rows(t), *modal_kind_rows(t), jobs_row(t)]
+            elif group == "token":
+                rows = token_rows(t)
             else:
                 rows = unsaved_rows(t, group.removeprefix("quit-"))
             for r in rows:
@@ -1121,8 +1237,10 @@ def main() -> int:
     started = time.monotonic()
     rows: list = []
     try:
-        for group in ("main", "quit-discard", "quit-save"):
-            if group != "main" and only and not any("Quit" in o for o in only):
+        for group in ("main", "quit-discard", "quit-save", "token"):
+            if group.startswith("quit-") and only and not any("Quit" in o for o in only):
+                continue
+            if group == "token" and only and not any("Regenerate" in o for o in only):
                 continue
             before = len(rows)
             try:

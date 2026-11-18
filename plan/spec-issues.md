@@ -2204,6 +2204,81 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   forms for the 22 Drawing-family items, the five scene-family items and 20 checklist items (OS form only: the checklist
   opens with a secondary click; its reference is the Window menu's panel item's).
 
+## SI-173 — the agent settings: one state for their commands and `prefs.set` (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §7.3 lines 783-789 (Agent access: the `agent.*` keys are also read and written through
+  `prefs.get` and `prefs.set`, subject to 11's restrictions), 11 §15.1, `reviews/M4-design-agent-surfaces.md` §2.
+- **Problem:** `agent.server.set` wrote its keys without `prefs.changed`, so a surface showing them could not follow a
+  change made from the command layer; and the category's controls used `prefs.set`.
+- **Decided:** `agent.server.set` validates and stages its keys as `prefs.set` does (an unchanged value is still stored,
+  without an event); `prefs.set` on `agent.server.enabled` already started and stopped the server through the host's
+  `prefs.changed` handler and the policy defaults already shared one validator. Preferences › Agent access sends one
+  command per changed group at OK, in table order, never `prefs.set`; a refusal part-way leaves the later groups staged
+  and says the earlier ones were applied. Regenerate token acts at once after a question (Cancel the default).
+- **Built:** `agent.rs`, `commands/prefs.rs` (`stage_stored`), `AgentAccessPage.tsx`, `agentAccess.ts`,
+  `PreferencesDialog.tsx`; `c44a_agent.rs` (`the_server_command_and_the_server_preferences_are_one_state`),
+  `agentAccess.test.tsx`; D-39 rows for each control at OK; D-44 rows of the Regenerate question.
+
+## SI-174 — the Activity panel and Window › Activity (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §5.2 (the panel catalogue, 21 panels), 01 Window menu, 11 §6.4 (the indicator's Activity…), 11 §11
+  (the activity panel), `reviews/M4-design-agent-surfaces.md` §3.
+- **Problem:** 11 requires an activity panel that 01's catalogue and Window menu do not list.
+- **Decided:** a dockable panel `activity` ("Activity") joins the kernel's catalogue (22 panels), Window › Activity
+  shows it (a checked item like the other panels), and the indicator's popover has Activity…. The panel lists the log of
+  this project session (the last 500 entries; the log keeps all), Undo back to before an entry (`edit.history.move` to
+  just before its step, named first when later steps are yours; disabled with the reason when the step is gone or
+  undone), Copy as batch JSON (the batch export's form; `clipboard`), Export… (`agent.activity.export`, the path from the
+  platform's save dialog) and the sessions strip (policy at once, scopes at OK, Pause or Resume, Disconnect).
+- **Built:** `ui.rs` `PANELS`, `menu.json`, `catalogue.ts`, `ActivityPanel.tsx`, `activityModel.ts`, `StatusBar.tsx`;
+  `ActivityPanel.test.tsx`; parity `float:activity`, `float:activity:scopes`; D-39 rows (the session controls in the OS
+  form on a second test-only session; scope `app` named in the MCP form); D-44 rows of the Undo back question.
+
+## SI-175 — the Activity panel's live updates, and the entry fields it lacks (found in M4 C4.4a; partly built, a ruling asked)
+
+- **Sections:** 11 §11, `reviews/M4-design-agent-surfaces.md` §3 (kernel gaps 1 and 2).
+- **Problem:** no event says the activity log grew, and an entry has no batch id and no changed ids, so the panel can
+  neither group a script's calls nor highlight what an entry changed.
+- **Built:** a host-only notice `shell.agentActivity {entry}` after every recorded entry (`run.rs` `audit`; MCP clients
+  never receive `shell.*`); the panel appends from it alone, and re-reads the log on a gap in `seq` and on every open or
+  close.
+- **Asked:** the design's registry additions (`agent.activity.recorded`, `afterSeq` on `agent.activity.list`, `batchId`
+  and `changedIds` on the entry) change spec A, which is read-only here. Until a ruling adds them, the panel groups by
+  entry (a batch's steps are in its parameters) and selecting an entry highlights nothing.
+
+## SI-176 — a session's grant announced (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 11 §6.4, §15.1, `reviews/M4-design-agent-surfaces.md` §3, §5.
+- **Problem:** connect and disconnect have events, pause and resume have `agent.paused` and `agent.resumed`, but a grant
+  changes a session silently.
+- **Decided:** `agent.session.grant` emits the host-only notice `shell.agentSession {sessionId}`; the sessions strip
+  re-reads on it and on the four events. The registry event the design proposed (`agent.session.changed`) needs spec A
+  and waits with SI-175's ruling.
+
+## SI-178 — Regenerate token disconnects the HTTP clients and keeps the endpoint (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 11 §15.1 (`agent.token.regenerate`: "connected HTTP clients are disconnected"), 11 §4, ADR-0022.
+- **Problem:** the command rewrote the discovery file with `endpoint: null` and left the HTTP sessions connected.
+- **Decided:** after the new token is written, the host-only notice `shell.agentToken` makes the desktop host restart a
+  running server: its sessions end, and the discovery file is written again with the endpoint and the new token. The old
+  token is refused from then on.
+- **Built:** `agent.rs`, `host.rs` (`restart_http`), `shell.rs`; the D-44 rows "Agent access › Regenerate token ›
+  Regenerate / Cancel / Enter (default Cancel)" in a session of their own (the old token answered 401, the new 200, at the
+  same endpoint).
+
+## SI-179 — the activity log's persistence and the typed tools are preferences (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 11 §11 (persistence "is a preference, default off"), 11 §5 (typed tools), 01 §7.3 (Agent access keys
+  defined by 11), `reviews/M4-design-agent-surfaces.md` §6.
+- **Problem:** `agent.activity.persist.set` and `agent.typedTools.set` set session state only, so both reverted at the
+  next start.
+- **Decided:** two keys, `agent.activity.persist` (bool, default false, live) and `agent.typedTools` (object
+  `{enabled, namespaces}`, default off with no namespaces, live), category agent. The commands stage them as `prefs.set`
+  does (`prefs.changed`), `prefs.set` writes the same state, and the executor applies them at start. An object
+  preference's list member (`namespaces`) is validated as a list of strings.
+- **Built:** `prefs.json`, `agents.rs`, `agent.rs`, `commands/prefs.rs`, `prefs.rs` (`same_type`), `lib.rs`;
+  `c44a_agent.rs` (`the_activity_persistence_and_the_typed_tools_survive_a_restart`).
+
 ## SI-180 — the `clipboard` GUI-only reason, and the load report window's read (found in M4 C4.4a; decided by the builder)
 
 - **Sections:** 10 §7.3 (the load report, shown once as a summary), 11 §11 (copy as batch JSON), SI-155 (GUI-only

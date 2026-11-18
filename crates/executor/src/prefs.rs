@@ -336,6 +336,11 @@ fn same_type(d: &Value, v: &Value) -> bool {
         Value::Number(n) if n.is_i64() || n.is_u64() => v.is_i64() || v.is_u64(),
         Value::Number(_) => v.is_number(),
         Value::String(_) => v.is_string(),
+        // A list member (`agent.typedTools.namespaces`, SI-179): every entry of the default's entries' type, strings
+        // when the default list is empty.
+        Value::Array(d) => v.as_array().is_some_and(|a| {
+            d.first().map_or_else(|| a.iter().all(Value::is_string), |d0| a.iter().all(|x| same_type(d0, x)))
+        }),
         _ => false,
     }
 }

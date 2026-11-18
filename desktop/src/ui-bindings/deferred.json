@@ -1,45 +1,10 @@
 {
   "$comment": "The commands whose GUI location belongs to a checkpoint that has not passed (rulings D-30, D-31): the owner checkpoint, the spec section that defines the location, and the location. The parity gate (crates/executor/tests/c43/parity.rs) requires every implemented command to be bound in parity.json, declared agent-only, or listed here, and exactly one of the three; an owner must not have passed.",
   "deferred": {
-    "agent.activity.export": {
-      "owner": "M4 C4.4",
-      "section": "11 §6.4; 01 §12",
-      "location": "the agent activity panel"
-    },
-    "agent.activity.persist.set": {
-      "owner": "M4 C4.4",
-      "section": "01 §7.3 (preference catalogue: agent access); 11 §6.4",
-      "location": "Preferences › Agent access"
-    },
     "agent.confirmation.respond": {
       "owner": "M4 C4.4",
       "section": "11 §6.3, §6.4",
       "location": "the agent confirmation sheet"
-    },
-    "agent.policy.defaults.set": {
-      "owner": "M4 C4.4",
-      "section": "01 §7.3 (preference catalogue: agent access); 11 §6.4",
-      "location": "Preferences › Agent access"
-    },
-    "agent.server.set": {
-      "owner": "M4 C4.4",
-      "section": "01 §7.3 (preference catalogue: agent access); 11 §6.4",
-      "location": "Preferences › Agent access"
-    },
-    "agent.session.grant": {
-      "owner": "M4 C4.4",
-      "section": "11 §6.4; 01 §12",
-      "location": "the agent activity panel"
-    },
-    "agent.token.regenerate": {
-      "owner": "M4 C4.4",
-      "section": "11 §4 (Transport: the token shown and regenerable in Preferences › Agent access, lines 107-109)",
-      "location": "Preferences › Agent access (D-35)"
-    },
-    "agent.typedTools.set": {
-      "owner": "M4 C4.4",
-      "section": "01 §7.3 (preference catalogue: agent access); 11 §6.4",
-      "location": "Preferences › Agent access"
     },
     "anim.camera.create": {
       "owner": "M6 C6.2",

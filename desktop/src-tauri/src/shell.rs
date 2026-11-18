@@ -153,6 +153,14 @@ pub fn start_event_pump(app: &AppHandle) {
                     let enabled = e.payload.get("enabled").and_then(Value::as_bool).unwrap_or(false);
                     apply_agent_server(&app, enabled);
                 }
+                // `agent.token.regenerate` (SI-178): the HTTP clients are disconnected and the discovery file keeps
+                // the endpoint.
+                "shell.agentToken" => {
+                    if let Some(Err(e)) = app.state::<Host>().restart_http() {
+                        log(&e);
+                        notice(&app, "agent.serverFailed", "error", &format!("The agent server did not start: {e}"));
+                    }
+                }
                 _ => {}
             }
             // The menu re-reads its facts, and the float windows follow the kernel (ruling O-2), once per burst of

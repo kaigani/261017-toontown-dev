@@ -1078,6 +1078,11 @@ impl Core {
     pub(crate) fn audit(&mut self, entry: crate::agents::ActivityEntry) -> crate::agents::ActivityEntry {
         let Some(s) = self.session.as_mut() else { return entry };
         let e = s.agents.record(entry);
+        // The Activity panel appends the entry from this host-only notice (no polling; SI-175); MCP clients never
+        // receive `shell.*` notices.
+        if let Ok(v) = serde_json::to_value(&e) {
+            s.emit("shell.agentActivity", json!({ "entry": v }));
+        }
         if s.agents.persist
             && let Some(dir) =
                 s.project.as_ref().and_then(|p| p.path.as_ref()).and_then(|p| crate::commands::agent::activity_file(p))

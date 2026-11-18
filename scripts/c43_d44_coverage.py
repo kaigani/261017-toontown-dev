@@ -99,6 +99,11 @@ COVERAGE: dict[str, dict] = {
     "message:keymap.resetAll": {"rows": ["shortcut editor › Reset all › Reset All",
                                          "shortcut editor › Reset all › Cancel",
                                          "shortcut editor › Reset all › Enter (default Cancel)"], "default": "Cancel"},
+    "message:agent.undoBack": {"rows": ["Activity › Undo back › Undo", "Activity › Undo back › Cancel",
+                                        "Activity › Undo back › Enter (default Cancel)"], "default": "Cancel"},
+    "message:agent.tokenRegenerate": {"rows": ["Agent access › Regenerate token › Regenerate",
+                                               "Agent access › Regenerate token › Cancel",
+                                               "Agent access › Regenerate token › Enter (default Cancel)"], "default": "Cancel"},
     "message:engine.restartConfirm": {"reason": "needs an engine that stops answering; App.test.tsx covers the question "
                                                 "and both choices (named in the table)", "default": "Cancel"},
     "inline:keymap.conflict": {"rows": ["shortcut editor › conflict › Override", "shortcut editor › conflict › Cancel"],

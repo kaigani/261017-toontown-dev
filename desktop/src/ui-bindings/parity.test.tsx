@@ -474,6 +474,47 @@ async function surfaces(): Promise<Surface[]> {
   out.push(await settled('float:history', document.body));
   cleanup();
 
+  // The Activity panel in a floating window (M4 C4.4a, design note 2 §3): an entry selected (its Undo back and Copy
+  // enabled), a connected session; then the session's scope checklist disclosed.
+  const activity = host(true);
+  activity.handlers['agent.activity.list'] = () =>
+    ok([
+      {
+        seq: 1,
+        time: '2026-11-18T10:00:00Z',
+        sessionId: 's1',
+        client: 'mcp',
+        tool: 'run_command',
+        commandId: 'draw.rectangle.add',
+        params: {},
+        status: 'ok',
+        undoStepId: 'u-1',
+        changedCount: 1,
+        durationMs: 3,
+      },
+    ]);
+  mark(activity);
+  mount(activity, 'activity');
+  const first = await waitFor(() => {
+    const e = document.querySelector<HTMLElement>('[data-tt-id="activity.entry.1"]');
+    if (!e) throw new Error('no activity entry');
+    return e;
+  });
+  act(() => {
+    first.click();
+  });
+  out.push(await settled('float:activity', document.body));
+  mark(activity);
+  act(() => {
+    document.querySelector<HTMLElement>('[data-tt-id="activity.session.s1.scopes"]')?.click();
+  });
+  await waitFor(() => {
+    if (!document.querySelector('[data-tt-id="activity.session.s1.scopes.ok"]'))
+      throw new Error('no scope list');
+  });
+  out.push(await settled('float:activity:scopes', document.body));
+  cleanup();
+
   // The Pen panel in a floating window (M4 C4.4a): the brush pens, the current one's settings, the advanced options.
   const pen = host(true);
   mark(pen);

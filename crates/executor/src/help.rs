@@ -158,6 +158,14 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
     ("keymap.conflict", "The key sequence is already bound to another command."),
     ("keymap.importMode", "Merge adds the file's shortcuts to the keymap; Replace keeps only the file's."),
     ("keymap.resetAll", "Reset All restores every shortcut to its default when Preferences is confirmed."),
+    (
+        "agent.undoBack",
+        "Undo back to before this entry moves the history back past the agent's step; later steps, yours included, are undone in order and stay redoable.",
+    ),
+    (
+        "agent.tokenRegenerate",
+        "Regenerate token replaces the agent server's bearer token in the discovery file; connected HTTP clients are disconnected and need the new token.",
+    ),
     ("ui.unknownMessage", "There is no message with that id."),
     ("scene.noTarget", "There is no current scene and no scene was given."),
     ("render.noCamera", "The scene has no camera to render through; add a camera or name one."),

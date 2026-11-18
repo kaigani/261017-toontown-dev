@@ -325,6 +325,11 @@ impl ExecutorHandle {
         {
             session.agents.limits = limits;
         }
+        // SI-179: the activity log's persistence and the typed tools saved at the last run.
+        session.agents.persist = session.env.pref(agents::PERSIST_PREF).and_then(|v| v.as_bool()).unwrap_or(false);
+        if let Some(v) = session.env.pref(agents::TYPED_TOOLS_PREF) {
+            session.agents.typed_tools = agents::typed_tools_of(&v);
+        }
         // M4 C4.1: the start-screen rule follows `general.startup.behaviour`; the main window geometry saved at the
         // last quit is restored (01 §1.1, §11), clamped to the screens when the host reports them.
         let by_default = session.env.pref("general.startup.behaviour").and_then(|v| v.as_str().map(str::to_owned));
