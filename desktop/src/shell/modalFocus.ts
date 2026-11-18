@@ -35,8 +35,8 @@ function focusables(el: HTMLElement): HTMLElement[] {
 /** Makes every element outside `el` inert: each sibling of `el` and of each of its ancestors up to the body. */
 function inertOutside(el: HTMLElement): HTMLElement[] {
   const out: HTMLElement[] = [];
-  let node: HTMLElement | null = el;
-  while (node && node !== document.body) {
+  let node: HTMLElement = el;
+  while (node !== document.body) {
     const parent: HTMLElement | null = node.parentElement;
     if (!parent) break;
     for (const sib of Array.from(parent.children)) {

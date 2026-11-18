@@ -118,6 +118,7 @@ export function measureScene(name: SceneName): { drawings: Map<string, DecodedDr
     drawings,
     scene: {
       viewId: 'measure',
+      documentRev: null,
       background: [255, 255, 255, 255],
       grid: { visible: false, type: 'normal', overlay: false },
       entries,

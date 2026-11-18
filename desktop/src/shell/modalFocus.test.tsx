@@ -98,7 +98,10 @@ describe('application modals (D-49 item 3)', () => {
   it('a message box over a form is live; closing it leaves the form modal', async () => {
     const { prefs } = await preferences();
     act(() => {
-      must(prefs.querySelector<HTMLElement>('[data-tt-id="preferences.category.keyboard"]'), 'keyboard').click();
+      must(
+        prefs.querySelector<HTMLElement>('[data-tt-id="preferences.category.keyboard"]'),
+        'keyboard',
+      ).click();
     });
     await waitFor(() => {
       expect(prefs.querySelector('[data-tt-id="keymap.resetAll"]')).not.toBeNull();
@@ -114,6 +117,8 @@ describe('application modals (D-49 item 3)', () => {
     });
     // The form is still open and still the modal: the background stays inert.
     expect(prefs.isConnected).toBe(true);
-    expect(must(document.querySelector('[data-tt-id="mainToolbar"]'), 'toolbar').closest('[inert]')).not.toBeNull();
+    expect(
+      must(document.querySelector('[data-tt-id="mainToolbar"]'), 'toolbar').closest('[inert]'),
+    ).not.toBeNull();
   });
 });

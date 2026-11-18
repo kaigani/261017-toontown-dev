@@ -75,9 +75,14 @@ fn d35_a_mention_binds_nothing() {
     );
     let (bad, _) = pa3_entries(&m2, &entries, READS);
     assert!(bad.iter().any(|p| p.contains("`keymap.export` is in no state")), "{bad:?}");
-    // `tool.list`: read by the Drawing tools palette; without its declared read the mention binds nothing.
+    // `tool.list`: read by the Drawing tools palette (in every window that renders it); without a declared read on any
+    // surface the mention binds nothing.
     let mut reads: Value = serde_json::from_str(READS).unwrap();
-    reads["surfaces"]["main"]["reads"].as_object_mut().unwrap().remove("tool.list");
+    let mut declared = 0;
+    for (_, s) in reads["surfaces"].as_object_mut().unwrap() {
+        declared += usize::from(s["reads"].as_object_mut().unwrap().remove("tool.list").is_some());
+    }
+    assert!(declared > 0, "the fixture removes a declared read");
     let (bad, _) = pa3_entries(&m, &entries, &reads.to_string());
     assert!(bad.iter().any(|p| p.contains("`tool.list` is in no state")), "{bad:?}");
 }
@@ -87,9 +92,18 @@ fn d35_a_mention_binds_nothing() {
 fn d35_declared_reads_and_call_sites_agree_both_ways() {
     let m = manifest();
     assert_eq!(reads_problems(&m, READS), Vec::<String>::new());
-    // An undeclared call site fails.
+    // A query a surface sends without declaring it fails (C43B-R3S-01), and a call site no surface declares fails.
     let mut reads: Value = serde_json::from_str(READS).unwrap();
     reads["surfaces"]["main"]["reads"].as_object_mut().unwrap().remove("view.list");
+    let bad = reads_problems(&m, &reads.to_string());
+    assert!(
+        bad.iter().any(|p| p.contains("surface `main` sends `view.list` when rendered but declares no read of it")),
+        "{bad:?}"
+    );
+    let mut reads: Value = serde_json::from_str(READS).unwrap();
+    for (_, s) in reads["surfaces"].as_object_mut().unwrap() {
+        s["reads"].as_object_mut().unwrap().remove("view.list");
+    }
     let bad = reads_problems(&m, &reads.to_string());
     assert!(bad.iter().any(|p| p.contains("`view.list` is read in desktop/src/panels/PanelBody.tsx")), "{bad:?}");
     // A declared read without a call site fails, as does a declared mutating command.
@@ -109,17 +123,21 @@ fn d35_declared_reads_and_call_sites_agree_both_ways() {
     let moved = reads["surfaces"].as_object_mut().unwrap().remove("dialog:Help").unwrap();
     reads["surfaces"]["helpWindow"] = moved;
     let bad = reads_problems(&m, &reads.to_string());
-    assert!(bad.iter().any(|p| p == "reads.json: surface `helpWindow` is not a surface the collector renders"), "{bad:?}");
+    assert!(
+        bad.iter().any(|p| p == "reads.json: surface `helpWindow` is not a surface the collector renders"),
+        "{bad:?}"
+    );
     // C43B-R3S-01 (ruling D-48): a surface that declares a read it does not send fails, even when another surface in the
     // same file sends it (About declaring Project Info's query, both in infoDialogs.tsx); and a query a surface sends
     // without declaring it fails.
     let mut reads: Value = serde_json::from_str(READS).unwrap();
-    reads["surfaces"]["dialog:About Toontown"]["reads"]["project.info.get"] = json!(["desktop/src/shell/infoDialogs.tsx"]);
+    reads["surfaces"]["dialog:About Toontown"]["reads"]["project.info.get"] =
+        json!(["desktop/src/shell/infoDialogs.tsx"]);
     let bad = reads_problems(&m, &reads.to_string());
     assert_eq!(
         bad,
         vec![
-            "reads.json: surface `dialog:About Toontown` declares `project.info.get` (desktop/src/shell/infoDialogs.tsx),              which it does not send when rendered"
+            "reads.json: surface `dialog:About Toontown` declares `project.info.get` (desktop/src/shell/infoDialogs.tsx), which it does not send when rendered"
                 .to_owned()
         ]
     );

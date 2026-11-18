@@ -3,6 +3,7 @@
   "scene": {
     "sceneForm": "1.1",
     "viewId": "cameraView",
+    "documentRev": 4,
     "viewType": "camera",
     "background": [
       255,

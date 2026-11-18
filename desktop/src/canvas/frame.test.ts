@@ -23,6 +23,7 @@ const entry = (drawingId: string, role: SceneEntry['role']): SceneEntry => ({
 function scene(grid: Scene['grid'], entries: SceneEntry[]): Scene {
   return {
     viewId: 'drawingView',
+    documentRev: null,
     background: [1, 2, 3, 255],
     grid,
     entries,

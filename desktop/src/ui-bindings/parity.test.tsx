@@ -140,7 +140,9 @@ const isQueryCommand = (id: string) =>
 
 const snapshot = (name: string, el: Element): Surface => {
   const sent = reading ? reading.host.sent.slice(reading.since) : [];
-  const reads = [...new Set(sent.filter((x) => !x.dryRun && isQueryCommand(x.command)).map((x) => x.command))].sort();
+  const reads = [
+    ...new Set(sent.filter((x) => !x.dryRun && isQueryCommand(x.command)).map((x) => x.command)),
+  ].sort();
   return { name, root: el.cloneNode(true) as Element, reads };
 };
 
@@ -561,13 +563,17 @@ describe('the parity manifest (parity note 9)', () => {
     ]);
     // Ruling D-48 item 7: a `#[cfg(test)]` on anything but the trailing test module fails closed (the file is refused,
     // not read only up to it): a test-only function followed by product code, and a test module with code after it.
-    const early = ['#[cfg(test)]', 'fn helper() {}', 'fn product() { host.run("job.list", json!({})); }'].join('
-');
+    const early = [
+      '#[cfg(test)]',
+      'fn helper() {}',
+      'fn product() { host.run("job.list", json!({})); }',
+    ].join('\n');
     expect(() => rustCallSites(early)).toThrow(/trailing test module/);
-    const notLast = ['#[cfg(test)]', 'mod tests { fn t() {} }', 'fn product() { host.run("job.list", json!({})); }'].join(
-      '
-',
-    );
+    const notLast = [
+      '#[cfg(test)]',
+      'mod tests { fn t() {} }',
+      'fn product() { host.run("job.list", json!({})); }',
+    ].join('\n');
     expect(() => rustCallSites(notLast)).toThrow(/trailing test module/);
   });
 

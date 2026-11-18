@@ -1,39 +1,70 @@
 {
-  "$comment": "The queries each rendered surface reads (ruling D-35). Each key is a collected surface (parity.json `surfaces`, or `menu` for the native menu built from menu.json), so a read belongs to a surface the window renders; the gate refuses any other key (C43B-R2S-01, C43B-R2-01). A query is bound only if a surface here declares it; the gate (crates/executor/tests/common/parity_gate.rs) checks this table both ways against the query call sites the parity test finds in product code (parity.json `callSites`): every call site is declared here, under a surface or under plumbing, and every declared read has a call site in a file it names. Plumbing calls bind nothing.",
+  "$comment": "The queries each rendered surface reads (rulings D-35, D-48). Each key is a collected surface (parity.json `surfaces`, or `menu` for the native menu built from menu.json), and declares exactly the queries that surface sends while it opens and settles (parity.json `surfaceReads`, observed by the parity collector; C43B-R3S-01), each with the product files that call it. The gate (crates/executor/tests/common/parity_gate.rs) checks both directions per surface and against the call sites: a surface declaring a read it does not send fails, as does a query a surface sends without declaring it. Plumbing calls bind nothing.",
   "surfaces": {
     "main": {
-      "description": "the main window's title, mode, start screen and modal state (01 §5.1); the dock: the workspace's arrangement and the panels it shows (01 §5.4, §5.5); the main toolbar and the tool palettes (01 §5.7); the Drawing tools palette's tools (02 §7); the status bar: its texts, the running jobs, the agent indicator and its sessions popover (01 §9.1, 11 §6.4); the History panel (01 §10); a view window's type buttons (01 §5.3); a view window's zoom readout, drawing aids and symmetry (01 §5.3, 02 §6.2, §10); the Drawing and Camera view canvas: its mapping, active view, tools, pens, selection and preferences (02 §4, camera note §6)",
+      "description": "the main window with a project as it opens: title, dock, toolbars, palettes, status bar, history, view chrome and canvas, and the store's slices (01 §5, 02 §4)",
       "reads": {
-        "app.state.get": ["desktop/src/state/store.ts", "desktop/src/canvas/CanvasView.tsx"],
-        "workspace.get": ["desktop/src/state/store.ts"],
-        "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
-        "workspace.list": ["desktop/src/state/store.ts"],
-        "drawAid.state.get": ["desktop/src/shell/toolbarGroups.tsx", "desktop/src/panels/ViewChrome.tsx"],
-        "tool.list": ["desktop/src/shell/Toolbars.tsx"],
-        "ui.statusBar.get": ["desktop/src/state/store.ts"],
-        "job.list": ["desktop/src/shell/StatusBar.tsx"],
         "agent.server.status": ["desktop/src/state/store.ts"],
-        "agent.activity.list": ["desktop/src/shell/StatusBar.tsx"],
+        "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "draw.viewMapping.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "drawAid.state.get": ["desktop/src/panels/ViewChrome.tsx", "desktop/src/shell/toolbarGroups.tsx"],
+        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
         "edit.history.get": ["desktop/src/state/store.ts"],
+        "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "job.list": ["desktop/src/shell/StatusBar.tsx"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.list": ["desktop/src/shell/Toolbars.tsx"],
+        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.settings.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
         "view.list": ["desktop/src/panels/PanelBody.tsx"],
         "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"],
-        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
-        "tool.settings.get": ["desktop/src/panels/ViewChrome.tsx"],
-        "draw.viewMapping.get": ["desktop/src/canvas/CanvasView.tsx"],
-        "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
-        "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
-        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx"],
-        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx"],
-        "prefs.get": ["desktop/src/canvas/CanvasView.tsx"]
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
     },
     "startScreen": {
-      "description": "the main window's title, mode, start screen and modal state (01 §5.1); the start screen: recent projects and recovery (01 §2, §3.7)",
+      "description": "the start screen window as it opens: the start screen with the shell beneath it (the store loads every slice at launch; 01 §1.1, §2, §3.7)",
       "reads": {
-        "app.state.get": ["desktop/src/state/store.ts"],
-        "project.recent.list": ["desktop/src/state/store.ts"],
-        "project.recovery.list": ["desktop/src/state/store.ts"]
+        "agent.server.status": ["desktop/src/state/store.ts"],
+        "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "draw.viewMapping.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "drawAid.state.get": ["desktop/src/panels/ViewChrome.tsx", "desktop/src/shell/toolbarGroups.tsx"],
+        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "job.list": ["desktop/src/shell/StatusBar.tsx"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.list": ["desktop/src/shell/Toolbars.tsx"],
+        "tool.pen.list": ["desktop/src/canvas/CanvasView.tsx"],
+        "tool.settings.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "view.list": ["desktop/src/panels/PanelBody.tsx"],
+        "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
     },
     "menu": {
@@ -45,24 +76,23 @@
       }
     },
     "float:history": {
-      "description": "the History panel (01 §10)",
+      "description": "a floating History window as it opens: its own store with every slice (01 §5.4, §10)",
       "reads": {
-        "edit.history.get": ["desktop/src/state/store.ts"]
-      }
-    },
-    "preferences:general": {
-      "description": "the Preferences window: the values, themes, tips and the shortcut editor's bindings (01 §7, §8.3, §9.4)",
-      "reads": {
+        "agent.server.status": ["desktop/src/state/store.ts"],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
         "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
-        "keymap.list": ["desktop/src/state/store.ts"]
-      }
-    },
-    "dialog:New Project": {
-      "description": "the New Project form's presets (01 §3.1)",
-      "reads": {
-        "project.presets.list": ["desktop/src/state/store.ts"]
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
     },
     "dialog:Project Properties": {
@@ -99,6 +129,18 @@
       "description": "the Help window (01 §9.3)",
       "reads": {
         "ui.help.get": ["desktop/src/App.tsx"]
+      }
+    },
+    "agentPopover": {
+      "description": "the agent sessions popover: the recent activity it reads when opened (11 §6.4)",
+      "reads": {
+        "agent.activity.list": ["desktop/src/shell/StatusBar.tsx"]
+      }
+    },
+    "jobsWindow": {
+      "description": "the progress window: the running jobs of every session (01 §9.5)",
+      "reads": {
+        "job.list": ["desktop/src/shell/StatusBar.tsx"]
       }
     }
   },

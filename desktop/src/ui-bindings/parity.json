@@ -15717,6 +15717,328 @@
       "file": "desktop/src/state/store.ts"
     }
   ],
+  "surfaceReads": [
+    {
+      "surface": "agentPopover",
+      "query": "agent.activity.list"
+    },
+    {
+      "surface": "dialog:About Toontown",
+      "query": "app.info.get"
+    },
+    {
+      "surface": "dialog:Check Project",
+      "query": "doc.validate"
+    },
+    {
+      "surface": "dialog:Help",
+      "query": "ui.help.get"
+    },
+    {
+      "surface": "dialog:Open Backup",
+      "query": "project.backup.list"
+    },
+    {
+      "surface": "dialog:Opening project",
+      "query": "job.wait"
+    },
+    {
+      "surface": "dialog:Project Info",
+      "query": "project.info.get"
+    },
+    {
+      "surface": "dialog:Project Properties",
+      "query": "project.properties.get"
+    },
+    {
+      "surface": "float:history",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:history",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:history",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:history",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:history",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:history",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:history",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:history",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:history",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:history",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:history",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:history",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:history",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:history",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:history",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "jobsWindow",
+      "query": "job.list"
+    },
+    {
+      "surface": "main",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "main",
+      "query": "anim.tool.get"
+    },
+    {
+      "surface": "main",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "main",
+      "query": "draw.viewMapping.get"
+    },
+    {
+      "surface": "main",
+      "query": "drawAid.state.get"
+    },
+    {
+      "surface": "main",
+      "query": "drawAid.staticLightTable.list"
+    },
+    {
+      "surface": "main",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "main",
+      "query": "edit.selection.get"
+    },
+    {
+      "surface": "main",
+      "query": "job.list"
+    },
+    {
+      "surface": "main",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "main",
+      "query": "prefs.get"
+    },
+    {
+      "surface": "main",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "main",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "main",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "main",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "main",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "main",
+      "query": "tool.list"
+    },
+    {
+      "surface": "main",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "main",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "main",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "main",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "main",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "main",
+      "query": "view.list"
+    },
+    {
+      "surface": "main",
+      "query": "view.transform.get"
+    },
+    {
+      "surface": "main",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "main",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "main",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "main",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "startScreen",
+      "query": "anim.tool.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "draw.viewMapping.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "drawAid.state.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "drawAid.staticLightTable.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "edit.selection.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "job.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "prefs.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "tool.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "view.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "view.transform.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "startScreen",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "startScreen",
+      "query": "workspace.list"
+    }
+  ],
   "uses": [
     {
       "command": "agent.activity",
@@ -16652,12 +16974,6 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/state/store.ts"
-      ]
-    },
-    {
-      "command": "project.exists",
-      "files": [
-        "desktop/src/shell/makeActions.tsx"
       ]
     },
     {
