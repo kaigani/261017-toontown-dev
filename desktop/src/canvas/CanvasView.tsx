@@ -630,6 +630,7 @@ export function CanvasView({
         scene?.viewType ?? null,
         previewKind,
         preview,
+        overlay !== null,
         cameraShown,
         stats.drawn,
         stats.residentDrawings,
@@ -651,6 +652,8 @@ export function CanvasView({
         viewType: scene?.viewType ?? null,
         // The preview's affine and corners of the selection box under it, for the e2e (PV2).
         ...(preview ? { preview: { kind: previewKind, transform: preview } } : {}),
+        // Whether a gesture's overlay is drawn (a drawing tool's stroke until its commit is drawn; ruling D-50's e2e).
+        overlay: overlay !== null,
         ...(cameraShown ? { camera: cameraShown } : {}),
         ...(({ drawn, residentDrawings, residentBytes, lastError }) => ({
           drawn,

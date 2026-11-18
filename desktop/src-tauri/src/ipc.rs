@@ -310,7 +310,13 @@ pub async fn canvas_scene(app: AppHandle, json: String) -> Result<Response, Stri
     let answer = tauri::async_runtime::spawn_blocking(move || {
         let host = app.state::<Host>();
         let generation = host.generation();
-        host.exec().canvas_scene(&req.view_id).map(|scene| json!({ "generation": generation, "scene": scene }))
+        let answer =
+            host.exec().canvas_scene(&req.view_id).map(|scene| json!({ "generation": generation, "scene": scene }));
+        // Ruling D-50: a dev-only delay of the answer's delivery (the scene is built now, at the current revision).
+        if let Some(d) = crate::delay_hooks::scene_delay() {
+            std::thread::sleep(d);
+        }
+        answer
     })
     .await
     .map_err(|e| internal(e.to_string()))?;
@@ -390,7 +396,14 @@ pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, St
             (Some(id), Some(io)) => io.finish(id, generation, request),
             _ if generation != host.generation() => stale_gesture(generation, host.generation()),
             // The user's own gesture, played by this window: never routed, and its answer needs no hover hit test.
-            _ => host.exec().pointer_in_window(tt_executor::Origin::User, request),
+            _ => {
+                let env = host.exec().pointer_in_window(tt_executor::Origin::User, request);
+                // Ruling D-50: a dev-only delay of the answer's delivery (the commit is made now).
+                if let Some(d) = crate::delay_hooks::commit_delay() {
+                    std::thread::sleep(d);
+                }
+                env
+            }
         }
     })
     .await

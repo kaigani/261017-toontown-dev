@@ -14,6 +14,7 @@
 pub mod attached;
 pub mod bindings;
 pub mod capture;
+pub mod delay_hooks;
 pub mod diagnostics;
 pub mod floats;
 pub mod host;
