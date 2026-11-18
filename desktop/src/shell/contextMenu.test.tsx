@@ -89,7 +89,7 @@ describe('the dock tab checklist (01 §5.4)', () => {
   it('Home, End and the arrows move the focus; Escape closes and gives the focus back', async () => {
     await app();
     const tab = await waitFor(() => el('tab.history'));
-    tab.tabIndex = 0;
+    expect(tab.tabIndex).toBe(0);
     act(() => {
       tab.focus();
       fireEvent.contextMenu(tab, { clientX: 30, clientY: 30 });

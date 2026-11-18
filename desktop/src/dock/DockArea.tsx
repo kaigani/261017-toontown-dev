@@ -54,6 +54,8 @@ function Tab(props: IDockviewPanelHeaderProps<{ panelId: string }>) {
     <div
       className="dock-tab"
       role="tab"
+      // Reachable with the keyboard, so the context-menu key or Shift+F10 opens the checklist (design note 1 §9).
+      tabIndex={0}
       aria-selected={shown}
       data-tt-role="tab"
       data-tt-id={`tab.${id}`}
