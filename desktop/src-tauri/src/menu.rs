@@ -363,6 +363,12 @@ fn apply(app: &AppHandle, f: &Facts) {
         rebuild_dynamic(app, &sub, "recent", &entries);
     }
     st.recent_paths = recent.iter().map(|(_, _, p)| p["path"].as_str().unwrap_or_default().to_owned()).collect();
+    // Open Recent's full path in the status bar (Windows) or tool tip (macOS): 01 §3.3 line 190, D-48 item 8.
+    crate::menu_hint::set_entries(
+        app,
+        recent.iter().map(|(_, label, _)| label.clone()).collect(),
+        st.recent_paths.clone(),
+    );
     let workspaces = dynamic("dyn:workspace:");
     if let Some(sub) = st.workspaces.clone() {
         let entries: Vec<(String, Option<bool>)> =

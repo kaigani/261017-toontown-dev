@@ -12,24 +12,33 @@ import type { StatusLine } from './messagesApi';
 export function StatusBar() {
   const texts = useSlice('statusBar') as StatusBarTexts | undefined;
   const [line, setLine] = useState<StatusLine | null>(null);
+  // A highlighted native menu item's hint (Open Recent's full path, 01 §3.3 line 190): shown instead of the status
+  // line while it is set; the status line is back when it clears.
+  const [hint, setHint] = useState<string | null>(null);
   useEffect(() => {
     const on = (e: Event) => {
       setLine((e as CustomEvent<StatusLine | null>).detail);
     };
+    const onHint = (e: Event) => {
+      const t = (e as CustomEvent<string | null>).detail;
+      setHint(typeof t === 'string' && t !== '' ? t : null);
+    };
     window.addEventListener('tt-status-line', on);
+    window.addEventListener('tt-menu-hint', onHint);
     return () => {
       window.removeEventListener('tt-status-line', on);
+      window.removeEventListener('tt-menu-hint', onHint);
     };
   }, []);
   if (texts && !texts.visible) return null;
   return (
     <footer className="status-bar" role="status" data-tt-role="statusBar" data-tt-id="statusBar">
       <span
-        className={`status-message status-${line?.kind ?? 'info'}`}
+        className={`status-message status-${hint !== null ? 'info' : (line?.kind ?? 'info')}`}
         data-tt-role="text"
         data-tt-id="status.line"
       >
-        {line?.text ?? ''}
+        {hint ?? line?.text ?? ''}
       </span>
       <span className="status-description" data-tt-role="text" data-tt-id="status.description">
         {texts?.description ?? ''}

@@ -1202,6 +1202,7 @@ async def build_and_run(t: Table, only: set) -> None:
                 await t.row(r)
 
     await jobs_row(t)
+    await recent_hint_row(t)
     # Saved first: the agent's session may not discard (its policy), and the close must not ask.
     await e2e.run_cmd(t.s, "project.saveAs", {"path": str(t.work / "D39-final.animpkg"), "onExists": "overwrite"})
     await asyncio.sleep(1.0)
@@ -1290,6 +1291,73 @@ async def jobs_row(t: Table) -> None:
     except Exception as ex:  # noqa: BLE001
         rec.update({"ok": False, "error": repr(ex)})
         t.run.check(False, "D-39 status bar › jobs: ran", repr(ex))
+    t.rows.append(rec)
+    t.run.save("rows.json", t.rows)
+
+
+async def recent_hint_row(t: Table) -> None:
+    """Open Recent's full path (01 §3.3 line 190; ruling D-48 item 8; reviews/M4-design-panels.md §13). The project is
+    saved under a known path, so it heads Open Recent. MCP form: the window tree's menu bar names the entry's full path
+    (`hint`). OS form (Windows): real clicks open File, then Open Recent; the cursor rests on the first entry; the status
+    bar's left line is its full path; Escape closes the menu and the line is what it was before. No command is sent."""
+    rec = {"name": "File › Open Recent › an entry's full path", "spec": "01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\")"}
+    try:
+        path = t.work / "D39-recent.animpkg"
+        await t.cmd("project.saveAs", {"path": str(path), "onExists": "overwrite"})  # waits for the save job
+        listed = (await e2e.run_cmd(t.s, "project.recent.list", {})).get("result")
+        entries = listed if isinstance(listed, list) else (listed or {}).get("projects") or (listed or {}).get("items") or []
+        want = (entries[0] or {}).get("path") if entries else None
+        if not (want or "").endswith(path.name):
+            raise RuntimeError(f"the saved project does not head Open Recent: {entries[:2]}")
+        await asyncio.sleep(1.5)  # the native menu is rebuilt from the kernel's recent list
+        if isinstance(t, McpTable):
+            entry = t.menu_node(await t.tree(), ["File", "Open Recent"])
+            first = ((entry or {}).get("children") or [{}])[0]
+            ok = want is not None and first.get("hint") == want and first.get("id") == "dyn:recent:0"
+            rec.update({"form": "mcp", "expected": want, "node": {k: first.get(k) for k in ("id", "label", "hint")}, "ok": ok})
+            t.run.check(ok, f"D-39 {rec['name']}: the window tree's Open Recent entry names its full path ({rec['spec']})", rec)
+        else:
+            def line():
+                return t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent ?? null")
+            before = line()
+            t.clear()
+            h = front()
+            handle = u32.GetMenu(h)
+            for label in ("File", "Open Recent"):
+                labels = menu_labels(handle)
+                i = labels.index(label)
+                r = wintypes.RECT()
+                if not u32.GetMenuItemRect(h, handle, i, ctypes.byref(r)):
+                    raise RuntimeError(f"native menu rectangle absent: {label}")
+                click_screen((r.left + r.right) // 2, (r.top + r.bottom) // 2)
+                handle = u32.GetSubMenu(handle, i)
+            r = wintypes.RECT()
+            if not u32.GetMenuItemRect(h, handle, 0, ctypes.byref(r)):
+                raise RuntimeError("the first Open Recent entry has no rectangle")
+            # Resting on the entry highlights it (no click: choosing it would open the project).
+            u32.SetCursorPos((r.left + r.right) // 2 + 1, (r.top + r.bottom) // 2)
+            time.sleep(0.15)
+            u32.SetCursorPos((r.left + r.right) // 2, (r.top + r.bottom) // 2)
+            shown = None
+            for _ in range(30):
+                time.sleep(0.1)
+                shown = line()
+                if shown == want:
+                    break
+            key(0x1B)
+            key(0x1B)
+            key(0x1B)
+            time.sleep(0.5)
+            after = line()
+            sent = [c for c in t.recorded() if t.kinds.get(c.get("command")) != "query"]
+            ok = want is not None and shown == want and after == before and sent == []
+            rec.update({"form": "os", "expected": want, "shownWhileHighlighted": shown, "before": before, "afterClose": after,
+                        "sent": sent, "ok": ok})
+            t.run.check(ok, f"D-39 {rec['name']}: the status bar shows the highlighted entry's full path, then its line "
+                            f"again; no command ({rec['spec']})", rec)
+    except Exception as ex:  # noqa: BLE001
+        rec.update({"ok": False, "error": repr(ex)})
+        t.run.check(False, f"D-39 {rec['name']}: ran", repr(ex))
     t.rows.append(rec)
     t.run.save("rows.json", t.rows)
 

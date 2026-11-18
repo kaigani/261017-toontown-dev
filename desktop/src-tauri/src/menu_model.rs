@@ -153,7 +153,7 @@ fn items(list: &[Item], platform: Platform, f: &Facts, path: &str, next: &mut us
             Item::Recent => {
                 for (k, r) in f.recent.iter().enumerate() {
                     out.push(json!({ "role": "menuitem", "id": format!("dyn:recent:{k}"), "label": recent_label(&r.name, r.exists),
-                                     "enabled": true, "commandId": "project.open",
+                                     "enabled": true, "commandId": "project.open", "hint": r.path,
                                      "command": { "commandId": "project.open", "params": { "path": r.path } } }));
                 }
             }
@@ -232,6 +232,9 @@ mod tests {
         let walk = find(&menus, &|n| n["id"] == "dyn:recent:0").unwrap();
         assert_eq!(walk["label"], "Walk");
         assert_eq!(walk["command"], json!({ "commandId": "project.open", "params": { "path": "/p/Walk.animpkg" } }));
+        // 01 §3.3 line 190: the full path, shown in the status bar or tool tip (D-48 item 8).
+        assert_eq!(walk["hint"], "/p/Walk.animpkg");
+        assert_eq!(gone["hint"], "/p/Gone.animpkg");
     }
 
     #[test]

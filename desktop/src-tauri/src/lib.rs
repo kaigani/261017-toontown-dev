@@ -21,6 +21,7 @@ pub mod host;
 pub mod instance;
 pub mod ipc;
 pub mod menu;
+pub mod menu_hint;
 pub mod menu_model;
 pub mod shell;
 pub mod watchdog;
@@ -185,6 +186,7 @@ pub fn run() -> Result<(), DesktopError> {
             floats::reconcile(&handle);
             watchdog::start(&handle);
             menu::refresh(&handle);
+            menu_hint::install(&handle);
             shell::sync_agent_server(&handle, true);
             if let Some((listener, key)) = listener {
                 let h = handle.clone();

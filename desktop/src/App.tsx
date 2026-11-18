@@ -307,6 +307,25 @@ function Window() {
     };
   }, [host, messages]);
 
+  // A native menu item's hint (Open Recent's full path, 01 §3.3 line 190): shown on the status bar's left line while
+  // the item is highlighted (StatusBar's `tt-menu-hint`).
+  useEffect(() => {
+    let unlisten: (() => void) | null = null;
+    let disposed = false;
+    void host
+      .onMenuHint((text) => {
+        window.dispatchEvent(new CustomEvent<string | null>('tt-menu-hint', { detail: text }));
+      })
+      .then((u) => {
+        if (disposed) u();
+        else unlisten = u;
+      });
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, [host]);
+
   // Menu items forwarded by the host: one action each.
   useEffect(() => {
     let unlisten: (() => void) | null = null;

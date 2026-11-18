@@ -50,6 +50,9 @@ export interface HostApi extends BenchApi {
   ): Promise<Unlisten>;
   /** Notices of the host itself (for example the agent server could not start; ruling O-6). */
   onHostNotice(handler: (notice: HostNotice) => void): Promise<Unlisten>;
+  /** A native menu item's hint while it is highlighted (Open Recent's full path, 01 §3.3 line 190); `null` when the
+   *  highlight moves elsewhere or the menu closes. */
+  onMenuHint(handler: (text: string | null) => void): Promise<Unlisten>;
   /** Restarts a stuck engine (the user's choice, never automatic). */
   restartEngine(): Promise<{ generation: number }>;
   ping(request: PingRequest): Promise<PingResponse>;
@@ -190,6 +193,19 @@ function isHostNotice(v: unknown): v is HostNotice {
   );
 }
 
+const MENU_HINT_SCHEMA: Schema = {
+  type: 'object',
+  properties: { text: { type: ['string', 'null'], maxLength: 4096 } },
+  required: ['text'],
+  additionalProperties: false,
+};
+
+function isMenuHint(v: unknown): v is { text: string | null } {
+  if (typeof v !== 'object' || v === null) return false;
+  const t = (v as Record<string, unknown>)['text'];
+  return t === null || typeof t === 'string';
+}
+
 const ENGINE_STATUS_SCHEMA: Schema = {
   type: 'object',
   properties: { notResponding: { type: 'boolean' }, generation: { type: 'integer', minimum: 0 } },
@@ -239,6 +255,11 @@ export function createHostApi(transport: HostTransport): HostApi {
       transport.listen('host-notice', (payload) => {
         const v = acceptWire(payload, HOST_NOTICE_SCHEMA, isHostNotice);
         if (v !== undefined) handler(v);
+      }),
+    onMenuHint: (handler) =>
+      transport.listen('menu-hint', (payload) => {
+        const v = acceptWire(payload, MENU_HINT_SCHEMA, isMenuHint);
+        if (v !== undefined) handler(v.text);
       }),
     restartEngine: () => call(transport, 'restart_engine', undefined, GENERATION_SCHEMA, isGeneration),
     ping: (request) => call(transport, 'ping', request, pingResponseSchema, isPingResponse),
