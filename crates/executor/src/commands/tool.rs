@@ -1129,15 +1129,30 @@ pub(crate) fn tool_pen_delete(cx: &mut Cx, p: PenParams) -> Result<PenDeleted, C
         ));
     }
     let (_, i) = pen_index(cx, &id)?;
+    // SI-167 (design note 1 §3): when the current pen is deleted, the next pen of its type in the list becomes
+    // current, else the previous one, and is announced (`selected`), so the Pen panel and the cursor follow.
+    let was_current = current_pen(cx, kind).as_ref() == Some(&id);
+    let successor = {
+        let doc = cx.document()?;
+        let family: Vec<Id> =
+            doc.project().pens().iter().filter(|x| *x.kind() == kind).map(|x| x.id().clone()).collect();
+        let at = family.iter().position(|x| *x == id).unwrap_or(0);
+        family.get(at + 1).or_else(|| at.checked_sub(1).and_then(|j| family.get(j))).cloned()
+    };
     cx.patch_entries(vec![(EntryKey::Project, vec![op("remove", &format!("/pens/{i}"), None)])])?;
     let slot = match kind {
         PenKind::Brush => &mut cx.app_mut().pens.brush,
         PenKind::Eraser => &mut cx.app_mut().pens.eraser,
     };
-    if slot.as_ref() == Some(&id) {
+    if was_current {
+        slot.clone_from(&successor);
+    } else if slot.as_ref() == Some(&id) {
         *slot = None;
     }
     emit_pen(cx, id.as_str(), PenChange::Deleted);
+    if let Some(next) = successor.filter(|_| was_current) {
+        emit_pen(cx, next.as_str(), PenChange::Selected);
+    }
     Ok(PenDeleted {
         removed_pen_id: id.as_str().to_owned(),
         current_pen_id: current_pen(cx, kind).map(|i| i.as_str().to_owned()),

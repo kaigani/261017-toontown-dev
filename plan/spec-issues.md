@@ -2074,3 +2074,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Question for the spec owner:** should a failed or cancelled Open return to the previous project (for instance by
   loading the new one before closing the old)? Until answered the behaviour is the spec as written (ruling D-53
   context); the D-44 "error box › OK" row checks it.
+## SI-167 — which pen is current after the current pen is deleted (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 02 §6.1 lines 354-384 (pens; Delete), 02 §12.1 ("Delete Pen").
+- **Problem:** 02 says the last pen of a type cannot be deleted but not which pen becomes current when the current one
+  is. The kernel cleared the slot without an event, so the default pen took over unannounced and the Pen panel and the
+  cursor could not follow.
+- **Decided:** the next pen of the same type in the list becomes current, else the previous one, announced with
+  `tool.pen.changed {penId, change: "selected"}` after the deletion's own event. Deleting a pen that is not current
+  leaves the current pen. Undo restores the pen, not the selection (selection is UI state, 02 §12.1).
+- **Built:** `tool.pen.delete` (`crates/executor/src/commands/tool.rs`); `c44a_panels.rs`.
