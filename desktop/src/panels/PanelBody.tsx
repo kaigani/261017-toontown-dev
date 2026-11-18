@@ -65,7 +65,8 @@ export function HistoryPanel() {
             </button>
           </li>
           {entries.map((e) => {
-            const position = e.index + 1;
+            // The kernel's `index` is 1-based: the position just after the step (`edit.history.get`).
+            const position = e.index;
             const after = position > history.position;
             return (
               <li key={e.index}>

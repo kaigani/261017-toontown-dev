@@ -478,6 +478,12 @@ impl Host {
     /// # Errors
     /// A message when the token cannot be made or no port can be bound.
     pub fn start_http(&self) -> Result<String, String> {
+        self.start_http_on(None)
+    }
+
+    /// [`Host::start_http`] on `at` when given (the address a restart keeps), else on the launch address or the
+    /// preferred port and the next free ones.
+    fn start_http_on(&self, at: Option<std::net::SocketAddr>) -> Result<String, String> {
         let mut slot = self.http.lock().unwrap_or_else(PoisonError::into_inner);
         if let Some(s) = slot.as_ref() {
             return Ok(s.url());
@@ -489,7 +495,7 @@ impl Host {
             .and_then(|r| r.pointer("/values/agent.server.port").and_then(Value::as_u64))
             .and_then(|p| u16::try_from(p).ok())
             .unwrap_or(47215);
-        let candidates: Vec<std::net::SocketAddr> = match self.options.mcp_http {
+        let candidates: Vec<std::net::SocketAddr> = match at.or(self.options.mcp_http) {
             Some(a) => vec![a],
             // The documented port, then the next free ones (11 §4).
             None => {
@@ -519,12 +525,10 @@ impl Host {
     /// After `agent.token.regenerate` (SI-178): a running server is stopped, which ends its HTTP sessions, and started
     /// again with the new token, which rewrites the discovery file with the endpoint. `None` when it was not running.
     pub fn restart_http(&self) -> Option<Result<String, String>> {
-        let running = self.http.lock().unwrap_or_else(PoisonError::into_inner).is_some();
-        if !running {
-            return None;
-        }
+        // The address actually bound (a launch on port 0 got an ephemeral one): the endpoint stays what it was.
+        let addr = self.http.lock().unwrap_or_else(PoisonError::into_inner).as_ref().map(|s| s.addr)?;
         self.stop_http();
-        Some(self.start_http())
+        Some(self.start_http_on(Some(addr)))
     }
 
     /// Stops the attached-mode server; its sessions end and the discovery file no longer advertises an endpoint

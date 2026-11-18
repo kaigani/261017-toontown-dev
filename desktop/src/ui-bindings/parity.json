@@ -457,7 +457,10 @@
       "surface": "float:activity",
       "commands": [
         "edit.history.move"
-      ]
+      ],
+      "params": {
+        "position": 0
+      }
     },
     {
       "id": "activity.export",
@@ -538,7 +541,10 @@
       "surface": "float:activity:scopes",
       "commands": [
         "edit.history.move"
-      ]
+      ],
+      "params": {
+        "position": 0
+      }
     },
     {
       "id": "history.0",
@@ -551,13 +557,13 @@
       }
     },
     {
-      "id": "history.2",
+      "id": "history.1",
       "surface": "float:history",
       "commands": [
         "edit.history.move"
       ],
       "params": {
-        "position": 2
+        "position": 1
       }
     },
     {
@@ -1984,13 +1990,13 @@
       }
     },
     {
-      "id": "history.2",
+      "id": "history.1",
       "surface": "main",
       "commands": [
         "edit.history.move"
       ],
       "params": {
-        "position": 2
+        "position": 1
       }
     },
     {

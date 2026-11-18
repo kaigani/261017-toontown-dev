@@ -1,0 +1,18 @@
+{
+ "kind": "toontown.c44a.e2e.summary",
+ "script": "scripts/c44a-e2e.py",
+ "platform": "windows (workstation, real input)",
+ "seconds": 51.7,
+ "failures": [],
+ "checks": [
+  "pen edit through the window changes the next Brush stroke's width, not the existing one",
+  "Draw on Top Layer through the window; the next Brush drag goes on the top layer",
+  "the sheet's Apply customises the main toolbar",
+  "an agent's second camera appears; choosing it changes the Camera view mapping",
+  "Export\u2026 writes the activity log, read back entry for entry",
+  "agent server off from Preferences clears the endpoint; on again it returns",
+  "Draw on Top Layer persisted across a restart",
+  "the customised toolbar persisted across a restart",
+  "Restore Default returns toolbar-default.json's items"
+ ]
+}

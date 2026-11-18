@@ -101,11 +101,12 @@ export function undoBack(
   if (!e.undoStepId) return { ok: false, reason: 'it made no undo step' };
   const step = history?.entries.find((h) => h.stepId === e.undoStepId);
   if (!history || !step) return { ok: false, reason: 'its step is no longer in the history' };
-  if (step.index + 1 > history.position) return { ok: false, reason: 'already undone' };
-  const undone = history.entries.filter((h) => h.index >= step.index && h.index < history.position);
+  // `index` is 1-based (the position just after the step): applied while it is at most the position.
+  if (step.index > history.position) return { ok: false, reason: 'already undone' };
+  const undone = history.entries.filter((h) => h.index >= step.index && h.index <= history.position);
   return {
     ok: true,
-    position: step.index,
+    position: step.index - 1,
     steps: undone.length,
     yours: undone.filter((h) => h.source === 'user').length,
   };

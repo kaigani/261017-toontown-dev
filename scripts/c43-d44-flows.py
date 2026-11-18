@@ -875,8 +875,8 @@ def undo_back_rows(t: Flows) -> list:
         rows.append({"name": f"Activity › Undo back › {button}", "spec": f"11 §11; {spec_line('edit.history.move')}",
                      "path": ["Window", "Activity", "Undo back to before this entry"], "choice": button, "setup": setup,
                      "state": position, "flow": flow,
-                     "expect": (lambda c: lambda ctx: [("edit.history.move", {"position": ctx["index"]}, [])] if c == "undo" else [])(choice),
-                     "effect": (lambda c: lambda b, a, ctx: (a == ctx["index"]) if c == "undo"
+                     "expect": (lambda c: lambda ctx: [("edit.history.move", {"position": ctx["index"] - 1}, [])] if c == "undo" else [])(choice),
+                     "effect": (lambda c: lambda b, a, ctx: (a == ctx["index"] - 1) if c == "undo"
                                 else (a == b and (c != "enter" or ctx.get("default") == "message.cancel")))(choice)})
     return rows
 

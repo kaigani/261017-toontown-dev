@@ -467,8 +467,8 @@ describe('history panel (01 §10)', () => {
       'edit.history.get': () =>
         ok({
           entries: [
-            { index: 0, label: 'Add Stroke', source: 'user', time: '10:00' },
-            { index: 1, label: 'Move Peg', source: 'agent', agentName: 'Helper', time: '10:01' },
+            { index: 1, label: 'Add Stroke', source: 'user', time: '10:00' },
+            { index: 2, label: 'Move Peg', source: 'agent', agentName: 'Helper', time: '10:01' },
           ],
           position: 2,
           cleanPosition: 0,

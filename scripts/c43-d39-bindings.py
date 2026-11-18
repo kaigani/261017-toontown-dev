@@ -1749,10 +1749,18 @@ async def build_and_run(t: Table, only: set) -> None:
     async def agent_prefs():
         return (await cmd("prefs.get", {"keys": AGENT_KEYS})).get("values") or {}
 
+    async def user_cmd(command, params):
+        # The person's call, from the page (scope `app` refuses an agent's): the setup's own, before the row records.
+        t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command: %s, params: %s})}).then(() => true)"
+                 % (json.dumps(command), json.dumps(params)))
+        await asyncio.sleep(0.3)
+
     async def agent_defaults():
-        await cmd("agent.policy.defaults.set", SEED_POLICY)
-        await cmd("agent.typedTools.set", {"enabled": False, "namespaces": []})
-        await cmd("agent.activity.persist.set", {"enabled": False})
+        # The server runs from the launch flag; its preference on too, so the page's port field is enabled.
+        await user_cmd("prefs.set", {"values": {"agent.server.enabled": True, "agent.server.port": 47215}})
+        await user_cmd("agent.policy.defaults.set", SEED_POLICY)
+        await user_cmd("agent.typedTools.set", {"enabled": False, "namespaces": []})
+        await user_cmd("agent.activity.persist.set", {"enabled": False})
 
     def agent_flow(edit, label):
         async def flow():
@@ -1823,7 +1831,7 @@ async def build_and_run(t: Table, only: set) -> None:
 
     async def typed_on():
         await agent_defaults()
-        await cmd("agent.typedTools.set", {"enabled": True, "namespaces": []})
+        await user_cmd("agent.typedTools.set", {"enabled": True, "namespaces": []})
     rows.append({"name": "Preferences › Agent access › namespace", "spec": f"{spec_line('agent.typedTools.set')}; 11 §5",
                  "action": ("none",), "custom": agent_flow(clicked("agentAccess.namespace.doc"), "the doc namespace"),
                  "expect": ("agent.typedTools.set", {"enabled": True, "namespaces": ["doc"]}), "label": None,
@@ -1916,6 +1924,13 @@ async def build_and_run(t: Table, only: set) -> None:
         await activity_open()
 
     async def undo_back_flow():
+        # The panel shows the entry once its log is read (a wait for a state, ruling D-45; the bound guards a hang).
+        start = time.monotonic()
+        while time.monotonic() - start < 10.0:
+            r = t.rect(f"activity.entry.{second['seq']}")
+            if r and not r.get("hidden"):
+                break
+            await asyncio.sleep(0.2)
         t.click(f"activity.entry.{second['seq']}")
         await asyncio.sleep(0.4)
         t.clear()
@@ -1927,8 +1942,8 @@ async def build_and_run(t: Table, only: set) -> None:
         return (await cmd("edit.history.get", {"limit": 1})).get("position")
     rows.append({"name": "Activity › Undo back to before an entry", "spec": f"{spec_line('edit.history.move')}; 11 §11",
                  "action": ("none",), "custom": undo_back_flow,
-                 "expect": lambda b: ("edit.history.move", {"position": second["index"]}), "label": None,
-                 "setup": agent_step, "state": history_position, "effect": lambda b, a, k: a == second["index"],
+                 "expect": lambda b: ("edit.history.move", {"position": second["index"] - 1}), "label": None,
+                 "setup": agent_step, "state": history_position, "effect": lambda b, a, k: a == second["index"] - 1,
                  "disabled": None, "mcpReason": "the entry is selected in the panel first (window state a click sets)"})
 
     exported = t.work / "D39-activity.jsonl"
@@ -1969,7 +1984,7 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": activity_hidden, "state": panel_state, "effect": lambda b, a, k: a.get("visible") is True,
                  "disabled": None, "mcpReason": "the popover opens with a click on the indicator (window state)"})
     rows.append({"name": "Window › Activity", "spec": f"{spec_line('window.panel.set')}; 11 §6.4 (SI-174)",
-                 "action": ("menu", ["Window", "Activity"]),
+                 "action": ("menu", ["Window", "Panels", "Activity"]),
                  "expect": ("window.panel.set", {"panelId": "activity", "visible": True}), "label": None,
                  "setup": activity_hidden, "state": panel_state, "effect": lambda b, a, k: a.get("visible") is True,
                  "disabled": None})

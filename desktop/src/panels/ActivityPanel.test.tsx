@@ -100,8 +100,8 @@ describe('the Activity panel (11 §11)', () => {
   it('Undo back to before an entry moves the history, naming the steps that are yours first', async () => {
     const history = {
       entries: [
-        { index: 0, stepId: 'u-1', label: 'Rectangle', source: 'agent', agentName: 'mcp', time: '' },
-        { index: 1, stepId: 'x-9', label: 'Brush', source: 'user', time: '' },
+        { index: 1, stepId: 'u-1', label: 'Rectangle', source: 'agent', agentName: 'mcp', time: '' },
+        { index: 2, stepId: 'x-9', label: 'Brush', source: 'user', time: '' },
       ],
       position: 2,
       cleanPosition: null,
