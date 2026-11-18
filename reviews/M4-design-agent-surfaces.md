@@ -223,7 +223,7 @@ reference to 11. With no project open nothing is persisted, and the Agent access
   supports `navigator.clipboard.writeText` on both OSes from a user gesture. The parity collector finds `clipboard`
   elements by their declared reason, and the gate fails if one does not call `copyText`.
 
-## 9. Spec issues and rulings before code (numbers follow note 1's, from SI-171)
+## 9. Spec issues and rulings before code (numbers follow note 1's, from SI-173)
 
 **For the orchestrator:**
 
@@ -274,3 +274,56 @@ reference to 11. With no project open nothing is persisted, and the Agent access
   The rows for the copy actions record the reason, not a command.
 - **macOS:** the sheet's attachment and keys, checked by the manual script `reviews/manual/M4/C4.4a-agent.md` and by the
   D-39 table's MCP form on the macOS runner.
+
+## 11. No single MCP answer or event over 1 MiB (D-51 item 2, SI-163; an item of C4.4a)
+
+**The rule.** No single MCP message, a tool result, a resource read or a notification, may exceed 1 MiB (1 048 576
+bytes of its JSON-RPC text), on stdio and on HTTP alike. A common client refuses a larger server-sent event and
+reports "SSE stream ended without a response" although the server sent everything (D-49 item 4: `job_wait` on a
+12 000-frame render answered 4.1 MB; `reviews/evidence/M4-C4.3b-r4/job-wait`).
+
+**Which answers can exceed it** (they grow with the document or the job's output, not with the request):
+
+| Kind | Commands | Today |
+|---|---|---|
+| Job records that list outputs | `render.range.run` (one entry per frame), the import jobs (`import.file.run`, `import.keyedImages.run`, `draw.vectorFile.import`, `draw.vectorize.run`: created ids), `draw.feather.apply` (layer ids) | unbounded |
+| Whole-document reads | `doc.export.json`, `draw.drawing.get` (a large drawing with `include`), `anim.evaluate` (nodes × frames), `doc.validate`, `element.drawing.list` | unbounded |
+| Inline images | `inspect.screenshot`, the contact sheet and any `png` result | bounded by `maxInlineBytes` (default 50 MB) and `maxInlineImagePx`, not by the cap |
+| The window tree | `inspect_ui` with a large depth | unbounded |
+| Events | `draw.drawing.changed` and the other `*.changed` events whose payload lists ids | unbounded |
+
+Already paged and within the cap: `doc.object.find`, `edit.history.get` (`offset`, `limit` at most 1000),
+`agent.activity.list` (`limit`).
+
+**The bounded shapes.**
+
+1. **A job record's result that enumerates outputs** keeps its other fields and replaces the list by
+   `{count, location, pattern, first, last, truncated}`. `location` is the output directory or the owning element,
+   `pattern` the naming pattern (for example `frame-####.png`), and `first` and `last` are the first and last entries
+   in full. `truncated` is true when the list was not given; a list of at most 100 entries is still given in full, with
+   `truncated: false`. The full list is read in pages with a new query, `job.outputs.list {jobId, offset = 0,
+   limit = 1000 (1-1000)}`, answering `{total, offset, items}` (a registry addition: SI-181).
+2. **Inline images.** The effective inline limit is the smaller of `maxInlineBytes` and the cap less the envelope. An
+   image over it is refused with `limit.exceeded {limit: "answerBytes", value, size}`, whose hint names `region`, a
+   smaller view, or the file-writing command (`export.snapshot.run`).
+3. **Whole-document reads and the window tree.** Over the cap they answer `limit.exceeded {limit: "answerBytes"}` with
+   a hint naming the narrower query (`within`, `include`, a frame range, `depth`) or the file form
+   (`doc.package.export {form: "folder"}`). Nothing is cut silently.
+4. **Events.** An id list over 10 000 entries becomes `{count, truncated: true}`; the client re-reads the subject.
+   `draw.drawing.changed` keeps `drawingId` and `rev`, which is enough to re-read.
+5. **The backstop.** At the server's writer (`crates/mcp/src/server.rs` `send`), a response over the cap is replaced by
+   the same `limit.exceeded` envelope, and a notification over the cap is not sent and is recorded in the audit log.
+   This holds for commands not listed above and for any future one.
+
+**The gate test** (`crates/mcp/tests/c44a_answer_cap.rs`; no wall-clock assertion, D-45):
+
+- every command with a worked example (`crates/mcp/src/worked-examples.json`, `crates/registry/src/example-results.json`)
+  runs on a fixture project, and its serialised answer is at most 1 MiB; the test reports the largest;
+- stress fixtures for the enumerating commands: `render.range.run` of 12 000 frames at scale 0.05 gives a record of at
+  most 64 KiB with `count` 12 000, `truncated` true and `first` and `last`; `job.outputs.list` pages cover all 12 000
+  entries exactly once;
+- a synthetic oversize answer and notification meet the backstop.
+
+**End to end:** the reviewer's client (Python `mcp` over `httpx2`) waits for that render over HTTP and receives its
+answer. **Spec issues:** SI-181 (`job.outputs.list` and the bounded record), SI-182 (`limit.exceeded` with
+`answerBytes` for the reads, images and the backstop).
