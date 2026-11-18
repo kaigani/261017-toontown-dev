@@ -381,40 +381,156 @@ def quit_row(t: Flows, choice: str, button: str) -> dict:
 
 
 def save_as_rows(t: Flows) -> list:
+    """Ruling D-49 item 1 (C43B-R3-01): one replacement decision per Save As, the native picker's own (Windows and macOS
+    ask before replacing; reviews/M4-design-dialogs.md §1). Its Yes saves over the file with `onExists: overwrite` and no
+    application question; its No leaves the picker open, and Escape then sends nothing."""
     fx = t.fx
     rows = []
-    for choice, button in (("replace", "Replace"), ("cancel", "Cancel")):
+    for choice, button in (("yes", "native Yes"), ("no", "native No")):
         async def flow(ctx, choice=choice, button=button):
             choose_menu(["File", "Save As"])
             await asyncio.sleep(1.8)
             type_text(str(fx["other"]))
             key(VK_RETURN)
-            # The native dialog asks first whether to replace the file (its own question): Yes.
-            if not await t.wait_for("message.project.exists", 1.5):
-                key(0x59)
-            if not await t.wait_for("message.project.exists"):
-                raise RuntimeError("the application's Replace question did not appear")
-            t.click(f"message.{choice}")
+            await asyncio.sleep(1.2)
+            key(0x59 if choice == "yes" else 0x4E)  # the native "replace?" question: Y or N
+            if choice == "no":
+                await asyncio.sleep(0.8)
+                key(VK_ESCAPE)  # the picker, still open after No, cancelled
             await asyncio.sleep(2.5)
-            return f"real native menu File › Save As, a typed path, the native dialog's Yes, a real click on {button}"
+            ctx["questions"] = t.cdp.js("document.querySelectorAll('[role=alertdialog]').length")
+            return f"real native menu File › Save As, a typed existing path, the native question's {button}"
 
         def expect(ctx, choice=choice):
-            first = ("project.saveAs", {"path": lambda v: same_path(v, fx["other"])}, ["onExists"])
-            if choice == "cancel":
-                return [first]
-            return [first, ("project.saveAs", {"path": lambda v: same_path(v, fx["other"]), "onExists": "overwrite"}, [])]
+            if choice == "no":
+                return []
+            return [("project.saveAs", {"path": lambda v: same_path(v, fx["other"]), "onExists": "overwrite"}, [])]
 
         def effect(b, a, ctx, choice=choice):
-            if choice == "cancel":
+            if ctx.get("questions"):
+                return False  # no application question after the native one
+            if choice == "no":
                 return same_path(a["path"], fx["flow"]) and a["other"] == b["other"]
             return same_path(a["path"], fx["other"]) and a["other"] != b["other"]
 
         async def cleanup():
             shutil.copyfile(fx["otherPristine"], fx["other"])
 
-        rows.append({"name": f"Save As (existing file) › {button}", "spec": f"01 §3.6; {spec_line('project.saveAs')}",
+        rows.append({"name": f"Save As (existing file) › {button}", "spec": f"01 §3.6, §9.5; {spec_line('project.saveAs')}",
                      "path": ["File", "Save As"], "choice": button, "setup": t.prepare_dirty, "state": lambda ctx: t.project_state(),
                      "flow": flow, "expect": expect, "effect": effect, "cleanup": cleanup})
+    return rows
+
+
+def default_rows(t: Flows) -> list:
+    """Ruling D-49 item 2 (C43B-R3-02): each message box opens on its focused default button, and Enter takes it."""
+    fx = t.fx
+    rows = []
+
+    async def close_enter(ctx):
+        choose_menu(["File", "Close Project"])
+        if not await t.wait_for("message.project.unsavedChanges"):
+            raise RuntimeError("the unsaved-changes question did not appear")
+        ctx["default"] = t.cdp.js("document.activeElement && document.activeElement.dataset.ttId")
+        key(VK_RETURN)
+        await asyncio.sleep(2.0)
+        return "real native menu File › Close Project, then a real Enter on the focused default"
+
+    rows.append({"name": "unsaved changes › Enter (default Save)", "spec": "01 §3.5, §9.5; D-49 item 2",
+                 "path": ["File", "Close Project"], "choice": "Enter", "setup": t.prepare_dirty,
+                 "state": lambda ctx: t.project_state(), "flow": close_enter,
+                 "expect": lambda ctx: [("project.save", {}, []), ("project.close", {}, ["onUnsaved"])],
+                 "effect": lambda b, a, ctx: ctx.get("default") == "message.save" and not a["open"] and a["flow"] != b["flow"]})
+
+    keys_file = t.work / "flow-keys-default.json"
+
+    async def reset_setup(ctx):
+        await t.cmd("keymap.reset", {"all": True})
+        await t.cmd("keymap.set", {"commandId": "project.save", "keys": "Primary+Shift+F11", "replaceExisting": True})
+        await t.open_preferences("keyboard")
+
+    async def reset_enter(ctx):
+        t.click("keymap.resetAll")
+        if not await t.wait_for("message.keymap.resetAll"):
+            raise RuntimeError("the Reset All question did not appear")
+        ctx["default"] = t.cdp.js("document.activeElement && document.activeElement.dataset.ttId")
+        key(VK_RETURN)
+        await asyncio.sleep(0.6)
+        t.click("preferences.submit")
+        await asyncio.sleep(1.5)
+        return "Preferences › Keyboard › Reset all, then a real Enter on the focused default, then OK"
+
+    rows.append({"name": "shortcut editor › Reset all › Enter (default Cancel)", "spec": "01 §8.3; D-49 item 2",
+                 "path": ["File", "Preferences", "Keyboard", "Reset all"], "choice": "Enter", "setup": reset_setup,
+                 "state": lambda ctx: t.keys_of("project.save"), "flow": reset_enter, "expect": lambda ctx: [],
+                 "effect": lambda b, a, ctx: ctx.get("default") == "message.cancel" and "Primary+Shift+F11" in a,
+                 "cleanup": lambda: t.cmd("keymap.reset", {"all": True})})
+
+    async def import_setup(ctx):
+        await t.cmd("keymap.reset", {"all": True})
+        await t.cmd("keymap.export", {"path": str(keys_file), "onExists": "overwrite"})
+        data = json.loads(keys_file.read_text(encoding="utf-8"))
+        for b in data.get("bindings", []):
+            if b.get("commandId") == "project.save":
+                b["keys"] = "Primary+Shift+F11"
+        keys_file.write_text(json.dumps(data), encoding="utf-8")
+        await t.open_preferences("keyboard")
+
+    async def import_enter(ctx):
+        t.click("keymap.import")
+        await asyncio.sleep(1.8)
+        type_text(str(keys_file))
+        key(VK_RETURN)
+        if not await t.wait_for("message.keymap.importMode"):
+            raise RuntimeError("the Merge / Replace / Cancel question did not appear")
+        ctx["default"] = t.cdp.js("document.activeElement && document.activeElement.dataset.ttId")
+        key(VK_RETURN)
+        await asyncio.sleep(0.6)
+        t.click("preferences.submit")
+        await asyncio.sleep(1.5)
+        return "Preferences › Keyboard › Import, a typed path, then a real Enter on the focused default, then OK"
+
+    rows.append({"name": "shortcut editor › Import › Enter (default Merge)", "spec": "01 §8.3 item 8; D-46; D-49 item 2",
+                 "path": ["File", "Preferences", "Keyboard", "Import"], "choice": "Enter", "setup": import_setup,
+                 "state": lambda ctx: t.keys_of("project.save"), "flow": import_enter,
+                 "expect": lambda ctx: [("keymap.import", {"path": lambda v: same_path(v, keys_file), "mode": "merge"}, [])],
+                 "effect": lambda b, a, ctx: ctx.get("default") == "message.merge" and a == ["Primary+S", "Primary+Shift+F11"],
+                 "cleanup": lambda: t.cmd("keymap.reset", {"all": True})})
+    return rows
+
+
+def modal_kind_rows(t: Flows) -> list:
+    """Ruling D-49 item 3 (C43B-R3-03): one row per modal kind: Tab past the last control keeps the focus inside, and
+    Escape then takes Cancel (nothing is sent; the background stays as it was)."""
+    rows = []
+
+    def kind(name, path, ident, setup, state, effect):
+        async def flow(ctx):
+            choose_menu(path)
+            if not await t.wait_for(ident):
+                raise RuntimeError(f"{name} did not open")
+            count = t.cdp.js("document.querySelectorAll('[aria-modal=true] button:not([disabled]), [aria-modal=true] input:not([disabled]), "
+                             "[aria-modal=true] select, [aria-modal=true] summary').length") or 0
+            inside = []
+            for _ in range(int(count) + 2):
+                key(0x09)
+                await asyncio.sleep(0.1)
+                inside.append(bool(t.cdp.js("!!document.activeElement && !!document.activeElement.closest('[aria-modal=true]')")))
+            ctx["inside"] = all(inside)
+            key(VK_ESCAPE)
+            await asyncio.sleep(1.0)
+            ctx["closed"] = not t.cdp.js("!!document.querySelector('[aria-modal=true]')")
+            return f"real native menu {' › '.join(path)}, {int(count) + 2} real Tabs, then a real Escape"
+
+        rows.append({"name": f"modal ({name}) › Tab past the last control, Escape", "spec": "01 §9.5; D-49 item 3",
+                     "path": path, "choice": "Tab, Escape", "setup": setup, "state": state, "flow": flow,
+                     "expect": lambda ctx: [],
+                     "effect": lambda b, a, ctx: ctx.get("inside") is True and ctx.get("closed") is True and effect(b, a)})
+
+    kind("message box", ["File", "Close Project"], "message.project.unsavedChanges", t.prepare_dirty,
+         lambda ctx: t.project_state(), lambda b, a: a["open"] and a["dirty"] is True and a["flow"] == b["flow"])
+    kind("form", ["File", "Project Properties"], "projectProperties.width", t.prepare_clean,
+         lambda ctx: t.project_state(), lambda b, a: a == b)
     return rows
 
 
@@ -906,7 +1022,7 @@ async def session(app: str, run, out: Path, work: Path, group: str, only: set, s
             await fixture(t)
             if group == "main":
                 rows = [*unsaved_rows(t, None), *save_as_rows(t), *keymap_rows(t), *workspace_rows(t), *preferences_rows(t),
-                        *form_rows(t), *dismiss_rows(t), jobs_row(t)]
+                        *form_rows(t), *dismiss_rows(t), *default_rows(t), *modal_kind_rows(t), jobs_row(t)]
             else:
                 rows = unsaved_rows(t, group.removeprefix("quit-"))
             for r in rows:

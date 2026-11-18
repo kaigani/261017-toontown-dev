@@ -280,7 +280,9 @@ def window_handle() -> int:
 def front() -> int:
     h = window_handle()
     u32.ShowWindow(h, 9)
-    u32.SetForegroundWindow(h)
+    # D-49 item 5: verified, not assumed (SetForegroundWindow alone can leave another window in front).
+    if not c42.ensure_foreground(h):
+        raise RuntimeError("the application window is not in the foreground: no input is sent (D-49 item 5)")
     time.sleep(0.15)
     return h
 

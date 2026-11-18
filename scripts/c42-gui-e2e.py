@@ -714,8 +714,48 @@ def os_minimise_restore(pid) -> None:
     time.sleep(0.8)
     u.ShowWindow(hwnds[0], 9)  # SW_RESTORE
     time.sleep(0.3)
-    u.SetForegroundWindow(hwnds[0])
+    if not ensure_foreground(hwnds[0]):
+        raise RuntimeError("the application window is not in the foreground: no input is sent (D-49 item 5)")
     time.sleep(0.5)
+
+
+def ensure_foreground(h) -> bool:
+    """Puts the application's window `h` in the foreground and verifies it (ruling D-49 item 5): `SetForegroundWindow`
+    alone can leave another window in front, and the first input then goes there. When the call is not honoured, the
+    foreground window's input thread is attached to this one, the window raised and set again, then detached. Returns
+    whether `h` owns the foreground (the foreground window, or its root, is `h`)."""
+    import ctypes
+    from ctypes import wintypes
+    u, k = ctypes.windll.user32, ctypes.windll.kernel32
+    u.GetForegroundWindow.restype = wintypes.HWND
+    u.GetAncestor.restype = wintypes.HWND
+
+    def owns() -> bool:
+        fg = u.GetForegroundWindow()
+        return bool(fg) and (fg == h or u.GetAncestor(fg, 2) == h)
+
+    u.ShowWindow(h, 9)  # SW_RESTORE
+    u.SetForegroundWindow(h)
+    time.sleep(0.15)
+    if owns():
+        return True
+    fg = u.GetForegroundWindow()
+    mine = k.GetCurrentThreadId()
+    theirs = u.GetWindowThreadProcessId(fg, None) if fg else 0
+    target = u.GetWindowThreadProcessId(h, None)
+    attached = []
+    for other in {theirs, target} - {0, mine}:
+        if u.AttachThreadInput(mine, other, True):
+            attached.append(other)
+    try:
+        u.BringWindowToTop(h)
+        u.SetForegroundWindow(h)
+        u.SetFocus(h)
+        time.sleep(0.2)
+    finally:
+        for other in attached:
+            u.AttachThreadInput(mine, other, False)
+    return owns()
 
 
 def os_double_click(pid, p) -> None:
@@ -763,7 +803,8 @@ def os_drag(pid, pts):
     if not hwnds:
         return
     h = hwnds[0]
-    u.SetForegroundWindow(h)
+    if not ensure_foreground(h):
+        raise RuntimeError("the application window is not in the foreground: no input is sent (D-49 item 5)")
     origin = wintypes.POINT(0, 0)
     u.ClientToScreen(h, ctypes.byref(origin))
     time.sleep(0.3)

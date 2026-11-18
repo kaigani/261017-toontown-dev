@@ -34,7 +34,8 @@ CLASSES = [
 ]
 
 #: What no product path shows in M4: listed so the class has its reason.
-ALWAYS = ["class:information box", "class:tip with suppression box"]
+ALWAYS = ["class:information box", "class:tip with suppression box", "class:native picker replace question",
+          "kind:message box", "kind:form"]
 
 
 def _product_files():
@@ -67,6 +68,8 @@ NO_COMMAND = "no command: dismissing it sends nothing"
 #: Every inventory item: {"rows": [row names of scripts/c43-d44-flows.py]} or {"reason": why it has no row}.
 COVERAGE: dict[str, dict] = {
     "dialog:Preferences": {"rows": ["Preferences › OK", "Preferences › Cancel"]},
+    "kind:message box": {"rows": ["modal (message box) › Tab past the last control, Escape"]},
+    "kind:form": {"rows": ["modal (form) › Tab past the last control, Escape"]},
     "dialog:Help": {"rows": ["Help › Close"], "class": NO_COMMAND},
     "dialog:About Toontown": {"rows": ["About › Close"], "class": NO_COMMAND},
     "dialog:Project Info": {"rows": ["Project Info › Close"], "class": NO_COMMAND},
@@ -84,15 +87,20 @@ COVERAGE: dict[str, dict] = {
     "progress:Saving": {"reason": "no choice: a save is not cancellable (its window has no Cancel)"},
     "prompt:New Workspace": {"rows": ["New Workspace › Create", "New Workspace › Cancel"]},
     "prompt:Rename Workspace": {"rows": ["Rename Workspace › Rename", "Rename Workspace › Cancel"]},
-    "message:project.unsavedChanges": {"rows": UNSAVED},
-    "message:project.exists": {"rows": ["Save As (existing file) › Replace", "Save As (existing file) › Cancel"]},
+    "message:project.unsavedChanges": {"rows": UNSAVED + ["unsaved changes › Enter (default Save)"], "default": "Save"},
+    "class:native picker replace question": {"rows": ["Save As (existing file) › native Yes",
+                                                       "Save As (existing file) › native No"],
+                                              "default": "No (the platform's)"},
     "message:keymap.importMode": {"rows": ["shortcut editor › Import › Merge", "shortcut editor › Import › Replace",
-                                           "shortcut editor › Import › Cancel"]},
+                                           "shortcut editor › Import › Cancel",
+                                           "shortcut editor › Import › Enter (default Merge)"], "default": "Merge"},
     "message:keymap.resetAll": {"rows": ["shortcut editor › Reset all › Reset All",
-                                         "shortcut editor › Reset all › Cancel"]},
+                                         "shortcut editor › Reset all › Cancel",
+                                         "shortcut editor › Reset all › Enter (default Cancel)"], "default": "Cancel"},
     "message:engine.restartConfirm": {"reason": "needs an engine that stops answering; App.test.tsx covers the question "
-                                                "and both choices (named in the table)"},
-    "inline:keymap.conflict": {"rows": ["shortcut editor › conflict › Override", "shortcut editor › conflict › Cancel"]},
+                                                "and both choices (named in the table)", "default": "Cancel"},
+    "inline:keymap.conflict": {"rows": ["shortcut editor › conflict › Override", "shortcut editor › conflict › Cancel"],
+                               "default": "Cancel"},
     "popover:Jobs": {"rows": ["progress window › Cancel"]},
     "popover:Agent sessions": {"reason": "no question: Pause, Resume and Stop are single actions, each a D-39 row"},
     "popover:Start screen": {"reason": "no question: each entry is a single action (New, Open, a recent project, a "

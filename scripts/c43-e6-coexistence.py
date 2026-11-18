@@ -111,7 +111,10 @@ def os_drag(pid: int, pts: list, seconds: float, hold_s: float, times: dict) -> 
     if u.GetForegroundWindow() != h:
         u.keybd_event(0x12, 0, 0, 0)
         u.keybd_event(0x12, 0, 2, 0)
-    u.SetForegroundWindow(h)
+    # D-49 item 5: the window must own the foreground before the first input, or the press goes elsewhere.
+    if not c42.ensure_foreground(h):
+        times["error"] = "the application window is not in the foreground: no input is sent (D-49 item 5)"
+        return
     origin = wintypes.POINT(0, 0)
     u.ClientToScreen(h, ctypes.byref(origin))
     time.sleep(0.3)
