@@ -1,0 +1,172 @@
+[
+ {
+  "name": "PRODUCT ignores both 3000 ms hooks",
+  "ok": true,
+  "detail": {
+   "samples": [
+    [
+     0.05696160008665174,
+     false
+    ],
+    [
+     0.20802360004745424,
+     false
+    ],
+    [
+     0.3620432000607252,
+     false
+    ],
+    [
+     0.5015967000508681,
+     false
+    ],
+    [
+     0.6602704001124948,
+     false
+    ],
+    [
+     0.8142712000990286,
+     false
+    ],
+    [
+     0.9700812000082806,
+     false
+    ],
+    [
+     1.126394800026901,
+     false
+    ],
+    [
+     1.2680540001019835,
+     false
+    ],
+    [
+     1.4275225000455976,
+     false
+    ],
+    [
+     1.564751400030218,
+     false
+    ],
+    [
+     1.7268981001107022,
+     false
+    ],
+    [
+     1.8815995000768453,
+     false
+    ],
+    [
+     2.0350081000942737,
+     false
+    ],
+    [
+     2.1905099001014605,
+     false
+    ]
+   ],
+   "record": {
+    "origin": "user",
+    "tool": "brush",
+    "view": "drawingView",
+    "pointerType": "mouse",
+    "drawingToView": [
+     1,
+     0,
+     0,
+     -1,
+     450.5,
+     316.5
+    ],
+    "events": [
+     {
+      "type": "down",
+      "x": 370,
+      "y": 356,
+      "modifiers": [],
+      "dt": 0,
+      "pressure": 1,
+      "button": "left"
+     },
+     {
+      "type": "move",
+      "x": 410,
+      "y": 336,
+      "modifiers": [],
+      "dt": 215,
+      "pressure": 1
+     },
+     {
+      "type": "move",
+      "x": 450,
+      "y": 346,
+      "modifiers": [],
+      "dt": 200,
+      "pressure": 1
+     },
+     {
+      "type": "up",
+      "x": 450,
+      "y": 346,
+      "modifiers": [],
+      "dt": 186,
+      "pressure": 1
+     }
+    ],
+    "eventCount": 4,
+    "status": "ok",
+    "code": null,
+    "commands": [
+     {
+      "commandId": "draw.stroke.add",
+      "params": {
+       "kind": "brush",
+       "points": [
+        {
+         "x": -80.5,
+         "y": -39.5,
+         "pressure": 1
+        },
+        {
+         "x": -40.5,
+         "y": -19.5,
+         "pressure": 1
+        },
+        {
+         "x": -0.5,
+         "y": -29.5,
+         "pressure": 1
+        },
+        {
+         "x": -0.5,
+         "y": -29.5,
+         "pressure": 1
+        }
+       ],
+       "fit": true,
+       "penId": "pen_01M7PW736PGX4KCWQGNTJAX13Z",
+       "colourId": "col_01M7PW736N79JGE5M2G0PAH7PC",
+       "layer": "auto",
+       "symmetry": true
+      }
+     }
+    ]
+   },
+   "answeredAt": 0.05696160008665174,
+   "trace": [],
+   "times": {
+    "press": 607920.9421987,
+    "release": 607921.5436112
+   }
+  }
+ },
+ {
+  "name": "PRODUCT D-32",
+  "ok": true,
+  "detail": {
+   "statuses": [
+    "ok"
+   ]
+  }
+ }
+]

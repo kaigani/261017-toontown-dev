@@ -645,6 +645,8 @@ def b3():
    r=await self.drag([(-80,-40),(-40,-20),(0,-30)])
    self.check('PRODUCT ignores both 3000 ms hooks',r['answeredAt'] is not None and r['answeredAt']<.8, r)
    same,diff=await self.same_as_direct([r['record']]);self.check('PRODUCT D-32',same,diff)
+ os.environ['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS']='--remote-debugging-port='+str(d.CDP_PORT)
+ os.environ['WEBVIEW2_USER_DATA_FOLDER']=str(OUT/'webview2')
  lc.Lifecycle=Review
  run=lc.e2e.Run(OUT);work=Path(tempfile.mkdtemp(prefix='r4-preview-'))
  lc.e6.dpi_aware()
