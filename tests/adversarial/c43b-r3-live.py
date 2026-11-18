@@ -751,6 +751,7 @@ async def closure_body(t):
   for _ in range(len(initial['items'])+2):d.key(0x09,0x10);route.append(t.cdp.js(expr))
   # Place focus on root through real click on its title, so Enter/Space cannot submit a button.
   r=t.rect(ident);h=d.front();origin=d.wintypes.POINT(0,0);d.u32.ClientToScreen(h,d.ctypes.byref(origin));d.click_screen(origin.x+r['x']*r['dpr'],origin.y+(r['y']-t.cdp.js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']').getBoundingClientRect().height"%json.dumps(ident))/2+15)*r['dpr'])
+  keyFocus=t.cdp.js("({id:document.activeElement?.dataset.ttId,tag:document.activeElement?.tagName})")
   for vk,mods in [(0x42,()),(0x5A,(0x11,)),(0x20,()),(0x0D,())]:d.key(vk,*mods)
   d.click_screen(origin.x+10,origin.y+100);await asyncio.sleep(.3)
   after=content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));sent=t.recorded();bad=[x for x in sent if x.get('command') not in SPEC_QUERIES]
@@ -762,7 +763,7 @@ async def closure_body(t):
    closed=t.cdp.js("!document.querySelector('[data-tt-id=progress]')");status=t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent");box=t.cdp.js("!!document.querySelector('[role=alertdialog]')")
    t.run.check('cancelled' in (status or '') and not box,'Cancelled job status line',{'status':status,'errorBox':box})
    bad=[x for x in bad if x.get('command')=='review.dispatch_key' or x.get('command')!='job.cancel']
-  rec={'initial':initial,'route':route,'sent':sent,'unchanged':before==after,'presentBeforeEscape':present,'closed':closed}
+  rec={'initial':initial,'keyFocus':keyFocus,'route':route,'sent':sent,'unchanged':before==after,'presentBeforeEscape':present,'closed':closed}
   t.run.check(all(x['inside'] for x in route) and before==after and not bad and present and closed,'Modal '+kind,rec)
 
 def closure():return bcase(closure_body,'closure')
