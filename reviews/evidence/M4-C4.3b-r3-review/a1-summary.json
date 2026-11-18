@@ -1,0 +1,698 @@
+{
+ "initial": [
+  {
+   "probe": "c43b-r1-live.py case3",
+   "exit": 0,
+   "failLines": [],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case3.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case4",
+   "exit": 0,
+   "failLines": [],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case4.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case5",
+   "exit": 0,
+   "failLines": [],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case5.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case6",
+   "exit": 0,
+   "failLines": [],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case6.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case7",
+   "exit": 1,
+   "failLines": [],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case7.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case8",
+   "exit": 0,
+   "failLines": [],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case8.log"
+  },
+  {
+   "probe": "c43b-r2-live.py a2",
+   "exit": 0,
+   "failLines": [],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-a2.log"
+  },
+  {
+   "probe": "c43b-r2-live.py a3",
+   "exit": 1,
+   "failLines": [
+    "FAIL D-39 tree declaration equals OS input command/params; spec/02_drawing.md:1388",
+    "FAIL D-39 main toolbar \u203a drawAid.grid.set: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1388; 01 \u00a75.7 lines 451-456 (Grid on/off))"
+   ],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-a3.log"
+  },
+  {
+   "probe": "c43b-r2-live.py b1",
+   "exit": 0,
+   "failLines": [],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-b1.log"
+  },
+  {
+   "probe": "c43b-r2-live.py b2",
+   "exit": 1,
+   "failLines": [],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-b2.log"
+  },
+  {
+   "probe": "c43b-r2-live.py b3",
+   "exit": 1,
+   "failLines": [
+    "FAIL D-39 main toolbar \u203a drawAid.grid.set: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1388; 01 \u00a75.7 lines 451-456 (Grid on/off))"
+   ],
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-b3.log"
+  }
+ ],
+ "repeat": [
+  {
+   "probe": "c43b-r1-live.py case7 r2",
+   "exit": 1,
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r2.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case7 r2-exact",
+   "exit": 1,
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r2-exact.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case7 r2-exact-select",
+   "exit": 0,
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r2-exact-select.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case7 r2-exact-tools",
+   "exit": 0,
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r2-exact-tools.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case7 r3-labels",
+   "exit": 0,
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r3-labels.log"
+  },
+  {
+   "probe": "c43b-r2-live.py a3",
+   "exit": 0,
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r2-live.py-a3.log"
+  },
+  {
+   "probe": "c43b-r2-live.py b3",
+   "exit": 0,
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r2-live.py-b3.log"
+  }
+ ],
+ "finalRepeat": [
+  {
+   "probe": "c43b-r1-live.py case7 r2",
+   "exit": 0,
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat-final\\c43b-r1-live.py-case7-r2.log"
+  },
+  {
+   "probe": "c43b-r1-live.py case7 r2-exact",
+   "exit": 0,
+   "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat-final\\c43b-r1-live.py-case7-r2-exact.log"
+  }
+ ],
+ "diagnostic": [
+  {
+   "iteration": 0,
+   "main": 14484230,
+   "foreground": 263682,
+   "foregroundAfter": 263682,
+   "before": {
+    "grid": {
+     "visible": false,
+     "type": "normal",
+     "overlay": false
+    },
+    "onionSkin": {
+     "enabled": false,
+     "previous": 1,
+     "next": 0
+    },
+    "onionSkinStyle": {
+     "outline": false,
+     "transparency": true,
+     "colourShading": true,
+     "previousColour": "#FF0000FF",
+     "nextColour": "#00C000FF"
+    },
+    "autoLightTable": false,
+    "staticLightTable": [],
+    "lightTableShade": {
+     "auto": true,
+     "static": true
+    },
+    "strokes": false,
+    "currentOnTop": false,
+    "selectionDisplay": {
+     "outlineOnSelection": false,
+     "boxHighlighting": true,
+     "keepSelectionVisible": false
+    },
+    "background": {
+     "colour": "#F0F0F0FF",
+     "useSceneColour": false
+    }
+   },
+   "after": {
+    "grid": {
+     "visible": false,
+     "type": "normal",
+     "overlay": false
+    },
+    "onionSkin": {
+     "enabled": false,
+     "previous": 1,
+     "next": 0
+    },
+    "onionSkinStyle": {
+     "outline": false,
+     "transparency": true,
+     "colourShading": true,
+     "previousColour": "#FF0000FF",
+     "nextColour": "#00C000FF"
+    },
+    "autoLightTable": false,
+    "staticLightTable": [],
+    "lightTableShade": {
+     "auto": true,
+     "static": true
+    },
+    "strokes": false,
+    "currentOnTop": false,
+    "selectionDisplay": {
+     "outlineOnSelection": false,
+     "boxHighlighting": true,
+     "keepSelectionVisible": false
+    },
+    "background": {
+     "colour": "#F0F0F0FF",
+     "useSceneColour": false
+    }
+   },
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "events": []
+  },
+  {
+   "iteration": 1,
+   "main": 14484230,
+   "foreground": 14484230,
+   "foregroundAfter": 14484230,
+   "before": {
+    "grid": {
+     "visible": false,
+     "type": "normal",
+     "overlay": false
+    },
+    "onionSkin": {
+     "enabled": false,
+     "previous": 1,
+     "next": 0
+    },
+    "onionSkinStyle": {
+     "outline": false,
+     "transparency": true,
+     "colourShading": true,
+     "previousColour": "#FF0000FF",
+     "nextColour": "#00C000FF"
+    },
+    "autoLightTable": false,
+    "staticLightTable": [],
+    "lightTableShade": {
+     "auto": true,
+     "static": true
+    },
+    "strokes": false,
+    "currentOnTop": false,
+    "selectionDisplay": {
+     "outlineOnSelection": false,
+     "boxHighlighting": true,
+     "keepSelectionVisible": false
+    },
+    "background": {
+     "colour": "#F0F0F0FF",
+     "useSceneColour": false
+    }
+   },
+   "after": {
+    "grid": {
+     "visible": true,
+     "type": "normal",
+     "overlay": false
+    },
+    "onionSkin": {
+     "enabled": false,
+     "previous": 1,
+     "next": 0
+    },
+    "onionSkinStyle": {
+     "outline": false,
+     "transparency": true,
+     "colourShading": true,
+     "previousColour": "#FF0000FF",
+     "nextColour": "#00C000FF"
+    },
+    "autoLightTable": false,
+    "staticLightTable": [],
+    "lightTableShade": {
+     "auto": true,
+     "static": true
+    },
+    "strokes": false,
+    "currentOnTop": false,
+    "selectionDisplay": {
+     "outlineOnSelection": false,
+     "boxHighlighting": true,
+     "keepSelectionVisible": false
+    },
+    "background": {
+     "colour": "#F0F0F0FF",
+     "useSceneColour": false
+    }
+   },
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "visible": true
+     }
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "tool.settings.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.staticLightTable.list",
+     "params": {}
+    },
+    {
+     "command": "view.transform.get",
+     "params": {
+      "viewId": "cameraView"
+     }
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "draw.viewMapping.get",
+     "params": {
+      "view": "cameraView"
+     }
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "events": [
+    {
+     "type": "pointerdown",
+     "target": "mainToolbar.drawAid.grid.set",
+     "tag": "BUTTON"
+    },
+    {
+     "type": "focusin",
+     "target": "mainToolbar.drawAid.grid.set",
+     "tag": "BUTTON"
+    },
+    {
+     "type": "pointerup",
+     "target": "mainToolbar.drawAid.grid.set",
+     "tag": "BUTTON"
+    },
+    {
+     "type": "click",
+     "target": "mainToolbar.drawAid.grid.set",
+     "tag": "BUTTON"
+    }
+   ]
+  },
+  {
+   "iteration": 2,
+   "main": 14484230,
+   "foreground": 14484230,
+   "foregroundAfter": 14484230,
+   "before": {
+    "grid": {
+     "visible": true,
+     "type": "normal",
+     "overlay": false
+    },
+    "onionSkin": {
+     "enabled": false,
+     "previous": 1,
+     "next": 0
+    },
+    "onionSkinStyle": {
+     "outline": false,
+     "transparency": true,
+     "colourShading": true,
+     "previousColour": "#FF0000FF",
+     "nextColour": "#00C000FF"
+    },
+    "autoLightTable": false,
+    "staticLightTable": [],
+    "lightTableShade": {
+     "auto": true,
+     "static": true
+    },
+    "strokes": false,
+    "currentOnTop": false,
+    "selectionDisplay": {
+     "outlineOnSelection": false,
+     "boxHighlighting": true,
+     "keepSelectionVisible": false
+    },
+    "background": {
+     "colour": "#F0F0F0FF",
+     "useSceneColour": false
+    }
+   },
+   "after": {
+    "grid": {
+     "visible": false,
+     "type": "normal",
+     "overlay": false
+    },
+    "onionSkin": {
+     "enabled": false,
+     "previous": 1,
+     "next": 0
+    },
+    "onionSkinStyle": {
+     "outline": false,
+     "transparency": true,
+     "colourShading": true,
+     "previousColour": "#FF0000FF",
+     "nextColour": "#00C000FF"
+    },
+    "autoLightTable": false,
+    "staticLightTable": [],
+    "lightTableShade": {
+     "auto": true,
+     "static": true
+    },
+    "strokes": false,
+    "currentOnTop": false,
+    "selectionDisplay": {
+     "outlineOnSelection": false,
+     "boxHighlighting": true,
+     "keepSelectionVisible": false
+    },
+    "background": {
+     "colour": "#F0F0F0FF",
+     "useSceneColour": false
+    }
+   },
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "visible": false
+     }
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "tool.settings.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.staticLightTable.list",
+     "params": {}
+    },
+    {
+     "command": "view.transform.get",
+     "params": {
+      "viewId": "cameraView"
+     }
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "draw.viewMapping.get",
+     "params": {
+      "view": "cameraView"
+     }
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "events": [
+    {
+     "type": "pointerdown",
+     "target": "mainToolbar.drawAid.grid.set",
+     "tag": "BUTTON"
+    },
+    {
+     "type": "pointerup",
+     "target": "mainToolbar.drawAid.grid.set",
+     "tag": "BUTTON"
+    },
+    {
+     "type": "click",
+     "target": "mainToolbar.drawAid.grid.set",
+     "tag": "BUTTON"
+    }
+   ]
+  }
+ ],
+ "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8",
+ "hashes": [
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case3.log",
+   "bytes": 17480,
+   "sha256": "0b27ec4cf5fa459569a6cb1a0c3296590e4771fdd6f00ebe5fe50d610e0ee885"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case4.log",
+   "bytes": 25,
+   "sha256": "d87516040045798c0a3c3dcf5908cb9f8d9d49c2f582ba546642cd8ccb1dc4c1"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case5.log",
+   "bytes": 5241,
+   "sha256": "01ff09b9e0a680d48506c37e49d1ad4ad7f8c4bd1ba535888980b941cc089695"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case6.log",
+   "bytes": 7189,
+   "sha256": "b966640cd9d0ea0747b54f138829bca86a235858d949c296fb3994bc80eb0f83"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case7.log",
+   "bytes": 1588,
+   "sha256": "36c5237fdbf2a1fa92d6015e0adc641c8649b9b52f47d8281a632aa5737ddf8b"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r1-live.py-case8.log",
+   "bytes": 10535,
+   "sha256": "acef5810e0255dfb34ebb728ed2ea3dcc09d29e8b51eeba580abc1c7e10eaa59"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-a2.log",
+   "bytes": 59414,
+   "sha256": "77a3a5d7b25e4f785b2c02c425408851c36366b8216c9e8286f6be7f8125a783"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-a3.log",
+   "bytes": 59296,
+   "sha256": "09372981610b199d12713310b88c7282776041c1678b6260365d3396a9a91454"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-b1.log",
+   "bytes": 3608,
+   "sha256": "7a3b4677eee02aed9787edf428596119758f6503103be60d877fba708f5b42a4"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-b2.log",
+   "bytes": 32163,
+   "sha256": "80bdce72217fca9ff31e93cc91b41d9bc1a210654d943a81a48da6c7a23b3fd0"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-a1-g3jjcjs8\\c43b-r2-live.py-b3.log",
+   "bytes": 10519,
+   "sha256": "7f8612616722220c3a5fa7e04e01cc62cfa7f67996aff48106d28160745941dc"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r2-exact-select.log",
+   "bytes": 40,
+   "sha256": "8f0e9570b4ec25457c053ffc799778084eafb29a2416b0d416f23684e34d7143"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r2-exact-tools.log",
+   "bytes": 39,
+   "sha256": "a6af88e197c46c001105046c03b05f54abea54fce4537655af2c7920b40251d3"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r2-exact.log",
+   "bytes": 33,
+   "sha256": "8c6ad749cd19bae97abc6d5e011e9d4fe8d6ec57d24c798504c60854c50f5c0a"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r2.log",
+   "bytes": 27,
+   "sha256": "8095bc4c606dcea6cccdbe507acd599797d79b2ec355572a6320f92af4c8488c"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r1-live.py-case7-r3-labels.log",
+   "bytes": 34,
+   "sha256": "3a697954ce1c18ac037d7e0860b9297bf175b5c6158d64261b09abd3d6761397"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r2-live.py-a3.log",
+   "bytes": 58472,
+   "sha256": "8f294719672da2ce94d6b8cfd2ea33f9c8b1148bb6d28eb7f14ca263b4a2cacb"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat\\c43b-r2-live.py-b3.log",
+   "bytes": 9879,
+   "sha256": "65830bae4a3f9462be19c06fb29e7414d7cb9e186411b4dc22176abdbfe24222"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat-final\\c43b-r1-live.py-case7-r2-exact.log",
+   "bytes": 33,
+   "sha256": "b2e07ccb6f484dd9d75dd64d473bcadf203eee965fcca559dc6949cd6c099511"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-repeat-final\\c43b-r1-live.py-case7-r2.log",
+   "bytes": 27,
+   "sha256": "647175efa7c5cd57da337d8e010c0e678104a0128b6bc6c98a76b7bfc39651ea"
+  }
+ ],
+ "verdict": "PASS; initial first-input failures are activation faults"
+}
