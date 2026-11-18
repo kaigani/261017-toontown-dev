@@ -77,21 +77,10 @@ export function makeActions(
   const saveAs = async (): Promise<Envelope | null> => {
     const path = await pick('save', 'Save As');
     if (!path) return null;
-    let env = await run('project.saveAs', { path }, ['project.exists']);
-    if (env.status === 'error' && env.error?.code === 'project.exists') {
-      const a = await messages.show({
-        severity: 'question',
-        messageId: 'project.exists',
-        title: 'Save As',
-        text: `"${path}" exists. Replace it?`,
-        buttons: [
-          { id: 'replace', label: 'Replace', role: 'destructive' },
-          { id: 'cancel', label: 'Cancel', role: 'cancel' },
-        ],
-      });
-      if (a.button !== 'replace') return null;
-      env = await run('project.saveAs', { path, onExists: 'overwrite' });
-    }
+    // Ruling D-49 item 1 (C43B-R3-01): one replacement decision per operation (01 §9.5). The native save picker asks
+    // whether to replace an existing file itself on Windows and macOS (reviews/M4-design-dialogs.md §1), so its path
+    // is saved over without a second question; the kernel's `project.exists` refusal stays for agents.
+    const env = await run('project.saveAs', { path, onExists: 'overwrite' });
     return waitJob(env, 'Saving', false);
   };
 
