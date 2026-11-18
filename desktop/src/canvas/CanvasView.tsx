@@ -80,6 +80,15 @@ function asAffine(v: unknown): Affine | null {
     : null;
 }
 
+/**
+ * The mounted canvases of each view, each with its own presence report. The host knows which window shows a view only
+ * from these reports, keyed by the view: when the dock re-creates a view's panel (a workspace switch) the new canvas can
+ * mount before the old one unmounts, and the old one's "gone" would then wipe the new one's presence (CI run
+ * 44401155529: "no window shows `drawingView`" with the Drawing view on screen). A canvas reports "gone" only when no
+ * other canvas of its view is mounted; otherwise one that is reports itself again.
+ */
+const LIVE_CANVASES = new Map<string, Set<() => void>>();
+
 /** A secondary press dragged farther than this (CSS pixels) opens no menu at its release (design note 1 §9). */
 const MENU_DRAG_PX = 4;
 
@@ -247,6 +256,11 @@ export function CanvasView({
       endPreview();
     });
     const reportPresence = (present: boolean) => {
+      if (!present && (LIVE_CANVASES.get(viewId)?.size ?? 0) > 0) {
+        // Another canvas of this view is mounted: it reports itself instead of this one's "gone".
+        LIVE_CANVASES.get(viewId)?.values().next().value?.();
+        return;
+      }
       const r = canvas.getBoundingClientRect();
       void engine
         .canvasPresence(
@@ -489,6 +503,13 @@ export function CanvasView({
               .then(refreshMapping, () => undefined);
           });
     ro?.observe(el);
+    // This canvas among its view's mounted canvases (presence above); it reports once it has a size.
+    const reportMounted = () => {
+      if (size.width >= 1 && size.height >= 1) reportPresence(true);
+    };
+    const mounted = LIVE_CANVASES.get(viewId) ?? new Set<() => void>();
+    mounted.add(reportMounted);
+    LIVE_CANVASES.set(viewId, mounted);
 
     let unlisten: (() => void) | null = null;
     void engine
@@ -998,6 +1019,7 @@ export function CanvasView({
       if (playing) void engine.gestureAbort(playing.input.requestId).catch(() => undefined);
       for (const q of agentQueue.splice(0)) void engine.gestureAbort(q.requestId).catch(() => undefined);
       unlistenAgent?.();
+      LIVE_CANVASES.get(viewId)?.delete(reportMounted);
       reportPresence(false);
       canvas.removeEventListener('pointerdown', onDown);
       canvas.removeEventListener('pointermove', onMove);
