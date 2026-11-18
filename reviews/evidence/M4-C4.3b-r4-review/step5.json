@@ -1,0 +1,573 @@
+[
+ {
+  "check": "Invalid project job error",
+  "ok": false,
+  "detail": {
+   "text": "Error Opening project\n\nno end-of-central-directory record (not a zip archive, or truncated)\n\nDetails\nOK",
+   "focus": "message.ok",
+   "dismissed": true,
+   "jobs": "job.wait observed in GUI IPC; all-session listing is GUI-only",
+   "beforeProject": {
+    "id": "pr_01M7PVW14K538PTDXW44DYKH0S",
+    "name": "Closure",
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-closure-kwsd0fp9\\closure.animpkg",
+    "dirty": false,
+    "globalLibraryDirty": false,
+    "readOnly": false
+   },
+   "afterProject": null,
+   "sent": [
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "project.recent.list",
+     "params": {}
+    },
+    {
+     "command": "project.recovery.list",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "window.toolbar.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "project.recent.list",
+     "params": {}
+    },
+    {
+     "command": "project.recovery.list",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "project.open",
+     "params": {
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-closure-kwsd0fp9\\invalid.animpkg"
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "tool.list",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "tool.settings.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.staticLightTable.list",
+     "params": {}
+    },
+    {
+     "command": "view.transform.get",
+     "params": {
+      "viewId": "drawingView"
+     }
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "drawAid.state.get",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "project.recent.list",
+     "params": {}
+    },
+    {
+     "command": "project.recovery.list",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "job.wait",
+     "params": {
+      "jobId": "job-2",
+      "timeoutMs": 20000
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "agent.server.status",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    }
+   ],
+   "unchanged": false
+  }
+ }
+]

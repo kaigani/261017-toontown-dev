@@ -696,7 +696,9 @@ async def closure_body(t):
   before=content(await c('doc.export.json',{'scope':'project','binaries':'omit'}));state=await c('app.state.get');t.clear();await open_error()
   text=t.cdp.js("document.querySelector('[role=alertdialog]').innerText");focus=await focusid();t.click('message.ok');await asyncio.sleep(.4)
   now=await c('app.state.get');after=content(await c('doc.export.json',{'scope':'project','binaries':'omit'})) if now.get('project') else None
-  t.run.check(before==after and state['project']==now['project'] and len(text)>15 and focus=='message.ok','Invalid project job error',{'text':text,'focus':focus,'sent':t.recorded(),'unchanged':before==after})
+  dismissed=t.cdp.js("!document.querySelector('[role=alertdialog]')")
+  records='job.wait observed in GUI IPC; all-session listing is GUI-only'
+  t.run.check(before==after and state['project']==now['project'] and len(text)>15 and focus=='message.ok' and dismissed,'Invalid project job error',{'text':text,'focus':focus,'dismissed':dismissed,'jobs':records,'beforeProject':state.get('project'),'afterProject':now.get('project'),'sent':t.recorded(),'unchanged':before==after})
  elif step=='3':
   kind=sys.argv[4];vk=int(sys.argv[5]);expected={'unsaved':'message.save','import':'message.merge','reset':'message.cancel','conflict':'keymap.conflict.cancel','error':'message.ok','information':'message.ok'}[kind]
   if kind=='unsaved':
