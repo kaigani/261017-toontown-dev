@@ -534,6 +534,8 @@ export function KeymapEditor({
             data-tt-role="button"
             data-tt-id="keymap.capture"
             data-tt-command="keymap.set"
+            // While it listens, Escape and Tab are keys to capture, not the dialog's (modalFocus.ts).
+            data-modal-keys={capturing ? 'own' : undefined}
             onClick={() => {
               setCapturing(true);
               setNotice(null);
@@ -594,6 +596,8 @@ export function KeymapEditor({
                 data-tt-role="button"
                 data-tt-id="keymap.conflict.cancel"
                 data-tt-gui-only="dismiss"
+                // D-49 item 2: Override is destructive; the question opens on Cancel.
+                autoFocus
                 onClick={() => {
                   setConflict(null);
                 }}

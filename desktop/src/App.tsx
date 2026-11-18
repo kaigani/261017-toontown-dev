@@ -455,7 +455,8 @@ function EngineBanner() {
               title: 'Restart the engine?',
               text: `The engine is not responding. ${since}`,
               buttons: [
-                { id: 'restart', label: 'Restart', role: 'default' },
+                // D-49 item 2: a destructive question defaults to Cancel (unsaved work since the autosave is lost).
+                { id: 'restart', label: 'Restart', role: 'destructive' },
                 { id: 'cancel', label: 'Cancel', role: 'cancel' },
               ],
             });

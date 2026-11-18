@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { App } from '../App';
 import { createHostApi, HostProvider } from '../ipc';
-import { createScriptedHost, fail, NO_PROJECT_STATE, ok } from '../test-support/scriptedHost';
+import { createScriptedHost, NO_PROJECT_STATE, ok } from '../test-support/scriptedHost';
 
 afterEach(cleanup);
 
@@ -22,7 +22,7 @@ const OPEN = {
     id: 'pr_1',
     name: 'Walk',
     path: '/p/Walk.animpkg',
-    dirty: false,
+    dirty: true,
     globalLibraryDirty: false,
     readOnly: false,
   },
@@ -38,9 +38,7 @@ describe('keys inside a modal question are the question’s', () => {
       'app.state.get': () => ok(OPEN),
       'keymap.list': () =>
         ok([{ commandId: 'playback.start', keys: 'Enter', context: 'global', isDefault: true }]),
-      'project.saveAs': () => fail('project.exists', 'the file exists'),
     });
-    h.picked = '/p/Other.animpkg';
     render(
       <HostProvider api={createHostApi(h)}>
         <App />
@@ -52,16 +50,17 @@ describe('keys inside a modal question are the question’s', () => {
     });
     // Outside a dialog the bound key is the keymap's: its default is prevented.
     expect(fireEvent.keyDown(document.body, { key: 'Enter', code: 'Enter' })).toBe(false);
+    // The unsaved-changes question (Close of a dirty project): its default button is Save (D-49 item 2).
     act(() => {
-      h.menu('project.saveAs', {});
+      h.menu('project.close', {});
     });
     const box = await screen.findByRole('alertdialog');
-    const replace = box.querySelector<HTMLButtonElement>('[data-tt-id="message.replace"]');
-    expect(replace).not.toBeNull();
+    const save = box.querySelector<HTMLButtonElement>('[data-tt-id="message.save"]');
+    expect(save?.getAttribute('data-tt-default')).toBe('true');
     // The real window focuses the default button (seen in the D-39 diagnostic); here it is focused by hand.
-    replace?.focus();
-    // On the focused button the key keeps its default (the button's activation).
-    expect(fireEvent.keyDown(must(replace), { key: 'Enter', code: 'Enter' })).toBe(true);
-    expect(fireEvent.keyDown(must(replace), { key: ' ', code: 'Space' })).toBe(true);
+    save?.focus();
+    // On the focused button the key keeps its default (the button's activation); the keymap gets nothing.
+    expect(fireEvent.keyDown(must(save), { key: 'Enter', code: 'Enter' })).toBe(true);
+    expect(fireEvent.keyDown(must(save), { key: ' ', code: 'Space' })).toBe(true);
   });
 });

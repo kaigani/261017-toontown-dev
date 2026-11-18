@@ -1,9 +1,10 @@
 // The New Project form (01 §3.1; start screen and dialog share it) and the Project Properties dialog (01 §3.8).
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { Envelope } from '../ipc';
 import type { ShellServices } from '../state/context';
 import { Dialog } from './dialogs';
+import { useModalFocus } from './modalFocus';
 import { projectFieldProblems } from './projectFields';
 
 interface PresetEntry {
@@ -288,10 +289,23 @@ export function JobProgress({
     });
     return off;
   }, [services, jobId, close]);
+  // D-49 item 3: an application modal like the others; Escape cancels the job where it can be cancelled.
+  const ref = useRef<HTMLDivElement>(null);
+  useModalFocus(
+    ref,
+    cancellable
+      ? () => {
+          void services.engine.run('job.cancel', { jobId }).done;
+        }
+      : undefined,
+  );
   return (
     <div
+      ref={ref}
+      tabIndex={-1}
       className="dialog progress"
       role="dialog"
+      aria-modal="true"
       aria-label={title}
       data-tt-role="dialog"
       data-tt-id="progress"

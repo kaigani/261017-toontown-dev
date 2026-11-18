@@ -8,6 +8,7 @@ import { isUnmodified, sequenceOf } from '../keys/sequence';
 import type { ShellServices } from '../state/context';
 import type { Binding } from '../state/types';
 import type { ActionsApi } from './actionsApi';
+import { anyModalOpen } from './modalFocus';
 import { collectUiTree, type UiNode } from './uiTree';
 
 /** How long after the last change the rendered UI tree is reported (a frame or two; product value). */
@@ -94,12 +95,13 @@ export function useShortcuts(
       if (!seq) return;
       const field = isTextField(e.target);
       if (field && isUnmodified(seq)) return;
-      if ((seq === 'Enter' || seq === 'Space') && isActivatable(e.target)) return;
-      if (e.target instanceof Element && e.target.closest('[aria-modal="true"]')) {
-        // The page's own accelerators (reload, print) stay off; no command runs behind a modal question.
+      // D-49 item 3: no key reaches the keymap while an application modal is open, wherever the focus is (decided by
+      // the modal being open, not by the event's target); the page's own accelerators (reload, print) stay off.
+      if (anyModalOpen()) {
         if (isBrowserAccelerator(seq)) e.preventDefault();
         return;
       }
+      if ((seq === 'Enter' || seq === 'Space') && isActivatable(e.target)) return;
       const bound = keymap.some((b) => b.keys === seq);
       if (!bound && !isBrowserAccelerator(seq)) return;
       e.preventDefault();

@@ -69,7 +69,8 @@ export function Dialog({
   command?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  useModalFocus(ref);
+  // D-49 item 3: the shared modal rules (focus kept inside, background inert, Escape is Cancel wherever the focus is).
+  useModalFocus(ref, onCancel);
   return (
     <div
       ref={ref}
@@ -81,12 +82,6 @@ export function Dialog({
       data-tt-role="dialog"
       data-tt-id={id}
       data-tt-label={title}
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') {
-          e.stopPropagation();
-          onCancel();
-        }
-      }}
     >
       <h2>{title}</h2>
       <form

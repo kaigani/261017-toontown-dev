@@ -202,8 +202,15 @@ function MessageBox({
   const buttons = spec.buttons ?? OK;
   const cancel =
     buttons.find((b) => b.role === 'cancel') ?? buttons.find((b) => b.role === 'default') ?? buttons[0];
+  // D-49 item 2: the box opens with a focused default button (Enter or Space takes the focused one): the `default`
+  // button, else Cancel (a destructive question with no named default defaults to Cancel), else the first.
+  const focused =
+    buttons.find((b) => b.role === 'default') ?? buttons.find((b) => b.role === 'cancel') ?? buttons[0];
   const ref = useRef<HTMLDivElement>(null);
-  useModalFocus(ref);
+  // D-49 item 3: the shared modal rules; Escape takes Cancel wherever the focus is.
+  useModalFocus(ref, () => {
+    if (cancel) onAnswer(cancel.id, suppress);
+  });
   return (
     <div className="modal-backdrop">
       <div
@@ -216,9 +223,6 @@ function MessageBox({
         data-tt-role="dialog"
         data-tt-id={`message.${spec.messageId}`}
         data-tt-label={spec.title ?? spec.messageId}
-        onKeyDown={(e) => {
-          if (e.key === 'Escape' && cancel) onAnswer(cancel.id, suppress);
-        }}
       >
         <h2 id="tt-message-title">
           <span className="severity">{spec.severity}</span> {spec.title ?? 'Toontown'}
@@ -254,7 +258,8 @@ function MessageBox({
               key={b.id}
               type="button"
               className={b.role ? `button-${b.role}` : undefined}
-              autoFocus={b.role === 'default'}
+              autoFocus={b.id === focused?.id}
+              data-tt-default={b.id === focused?.id ? 'true' : undefined}
               data-tt-role="button"
               data-tt-id={`message.${b.id}`}
               data-tt-gui-only={buttons.length === 1 ? 'dismiss' : 'answer'}
