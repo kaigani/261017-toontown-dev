@@ -120,19 +120,22 @@ fn preference_commands_announce_their_change() {
 fn the_tablet_command_and_the_tablet_preferences_are_one_state() {
     let h = fixture();
     let rx = h.subscribe();
-    let r = ok(&h, "tool.tablet.set", json!({ "ignoreTablet": true, "inputInterface": "wintab" }));
+    let r = ok(&h, "tool.tablet.set", json!({ "ignoreTablet": true, "inputInterface": "alternative" }));
     assert_eq!(r["restartRequired"], true, "{r}");
     let ev: Vec<Value> = rx.try_iter().filter(|e| e.name == "prefs.changed").map(|e| e.payload).collect();
     assert_eq!(ev.len(), 1, "{ev:?}");
     let mut keys: Vec<String> =
         ev[0]["keys"].as_array().unwrap().iter().map(|k| k.as_str().unwrap().to_owned()).collect();
     keys.sort();
-    assert_eq!(keys, ["tablet.ignore", "tablet.inputInterface"]);
+    assert_eq!(keys, ["tablet.alternativeInput", "tablet.ignore"]);
     let prefs = |k: &str| ok(&h, "prefs.get", json!({ "keys": [k] }))["values"][k].clone();
     assert_eq!(prefs("tablet.ignore"), true);
-    assert_eq!(prefs("tablet.inputInterface"), "wintab");
+    assert_eq!(prefs("tablet.alternativeInput"), true);
+    assert_eq!(r["settings"]["inputInterface"], "alternative", "{r}");
+    // 01 §7.3 holds two interfaces: any other name is refused.
+    assert_eq!(err(&h, "tool.tablet.set", json!({ "inputInterface": "wintab" })).code, "arg.invalid");
     // The other way: the preference written by `prefs.set` is the command's state.
-    ok(&h, "prefs.set", json!({ "values": { "tablet.portraitCorrection": true, "tablet.inputInterface": "" } }));
+    ok(&h, "prefs.set", json!({ "values": { "tablet.portraitCorrection": true, "tablet.alternativeInput": false } }));
     let tablet = ok(&h, "tool.settings.get", json!({}))["tablet"].clone();
     assert_eq!(tablet["ignoreTablet"], true);
     assert_eq!(tablet["portraitCorrection"], true);

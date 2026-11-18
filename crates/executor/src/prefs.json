@@ -78,7 +78,7 @@
 
     { "key": "tablet.ignore", "type": "bool", "default": false, "applies": "live", "category": "tablet", "description": "Treat the tablet as a mouse (no pressure or tilt)." },
     { "key": "tablet.compatibilityMode", "type": "bool", "default": false, "applies": "restart", "category": "tablet", "description": "Compatibility tablet handling, for tablets whose drivers misreport (02 §6.3; SI-165)." },
-    { "key": "tablet.inputInterface", "type": "string", "default": "", "maxLength": 64, "applies": "restart", "category": "tablet", "description": "The operating-system tablet input interface; empty uses the platform default (02 §6.3; SI-165, replacing tablet.alternativeInput)." },
+    { "key": "tablet.alternativeInput", "type": "bool", "default": false, "applies": "restart", "category": "tablet", "description": "Use the alternative operating-system tablet input interface (02 §6.3 Tablet input interface; SI-165)." },
     { "key": "tablet.portraitCorrection", "type": "bool", "default": false, "applies": "live", "category": "tablet", "description": "Correct coordinates and pressure on tablet computers used in portrait orientation." },
 
     { "key": "staging.motionPoint.defaultTension", "type": "number", "default": 0.0, "min": -1.0, "max": 1.0, "applies": "live", "category": "staging", "description": "Tension of newly created motion points (+1 = sharp corner)." },

@@ -1412,11 +1412,13 @@ pub(crate) struct TabletResult {
     agent_only = "the structured equivalent of the Tablet category's `prefs.set` on `tablet.*` (D-40 answer 1, SI-165)",
 )]
 pub(crate) fn tool_tablet_set(cx: &mut Cx, p: TabletParams) -> Result<TabletResult, CommandError> {
-    if p.input_interface.as_ref().is_some_and(|s| s.is_empty() || s.len() > 64) {
+    // SI-165: 01 §7.3 stores the interface as the boolean `tablet.alternativeInput`, so the interface is the platform
+    // default or the alternative one.
+    if p.input_interface.as_deref().is_some_and(|s| !matches!(s, INTERFACE_DEFAULT | INTERFACE_ALTERNATIVE)) {
         return Err(err(
             codes::ARG_INVALID,
-            "an input interface name is 1-64 characters",
-            json!({ "pointer": "/inputInterface" }),
+            "the input interface is `default` or `alternative`",
+            json!({ "pointer": "/inputInterface", "allowed": [INTERFACE_DEFAULT, INTERFACE_ALTERNATIVE] }),
         ));
     }
     // SI-165 (D-40 answer 1): the tablet settings are the Tablet category's `tablet.*` preferences; this command stages
@@ -1437,8 +1439,9 @@ pub(crate) fn tool_tablet_set(cx: &mut Cx, p: TabletParams) -> Result<TabletResu
         values.insert(TABLET_COMPATIBILITY.into(), json!(v));
     }
     if let Some(v) = p.input_interface {
-        values.insert(TABLET_INTERFACE.into(), json!(v));
-        after.input_interface = Some(v);
+        let alternative = v == INTERFACE_ALTERNATIVE;
+        values.insert(TABLET_ALTERNATIVE.into(), json!(alternative));
+        after.input_interface = alternative.then(|| INTERFACE_ALTERNATIVE.to_owned());
     }
     super::prefs::stage(cx, values)?;
     let restart_required = after.input_interface != before.input_interface;
@@ -1448,7 +1451,9 @@ pub(crate) fn tool_tablet_set(cx: &mut Cx, p: TabletParams) -> Result<TabletResu
 const TABLET_IGNORE: &str = "tablet.ignore";
 const TABLET_PORTRAIT: &str = "tablet.portraitCorrection";
 const TABLET_COMPATIBILITY: &str = "tablet.compatibilityMode";
-const TABLET_INTERFACE: &str = "tablet.inputInterface";
+const TABLET_ALTERNATIVE: &str = "tablet.alternativeInput";
+const INTERFACE_DEFAULT: &str = "default";
+const INTERFACE_ALTERNATIVE: &str = "alternative";
 
 /// The tablet settings: the Tablet category's preferences (SI-165).
 pub(crate) fn tablet_of(cx: &Cx) -> crate::drawing::TabletSetting {
@@ -1457,10 +1462,7 @@ pub(crate) fn tablet_of(cx: &Cx) -> crate::drawing::TabletSetting {
         ignore_tablet: flag(TABLET_IGNORE),
         portrait_correction: flag(TABLET_PORTRAIT),
         compatibility_mode: flag(TABLET_COMPATIBILITY),
-        input_interface: cx
-            .pref(TABLET_INTERFACE)
-            .and_then(|v| v.as_str().map(str::to_owned))
-            .filter(|s| !s.is_empty()),
+        input_interface: flag(TABLET_ALTERNATIVE).then(|| INTERFACE_ALTERNATIVE.to_owned()),
     }
 }
 

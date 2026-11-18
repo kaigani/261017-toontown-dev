@@ -2115,9 +2115,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   inputInterface}`), D-40 answer 1.
 - **Problem:** `tool.tablet.set` wrote its own state and emitted `tool.options.changed`, while the Preferences dialog
   wrote the `tablet.*` keys with `prefs.set`: two states for one setting. 01 and 02 also name different options.
-- **Decided:** the keys are `tablet.ignore`, `tablet.portraitCorrection` (live), `tablet.compatibilityMode` (bool,
-  restart, new) and `tablet.inputInterface` (a string of at most 64 characters, empty for the platform default, restart,
-  replacing the boolean `tablet.alternativeInput`). `tool.tablet.set` stages them as `prefs.set` does and emits
+- **Decided:** the keys are 01's catalogue, `tablet.ignore`, `tablet.portraitCorrection` (live) and
+  `tablet.alternativeInput` (bool, restart), with `tablet.compatibilityMode` (bool, restart) added for 02's fourth
+  option. 02's "Tablet input interface" is `tablet.alternativeInput`: `tool.tablet.set {inputInterface}` takes `default`
+  or `alternative` (any other name is `arg.invalid`) and the settings report `inputInterface: "alternative"` or `null`.
+  (Design note 1 §5 proposed a string key replacing `tablet.alternativeInput`; that was built first and withdrawn when
+  the reviewer's catalogue receipt `c41-r1s-prefs.py` showed it breaks 01 §7.3.) `tool.tablet.set` stages them as
+  `prefs.set` does and emits
   `prefs.changed`; the tablet settings `tool.settings.get` reports are read from them; `tool.tablet.set` is agent-only,
   the structured equivalent of the Tablet category (D-40 answer 1). No consumer of the tablet state exists yet (the
   canvas sends raw pressure); that stays so in M4.

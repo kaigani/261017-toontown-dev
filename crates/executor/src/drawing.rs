@@ -121,7 +121,7 @@ pub struct TabletSetting {
     pub portrait_correction: bool,
     /// Compatibility handling.
     pub compatibility_mode: bool,
-    /// The input interface (`null`: the platform default).
+    /// The input interface: `alternative`, or `null` for the platform default (01 §7.3 `tablet.alternativeInput`).
     pub input_interface: Option<String>,
 }
 
