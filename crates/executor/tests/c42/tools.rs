@@ -134,7 +134,12 @@ fn pens_keep_their_rules() {
     let removed = ok(&h, "tool.pen.delete", json!({ "penId": p1 }));
     assert_eq!(removed["removedPenId"], p1);
     let change: Vec<Value> = rx.try_iter().filter(|e| e.name == "tool.pen.changed").map(|e| e.payload).collect();
-    assert_eq!(change, vec![json!({ "penId": p1, "change": "deleted" })]);
+    // p1 was the current brush pen: SI-167 announces the next one as current after the deletion.
+    let next = removed["currentPenId"].clone();
+    assert_eq!(
+        change,
+        vec![json!({ "penId": p1, "change": "deleted" }), json!({ "penId": next, "change": "selected" })]
+    );
 }
 
 #[test]
