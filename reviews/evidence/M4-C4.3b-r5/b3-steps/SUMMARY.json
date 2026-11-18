@@ -1,0 +1,197 @@
+{
+ "B3_STEP=3": {
+  "command": "B3_STEP=3 REVIEW_RAW=<fresh TEMP folder> python tests/adversarial/c43b-r3-live.py <hooks toontown.exe> b3",
+  "body": "unchanged (merged review head 386b7c8e)",
+  "exit": 0,
+  "checks": [
+   {
+    "ok": true,
+    "check": "the Drawing view's canvas is located in the window",
+    "detail": [
+     49,
+     138
+    ]
+   },
+   {
+    "ok": true,
+    "check": "D-50 move lifecycle and actual geometry command",
+    "detail": {
+     "commands": [
+      "draw.transform.apply"
+     ],
+     "answeredAt": 2.593974499963224,
+     "heldSamples": 20,
+     "heldAll": true,
+     "afterSamples": 9,
+     "afterNone": true,
+     "status": "ok"
+    }
+   },
+   {
+    "ok": true,
+    "check": "D-50 move D-32",
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   },
+   {
+    "ok": true,
+    "check": "D-50 scale lifecycle and actual geometry command",
+    "detail": {
+     "commands": [
+      "draw.transform.apply"
+     ],
+     "answeredAt": 2.607103699934669,
+     "heldSamples": 20,
+     "heldAll": true,
+     "afterSamples": 9,
+     "afterNone": true,
+     "status": "ok"
+    }
+   },
+   {
+    "ok": true,
+    "check": "D-50 scale D-32",
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   },
+   {
+    "ok": true,
+    "check": "D-50 Brush lifecycle and actual geometry command",
+    "detail": {
+     "commands": [
+      "draw.stroke.add"
+     ],
+     "answeredAt": 2.5632062000222504,
+     "heldSamples": 20,
+     "heldAll": true,
+     "afterSamples": 9,
+     "afterNone": true,
+     "status": "ok"
+    }
+   },
+   {
+    "ok": true,
+    "check": "D-50 Brush D-32",
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   },
+   {
+    "ok": true,
+    "check": "D-50 Rectangle lifecycle and actual geometry command",
+    "detail": {
+     "commands": [
+      "draw.rectangle.add"
+     ],
+     "answeredAt": 2.5615591999376193,
+     "heldSamples": 19,
+     "heldAll": true,
+     "afterSamples": 9,
+     "afterNone": true,
+     "status": "ok"
+    }
+   },
+   {
+    "ok": true,
+    "check": "D-50 Rectangle D-32",
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   }
+  ],
+  "raw": [
+   {
+    "file": "transcript.json",
+    "bytes": 2042,
+    "sha256": "f580c65da7ca5111504a5d1245175eb23946b1785ab64c6c2e348aaa73cc334f"
+   }
+  ]
+ },
+ "B3_STEP=6": {
+  "command": "B3_STEP=6 REVIEW_RAW=<fresh TEMP folder> python tests/adversarial/c43b-r3-live.py <hooks toontown.exe> b3",
+  "body": "unchanged (merged review head 386b7c8e)",
+  "exit": 1,
+  "checks": [
+   {
+    "ok": true,
+    "check": "the Drawing view's canvas is located in the window",
+    "detail": [
+     49,
+     138
+    ]
+   },
+   {
+    "ok": true,
+    "check": "D-50 (e) a refusal clears at once: refused, and nothing is drawn from just after the answer",
+    "detail": {
+     "answeredAt": 2.5660452999873087,
+     "status": "error",
+     "code": "drawing.locked",
+     "drawnAfterAnswer": []
+    }
+   },
+   {
+    "ok": true,
+    "check": "D-50 (e) a refusal clears at once: the drawing is unchanged",
+    "detail": null
+   },
+   {
+    "ok": false,
+    "check": "D-50 Camera and back while pending have no stale preview",
+    "detail": [
+     {
+      "view": "camera",
+      "afterRelease": 0.995,
+      "viewType": "camera",
+      "overlay": false,
+      "preview": false
+     },
+     {
+      "view": "drawing",
+      "afterRelease": 2.011,
+      "viewType": "drawing",
+      "overlay": true,
+      "preview": false
+     }
+    ]
+   },
+   {
+    "ok": true,
+    "check": "D-50 view switch D-32",
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   }
+  ],
+  "raw": [
+   {
+    "file": "transcript.json",
+    "bytes": 5449,
+    "sha256": "7ba8cb29863e9e0d6bd9ac63a21ce40a1876d131228a36fadb8ef2855ca5969a"
+   },
+   {
+    "file": "switch-camera.png",
+    "bytes": 44746,
+    "sha256": "80e9ee4c5d63c0e09f1c4c46e23c8a70267158c10d75d2ac19bb48d69b4bf5a4"
+   },
+   {
+    "file": "switch-drawing.png",
+    "bytes": 44630,
+    "sha256": "368ef1134115ab1757603e713f09e104c2d08b561926a7a1a33e4f1de0bf6af5"
+   }
+  ],
+  "note": "The one failing check needs no overlay on the return to the Drawing view before the answer. Ruling D-53 item 1 requires it drawn again there, in Drawing coordinates (switch-drawing.png: the blue overlay lies on the committed stroke); in the Camera view nothing is drawn (overlay false at +0.995 s; switch-camera.png shows only the committed stroke). Before the fix the Camera sample had overlay true (the reviewer's finding)."
+ }
+}

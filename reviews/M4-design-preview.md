@@ -90,6 +90,13 @@ the gesture's ink. There is no frame without either.
   settles after more than 400 ms keeps the preview until that frame. Vitest with answers delivered when the
   test says (a delayed answer after a second gesture began; a restart between release and answer; unmount); the
   review's probe repeats the rapid pair 20 times through the real pointer.
+  **The view (ruling D-53, C43B-R4-01).** A pending preview or overlay also belongs to the view its gesture was made
+  in: the view window's type at the press and the mapping its overlays are drawn with (the Drawing type's
+  drawing-to-view, the Camera type's camera-to-view). It is never drawn with another view's transform. While pending
+  it is not drawn under any other view type or mapping (the window switched to the Camera view after a Drawing-view
+  press); back in its own view before the answer it is drawn again; after the committed frame it is gone everywhere
+  (`drawnInView`, `desktop/src/canvas/gestureLifecycle.ts`; Vitest `a pending preview belongs to its view`; the
+  lifecycle script's row (f) through the window's type buttons).
 - **PV4** The preview's affine follows the furniture rule of the kernel's command for every handle: for each row of
   the gestures note's tables, the window's `P` maps the box's corners where the committed command's result puts them,
   within 1 view pixel, in the exact cases. Vitest, against values derived in the test.
