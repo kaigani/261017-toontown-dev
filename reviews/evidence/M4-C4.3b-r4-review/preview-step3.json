@@ -1,9 +1,12 @@
 [
  {
-  "name": "(a) Select move: drawn until the committed frame (answer 2500 ms late)",
+  "name": "move lifecycle and actual geometry command",
   "ok": true,
   "detail": {
-   "answeredAt": 2.5908952000318095,
+   "commands": [
+    "draw.transform.apply"
+   ],
+   "answeredAt": 2.566334899980575,
    "heldSamples": 20,
    "heldAll": true,
    "afterSamples": 9,
@@ -12,7 +15,7 @@
   }
  },
  {
-  "name": "(a) Select move: the drawing equals the direct commands' (D-32)",
+  "name": "move D-32",
   "ok": true,
   "detail": {
    "statuses": [
@@ -21,10 +24,13 @@
   }
  },
  {
-  "name": "(a) Select corner scale: drawn until the committed frame (answer 2500 ms late)",
+  "name": "scale lifecycle and actual geometry command",
   "ok": true,
   "detail": {
-   "answeredAt": 2.608371799928136,
+   "commands": [
+    "draw.transform.apply"
+   ],
+   "answeredAt": 2.572708399966359,
    "heldSamples": 20,
    "heldAll": true,
    "afterSamples": 9,
@@ -33,7 +39,7 @@
   }
  },
  {
-  "name": "(a) Select corner scale: the drawing equals the direct commands' (D-32)",
+  "name": "scale D-32",
   "ok": true,
   "detail": {
    "statuses": [
@@ -42,11 +48,14 @@
   }
  },
  {
-  "name": "(a) Brush: drawn until the committed frame (answer 2500 ms late)",
+  "name": "Brush lifecycle and actual geometry command",
   "ok": true,
   "detail": {
-   "answeredAt": 2.5780515000224113,
-   "heldSamples": 20,
+   "commands": [
+    "draw.stroke.add"
+   ],
+   "answeredAt": 2.5615784999681637,
+   "heldSamples": 19,
    "heldAll": true,
    "afterSamples": 9,
    "afterNone": true,
@@ -54,7 +63,7 @@
   }
  },
  {
-  "name": "(a) Brush: the drawing equals the direct commands' (D-32)",
+  "name": "Brush D-32",
   "ok": true,
   "detail": {
    "statuses": [
@@ -63,10 +72,13 @@
   }
  },
  {
-  "name": "(a) Rectangle: drawn until the committed frame (answer 2500 ms late)",
+  "name": "Rectangle lifecycle and actual geometry command",
   "ok": true,
   "detail": {
-   "answeredAt": 2.563811899977736,
+   "commands": [
+    "draw.rectangle.add"
+   ],
+   "answeredAt": 2.64183109998703,
    "heldSamples": 20,
    "heldAll": true,
    "afterSamples": 9,
@@ -75,7 +87,7 @@
   }
  },
  {
-  "name": "(a) Rectangle: the drawing equals the direct commands' (D-32)",
+  "name": "Rectangle D-32",
   "ok": true,
   "detail": {
    "statuses": [

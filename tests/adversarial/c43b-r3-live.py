@@ -601,17 +601,34 @@ def b3():
  head=str(ROOT/'target/release/toontown-headless.exe')
  if step==1:
   return subprocess.run([sys.executable,str(ROOT/'scripts/c43-preview-lifecycle.py'),APP,head,str(OUT)],cwd=ROOT).returncode
+ import inspect,textwrap
+ reader=textwrap.dedent(inspect.getsource(load('timing_source','scripts/c43-d39-bindings.py').Cdp._read))
+ reader=reader.replace('    while True:', '    self.trace=[];self.trace_requests={}\n    while True:',1)
+ marker='        if r.get("method") == "Network.requestWillBeSent":'
+ observe='''        if r.get("method") == "Network.requestWillBeSent":
+            req=r['params'].get('request') or {};url=req.get('url','')
+            for cmd in ('canvas_scene','gesture_commit'):
+                if cmd in url:
+                    e={'cmd':cmd,'asked':time.monotonic()*1000,'args':req.get('postData')}
+                    self.trace.append(e);self.trace_requests[r['params']['requestId']]=e
+        if r.get('method') == 'Network.loadingFinished':
+            e=self.trace_requests.get(r['params']['requestId'])
+            if e is not None:e['answered']=time.monotonic()*1000
+'''
+ reader=reader.replace(marker,observe+marker)
+ exec(compile(reader,'<review timing observer>','exec'),d.__dict__);d.Cdp._read=d.__dict__['_read']
  class Review(lc.Lifecycle):
   async def fixture(self):
    await super().fixture()
    self.cdp=d.Cdp(d.CDP_PORT)
-   self.cdp.js("window.reviewTrace=[];window.reviewInvoke=window.__TAURI_INTERNALS__.invoke;window.__TAURI_INTERNALS__.invoke=function(cmd,args){const e={cmd,args,asked:performance.now()};if(['canvas_scene','gesture_commit'].includes(cmd))reviewTrace.push(e);return reviewInvoke.apply(this,arguments).then(v=>{e.answered=performance.now();e.value=v;return v})}")
+   self.cdp.record()
   async def start_row(self,*args):
    await super().start_row(*args)
-   self.cdp.js('reviewTrace.length=0')
+   if self.scene_ms:await asyncio.sleep(2*self.scene_ms/1000+.3)
+   self.cdp.trace=[]
   async def press(self,*args,**kwargs):
    r=await super().press(*args,**kwargs)
-   self.release_page=self.cdp.js('performance.now()')
+   self.release_page=time.monotonic()*1000
    return r
   async def settle(self, pressed, extra_s=2.0):
    rel=pressed['times']['release']; before=pressed['before']; samples=[]; answer=None; record=None
@@ -626,13 +643,14 @@ def b3():
     self.run.save('sample-'+str(self.n)+'.json',{'samples':samples,'latest':st,'record':record})
     if answer is not None and now>=answer+extra_s:break
     await asyncio.sleep(.02)
-   trace=self.cdp.js('reviewTrace')
+   trace=self.cdp.trace
    self.run.save('trace-'+str(self.n)+'.json',trace)
    return {'samples':samples,'record':record,'answeredAt':answer,'trace':trace}
   async def state_b(self):
-   await self.start_row('select')
-   async def ask():await self.cmd('drawAid.grid.set',{'visible':True})
-   r=await self.drag([(-60,40),(-30,50),(0,60)],prepare=ask)
+   await self.start_row('select',True)
+   async def ask():
+    await self.cmd('drawAid.grid.set',{'visible':True});await asyncio.sleep(.15)
+   r=await self.drag([(-120,40),(-90,50),(-60,60)],prepare=ask)
    trace=r['trace'];commits=[e for e in trace if e['cmd']=='gesture_commit'];scenes=[e for e in trace if e['cmd']=='canvas_scene' and e['asked']<self.release_page<e.get('answered',0)]
    commit=commits[-1] if commits else {};scene=next((e for e in scenes if e['answered']<commit.get('answered',0)),{})
    order={'release':self.release_page,'sceneAsked':scene.get('asked'),'sceneAnswer':scene.get('answered'),'commitAnswer':commit.get('answered')}
@@ -660,7 +678,14 @@ def b3():
    self.check('Camera and back while pending have no stale preview',all(not lc.pending(x['state']) and x['afterRelease']<2.5 for x in states),states)
    same,diff=await self.same_as_direct([r['record']]);self.check('view switch D-32',same and not lc.pending(await self.state()),diff)
   async def state_a(self):
-   if step!=2:return await super().state_a()
+   if step!=2:
+    for name,tool,pts in [('move','select',[(-120,40),(-90,50),(-60,60)]),('scale','select',[(180,110),(190,116),(200,122)]),('Brush','brush',[(-80,-40),(-40,-20),(0,-30)]),('Rectangle','rectangle',[(-50,-60),(-20,-40),(10,-20)])]:
+     await self.start_row(tool,tool=='select')
+     r=await self.drag(pts);ok,detail=self.held_while_pending(r)
+     commands=[x['commandId'] for x in (r['record'] or {}).get('commands',[])]
+     self.check(name+' lifecycle and actual geometry command',ok and ('draw.transform.apply' in commands if tool=='select' else bool(commands)),{'commands':commands,**detail})
+     same,diff=await self.same_as_direct([r['record']]);self.check(name+' D-32',same,diff)
+    return
    await self.start_row('brush')
    r=await self.drag([(-80,-40),(-40,-20),(0,-30)])
    self.check('PRODUCT ignores both 3000 ms hooks',r['answeredAt'] is not None and r['answeredAt']<.8, r)
