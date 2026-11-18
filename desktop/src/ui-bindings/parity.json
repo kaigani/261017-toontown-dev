@@ -16612,6 +16612,12 @@
       ]
     },
     {
+      "command": "job.failed",
+      "files": [
+        "desktop/src/shell/makeActions.tsx"
+      ]
+    },
+    {
       "command": "job.finished",
       "files": [
         "desktop/src/shell/StatusBar.tsx"
