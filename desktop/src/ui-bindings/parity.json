@@ -7,6 +7,8 @@
     "agentPopover",
     "jobsWindow",
     "dockTabContextMenu",
+    "viewContextMenu:scene",
+    "viewContextMenu:drawing",
     "dialog:About Toontown",
     "dialog:Project Info",
     "dialog:Check Project",
@@ -153,147 +155,210 @@
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "cameraView"
+      }
     },
     {
       "id": "panelChecklist.capture",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "capture"
+      }
     },
     {
       "id": "panelChecklist.cells",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "cells"
+      }
     },
     {
       "id": "panelChecklist.colour",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "colour"
+      }
     },
     {
       "id": "panelChecklist.drawingView",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "drawingView"
+      }
     },
     {
       "id": "panelChecklist.effectPreview",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "effectPreview"
+      }
     },
     {
       "id": "panelChecklist.functionEditor",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "functionEditor"
+      }
     },
     {
       "id": "panelChecklist.history",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "history"
+      }
     },
     {
       "id": "panelChecklist.library",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "library"
+      }
     },
     {
       "id": "panelChecklist.lipSync",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "lipSync"
+      }
     },
     {
       "id": "panelChecklist.motionRecording",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "motionRecording"
+      }
     },
     {
       "id": "panelChecklist.pen",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "pen"
+      }
     },
     {
       "id": "panelChecklist.properties",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "properties"
+      }
     },
     {
       "id": "panelChecklist.sceneManager",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "sceneManager"
+      }
     },
     {
       "id": "panelChecklist.sideView",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "sideView"
+      }
     },
     {
       "id": "panelChecklist.soundEditor",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "soundEditor"
+      }
     },
     {
       "id": "panelChecklist.storyline",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "storyline"
+      }
     },
     {
       "id": "panelChecklist.text",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "text"
+      }
     },
     {
       "id": "panelChecklist.timeline",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "timeline"
+      }
     },
     {
       "id": "panelChecklist.topView",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "topView"
+      }
     },
     {
       "id": "panelChecklist.xsheet",
       "surface": "dockTabContextMenu",
       "commands": [
         "window.panel.set"
-      ]
+      ],
+      "params": {
+        "panelId": "xsheet"
+      }
     },
     {
       "id": "history.0",
@@ -2468,6 +2533,240 @@
       "commands": [
         "prefs.set"
       ]
+    },
+    {
+      "id": "cameraView.drawingMenu.arrange.back",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.arrange.apply"
+      ],
+      "params": {
+        "to": "back"
+      }
+    },
+    {
+      "id": "cameraView.drawingMenu.arrange.backward",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.arrange.apply"
+      ],
+      "params": {
+        "to": "backward"
+      }
+    },
+    {
+      "id": "cameraView.drawingMenu.arrange.forward",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.arrange.apply"
+      ],
+      "params": {
+        "to": "forward"
+      }
+    },
+    {
+      "id": "cameraView.drawingMenu.arrange.front",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.arrange.apply"
+      ],
+      "params": {
+        "to": "front"
+      }
+    },
+    {
+      "id": "cameraView.drawingMenu.breakApart",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.breakApart.apply"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.centreLine",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.centreLine.apply"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.copy",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "edit.copy"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.cut",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "edit.cut"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.deselectAll",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "edit.deselectAll"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.flatten",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.flatten.apply"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.flip.horizontal",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.flip.apply"
+      ],
+      "params": {
+        "axis": "horizontal"
+      }
+    },
+    {
+      "id": "cameraView.drawingMenu.flip.vertical",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.flip.apply"
+      ],
+      "params": {
+        "axis": "vertical"
+      }
+    },
+    {
+      "id": "cameraView.drawingMenu.group",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.group.create"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.linesToBrush",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.linesToBrush.apply"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.optimize",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.optimize.apply"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.paste",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "edit.paste"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.rotate.180",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.rotate.apply"
+      ],
+      "params": {
+        "by": "180"
+      }
+    },
+    {
+      "id": "cameraView.drawingMenu.rotate.90ccw",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.rotate.apply"
+      ],
+      "params": {
+        "by": "90ccw"
+      }
+    },
+    {
+      "id": "cameraView.drawingMenu.rotate.90cw",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.rotate.apply"
+      ],
+      "params": {
+        "by": "90cw"
+      }
+    },
+    {
+      "id": "cameraView.drawingMenu.selectAll",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "edit.selectAll"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.smooth",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.smooth.apply"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.drawingMenu.ungroup",
+      "surface": "viewContextMenu:drawing",
+      "commands": [
+        "draw.group.delete"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.sceneMenu.copy",
+      "surface": "viewContextMenu:scene",
+      "commands": [
+        "edit.copy"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.sceneMenu.cut",
+      "surface": "viewContextMenu:scene",
+      "commands": [
+        "edit.cut"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.sceneMenu.deselectAll",
+      "surface": "viewContextMenu:scene",
+      "commands": [
+        "edit.deselectAll"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.sceneMenu.paste",
+      "surface": "viewContextMenu:scene",
+      "commands": [
+        "edit.paste"
+      ],
+      "params": {}
+    },
+    {
+      "id": "cameraView.sceneMenu.selectAll",
+      "surface": "viewContextMenu:scene",
+      "commands": [
+        "edit.selectAll"
+      ],
+      "params": {}
     }
   ],
   "guiOnly": [
@@ -18076,6 +18375,10 @@
     {
       "surface": "startScreen",
       "query": "workspace.list"
+    },
+    {
+      "surface": "viewContextMenu:drawing",
+      "query": "tool.options.get"
     }
   ],
   "uses": [
@@ -18261,6 +18564,30 @@
       ]
     },
     {
+      "command": "arrange.back",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "arrange.backward",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "arrange.forward",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "arrange.front",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
       "command": "busy.cancel",
       "files": [
         "desktop/src/shell/actions.tsx"
@@ -18421,6 +18748,24 @@
       ]
     },
     {
+      "command": "draw.arrange.apply",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "draw.breakApart.apply",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "draw.centreLine.apply",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
       "command": "draw.drawing.changed",
       "files": [
         "desktop/src/panels/DrawingInspectorPage.tsx"
@@ -18439,9 +18784,51 @@
       ]
     },
     {
+      "command": "draw.flatten.apply",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "draw.flip.apply",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "draw.group.create",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "draw.group.delete",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
       "command": "draw.inspectorPreview.set",
       "files": [
         "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "draw.linesToBrush.apply",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "draw.optimize.apply",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "draw.rotate.apply",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
       ]
     },
     {
@@ -18449,6 +18836,12 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "draw.smooth.apply",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
       ]
     },
     {
@@ -18590,6 +18983,24 @@
       ]
     },
     {
+      "command": "edit.copy",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "edit.cut",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "edit.deselectAll",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
       "command": "edit.history.changed",
       "files": [
         "desktop/src-tauri/src/menu.rs",
@@ -18609,9 +19020,21 @@
       ]
     },
     {
+      "command": "edit.paste",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
       "command": "edit.redo",
       "files": [
         "desktop/src-tauri/src/menu.rs"
+      ]
+    },
+    {
+      "command": "edit.selectAll",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
       ]
     },
     {
@@ -18656,6 +19079,18 @@
       "command": "envelope.root",
       "files": [
         "desktop/src/ipc/engine.ts"
+      ]
+    },
+    {
+      "command": "flip.horizontal",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "flip.vertical",
+      "files": [
+        "desktop/src/canvas/viewMenus.ts"
       ]
     },
     {

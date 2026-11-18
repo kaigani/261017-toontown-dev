@@ -209,7 +209,7 @@ export function ViewPanel({ panelId }: { panelId: string }) {
         </button>
       </div>
       {drawing ? (
-        <CanvasView engine={engine} viewId={panelId} />
+        <CanvasView engine={engine} viewId={panelId} viewType={viewType} />
       ) : (
         <div ref={canvas} className="view-canvas" data-tt-role="canvas" data-tt-id={`${panelId}.canvas`}>
           <p>{info?.owner ? `The interactive canvas arrives with ${info.owner}.` : ''}</p>

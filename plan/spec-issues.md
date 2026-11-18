@@ -2180,3 +2180,26 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   one `window.toolbar.items.set {toolbarId: main, items}`; Restore Default sends `window.toolbar.items.reset`);
   `toolbarSheet.test.tsx`; the D-39 row "Window › Customize Toolbar" and the D-44 rows of `dialog:Customize Toolbar`.
 
+## SI-172 — the secondary click on the canvas, and Control on macOS (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §5.3 line 373 (each view's context menu), 02 §4.4 lines 291-296, 02 §13.3 (no tool maps a
+  secondary drag), 05 §5.0 lines 393-394 (the temporary-select modifier), `reviews/M4-design-panels.md` §9, D-40
+  answers 11 and 12.
+- **Problem:** a secondary press was a tool gesture on the canvas (the collector took any button), so the views could
+  have no context menu; and on macOS Control-click is the secondary click while Control (or Command) was also taken as
+  the temporary-select modifier.
+- **Decided:** the canvas never passes a secondary press to the gesture collector. The `contextmenu` event (a
+  secondary click, at its release on Windows and at the press on macOS; the context-menu key; Shift+F10 with the view
+  focused) opens the view's menu at the pointer, or at the view's corner from the keyboard; a secondary press dragged
+  more than 4 pixels opens nothing. On macOS a Control-press is the secondary click and starts no gesture, and the
+  temporary-select modifier is Command alone, as macOS applications behave; Windows keeps Control or the Windows key.
+  The menu shows the family the view runs: the Camera view with a scene tool shows the scene family (the general edit
+  items of 01 §6 only; the items of 05 §3.2 lines 326-328 are M6 C6.1's by D-30), else the Drawing family of 02 §4.4,
+  without Feather Edges until `draw.feather.apply` is implemented (D-40 answer 11). The dock tab's checklist moves to
+  the same component (check marks, the keyboard, each panel's reference completed by the kernel as a toggle; the central
+  view's item disabled with the kernel's reason).
+- **Built:** `ContextMenu.tsx`, `contextMenuModel.ts`, `viewMenus.ts`, `CanvasView.tsx`, `DockArea.tsx`;
+  `contextMenu.test.tsx`; the parity collector's `viewContextMenu:scene` and `viewContextMenu:drawing`; D-39 rows in both
+  forms for the 22 Drawing-family items, the five scene-family items and 20 checklist items (OS form only: the checklist
+  opens with a secondary click; its reference is the Window menu's panel item's).
+

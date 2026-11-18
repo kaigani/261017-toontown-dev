@@ -466,6 +466,12 @@
       "reads": {
         "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"]
       }
+    },
+    "viewContextMenu:drawing": {
+      "description": "viewContextMenu:drawing",
+      "reads": {
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"]
+      }
     }
   },
   "plumbing": {

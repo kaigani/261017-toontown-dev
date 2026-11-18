@@ -18,3 +18,12 @@ Branch `m4-desktop-shell`. Builder: Claude Opus 5.5. The orchestrator merges and
 
 The inventory and counts, the deferred list by owner (none owned by M4, D-31), the receipt folders over 5 MB for the
 orchestrator's trim (D-40), the open spec issues, and the final head with its run.
+
+## 3. Deferrals recorded during C4.4a (for the deferred list)
+
+- **Feather Edges** in the views' context menus and the Drawing menu: `draw.feather.apply` is declared but not
+  implemented (owner M7 C7.2, or the first checkpoint after the SI-077 decision); its owner adds the item in both menus
+  when it implements the command (D-40 answer 11).
+- **The Camera view's scene-family context menu grows in M6 C6.1**: the items of 05 §3.2 lines 326-328 keep their
+  `deferred` owners (D-30, D-40 answer 12); C4.4a ships the general edit items of 01 §6 only.
+- **Toolbar items with fixed parameters** (01 §5.7): left to the milestone that changes the workspace format (SI-170).

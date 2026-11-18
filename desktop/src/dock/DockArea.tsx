@@ -2,7 +2,8 @@
 // into a command. Drops are vetoed and replaced by `window.panel.move`; a tab's close button is `window.panel.set
 // {visible: false}`; a double-click toggles floating; the tab bar's context menu is the panel checklist. A splitter
 // drag ends in the same-place `window.panel.move` (a panel tabbed with itself) that records the area's size in every
-// area (SI-118, interim ruling O-3a). The grid is rebuilt from the kernel's answer.
+// area (SI-118, interim ruling O-3a). The grid is rebuilt from the kernel's answer. The checklist is the shared context
+// menu (M4 C4.4a, design note 1 §9): check marks, the keyboard, and each panel's visibility toggled.
 import {
   DockviewReact,
   themeDark,
@@ -17,6 +18,8 @@ import { useCallback, useEffect, useRef, useState, type FunctionComponent } from
 import { PANEL_CATALOGUE, panelInfo } from '../panels/catalogue';
 import { PanelBody } from '../panels/PanelBody';
 import { useActions } from '../shell/actionsApi';
+import { ContextMenu } from '../shell/ContextMenu';
+import { menuAt, type MenuAt, type MenuGroup } from '../shell/contextMenuModel';
 import { useSlice } from '../state/context';
 import { useAppliedTheme } from '../theme/theme';
 import type { Arrangement, Layout, PanelEntry } from '../state/types';
@@ -36,7 +39,7 @@ function Tab(props: IDockviewPanelHeaderProps<{ panelId: string }>) {
   const id = props.params.panelId;
   const panels = (useSlice('panels') as readonly PanelEntry[] | undefined) ?? [];
   const floating = panels.find((p) => p.panelId === id)?.floating === true;
-  const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
+  const [menu, setMenu] = useState<MenuAt | null>(null);
   // The shown tab of its group is reported as selected (the UI tree's `checked`; O-5).
   const [shown, setShown] = useState(props.api.isVisible);
   useEffect(() => {
@@ -62,7 +65,7 @@ function Tab(props: IDockviewPanelHeaderProps<{ panelId: string }>) {
       }}
       onContextMenu={(e) => {
         e.preventDefault();
-        setMenu({ x: e.clientX, y: e.clientY });
+        setMenu(menuAt(e));
       }}
     >
       <span>{title(id)}</span>
@@ -96,36 +99,23 @@ function Tab(props: IDockviewPanelHeaderProps<{ panelId: string }>) {
   );
 }
 
-/** The tab bar's context menu: every panel with a show/hide check mark (01 §5.4). */
-export function PanelChecklist({ at, onClose }: { at: { x: number; y: number }; onClose: () => void }) {
-  const actions = useActions();
-  return (
-    <div
-      className="context-menu"
-      role="menu"
-      style={{ left: at.x, top: at.y }}
-      data-tt-role="menu"
-      data-tt-id="panelChecklist"
-      onMouseLeave={onClose}
-    >
-      {PANEL_CATALOGUE.map((p) => (
-        <button
-          key={p.id}
-          type="button"
-          role="menuitemcheckbox"
-          data-tt-role="menuitem"
-          data-tt-id={`panelChecklist.${p.id}`}
-          data-tt-command="window.panel.set"
-          onClick={() => {
-            onClose();
-            void actions.run('window.panel.set', { panelId: p.id, visible: true });
-          }}
-        >
-          {p.title}
-        </button>
-      ))}
-    </div>
-  );
+/** The tab bar's context menu: every panel with its show/hide check mark (01 §5.4 lines 387-388; design note 1 §9).
+ *  Each item's reference leaves the visibility open and the kernel completes it as a toggle, as the Window menu's panel
+ *  items are. */
+const PANEL_MENU: readonly MenuGroup[] = [
+  {
+    items: PANEL_CATALOGUE.map((p) => ({
+      id: p.id,
+      label: p.title,
+      command: 'window.panel.set',
+      params: { panelId: p.id },
+      check: true,
+    })),
+  },
+];
+
+export function PanelChecklist({ at, onClose }: { at: MenuAt; onClose: () => void }) {
+  return <ContextMenu id="panelChecklist" label="Panels" at={at} groups={PANEL_MENU} onClose={onClose} />;
 }
 
 const SIDES: readonly Area[] = ['left', 'right', 'top', 'bottom'];

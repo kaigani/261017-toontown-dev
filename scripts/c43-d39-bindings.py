@@ -296,6 +296,35 @@ def click_screen(x: int, y: int) -> None:
     time.sleep(0.3)
 
 
+def _send_right(down: bool) -> bool:
+    """One secondary (right) button press or release through `SendInput`; whether it was injected."""
+    class MOUSEINPUT(ctypes.Structure):
+        _fields_ = [("dx", wintypes.LONG), ("dy", wintypes.LONG), ("mouseData", wintypes.DWORD),
+                    ("dwFlags", wintypes.DWORD), ("time", wintypes.DWORD), ("dwExtraInfo", ctypes.c_size_t)]
+
+    class MINPUT(ctypes.Structure):
+        _fields_ = [("type", wintypes.DWORD), ("mi", MOUSEINPUT)]
+
+    i = MINPUT(type=0, mi=MOUSEINPUT(0, 0, 0, 0x0008 if down else 0x0010, 0, 0))
+    return u32.SendInput(1, ctypes.byref(i), ctypes.sizeof(MINPUT)) == 1
+
+
+def right_click_screen(x: int, y: int) -> None:
+    u32.SetCursorPos(int(x), int(y))
+    time.sleep(0.12)
+    _send_right(True)
+    time.sleep(0.05)
+    _send_right(False)
+    time.sleep(0.3)
+
+
+# The rendered menus' declared references (the parity manifest's DOM rows, ruling D-35), by id without the view's
+# prefix: the MCP form exercises a context menu's items through them (an agent has no secondary click).
+PARITY_DOM = {r["id"].split(".", 1)[1]: r for r in json.loads(
+    (Path(__file__).resolve().parent.parent / "desktop/src/ui-bindings/parity.json").read_text(encoding="utf-8"))["dom"]
+    if ".drawingMenu." in r["id"] or ".sceneMenu." in r["id"]}
+
+
 def key(vk: int, *mods: int) -> None:
     for m in mods:
         u32.keybd_event(m, 0, 0, 0)
@@ -478,6 +507,29 @@ class Table:
                 key(0x28 if moves > 0 else 0x26)
             key(0x0D)
             return f"real click, {abs(moves)} arrow keys and Enter"
+        if kind == "context":
+            key(0x1B)
+            r = self.rect(action[1])
+            if not r or r.get("hidden"):
+                raise RuntimeError(f"control absent or hidden: {action[1]}")
+            h = front()
+            origin = wintypes.POINT(0, 0)
+            u32.ClientToScreen(h, ctypes.byref(origin))
+            right_click_screen(origin.x + r["x"] * r["dpr"], origin.y + r["y"] * r["dpr"])
+            # The item shows enabled once the kernel's availability answered (a wait for a state, ruling D-45; the bound
+            # only guards a hang).
+            start = time.monotonic()
+            state = None
+            while time.monotonic() - start < 10.0:
+                state = self.cdp.js("document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')?.getAttribute('aria-disabled') ?? null"
+                                    % json.dumps(action[2]))
+                if state == "false":
+                    break
+                await asyncio.sleep(0.1)
+            if state != "false":
+                raise RuntimeError(f"menu item absent or disabled after the secondary click: {action[2]} ({state})")
+            how = self.click(action[2])
+            return f"a real secondary click on {action[1]}, then {how} on the item"
         if kind == "none":
             return "no input"
         raise ValueError(kind)
@@ -751,6 +803,13 @@ class McpTable(Table):
                 raise RuntimeError(f"option {action[2]!r} absent from the list's node: {action[1]}")
             ref = o.get("command") or {}
             self.declared = {"command": ref.get("commandId"), "params": ref.get("params") or {}}
+        elif kind == "context":
+            # An agent has no secondary click: the item is exercised through the reference the rendered menu declares
+            # for it (the parity manifest's DOM row, collected from the same menu; design note 1 §9, plan §4.10).
+            row = PARITY_DOM.get(action[2].split(".", 1)[1])
+            if not row:
+                raise RuntimeError(f"menu item absent from the parity manifest: {action[2]}")
+            self.declared = {"command": row["commands"][0], "params": row.get("params") or {}}
         else:
             raise RuntimeError("an action the MCP form does not perform")
         env = await e2e.run_cmd(self.s, self.declared["command"], self.declared["params"])
@@ -850,34 +909,42 @@ async def build_and_run(t: Table, only: set) -> None:
     rows: list = []
 
     # 1. The Drawing menu (02 §4.4 lines 293-296; the commands' rows and labels in 02 §13.5).
-    def menu_row(label, command, params, spec_label, steps, effect, path=None):
+    def menu_row(label, command, params, spec_label, steps, effect, path=None, item=None):
         rows.append({"name": f"Drawing › {label}", "spec": f"{spec_line(command)} (label \"{spec_label}\"); 02 §4.4 lines 293-296",
                      "action": ("menu", path or ["Drawing", label]), "expect": (command, params), "label": spec_label,
                      "setup": setup(*steps), "state": drawing, "effect": effect, "disabled": ("menu", path or ["Drawing", label])})
+        if item:
+            # C4.4a (design note 1 §9): the Drawing view's context menu sends the main menu's command (02 §4.4 line 296).
+            rows.append({"name": f"Drawing view context menu › {label}",
+                         "spec": f"{spec_line(command)} (label \"{spec_label}\"); 02 §4.4 lines 291-296",
+                         "action": ("context", "drawingView.canvas", f"drawingView.drawingMenu.{item}"),
+                         "expect": (command, params), "label": spec_label,
+                         "setup": setup(lambda: focus_view("drawingView"), *steps), "state": drawing, "effect": effect,
+                         "disabled": None})
 
     two = [lambda: rect(-150, 0), lambda: rect(150, 0), select_all]
     layers = lambda d: [n for n in nodes_of(d) if n.get("type") == "layer" and n.get("strokes")]  # noqa: E731
-    menu_row("Flatten", "draw.flatten.apply", {}, "Flatten Drawing", two, lambda b, a, k: len(layers(a)) < len(layers(b)))
-    menu_row("Optimize", "draw.optimize.apply", {}, "Optimize Drawing", two, lambda b, a, k: len(layers(a)) < len(layers(b)))
+    menu_row("Flatten", "draw.flatten.apply", {}, "Flatten Drawing", two, lambda b, a, k: len(layers(a)) < len(layers(b)), item="flatten")
+    menu_row("Optimize", "draw.optimize.apply", {}, "Optimize Drawing", two, lambda b, a, k: len(layers(a)) < len(layers(b)), item="optimize")
 
     async def wobbly():
         pts = [{"x": -200 + 10 * i, "y": (i % 2) * 0.2} for i in range(40)]
         await cmd("draw.stroke.add", {"kind": "pencil", "points": pts, "fit": False, "layer": "new"})
     anchors = lambda d: sum(len(s.get("bezier") or []) for s in strokes_of(d))  # noqa: E731
-    menu_row("Smooth", "draw.smooth.apply", {}, "Smooth Selection", [wobbly, select_all], lambda b, a, k: anchors(a) < anchors(b))
+    menu_row("Smooth", "draw.smooth.apply", {}, "Smooth Selection", [wobbly, select_all], lambda b, a, k: anchors(a) < anchors(b), item="smooth")
     kinds = lambda d: sorted(s.get("kind") for s in strokes_of(d))  # noqa: E731
     menu_row("Convert Lines to Brush", "draw.linesToBrush.apply", {}, "Convert Lines to Brush",
-             [lambda: rect(0, 0), select_all], lambda b, a, k: "brush" in kinds(a) and "brush" not in kinds(b))
+             [lambda: rect(0, 0), select_all], lambda b, a, k: "brush" in kinds(a) and "brush" not in kinds(b), item="linesToBrush")
 
     async def text():
         await cmd("draw.text.add", {"position": {"x": -60, "y": 0}, "text": "Ab"})
     menu_row("Break Text Apart", "draw.breakApart.apply", {}, "Break Text Apart", [text, select_all],
-             lambda b, a, k: any(n.get("type") == "text" for n in nodes_of(b)) and not any(n.get("type") == "text" for n in nodes_of(a)))
+             lambda b, a, k: any(n.get("type") == "text" for n in nodes_of(b)) and not any(n.get("type") == "text" for n in nodes_of(a)), item="breakApart")
 
     async def brush():
         await cmd("draw.stroke.add", {"kind": "brush", "points": [{"x": -100, "y": 0}, {"x": 0, "y": 40}, {"x": 100, "y": 0}], "layer": "new"})
     menu_row("Extract Centre Line", "draw.centreLine.apply", {}, "Extract Centre Line", [brush, select_all],
-             lambda b, a, k: "pencil" in kinds(a) and "pencil" not in kinds(b))
+             lambda b, a, k: "pencil" in kinds(a) and "pencil" not in kinds(b), item="centreLine")
 
     async def select_first():
         d = await drawing()
@@ -890,16 +957,16 @@ async def build_and_run(t: Table, only: set) -> None:
     for label, to, sel in (("Bring to Front", "front", select_first), ("Bring Forward", "forward", select_first),
                            ("Send Backward", "backward", select_last), ("Send to Back", "back", select_last)):
         menu_row(label, "draw.arrange.apply", {"to": to}, label, [lambda: rect(-30, 0), lambda: rect(30, 10), sel], order,
-                 path=["Drawing", "Arrange", label])
+                 path=["Drawing", "Arrange", label], item=f"arrange.{to}")
     geometry = lambda b, a, k: [s.get("bezier") for s in strokes_of(a)] != [s.get("bezier") for s in strokes_of(b)]  # noqa: E731
     one = [lambda: rect(120, 60), select_all]
-    menu_row("Flip Horizontal", "draw.flip.apply", {"axis": "horizontal"}, "Flip Horizontal", one, geometry)
-    menu_row("Flip Vertical", "draw.flip.apply", {"axis": "vertical"}, "Flip Vertical", one, geometry)
-    menu_row("Rotate 90° CW", "draw.rotate.apply", {"by": "90cw"}, "Rotate 90° CW", one, geometry)
-    menu_row("Rotate 90° CCW", "draw.rotate.apply", {"by": "90ccw"}, "Rotate 90° CCW", one, geometry)
-    menu_row("Rotate 180°", "draw.rotate.apply", {"by": "180"}, "Rotate 180°", one, geometry)
+    menu_row("Flip Horizontal", "draw.flip.apply", {"axis": "horizontal"}, "Flip Horizontal", one, geometry, item="flip.horizontal")
+    menu_row("Flip Vertical", "draw.flip.apply", {"axis": "vertical"}, "Flip Vertical", one, geometry, item="flip.vertical")
+    menu_row("Rotate 90° CW", "draw.rotate.apply", {"by": "90cw"}, "Rotate 90° CW", one, geometry, item="rotate.90cw")
+    menu_row("Rotate 90° CCW", "draw.rotate.apply", {"by": "90ccw"}, "Rotate 90° CCW", one, geometry, item="rotate.90ccw")
+    menu_row("Rotate 180°", "draw.rotate.apply", {"by": "180"}, "Rotate 180°", one, geometry, item="rotate.180")
     groups = lambda d: [n for n in nodes_of(d) if n.get("type") == "group"]  # noqa: E731
-    menu_row("Group", "draw.group.create", {}, "Group Selection", two, lambda b, a, k: len(groups(a)) == len(groups(b)) + 1)
+    menu_row("Group", "draw.group.create", {}, "Group Selection", two, lambda b, a, k: len(groups(a)) == len(groups(b)) + 1, item="group")
 
     async def grouped():
         d = await drawing()
@@ -907,7 +974,7 @@ async def build_and_run(t: Table, only: set) -> None:
         # The group itself selected (a person's click on it; `by: all` selects its strokes, not the group).
         await cmd("draw.selection.set", {"by": "ids", "ids": [g["groupId"]]})
     menu_row("Ungroup", "draw.group.delete", {}, "Ungroup Selection", two + [grouped],
-             lambda b, a, k: len(groups(a)) == len(groups(b)) - 1)
+             lambda b, a, k: len(groups(a)) == len(groups(b)) - 1, item="ungroup")
     menu_row("Delete Objects", "draw.object.delete", {}, "Delete Object", one, lambda b, a, k: len(strokes_of(a)) < len(strokes_of(b)))
     menu_row("Lock Drawing", "draw.lock.set", {"locked": True}, "Lock Drawing", [lambda: rect(0, 0)],
              lambda b, a, k: a.get("locked") is True and b.get("locked") is not True)
@@ -1553,6 +1620,116 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": toolbar_reset, "state": toolbar_items,
                  "effect": lambda b, a, k: a == b[1:], "disabled": None, "after": toolbar_reset,
                  "mcpReason": "the sheet opens from the native menu, which only real input reaches"})
+
+    # ----- C4.4a: the views' context menus' edit items (01 §6; 02 §4.4; D-40 answer 12; design note 1 §9) -----
+    async def edit_state():
+        d = await drawing()
+        sel = await cmd("draw.selection.get", {})
+        clip = (await e2e.run_cmd(t.s, "edit.clipboard.get", {})).get("result") or {}
+        return {"strokes": len(strokes_of(d)), "selected": len(sel.get("ids") or sel.get("selectedIds") or []),
+                "clipboard": json.dumps(clip, sort_keys=True)[:4000]}
+
+    async def deselect():
+        await cmd("draw.selection.set", {"by": "none"})
+
+    async def copy_left_only():
+        d = await drawing()
+        await cmd("draw.selection.set", {"by": "ids", "ids": [strokes_of(d)[0]["id"]]})
+        await cmd("edit.copy", {})
+
+    async def copy_all():
+        await select_all()
+        await cmd("edit.copy", {})
+
+    for item, label, command, spec_label, steps, eff in (
+        ("cut", "Cut", "edit.cut", "Cut", [lambda: rect(0, 0), select_all], lambda b, a, k: a["strokes"] < b["strokes"]),
+        ("copy", "Copy", "edit.copy", None, [lambda: rect(-150, 0), copy_left_only, lambda: rect(150, 0), select_all],
+         lambda b, a, k: a["clipboard"] != b["clipboard"]),
+        ("paste", "Paste", "edit.paste", "Paste", [lambda: rect(0, 0), copy_all], lambda b, a, k: a["strokes"] > b["strokes"]),
+        ("selectAll", "Select All", "edit.selectAll", None, [lambda: rect(-100, 0), lambda: rect(100, 0), deselect],
+         lambda b, a, k: b["selected"] == 0 and a["selected"] > 0),
+        ("deselectAll", "Deselect All", "edit.deselectAll", None, [lambda: rect(0, 0), select_all],
+         lambda b, a, k: b["selected"] > 0 and a["selected"] == 0),
+    ):
+        rows.append({"name": f"Drawing view context menu › {label}", "spec": f"{spec_line(command)}; 01 §6; 02 §4.4 lines 291-296",
+                     "action": ("context", "drawingView.canvas", f"drawingView.drawingMenu.{item}"), "expect": (command, {}),
+                     "label": spec_label, "setup": setup(lambda: focus_view("drawingView"), *steps), "state": edit_state,
+                     "effect": eff, "disabled": None})
+
+    # The Camera view's scene family (a scene tool running): the same items act on the staging selection.
+    ann = {}
+
+    async def scene_state():
+        els = (await e2e.run_cmd(t.s, "element.list", {})).get("result") or {}
+        els = els.get("elements") if isinstance(els, dict) else els
+        sel = await cmd("edit.selection.get", {"context": "staging"})
+        clip = (await e2e.run_cmd(t.s, "edit.clipboard.get", {})).get("result") or {}
+        return {"elements": len(els or []), "selected": len(sel.get("ids") or []),
+                "clipboard": json.dumps(clip, sort_keys=True)[:4000]}
+
+    async def scene_ready():
+        await clean()
+        await focus_view("cameraView")
+        await cmd("anim.tool.set", {"tool": "select"})
+        if not ann.get("id"):
+            ann["id"] = ((await cmd("element.create", {"type": "drawing", "name": "Ann"})).get("elementIds") or [None])[0]
+            await cmd("element.drawing.create", {"elementId": ann["id"], "name": "1", "exposeFrom": 1, "exposeTo": 24})
+        await cmd("edit.selection.set", {"context": "staging", "ids": []})
+
+    async def select_ann():
+        await cmd("edit.selection.set", {"context": "staging", "ids": [ann["id"]]})
+
+    async def copy_ann():
+        await select_ann()
+        await cmd("edit.copy", {})
+
+    async def ann_back():
+        # The cut element is pasted back for the rows after it.
+        ann["id"] = None
+
+    def scene_setup(*steps):
+        async def run():
+            await scene_ready()
+            for st in steps:
+                await st()
+        return run
+
+    for item, label, command, spec_label, steps, eff, after in (
+        ("copy", "Copy", "edit.copy", None, [select_ann], lambda b, a, k: a["clipboard"] != b["clipboard"], None),
+        ("selectAll", "Select All", "edit.selectAll", None, [], lambda b, a, k: b["selected"] == 0 and a["selected"] > 0, None),
+        ("deselectAll", "Deselect All", "edit.deselectAll", None, [select_ann],
+         lambda b, a, k: b["selected"] > 0 and a["selected"] == 0, None),
+        ("paste", "Paste", "edit.paste", "Paste", [copy_ann], lambda b, a, k: a["elements"] > b["elements"], None),
+        ("cut", "Cut", "edit.cut", "Cut", [select_ann], lambda b, a, k: a["elements"] < b["elements"], ann_back),
+    ):
+        rows.append({"name": f"Camera view context menu (scene tool) › {label}", "spec": f"{spec_line(command)}; 01 §6; D-40 answer 12",
+                     "action": ("context", "cameraView.canvas", f"cameraView.sceneMenu.{item}"), "expect": (command, {}),
+                     "label": spec_label, "setup": scene_setup(*steps), "state": scene_state, "effect": eff,
+                     "disabled": None, **({"after": after} if after else {})})
+
+    # ----- C4.4a: the dock tab's panel checklist on the shared menu (01 §5.4 lines 387-388; design note 1 §9): each
+    # panel's visibility toggled as the kernel completes the reference (shown and in front: hide; else show) -----
+    async def panel_list():
+        return {p["panelId"]: p for p in await cmd("window.panel.list", {}) or []}
+
+    def front_shown(b, pid):
+        e = b.get(pid) or {}
+        return bool(e.get("visible") and (e.get("current") or e.get("floating")))
+
+    checklist = sorted(i.split(".", 1)[1] for i in (r["id"] for r in json.loads(
+        (ROOT / "desktop/src/ui-bindings/parity.json").read_text(encoding="utf-8"))["dom"]) if i.startswith("panelChecklist."))
+    # The central view's item is disabled: it is never hidden or floated (prechecks.rs `window_panel_set`; the checklist
+    # shows the kernel's reason), so its row is the Vitest's disabled item, not a toggle here.
+    for pid in (p_ for p_ in checklist if p_ != "cameraView"):
+        tab = "tab.cameraView"
+        rows.append({"name": f"dock tab menu › {pid}", "spec": f"{spec_line('window.panel.set')}; 01 §5.4 lines 387-388",
+                     "action": ("context", tab, f"panelChecklist.{pid}"),
+                     "expect": (lambda p_: lambda b: ("window.panel.set", {"panelId": p_, "visible": not front_shown(b, p_)}))(pid),
+                     "label": None, "setup": None, "state": panel_list, "toggle": True,
+                     "effect": (lambda p_: lambda b, a, k: (a.get(p_) or {}) != (b.get(p_) or {}))(pid), "disabled": None,
+                     "osOnly": True,
+                     "mcpReason": "the checklist opens with a secondary click on a tab; its reference is the Window menu's "
+                                  "panel item's, completed by the kernel as a toggle"})
 
     for r in rows:
         if r.get("skip"):

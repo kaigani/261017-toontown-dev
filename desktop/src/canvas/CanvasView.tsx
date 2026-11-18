@@ -7,7 +7,7 @@
 // The element's `data-tt-value` carries what the canvas shows (back end, generation, each resident drawing and its
 // revision), so the UI tree (`inspect_ui`) and the running-application tests can check it.
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { GENERATION_EVENT, type AgentInput, type EngineApi } from '../ipc';
 import { stringifyWireJson } from '../ipc/wireJson';
@@ -45,6 +45,10 @@ import { gestureOrder } from './gestureOrder';
 import { drawingPreview, grabberPreview, scenePreview, type Box } from './preview';
 import { CanvasMetrics } from './metrics';
 import { CanvasModel } from './model';
+import { ContextMenu } from '../shell/ContextMenu';
+import { menuAt, type MenuAt } from '../shell/contextMenuModel';
+import { isMac } from '../keys/sequence';
+import { DRAWING_MENU, SCENE_MENU } from './viewMenus';
 import { selectionCursor, selectionOverlay, type SelectionOverlay } from './selection';
 import type { Renderer } from './renderer';
 
@@ -76,17 +80,30 @@ function asAffine(v: unknown): Affine | null {
     : null;
 }
 
+/** A secondary press dragged farther than this (CSS pixels) opens no menu at its release (design note 1 §9). */
+const MENU_DRAG_PX = 4;
+
 export function CanvasView({
   engine,
   viewId,
+  viewType = null,
   onReady,
 }: {
   engine: EngineApi;
   viewId: string;
+  /** The window's type from `view.list` (the view panel's), used until the scene answer gives it. */
+  viewType?: string | null;
   onReady?: (h: CanvasHandle | null) => void;
 }) {
   const host = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  // The view's context menu (design note 1 §9): the family the view runs when it opened.
+  const [menu, setMenu] = useState<{ at: MenuAt; family: 'drawing' | 'scene' } | null>(null);
+  const openMenu = useRef(setMenu);
+  const windowType = useRef(viewType);
+  useEffect(() => {
+    windowType.current = viewType;
+  }, [viewType]);
 
   useEffect(() => {
     const el = host.current;
@@ -113,6 +130,9 @@ export function CanvasView({
     // tools, Select), the active view for click-to-activate (V9), the drawing mapping asked again per scene revision.
     let sceneTool = 'select';
     let sceneFamily = true;
+    // Where a secondary press went down (design note 1 §9); the menu opens at its release unless it was dragged.
+    let secondary: { x: number; y: number } | null = null;
+    const mac = isMac();
     let activeView: string | null = null;
     let mappedVersion = -1;
     let cameraShown: ReturnType<typeof cameraOverlay>['shown'] | null = null;
@@ -791,6 +811,12 @@ export function CanvasView({
         activeView = viewId;
         void engine.run('view.active.set', { viewId }).done.catch(() => undefined);
       }
+      // The secondary click is the context menu's, never a tool gesture (design note 1 §9): a secondary press, and on
+      // macOS a Control-press, is remembered and opens the menu at release unless it was dragged (SI-172).
+      if (e.button === 2 || (mac && e.button === 0 && e.ctrlKey)) {
+        secondary = { x: e.clientX, y: e.clientY };
+        return;
+      }
       if (playing) {
         // P2: the user's press wins; the agent's gesture is discarded before any command.
         void engine.gestureAbort(playing.input.requestId).catch(() => undefined);
@@ -812,7 +838,8 @@ export function CanvasView({
         p: [s.x, s.y],
         constrain: e.shiftKey,
         alternate: e.altKey,
-        tempSelect: e.ctrlKey || e.metaKey,
+        // SI-172: on macOS Control-click is the context menu, so Command alone is the temporary-select modifier.
+        tempSelect: mac ? e.metaKey : e.ctrlKey || e.metaKey,
       };
       const inCamera = model?.scene?.viewType === 'camera';
       if (inCamera && sceneFamily && (sceneTool === 'select' || sceneTool === 'transform'))
@@ -871,6 +898,19 @@ export function CanvasView({
         if (preview && previewKind !== 'grab') overlay = null;
       }
     };
+    // The `contextmenu` event: a secondary click (at release on Windows, at the press on macOS), the context-menu key or
+    // Shift+F10 with the view focused. It opens the family the view runs now: the Camera view's scene family while a
+    // scene tool runs, else the Drawing family (02 §4.4 line 293).
+    const onMenu = (e: MouseEvent) => {
+      e.preventDefault();
+      const press = secondary;
+      secondary = null;
+      if (collector.active) return;
+      if (press && Math.hypot(e.clientX - press.x, e.clientY - press.y) > MENU_DRAG_PX) return;
+      const camera = (model?.scene?.viewType ?? windowType.current) === 'camera';
+      const family = camera && sceneFamily ? 'scene' : 'drawing';
+      openMenu.current({ at: menuAt({ clientX: e.clientX, clientY: e.clientY, currentTarget: el }), family });
+    };
     const onUp = (e: PointerEvent) => {
       if (!collector.pressed) return;
       const req = collector.up(sample(e));
@@ -918,6 +958,7 @@ export function CanvasView({
     canvas.addEventListener('lostpointercapture', onCancel);
     canvas.addEventListener('wheel', onWheel, { passive: false });
     canvas.addEventListener('dblclick', onDouble);
+    el.addEventListener('contextmenu', onMenu);
     window.addEventListener('keydown', onKey, true);
     window.addEventListener('blur', onBlur);
     const onGeneration = (e: Event) => {
@@ -965,6 +1006,7 @@ export function CanvasView({
       canvas.removeEventListener('lostpointercapture', onCancel);
       canvas.removeEventListener('wheel', onWheel);
       canvas.removeEventListener('dblclick', onDouble);
+      el.removeEventListener('contextmenu', onMenu);
       window.removeEventListener('keydown', onKey, true);
       window.removeEventListener('blur', onBlur);
       window.removeEventListener(GENERATION_EVENT, onGeneration);
@@ -979,8 +1021,26 @@ export function CanvasView({
   }, [engine, viewId, onReady]);
 
   return (
-    <div ref={host} className="view-canvas" data-tt-role="canvas" data-tt-id={`${viewId}.canvas`}>
+    <div
+      ref={host}
+      className="view-canvas"
+      tabIndex={0}
+      aria-label="Canvas"
+      data-tt-role="canvas"
+      data-tt-id={`${viewId}.canvas`}
+    >
       <canvas ref={canvasRef} className="view-canvas-surface" />
+      {menu && (
+        <ContextMenu
+          id={`${viewId}.${menu.family}Menu`}
+          label={menu.family === 'scene' ? 'Scene' : 'Drawing'}
+          at={menu.at}
+          groups={menu.family === 'scene' ? SCENE_MENU : DRAWING_MENU}
+          onClose={() => {
+            setMenu(null);
+          }}
+        />
+      )}
     </div>
   );
 }

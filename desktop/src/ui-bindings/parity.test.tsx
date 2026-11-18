@@ -77,6 +77,7 @@ function host(project: boolean): ScriptedHost {
     'workspace.get': () =>
       ok({ ...DEFAULT_LAYOUT, mainToolbar: { visible: true, items: TOOLBAR }, fullScreen: DEFAULT_LAYOUT }),
     'tool.list': () => ok({ tools: TOOLS.map((toolId) => ({ toolId })), activeToolId: 'brush' }),
+    'view.list': () => ok([{ viewId: 'cameraView', type: 'camera' }]),
     'agent.server.status': () => ok(SESSIONS),
     'agent.activity.list': () => ok([{ seq: 1, commandId: 'app.state.get', status: 'ok' }]),
     'edit.history.get': () =>
@@ -314,6 +315,31 @@ async function surfaces(): Promise<Surface[]> {
   act(() => {
     fireEvent.keyDown(checklist, { key: 'Escape' });
   });
+
+  // The views' context menus (M4 C4.4a, design note 1 §9): the Camera view's scene family while a scene tool runs (a new
+  // session runs the scene tools, SI-148), then the Drawing family once a drawing tool is chosen (02 §4.4 line 293).
+  const view = document.querySelector('[data-tt-id="cameraView.canvas"]');
+  if (!view) throw new Error('no Camera view canvas rendered');
+  for (const family of ['scene', 'drawing'] as const) {
+    if (family === 'drawing') {
+      act(() => {
+        h.event('tool.active.changed', { toolId: 'brush' });
+      });
+    }
+    mark(h);
+    act(() => {
+      fireEvent.contextMenu(view, { clientX: 40, clientY: 40 });
+    });
+    const menu = await waitFor(() => {
+      const m = document.querySelector(`[data-tt-id="cameraView.${family}Menu"]`);
+      if (!m) throw new Error(`no ${family} menu`);
+      return m;
+    });
+    out.push(await settled(`viewContextMenu:${family}`, menu));
+    act(() => {
+      fireEvent.keyDown(menu, { key: 'Escape' });
+    });
+  }
 
   // Each dialog the menus and events open.
   const dialogs: [string, string][] = [
