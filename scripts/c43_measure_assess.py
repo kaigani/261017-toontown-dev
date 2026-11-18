@@ -13,6 +13,10 @@ every check as `(passed, name, detail)`. A measurement that is incomplete fails;
 
 Then the budgets: plan §6's frame time, or, when the control shows an external cap (median above 17 ms), D-33's work
 per frame and share of long intervals; release-to-committed on the sample scene; drag feedback with OS input.
+
+Ruling D-52 (C43B-R3S-05): every budget and every count uses n, p50, p95 and max computed here from the measured
+population, never the record's reported summary. A summary that disagrees with its population (n exactly; p50, p95
+and max beyond `TOLERANCE_MS`) is refused, and so is a summary of a budgeted or counted quantity with no population.
 """
 
 from __future__ import annotations
@@ -36,6 +40,83 @@ def p95(values: list) -> float | None:
 
 def _n(stat) -> int:
     return (stat or {}).get("n", 0) if isinstance(stat, dict) else 0
+
+
+#: D-52: a reported p50, p95 or max may differ from the one computed from its population by this much, ms. The canvas
+#: rounds each sample and each summary value to 0.01 ms (desktop/src/canvas/metrics.ts), and rounding keeps the order,
+#: so the two agree exactly; the tolerance only absorbs floating-point representation.
+TOLERANCE_MS = 0.01
+
+
+def summary_of(values: list) -> dict:
+    """n, p50, p95 and max of a population, ranked as desktop/src/canvas/metrics.ts `stat` ranks them (the value at
+    rank ceil(q * n), 1-based)."""
+    s = sorted(values)
+    if not s:
+        return {"n": 0, "p50": None, "p95": None, "max": None}
+
+    def at(q_percent: int) -> float:
+        return s[min(len(s) - 1, max(0, -(-len(s) * q_percent // 100) - 1))]
+    return {"n": len(s), "p50": at(50), "p95": at(95), "max": s[-1]}
+
+
+#: D-52: where each summary's population is: the frame times' populations are the scene's interval lists; the others
+#: carry theirs in the summary's own `samples`.
+POPULATION_OF = {"idle": "idleIntervals", "dragFrames": "dragIntervals"}
+
+
+def population(r: dict, key: str):
+    """The measured population behind summary `key` of scene `r`, or None when the record has none."""
+    if key in POPULATION_OF:
+        values = r.get(POPULATION_OF[key])
+    else:
+        stat = r.get(key)
+        values = stat.get("samples") if isinstance(stat, dict) else None
+    return values if isinstance(values, list) else None
+
+
+def required_populations(r: dict) -> list:
+    """The summaries a count or a budget reads (drag feedback only with OS input, whose budget it is)."""
+    keys = ["idle", "dragFrames", "idleWork", "dragWork", "commits"]
+    if r.get("input") == "os":
+        keys.append("feedback")
+    return keys
+
+
+def _number(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
+
+
+def derived(r: dict) -> tuple:
+    """D-52: (each summary computed from its population, every disagreement or missing population)."""
+    out, problems = {}, []
+    for key in SUMMARIES:
+        stat = r.get(key)
+        values = population(r, key)
+        if values is None:
+            if stat is not None and key in required_populations(r):
+                problems.append(f"{key}: a summary with no population (refused: a count or a budget reads it)")
+            out[key] = None if stat is None else {"n": 0, "p50": None, "p95": None, "max": None}
+            continue
+        if not all(_number(v) for v in values):
+            problems.append(f"{key}: the population has a value that is not a finite number")
+            out[key] = None
+            continue
+        mine = summary_of(values)
+        out[key] = mine
+        if not isinstance(stat, dict):
+            continue  # a frame time's summary may be absent: its count and budget come from the population
+        if "n" in stat and stat.get("n") != mine["n"]:
+            problems.append(f"{key}: reports n = {stat.get('n')}, its population has {mine['n']}")
+        for k in ("p50", "p95", "max"):
+            if k not in stat:
+                continue
+            reported, got = stat.get(k), mine[k]
+            agree = (reported is None and got is None) or (
+                reported is not None and got is not None and _number(reported) and abs(reported - got) <= TOLERANCE_MS)
+            if not agree:
+                problems.append(f"{key}: reports {k} = {reported}, its population gives {got}")
+    return out, problems
 
 
 #: C43B-R3S-05 (ruling D-48): each scene summary and what its values must be: durations of work, feedback and commits
@@ -93,7 +174,9 @@ def assess(record: dict, bounds: dict, drags: int) -> list:
     check(_n(control.get("frameMs")) >= FULL and control.get("startScreen") is True,
           "D-33 control: 300 frames of the webview's cadence on the start screen", control.get("frameMs"))
     # C43B-R3S-05 (ruling D-48): every scene's populations and summaries are physically possible before any budget.
+    # Ruling D-52: and every summary is its population's; the counts and budgets below use the computed summaries.
     valid = True
+    computed: dict = {}
     for scene in ("sample", "groups1k"):
         r = record.get(scene)
         if isinstance(r, dict):
@@ -101,6 +184,10 @@ def assess(record: dict, bounds: dict, drags: int) -> list:
             valid = valid and not bad
             check(not bad, f"{scene}: every measurement finite, durations non-negative, intervals positive, "
                            "p50 <= p95 <= max", bad)
+            computed[scene], mismatch = derived(r)
+            valid = valid and not mismatch
+            check(not mismatch, f"{scene}: every summary is computed from its population (D-52: n exactly, p50, p95 "
+                                f"and max within {TOLERANCE_MS:g} ms)", mismatch)
     resident = (record.get("groups1k") or {}).get("resident", 0)
     check(resident >= RESIDENT_1K, f"the 1,000-element scene has its {RESIDENT_1K} drawings resident", resident)
 
@@ -126,8 +213,9 @@ def assess(record: dict, bounds: dict, drags: int) -> list:
         if not isinstance(r, dict):
             check(False, f"{scene}: measured", None)
             continue
+        c = computed.get(scene) or {}
         # Completeness first: an incomplete scene fails.
-        commits = (r.get("commits") or {}).get("n", 0)
+        commits = _n(c.get("commits"))
         check(r.get("drags") == drags and commits == drags,
               f"{scene}: every one of the {drags} drags committed and was measured", {"drags": r.get("drags"), "commits": commits})
         # C43B-R1-05: the bounds name their least number of actual samples (workstation: 30, plan §6), whatever
@@ -136,18 +224,18 @@ def assess(record: dict, bounds: dict, drags: int) -> list:
         check(commits >= least, f"{scene}: at least {least} actual release-to-committed samples", commits)
         full = {
             "idle frame intervals": len(r.get("idleIntervals") or []),
-            "idle frames' work": _n(r.get("idleWork")),
+            "idle frames' work": _n(c.get("idleWork")),
             "frame intervals during the drags": len(r.get("dragIntervals") or []),
-            "work of the frames drawn during the drags": _n(r.get("dragWork")),
+            "work of the frames drawn during the drags": _n(c.get("dragWork")),
         }
         if r.get("input") == "os":
-            full["drag feedback samples"] = _n(r.get("feedback"))
+            full["drag feedback samples"] = _n(c.get("feedback"))
         for what, n in full.items():
             check(n >= FULL, f"{scene}: {FULL} {what}", n)
         if capped:
             long = 2 * median
-            for phase, intervals, work in (("idle", r.get("idleIntervals") or [], r.get("idleWork") or {}),
-                                           ("during scene drags", r.get("dragIntervals") or [], r.get("dragWork") or {})):
+            for phase, intervals, work in (("idle", r.get("idleIntervals") or [], c.get("idleWork") or {}),
+                                           ("during scene drags", r.get("dragIntervals") or [], c.get("dragWork") or {})):
                 share = sum(1 for v in intervals if v > long) / len(intervals) if intervals else None
                 r.setdefault("d33", {})[phase] = {"workP95": work.get("p95"), "longShare": share,
                                                   "intervals": len(intervals), "longMs": long}
@@ -158,15 +246,15 @@ def assess(record: dict, bounds: dict, drags: int) -> list:
             budget = []
         else:
             budget = [
-                ("frame time p95, idle", (r.get("idle") or {}).get("p95"), bounds["frameMs"]),
-                ("frame time p95, during scene drags", (r.get("dragFrames") or {}).get("p95"), bounds["dragFrameMs"]),
+                ("frame time p95, idle", (c.get("idle") or {}).get("p95"), bounds["frameMs"]),
+                ("frame time p95, during scene drags", (c.get("dragFrames") or {}).get("p95"), bounds["dragFrameMs"]),
             ]
         # Plan §6 names the 1,000-element scene for the frame time; release-to-committed is the sample scene's bound,
         # and the large scene's figure is recorded with its parts (the kernel's answer, the redraw).
         if scene == "sample":
-            budget.append(("release-to-committed p95 of a scene drag", (r.get("commits") or {}).get("p95"), bounds["commitMs"]))
+            budget.append(("release-to-committed p95 of a scene drag", (c.get("commits") or {}).get("p95"), bounds["commitMs"]))
         if r.get("input") == "os":
-            budget.append(("drag feedback p95 (a sample to the frame drawing the preview)", (r.get("feedback") or {}).get("p95"),
+            budget.append(("drag feedback p95 (a sample to the frame drawing the preview)", (c.get("feedback") or {}).get("p95"),
                            bounds["feedbackMs"]))
         for name, value, bound in budget:
             check(value is not None and value <= bound, f"{scene}: {name} <= {bound} ms", value)
