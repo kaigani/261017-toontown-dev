@@ -117,6 +117,10 @@ export class CanvasMetrics {
     gestureIntervals: number[];
     /** The raw work of the last frames drawn during a gesture (C43B-R1S-08). */
     gestureWork: number[];
+    /** The raw work of the last frames drawn with no gesture, and the raw drag feedback samples: the populations of
+     *  `idleWorkMs` and `inkMs` (ruling D-52: a budget is computed from its population). */
+    idleWork: number[];
+    ink: number[];
     commitParts: CanvasMetrics['commitParts'];
     loads: CanvasMetrics['loads'];
   } {
@@ -133,6 +137,8 @@ export class CanvasMetrics {
       frameIntervals: this.frames.map((v) => Math.round(v * 100) / 100),
       gestureIntervals: this.gestureFrames.map((v) => Math.round(v * 100) / 100),
       gestureWork: this.gestureWork.map((v) => Math.round(v * 100) / 100),
+      idleWork: this.idleWork.map((v) => Math.round(v * 100) / 100),
+      ink: this.ink.map((v) => Math.round(v * 100) / 100),
       commitParts: [...this.commitParts],
       loads: [...this.loads],
     };

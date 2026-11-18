@@ -44,6 +44,8 @@ describe('canvas metrics', () => {
     expect(s.gestureWorkMs).toEqual({ n: 2, p50: 7, p95: 9, max: 9 });
     expect(s.idleWorkMs.n).toBe(3);
     expect(s.gestureWork).toEqual([7, 9]);
+    // D-52: the idle work's population is exported with its summary.
+    expect(s.idleWork).toEqual([1, 2, 3]);
     // Every frame's work is still in the overall figure.
     expect(s.workMs.n).toBe(5);
   });

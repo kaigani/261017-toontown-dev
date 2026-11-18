@@ -77,6 +77,14 @@ async def metrics(session) -> dict:
     return (await cam.canvas_summary(session)).get("metrics") or {}
 
 
+def with_samples(stat, samples):
+    """A canvas summary with its population (ruling D-52: the assessor computes every budget from the population and
+    refuses a summary without one, or one its population does not give)."""
+    if not isinstance(stat, dict):
+        return stat
+    return {**stat, "samples": list(samples) if isinstance(samples, list) else None}
+
+
 async def scene_measure(session, run, label: str, element: str, drags: int, os_input: bool, control_ms: float | None) -> dict:
     """Idle frames, then `drags` scene drags of `element` (selected) with the Select tool; each drag undone."""
     rc = e2e.run_cmd
@@ -88,7 +96,8 @@ async def scene_measure(session, run, label: str, element: str, drags: int, os_i
     # Long enough for the ring to hold only this scene's idle frames: 300 at the control's cadence, with a margin.
     await asyncio.sleep(max(6.0, 1.3 * assess_mod.FULL * (control_ms or 16.7) / 1000.0))
     idle = await metrics(session)
-    out: dict = {"idle": idle.get("frameMs"), "idleWork": idle.get("idleWorkMs"), "idleIntervals": idle.get("frameIntervals") or []}
+    out: dict = {"idle": idle.get("frameMs"), "idleWork": with_samples(idle.get("idleWorkMs"), idle.get("idleWork")),
+                 "idleIntervals": idle.get("frameIntervals") or []}
     place = await e6.locate_view(session, rc, "cameraView") if os_input else None
     out["input"] = "os" if place else "agent"
     committed = 0
@@ -124,7 +133,9 @@ async def scene_measure(session, run, label: str, element: str, drags: int, os_i
     # The canvas keeps its last commits in a ring: this scene's are its last ones, one per drag that committed.
     all_commits = m.get("commits") or []
     mine = all_commits[-committed:] if committed else []
-    out.update({"dragFrames": m.get("gestureFrameMs"), "dragWork": m.get("gestureWorkMs"), "dragIntervals": m.get("gestureIntervals") or [], "feedback": m.get("inkMs"), "feedbackBefore": feedback_before,
+    out.update({"dragFrames": m.get("gestureFrameMs"), "dragWork": with_samples(m.get("gestureWorkMs"), m.get("gestureWork")),
+                "dragIntervals": m.get("gestureIntervals") or [], "feedback": with_samples(m.get("inkMs"), m.get("ink")),
+                "feedbackBefore": feedback_before,
                 "commits": {"n": len(mine), "p95": p95(mine), "max": max(mine) if mine else None, "samples": mine},
                 "commitParts": (m.get("commitParts") or [])[-5:], "drags": drags})
     return out
