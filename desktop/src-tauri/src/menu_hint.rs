@@ -12,8 +12,11 @@
 
 use std::sync::{Mutex, OnceLock, PoisonError};
 
+#[cfg(windows)]
 use serde_json::json;
-use tauri::{AppHandle, Emitter};
+use tauri::AppHandle;
+#[cfg(windows)]
+use tauri::Emitter;
 
 /// Event name of a menu hint for the main window's status bar (`{text: string | null}`).
 pub const MENU_HINT_EVENT: &str = "menu-hint";
@@ -24,7 +27,8 @@ struct Entries {
     labels: Vec<String>,
     /// Their paths, in the same order.
     paths: Vec<String>,
-    /// The hint last sent (a repeated highlight sends nothing).
+    /// The hint last sent (a repeated highlight sends nothing; Windows sends hints).
+    #[cfg(windows)]
     last: Option<Option<String>>,
 }
 
@@ -70,7 +74,8 @@ pub fn set_entries(app: &AppHandle, labels: Vec<String>, paths: Vec<String>) {
     }
 }
 
-/// Sends the hint to the main window when it changed.
+/// Sends the hint to the main window when it changed (Windows: macOS shows the path as a tool tip instead).
+#[cfg(windows)]
 fn send(hint: Option<String>) {
     {
         let mut e = entries().lock().unwrap_or_else(PoisonError::into_inner);
