@@ -922,7 +922,9 @@ def dismiss_rows(t: Flows) -> list:
 
     rows.append({"name": "error box › OK", "spec": "01 §9.5 (messages)", "path": ["File", "Open"], "choice": "OK",
                  "setup": t.prepare_clean, "state": nothing_state, "flow": error_flow, "expect": lambda ctx: [],
-                 "effect": lambda b, a, ctx: same_path(a["path"], fx["flow"]) and a["flow"] == b["flow"]})
+                 # 01 §3.2: the current project is closed before the new one is loaded; on an error the new one is not
+                 # opened, so no project is open. The project's file is unchanged.
+                 "effect": lambda b, a, ctx: b["open"] and not a["open"] and a["flow"] == b["flow"]})
 
     async def picker_flow(ctx):
         choose_menu(["File", "Open"])

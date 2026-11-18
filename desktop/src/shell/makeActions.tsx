@@ -66,7 +66,23 @@ export function makeActions(
       <JobProgress services={services} jobId={jobId} title={title} cancellable={cancellable} close={close} />
     ));
     const final = done ?? env;
-    if (final.status !== 'ok') await messages.failure(final, title);
+    if (final.status !== 'ok') {
+      await messages.failure(final, title);
+      return final;
+    }
+    // `job.wait` answers `ok` with the job's record: a job that failed is a failure the user is told about (01 §9.5),
+    // with the job's own error; a cancelled job is the user's choice, shown on the status line (SI-111).
+    const record = final.result as { state?: unknown; error?: Envelope['error'] } | undefined;
+    if (record?.state === 'failed') {
+      const failed: Envelope = {
+        ...final,
+        status: 'error',
+        error: record.error ?? { code: 'job.failed', message: 'The job failed.' },
+      };
+      await messages.failure(failed, title);
+      return failed;
+    }
+    if (record?.state === 'cancelled') messages.status(`${title}: cancelled`);
     return final;
   };
 
