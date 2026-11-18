@@ -561,11 +561,6 @@
       "section": "09 §11.2 (Command table)",
       "location": "File > Export > Image Sequence"
     },
-    "tool.text.options.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §6 (pens), §7.7 (tool option defaults), §8.9-§8.11",
-      "location": "the tool options and pens bar"
-    },
     "window.toolbar.items.set": {
       "owner": "M4 C4.4",
       "section": "01 §5.7 (toolbar customisation)",

@@ -11,12 +11,14 @@ import type { History } from '../state/types';
 import { panelInfo } from './catalogue';
 import { PenPanel } from './PenPanel';
 import { PropertiesPanel } from './PropertiesPanel';
+import { TextPanel } from './TextPanel';
 
 export function PanelBody({ panelId }: { panelId: string }) {
   const info = panelInfo(panelId);
   if (panelId === 'history') return <HistoryPanel />;
   if (panelId === 'pen') return <PenPanel />;
   if (panelId === 'properties') return <PropertiesPanel />;
+  if (panelId === 'text') return <TextPanel />;
   if (info?.view) return <ViewPanel panelId={panelId} />;
   return (
     <div

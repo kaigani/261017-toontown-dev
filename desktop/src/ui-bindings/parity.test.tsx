@@ -162,6 +162,22 @@ const TOOL_OPTIONS: Record<string, Record<string, unknown>> = {
   select: { rectRule: 'inside' },
   pencil: { thicknessSource: 'penMax', thickness: null },
   polyline: { snap: true, snapRadius: 8, thicknessSource: 'penMax', thickness: null },
+  // An outline set, so the Text panel offers to remove it.
+  text: {
+    font: null,
+    size: 36,
+    bold: false,
+    italic: false,
+    baseline: 'normal',
+    kerning: 0,
+    autoKern: true,
+    align: 'left',
+    leftMargin: 0,
+    rightMargin: 0,
+    indent: 0,
+    lineSpacing: 0,
+    outlineColourId: 'cl_1',
+  },
 };
 
 function mount(h: ScriptedHost, floatPanel?: string) {
@@ -410,6 +426,14 @@ async function surfaces(): Promise<Surface[]> {
     out.push(await settled(`float:properties:${tool}`, document.body));
     cleanup();
   }
+
+  // The Text panel as the defaults for new text, in a floating window (M4 C4.4a).
+  const text = host(true);
+  mark(text);
+  mount(text, 'text');
+  await screen.findByText('Defaults for new text');
+  out.push(await settled('float:text', document.body));
+  cleanup();
   return out;
 }
 

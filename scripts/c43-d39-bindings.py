@@ -1419,6 +1419,55 @@ async def build_and_run(t: Table, only: set) -> None:
                      "setup": (lambda m: (lambda: cmd("colour.gapClosing.set", {"mode": "medium" if m != "medium" else "off"})))(mode),
                      "state": gap_state, "effect": (lambda m: lambda b, a, k: a.get("mode") == m)(mode), "disabled": None})
 
+    # ----- C4.4a: the Text panel as the defaults for new text (02 §7.6.1; design note 1 §5) -----
+    async def text_state():
+        return (await cmd("tool.options.get", {"toolId": "text"})).get("options") or {}
+
+    async def text_shown():
+        await cmd("window.panel.set", {"panelId": "text", "visible": True})
+        await asyncio.sleep(0.5)
+
+    async def text_outlined():
+        await cmd("tool.text.options.set", {"outlineColourId": "D39 outline"})
+        await text_shown()
+
+    for flag in ("bold", "italic", "autoKern"):
+        rows.append({"name": f"Text panel › {flag}", "spec": f"{spec_line('tool.text.options.set')}; 02 §7.6.1",
+                     "action": ("dom", f"text.{flag}"),
+                     "expect": (lambda f: lambda b: ("tool.text.options.set", {f: not b.get(f)}))(flag), "label": None,
+                     "setup": text_shown, "state": text_state, "toggle": True,
+                     "effect": (lambda f: lambda b, a, k: a.get(f) == (not b.get(f)))(flag), "disabled": None})
+    for key_, value in (("align", "centre"), ("baseline", "superscript")):
+        rows.append({"name": f"Text panel › {key_}", "spec": f"{spec_line('tool.text.options.set')}; 02 §7.6.1",
+                     "action": ("select", f"text.{key_}", value),
+                     "expect": (lambda k_, v_: lambda b: ("tool.text.options.set", {k_: v_}))(key_, value), "label": None,
+                     "setup": text_shown, "state": text_state,
+                     "effect": (lambda k_, v_: lambda b, a, k: a.get(k_) == v_)(key_, value), "disabled": None})
+    rows.append({"name": "Text panel › Remove outline", "spec": f"{spec_line('tool.text.options.set')}; 02 §7.6.1",
+                 "action": ("dom", "text.removeOutline"),
+                 "expect": lambda b: ("tool.text.options.set", {"outlineColourId": None}), "label": None,
+                 "setup": text_outlined, "state": text_state,
+                 "effect": lambda b, a, k: b.get("outlineColourId") is not None and a.get("outlineColourId") is None,
+                 "disabled": None})
+
+    def text_field_flow(ident, typed):
+        async def flow():
+            front()
+            t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=\"%s\"]'); e.focus(); e.select(); return true; })()" % ident)
+            type_text(typed)
+            key(0x0D)
+            return f"{typed!r} typed in the focused field, then a real Enter"
+        return flow
+
+    for ident, typed, expect_params, read in (("text.size", "48", {"size": 48}, lambda a: a.get("size") == 48),
+                                              ("text.font", "Arial", {"font": "Arial"}, lambda a: a.get("font") == "Arial")):
+        rows.append({"name": f"Text panel › {ident[5:]} (typed)", "spec": f"{spec_line('tool.text.options.set')}; 02 §7.6.1",
+                     "action": ("none",), "custom": text_field_flow(ident, typed),
+                     "expect": (lambda e_: lambda b: ("tool.text.options.set", e_))(expect_params), "label": None,
+                     "setup": text_shown, "state": text_state,
+                     "effect": (lambda r_: lambda b, a, k: r_(a))(read), "disabled": None,
+                     "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+
     for r in rows:
         if r.get("skip"):
             await r["setup"]()

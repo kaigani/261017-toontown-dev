@@ -41,7 +41,8 @@
     "float:properties:select",
     "float:properties:pencil",
     "float:properties:polyline",
-    "float:properties:paint"
+    "float:properties:paint",
+    "float:text"
   ],
   "dom": [
     {
@@ -1072,6 +1073,200 @@
       ],
       "params": {
         "enabled": true
+      }
+    },
+    {
+      "id": "text.align",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ]
+    },
+    {
+      "id": "text.align.centre",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "align": "centre"
+      }
+    },
+    {
+      "id": "text.align.justify",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "align": "justify"
+      }
+    },
+    {
+      "id": "text.align.left",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "align": "left"
+      }
+    },
+    {
+      "id": "text.align.right",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "align": "right"
+      }
+    },
+    {
+      "id": "text.autoKern",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "autoKern": false
+      }
+    },
+    {
+      "id": "text.baseline",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ]
+    },
+    {
+      "id": "text.baseline.normal",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "baseline": "normal"
+      }
+    },
+    {
+      "id": "text.baseline.subscript",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "baseline": "subscript"
+      }
+    },
+    {
+      "id": "text.baseline.superscript",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "baseline": "superscript"
+      }
+    },
+    {
+      "id": "text.bold",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "bold": true
+      }
+    },
+    {
+      "id": "text.font",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "font": null
+      }
+    },
+    {
+      "id": "text.indent",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "indent": 0
+      }
+    },
+    {
+      "id": "text.italic",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "italic": true
+      }
+    },
+    {
+      "id": "text.kerning",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "kerning": 0
+      }
+    },
+    {
+      "id": "text.leftMargin",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "leftMargin": 0
+      }
+    },
+    {
+      "id": "text.lineSpacing",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "lineSpacing": 0
+      }
+    },
+    {
+      "id": "text.removeOutline",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "outlineColourId": null
+      }
+    },
+    {
+      "id": "text.rightMargin",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "rightMargin": 0
+      }
+    },
+    {
+      "id": "text.size",
+      "surface": "float:text",
+      "commands": [
+        "tool.text.options.set"
+      ],
+      "params": {
+        "size": 36
       }
     },
     {
@@ -16499,6 +16694,10 @@
     },
     {
       "command": "tool.options.get",
+      "file": "desktop/src/panels/TextPanel.tsx"
+    },
+    {
+      "command": "tool.options.get",
       "file": "desktop/src/panels/ToolOptionsPage.tsx"
     },
     {
@@ -16560,6 +16759,10 @@
     {
       "command": "tool.symmetry.set",
       "file": "desktop/src/panels/ViewChrome.tsx"
+    },
+    {
+      "command": "tool.text.options.set",
+      "file": "desktop/src/panels/TextPanel.tsx"
     },
     {
       "command": "ui.help.get",
@@ -17309,6 +17512,70 @@
     },
     {
       "surface": "float:properties:select",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:text",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:text",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:text",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "tool.options.get"
+    },
+    {
+      "surface": "float:text",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:text",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:text",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:text",
       "query": "workspace.list"
     },
     {
@@ -18551,6 +18818,7 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/App.tsx",
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/TextPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/shell/Toolbars.tsx",
@@ -18608,6 +18876,7 @@
         "desktop/src/App.tsx",
         "desktop/src/panels/PanelBody.tsx",
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/TextPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/shell/Toolbars.tsx",
@@ -18919,6 +19188,18 @@
       ]
     },
     {
+      "command": "text.font",
+      "files": [
+        "desktop/src/panels/TextPanel.tsx"
+      ]
+    },
+    {
+      "command": "text.removeOutline",
+      "files": [
+        "desktop/src/panels/TextPanel.tsx"
+      ]
+    },
+    {
       "command": "tips.reset",
       "files": [
         "desktop/src/prefs/PreferencesDialog.tsx"
@@ -18979,6 +19260,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/TextPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
         "desktop/src/state/store.ts"
@@ -18987,6 +19269,7 @@
     {
       "command": "tool.options.get",
       "files": [
+        "desktop/src/panels/TextPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
@@ -19079,6 +19362,12 @@
       "command": "tool.symmetry.set",
       "files": [
         "desktop/src/panels/ViewChrome.tsx"
+      ]
+    },
+    {
+      "command": "tool.text.options.set",
+      "files": [
+        "desktop/src/panels/TextPanel.tsx"
       ]
     },
     {

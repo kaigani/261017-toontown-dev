@@ -2124,3 +2124,19 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Built:** `tool.rs` (`tool_tablet_set`, `tablet_of`), `prefs.json`; `c44a_panels.rs`
   (`the_tablet_command_and_the_tablet_preferences_are_one_state`); D-39 rows for the four keys through the Preferences
   dialog (OS form).
+
+## SI-169 — the Text panel's font list and outline colour (found in M4 C4.4a; partly built, a ruling asked)
+
+- **Sections:** 02 §7.6.1 lines 683-699 (the Text panel: font, ..., outline colour), 02 §13.5, A (no query lists
+  fonts), ADR-0016 lines 39 and 112-117 (system fonts with `fontdb`; layout depends on the installed font files), D-40
+  answer 3.
+- **Problem:** the panel needs a list of fonts; no command gives one, and adding `draw.font.list` is a spec A addition
+  (spec A is a read-only copy; the registry refuses an undeclared command). Choosing an outline colour needs the palette
+  (M7).
+- **Built:** the Text panel edits every default but the outline colour (`tool.text.options.set`); the font is a typed
+  family name, empty for the platform default (`null`); an outline already set can be removed (`outlineColourId:
+  null`).
+- **Asked:** (1) add `draw.font.list` (query, read scope: `{families: [{name, styles}], default}` from
+  `tt_vector::fonts::installed_families()`) to spec A; (2) the font determinism ruling of design note 1 §5: the
+  system's fonts with only the bundled default deterministic across the two OSes (recommended, the panel marking fonts
+  that are not bundled), or bundled fonts only. The outline colour list comes with the palette (M7).

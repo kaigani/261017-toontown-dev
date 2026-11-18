@@ -26,7 +26,7 @@
           "desktop/src/panels/ToolOptionsPage.tsx"
         ],
         "tool.list": ["desktop/src/shell/Toolbars.tsx"],
-        "tool.options.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
         "tool.pen.list": [
           "desktop/src/canvas/CanvasView.tsx",
           "desktop/src/panels/PenPanel.tsx",
@@ -73,7 +73,7 @@
           "desktop/src/panels/ToolOptionsPage.tsx"
         ],
         "tool.list": ["desktop/src/shell/Toolbars.tsx"],
-        "tool.options.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
         "tool.pen.list": [
           "desktop/src/canvas/CanvasView.tsx",
           "desktop/src/panels/PenPanel.tsx",
@@ -223,7 +223,7 @@
           "desktop/src/panels/PenPanel.tsx",
           "desktop/src/panels/ToolOptionsPage.tsx"
         ],
-        "tool.options.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
         "tool.pen.list": [
           "desktop/src/canvas/CanvasView.tsx",
           "desktop/src/panels/PenPanel.tsx",
@@ -260,7 +260,7 @@
           "desktop/src/panels/PenPanel.tsx",
           "desktop/src/panels/ToolOptionsPage.tsx"
         ],
-        "tool.options.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
         "tool.pen.list": [
           "desktop/src/canvas/CanvasView.tsx",
           "desktop/src/panels/PenPanel.tsx",
@@ -297,7 +297,7 @@
           "desktop/src/panels/PenPanel.tsx",
           "desktop/src/panels/ToolOptionsPage.tsx"
         ],
-        "tool.options.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
         "tool.pen.list": [
           "desktop/src/canvas/CanvasView.tsx",
           "desktop/src/panels/PenPanel.tsx",
@@ -334,7 +334,7 @@
           "desktop/src/panels/PenPanel.tsx",
           "desktop/src/panels/ToolOptionsPage.tsx"
         ],
-        "tool.options.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
         "tool.pen.list": [
           "desktop/src/canvas/CanvasView.tsx",
           "desktop/src/panels/PenPanel.tsx",
@@ -371,7 +371,7 @@
           "desktop/src/panels/PenPanel.tsx",
           "desktop/src/panels/ToolOptionsPage.tsx"
         ],
-        "tool.options.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
         "tool.pen.list": [
           "desktop/src/canvas/CanvasView.tsx",
           "desktop/src/panels/PenPanel.tsx",
@@ -408,7 +408,7 @@
           "desktop/src/panels/PenPanel.tsx",
           "desktop/src/panels/ToolOptionsPage.tsx"
         ],
-        "tool.options.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
         "tool.pen.list": [
           "desktop/src/canvas/CanvasView.tsx",
           "desktop/src/panels/PenPanel.tsx",
@@ -419,6 +419,27 @@
           "desktop/src/panels/ToolOptionsPage.tsx",
           "desktop/src/panels/ViewChrome.tsx"
         ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:text": {
+      "description": "the Text panel in a floating window: the defaults for new text, and the store's slices (02 §7.6.1, 01 §5.4)",
+      "reads": {
+        "agent.server.status": ["desktop/src/state/store.ts"],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
         "ui.statusBar.get": ["desktop/src/state/store.ts"],
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
