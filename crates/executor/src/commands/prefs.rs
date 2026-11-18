@@ -185,6 +185,22 @@ fn same(a: &Value, b: &Value) -> bool {
     }
 }
 
+/// For a command that always stored its key (`colour.gapClosing.set`, `draw.inspectorPreview.set`, `agent.server.set`):
+/// the changed keys are staged as [`stage`] stages them (consequences and `prefs.changed`), and an unchanged value is
+/// still stored, without an event, as the command stored it before it announced its change (SI-166, SI-173).
+pub(crate) fn stage_stored(cx: &mut Cx, values: Map<String, Value>) -> Result<(), CommandError> {
+    let unchanged: Map<String, Value> = values
+        .iter()
+        .filter(|(k, v)| cx.pref(k).is_some_and(|now| same(&now, v)))
+        .map(|(k, v)| (k.clone(), v.clone()))
+        .collect();
+    stage(cx, values)?;
+    if !unchanged.is_empty() {
+        cx.defer(Effect::Prefs(unchanged));
+    }
+    Ok(())
+}
+
 /// Stages validated preference values, their consequences and `prefs.changed` (shared by `prefs.set`, `prefs.reset`
 /// and the commands that write a preference key, such as `ui.statusBar.set`). Only keys whose effective value changes
 /// are staged and listed (C41-R1-10): a call that changes nothing writes nothing and emits nothing.

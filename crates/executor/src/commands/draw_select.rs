@@ -813,7 +813,7 @@ pub(crate) fn draw_inspector_preview_set(cx: &mut Cx, p: PreviewParams) -> Resul
     // Staged as `prefs.set` stages: it emits `prefs.changed` (design note 1 §2; SI-166).
     let mut prefs = serde_json::Map::new();
     prefs.insert(PREVIEW_PREF.into(), json!(p.visible));
-    super::prefs::stage(cx, prefs)?;
+    super::prefs::stage_stored(cx, prefs)?;
     Ok(PreviewResult { visible: p.visible })
 }
 

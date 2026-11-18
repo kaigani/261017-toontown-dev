@@ -1493,12 +1493,12 @@ async def build_and_run(t: Table, only: set) -> None:
         await cmd("tool.text.options.set", {"outlineColourId": "D39 outline"})
         await text_shown()
 
-    for flag in ("bold", "italic", "autoKern"):
-        rows.append({"name": f"Text panel › {flag}", "spec": f"{spec_line('tool.text.options.set')}; 02 §7.6.1",
-                     "action": ("dom", f"text.{flag}"),
-                     "expect": (lambda f: lambda b: ("tool.text.options.set", {f: not b.get(f)}))(flag), "label": None,
+    for text_flag in ("bold", "italic", "autoKern"):
+        rows.append({"name": f"Text panel › {text_flag}", "spec": f"{spec_line('tool.text.options.set')}; 02 §7.6.1",
+                     "action": ("dom", f"text.{text_flag}"),
+                     "expect": (lambda f: lambda b: ("tool.text.options.set", {f: not b.get(f)}))(text_flag), "label": None,
                      "setup": text_shown, "state": text_state, "toggle": True,
-                     "effect": (lambda f: lambda b, a, k: a.get(f) == (not b.get(f)))(flag), "disabled": None})
+                     "effect": (lambda f: lambda b, a, k: a.get(f) == (not b.get(f)))(text_flag), "disabled": None})
     for key_, value in (("align", "centre"), ("baseline", "superscript")):
         rows.append({"name": f"Text panel › {key_}", "spec": f"{spec_line('tool.text.options.set')}; 02 §7.6.1",
                      "action": ("select", f"text.{key_}", value),
@@ -1622,6 +1622,13 @@ async def build_and_run(t: Table, only: set) -> None:
                  "mcpReason": "the sheet opens from the native menu, which only real input reaches"})
 
     # ----- C4.4a: the views' context menus' edit items (01 §6; 02 §4.4; D-40 answer 12; design note 1 §9) -----
+    def in_bob(*steps):
+        # Bob's drawing current whatever the rows before chose (the drawing steps act on the current drawing).
+        async def run():
+            await cmd("app.context.set", {"elementId": bob, "frame": 1})
+            await setup(*steps)()
+        return run
+
     async def edit_state():
         d = await drawing()
         sel = await cmd("draw.selection.get", {})
@@ -1653,7 +1660,7 @@ async def build_and_run(t: Table, only: set) -> None:
     ):
         rows.append({"name": f"Drawing view context menu › {label}", "spec": f"{spec_line(command)}; 01 §6; 02 §4.4 lines 291-296",
                      "action": ("context", "drawingView.canvas", f"drawingView.drawingMenu.{item}"), "expect": (command, {}),
-                     "label": spec_label, "setup": setup(lambda: focus_view("drawingView"), *steps), "state": edit_state,
+                     "label": spec_label, "setup": in_bob(lambda: focus_view("drawingView"), *steps), "state": edit_state,
                      "effect": eff, "disabled": None})
 
     # The Camera view's scene family (a scene tool running): the same items act on the staging selection.
@@ -1668,6 +1675,7 @@ async def build_and_run(t: Table, only: set) -> None:
                 "clipboard": json.dumps(clip, sort_keys=True)[:4000]}
 
     async def scene_ready():
+        await cmd("app.context.set", {"elementId": bob, "frame": 1})
         await clean()
         await focus_view("cameraView")
         await cmd("anim.tool.set", {"tool": "select"})

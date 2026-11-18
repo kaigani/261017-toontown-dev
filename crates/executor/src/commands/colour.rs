@@ -1960,7 +1960,7 @@ pub(crate) fn colour_gap_closing_set(cx: &mut Cx, p: GapClosingSetParams) -> Res
     // emits `prefs.changed` and every surface showing the mode follows (design note 1 §2; SI-166).
     let mut prefs = serde_json::Map::new();
     prefs.insert(GAP_PREF.into(), json!(p.mode));
-    super::prefs::stage(cx, prefs)?;
+    super::prefs::stage_stored(cx, prefs)?;
     Ok(GapClosingSetResult { mode: p.mode })
 }
 
@@ -1991,6 +1991,7 @@ pub(crate) struct GapClosingGetResult {
     label = "Get automatic gap closing",
     scopes = [read],
     example(title = "Current gap closing mode", params = "{}"),
+    gui = "Properties panel: Tool options page of the paint tools; Colour › Auto Close Gap (M4 C4.4a)",
 )]
 pub(crate) fn colour_gap_closing_get(
     cx: &mut Cx,
