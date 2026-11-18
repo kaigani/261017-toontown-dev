@@ -6,6 +6,11 @@ OUT=Path(os.environ.get('REVIEW_RAW') or tempfile.mkdtemp(prefix='c43b-r3-'))
 def load(name,path):
  s=importlib.util.spec_from_file_location(name,ROOT/path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def content(doc):
+ import copy
+ out=copy.deepcopy(doc)
+ if isinstance(out,dict) and isinstance(out.get('bundle'),dict):out['bundle'].pop('exportedAt',None)
+ return out
 async def wait(t,ident):
  for _ in range(100):
   if t.cdp.js("!!document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')"%json.dumps(ident)):return
@@ -42,10 +47,17 @@ async def exercise(t,op,choice,input_kind='click'):
  after=flow.read_bytes();(OUT/(op+'-'+choice+'-'+input_kind+'-after.animpkg')).write_bytes(after);state=None;afterdoc=None
  if op!='Quit' or choice=='cancel':
   state=await c('app.state.get',{});afterdoc=await c('doc.export.json',{'scope':'project','binaries':'omit'}) if state.get('project') else None
+ alive=None
+ if op=='Quit':
+  import ctypes
+  from ctypes import wintypes
+  k=ctypes.windll.kernel32;k.OpenProcess.restype=wintypes.HANDLE;k.WaitForSingleObject.argtypes=[wintypes.HANDLE,wintypes.DWORD];k.CloseHandle.argtypes=[wintypes.HANDLE]
+  h=k.OpenProcess(0x100000,False,d.e2e.APP_PID['pid']);alive=bool(h and k.WaitForSingleObject(h,0)==258)
+  if h:k.CloseHandle(h)
  command={'New':'project.create','Open':'project.open','Recent':'project.open','Backup':'project.backup.open','Close':'project.close','Quit':'app.quit'}[op]
  expected=[] if choice=='cancel' else (['project.save',command] if choice=='save' else [command])
  ok=[x['command'] for x in sent]==expected and ((before!=after) if choice=='save' else before==after)
- if choice=='cancel':ok=ok and afterdoc==doc and state['project']['dirty']
+ if choice=='cancel':ok=ok and content(afterdoc)==content(doc) and state['project']['dirty']
  else:
   params=sent[-1]['params'] if sent else {}
   if afterdoc is not None:ok=ok and 'UnsavedMarker' not in json.dumps(afterdoc)
@@ -54,14 +66,15 @@ async def exercise(t,op,choice,input_kind='click'):
   elif op=='Close':ok=ok and not state.get('project')
   elif op=='New':ok=ok and state['project']['path'] is None
   elif op=='Backup':ok=ok and state['project']['path'] is None
- rec={'operation':op,'choice':choice,'input':input_kind,'focus':focus,'sent':sent,'beforeBytes':len(before),'afterBytes':len(after),'beforeHash':hashlib.sha256(before).hexdigest(),'afterHash':sha(flow),'beforeDoc':doc,'afterDoc':afterdoc,'state':state,'ok':bool(ok)}
+ if op=='Quit':ok=ok and alive==(choice=='cancel')
+ rec={'alive':alive,'operation':op,'choice':choice,'input':input_kind,'focus':focus,'sent':sent,'beforeBytes':len(before),'afterBytes':len(after),'beforeHash':hashlib.sha256(before).hexdigest(),'afterHash':sha(flow),'beforeDoc':doc,'afterDoc':afterdoc,'state':state,'ok':bool(ok)}
  t.run.save(op+'-'+choice+'-'+input_kind+'.json',rec);t.run.check(bool(ok),op+' '+choice+' '+input_kind,rec)
 async def a2_body(t,op,choice,kind):
  t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
  await exercise(t,op,choice,kind)
 def a2():
  run=d.e2e.Run(OUT);d.e6.dpi_aware()
- for op in ('New','Open','Recent','Backup','Close','Quit'):
+ for op in os.environ.get('REVIEW_FLOWS','New,Open,Recent,Backup,Close,Quit').split(','):
   for choice,kind in [('save','click'),('discard','click'),('cancel','click'),('save','enter'),('cancel','escape')]:
    work=Path(tempfile.mkdtemp(prefix='r3-flow-'))
    async def body(t):await a2_body(t,op,choice,kind)
@@ -160,7 +173,7 @@ async def modal(t,ident):
  await asyncio.sleep(.2)
  after=await t.cmd('doc.export.json',{'scope':'project','binaries':'omit'})
  sent=t.recorded();bad=[x for x in sent if t.kinds.get(x.get('command')) in ('action','ui','toggle','job')]
- t.run.check(all(focus) and before==after and not bad,'modal keys and Tab '+ident,{'focus':focus,'sent':sent})
+ t.run.check(all(focus) and content(before)==content(after) and not bad,'modal keys and Tab '+ident,{'focus':focus,'sent':sent})
 async def a3_body(t):
  t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
  await c('project.create',{'name':'DialogReview'})
@@ -229,7 +242,31 @@ async def jobs(t):
   sent=t.recorded();after=await t.cmd('doc.export.json',{'scope':'project','binaries':'omit'})
   closed=t.cdp.js("!document.querySelector('[data-tt-id=jobsWindow]')")
   t.run.save('job-cancel.json',{'jobId':jid,'result':result,'shown':shown,'sent':sent,'before':before,'after':after,'closed':closed})
-  t.run.check(bool(shown) and before==after and closed and any(x=={'command':'job.cancel','params':{'jobId':jid}} for x in sent) and result.get('result',{}).get('state')=='cancelled','Agent progress cancel',result)
+  t.run.check(bool(shown) and content(before)==content(after) and closed and any(x=={'command':'job.cancel','params':{'jobId':jid}} for x in sent) and result.get('result',{}).get('state')=='cancelled','Agent progress cancel',result)
+  env=await d.e2e.run_cmd(agent,'render.range.run',{'from':1,'to':12000,'scale':0.01,'directory':str(t.work/'committed'),'createDirs':True,'onConflict':'overwrite'})
+  committed_id=env['result']['jobId'];samples=[];past=None;deadline=time.monotonic()+600
+  while time.monotonic()<deadline:
+   records=(await d.e2e.run_cmd(agent,'job.list',{'jobId':committed_id})).get('result') or []
+   record=records[0] if records else {}
+   if not record.get('cancellable',True):
+    past={k:record.get(k) for k in ('jobId','state','progress','message','cancellable')}
+    break
+   if len(samples)<10:samples.append({k:record.get(k) for k in ('state','progress','cancellable')})
+   await asyncio.sleep(.02)
+  if past is None:raise RuntimeError('commit point hang guard')
+  control=None
+  for _ in range(100):
+   control=t.cdp.js("!!document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')"%json.dumps('jobsWindow.cancel.'+committed_id))
+   if not control:break
+   await asyncio.sleep(.05)
+  cancellation=await d.e2e.run_cmd(agent,'job.cancel',{'jobId':committed_id})
+  final=await d.e2e.call(agent,'job_wait',{'jobId':committed_id,'timeoutMs':120000})
+  await asyncio.sleep(.7)
+  unchanged=content(before)==content(await t.cmd('doc.export.json',{'scope':'project','binaries':'omit'}))
+  closed=t.cdp.js("!document.querySelector('[data-tt-id=jobsWindow]')")
+  receipt={'pastCommit':past,'samples':samples,'cancelControl':control,'cancellation':cancellation,'finalState':final.get('result',{}).get('state'),'documentUnchanged':unchanged,'windowClosed':closed}
+  t.run.save('job-commit.json',receipt)
+  t.run.check(past['state']=='running' and not control and receipt['finalState']=='succeeded' and unchanged and closed,'Job past commit is not cancellable',receipt)
 def a3():
  run=d.e2e.Run(OUT);d.e6.dpi_aware();work=Path(tempfile.mkdtemp(prefix='r3-dialogs-'))
  d.build_and_run=lambda t,only:a3_body(t)
