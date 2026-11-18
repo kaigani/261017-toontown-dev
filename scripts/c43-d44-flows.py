@@ -61,6 +61,8 @@ FLOW_COMMANDS = {
     "project.save", "project.saveAs", "project.create", "project.open", "project.backup.open", "project.recovery.open",
     "project.close", "app.quit", "keymap.set", "keymap.import", "keymap.reset", "keymap.remove", "workspace.create",
     "workspace.rename", "prefs.set", "job.cancel", "project.properties.set", "doc.repair",
+    # M4 C4.4a: the toolbar customisation sheet.
+    "window.toolbar.items.set", "window.toolbar.items.reset",
 }
 
 
@@ -766,6 +768,61 @@ UNUSED_ASSET = {
 }
 
 
+def toolbar_rows(t: Flows) -> list:
+    """The toolbar customisation sheet (01 §5.7; M4 C4.4a, design note 1 §7): Apply sends the staged items, Cancel
+    nothing, Restore Default the reset at once."""
+    rows = []
+
+    async def items(_ctx):
+        listed = await t.cmd("window.toolbar.list", {})
+        listed = listed if isinstance(listed, list) else []
+        return next((x.get("items") for x in listed if x.get("toolbarId") == "main"), [])
+
+    async def reset(_ctx=None):
+        await t.cmd("window.toolbar.items.reset", {})
+        await asyncio.sleep(0.4)
+
+    async def open_sheet():
+        choose_menu(["Window", "Customize Toolbar"])
+        if not await t.wait_for("toolbarSheet.item.0"):
+            raise RuntimeError("the toolbar sheet did not open")
+        await asyncio.sleep(0.4)
+
+    for choice, button in (("submit", "Apply"), ("cancel", "Cancel")):
+        async def flow(ctx, choice=choice, button=button):
+            ctx["before"] = await items(ctx)
+            await open_sheet()
+            t.click("toolbarSheet.item.0")
+            t.click("toolbarSheet.remove")
+            await asyncio.sleep(0.3)
+            t.click(f"toolbarSheet.{choice}")
+            await asyncio.sleep(1.0)
+            return f"real native menu Window › Customize Toolbar, the first item removed in the sheet, a real click on {button}"
+
+        rows.append({"name": f"Customize Toolbar › {button}", "spec": f"01 §5.7 lines 445-464; {spec_line('window.toolbar.items.set')}",
+                     "path": ["Window", "Customize Toolbar"], "choice": button, "setup": reset, "state": items, "flow": flow,
+                     "expect": (lambda c: lambda ctx: [("window.toolbar.items.set", {"toolbarId": "main", "items": ctx["before"][1:]}, [])]
+                                if c == "submit" else [])(choice),
+                     "effect": (lambda c: lambda b, a, ctx: a == (b[1:] if c == "submit" else b))(choice),
+                     "cleanup": reset})
+
+    async def customised(ctx):
+        await t.cmd("window.toolbar.items.set", {"toolbarId": "main", "items": ["project.save", "separator", "edit.undo"]})
+        await asyncio.sleep(0.4)
+
+    async def restore_flow(ctx):
+        await open_sheet()
+        t.click("toolbarSheet.restore")
+        await asyncio.sleep(1.0)
+        return "real native menu Window › Customize Toolbar, a real click on Restore Default"
+
+    rows.append({"name": "Customize Toolbar › Restore Default", "spec": f"01 §5.7; {spec_line('window.toolbar.items.reset')}",
+                 "path": ["Window", "Customize Toolbar"], "choice": "Restore Default", "setup": customised, "state": items,
+                 "flow": restore_flow, "expect": lambda ctx: [("window.toolbar.items.reset", {}, [])],
+                 "effect": lambda b, a, ctx: len(a) > 3 and a != b, "cleanup": reset})
+    return rows
+
+
 def form_rows(t: Flows) -> list:
     fx = t.fx
     rows = []
@@ -1023,7 +1080,7 @@ async def session(app: str, run, out: Path, work: Path, group: str, only: set, s
             t.rows = sink
             await fixture(t)
             if group == "main":
-                rows = [*unsaved_rows(t, None), *save_as_rows(t), *keymap_rows(t), *workspace_rows(t), *preferences_rows(t),
+                rows = [*unsaved_rows(t, None), *save_as_rows(t), *keymap_rows(t), *workspace_rows(t), *toolbar_rows(t), *preferences_rows(t),
                         *form_rows(t), *dismiss_rows(t), *default_rows(t), *modal_kind_rows(t), jobs_row(t)]
             else:
                 rows = unsaved_rows(t, group.removeprefix("quit-"))

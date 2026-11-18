@@ -15,6 +15,7 @@
     "dialog:Project Properties",
     "dialog:New Workspace",
     "dialog:Rename Workspace",
+    "dialog:Customize Toolbar",
     "dialog:Help",
     "dialog:Opening project",
     "messageBox",
@@ -76,6 +77,21 @@
       "params": {
         "all": true
       }
+    },
+    {
+      "id": "toolbarSheet.restore",
+      "surface": "dialog:Customize Toolbar",
+      "commands": [
+        "window.toolbar.items.reset"
+      ],
+      "params": {}
+    },
+    {
+      "id": "toolbarSheet.submit",
+      "surface": "dialog:Customize Toolbar",
+      "commands": [
+        "window.toolbar.items.set"
+      ]
     },
     {
       "id": "newProject.create",
@@ -2464,6 +2480,76 @@
       "id": "checkProject.cancel",
       "surface": "dialog:Check Project",
       "reason": "dismiss"
+    },
+    {
+      "id": "toolbarSheet.add",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "typing"
+    },
+    {
+      "id": "toolbarSheet.allowed.edit.redo",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "navigate"
+    },
+    {
+      "id": "toolbarSheet.allowed.edit.undo",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "navigate"
+    },
+    {
+      "id": "toolbarSheet.allowed.project.save",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "navigate"
+    },
+    {
+      "id": "toolbarSheet.allowed.separator",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "navigate"
+    },
+    {
+      "id": "toolbarSheet.allowed.space",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "navigate"
+    },
+    {
+      "id": "toolbarSheet.cancel",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "dismiss"
+    },
+    {
+      "id": "toolbarSheet.down",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "typing"
+    },
+    {
+      "id": "toolbarSheet.filter",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "typing"
+    },
+    {
+      "id": "toolbarSheet.item.0",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "navigate"
+    },
+    {
+      "id": "toolbarSheet.item.1",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "navigate"
+    },
+    {
+      "id": "toolbarSheet.item.2",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "navigate"
+    },
+    {
+      "id": "toolbarSheet.remove",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "typing"
+    },
+    {
+      "id": "toolbarSheet.up",
+      "surface": "dialog:Customize Toolbar",
+      "reason": "typing"
     },
     {
       "id": "help.cancel",
@@ -15550,6 +15636,13 @@
       ]
     },
     {
+      "id": "menu:Window/Customize Toolbar…",
+      "surface": "menu",
+      "commands": [
+        "window.toolbar.items.set"
+      ]
+    },
+    {
       "id": "menu:Window/Reset Main Toolbar",
       "surface": "menu",
       "commands": [
@@ -16975,6 +17068,14 @@
       "file": "desktop/src/panels/PanelBody.tsx"
     },
     {
+      "command": "window.toolbar.items.reset",
+      "file": "desktop/src/shell/toolbarSheet.tsx"
+    },
+    {
+      "command": "window.toolbar.list",
+      "file": "desktop/src/shell/toolbarSheet.tsx"
+    },
+    {
       "command": "window.toolbar.list",
       "file": "desktop/src/state/store.ts"
     },
@@ -17003,6 +17104,10 @@
     {
       "surface": "dialog:Check Project",
       "query": "doc.validate"
+    },
+    {
+      "surface": "dialog:Customize Toolbar",
+      "query": "window.toolbar.list"
     },
     {
       "surface": "dialog:Help",
@@ -19652,6 +19757,24 @@
       ]
     },
     {
+      "command": "toolbarSheet.add",
+      "files": [
+        "desktop/src/shell/toolbarSheet.tsx"
+      ]
+    },
+    {
+      "command": "toolbarSheet.filter",
+      "files": [
+        "desktop/src/shell/toolbarSheet.tsx"
+      ]
+    },
+    {
+      "command": "toolbarSheet.restore",
+      "files": [
+        "desktop/src/shell/toolbarSheet.tsx"
+      ]
+    },
+    {
       "command": "toolOptions.gapClosing",
       "files": [
         "desktop/src/panels/ToolOptionsPage.tsx"
@@ -19850,8 +19973,22 @@
       ]
     },
     {
+      "command": "window.toolbar.items.reset",
+      "files": [
+        "desktop/src/shell/toolbarSheet.tsx"
+      ]
+    },
+    {
+      "command": "window.toolbar.items.set",
+      "files": [
+        "desktop/src/shell/makeActions.tsx",
+        "desktop/src/shell/toolbarSheet.tsx"
+      ]
+    },
+    {
       "command": "window.toolbar.list",
       "files": [
+        "desktop/src/shell/toolbarSheet.tsx",
         "desktop/src/state/store.ts"
       ]
     },

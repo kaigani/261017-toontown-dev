@@ -959,6 +959,13 @@
         },
         {
           "kind": "command",
+          "command": "window.toolbar.items.set",
+          "label": "Customize Toolbar…",
+          "enabledWithoutProject": true,
+          "dialog": "toolbarSheet"
+        },
+        {
+          "kind": "command",
           "command": "window.toolbar.items.reset",
           "label": "Reset Main Toolbar",
           "enabledWithoutProject": true

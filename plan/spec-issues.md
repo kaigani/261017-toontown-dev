@@ -2161,3 +2161,18 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   it. The three camera commands' `gui` strings name the main toolbar's camera list (M4 C4.4a) instead of M6 C6.2.
 - **Built:** `Toolbars.tsx` (`CameraList`, reading `anim.camera.list` and `anim.camera.current.get`); `cameraList.test.tsx`;
   the D-39 row "main toolbar › camera list" in both forms.
+## SI-170 — toolbar items with fixed parameters (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §5.7 lines 445-464 (the main toolbar's customisation; "every toolbar item is a command reference
+  (command ID plus optional fixed parameters)"), 05 `window.toolbar.items.set` (items are strings),
+  `reviews/M4-design-panels.md` §7.
+- **Problem:** the spec lets a toolbar item carry fixed parameters, but `window.toolbar.items.set` and the stored
+  workspace hold an item as a string (a group id, a spacer or a command id), and `allowedItems` lists strings.
+- **Decided:** in M4 an item is a group id, a spacer or a command id with no parameters; a command whose run needs
+  parameters is still placeable and opens its dialog, as its menu item does. Items with fixed parameters need a
+  structured item in the workspace format and in `window.toolbar.items.set`; they are left to the milestone that
+  changes that format, and no command or stored state here assumes them.
+- **Built:** `toolbarSheet.tsx` (Window › Customize Toolbar…: staged Add, Remove, Move Up, Move Down, filter; Apply sends
+  one `window.toolbar.items.set {toolbarId: main, items}`; Restore Default sends `window.toolbar.items.reset`);
+  `toolbarSheet.test.tsx`; the D-39 row "Window › Customize Toolbar" and the D-44 rows of `dialog:Customize Toolbar`.
+

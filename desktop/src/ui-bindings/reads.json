@@ -45,7 +45,7 @@
         "view.list": ["desktop/src/panels/PanelBody.tsx"],
         "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -94,7 +94,7 @@
         "view.list": ["desktop/src/panels/PanelBody.tsx"],
         "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -122,7 +122,7 @@
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -205,7 +205,7 @@
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -242,7 +242,7 @@
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -279,7 +279,7 @@
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -316,7 +316,7 @@
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -353,7 +353,7 @@
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -390,7 +390,7 @@
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -427,7 +427,7 @@
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -448,7 +448,7 @@
         "ui.theme.list": ["desktop/src/state/store.ts"],
         "ui.tips.list": ["desktop/src/state/store.ts"],
         "window.panel.list": ["desktop/src/state/store.ts"],
-        "window.toolbar.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
       }
@@ -459,6 +459,12 @@
         "draw.drawing.render": ["desktop/src/panels/DrawingInspectorPage.tsx"],
         "element.drawing.list": ["desktop/src/panels/DrawingInspectorPage.tsx"],
         "prefs.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/DrawingInspectorPage.tsx"]
+      }
+    },
+    "dialog:Customize Toolbar": {
+      "description": "dialog:Customize Toolbar",
+      "reads": {
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"]
       }
     }
   },

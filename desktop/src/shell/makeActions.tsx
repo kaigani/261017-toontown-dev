@@ -13,6 +13,7 @@ import type { DialogsApi } from './dialogsApi';
 import type { MessagesApi } from './messagesApi';
 import { AboutDialog, BackupsDialog, CheckProjectDialog, ProjectInfoDialog } from './infoDialogs';
 import { JobProgress, NewProjectDialog, ProjectPropertiesDialog } from './projectForms';
+import { ToolbarSheet } from './toolbarSheet';
 
 function jobIdOf(env: Envelope): string | null {
   const r = env.result as Record<string, unknown> | undefined;
@@ -297,6 +298,17 @@ export function makeActions(
           />
         ));
         return null;
+      case 'window.toolbar.items.set': {
+        // Window › Customize Toolbar…: the sheet stages the items; Apply sends them (01 §5.7; design note 1 §7).
+        if (p['items'] === undefined) {
+          const chosen = await dialogs.open<Record<string, unknown>>('Customize Toolbar', (close) => (
+            <ToolbarSheet services={services} close={close} />
+          ));
+          if (!chosen) return null;
+          Object.assign(p, chosen);
+        }
+        return run(command, p);
+      }
       case 'project.properties.set': {
         if (Object.keys(p).length === 0) {
           const chosen = await dialogs.open<Record<string, unknown>>('Project Properties', (close) => (

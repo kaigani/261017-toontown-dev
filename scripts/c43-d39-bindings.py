@@ -1528,6 +1528,37 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": two_cameras, "state": cameras_state,
                  "effect": lambda b, a, k: a["current"] == cam_target["id"] != b["current"], "disabled": None})
 
+    # ----- C4.4a: Window › Customize Toolbar… (01 §5.7; design note 1 §7): the sheet's Apply sends the items -----
+    async def toolbar_items():
+        listed = await cmd("window.toolbar.list", {})
+        listed = listed if isinstance(listed, list) else []
+        return next((x.get("items") for x in listed if x.get("toolbarId") == "main"), [])
+
+    async def toolbar_reset():
+        await cmd("window.toolbar.items.reset", {})
+        await asyncio.sleep(0.4)
+
+    tb_before: dict = {}
+
+    async def customize_flow():
+        tb_before["items"] = await toolbar_items()
+        choose_menu(["Window", "Customize Toolbar"])
+        await asyncio.sleep(1.0)
+        t.clear()
+        t.click("toolbarSheet.item.0")
+        t.click("toolbarSheet.remove")
+        await asyncio.sleep(0.3)
+        t.click("toolbarSheet.submit")
+        await asyncio.sleep(1.0)
+        return "real native menu Window › Customize Toolbar, the first item removed, a real click on Apply"
+
+    rows.append({"name": "Window › Customize Toolbar", "spec": f"{spec_line('window.toolbar.items.set')}; 01 §5.7 lines 445-464",
+                 "action": ("none",), "custom": customize_flow,
+                 "expect": lambda b: ("window.toolbar.items.set", {"toolbarId": "main", "items": b[1:]}), "label": None,
+                 "setup": toolbar_reset, "state": toolbar_items,
+                 "effect": lambda b, a, k: a == b[1:], "disabled": None, "after": toolbar_reset,
+                 "mcpReason": "the sheet opens from the native menu, which only real input reaches"})
+
     for r in rows:
         if r.get("skip"):
             await r["setup"]()

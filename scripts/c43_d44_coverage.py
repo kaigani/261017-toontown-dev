@@ -87,6 +87,8 @@ COVERAGE: dict[str, dict] = {
     "progress:Saving": {"reason": "no choice: a save is not cancellable (its window has no Cancel)"},
     "prompt:New Workspace": {"rows": ["New Workspace › Create", "New Workspace › Cancel"]},
     "prompt:Rename Workspace": {"rows": ["Rename Workspace › Rename", "Rename Workspace › Cancel"]},
+    "dialog:Customize Toolbar": {"rows": ["Customize Toolbar › Apply", "Customize Toolbar › Cancel",
+                                          "Customize Toolbar › Restore Default"]},
     "message:project.unsavedChanges": {"rows": UNSAVED + ["unsaved changes › Enter (default Save)"], "default": "Save"},
     "class:native picker replace question": {"rows": ["Save As (existing file) › native Yes",
                                                        "Save As (existing file) › native No"],

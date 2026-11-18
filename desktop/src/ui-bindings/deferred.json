@@ -531,11 +531,6 @@
       "section": "09 §11.2 (Command table)",
       "location": "File > Export > Image Sequence"
     },
-    "window.toolbar.items.set": {
-      "owner": "M4 C4.4",
-      "section": "01 §5.7 (toolbar customisation)",
-      "location": "the toolbar customisation sheet"
-    },
     "xsheet.exposures.set": {
       "owner": "M5 C5.2",
       "section": "04 §17.4 (Command table)",

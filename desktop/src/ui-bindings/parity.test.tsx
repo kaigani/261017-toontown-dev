@@ -158,6 +158,16 @@ function host(project: boolean): ScriptedHost {
         ],
       }),
     'anim.camera.current.get': () => ok({ cameraId: 'cam_1' }),
+    // The toolbar customisation sheet (M4 C4.4a): the main toolbar's items and the items it allows.
+    'window.toolbar.list': () =>
+      ok([
+        {
+          toolbarId: 'main',
+          visible: true,
+          items: ['project.save', 'separator', 'edit.undo'],
+          allowedItems: ['project.save', 'edit.undo', 'edit.redo', 'separator', 'space'],
+        },
+      ]),
     // The Properties panel's Tool options page (M4 C4.4a): each tool's options, the drawing settings, gap closing.
     'tool.options.get': (p) => ok({ toolId: p['toolId'], options: TOOL_OPTIONS[String(p['toolId'])] ?? {} }),
     'tool.settings.get': () =>
@@ -315,6 +325,7 @@ async function surfaces(): Promise<Surface[]> {
     ['Project Properties', 'project.properties.set'],
     ['New Workspace', 'workspace.create'],
     ['Rename Workspace', 'workspace.rename'],
+    ['Customize Toolbar', 'window.toolbar.items.set'],
   ];
   for (const [title, command] of dialogs) {
     mark(h);
