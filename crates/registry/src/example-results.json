@@ -9249,6 +9249,14 @@
             },
             {
               "role": "panel",
+              "id": "activity",
+              "label": "Activity",
+              "visible": false,
+              "floating": false,
+              "focused": false
+            },
+            {
+              "role": "panel",
               "id": "soundEditor",
               "label": "Sound element editor",
               "visible": false,
@@ -11495,6 +11503,14 @@
         {
           "panelId": "history",
           "title": "History",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "activity",
+          "title": "Activity",
           "visible": false,
           "floating": false,
           "current": false,
