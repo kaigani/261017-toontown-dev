@@ -434,6 +434,30 @@ async function surfaces(): Promise<Surface[]> {
   await screen.findByText('Defaults for new text');
   out.push(await settled('float:text', document.body));
   cleanup();
+
+  // The Properties panel's Drawing page, the drawing inspector (M4 C4.4a): the current element's drawing at frame 1.
+  const inspector = host(true);
+  inspector.handlers['app.state.get'] = () =>
+    ok({ ...PROJECT_STATE, element: { id: 'el_1', name: 'Bob', type: 'drawing' } });
+  inspector.handlers['element.drawing.list'] = () =>
+    ok({
+      drawings: [
+        { id: 'dr_1', name: '1', exposures: [{ from: 1, to: 12 }] },
+        { id: 'dr_2', name: '2', exposures: [{ from: 13, to: 24 }] },
+      ],
+    });
+  inspector.handlers['draw.drawing.render'] = () =>
+    ok({ png: 'iVBORw0KGgo=', width: 160, height: 90, drawingToPixel: [1, 0, 0, 1, 0, 0] });
+  inspector.handlers['prefs.get'] = () => ok({ values: { 'drawing.inspectorPreview': true } });
+  mount(inspector, 'properties');
+  await screen.findByText('Draw on Top Layer');
+  mark(inspector);
+  act(() => {
+    fireEvent.click(screen.getByRole('tab', { name: 'Drawing' }));
+  });
+  await screen.findByText('Show preview');
+  out.push(await settled('float:properties:drawing', document.body));
+  cleanup();
   return out;
 }
 

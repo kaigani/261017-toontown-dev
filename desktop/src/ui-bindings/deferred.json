@@ -306,25 +306,10 @@
       "section": "10 §7.3 (the load report, shown once as a summary)",
       "location": "the load report window"
     },
-    "draw.drawing.rename": {
-      "owner": "M4 C4.4",
-      "section": "02 §9 (Drawing inspector: drawing name)",
-      "location": "the Properties view drawing tab"
-    },
-    "draw.drawing.render": {
-      "owner": "M4 C4.4",
-      "section": "02 §9 (Drawing inspector: thumbnail)",
-      "location": "the Properties view drawing tab"
-    },
     "draw.envelope.apply": {
       "owner": "M4 C4.4",
       "section": "02 §7.1.3 (Perspective)",
       "location": "the Perspective tool"
-    },
-    "draw.inspectorPreview.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §9 (Drawing inspector: show preview)",
-      "location": "the Properties view drawing tab"
     },
     "draw.point.add": {
       "owner": "M4 C4.4",

@@ -151,7 +151,6 @@ pub(crate) struct ListResult {
     needs_project,
     example(title = "Bob's drawings with usage", params = r#"{"elementId": "scene:\"Intro\"/element:\"Bob\""}"#),
     example(title = "Bob's unused drawings with 32-pixel thumbnails", params = r#"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "filter": "unused", "thumbnails": 32}"#),
-    agent_only = "the Cells panel, Exposure Sheet and library show the drawings directly",
 )]
 pub(crate) fn element_drawing_list(cx: &mut Cx, p: ListParams) -> Result<ListResult, CommandError> {
     let id = element_id(cx, &p.element_id, "/elementId")?;

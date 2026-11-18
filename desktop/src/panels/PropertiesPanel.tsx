@@ -1,13 +1,15 @@
-// The Properties panel (01 §5.2 `properties`; M4 C4.4a): pages for the active tool's options and the current pen (the
-// Pen panel's content, 02 §6.1). Choosing a page changes nothing but what the panel shows (`navigate`).
+// The Properties panel (01 §5.2 `properties`; M4 C4.4a): pages for the active tool's options, the current pen (the Pen
+// panel's content, 02 §6.1) and the drawing inspector (02 §9). Choosing a page changes nothing but what the panel shows (`navigate`).
 import { useState } from 'react';
 
+import { DrawingInspectorPage } from './DrawingInspectorPage';
 import { PenPanel } from './PenPanel';
 import { ToolOptionsPage } from './ToolOptionsPage';
 
 const PAGES = [
   { id: 'toolOptions', label: 'Tool options' },
   { id: 'pen', label: 'Pen' },
+  { id: 'drawing', label: 'Drawing' },
 ] as const;
 
 type Page = (typeof PAGES)[number]['id'];
@@ -34,7 +36,15 @@ export function PropertiesPanel() {
           </button>
         ))}
       </div>
-      <div role="tabpanel">{page === 'toolOptions' ? <ToolOptionsPage /> : <PenPanel />}</div>
+      <div role="tabpanel">
+        {page === 'toolOptions' ? (
+          <ToolOptionsPage />
+        ) : page === 'pen' ? (
+          <PenPanel />
+        ) : (
+          <DrawingInspectorPage />
+        )}
+      </div>
     </div>
   );
 }

@@ -1468,13 +1468,52 @@ async def build_and_run(t: Table, only: set) -> None:
                      "effect": (lambda r_: lambda b, a, k: r_(a))(read), "disabled": None,
                      "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
 
+    # ----- C4.4a: the drawing inspector, the Properties panel's Drawing page (02 §9; design note 1 §6) -----
+    async def inspector_shown():
+        await cmd("window.panel.set", {"panelId": "properties", "visible": True})
+        await cmd("app.context.set", {"elementId": bob, "frame": 1})
+        await asyncio.sleep(0.6)
+        t.click("properties.page.drawing")
+        await asyncio.sleep(0.6)
+
+    async def preview_state():
+        return (await cmd("prefs.get", {"keys": ["drawing.inspectorPreview"]})).get("values") or {}
+
+    async def drawings_of_bob():
+        return await cmd("element.drawing.list", {"elementId": bob})
+
+    def first_drawing(st):
+        return ((st.get("drawings") or [{}])[0])
+
+    rows.append({"name": "Drawing inspector › Show preview", "spec": f"{spec_line('draw.inspectorPreview.set')}; 02 §9",
+                 "action": ("dom", "inspector.preview"),
+                 "expect": lambda b: ("draw.inspectorPreview.set", {"visible": b.get("drawing.inspectorPreview") is False}),
+                 "label": None, "setup": inspector_shown, "state": preview_state, "toggle": True,
+                 "effect": lambda b, a, k: a.get("drawing.inspectorPreview") != b.get("drawing.inspectorPreview"),
+                 "disabled": None, "osOnly": True,
+                 "mcpReason": "the Drawing page opens with a click on its tab, the window's own state that real input sets"})
+
+    async def rename_drawing_flow():
+        front()
+        t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=\"inspector.name\"]'); e.focus(); e.select(); return true; })()")
+        type_text("D39 key")
+        key(0x0D)
+        return "the name typed in the focused field, then a real Enter"
+
+    rows.append({"name": "Drawing inspector › rename", "spec": f"{spec_line('draw.drawing.rename')} (label \"Rename Drawing\"); 02 §9",
+                 "action": ("none",), "custom": rename_drawing_flow,
+                 "expect": lambda b: ("draw.drawing.rename", {"drawingId": first_drawing(b).get("id"), "name": "D39 key"}),
+                 "label": "Rename Drawing", "setup": inspector_shown, "state": drawings_of_bob,
+                 "effect": lambda b, a, k: first_drawing(a).get("name") == "D39 key", "disabled": None,
+                 "mcpReason": "the Drawing page opens with a click on its tab, and the name is typed"})
+
     for r in rows:
         if r.get("skip"):
             await r["setup"]()
             continue
         if only and not any(o in r["name"] for o in only):
             continue
-        if isinstance(t, McpTable) and (r.get("custom") or r.get("post_click")):
+        if isinstance(t, McpTable) and (r.get("custom") or r.get("post_click") or r.get("osOnly")):
             reason = r.get("mcpReason") or (
                 "its action is the operating system's own file dialog (a typed path), which only real input reaches"
                 if "shortcut editor" in r["name"] else

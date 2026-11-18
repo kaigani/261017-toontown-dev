@@ -42,7 +42,8 @@
     "float:properties:pencil",
     "float:properties:polyline",
     "float:properties:paint",
-    "float:text"
+    "float:text",
+    "float:properties:drawing"
   ],
   "dom": [
     {
@@ -734,6 +735,27 @@
       ],
       "params": {
         "enabled": true
+      }
+    },
+    {
+      "id": "inspector.name",
+      "surface": "float:properties:drawing",
+      "commands": [
+        "draw.drawing.rename"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "name": "1"
+      }
+    },
+    {
+      "id": "inspector.preview",
+      "surface": "float:properties:drawing",
+      "commands": [
+        "draw.inspectorPreview.set"
+      ],
+      "params": {
+        "visible": false
       }
     },
     {
@@ -2507,6 +2529,11 @@
       "reason": "typing"
     },
     {
+      "id": "properties.page.drawing",
+      "surface": "float:properties:brush",
+      "reason": "navigate"
+    },
+    {
       "id": "properties.page.pen",
       "surface": "float:properties:brush",
       "reason": "navigate"
@@ -2514,6 +2541,31 @@
     {
       "id": "properties.page.toolOptions",
       "surface": "float:properties:brush",
+      "reason": "navigate"
+    },
+    {
+      "id": "inspector.browse",
+      "surface": "float:properties:drawing",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.drawing",
+      "surface": "float:properties:drawing",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.pen",
+      "surface": "float:properties:drawing",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.toolOptions",
+      "surface": "float:properties:drawing",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.drawing",
+      "surface": "float:properties:eraser",
       "reason": "navigate"
     },
     {
@@ -2527,6 +2579,11 @@
       "reason": "navigate"
     },
     {
+      "id": "properties.page.drawing",
+      "surface": "float:properties:paint",
+      "reason": "navigate"
+    },
+    {
       "id": "properties.page.pen",
       "surface": "float:properties:paint",
       "reason": "navigate"
@@ -2534,6 +2591,11 @@
     {
       "id": "properties.page.toolOptions",
       "surface": "float:properties:paint",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.drawing",
+      "surface": "float:properties:pencil",
       "reason": "navigate"
     },
     {
@@ -2547,6 +2609,11 @@
       "reason": "navigate"
     },
     {
+      "id": "properties.page.drawing",
+      "surface": "float:properties:polyline",
+      "reason": "navigate"
+    },
+    {
       "id": "properties.page.pen",
       "surface": "float:properties:polyline",
       "reason": "navigate"
@@ -2554,6 +2621,11 @@
     {
       "id": "properties.page.toolOptions",
       "surface": "float:properties:polyline",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.drawing",
+      "surface": "float:properties:select",
       "reason": "navigate"
     },
     {
@@ -16493,6 +16565,18 @@
       "file": "desktop/src/shell/infoDialogs.tsx"
     },
     {
+      "command": "draw.drawing.rename",
+      "file": "desktop/src/panels/DrawingInspectorPage.tsx"
+    },
+    {
+      "command": "draw.drawing.render",
+      "file": "desktop/src/panels/DrawingInspectorPage.tsx"
+    },
+    {
+      "command": "draw.inspectorPreview.set",
+      "file": "desktop/src/panels/DrawingInspectorPage.tsx"
+    },
+    {
       "command": "draw.viewMapping.get",
       "file": "desktop/src/canvas/CanvasView.tsx"
     },
@@ -16523,6 +16607,10 @@
     {
       "command": "edit.selection.get",
       "file": "desktop/src/canvas/CanvasView.tsx"
+    },
+    {
+      "command": "element.drawing.list",
+      "file": "desktop/src/panels/DrawingInspectorPage.tsx"
     },
     {
       "command": "job.cancel",
@@ -16571,6 +16659,10 @@
     {
       "command": "prefs.get",
       "file": "desktop/src/canvas/CanvasView.tsx"
+    },
+    {
+      "command": "prefs.get",
+      "file": "desktop/src/panels/DrawingInspectorPage.tsx"
     },
     {
       "command": "prefs.list",
@@ -17113,6 +17205,18 @@
     {
       "surface": "float:properties:brush",
       "query": "workspace.list"
+    },
+    {
+      "surface": "float:properties:drawing",
+      "query": "draw.drawing.render"
+    },
+    {
+      "surface": "float:properties:drawing",
+      "query": "element.drawing.list"
+    },
+    {
+      "surface": "float:properties:drawing",
+      "query": "prefs.get"
     },
     {
       "surface": "float:properties:eraser",
@@ -18102,6 +18206,7 @@
       "command": "doc.changed",
       "files": [
         "desktop/src-tauri/src/menu.rs",
+        "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -18109,6 +18214,7 @@
       "command": "doc.redone",
       "files": [
         "desktop/src-tauri/src/menu.rs",
+        "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/state/store.ts"
       ]
@@ -18123,6 +18229,7 @@
       "command": "doc.undone",
       "files": [
         "desktop/src-tauri/src/menu.rs",
+        "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/state/store.ts"
       ]
@@ -18132,6 +18239,30 @@
       "files": [
         "desktop/src/shell/infoDialogs.tsx",
         "desktop/src/shell/makeActions.tsx"
+      ]
+    },
+    {
+      "command": "draw.drawing.changed",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "draw.drawing.rename",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "draw.drawing.render",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "draw.inspectorPreview.set",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
       ]
     },
     {
@@ -18262,6 +18393,24 @@
       ]
     },
     {
+      "command": "drawing.inspectorPreview",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "drawing.nameExists",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "drawing.nameInvalid",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
       "command": "edit.history.changed",
       "files": [
         "desktop/src-tauri/src/menu.rs",
@@ -18298,6 +18447,12 @@
       "command": "edit.selection.get",
       "files": [
         "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
+      "command": "element.drawing.list",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
       ]
     },
     {
@@ -18366,6 +18521,48 @@
       "command": "inspect.ui.tree",
       "files": [
         "desktop/src-tauri/src/host.rs"
+      ]
+    },
+    {
+      "command": "inspector.browse",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "inspector.browsing",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "inspector.element",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "inspector.name",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "inspector.nameProblem",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "inspector.preview",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "inspector.thumbnail",
+      "files": [
+        "desktop/src/panels/DrawingInspectorPage.tsx"
       ]
     },
     {
@@ -18739,6 +18936,7 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src-tauri/src/shell.rs",
         "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/state/store.ts"
       ]
@@ -18749,7 +18947,8 @@
         "desktop/src-tauri/src/host.rs",
         "desktop/src-tauri/src/shell.rs",
         "desktop/src/App.tsx",
-        "desktop/src/canvas/CanvasView.tsx"
+        "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/panels/DrawingInspectorPage.tsx"
       ]
     },
     {
@@ -18817,6 +19016,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/App.tsx",
+        "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/TextPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
@@ -18874,6 +19074,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/App.tsx",
+        "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PanelBody.tsx",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/TextPanel.tsx",

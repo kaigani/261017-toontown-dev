@@ -2140,3 +2140,14 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `tt_vector::fonts::installed_families()`) to spec A; (2) the font determinism ruling of design note 1 §5: the
   system's fonts with only the bundled default deterministic across the two OSes (recommended, the panel marking fonts
   that are not bundled), or bundled fonts only. The outline colour list comes with the palette (M7).
+## SI-168 — the drawing inspector's subject before M5, and two commands that rename a drawing (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 02 §9 lines 858-872 (the inspector shows "the drawing selected in the Cells panel, Exposure Sheet or
+  library"), D-40 answer 4, A (`draw.drawing.rename`, `element.drawing.rename`, both "Rename Drawing").
+- **Problem:** the panels that select a drawing arrive with M5; and two commands rename a drawing.
+- **Decided:** until M5 the inspector's subject is the current element's drawing at the current frame (from
+  `app.state.get` and `element.drawing.list`'s exposures); nothing is shown when no drawing is exposed there. The
+  inspector renames with `draw.drawing.rename` (02 §9's command); `element.drawing.rename` stays as the element bank's
+  equivalent. `element.drawing.list` is the inspector's declared read and leaves agent-only (D-40 answer 5).
+  `draw.drawing.get` stays agent-only: the inspector does not need it.
+- **Built:** `desktop/src/panels/DrawingInspectorPage.tsx`; `DrawingInspectorPage.test.tsx`; D-39 rows (OS form).
