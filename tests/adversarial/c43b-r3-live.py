@@ -508,6 +508,99 @@ def a3():
  except Exception as ex:
   import traceback;traceback.print_exc();run.check(False,'A3 ran',repr(ex))
  run.save('transcript.json',run.transcript);return int(bool(run.failures))
+async def b1_body(t):
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+ await modal_fixture(t,'List review')
+ await asyncio.sleep(1)
+ rows=[]
+ tree=await d.McpTable.tree(t)
+ def lists(n):
+  out=[n] if any(c.get('command') for c in n.get('children',[])) and n.get('id','').startswith('mainToolbar.') and n.get('role')=='field' else []
+  for c in n.get('children',[]):out+=lists(c)
+  return out
+ controls=t.cdp.js("[...document.querySelectorAll('select[data-tt-command]')].map(e=>e.dataset.ttId)")
+ t.run.save('b1-discovery.json',{'controls':controls,'treeLists':lists(tree)})
+ for ident in controls:
+  if os.environ.get('REVIEW_LIST') and ident!=os.environ['REVIEW_LIST']:continue
+  # Workspace changes may replace visible toolbar controls; restore Drawing for each list.
+  await t.cmd('workspace.select',{'name':'Drawing'});await asyncio.sleep(.4)
+  node=d.McpTable.node(await d.McpTable.tree(t),ident)
+  options=[c for c in node.get('children',[]) if c.get('command')]
+  for opt in options:
+   for mode in ('mouse','keyboard','current','other-focus'):
+    await t.cmd('workspace.select',{'name':'Drawing'});await asyncio.sleep(.25)
+    ref=opt['command'];want={'command':ref['commandId'],'params':ref.get('params',{})}
+    value=opt['value']
+    alternate=next(c for c in options if c['value']!=value)
+    setup=opt if mode=='current' else alternate
+    await t.cmd(setup['command']['commandId'],setup['command'].get('params',{}));await asyncio.sleep(.3)
+    d.key(0x1B);pos=await t.position();t.clear()
+    if mode=='other-focus':
+     target='drawingView' if t.rect('drawingView') else 'cameraView'
+     t.click(target)
+    # Open with an OS click. Native popup row coordinates come from screen capture geometry.
+    if mode in ('mouse','current','other-focus'):
+     r=t.rect(ident);h=d.front();origin=d.wintypes.POINT(0,0);d.u32.ClientToScreen(h,d.ctypes.byref(origin))
+     t.click(ident);await asyncio.sleep(.2)
+     from PIL import ImageGrab
+     ImageGrab.grab().save(OUT/('popup-'+ident+'-'+value+'-'+mode+'.png'))
+     # Native WebView popup observed at control bottom, 24 physical pixels per row.
+     height=t.cdp.js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']').getBoundingClientRect().height"%json.dumps(ident))
+     d.click_screen(origin.x+r['x']*r['dpr'],origin.y+(r['y']+height/2)*r['dpr']+5+24*(options.index(opt)+.5))
+    else:
+     t.click(ident)
+     d.key(0x24)
+     for _ in range(options.index(opt)):d.key(0x28)
+     d.key(0x0D)
+    await asyncio.sleep(.6)
+    sent=[c for c in t.recorded() if c['command'] not in SPEC_QUERIES and c['command']!='review.dispatch_key']
+    shown=t.cdp.js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')?.value"%json.dumps(ident))
+    steps=await t.steps_since(pos)
+    expected=[] if mode=='current' else [want]
+    row={'list':ident,'option':value,'mode':mode,'declared':want,'sent':sent,'shown':shown,'steps':steps}
+    rows.append(row);t.run.save('b1-rows.json',rows)
+    t.run.check(sent==expected and shown==value and not steps,'B1 '+ident+' '+value+' '+mode,row)
+
+def bcase(body,name):
+ run=d.e2e.Run(OUT);d.e6.dpi_aware();work=Path(tempfile.mkdtemp(prefix='r3-'+name+'-'))
+ d.build_and_run=lambda t,only:body(t)
+ try:asyncio.run(d.session_all(APP,run,OUT,work,set()))
+ except Exception as ex:
+  import traceback;traceback.print_exc();run.check(False,name+' ran',repr(ex))
+ run.save('transcript.json',run.transcript);return int(bool(run.failures))
+def b1():return bcase(b1_body,'b1')
+
+async def b2_body(t):
+ import textwrap
+ old=(ROOT/'tests/adversarial/c43b-r2-live.py').read_text(encoding='utf-8')
+ a=old.index(' async def menus(t,state):');b=old.index(' original_build=m.build_and_run',a)
+ scope={'m':d,'ROOT':ROOT,'asyncio':asyncio,'json':json}
+ exec(textwrap.dedent(old[a:b]),scope)
+ menus=scope['menus']
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+ await menus(t,'no-project')
+ await modal_fixture(t,'Menu review')
+ await t.cmd('project.saveAs',{'path':str(t.work/'Menu.animpkg')})
+ await menus(t,'clean')
+ await t.cmd('draw.rectangle.add',{'from':{'x':60,'y':60},'to':{'x':100,'y':100}})
+ await t.cmd('draw.selection.set',{'by':'all'})
+ await menus(t,'dirty-selection')
+ paths=[['File','Save'],['Edit','Copy'],['View','Zoom In'],['View','Zoom Out'],['Drawing','Flip Horizontal'],['Drawing','Flip Vertical'],['Window','Extend Side Panels'],['Help','Context Help'],['Window','Workspace','Default'],['File','Open Recent','Menu']]
+ for path in paths:
+  if path[0]=='File' and len(path)>2:await t.cmd('project.save',{})
+  node=d.McpTable.menu_node(await d.McpTable.tree(t),path);ref=node.get('command',{})
+  t.clear();d.choose_menu(path);await asyncio.sleep(.5)
+  sent=[c for c in t.recorded() if c['command']!='review.dispatch_key']
+  t.run.check({'command':ref.get('commandId'),'params':ref.get('params',{})} in sent,'B2 native activation '+'/'.join(path),{'tree':node,'sent':sent})
+ await t.cmd('workspace.create',{'name':'Review workspace'})
+ await t.cmd('workspace.rename',{'name':'Review workspace','newName':'Renamed workspace'})
+ await t.cmd('workspace.select',{'name':'Renamed workspace'})
+ for name in ('Recent one','Recent two'):
+  await preserve_fixture(t);await t.cmd('project.create',{'name':name});await t.cmd('project.saveAs',{'path':str(t.work/(name+'.animpkg'))})
+ for name in ('Recent one','Recent two'):await t.cmd('project.open',{'path':str(t.work/(name+'.animpkg'))})
+ await menus(t,'workspace-recent')
+def b2():return bcase(b2_body,'b2')
+
 if __name__=='__main__':
  if len(sys.argv)<3:sys.exit(0)
  APP=str(Path(sys.argv[1]).resolve());OUT.mkdir(parents=True,exist_ok=True)
@@ -526,7 +619,7 @@ if __name__=='__main__':
  stop=threading.Event();worker=None
  if '--first-click' not in sys.argv:
   worker=threading.Thread(target=activate_new_windows,args=(stop,),daemon=True);worker.start()
- try:sys.exit({'a1':a1,'a2':a2,'a3':a3}[sys.argv[2]]())
+ try:sys.exit({'a1':a1,'a2':a2,'a3':a3,'b1':b1,'b2':b2}[sys.argv[2]]())
  finally:
   stop.set()
   if worker:worker.join()
