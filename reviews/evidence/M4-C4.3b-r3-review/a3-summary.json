@@ -1,0 +1,1171 @@
+{
+ "verdict": "FAIL",
+ "findingIds": [
+  "C43B-R3-01",
+  "C43B-R3-02",
+  "C43B-R3-03"
+ ],
+ "productHead": "6d708c64",
+ "sourceSha256": "12fc219da7c93c5d82a6f9754872ae9935915839a08040bface42a02c858fce6",
+ "groups": {
+  "imports": {
+   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-imports-complete",
+   "rows": [
+    {
+     "check": "modal keys and Tab message.keymap.importMode",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 3,
+     "focus": [
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Import merge",
+     "ok": true,
+     "commands": [
+      {
+       "command": "keymap.import",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-nqwa0nee\\import.json",
+        "mode": "merge"
+       }
+      }
+     ],
+     "focused": "message.merge"
+    },
+    {
+     "check": "Import complete binding set merge",
+     "ok": true,
+     "commands": [],
+     "expectedCount": 50,
+     "actualCount": 50
+    },
+    {
+     "check": "modal keys and Tab message.keymap.importMode",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 3,
+     "focus": [
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Import replace",
+     "ok": true,
+     "commands": [
+      {
+       "command": "keymap.import",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-nqwa0nee\\import.json",
+        "mode": "replace"
+       }
+      }
+     ],
+     "focused": "message.merge"
+    },
+    {
+     "check": "Import complete binding set replace",
+     "ok": true,
+     "commands": [],
+     "expectedCount": 49,
+     "actualCount": 49
+    },
+    {
+     "check": "modal keys and Tab message.keymap.importMode",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 3,
+     "focus": [
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Import cancel",
+     "ok": true,
+     "commands": [],
+     "focused": "message.merge"
+    },
+    {
+     "check": "Import complete binding set cancel",
+     "ok": true,
+     "commands": [],
+     "expectedCount": 49,
+     "actualCount": 49
+    },
+    {
+     "check": "Import enter",
+     "ok": true,
+     "commands": [
+      {
+       "command": "keymap.import",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-nqwa0nee\\import.json",
+        "mode": "merge"
+       }
+      }
+     ],
+     "focused": "message.merge"
+    },
+    {
+     "check": "Import complete binding set enter",
+     "ok": true,
+     "commands": [],
+     "expectedCount": 50,
+     "actualCount": 50
+    },
+    {
+     "check": "Import space",
+     "ok": true,
+     "commands": [
+      {
+       "command": "keymap.import",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-nqwa0nee\\import.json",
+        "mode": "merge"
+       }
+      }
+     ],
+     "focused": "message.merge"
+    },
+    {
+     "check": "Import complete binding set space",
+     "ok": true,
+     "commands": [],
+     "expectedCount": 50,
+     "actualCount": 50
+    },
+    {
+     "check": "Import escape",
+     "ok": true,
+     "commands": [],
+     "focused": "message.merge"
+    },
+    {
+     "check": "Import complete binding set escape",
+     "ok": true,
+     "commands": [],
+     "expectedCount": 49,
+     "actualCount": 49
+    }
+   ],
+   "regenerate": "python tests/adversarial/c43b-r3-live.py target/release/toontown.exe a3 --imports"
+  },
+  "keys": {
+   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-keys-verified",
+   "rows": [
+    {
+     "check": "modal keys and Tab message.keymap.resetAll",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 4,
+     "focus": [
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Reset reset",
+     "ok": true,
+     "commands": [
+      {
+       "command": "keymap.reset",
+       "params": {
+        "all": true
+       }
+      }
+     ]
+    },
+    {
+     "check": "modal keys and Tab message.keymap.resetAll",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 4,
+     "focus": [
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Reset cancel",
+     "ok": true,
+     "commands": []
+    },
+    {
+     "check": "Reset focused default answers enter",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-02",
+     "focus": "message.keymap.resetAll",
+     "stuck": true
+    },
+    {
+     "check": "Reset enter",
+     "ok": true,
+     "commands": []
+    },
+    {
+     "check": "Reset focused default answers space",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-02",
+     "focus": "message.keymap.resetAll",
+     "stuck": true
+    },
+    {
+     "check": "Reset space",
+     "ok": true,
+     "commands": []
+    },
+    {
+     "check": "Reset escape",
+     "ok": true,
+     "commands": []
+    },
+    {
+     "check": "modal keys and Tab keymap.conflict",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 9,
+     "focus": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Conflict override",
+     "ok": true,
+     "commands": [
+      {
+       "command": "keymap.set",
+       "params": {
+        "commandId": "app.info.get",
+        "keys": "Shift+Enter",
+        "context": "global",
+        "onConflict": "override"
+       }
+      }
+     ]
+    },
+    {
+     "check": "modal keys and Tab keymap.conflict",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 9,
+     "focus": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Conflict cancel",
+     "ok": true,
+     "commands": []
+    },
+    {
+     "check": "modal keys and Tab keymap.conflict",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 9,
+     "focus": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Conflict override-space",
+     "ok": true,
+     "commands": [
+      {
+       "command": "keymap.set",
+       "params": {
+        "commandId": "app.info.get",
+        "keys": "Shift+Enter",
+        "context": "global",
+        "onConflict": "override"
+       }
+      }
+     ]
+    },
+    {
+     "check": "modal keys and Tab keymap.conflict",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 9,
+     "focus": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Conflict cancel-space",
+     "ok": true,
+     "commands": []
+    }
+   ],
+   "regenerate": "python tests/adversarial/c43b-r3-live.py target/release/toontown.exe a3 --keys"
+  },
+  "overwrite": {
+   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded",
+   "rows": [
+    {
+     "check": "modal keys and Tab message.project.exists",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 4,
+     "focus": [
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Save As exactly one question replace",
+     "ok": false,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-replace.animpkg"
+       }
+      },
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-replace.animpkg",
+        "onExists": "overwrite"
+       }
+      }
+     ],
+     "finding": "C43B-R3-01",
+     "focused": "message.project.exists"
+    },
+    {
+     "check": "Save As bytes replace",
+     "ok": true,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-replace.animpkg"
+       }
+      },
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-replace.animpkg",
+        "onExists": "overwrite"
+       }
+      }
+     ],
+     "focused": "message.project.exists"
+    },
+    {
+     "check": "modal keys and Tab message.project.exists",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 4,
+     "focus": [
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Save As exactly one question cancel",
+     "ok": false,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-cancel.animpkg"
+       }
+      }
+     ],
+     "finding": "C43B-R3-01",
+     "focused": "message.project.exists"
+    },
+    {
+     "check": "Save As bytes cancel",
+     "ok": true,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-cancel.animpkg"
+       }
+      }
+     ],
+     "focused": "message.project.exists"
+    },
+    {
+     "check": "Save As focused default answers enter",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-02",
+     "focus": "message.project.exists",
+     "stuck": true
+    },
+    {
+     "check": "Save As exactly one question enter",
+     "ok": false,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-enter.animpkg"
+       }
+      }
+     ],
+     "finding": "C43B-R3-01",
+     "focused": "message.project.exists"
+    },
+    {
+     "check": "Save As bytes enter",
+     "ok": true,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-enter.animpkg"
+       }
+      }
+     ],
+     "focused": "message.project.exists"
+    },
+    {
+     "check": "Save As focused default answers space",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-02",
+     "focus": "message.project.exists",
+     "stuck": true
+    },
+    {
+     "check": "Save As exactly one question space",
+     "ok": false,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-space.animpkg"
+       }
+      }
+     ],
+     "finding": "C43B-R3-01",
+     "focused": "message.project.exists"
+    },
+    {
+     "check": "Save As bytes space",
+     "ok": true,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-space.animpkg"
+       }
+      }
+     ],
+     "focused": "message.project.exists"
+    },
+    {
+     "check": "Save As focused default answers escape",
+     "ok": true,
+     "commands": [],
+     "focus": "message.project.exists",
+     "stuck": false
+    },
+    {
+     "check": "Save As exactly one question escape",
+     "ok": false,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-escape.animpkg"
+       }
+      }
+     ],
+     "finding": "C43B-R3-01",
+     "focused": "message.project.exists"
+    },
+    {
+     "check": "Save As bytes escape",
+     "ok": true,
+     "commands": [
+      {
+       "command": "project.saveAs",
+       "params": {
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-gij_tnhz\\overwrite-escape.animpkg"
+       }
+      }
+     ],
+     "focused": "message.project.exists"
+    }
+   ],
+   "regenerate": "python tests/adversarial/c43b-r3-live.py target/release/toontown.exe a3 --overwrite",
+   "questions": [
+    {
+     "choice": "cancel",
+     "nativeQuestion": true,
+     "applicationQuestion": true,
+     "questionCount": 2,
+     "focused": "message.project.exists",
+     "beforeHash": "fa69801df121cc5ad15838d204104465244d32b71ac9c931544e53f9ca230976",
+     "afterHash": "fa69801df121cc5ad15838d204104465244d32b71ac9c931544e53f9ca230976"
+    },
+    {
+     "choice": "enter",
+     "nativeQuestion": true,
+     "applicationQuestion": true,
+     "questionCount": 2,
+     "focused": "message.project.exists",
+     "beforeHash": "bfc83daece4f0ec2aafedebbbad9f30c1e667dbaa9b4cfd21a49efde0c62ae0b",
+     "afterHash": "bfc83daece4f0ec2aafedebbbad9f30c1e667dbaa9b4cfd21a49efde0c62ae0b"
+    },
+    {
+     "choice": "escape",
+     "nativeQuestion": true,
+     "applicationQuestion": true,
+     "questionCount": 2,
+     "focused": "message.project.exists",
+     "beforeHash": "00c6012509bd54f4bd22c0b21874a5f92a5c69ad8111772fac08f81aac29687f",
+     "afterHash": "00c6012509bd54f4bd22c0b21874a5f92a5c69ad8111772fac08f81aac29687f"
+    },
+    {
+     "choice": "replace",
+     "nativeQuestion": true,
+     "applicationQuestion": true,
+     "questionCount": 2,
+     "focused": "message.project.exists",
+     "beforeHash": "4e45731e48563ae7bde7a76e2ddd54435f14b80e4c7612ba5e0800cd6c19c057",
+     "afterHash": "2206774e87b0928eb3c0e52f85a2791e128758ff144a98756260aaf5f4fbb45d"
+    },
+    {
+     "choice": "space",
+     "nativeQuestion": true,
+     "applicationQuestion": true,
+     "questionCount": 2,
+     "focused": "message.project.exists",
+     "beforeHash": "82d062835174a0f11bf937a50a1bc66833966f8fac14f23e26008efe1efe05fb",
+     "afterHash": "82d062835174a0f11bf937a50a1bc66833966f8fac14f23e26008efe1efe05fb"
+    }
+   ]
+  },
+  "jobs": {
+   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-jobs-final-pass",
+   "rows": [
+    {
+     "check": "Agent progress cancel",
+     "ok": true,
+     "commands": []
+    },
+    {
+     "check": "Job past commit is not cancellable",
+     "ok": true,
+     "commands": []
+    }
+   ],
+   "regenerate": "python tests/adversarial/c43b-r3-live.py target/release/toontown.exe a3 --jobs",
+   "commit": {
+    "pastCommit": {
+     "jobId": "job-2",
+     "state": "running",
+     "progress": 0.9999166666666667,
+     "message": "Rendering frame 12000",
+     "cancellable": false
+    },
+    "samples": [
+     {
+      "state": "running",
+      "progress": 0.0,
+      "cancellable": true
+     },
+     {
+      "state": "running",
+      "progress": 0.012166666666666666,
+      "cancellable": true
+     },
+     {
+      "state": "running",
+      "progress": 0.03941666666666667,
+      "cancellable": true
+     },
+     {
+      "state": "running",
+      "progress": 0.06091666666666667,
+      "cancellable": true
+     },
+     {
+      "state": "running",
+      "progress": 0.107,
+      "cancellable": true
+     },
+     {
+      "state": "running",
+      "progress": 0.18625,
+      "cancellable": true
+     },
+     {
+      "state": "running",
+      "progress": 0.3075833333333333,
+      "cancellable": true
+     },
+     {
+      "state": "running",
+      "progress": 0.45258333333333334,
+      "cancellable": true
+     },
+     {
+      "state": "running",
+      "progress": 0.584,
+      "cancellable": true
+     },
+     {
+      "state": "running",
+      "progress": 0.75025,
+      "cancellable": true
+     }
+    ],
+    "cancelControl": false,
+    "cancellation": {
+     "status": "ok",
+     "result": {
+      "jobId": "job-2",
+      "commandId": "render.range.run",
+      "state": "running",
+      "progress": 0.9999166666666667,
+      "message": "Rendering frame 12000",
+      "startedAt": "2026-11-18T00:24:58.358Z",
+      "session": "agent:s2-c177d2",
+      "cancellable": false
+     },
+     "changes": [],
+     "warnings": [],
+     "documentRev": 4
+    },
+    "finalState": "succeeded",
+    "documentUnchanged": true,
+    "windowClosed": true
+   }
+  },
+  "modal-extra": {
+   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-modal-extra-complete",
+   "rows": [
+    {
+     "check": "modal keys and Tab message.project.unsavedChanges",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03: focus escape; Escape cancellation separately reproduced",
+     "contentUnchanged": true,
+     "firstEscapingTab": 3,
+     "focus": [
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "check": "Escape cancels unsaved question after Tab New",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03",
+     "focused": {
+      "tag": "button",
+      "id": "drawingView.aid.strokes"
+     },
+     "questionStillOpen": true
+    },
+    {
+     "check": "Unsaved modal keys and Cancel preserve dirty content",
+     "ok": true,
+     "commands": []
+    },
+    {
+     "check": "Escape cancels unsaved question after Tab Open",
+     "ok": false,
+     "commands": [],
+     "finding": "C43B-R3-03",
+     "questionStillOpen": true,
+     "tabFocus": [
+      {
+       "tag": "button",
+       "id": "message.discard"
+      },
+      {
+       "tag": "button",
+       "id": "message.cancel"
+      },
+      {
+       "tag": "button",
+       "id": "mainToolbar.drawAid.grid.set"
+      }
+     ]
+    },
+    {
+     "check": "Unsaved focused Space saves without background playback",
+     "ok": true,
+     "commands": [
+      {
+       "command": "project.save",
+       "params": {}
+      }
+     ],
+     "focused": "message.save"
+    },
+    {
+     "check": "Native overwrite modal keys and No preserve document",
+     "ok": true,
+     "commands": []
+    }
+   ],
+   "regenerate": "python tests/adversarial/c43b-r3-live.py target/release/toontown.exe a3 --modal-extra",
+   "nativeKeys": {
+    "questionTitle": "Confirm Save As",
+    "tabRoots": [
+     8718758,
+     8718758,
+     8718758,
+     8718758,
+     8718758,
+     8718758
+    ],
+    "questionHwnd": 8718758,
+    "contentUnchanged": true,
+    "fileUnchanged": true,
+    "actions": [],
+    "playing": false
+   }
+  }
+ },
+ "hashes": [
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-imports-complete\\bindings-cancel.json",
+   "bytes": 33172,
+   "sha256": "4359f44bcda33341404ac6366812e0de133048101b7f421500f7d0e2394e31fe"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-imports-complete\\bindings-enter.json",
+   "bytes": 33453,
+   "sha256": "3ddaceea0bfeaa2697b7a21d174102a52b9ee8412ade66e6bab5994c93552417"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-imports-complete\\bindings-escape.json",
+   "bytes": 33172,
+   "sha256": "4359f44bcda33341404ac6366812e0de133048101b7f421500f7d0e2394e31fe"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-imports-complete\\bindings-merge.json",
+   "bytes": 33453,
+   "sha256": "3ddaceea0bfeaa2697b7a21d174102a52b9ee8412ade66e6bab5994c93552417"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-imports-complete\\bindings-replace.json",
+   "bytes": 33189,
+   "sha256": "0a6940ea771ba2905b01b44386e1c244dee361b08776a903c773782066519c07"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-imports-complete\\bindings-space.json",
+   "bytes": 33453,
+   "sha256": "3ddaceea0bfeaa2697b7a21d174102a52b9ee8412ade66e6bab5994c93552417"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-imports-complete\\run.log",
+   "bytes": 554,
+   "sha256": "579a75431d87c95a7d570af7b159a05e0bde2e5aee12028f3be56ea152556fa6"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-imports-complete\\transcript.json",
+   "bytes": 49164,
+   "sha256": "7e687ca528dbb851b5f8bd9aa496e2a9a89ece99796f403debabfb62933f0d72"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-keys-verified\\run.log",
+   "bytes": 581,
+   "sha256": "a3cde3b78f184ebff85f778f98a3f47f72d8d4ee61e8bbd8bc13ae52f341b5fc"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-keys-verified\\transcript.json",
+   "bytes": 97291,
+   "sha256": "6d086c29f102bf55bed6c3510756ae17c11a42f29e945c61c6a0673859e09912"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-cancel-application.png",
+   "bytes": 294127,
+   "sha256": "30a462c896f0cdc0fab9cb7fc20a725a396c82c23c84b2db2cc9af04b9b4c9e9"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-cancel-native.png",
+   "bytes": 235393,
+   "sha256": "f5d7f4aa1c31adfc872f50db2e1be0f3f306c507037b51f067b0259bfe85bd96"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-cancel.json",
+   "bytes": 8357,
+   "sha256": "9a4c6b7bed1a90677a02a5c385fc3ea2cf3a6c5c2b867e0fb62807162a27f2d7"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-enter-application.png",
+   "bytes": 292988,
+   "sha256": "a5fc55e7c62178d8dc87c9d10d58daebaeaadbe4bc35c7b2f61aa15e8d0be023"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-enter-native.png",
+   "bytes": 235353,
+   "sha256": "d1f13ca6f13ec81faae6e5e9e285346f913eb8c4fb7ea9316414b6480adcb9ce"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-enter.json",
+   "bytes": 7359,
+   "sha256": "2a46b8485e030de8cd0bd62636dcb58846436cfee8e1295c18b54e88d92e8eef"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-escape-application.png",
+   "bytes": 300352,
+   "sha256": "eef580f25010c86600380e94233e5bf9be7e5cb299ba31c234214548e9240ea3"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-escape-native.png",
+   "bytes": 235446,
+   "sha256": "83c16e1c9e0745ced974a89c7b9ec9ad4f465060ced45bec0b42343351087ee5"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-escape.json",
+   "bytes": 7212,
+   "sha256": "2e7b77380157db7a7f37ec69975874688b88c4636b52cacfa3b4f681218bd3ee"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-replace-application.png",
+   "bytes": 300824,
+   "sha256": "5c7215aa0879a8d49e2abc26ade4ecd213e932fb75fe24d35691fad0298a5e01"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-replace-native.png",
+   "bytes": 235722,
+   "sha256": "231471b9b52e99d22f6178d55209ad4c5ca68af5a2ac55543805c595f80df024"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-replace.json",
+   "bytes": 13574,
+   "sha256": "46fbd8512f52ba4f195ca6fd124d2c897e752f1da4948b6361b0fe86836e457a"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-space-application.png",
+   "bytes": 299363,
+   "sha256": "c490e0d7c21d461862f3754d67dd843ed3ea2ba34506eeee15c34e821e018391"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-space-native.png",
+   "bytes": 235457,
+   "sha256": "601c9e781de3c6a02f908138ab028860a99578f532b43cb8f1d09807ece5c80c"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\overwrite-space.json",
+   "bytes": 7061,
+   "sha256": "0600c0e6c3a8e9e6eda52c07753d419dff35e25a1b3b19d62974d098e5f37a74"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\run.log",
+   "bytes": 611,
+   "sha256": "d5c705cf861e7b53461d6a75776607d655385e18f79cc43d57aabbae05418a40"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-overwrite-recorded\\transcript.json",
+   "bytes": 137577,
+   "sha256": "352fe5d8d31b8955aff4258ea6a7e3af1019655bcdf70a35221d08c1b0f0edd9"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-jobs-final-pass\\commit-start.json",
+   "bytes": 123,
+   "sha256": "ef472b43229977cbd5b720d67768fe48d74003ae03738539c93d4939518cd7a4"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-jobs-final-pass\\job-cancel.json",
+   "bytes": 132665,
+   "sha256": "fed376a462f6ba67c9e767ebddf0121cc3b0f80685f8866dfe52316dd0f40d2e"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-jobs-final-pass\\job-commit-partial.json",
+   "bytes": 624,
+   "sha256": "3cee62de66b4d75b7cd3b88f999a62a8dccf386b15467f89142ce29c7057f541"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-jobs-final-pass\\job-commit.json",
+   "bytes": 1758,
+   "sha256": "8f7a5bc9e85a81a241623d050c8e3802eb016cc2be23077069151572c7e8672c"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-jobs-final-pass\\job-start.json",
+   "bytes": 123,
+   "sha256": "52abe2ab09717fe8d368af29476405e54ea886404d119b11a54152aaedde3b24"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-jobs-final-pass\\roots-bootstrap.json",
+   "bytes": 2,
+   "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-jobs-final-pass\\run.log",
+   "bytes": 110,
+   "sha256": "19602bb6e19bb276d0eeb0f3e4991c94c4879b6b9e72d98e741fa00d6b54546d"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-jobs-final-pass\\transcript.json",
+   "bytes": 3172,
+   "sha256": "b9253574cba9f020ab08ca56726507e5c44b258da55c0ed2a83ad27574e2c150"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-modal-extra-complete\\native-modal-keys.json",
+   "bytes": 270,
+   "sha256": "b1dff3e708853367317c40b2ba9fc58e80bc4dd4f9b9d8cb06cdedfe1b6c51df"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-modal-extra-complete\\run.log",
+   "bytes": 380,
+   "sha256": "6772ad626fa514382b84588444ad36e49e880e53c1745b2afb150292e449280d"
+  },
+  {
+   "file": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-modal-extra-complete\\transcript.json",
+   "bytes": 29879,
+   "sha256": "06e556e74a50db647665be45623b7d0425d79c73ee43b44aebc01ca18503cecc"
+  }
+ ]
+}

@@ -5,16 +5,40 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(os.environ.get('REVIEW_RAW') or tempfile.mkdtemp(prefix='c43b-r3-'))
 def load(name,path):
  s=importlib.util.spec_from_file_location(name,ROOT/path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
+def spec_queries():
+ import re
+ names=set()
+ for path in (ROOT/'spec').glob('*.md'):
+  for line in path.read_text(encoding='utf-8').splitlines():
+   match=re.match(r'\|\s*`([^`]+)`\s*\|\s*query\s*\|',line)
+   if match:names.add(match.group(1))
+ return names
+SPEC_QUERIES=spec_queries()
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def content(doc):
  import copy
  out=copy.deepcopy(doc)
  if isinstance(out,dict) and isinstance(out.get('bundle'),dict):out['bundle'].pop('exportedAt',None)
  return out
+async def preserve_fixture(t):
+ state=await t.cmd('app.state.get',{})
+ if (state.get('project') or {}).get('dirty'):
+  n=len(list(t.work.glob('fixture-save-*.animpkg')))
+  await t.cmd('project.saveAs',{'path':str(t.work/('fixture-save-'+str(n)+'.animpkg')),'onExists':'overwrite'})
+async def modal_fixture(t,name):
+ await preserve_fixture(t)
+ await t.cmd('project.create',{'name':name,'onUnsaved':'fail'})
+ eid=(await t.cmd('element.create',{'type':'drawing','name':'ModalUndoSentinel'}))['elementIds'][0]
+ await t.cmd('element.drawing.create',{'elementId':eid,'name':'1','exposeFrom':1,'exposeTo':24})
+ await t.cmd('app.context.set',{'elementId':eid,'frame':1})
+ await t.cmd('workspace.select',{'name':'Drawing'})
+ await t.cmd('view.active.set',{'viewId':'drawingView'})
+ await t.cmd('draw.rectangle.add',{'from':{'x':-40,'y':-40},'to':{'x':40,'y':40}})
 async def wait(t,ident):
  for _ in range(100):
   if t.cdp.js("!!document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')"%json.dumps(ident)):return
   await asyncio.sleep(.1)
+ t.run.save('missing-'+ident+'.json',{'body':t.cdp.js('document.body.innerText'),'focus':t.cdp.js('document.activeElement?.outerHTML')})
  raise RuntimeError('missing '+ident)
 async def exercise(t,op,choice,input_kind='click'):
  c=t.cmd;work=t.work
@@ -162,21 +186,80 @@ def first_click():
  return 0
 async def modal(t,ident):
  before=await t.cmd('doc.export.json',{'scope':'project','binaries':'omit'})
- t.clear()
+ recorded_before=t.recorded()
  focus=[]
  for _ in range(20):
   d.key(0x09);await asyncio.sleep(.03)
-  focus.append(t.cdp.js("!!document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')?.contains(document.activeElement)"%json.dumps(ident)))
+  focus.append(t.cdp.js("(() => {const e=document.querySelector('[data-tt-id='+JSON.stringify(%s)+']');const root=e?.closest('[role=alertdialog],[role=dialog]')||e;return !!root?.contains(document.activeElement)})()"%json.dumps(ident)))
  d.key(0x42)
- d.key(0x5A,ctrl=True) if False else None
  d.key(0x5A,0x11)
+ route=[]
+ for _ in range(100):
+  a=t.cdp.js("({id:document.activeElement?.dataset.ttId,command:document.activeElement?.dataset.ttCommand,disabled:document.activeElement?.disabled})")
+  route.append(a)
+  if a.get('command')=='playback.loop.set' and not a.get('disabled'):
+   d.key(0x20);break
+  d.key(0x09)
  await asyncio.sleep(.2)
- after=await t.cmd('doc.export.json',{'scope':'project','binaries':'omit'})
- sent=t.recorded();bad=[x for x in sent if t.kinds.get(x.get('command')) in ('action','ui','toggle','job')]
- t.run.check(all(focus) and content(before)==content(after) and not bad,'modal keys and Tab '+ident,{'focus':focus,'sent':sent})
+ after=await t.cmd('doc.export.json' ,{'scope':'project','binaries':'omit'})
+ sent=t.recorded()[len(recorded_before):];bad=[x for x in sent if x.get('command') not in SPEC_QUERIES and x.get('command')!='review.dispatch_key']
+ t.run.check(all(focus) and content(before)==content(after) and not bad,'modal keys and Tab '+ident,{'focus':focus,'tabRoute':route,'sent':sent,'contentUnchanged':content(before)==content(after),'unexpected':bad,'keyResolutionRequests':[x for x in sent if x.get('command')=='review.dispatch_key']})
+def native_dialogs():
+ import ctypes
+ from ctypes import wintypes
+ u=ctypes.windll.user32;out=[]
+ def text(h):
+  b=ctypes.create_unicode_buffer(2048);u.GetWindowTextW(h,b,2048);return b.value
+ def visit(h,_):
+  pid=wintypes.DWORD();u.GetWindowThreadProcessId(h,ctypes.byref(pid))
+  if pid.value!=d.e2e.APP_PID['pid'] or not u.IsWindowVisible(h):return True
+  title=text(h)
+  if title=='Toontown':return True
+  children=[]
+  def child(c,_):
+   value=text(c)
+   if value:children.append(value)
+   return True
+  callback=ctypes.WINFUNCTYPE(ctypes.c_bool,wintypes.HWND,wintypes.LPARAM)(child);u.EnumChildWindows(h,callback,0)
+  out.append({'hwnd':int(h),'title':title,'children':children});return True
+ cb=ctypes.WINFUNCTYPE(ctypes.c_bool,wintypes.HWND,wintypes.LPARAM)(visit);u.EnumWindows(cb,0)
+ return out
+async def overwrite(t):
+ c=t.cmd
+ for choice in ('replace','cancel','enter','space','escape'):
+  await preserve_fixture(t)
+  await c('project.create',{'name':'Existing','onUnsaved':'fail'});target=t.work/('overwrite-'+choice+'.animpkg');await c('project.saveAs',{'path':str(target)})
+  await modal_fixture(t,'Replacement');before=target.read_bytes();t.clear()
+  d.choose_menu(['File','Save As']);await asyncio.sleep(1.8);d.key(0x4E,0x12);d.key(0x41,0x11);d.type_text(str(target));d.key(0x0D);await asyncio.sleep(.7)
+  native=native_dialogs()
+  from PIL import ImageGrab
+  ImageGrab.grab().save(OUT/('overwrite-'+choice+'-native.png'))
+  native_question=any('confirm save' in x['title'].lower() or any('already exists' in y.lower() for y in x['children']) for x in native)
+  if native_question:d.key(0x59)
+  await wait(t,'message.project.exists')
+  ImageGrab.grab().save(OUT/('overwrite-'+choice+'-application.png'))
+  focused=t.cdp.js('document.activeElement?.dataset.ttId')
+  effective=choice
+  if choice in ('replace','cancel'):
+   await modal(t,'message.project.exists');t.click('message.'+choice)
+  else:
+   d.key(0x0D if choice=='enter' else 0x20 if choice=='space' else 0x1B);await asyncio.sleep(.3)
+   stuck=t.cdp.js("!!document.querySelector('[data-tt-id=\"message.project.exists\"]')")
+   t.run.check(not stuck,'Save As focused default answers '+choice,{'focus':focused,'stuck':stuck})
+   if stuck:d.key(0x1B)
+   effective='cancel' if focused!='message.replace' or choice=='escape' or stuck else 'replace'
+  await asyncio.sleep(1.5)
+  rec={'choice':choice,'native':native,'nativeQuestion':native_question,'applicationQuestion':True,'questionCount':2 if native_question else 1,'focused':focused,'beforeHash':hashlib.sha256(before).hexdigest(),'afterHash':sha(target),'sent':t.recorded()}
+  t.run.save('overwrite-'+choice+'.json',rec)
+  t.run.check(not native_question,'Save As exactly one question '+choice,rec)
+  t.run.check((target.read_bytes()!=before)==(effective=='replace'),'Save As bytes '+choice,rec)
+async def overwrite_only(t):
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();await overwrite(t)
+async def jobs_only(t):
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();await jobs(t)
 async def a3_body(t):
  t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
- await c('project.create',{'name':'DialogReview'})
+ await modal_fixture(t,'DialogReview')
  async def prefs():
   d.choose_menu(['File','Preferences']);await wait(t,'preferences.category.keyboard');t.click('preferences.category.keyboard');await asyncio.sleep(.5)
  async def finish():
@@ -185,11 +268,11 @@ async def a3_body(t):
  path=t.work/'import.json'
  for choice in ('merge','replace','cancel','enter','space','escape'):
   await c('keymap.reset',{'all':True});await c('keymap.export',{'path':str(path),'onExists':'overwrite'})
-  data=json.loads(path.read_text(encoding='utf-8'))
+  data=json.loads(path.read_text(encoding='utf-8'));baseline=await c('keymap.list',{})
   for b in data['bindings']:
    if b['commandId']=='project.save':b['keys']='Primary+Shift+F11'
   path.write_text(json.dumps(data),encoding='utf-8')
-  await prefs();t.click('keymap.import');await asyncio.sleep(1.8);d.type_text(str(path));d.key(0x0D)
+  await prefs();t.clear();t.click('keymap.import');await asyncio.sleep(1.8);d.key(0x4E,0x12);d.key(0x41,0x11);d.type_text(str(path));d.key(0x0D)
   await wait(t,'message.keymap.importMode')
   focused=t.cdp.js('document.activeElement?.dataset.ttId')
   if choice in ('merge','replace','cancel'):await modal(t,'message.keymap.importMode');t.click('message.'+choice)
@@ -197,35 +280,166 @@ async def a3_body(t):
   await asyncio.sleep(.5);await finish();actual=await keys()
   wanted=['Primary+S','Primary+Shift+F11'] if choice in ('merge','enter','space') else ['Primary+Shift+F11'] if choice=='replace' else ['Primary+S']
   t.run.check(actual==wanted and focused=='message.merge','Import '+choice,{'keys':actual,'focused':focused,'sent':t.recorded()})
- for choice in ('reset','cancel','enter','escape'):
+  normalize=lambda b:{k:b.get(k,{} if k=='params' else None) for k in ('commandId','params','keys','context')}
+  canonical=lambda rows:sorted(json.dumps(normalize(b),sort_keys=True) for b in rows)
+  imported=data['bindings'];expected=baseline if choice in ('cancel','escape') else imported
+  if choice in ('merge','enter','space'):
+   expected=baseline+[b for b in imported if normalize(b) not in [normalize(x) for x in baseline]]
+  all_actual=await c('keymap.list',{})
+  t.run.save('bindings-'+choice+'.json',{'before':baseline,'input':imported,'expected':expected,'actual':all_actual})
+  t.run.check(canonical(expected)==canonical(all_actual),'Import complete binding set '+choice,{'expectedCount':len(expected),'actualCount':len(all_actual)})
+ for choice in ('reset','cancel','enter','space','escape'):
   await c('keymap.reset',{'all':True});await c('keymap.set',{'commandId':'project.save','keys':'Primary+Shift+F11','replaceExisting':True})
   await prefs();t.click('keymap.resetAll');await wait(t,'message.keymap.resetAll');t.clear()
   if choice in ('reset','cancel'):await modal(t,'message.keymap.resetAll');t.click('message.'+choice)
   else:
-   d.key(0x0D if choice=='enter' else 0x1B)
+   d.key(0x0D if choice=='enter' else 0x20 if choice=='space' else 0x1B)
    await asyncio.sleep(.3)
-   if choice=='enter':
+   if choice in ('enter','space'):
     stuck=t.cdp.js("!!document.querySelector('[data-tt-id=\"message.keymap.resetAll\"]')")
-    t.run.check(not stuck,'Reset default Enter answers the question',{'stuck':stuck,'focus':t.cdp.js('document.activeElement?.dataset.ttId')})
+    t.run.check(not stuck,'Reset focused default answers '+choice,{'stuck':stuck,'focus':t.cdp.js('document.activeElement?.dataset.ttId')})
     if stuck:d.key(0x1B)
   await asyncio.sleep(.4);await finish()
   t.run.check(await keys()==(['Primary+S'] if choice=='reset' else ['Primary+Shift+F11']),'Reset '+choice,t.recorded())
  await c('keymap.reset',{'all':True})
- for choice in ('override','cancel'):
+ for choice in ('override','cancel','override-space','cancel-space'):
   await prefs();t.click('keymap.filter');d.type_text('app.info.get');await asyncio.sleep(.5);t.click('keymap.command.app.info.get');t.click('keymap.capture')
   d.key(0x0D,0x10);await wait(t,'keymap.conflict');t.clear()
-  await modal(t,'keymap.conflict');t.click('keymap.conflict.'+choice);await finish()
+  await modal(t,'keymap.conflict')
+  selected=choice.split('-')[0]
+  if choice.endswith('-space'):
+   for _ in range(150):
+    if t.cdp.js('document.activeElement?.dataset.ttId')=='keymap.conflict.'+selected:break
+    d.key(0x09)
+   d.key(0x20)
+  else:t.click('keymap.conflict.'+selected)
+  await finish()
   actual=await c('keymap.list',{'commandId':'app.info.get'})
-  t.run.check(any(x['keys']=='Shift+Enter' for x in actual)==(choice=='override'),'Conflict '+choice,{'bindings':actual,'sent':t.recorded()})
+  t.run.check(any(x['keys']=='Shift+Enter' for x in actual)==(choice.startswith('override')),'Conflict '+choice,{'bindings':actual,'sent':t.recorded()})
   await c('keymap.reset',{'all':True})
- for choice in ('replace','cancel'):
-  await c('project.create',{'name':'Existing','onUnsaved':'discard'});target=t.work/('existing-'+choice+'.animpkg');await c('project.saveAs',{'path':str(target)})
-  await c('project.create',{'name':'Replacement','onUnsaved':'discard'});before=target.read_bytes();t.clear()
-  d.choose_menu(['File','Save As']);await asyncio.sleep(1.8);d.type_text(str(target));d.key(0x0D);await asyncio.sleep(1);d.key(0x59)
-  await wait(t,'message.project.exists');await modal(t,'message.project.exists');t.click('message.'+choice);await asyncio.sleep(2)
-  t.run.check((target.read_bytes()!=before)==(choice=='replace'),'Save As '+choice,{'sent':t.recorded(),'before':hashlib.sha256(before).hexdigest(),'after':sha(target)})
+ await overwrite(t)
  await jobs(t)
+ await modal_extra(t)
+async def keys_only(t):
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
+ await modal_fixture(t,'ModalKeysReview')
+ async def prefs():
+  d.choose_menu(['File','Preferences']);await wait(t,'preferences.category.keyboard');t.click('preferences.category.keyboard');await asyncio.sleep(.5)
+ async def finish():
+  t.click('preferences.submit');await asyncio.sleep(.7)
+ async def keys():return sorted(x['keys'] for x in await c('keymap.list',{'commandId':'project.save'}))
+ for choice in ('reset','cancel','enter','space','escape'):
+  await c('keymap.reset',{'all':True});await c('keymap.set',{'commandId':'project.save','keys':'Primary+Shift+F11','replaceExisting':True})
+  await prefs();t.click('keymap.resetAll');await wait(t,'message.keymap.resetAll');t.clear()
+  if choice in ('reset','cancel'):await modal(t,'message.keymap.resetAll');t.click('message.'+choice)
+  else:
+   d.key(0x0D if choice=='enter' else 0x20 if choice=='space' else 0x1B)
+   await asyncio.sleep(.3)
+   if choice in ('enter','space'):
+    stuck=t.cdp.js("!!document.querySelector('[data-tt-id=\"message.keymap.resetAll\"]')")
+    t.run.check(not stuck,'Reset focused default answers '+choice,{'stuck':stuck,'focus':t.cdp.js('document.activeElement?.dataset.ttId')})
+    if stuck:d.key(0x1B)
+  await asyncio.sleep(.4);await finish()
+  t.run.check(await keys()==(['Primary+S'] if choice=='reset' else ['Primary+Shift+F11']),'Reset '+choice,t.recorded())
+ await c('keymap.reset',{'all':True})
+ for choice in ('override','cancel','override-space','cancel-space'):
+  await prefs();t.click('keymap.filter');d.type_text('app.info.get');await asyncio.sleep(.5);t.click('keymap.command.app.info.get');t.click('keymap.capture')
+  d.key(0x0D,0x10);await wait(t,'keymap.conflict');t.clear()
+  await modal(t,'keymap.conflict')
+  selected=choice.split('-')[0]
+  if choice.endswith('-space'):
+   for _ in range(150):
+    if t.cdp.js('document.activeElement?.dataset.ttId')=='keymap.conflict.'+selected:break
+    d.key(0x09)
+   d.key(0x20)
+  else:t.click('keymap.conflict.'+selected)
+  await finish()
+  actual=await c('keymap.list',{'commandId':'app.info.get'})
+  t.run.check(any(x['keys']=='Shift+Enter' for x in actual)==(choice.startswith('override')),'Conflict '+choice,{'bindings':actual,'sent':t.recorded()})
+  await c('keymap.reset',{'all':True})
+
+async def imports_only(t):
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
+ await modal_fixture(t,'DialogReview')
+ async def prefs():
+  d.choose_menu(['File','Preferences']);await wait(t,'preferences.category.keyboard');t.click('preferences.category.keyboard');await asyncio.sleep(.5)
+ async def finish():
+  t.click('preferences.submit');await asyncio.sleep(.7)
+ async def keys():return sorted(x['keys'] for x in await c('keymap.list',{'commandId':'project.save'}))
+ path=t.work/'import.json'
+ for choice in ('merge','replace','cancel','enter','space','escape'):
+  await c('keymap.reset',{'all':True});await c('keymap.export',{'path':str(path),'onExists':'overwrite'})
+  data=json.loads(path.read_text(encoding='utf-8'));baseline=await c('keymap.list',{})
+  for b in data['bindings']:
+   if b['commandId']=='project.save':b['keys']='Primary+Shift+F11'
+  path.write_text(json.dumps(data),encoding='utf-8')
+  await prefs();t.clear();t.click('keymap.import');await asyncio.sleep(1.8);d.key(0x4E,0x12);d.key(0x41,0x11);d.type_text(str(path));d.key(0x0D)
+  await wait(t,'message.keymap.importMode')
+  focused=t.cdp.js('document.activeElement?.dataset.ttId')
+  if choice in ('merge','replace','cancel'):await modal(t,'message.keymap.importMode');t.click('message.'+choice)
+  else:d.key(0x0D if choice=='enter' else 0x20 if choice=='space' else 0x1B)
+  await asyncio.sleep(.5);await finish();actual=await keys()
+  wanted=['Primary+S','Primary+Shift+F11'] if choice in ('merge','enter','space') else ['Primary+Shift+F11'] if choice=='replace' else ['Primary+S']
+  t.run.check(actual==wanted and focused=='message.merge','Import '+choice,{'keys':actual,'focused':focused,'sent':t.recorded()})
+  normalize=lambda b:{k:b.get(k,{} if k=='params' else None) for k in ('commandId','params','keys','context')}
+  canonical=lambda rows:sorted(json.dumps(normalize(b),sort_keys=True) for b in rows)
+  imported=data['bindings'];expected=baseline if choice in ('cancel','escape') else imported
+  if choice in ('merge','enter','space'):
+   expected=baseline+[b for b in imported if normalize(b) not in [normalize(x) for x in baseline]]
+  all_actual=await c('keymap.list',{})
+  t.run.save('bindings-'+choice+'.json',{'before':baseline,'input':imported,'expected':expected,'actual':all_actual})
+  t.run.check(canonical(expected)==canonical(all_actual),'Import complete binding set '+choice,{'expectedCount':len(expected),'actualCount':len(all_actual)})
+
+async def modal_extra(t):
+ import ctypes
+ from ctypes import wintypes
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
+ await modal_fixture(t,'UnsavedKeys')
+ path=t.work/'unsaved.animpkg';await c('project.saveAs',{'path':str(path)})
+ await c('draw.rectangle.add',{'from':{'x':60,'y':0},'to':{'x':80,'y':20}})
+ before=await c('doc.export.json',{'scope':'project','binaries':'omit'});disk=path.read_bytes()
+ t.clear();d.choose_menu(['File','New Project']);await wait(t,'message.project.unsavedChanges')
+ await modal(t,'message.project.unsavedChanges');d.key(0x1B);await asyncio.sleep(.4)
+ stuck=t.cdp.js("!!document.querySelector('[data-tt-id=\"message.project.unsavedChanges\"]')")
+ t.run.check(not stuck,'Escape cancels unsaved question after Tab New',{'questionStillOpen':stuck,'focused':t.cdp.js('document.activeElement?.outerHTML')})
+ if stuck:t.click('message.cancel')
+ state=await c('app.state.get',{});after=await c('doc.export.json',{'scope':'project','binaries':'omit'})
+ t.run.check(content(before)==content(after) and path.read_bytes()==disk and state['project']['dirty'],'Unsaved modal keys and Cancel preserve dirty content',{'sent':t.recorded()})
+ t.clear();d.choose_menu(['File','Open']);await wait(t,'message.project.unsavedChanges');tab_focus=[]
+ for _ in range(3):
+  d.key(0x09);tab_focus.append(t.cdp.js('document.activeElement?.outerHTML'))
+ d.key(0x1B);await asyncio.sleep(.3)
+ stuck=t.cdp.js("!!document.querySelector('[data-tt-id=\"message.project.unsavedChanges\"]')")
+ t.run.check(not stuck,'Escape cancels unsaved question after Tab Open',{'questionStillOpen':stuck,'tabFocus':tab_focus})
+ if stuck:t.click('message.cancel')
+ t.clear();d.choose_menu(['File','New Project']);await wait(t,'message.project.unsavedChanges');focused=t.cdp.js('document.activeElement?.dataset.ttId');d.key(0x20)
+ await wait(t,'newProject.name');d.key(0x1B);await asyncio.sleep(.4)
+ after=await c('doc.export.json',{'scope':'project','binaries':'omit'});state=await c('app.state.get',{})
+ actions=[x for x in t.recorded() if x.get('command') not in SPEC_QUERIES and x.get('command')!='review.dispatch_key']
+ t.run.check(focused=='message.save' and content(before)==content(after) and not state['project']['dirty'] and actions==[{'command':'project.save','params':{}}] and not state['playback']['playing'],'Unsaved focused Space saves without background playback',{'focused':focused,'sent':actions})
+ await preserve_fixture(t);await c('project.create',{'name':'NativeExisting','onUnsaved':'fail'})
+ target=t.work/'native-existing.animpkg';await c('project.saveAs',{'path':str(target)})
+ await modal_fixture(t,'NativeReplacement');before=await c('doc.export.json',{'scope':'project','binaries':'omit'});disk=target.read_bytes();t.clear()
+ d.choose_menu(['File','Save As']);await asyncio.sleep(1.5);d.key(0x4E,0x12);d.key(0x41,0x11);d.type_text(str(target));d.key(0x0D);await asyncio.sleep(.5)
+ dialogs=native_dialogs();question=next(x for x in dialogs if 'confirm save' in x['title'].lower())
+ class Info(ctypes.Structure):
+  _fields_=[('cbSize',wintypes.DWORD),('flags',wintypes.DWORD),('hwndActive',wintypes.HWND),('hwndFocus',wintypes.HWND),('hwndCapture',wintypes.HWND),('hwndMenuOwner',wintypes.HWND),('hwndMoveSize',wintypes.HWND),('hwndCaret',wintypes.HWND),('rcCaret',wintypes.RECT)]
+ u=ctypes.windll.user32;u.GetAncestor.restype=wintypes.HWND;roots=[]
+ for _ in range(6):
+  d.key(0x09);info=Info();info.cbSize=ctypes.sizeof(info);u.GetGUIThreadInfo(0,ctypes.byref(info));roots.append(u.GetAncestor(info.hwndFocus,2))
+ d.key(0x42);d.key(0x5A,0x11);d.key(0x20);await asyncio.sleep(.3);d.key(0x1B);await asyncio.sleep(.5)
+ after=await c('doc.export.json',{'scope':'project','binaries':'omit'});state=await c('app.state.get',{})
+ actions=[x for x in t.recorded() if x.get('command') not in SPEC_QUERIES and x.get('command')!='review.dispatch_key']
+ rec={'questionTitle':question['title'],'tabRoots':roots,'questionHwnd':question['hwnd'],'contentUnchanged':content(before)==content(after),'fileUnchanged':target.read_bytes()==disk,'actions':actions,'playing':state['playback']['playing']}
+ t.run.save('native-modal-keys.json',rec)
+ t.run.check(all(h==question['hwnd'] for h in roots) and rec['contentUnchanged'] and rec['fileUnchanged'] and not actions and not rec['playing'],'Native overwrite modal keys and No preserve document',rec)
 async def jobs(t):
+ await preserve_fixture(t)
+ await t.cmd('project.create',{'name':'JobReview','onUnsaved':'fail'})
+ bob=(await t.cmd('element.create',{'type':'drawing','name':'JobDrawing'}))['elementIds'][0]
+ await t.cmd('element.drawing.create',{'elementId':bob,'name':'1','exposeFrom':1,'exposeTo':24})
+ await t.cmd('app.context.set',{'elementId':bob,'frame':1})
+ await t.cmd('draw.rectangle.add',{'from':{'x':-40,'y':-40},'to':{'x':40,'y':40}})
  discovery=json.loads((t.work/'discovery.json').read_text())
  before=await t.cmd('doc.export.json',{'scope':'project','binaries':'omit'})
  async with contextlib.AsyncExitStack() as stack:
@@ -234,7 +448,16 @@ async def jobs(t):
   from mcp import types
   async def roots(_):return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='review')])
   agent=await stack.enter_async_context(d.e2e.ClientSession(streams[0],streams[1],list_roots_callback=roots));await agent.initialize()
-  env=await d.e2e.run_cmd(agent,'render.range.run',{'from':1,'to':2400,'scale':2,'directory':str(t.work/'render'),'createDirs':True,'onConflict':'overwrite'})
+  attempts=[]
+  for _ in range(300):
+   env=await d.e2e.run_cmd(agent,'render.range.run',{'from':1,'to':2400,'scale':2,'directory':str(t.work/'render'),'createDirs':True,'onConflict':'overwrite'})
+   if env.get('status')=='ok':break
+   attempts.append(env)
+   if env.get('error',{}).get('code')!='fs.outsideRoots':break
+   await asyncio.sleep(.1)
+  t.run.save('roots-bootstrap.json',attempts)
+  t.run.save('job-start.json',env)
+  if env.get('status')!='ok':raise RuntimeError('job start '+json.dumps(env))
   jid=env['result']['jobId'];await wait(t,'jobsWindow.cancel.'+jid)
   shown=t.cdp.js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')?.textContent"%json.dumps('jobsWindow.job.'+jid))
   t.clear();t.click('jobsWindow.cancel.'+jid)
@@ -243,7 +466,9 @@ async def jobs(t):
   closed=t.cdp.js("!document.querySelector('[data-tt-id=jobsWindow]')")
   t.run.save('job-cancel.json',{'jobId':jid,'result':result,'shown':shown,'sent':sent,'before':before,'after':after,'closed':closed})
   t.run.check(bool(shown) and content(before)==content(after) and closed and any(x=={'command':'job.cancel','params':{'jobId':jid}} for x in sent) and result.get('result',{}).get('state')=='cancelled','Agent progress cancel',result)
-  env=await d.e2e.run_cmd(agent,'render.range.run',{'from':1,'to':12000,'scale':0.01,'directory':str(t.work/'committed'),'createDirs':True,'onConflict':'overwrite'})
+  env=await d.e2e.run_cmd(agent,'render.range.run',{'from':1,'to':12000,'scale':0.05,'directory':str(t.work/'committed'),'createDirs':True,'onConflict':'overwrite'})
+  t.run.save('commit-start.json',env)
+  if env.get('status')!='ok':raise RuntimeError('commit job start '+json.dumps(env))
   committed_id=env['result']['jobId'];samples=[];past=None;deadline=time.monotonic()+600
   while time.monotonic()<deadline:
    records=(await d.e2e.run_cmd(agent,'job.list',{'jobId':committed_id})).get('result') or []
@@ -260,7 +485,16 @@ async def jobs(t):
    if not control:break
    await asyncio.sleep(.05)
   cancellation=await d.e2e.run_cmd(agent,'job.cancel',{'jobId':committed_id})
-  final=await d.e2e.call(agent,'job_wait',{'jobId':committed_id,'timeoutMs':120000})
+  t.run.save('job-commit-partial.json',{'past':past,'cancelControl':control,'cancellation':cancellation})
+  final_state=None
+  request=json.dumps({'command':'job.list','params':{'jobId':committed_id,'all':True}})
+  expression="(async()=>{let r=await window.__TAURI_INTERNALS__.invoke('run_command',{json:%s});if(r instanceof ArrayBuffer||ArrayBuffer.isView(r))r=JSON.parse(new TextDecoder().decode(r));else if(Array.isArray(r))r=JSON.parse(new TextDecoder().decode(Uint8Array.from(r)));else if(typeof r==='string')r=JSON.parse(r);const j=(r.result||[])[0];return j?{state:j.state,cancellable:j.cancellable}:r;})()"%json.dumps(request)
+  deadline=time.monotonic()+600
+  while time.monotonic()<deadline:
+   final_state=t.cdp.js(expression)
+   if final_state.get('state') in ('succeeded','failed','cancelled'):break
+   await asyncio.sleep(.1)
+  final={'result':final_state}
   await asyncio.sleep(.7)
   unchanged=content(before)==content(await t.cmd('doc.export.json',{'scope':'project','binaries':'omit'}))
   closed=t.cdp.js("!document.querySelector('[data-tt-id=jobsWindow]')")
@@ -269,7 +503,7 @@ async def jobs(t):
   t.run.check(past['state']=='running' and not control and receipt['finalState']=='succeeded' and unchanged and closed,'Job past commit is not cancellable',receipt)
 def a3():
  run=d.e2e.Run(OUT);d.e6.dpi_aware();work=Path(tempfile.mkdtemp(prefix='r3-dialogs-'))
- d.build_and_run=lambda t,only:a3_body(t)
+ d.build_and_run=lambda t,only:overwrite_only(t) if '--overwrite' in sys.argv else jobs_only(t) if '--jobs' in sys.argv else keys_only(t) if '--keys' in sys.argv else imports_only(t) if '--imports' in sys.argv else modal_extra(t) if '--modal-extra' in sys.argv else a3_body(t)
  try:asyncio.run(d.session_all(APP,run,OUT,work,set()))
  except Exception as ex:
   import traceback;traceback.print_exc();run.check(False,'A3 ran',repr(ex))
@@ -278,6 +512,15 @@ if __name__=='__main__':
  if len(sys.argv)<3:sys.exit(0)
  APP=str(Path(sys.argv[1]).resolve());OUT.mkdir(parents=True,exist_ok=True)
  d=load('r3d39','scripts/c43-d39-bindings.py')
+ # Observe key dispatch as well as action IPC; this changes no input or assertion in older probes.
+ import inspect,textwrap
+ reader=textwrap.dedent(inspect.getsource(d.Cdp._read))
+ marker='            if "/run_command" in (req.get("url") or ""):'
+ replacement='            if "/dispatch_key" in (req.get("url") or ""):\n                self.calls.append({"command":"review.dispatch_key","params":{"body":req.get("postData")}})\n'+marker
+ assert marker in reader
+ reader=reader.replace(marker,replacement)
+ exec(compile(reader,'<review IPC observer>','exec'),d.__dict__)
+ d.Cdp._read=d.__dict__['_read']
  server=subprocess.Popen([sys.executable,'-m','http.server','1420','--bind','127.0.0.1','--directory',str(ROOT/'desktop/dist')],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
  import threading
  stop=threading.Event();worker=None
