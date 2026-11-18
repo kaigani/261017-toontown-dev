@@ -671,9 +671,15 @@ def b3():
    await self.start_row('brush')
    p=await self.press([(-80,-80),(-40,-70),(0,-75)])
    states=[]
-   for view in ('cameraView',lc.VIEW):
-    await self.app.run('view.active.set',{'viewId':view});await asyncio.sleep(.2)
-    state=self.cdp.js("JSON.parse(document.querySelector('[data-tt-id=\""+view+".canvas\"]').getAttribute('data-tt-value'))")
+   for view in ('camera','drawing'):
+    rect=self.cdp.js("(() => {const r=document.querySelector('[data-tt-id=\"drawingView.type."+view+"\"]').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,dpr:devicePixelRatio}})()")
+    h=d.front();origin=d.wintypes.POINT(0,0);d.u32.ClientToScreen(h,d.ctypes.byref(origin))
+    d.u32.SetCursorPos(int(origin.x+rect['x']*rect['dpr']),int(origin.y+rect['y']*rect['dpr']));d.e6._send_button(True);await asyncio.sleep(.03);d.e6._send_button(False)
+    await asyncio.sleep(.55)
+    import base64
+    shot=self.cdp.call('Page.captureScreenshot',{'format':'png'})
+    (OUT/('switch-'+view+'.png')).write_bytes(base64.b64decode(shot['result']['data']))
+    state=await self.state()
     states.append({'view':view,'afterRelease':time.monotonic()-p['times']['release'],'state':state})
    r=await self.settle(p)
    self.check('Camera and back while pending have no stale preview',all(not lc.pending(x['state']) and x['afterRelease']<2.5 for x in states),states)

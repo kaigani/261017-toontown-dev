@@ -1,0 +1,209 @@
+[
+ {
+  "name": "(e) a refusal clears at once: refused, and nothing is drawn from just after the answer",
+  "ok": true,
+  "detail": {
+   "answeredAt": 2.588567500002682,
+   "status": "error",
+   "code": "drawing.locked",
+   "drawnAfterAnswer": []
+  }
+ },
+ {
+  "name": "(e) a refusal clears at once: the drawing is unchanged",
+  "ok": true,
+  "detail": null
+ },
+ {
+  "name": "Camera and back while pending have no stale preview",
+  "ok": false,
+  "detail": [
+   {
+    "view": "camera",
+    "afterRelease": 1.0213724999921396,
+    "state": {
+     "backend": "webgl2",
+     "generation": 0,
+     "drawings": [
+      {
+       "id": "dr_01K7JJN800KQNKMSFBTEQ5B9TZ",
+       "rev": 9,
+       "bucket": 1
+      }
+     ],
+     "failures": [],
+     "gesture": {
+      "status": "error",
+      "code": "drawing.locked"
+     },
+     "selection": {
+      "objects": 0,
+      "handles": 0,
+      "points": 0,
+      "pivot": false
+     },
+     "viewType": "camera",
+     "overlay": true,
+     "camera": {
+      "frame": true,
+      "pivots": 0,
+      "boxes": 0,
+      "otherCameras": 0,
+      "handles": 0
+     },
+     "drawn": 1,
+     "residentDrawings": 1,
+     "residentBytes": 34232644,
+     "lastError": null,
+     "lastGesture": {
+      "origin": "user",
+      "tool": "brush",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+       1,
+       0,
+       0,
+       -1,
+       450.5,
+       316.5
+      ],
+      "events": [
+       {
+        "type": "down",
+        "x": 370,
+        "y": 296,
+        "modifiers": [],
+        "dt": 0,
+        "pressure": 1,
+        "button": "left"
+       },
+       {
+        "type": "move",
+        "x": 410,
+        "y": 286,
+        "modifiers": [],
+        "dt": 217,
+        "pressure": 1
+       },
+       {
+        "type": "move",
+        "x": 450,
+        "y": 291,
+        "modifiers": [],
+        "dt": 200,
+        "pressure": 1
+       },
+       {
+        "type": "up",
+        "x": 450,
+        "y": 291,
+        "modifiers": [],
+        "dt": 184,
+        "pressure": 1
+       }
+      ],
+      "eventCount": 4,
+      "status": "error",
+      "code": "drawing.locked",
+      "commands": []
+     }
+    }
+   },
+   {
+    "view": "drawing",
+    "afterRelease": 2.0378366999793798,
+    "state": {
+     "backend": "webgl2",
+     "generation": 0,
+     "drawings": [
+      {
+       "id": "dr_01K7JJN800KQNKMSFBTEQ5B9TZ",
+       "rev": 9,
+       "bucket": 0
+      }
+     ],
+     "failures": [],
+     "gesture": {
+      "status": "error",
+      "code": "drawing.locked"
+     },
+     "selection": {
+      "objects": 0,
+      "handles": 0,
+      "points": 0,
+      "pivot": false
+     },
+     "viewType": "drawing",
+     "overlay": true,
+     "drawn": 1,
+     "residentDrawings": 1,
+     "residentBytes": 34230388,
+     "lastError": null,
+     "lastGesture": {
+      "origin": "user",
+      "tool": "brush",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+       1,
+       0,
+       0,
+       -1,
+       450.5,
+       316.5
+      ],
+      "events": [
+       {
+        "type": "down",
+        "x": 370,
+        "y": 296,
+        "modifiers": [],
+        "dt": 0,
+        "pressure": 1,
+        "button": "left"
+       },
+       {
+        "type": "move",
+        "x": 410,
+        "y": 286,
+        "modifiers": [],
+        "dt": 217,
+        "pressure": 1
+       },
+       {
+        "type": "move",
+        "x": 450,
+        "y": 291,
+        "modifiers": [],
+        "dt": 200,
+        "pressure": 1
+       },
+       {
+        "type": "up",
+        "x": 450,
+        "y": 291,
+        "modifiers": [],
+        "dt": 184,
+        "pressure": 1
+       }
+      ],
+      "eventCount": 4,
+      "status": "error",
+      "code": "drawing.locked",
+      "commands": []
+     }
+    }
+   }
+  ]
+ },
+ {
+  "name": "view switch D-32",
+  "ok": true,
+  "detail": {
+   "statuses": [
+    "ok"
+   ]
+  }
+ }
+]
