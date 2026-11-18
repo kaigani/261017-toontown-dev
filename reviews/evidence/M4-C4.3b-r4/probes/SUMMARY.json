@@ -1,0 +1,103 @@
+{
+ "receipt": "reviewer probes run unchanged on 4ceae4f3; 40a5631a regenerates only parity.json (uses)",
+ "rows": [
+  {
+   "probe": "tests/adversarial/c43b-r3s-static.py",
+   "exit": 0,
+   "note": "6 PASS lines, unchanged body"
+  },
+  {
+   "probe": "tests/adversarial/c43b-r2s-static.py",
+   "exit": 0,
+   "note": "counts {action 122, agent 61, deferred 132, read 32, total 347}; both fixtures []"
+  },
+  {
+   "probe": "tests/adversarial/c43b-r3-live.py a1",
+   "exit": null,
+   "note": "stopped by the builder's 3000 s local limit while running c43b-r2-live.py b1 (exit 143); its completed list below, the rest run directly",
+   "completed": [
+    {
+     "probe": "c43b-r1-live.py case3",
+     "exit": 0
+    },
+    {
+     "probe": "c43b-r1-live.py case4",
+     "exit": 0
+    },
+    {
+     "probe": "c43b-r1-live.py case5",
+     "exit": 0
+    },
+    {
+     "probe": "c43b-r1-live.py case6",
+     "exit": 0
+    },
+    {
+     "probe": "c43b-r1-live.py case7",
+     "exit": 0
+    },
+    {
+     "probe": "c43b-r1-live.py case8",
+     "exit": 0
+    },
+    {
+     "probe": "c43b-r2-live.py a2",
+     "exit": 0
+    },
+    {
+     "probe": "c43b-r2-live.py a3",
+     "exit": 0
+    }
+   ]
+  },
+  {
+   "probe": "tests/adversarial/c43b-r2-live.py b1 (a1's list, run directly)",
+   "exit": 0,
+   "ok": 0,
+   "fail": []
+  },
+  {
+   "probe": "tests/adversarial/c43b-r2-live.py b2 (a1's list, run directly)",
+   "exit": 0,
+   "ok": 580,
+   "fail": []
+  },
+  {
+   "probe": "tests/adversarial/c43b-r2-live.py b3 (a1's list, run directly)",
+   "exit": 0,
+   "ok": 85,
+   "fail": []
+  },
+  {
+   "probe": "tests/adversarial/c43b-r3-live.py a2",
+   "exit": 0,
+   "ok": 30,
+   "fail": []
+  },
+  {
+   "probe": "tests/adversarial/c43b-r3-live.py a3",
+   "exit": 1,
+   "ok": 31,
+   "fail": [
+    "FAIL Conflict override-space",
+    "FAIL A3 ran"
+   ],
+   "cause": [
+    "missing message.project.exists: the window's Replace question D-49 item 1 removed (by construction)",
+    "Conflict override-space: modal() leaves focus on keymap.filter after 20 contained Tabs; its B and Ctrl+Z edit the filter, the list shows every command, 150 Tabs do not reach Override; fresh conflict: Override 26 Tabs away (builder diagnostic)"
+   ]
+  },
+  {
+   "probe": "tests/adversarial/c43b-r3-live.py b1",
+   "exit": 0,
+   "ok": 60,
+   "fail": []
+  },
+  {
+   "probe": "tests/adversarial/c43b-r3-live.py b2",
+   "exit": 0,
+   "ok": 620,
+   "fail": []
+  }
+ ]
+}

@@ -1,0 +1,317 @@
+{
+ "receipt": "reviews/evidence/M4-C4.3b-r4/preview-lifecycle",
+ "verdict": "pass",
+ "regenerate": "cargo build --release -p tt-desktop --features test-hooks; python scripts/c43-preview-lifecycle.py target/release/toontown.exe target/release/toontown-headless.exe <out>",
+ "manifest": {
+  "kind": "toontown.c43b.preview-lifecycle",
+  "commitDelayMs": 2500,
+  "sceneDelayMs": 1800,
+  "seconds": 66.8,
+  "rows": 18,
+  "passed": 18,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the Drawing view's canvas is located in the window"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (a) Select move: drawn until the committed frame (answer 2500 ms late)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (a) Select move: the drawing equals the direct commands' (D-32)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (a) Select corner scale: drawn until the committed frame (answer 2500 ms late)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (a) Select corner scale: the drawing equals the direct commands' (D-32)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (a) Brush: drawn until the committed frame (answer 2500 ms late)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (a) Brush: the drawing equals the direct commands' (D-32)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (a) Rectangle: drawn until the committed frame (answer 2500 ms late)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (a) Rectangle: the drawing equals the direct commands' (D-32)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (c) undo by keyboard right after the release: answered, and nothing is left drawn once settled"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (c) undo by keyboard right after the release: the drawing equals the direct commands then undo (D-32)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (d) a second gesture before the first settles: the second press came before the first answer, both committed, nothing left drawn"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (d) a second gesture before the first settles: the drawing equals both gestures' direct commands (D-32)"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (e) a refusal clears at once: refused, and nothing is drawn from just after the answer"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (e) a refusal clears at once: the drawing is unchanged"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (f) the active view switched to the Camera view and back while pending: the commit answered, nothing left drawn"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (f) the active view switched to the Camera view and back while pending: the drawing equals the direct commands' (D-32)"
+  },
+  {
+   "ok": true,
+   "check": "the Drawing view's canvas is located in the window"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (b) a scene answer in flight before the commit arrives first: the trace is staged (scene built before the commit, delivered between the commit and its answer) and the preview stays until the committed frame"
+  },
+  {
+   "ok": true,
+   "check": "D-50 (b) a scene answer in flight before the commit arrives first: the drawing equals the direct commands' (D-32)"
+  }
+ ],
+ "rows": [
+  {
+   "name": "(a) Select move: drawn until the committed frame (answer 2500 ms late)",
+   "ok": true,
+   "detail": {
+    "answeredAt": 2.564,
+    "heldSamples": 34,
+    "heldAll": true,
+    "afterSamples": 9,
+    "afterNone": true,
+    "status": "ok"
+   }
+  },
+  {
+   "name": "(a) Select move: the drawing equals the direct commands' (D-32)",
+   "ok": true,
+   "detail": {
+    "statuses": [
+     "ok"
+    ]
+   }
+  },
+  {
+   "name": "(a) Select corner scale: drawn until the committed frame (answer 2500 ms late)",
+   "ok": true,
+   "detail": {
+    "answeredAt": 2.567,
+    "heldSamples": 34,
+    "heldAll": true,
+    "afterSamples": 7,
+    "afterNone": true,
+    "status": "ok"
+   }
+  },
+  {
+   "name": "(a) Select corner scale: the drawing equals the direct commands' (D-32)",
+   "ok": true,
+   "detail": {
+    "statuses": [
+     "ok"
+    ]
+   }
+  },
+  {
+   "name": "(a) Brush: drawn until the committed frame (answer 2500 ms late)",
+   "ok": true,
+   "detail": {
+    "answeredAt": 2.561,
+    "heldSamples": 34,
+    "heldAll": true,
+    "afterSamples": 7,
+    "afterNone": true,
+    "status": "ok"
+   }
+  },
+  {
+   "name": "(a) Brush: the drawing equals the direct commands' (D-32)",
+   "ok": true,
+   "detail": {
+    "statuses": [
+     "ok"
+    ]
+   }
+  },
+  {
+   "name": "(a) Rectangle: drawn until the committed frame (answer 2500 ms late)",
+   "ok": true,
+   "detail": {
+    "answeredAt": 2.557,
+    "heldSamples": 33,
+    "heldAll": true,
+    "afterSamples": 8,
+    "afterNone": true,
+    "status": "ok"
+   }
+  },
+  {
+   "name": "(a) Rectangle: the drawing equals the direct commands' (D-32)",
+   "ok": true,
+   "detail": {
+    "statuses": [
+     "ok"
+    ]
+   }
+  },
+  {
+   "name": "(c) undo by keyboard right after the release: answered, and nothing is left drawn once settled",
+   "ok": true,
+   "detail": {
+    "answeredAt": 2.581,
+    "status": "ok",
+    "pending": false
+   }
+  },
+  {
+   "name": "(c) undo by keyboard right after the release: the drawing equals the direct commands then undo (D-32)",
+   "ok": true,
+   "detail": {
+    "statuses": [
+     "ok",
+     "ok"
+    ]
+   }
+  },
+  {
+   "name": "(d) a second gesture before the first settles: the second press came before the first answer, both committed, nothing left drawn",
+   "ok": true,
+   "detail": {
+    "secondPressAfterFirstRelease": 0.561,
+    "firstAnsweredAt": 2.559,
+    "secondAnsweredAt": 3.91,
+    "pending": false
+   }
+  },
+  {
+   "name": "(d) a second gesture before the first settles: the drawing equals both gestures' direct commands (D-32)",
+   "ok": true,
+   "detail": {
+    "statuses": [
+     "ok",
+     "ok"
+    ]
+   }
+  },
+  {
+   "name": "(e) a refusal clears at once: refused, and nothing is drawn from just after the answer",
+   "ok": true,
+   "detail": {
+    "answeredAt": 2.548,
+    "status": "error",
+    "error": null,
+    "drawnAfterAnswer": []
+   }
+  },
+  {
+   "name": "(e) a refusal clears at once: the drawing is unchanged",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "name": "(f) the active view switched to the Camera view and back while pending: the commit answered, nothing left drawn",
+   "ok": true,
+   "detail": {
+    "answeredAt": 2.791,
+    "pending": false
+   }
+  },
+  {
+   "name": "(f) the active view switched to the Camera view and back while pending: the drawing equals the direct commands' (D-32)",
+   "ok": true,
+   "detail": {
+    "statuses": [
+     "ok"
+    ]
+   }
+  },
+  {
+   "name": "(b) a scene answer in flight before the commit arrives first: the trace is staged (scene built before the commit, delivered between the commit and its answer) and the preview stays until the committed frame",
+   "ok": true,
+   "detail": {
+    "answeredAt": 2.577,
+    "heldSamples": 34,
+    "heldAll": true,
+    "afterSamples": 8,
+    "afterNone": true,
+    "status": "ok",
+    "releaseAfterSceneAsked": 1.116,
+    "sceneDelayMs": 1800,
+    "sceneArrivesAfterRelease": 0.684,
+    "staged": true
+   }
+  },
+  {
+   "name": "(b) a scene answer in flight before the commit arrives first: the drawing equals the direct commands' (D-32)",
+   "ok": true,
+   "detail": {
+    "statuses": [
+     "ok"
+    ]
+   }
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 188,
+   "sha256": "6e6eaf8dbdc0733138395b4b590a556703bc28a1159ec0cca678b64a79cf1ef8"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 4527,
+   "sha256": "e4f54713f020b60b5f2c8a1fde26bed5330c0be0825512c83f3dbb50fbd2f512"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 4919,
+   "sha256": "39a63e3b85ad886d02fb71e79c33af9d8dba0d5c817ae6ac8818eef89d625b1e"
+  }
+ ],
+ "rerunStateE": {
+  "note": "state (e) rerun after the row recorded the refusal code",
+  "rows": [
+   {
+    "name": "(e) a refusal clears at once: refused, and nothing is drawn from just after the answer",
+    "ok": true,
+    "detail": {
+     "answeredAt": 2.711,
+     "status": "error",
+     "code": "drawing.locked",
+     "drawnAfterAnswer": []
+    }
+   },
+   {
+    "name": "(e) a refusal clears at once: the drawing is unchanged",
+    "ok": true,
+    "detail": null
+   }
+  ]
+ }
+}
