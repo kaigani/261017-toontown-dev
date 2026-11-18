@@ -12,11 +12,9 @@ fn current_brush(h: &tt_executor::ExecutorHandle) -> String {
 fn pen_id(h: &tt_executor::ExecutorHandle, name: &str) -> String {
     let list = ok(h, "tool.pen.list", json!({ "type": "brush" }));
     let pens = list["pens"].as_array().cloned().unwrap_or_default();
-    pens.iter()
-        .find(|p| p["name"] == name)
-        .and_then(|p| p["penId"].as_str().or_else(|| p["id"].as_str()))
-        .unwrap_or_else(|| panic!("no pen {name}: {list}"))
-        .to_owned()
+    let id = pens.iter().find(|p| p["name"] == name).and_then(|p| p["penId"].as_str()).unwrap_or_default().to_owned();
+    assert!(!id.is_empty(), "no pen {name}: {list}");
+    id
 }
 
 fn selected_events(rx: &std::sync::mpsc::Receiver<tt_executor::Event>) -> Vec<Value> {
@@ -66,4 +64,32 @@ fn deleting_the_current_pen_makes_the_next_one_current_and_says_so() {
     ok(&h, "tool.pen.delete", json!({ "penId": b }));
     assert_eq!(current_brush(&h), before_b);
     assert_eq!(selected_events(&rx).iter().map(|e| e["penId"].clone()).collect::<Vec<_>>(), vec![json!(before_b)]);
+}
+
+/// Design note 1 §3: the Pen panel's Delete is disabled, with the reason, for the last pen of a type (`pen.lastPen` is
+/// the precheck's as well as the handler's), and enabled while another pen of the type exists.
+#[test]
+fn delete_is_unavailable_for_the_last_pen_of_a_type() {
+    let h = fixture();
+    ok(&h, "tool.pen.create", json!({ "type": "eraser", "name": "Second eraser" }));
+    let erasers: Vec<String> = ok(&h, "tool.pen.list", json!({ "type": "eraser" }))["pens"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|p| p["penId"].as_str().unwrap().to_owned())
+        .collect();
+    assert!(erasers.len() >= 2, "{erasers:?}");
+    let delete = |id: &str| {
+        let mut p = serde_json::Map::new();
+        p.insert("penId".into(), json!(id));
+        h.availability(vec![("tool.pen.delete".into(), p)]).unwrap().remove(0)
+    };
+    for id in &erasers[1..] {
+        assert!(delete(id).enabled, "another eraser exists");
+        ok(&h, "tool.pen.delete", json!({ "penId": id }));
+    }
+    let last = delete(&erasers[0]);
+    assert!(!last.enabled, "the last eraser pen cannot be deleted");
+    assert!(last.reason.as_deref().unwrap_or_default().contains("last eraser pen"), "{:?}", last.reason);
+    assert_eq!(err(&h, "tool.pen.delete", json!({ "penId": erasers[0] })).code, "pen.lastPen");
 }

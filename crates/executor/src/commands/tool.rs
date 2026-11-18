@@ -568,6 +568,21 @@ fn find_pen(cx: &Cx, r: &str) -> Result<(Id, PenKind, String), CommandError> {
         .ok_or_else(|| err("pen.notFound", format!("no pen `{r}`"), json!({ "pointer": "/penId", "penId": r })))
 }
 
+/// `pen.lastPen`: the last pen of its type cannot be deleted (02 §6.1). The handler of `tool.pen.delete` and its
+/// precheck (the Pen panel's Delete, shown disabled with this reason) use this one rule (ruling O-24).
+pub(crate) fn last_pen_refusal(cx: &Cx, r: &str) -> Result<(Id, PenKind, String), CommandError> {
+    let (id, kind, name) = find_pen(cx, r)?;
+    let same_kind = cx.document()?.project().pens().iter().filter(|x| *x.kind() == kind).count();
+    if same_kind <= 1 {
+        return Err(err(
+            "pen.lastPen",
+            format!("`{name}` is the last {} pen", kind_str(kind)),
+            json!({ "penId": id.as_str() }),
+        ));
+    }
+    Ok((id, kind, name))
+}
+
 fn select_pen(cx: &mut Cx, r: &str, want: Option<PenKind>) -> Result<(Id, PenKind), CommandError> {
     let (id, kind, name) = find_pen(cx, r)?;
     if want.is_some_and(|w| w != kind) {
@@ -1110,6 +1125,7 @@ pub(crate) struct PenDeleted {
 
 #[command(
     id = "tool.pen.delete",
+    precheck = crate::prechecks::tool_pen_delete,
     kind = action,
     label = "Delete pen",
     scopes = [edit],
@@ -1119,15 +1135,7 @@ pub(crate) struct PenDeleted {
     gui = "the Tools toolbar and tool properties (02, 05); wired in M4 C4.2",
 )]
 pub(crate) fn tool_pen_delete(cx: &mut Cx, p: PenParams) -> Result<PenDeleted, CommandError> {
-    let (id, kind, name) = find_pen(cx, &p.pen_id)?;
-    let same_kind = cx.document()?.project().pens().iter().filter(|x| *x.kind() == kind).count();
-    if same_kind <= 1 {
-        return Err(err(
-            "pen.lastPen",
-            format!("`{name}` is the last {} pen", kind_str(kind)),
-            json!({ "penId": id.as_str() }),
-        ));
-    }
+    let (id, kind, _) = last_pen_refusal(cx, &p.pen_id)?;
     let (_, i) = pen_index(cx, &id)?;
     // SI-167 (design note 1 §3): when the current pen is deleted, the next pen of its type in the list becomes
     // current, else the previous one, and is announced (`selected`), so the Pen panel and the cursor follow.

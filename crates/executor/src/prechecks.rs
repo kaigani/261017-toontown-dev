@@ -106,6 +106,13 @@ pub(crate) fn xsheet_exposures_set(cx: &Cx, v: &Value) -> Result<(), CommandErro
 }
 
 /// `render.range.run`: the scene (given, else the current or first one).
+/// `tool.pen.delete`: the pen exists and is not the last of its type (`pen.lastPen`, 02 §6.1), so the Pen panel's
+/// Delete is disabled with that reason (design note 1 §3).
+pub(crate) fn tool_pen_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let pen = v.get("penId").and_then(Value::as_str).unwrap_or_default();
+    crate::commands::tool::last_pen_refusal(cx, pen).map(|_| ())
+}
+
 pub(crate) fn render_range_run(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     crate::commands::render::scene_param(cx, v.get("sceneId").and_then(Value::as_str)).map(|_| ())
 }
