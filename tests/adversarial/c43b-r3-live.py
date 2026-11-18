@@ -604,6 +604,90 @@ async def b2_body(t):
  await menus(t,'workspace-recent')
 def b2():return bcase(b2_body,'b2')
 
+
+async def b3_body(t):
+ # Fresh fixture and real OS input; all raw frame captures remain outside the repository.
+ import ctypes, threading
+ from ctypes import wintypes
+ cam=load('b3camera','scripts/c43-camera-e2e.py')
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+ await modal_fixture(t,'B3 preview lifecycle')
+ eid=(await t.cmd('app.state.get')).get('element',{}).get('id')
+ for g in range(int(os.environ.get('B3_GROUPS','10'))):
+  steps=[]
+  for i in range(100):
+   n=g*100+i
+   steps += [{'id':'element.create','params':{'type':'drawing','name':'B3 '+str(n)},'as':'e'+str(i)},
+    {'id':'element.drawing.create','params':{'elementId':'$e'+str(i)+'.result.elementIds.0','name':'1','exposeFrom':1,'exposeTo':24},'as':'d'+str(i)},
+    {'id':'draw.rectangle.add','params':{'drawingId':'$d'+str(i)+'.result.drawingId','from':{'x':500+n%40*3,'y':500+n//40*3},'to':{'x':502+n%40*3,'y':502+n//40*3}}}]
+  env=await d.e2e.call(t.s,'batch',{'steps':steps,'label':'B3 heavy fixture'})
+  if env.get('status') not in ('ok',None):raise RuntimeError(env)
+  print('B3 fixture',g+1,flush=True)
+ await t.cmd('app.context.set',{'elementId':eid,'frame':1})
+ await t.cmd('view.pan.set',{'viewId':'drawingView','centre':{'x':0,'y':0}})
+ await t.cmd('drawAid.autoLightTable.set',{'enabled':True})
+ await t.cmd('view.zoom.set',{'viewId':'drawingView','zoom':1})
+ await t.cmd('draw.selection.set',{'by':'all'})
+ await asyncio.sleep(3)
+ def summary():
+  return t.cdp.js("JSON.parse(document.querySelector('[data-tt-id=\"drawingView.canvas\"]').getAttribute('data-tt-value'))")
+ async def document():
+  path=t.work/'B3-document.json'
+  await t.cmd('doc.export.json',{'scope':'project','binaries':'omit','path':str(path),'onExists':'overwrite'})
+  return content({'bundle':json.loads(path.read_text(encoding='utf-8'))})
+ results=[]
+ for attempt,tool in enumerate(('move','scale','brush','rectangle')):
+  await t.cmd('draw.selection.set',{'by':'all'})
+  await t.cmd('tool.active.set',{'toolId':'select' if tool in ('move','scale') else tool})
+  await asyncio.sleep(.4)
+  place=await d.e6.locate_view(t.s,d.e2e.run_cmd,'drawingView');b=await cam.box_of(t.s,'drawingView')
+  if not place or not b:raise RuntimeError('missing view or selection')
+  x,y=((b[0]+b[2])/2+10,(b[1]+b[3])/2+10) if tool=='move' else (b[2],b[3]) if tool=='scale' else (b[2]+35,b[3]+35)
+  pts=[(place[0]+x,place[1]+y),(place[0]+x+32,place[1]+y+17)]
+  # Capture the rendered page for every compositor frame, with acknowledgements in a dedicated reader.
+  from websocket import create_connection
+  import urllib.request,base64
+  pages=json.load(urllib.request.urlopen('http://127.0.0.1:'+str(d.CDP_PORT)+'/json'))
+  page=next(p for p in pages if p.get('type')=='page' and 'float' not in p.get('url',''))
+  ws=create_connection(page['webSocketDebuggerUrl']);frames=[];stop=threading.Event()
+  def read_frames():
+   try:
+    while not stop.is_set():
+     msg=json.loads(ws.recv())
+     if msg.get('method')=='Page.screencastFrame':
+      p=msg['params'];idx=len(frames);path=OUT/('baseline-'+str(attempt)+'-'+tool+'-'+str(idx)+'.png');path.write_bytes(base64.b64decode(p['data']))
+      frames.append({'time':time.monotonic(),'metadata':p.get('metadata'),'file':str(path)})
+      ws.send(json.dumps({'id':10000+idx,'method':'Page.screencastFrameAck','params':{'sessionId':p['sessionId']}}))
+   except Exception:pass
+  reader=threading.Thread(target=read_frames,daemon=True);reader.start()
+  ws.send(json.dumps({'id':1,'method':'Page.startScreencast','params':{'format':'png','everyNthFrame':1}}))
+  times={};before=await document();h0=await t.position()
+  th=threading.Thread(target=d.e6.os_drag,args=(d.e2e.APP_PID['pid'],pts,.15,.8,times));th.start()
+  samples=[]
+  while th.is_alive():
+   samples.append({'time':time.monotonic(),'summary':summary()});await asyncio.sleep(.01)
+  await asyncio.to_thread(th.join)
+  for i in range(150):
+   samples.append({'time':time.monotonic(),'summary':summary()});await asyncio.sleep(.01)
+  ws.send(json.dumps({'id':2,'method':'Page.stopScreencast'}));stop.set();ws.close();reader.join(timeout=2)
+  after=await document();h1=await t.position();last=summary().get('lastGesture') or {}
+  row={'tool':tool,'times':times,'frames':frames,'samples':samples,'lastGesture':last,'steps':h1-h0,'attempt':attempt}
+  t.run.save('b3-'+'baseline-'+str(attempt)+'-'+tool+'.json',row)
+  t.run.check(not times.get('error') and h1==h0+1,'B3 preliminary input history '+tool,row['times'])
+  await t.cmd('edit.undo')
+  restored=await document()
+  commands=last.get('commands') or []
+  for c in commands:await t.cmd(c['commandId'],c.get('params',{}))
+  direct=await document()
+  # Revisions and generated object ids can differ after undo/reissue; preserve full exports for review.
+  t.run.save('b3-'+tool+'-documents.json',{'before':before,'after':after,'restored':restored,'direct':direct})
+  results.append({'tool':tool,'frames':len(frames),'steps':h1-h0,'commands':commands})
+  await t.cmd('edit.undo');await asyncio.sleep(.5)
+ t.run.save('b3-baseline.json',results)
+ raise RuntimeError('B3 incomplete: heavy pending interval, frame analysis, and steps 2-6 remain unverified')
+
+def b3():return bcase(b3_body,'b3')
+
 if __name__=='__main__':
  if len(sys.argv)<3:sys.exit(0)
  APP=str(Path(sys.argv[1]).resolve());OUT.mkdir(parents=True,exist_ok=True)
@@ -622,7 +706,7 @@ if __name__=='__main__':
  stop=threading.Event();worker=None
  if '--first-click' not in sys.argv:
   worker=threading.Thread(target=activate_new_windows,args=(stop,),daemon=True);worker.start()
- try:sys.exit({'a1':a1,'a2':a2,'a3':a3,'b1':b1,'b2':b2}[sys.argv[2]]())
+ try:sys.exit({'a1':a1,'a2':a2,'a3':a3,'b1':b1,'b2':b2,'b3':b3}[sys.argv[2]]())
  finally:
   stop.set()
   if worker:worker.join()

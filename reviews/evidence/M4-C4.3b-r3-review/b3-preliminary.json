@@ -1,0 +1,29 @@
+{
+  "complete": false,
+  "product": "6d708c64",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c43b-r3-na0pxhi3",
+  "baseline": {
+    "elements": 1001,
+    "residentChangeMs": {
+      "move": 53,
+      "scale": 51,
+      "brush": 58,
+      "rectangle": 68
+    },
+    "oneStepEach": true,
+    "undoRestoredEach": true,
+    "directReissue": "move and scale match excluding revision metadata; brush and rectangle differ only in newly allocated node/stroke IDs"
+  },
+  "limitations": [
+    "Required approximately 100 ms pending interval not achieved",
+    "Compositor frames captured but lifecycle pixel oracle not completed",
+    "Steps 2-6 not executed",
+    "No B3 verdict or product finding established"
+  ],
+  "failedFixtureAttempts": [
+    "Inline full export ended MCP stream; file export used subsequently",
+    "Initial offscreen press refused by OS guard; context and pan corrected",
+    "Dense drawing construction hit batch command.timeout at 30000 ms"
+  ],
+  "regenerate": "python tests/adversarial/c43b-r3-live.py target/release/toontown.exe b3"
+}
