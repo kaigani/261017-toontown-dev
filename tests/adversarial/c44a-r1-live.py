@@ -566,7 +566,7 @@ async def live3_body(t,step):
    t.click('agentAccess.regenerate');await pause()
    buttons=t.cdp.js("[...document.querySelectorAll('button')].filter(e=>e.textContent==='Regenerate').map(e=>e.dataset.ttId)")
    t.click(buttons[0]);await pause();new=json.loads(discpath.read_text())
-   check(new['token']!=disc['token'] and new['endpoint']==disc['endpoint'],'regenerate changes token keeps endpoint',sent())
+   check(new['token']!=disc['token'] and new['endpoint']==disc['endpoint'],'regenerate changes token keeps endpoint',{'sent':sent(),'oldFingerprint':{'length':len(disc['token']),'sha256':hashlib.sha256(disc['token'].encode()).hexdigest()},'newFingerprint':{'length':len(new['token']),'sha256':hashlib.sha256(new['token'].encode()).hexdigest()}})
    check('result' not in await init(q),'old token refused',await init(q));nq=fresh('new-token');check('result' in await init(nq),'new token accepted')
    tree=await tool(nq,'inspect_ui',{});logs=[]
    for f in (t.work/'user').rglob('*'):
