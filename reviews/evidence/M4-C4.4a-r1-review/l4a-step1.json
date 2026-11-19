@@ -1,7 +1,7 @@
 {
   "checks": 11,
   "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-p44fihsk",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ufgy5bhc",
   "results": [
     {
       "check": "initial policy",
@@ -11,7 +11,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-6520d4",
+            "sessionId": "s1-043d60",
             "client": "mcp",
             "policy": "autonomous",
             "scopes": [
@@ -24,13 +24,13 @@
               "prefs",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:50:02.491Z",
-            "lastActivity": "2026-11-19T21:50:05.064Z",
+            "connectedAt": "2026-11-19T22:09:55.972Z",
+            "lastActivity": "2026-11-19T22:09:58.261Z",
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s2-66bb3e",
+            "sessionId": "s2-afa0d7",
             "client": "review-live4-primary",
             "policy": "assist",
             "scopes": [
@@ -42,13 +42,13 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:50:11.713Z",
+            "connectedAt": "2026-11-19T22:10:04.889Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s3-7c38fc",
+            "sessionId": "s3-30f7be",
             "client": "review-live4-secondary",
             "policy": "assist",
             "scopes": [
@@ -60,7 +60,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:50:11.741Z",
+            "connectedAt": "2026-11-19T22:10:04.905Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
@@ -72,12 +72,12 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-mcu7avbk\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-mcu7avbk\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-hfne5psa\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-hfne5psa\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
     },
     {
       "check": "sheet content",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-mcu7avbk\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-mcu7avbk\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-hfne5psa\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-hfne5psa\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
     },
     {
       "check": "shortcut leaves request open",
@@ -111,9 +111,25 @@
             "params": {}
           },
           {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
             "command": "agent.confirmation.respond",
             "params": {
-              "confirmationId": "cf_3a3722c0237261b83c042d4f",
+              "confirmationId": "cf_8f55430cdedcc691742cc4de",
               "accept": true
             }
           },
@@ -203,7 +219,7 @@
       }
     },
     {
-      "check": "scene outcome",
+      "check": "file outcome",
       "ok": true,
       "detail": {
         "unchanged": false
@@ -212,12 +228,12 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-mcu7avbk\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-mcu7avbk\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-hfne5psa\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-hfne5psa\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
     },
     {
       "check": "sheet content",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-mcu7avbk\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-mcu7avbk\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-hfne5psa\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-hfne5psa\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
     },
     {
       "check": "shortcut leaves request open",
@@ -241,7 +257,7 @@
             "code": "confirmation.declined",
             "message": "the user declined the action",
             "details": {
-              "confirmToken": "cf_8718b9e6a1416bf040698fb2"
+              "confirmToken": "cf_58e30597aa2c89a4005b9bbd"
             }
           }
         },
@@ -255,9 +271,17 @@
             "params": {}
           },
           {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
             "command": "agent.confirmation.respond",
             "params": {
-              "confirmationId": "cf_8718b9e6a1416bf040698fb2",
+              "confirmationId": "cf_58e30597aa2c89a4005b9bbd",
               "accept": false
             }
           },
@@ -289,7 +313,7 @@
       }
     },
     {
-      "check": "scene outcome",
+      "check": "file outcome",
       "ok": true,
       "detail": {
         "unchanged": true

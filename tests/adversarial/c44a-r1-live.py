@@ -719,6 +719,7 @@ async def live4_body(t,step):
     d.key(0x09)
     if t.cdp.js('document.activeElement?.dataset.ttId')=='confirmSheet.accept':break
    d.key(0x0D);await pause();check((await task).get('status')=='ok','keyboard explicit Accept')
+   check(True,'keyboard decision receipts',{'sent':[x for x in t.recorded() if x['command']=='agent.confirmation.respond'],'answers':[x.result() for x in tasks if x.done()]})
   elif step==3:
    task,sid,p=await request(q)
    status=await call(q2,'agent.server.status');activity=await call(q2,'agent.activity.list',{'limit':100});events=await asyncio.to_thread(q2.rpc,'resources/read',{'uri':'app://events?after=0'})

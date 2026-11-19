@@ -1,7 +1,7 @@
 {
-  "checks": 12,
+  "checks": 13,
   "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-b2o786k1",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-00i3dcvc",
   "results": [
     {
       "check": "initial policy",
@@ -11,7 +11,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-fb3c31",
+            "sessionId": "s1-6f8569",
             "client": "mcp",
             "policy": "autonomous",
             "scopes": [
@@ -24,13 +24,13 @@
               "prefs",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T22:09:14.160Z",
-            "lastActivity": "2026-11-19T22:09:16.711Z",
+            "connectedAt": "2026-11-19T22:10:46.776Z",
+            "lastActivity": "2026-11-19T22:10:49.332Z",
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s2-0217d5",
+            "sessionId": "s2-960713",
             "client": "review-live4-primary",
             "policy": "assist",
             "scopes": [
@@ -42,13 +42,13 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T22:09:23.322Z",
+            "connectedAt": "2026-11-19T22:10:55.985Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s3-ad4b5a",
+            "sessionId": "s3-6f29a9",
             "client": "review-live4-secondary",
             "policy": "assist",
             "scopes": [
@@ -60,7 +60,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T22:09:23.341Z",
+            "connectedAt": "2026-11-19T22:10:56.006Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
@@ -72,7 +72,7 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-nw3lyw66\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-nw3lyw66\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
     },
     {
       "check": "outside key preserves request 13",
@@ -102,7 +102,7 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-nw3lyw66\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-nw3lyw66\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
     },
     {
       "check": "inside Escape declines",
@@ -112,17 +112,103 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-2.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-2.animpkg, bytes: 17Expires in 5:04DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-nw3lyw66\\overwrite-2.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-nw3lyw66\\overwrite-2.animpkg, bytes: 17Expires in 5:04DeclineAccept"
     },
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-3.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-3.animpkg, bytes: 17Expires in 5:01DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-nw3lyw66\\overwrite-3.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-nw3lyw66\\overwrite-3.animpkg, bytes: 17Expires in 5:01DeclineAccept"
     },
     {
       "check": "keyboard explicit Accept",
       "ok": true,
       "detail": null
+    },
+    {
+      "check": "keyboard decision receipts",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.confirmation.respond",
+            "params": {
+              "confirmationId": "cf_561e60b83158fa7c9bf89e42",
+              "accept": false
+            }
+          },
+          {
+            "command": "agent.confirmation.respond",
+            "params": {
+              "confirmationId": "cf_f9748e2edea751ae08ceae28",
+              "accept": false
+            }
+          },
+          {
+            "command": "agent.confirmation.respond",
+            "params": {
+              "confirmationId": "cf_a6a34f8b5aced45a46310850",
+              "accept": false
+            }
+          },
+          {
+            "command": "agent.confirmation.respond",
+            "params": {
+              "confirmationId": "cf_9e36ded797d731716a95b727",
+              "accept": true
+            }
+          }
+        ],
+        "answers": [
+          {
+            "status": "error",
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5,
+            "error": {
+              "code": "confirmation.declined",
+              "message": "the user declined the action",
+              "details": {
+                "confirmToken": "cf_561e60b83158fa7c9bf89e42"
+              }
+            }
+          },
+          {
+            "status": "error",
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5,
+            "error": {
+              "code": "confirmation.declined",
+              "message": "the user declined the action",
+              "details": {
+                "confirmToken": "cf_f9748e2edea751ae08ceae28"
+              }
+            }
+          },
+          {
+            "status": "error",
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5,
+            "error": {
+              "code": "confirmation.declined",
+              "message": "the user declined the action",
+              "details": {
+                "confirmToken": "cf_a6a34f8b5aced45a46310850"
+              }
+            }
+          },
+          {
+            "status": "ok",
+            "result": {
+              "jobId": "job-2"
+            },
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5
+          }
+        ]
+      }
     }
   ]
 }
