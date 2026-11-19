@@ -1,0 +1,19 @@
+{
+  "verdict": "FAIL",
+  "drawingMenuDispatchChecks": 88,
+  "sceneMenuDispatchChecks": 10,
+  "dockMenuDispatchChecks": 22,
+  "dockChecks": 44,
+  "findings": [
+    "C44A-R1-01",
+    "C44A-R1-02"
+  ],
+  "rawDrawingAndScene": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-gk8q0xb7",
+  "rawDock": "C:/Users/kaiga/AppData/Local/Temp/c44a-r1-jxst0eni",
+  "rawTargetRepro": "C:/Users/kaiga/AppData/Local/Temp/c44a-r1-easgfmwm",
+  "probeCorrections": [
+    "optional enabled defaults to true",
+    "command is nested in command reference",
+    "restore dock anchor after hiding it; checklist rerun all PASS"
+  ]
+}
