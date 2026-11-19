@@ -73,6 +73,9 @@ describe('M0 diagnostics gating (C0.4)', () => {
       'gesture_commit',
       'gesture_abort',
       'canvas_presence',
+      // D-62 item 2: Preferences › Agent access shows the agent token to the person (never a registry command).
+      'agent_token',
+      'token_shown',
     ]);
     expect(DIAGNOSTIC).toContain('bench_plan');
     expect(DIAGNOSTIC).toContain('spike_canvas_scene');

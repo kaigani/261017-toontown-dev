@@ -98,6 +98,10 @@ export interface ScriptedHost extends HostTransport {
   };
   /** Answers to `pick_path` (null: cancelled). */
   picked: string | null;
+  /** D-62 item 2: the agent token `agent_token` answers, whether `token_shown` allows a reveal, and its reports. */
+  token: string;
+  tokenAllowed: boolean;
+  readonly tokenReports: boolean[];
   readonly reports: Record<string, unknown>[];
   /** The exact JSON text of each `report_shell` call, as the host receives it. */
   readonly rawReports: string[];
@@ -123,6 +127,9 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
         ? { enabled: false, reason: 'there is nothing to undo' }
         : { enabled: true },
     picked: null,
+    token: '0123456789abcdef0123456789abcdef0123456789abcdef',
+    tokenAllowed: true,
+    tokenReports: [],
     handlers: {
       'app.state.get': () => ok(NO_PROJECT_STATE),
       'workspace.get': () => ok({ ...DEFAULT_LAYOUT, fullScreen: DEFAULT_LAYOUT }),
@@ -227,6 +234,12 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
         }
         case 'pick_path':
           return Promise.resolve({ path: host.picked });
+        // D-62 item 2: the agent token (a fixed test value) and the windows' reports of showing it.
+        case 'agent_token':
+          return Promise.resolve({ token: host.token });
+        case 'token_shown':
+          host.tokenReports.push(json['shown'] === true);
+          return Promise.resolve({ allowed: host.tokenAllowed });
         case 'restart_engine':
           host.restarts += 1;
           host.generation += 1;

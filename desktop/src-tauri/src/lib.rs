@@ -24,6 +24,7 @@ pub mod menu;
 pub mod menu_hint;
 pub mod menu_model;
 pub mod shell;
+pub mod token_reveal;
 pub mod watchdog;
 // Spike code is compiled into a build only with the feature; unit tests always compile it so its tests keep running.
 #[cfg(any(test, feature = "m0-diagnostics"))]
@@ -63,6 +64,8 @@ command_registry![
     ipc::gesture_commit,
     ipc::gesture_abort,
     ipc::canvas_presence,
+    ipc::agent_token,
+    ipc::token_shown,
 ];
 
 #[cfg(feature = "m0-diagnostics")]
@@ -82,6 +85,8 @@ command_registry![
     ipc::gesture_commit,
     ipc::gesture_abort,
     ipc::canvas_presence,
+    ipc::agent_token,
+    ipc::token_shown,
     diagnostics::bench_plan,
     diagnostics::bench_report,
     spikes::tablet::spike_mode,

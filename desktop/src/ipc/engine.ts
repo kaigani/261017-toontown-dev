@@ -139,6 +139,14 @@ export interface EngineApi {
   ): Promise<void>;
   /** Agent gestures the host routes to this window (`agent-input`; design note 2 §6). */
   onAgentInput(handler: (input: AgentInput) => void): Promise<Unlisten>;
+  /** `agent_token` (D-62 item 2): the agent token, for Preferences › Agent access to show to the person or copy; never
+   *  a registry command, so no agent reaches it. `null` when the host has none. */
+  agentToken(): Promise<string | null>;
+  /** `token_shown` (D-62 item 2): this window shows the token (`true`, before drawing it) or painted the mask
+   *  (`false`). Answers whether it may show it now (never while a window capture runs). */
+  tokenShown(shown: boolean): Promise<boolean>;
+  /** `token-hide`: a window capture is about to run; a shown token must be masked now. */
+  onTokenHide(handler: () => void): Promise<Unlisten>;
 }
 
 /** An agent's `pointer` request routed to this window (attached mode). */
@@ -308,6 +316,20 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     },
     async canvasScene(viewId) {
       return decode(await invoke('canvas_scene', { viewId }));
+    },
+    async agentToken() {
+      const v = decode(await invoke('agent_token', {}));
+      const token = typeof v === 'object' && v !== null ? (v as Record<string, unknown>)['token'] : null;
+      return typeof token === 'string' ? token : null;
+    },
+    async tokenShown(shown) {
+      const v = decode(await invoke('token_shown', { shown }));
+      return typeof v === 'object' && v !== null && (v as Record<string, unknown>)['allowed'] === true;
+    },
+    onTokenHide(handler) {
+      return transport.listen('token-hide', () => {
+        handler();
+      });
     },
     async gestureCommit(request) {
       try {

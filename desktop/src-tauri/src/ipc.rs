@@ -488,6 +488,31 @@ pub fn canvas_presence(host: State<'_, Host>, window: tauri::Window, json: Strin
     respond(&json!({}))
 }
 
+/// The agent token for Preferences › Agent access (ruling D-62 item 2): asked for only when the person reveals it or
+/// presses Copy, held by the page only while it is shown. Not a registry command (no agent reaches the page's IPC);
+/// nothing here logs it.
+///
+/// # Errors
+/// The JSON text of `internal` when no token can be read or made.
+#[tauri::command]
+pub fn agent_token(host: State<'_, Host>) -> Result<Response, String> {
+    let token = host.agent_token().map_err(internal)?;
+    respond(&json!({ "token": token }))
+}
+
+/// The window shows the agent token (`{shown: true}`, sent before it draws it) or has painted the mask
+/// (`{shown: false}`). Answers `{allowed}`: a window may not start showing it while a capture runs (D-62 item 2).
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a malformed request.
+#[tauri::command]
+pub fn token_shown(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
+    let v: Value = parse(&json)?;
+    let shown = v.get("shown").and_then(Value::as_bool).ok_or_else(|| arg_invalid("/shown", "true or false"))?;
+    let allowed = host.reveals.report(window.label(), shown);
+    respond(&json!({ "allowed": allowed }))
+}
+
 /// The SI-120 refusal of a user gesture made on a replaced engine (ruling O-14, D-7b): nothing runs.
 fn stale_gesture(made_on: u64, now: u64) -> tt_executor::Envelope {
     tt_executor::Envelope::error(

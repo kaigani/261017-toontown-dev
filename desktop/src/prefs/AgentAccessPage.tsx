@@ -2,9 +2,10 @@
 // staged like the rest of the dialog; at OK each changed group sends its one command in table order (`agentAccess.ts`),
 // never `prefs.set`. Each control declares the command it contributes. Regenerate token acts at once, after a question.
 // The status line re-reads on the session events and on `prefs.changed`.
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { COMMAND_INDEX } from '../ipc/generated/commands';
+import { copyText } from '../shell/clipboard';
 import { optionRef } from '../shell/listControl';
 import { declaredRange, NumericField, type NumericRange } from '../shell/NumericField';
 import { useMessages } from '../shell/messagesApi';
@@ -39,6 +40,150 @@ const NO_REMOTE = 'needs the MCP authorization flow (11 §4), which this version
 
 type Json = Record<string, unknown>;
 
+/** What the masked field shows: a fixed run of dots, nothing derived from the token. */
+const MASK = '\u2022'.repeat(16);
+
+/**
+ * The agent token (11 §4 lines 107-108: "shown and regenerable in Preferences > Agent access"; ruling D-62 item 2,
+ * C44A-R1-41). No surface an agent can read ever contains it:
+ * - the field is masked by default; Show reveals it only while the person asks for it (until Hide, leaving the page,
+ *   the window losing focus, a regenerated token, or a window capture);
+ * - the window's UI tree always reports the field as `redacted` (`data-tt-value`), revealed or not;
+ * - a window capture first asks the page to hide it (`token-hide`) and waits for the mask to be painted, and no reveal
+ *   starts while a capture runs (`token_shown` answers whether it may);
+ * - the token is fetched from the host (`agent_token`) only for a reveal or a Copy and held only while shown; it is
+ *   never a registry command's answer, so neither the activity log, its export nor the event stream can carry it, and
+ *   the page logs nothing.
+ */
+function AgentToken({ services }: { services: ShellServices }) {
+  const [shown, setShown] = useState<string | null>(null);
+  const [problem, setProblem] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const showing = useRef(false);
+  const engine = services.engine;
+  /** Masks the field; the host hears of it once the mask is painted (two frames), so a capture waiting shows it. */
+  const hide = useCallback(() => {
+    showing.current = false;
+    setShown(null);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        void engine.tokenShown(false).catch(() => undefined);
+      });
+    });
+  }, [engine]);
+  useEffect(() => {
+    let off: (() => void) | null = null;
+    let offEvents: (() => void) | null = null;
+    let stopped = false;
+    void engine
+      .onTokenHide(() => {
+        if (showing.current) hide();
+      })
+      .then((u) => {
+        if (stopped) u();
+        else off = u;
+      });
+    // A regenerated token: the shown one is stale.
+    void engine
+      .onEvent((e) => {
+        if (e.name === 'shell.agentToken' && showing.current) hide();
+      })
+      .then((u) => {
+        if (stopped) u();
+        else offEvents = u;
+      });
+    const blur = () => {
+      if (showing.current) hide();
+    };
+    window.addEventListener('blur', blur);
+    return () => {
+      stopped = true;
+      off?.();
+      offEvents?.();
+      window.removeEventListener('blur', blur);
+      // Leaving the page (another category, the dialog closed): the field is gone with it.
+      if (showing.current) {
+        showing.current = false;
+        void engine.tokenShown(false).catch(() => undefined);
+      }
+    };
+  }, [engine, hide]);
+  const reveal = async () => {
+    setProblem(null);
+    // The host hears of the reveal before the token is drawn; it refuses one while a window capture runs.
+    if (!(await engine.tokenShown(true))) {
+      setProblem('The token cannot be shown while the window is being captured. Try again.');
+      return;
+    }
+    const token = await engine.agentToken();
+    if (token === null) {
+      setProblem('There is no agent token yet.');
+      void engine.tokenShown(false);
+      return;
+    }
+    showing.current = true;
+    setShown(token);
+  };
+  const copy = async () => {
+    setProblem(null);
+    const token = await engine.agentToken();
+    if (token === null) {
+      setProblem('There is no agent token yet.');
+      return;
+    }
+    await copyText(token);
+    setCopied(true);
+  };
+  return (
+    <div className="agent-token" data-tt-role="group" data-tt-id="agentAccess.tokenGroup">
+      <label>
+        Token{' '}
+        <input
+          readOnly
+          className="agent-token-value"
+          value={shown ?? MASK}
+          aria-label="Agent token"
+          data-tt-role="textField"
+          data-tt-id="agentAccess.token"
+          // The window tree reports the field redacted, revealed or not (D-62 item 2).
+          data-tt-value="redacted"
+          data-tt-gui-only="focus"
+        />
+      </label>
+      <button
+        type="button"
+        aria-pressed={shown !== null}
+        data-tt-role="button"
+        data-tt-id="agentAccess.token.show"
+        data-tt-gui-only="disclose"
+        onClick={() => {
+          if (shown !== null) hide();
+          else void reveal();
+        }}
+      >
+        {shown !== null ? 'Hide' : 'Show'}
+      </button>
+      <button
+        type="button"
+        data-tt-role="button"
+        data-tt-id="agentAccess.token.copy"
+        data-tt-gui-only="clipboard"
+        onClick={() => {
+          void copy();
+        }}
+      >
+        Copy
+      </button>
+      {copied && <small className="field-hint">Copied to the clipboard.</small>}
+      {problem && (
+        <small className="field-problem" role="status">
+          {problem}
+        </small>
+      )}
+    </div>
+  );
+}
+
 export function AgentAccessPage({
   services,
   draft,
@@ -52,6 +197,8 @@ export function AgentAccessPage({
 }) {
   const messages = useMessages();
   const [status, setStatus] = useState<Json>({});
+  // The saved `agent.server.enabled` (what the check box was opened with), to say why the server is on (D-62 item 1).
+  const [saved, setSaved] = useState<boolean | null>(null);
   const namespaces = useMemo(
     () => namespacesOf(COMMAND_INDEX as unknown as Record<string, { event?: boolean }>),
     [],
@@ -65,6 +212,13 @@ export function AgentAccessPage({
         .done.then((env) => {
           if (!stopped && env.status === 'ok' && typeof env.result === 'object' && env.result !== null)
             setStatus(env.result as Json);
+        })
+        .catch(() => undefined);
+      void services.engine
+        .run('prefs.get', { keys: ['agent.server.enabled'] })
+        .done.then((env) => {
+          const values = (env.result as { values?: Json } | null)?.values ?? {};
+          if (!stopped && env.status === 'ok') setSaved(values['agent.server.enabled'] === true);
         })
         .catch(() => undefined);
     };
@@ -100,8 +254,18 @@ export function AgentAccessPage({
   return (
     <div className="agent-access" data-tt-role="group" data-tt-id="agentAccess">
       <p data-tt-role="text" data-tt-id="agentAccess.status">
-        {status['enabled'] === true ? 'The agent server is running' : 'The agent server is off'}
-        {endpoint ? ` at ${endpoint}` : ''} · {sessions} session{sessions === 1 ? '' : 's'}
+        {endpoint && endpoint !== 'stdio'
+          ? `The agent server is running at ${endpoint}`
+          : status['enabled'] === true
+            ? 'The agent server is running'
+            : 'The agent server is off'}{' '}
+        · {sessions} session{sessions === 1 ? '' : 's'}
+        {/* D-62 item 1: why it is on. The check box shows the saved setting, which a launch option does not change. */}
+        {endpoint && endpoint !== 'stdio' && saved === false
+          ? ' · started for this run by the --mcp-http launch option; the saved setting below is off'
+          : endpoint && endpoint !== 'stdio' && saved === true
+            ? ' · on in the saved setting below'
+            : ''}
       </p>
       <label>
         <input
@@ -256,6 +420,7 @@ export function AgentAccessPage({
         Keep the activity log beside the project
       </label>
       <div className="buttons">
+        <AgentToken services={services} />
         <button
           type="button"
           data-tt-role="button"

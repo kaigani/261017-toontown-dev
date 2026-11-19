@@ -234,6 +234,7 @@ impl Rollback {
                 typed_tools_version: s.agents.typed_tools_version,
                 ttl: s.agents.ttl,
                 server_enabled: s.agents.server_enabled,
+                serving: s.agents.serving.clone(),
             },
             timeline: s.timeline.clone(),
             events: s.events.len(),

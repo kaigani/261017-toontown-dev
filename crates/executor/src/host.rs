@@ -180,11 +180,19 @@ impl Default for ShellShared {
 /// Broadcasts the agent-activity notice (`shell.agentActing`, host only) around an agent request, so the agent
 /// indicator can show the acting state while the command runs (01 §12.1 rule 9).
 pub(crate) fn acting(bus: &Bus, origin: &Origin, command: &str, on: bool) {
+    acting_batch(bus, origin, command, None, on);
+}
+
+/// [`acting`], with a batch's undo label and step count (D-62 item 3: the indicator names a batch by its label, or
+/// "Batch (n steps)").
+pub(crate) fn acting_batch(bus: &Bus, origin: &Origin, command: &str, batch: Option<(&str, usize)>, on: bool) {
     if let Origin::Agent { session, name, .. } = origin {
-        let e = Event {
-            name: "shell.agentActing".to_owned(),
-            payload: json!({ "sessionId": session, "client": name, "commandId": command, "acting": on }),
-        };
+        let mut payload = json!({ "sessionId": session, "client": name, "commandId": command, "acting": on });
+        if let (Some((label, steps)), Some(m)) = (batch, payload.as_object_mut()) {
+            m.insert("label".to_owned(), json!(label));
+            m.insert("steps".to_owned(), json!(steps));
+        }
+        let e = Event { name: "shell.agentActing".to_owned(), payload };
         let mut subs = bus.subs.lock().unwrap_or_else(PoisonError::into_inner);
         subs.retain(|s| s.send(e.clone()).is_ok());
         bus.seq.fetch_add(1, Ordering::AcqRel);

@@ -81,6 +81,24 @@ fn the_server_command_and_the_server_preferences_are_one_state() {
     assert_eq!(err(&h, "prefs.set", json!({ "values": { "agent.server.port": 80 } })).code, "prefs.outOfRange");
 }
 
+/// D-62 item 1 (C44A-R1-40; 11 §15.1): while the host serves, the status carries the serving endpoint, whether the
+/// preference or the launch option started it (here the preference stays off, as with `--mcp-http`); when the host
+/// stops, the endpoint goes.
+#[test]
+fn the_status_carries_the_serving_endpoint_however_the_server_was_started() {
+    let h = fixture();
+    ok(&h, "prefs.set", json!({ "values": { "agent.server.enabled": false } }));
+    assert_eq!(ok(&h, "agent.server.status", json!({}))["endpoint"], Value::Null);
+    h.set_agent_serving(Some("http://127.0.0.1:47215/mcp".to_owned()));
+    let st = ok(&h, "agent.server.status", json!({}));
+    assert_eq!(st["endpoint"], "http://127.0.0.1:47215/mcp");
+    assert_eq!(st["enabled"], true);
+    assert_eq!(pref(&h, "agent.server.enabled"), false, "serving does not change the saved preference");
+    h.set_agent_serving(None);
+    let st = ok(&h, "agent.server.status", json!({}));
+    assert_eq!((st["endpoint"].clone(), st["enabled"].clone()), (Value::Null, json!(false)));
+}
+
 fn agent(h: &tt_executor::ExecutorHandle, root: &std::path::Path) -> tt_executor::Origin {
     let s = h
         .connect_agent(tt_executor::agents::AgentConnect {

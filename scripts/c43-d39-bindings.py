@@ -70,6 +70,30 @@ e6 = _load("c43e6", "c43-e6-coexistence.py")
 e2e, c42 = e6.e2e, e6.c42
 
 
+def clipboard_text() -> str | None:
+    """The system clipboard's text (Windows), as the person would paste it (D-62 item 2's Copy row)."""
+    if u32 is None:
+        return None
+    k32 = ctypes.windll.kernel32
+    u32.GetClipboardData.restype = ctypes.c_void_p
+    k32.GlobalLock.restype = ctypes.c_void_p
+    k32.GlobalLock.argtypes = [ctypes.c_void_p]
+    k32.GlobalUnlock.argtypes = [ctypes.c_void_p]
+    if not u32.OpenClipboard(0):
+        return None
+    try:
+        handle = u32.GetClipboardData(13)  # CF_UNICODETEXT
+        if not handle:
+            return None
+        ptr = k32.GlobalLock(handle)
+        try:
+            return ctypes.wstring_at(ptr) if ptr else None
+        finally:
+            k32.GlobalUnlock(handle)
+    finally:
+        u32.CloseClipboard()
+
+
 def _same_number(shown, value) -> bool:
     """A field's text shows `value` (D-61: the retained value after a refused entry)."""
     try:
@@ -2067,6 +2091,98 @@ async def build_and_run(t: Table, only: set) -> None:
                          "effect": (lambda i_, r_: lambda b, a, k: a == b and staged_refused(i_, r_(b)))(f_ident, a_read),
                          "disabled": None, "after": agent_defaults,
                          "mcpReason": "the controls are staged in the Preferences dialog and sent by its OK"})
+
+    # D-62 item 2 (C44A-R1-41): the agent token in Preferences. Copy puts it on the clipboard (read back and compared
+    # with the discovery file's by hash); Show reveals it to the person while no surface an agent reads carries it: the
+    # window tree reports it redacted, a capture made while it is shown has the mask painted (the field's pixels equal
+    # those of the masked field), and neither the activity export nor the application's log contains it.
+    token_case: dict = {}
+
+    def discovery_token():
+        return json.loads((t.work / "discovery.json").read_text(encoding="utf-8")).get("token") or ""
+
+    def sha(text):
+        import hashlib
+        return hashlib.sha256((text or "").encode("utf-8")).hexdigest()
+
+    async def open_agent_page():
+        choose_menu(["File", "Preferences"])
+        await asyncio.sleep(0.8)
+        t.click("preferences.category.agent")
+        await asyncio.sleep(0.6)
+
+    def token_field():
+        return t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=\"agentAccess.token\"]'); if (!e) return null;"
+                        " const b = e.getBoundingClientRect(); return {value: e.value, x: b.x, y: b.y, w: b.width, h: b.height,"
+                        " vw: window.innerWidth}; })()")
+
+    def crop(png, f):
+        w, h, ch, rows_ = c42.png_rgba(png)
+        k = w / f["vw"]
+        x0, y0 = int(f["x"] * k), int(f["y"] * k)
+        x1, y1 = min(w, int((f["x"] + f["w"]) * k)), min(h, int((f["y"] + f["h"]) * k))
+        return [bytes(r[x0 * ch:x1 * ch]) for r in rows_[y0:y1]]
+
+    async def token_copy_flow():
+        await open_agent_page()
+        t.clear()
+        t.click("agentAccess.token.copy")
+        await asyncio.sleep(0.6)
+        token_case["clipboard"] = sha(clipboard_text())
+        token_case["copyTree"] = json.dumps(await e2e.call(t.s, "inspect_ui", {"target": "window", "depth": 32}))
+        key(0x1B)
+        await asyncio.sleep(0.5)
+        return "real clicks in Preferences › Agent access: Copy"
+
+    async def token_show_flow():
+        await open_agent_page()
+        before = token_field()
+        masked = c42.png_of(await e2e.run_cmd(t.s, "inspect.screenshot", {"target": "window"}))
+        t.clear()
+        t.click("agentAccess.token.show")
+        await asyncio.sleep(0.6)
+        shown = token_field()
+        token_case["shown"] = sha((shown or {}).get("value"))
+        # What an agent reads while the person has it shown.
+        token_case["tree"] = json.dumps(await e2e.call(t.s, "inspect_ui", {"target": "window", "depth": 32}))
+        shot = c42.png_of(await e2e.run_cmd(t.s, "inspect.screenshot", {"target": "window"}))
+        await asyncio.sleep(0.3)
+        token_case["afterCapture"] = (token_field() or {}).get("value")
+        token_case["sameAsMasked"] = bool(masked and shot and before and crop(masked, before) == crop(shot, before))
+        export = t.work / "token-activity.jsonl"
+        await e2e.run_cmd(t.s, "agent.activity.export", {"path": str(export), "onExists": "overwrite"})
+        await asyncio.sleep(0.5)
+        token_case["export"] = export.read_text(encoding="utf-8") if export.exists() else ""
+        log = t.work / "discovery.log"
+        token_case["log"] = log.read_text(encoding="utf-8", errors="replace") if log.exists() else ""
+        key(0x1B)
+        await asyncio.sleep(0.5)
+        return "real clicks in Preferences › Agent access: Show, then an agent's inspect_ui, screenshot and export"
+
+    def token_absent(text):
+        tok = discovery_token()
+        return bool(tok) and tok not in (text or "")
+
+    async def nothing_state():
+        return {}
+
+    rows.append({"name": "Preferences › Agent access › token Copy", "spec": "11 §4 lines 107-108; D-62 item 2",
+                 "action": ("none",), "custom": token_copy_flow, "expect": None, "label": None,
+                 "setup": None, "state": nothing_state,
+                 "effect": lambda b, a, k: token_case.get("clipboard") == sha(discovery_token())
+                 and token_absent(token_case.get("copyTree")),
+                 "disabled": None, "osOnly": True, "after": close_dialogs,
+                 "mcpReason": "the Preferences dialog opens from the native menu, which only real input reaches"})
+    rows.append({"name": "Preferences › Agent access › token Show", "spec": "11 §4 lines 107-108; D-62 item 2",
+                 "action": ("none",), "custom": token_show_flow, "expect": None, "label": None,
+                 "setup": None, "state": nothing_state,
+                 "effect": lambda b, a, k: token_case.get("shown") == sha(discovery_token())
+                 and token_absent(token_case.get("tree")) and '"redacted"' in (token_case.get("tree") or "")
+                 and token_case.get("sameAsMasked") is True
+                 and token_absent(token_case.get("afterCapture"))
+                 and token_absent(token_case.get("export")) and token_absent(token_case.get("log")),
+                 "disabled": None, "osOnly": True, "after": close_dialogs,
+                 "mcpReason": "the Preferences dialog opens from the native menu, which only real input reaches"})
 
     async def typed_on():
         await agent_defaults()

@@ -61,6 +61,8 @@ pub struct Host {
     /// Agent gestures routed to windows and waiting for them (D-7a, D-7b): kept by the host, so a restart and a
     /// window that goes away answer them at once.
     routed: crate::attached::Routed,
+    /// Which windows show the agent token, and the window capture's guard (D-62 item 2).
+    pub reveals: crate::token_reveal::TokenReveals,
 }
 
 /// The sensor facts of one window.
@@ -201,6 +203,7 @@ impl Host {
             windows: Mutex::new(Windows::default()),
             attached: Mutex::new(None),
             routed: crate::attached::Routed::default(),
+            reveals: crate::token_reveal::TokenReveals::default(),
             options,
             settings_dir,
         })
@@ -428,6 +431,7 @@ impl Host {
         if let Some(io) = self.attached() {
             io.forget_window(label);
         }
+        self.reveals.forget(label);
         let combined = {
             let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
             w.facts.remove(label);
@@ -476,6 +480,16 @@ impl Host {
         read().ok_or_else(|| "cannot create the agent token: the discovery file was not written".to_owned())
     }
 
+    /// The agent token, for Preferences › Agent access to show to the person (D-62 item 2; 11 §4 lines 107-108: "shown
+    /// and regenerable in Preferences"): read, or made, as the server's own. Only the page's IPC reaches it; it is never
+    /// a registry command's answer, never logged and never recorded.
+    ///
+    /// # Errors
+    /// As [`Host::token`].
+    pub fn agent_token(&self) -> Result<String, String> {
+        self.token()
+    }
+
     /// Starts the attached-mode server if it is not running (11 §4: off until the user enables it or a flag asks).
     ///
     /// # Errors
@@ -516,6 +530,8 @@ impl Host {
                 Ok(server) => {
                     let url = server.url();
                     self.write_discovery(Some(&url), Some(&token));
+                    // D-62 item 1: `agent.server.status` reports the endpoint the discovery file advertises.
+                    self.exec().set_agent_serving(Some(url.clone()));
                     *self.http_token.lock().unwrap_or_else(PoisonError::into_inner) = Some(token.clone());
                     *slot = Some(server);
                     return Ok(url);
@@ -547,6 +563,7 @@ impl Host {
         if let Some(s) = self.http.lock().unwrap_or_else(PoisonError::into_inner).take() {
             s.stop();
         }
+        self.exec().set_agent_serving(None);
         self.clear_discovery();
     }
 

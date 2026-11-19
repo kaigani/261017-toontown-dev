@@ -75,6 +75,43 @@ Facts from the code at `93cf2ea9`:
 - **Reflected:** the category re-reads on `prefs.changed` for the `agent.*` keys, and the status line re-reads on
   `agent.session.connected` and `.disconnected`. An agent cannot change these settings (scope `app`), but a second
   window or the command layer can, so the Vitest drives the change through events only.
+- **The serving endpoint (ruling D-62 item 1, C44A-R1-40; 11 §15.1).** `agent.server.status` reports the endpoint the
+  HTTP server serves on, the discovery file's `endpoint`, however the server was started: the host tells the kernel when
+  it starts serving and when it stops (`ExecutorHandle::set_agent_serving`, from `Host::start_http_on` and
+  `Host::stop_http`, and again on the new engine after an engine restart). A headless server's stdio session reports
+  `stdio`. `enabled` is true while the server serves, while the saved preference has it on, or while a session is
+  connected.
+  - **The check box shows the saved preference** (`agent.server.enabled`): it is what OK writes, and an explicit
+    `--mcp-http` launch serves for that run without changing it (ruling O-21; ADR-0022 decision 5).
+  - **The status line says why the server is on**: "The agent server is running at <endpoint> · n sessions", followed by
+    "started for this run by the --mcp-http launch option; the saved setting below is off" when the saved preference is
+    off, or "on in the saved setting below" when it is on.
+- **The token (ruling D-62 item 2, C44A-R1-41; 11 §4 lines 107-108: "shown and regenerable").** A Token field beside
+  Regenerate token…, with Show and Copy. **No surface an agent can read ever contains the token:**
+  - **Masked by default.** The field shows a fixed run of dots, nothing derived from the token. The page asks the host
+    for the token (`agent_token`, a host IPC call of the page, never a registry command) only for a reveal or a Copy,
+    and holds it only while it is shown.
+  - **Show** reveals it only while the person asks for it: until Hide, leaving the page (another category, the dialog
+    closed), the window losing focus, a regenerated token (`shell.agentToken`), or a window capture. Its reason is
+    `disclose`.
+  - **Copy** writes it to the system clipboard (`copyText`, reason `clipboard`) without showing it.
+  - **The window tree** (`inspect_ui`) always reports the field's value as `redacted` (`data-tt-value`), revealed or not.
+  - **Window captures: the reveal is cleared before the capture.** The page reports `token_shown {shown: true}` before
+    it draws the token and `{shown: false}` once the mask is painted (two frames later). Every capture
+    (`inspect.screenshot`, whoever asked) first takes the host's capture guard (`desktop/src-tauri/src/token_reveal.rs`):
+    while a capture runs no window may start a reveal (the page is told so and keeps the mask), and the guard is
+    granted only when no window shows the token. A window that shows it is asked to hide it (`token-hide`), and the
+    capture waits, bounded by the capture's budget and 2 s, for its report; if the report does not come, nothing is
+    captured and the call is refused (`render.failed`, `reason: "tokenShown"`).
+  - **Logs and the activity export.** The token never passes through the kernel's command layer, so the activity log,
+    its export and the event stream cannot contain it; the page logs nothing, and the host's `agent_token` writes no log
+    line.
+  - **Tests.** `agentToken.test.tsx` (masked by default, Show and Hide with their reports, the reported window tree
+    redacted while revealed, `token-hide` masking it, no reveal during a capture, Copy to the clipboard only, nothing
+    sent or logged carrying it, leaving the page); `token_reveal.rs` (the capture guard); the D-39 rows "token Copy"
+    (the clipboard read back and compared with the discovery file by hash) and "token Show" (an agent's `inspect_ui`,
+    screenshot and activity export while it is shown, and the application's log: none carries it, and the field's
+    pixels in the capture equal the masked field's).
 
 ## 3. Activity panel (11 §11)
 
@@ -172,7 +209,10 @@ was loading is shown. Escape is Decline, never a silent dismiss. Accept and Decl
 - **Adds:**
   - **Activity…** (opens the panel; `navigate`);
   - a badge with the count of pending in-app confirmations, which opens the sheet;
-  - the acting state's label: the command's label instead of its id (11 §6.4 "last command label").
+  - the acting state's label: the command's label instead of its id (11 §6.4 "last command label"). As built after
+    ruling D-62 item 3 (C44A-R1-42): `desktop/src/shell/commandLabel.ts` gives the registry's label, in the acting state
+    and the popover's activity lines (and the Activity panel); a batch by its own label, which the acting notice now
+    carries with its step count, or "Batch (n steps)".
 - **The popover's activity lines** stay live while it is open, from `agent.activity.recorded`, instead of the one fetch
   on open.
 - **A paused session** shows as paused, from `agent.session.changed`.

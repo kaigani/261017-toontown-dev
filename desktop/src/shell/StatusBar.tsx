@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { COMMAND_INDEX } from '../ipc/generated/commands';
+import { commandLabel } from './commandLabel';
 import { useShell, useSlice, useStoreState } from '../state/context';
 import type { AgentServerStatus, StatusBarTexts } from '../state/types';
 import { useActions } from './actionsApi';
@@ -263,7 +264,7 @@ export function AgentIndicator() {
         }}
       >
         {busy
-          ? `Agent acting: ${acting.map((a) => `${a.client} (${a.commandId})`).join(', ')}`
+          ? `Agent acting: ${acting.map((a) => `${a.client} (${commandLabel(a.commandId, a)})`).join(', ')}`
           : `Agent: ${names}`}
       </button>
       {open && (
@@ -334,7 +335,7 @@ export function AgentIndicator() {
             </button>
             {activity.map((a) => (
               <span key={String(a['seq'])} className="activity-entry" data-tt-role="text">
-                {typeof a['commandId'] === 'string' ? a['commandId'] : ''} —{' '}
+                {typeof a['commandId'] === 'string' ? commandLabel(a['commandId'], a['params']) : ''} —{' '}
                 {typeof a['status'] === 'string' ? a['status'] : ''}
               </span>
             ))}

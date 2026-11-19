@@ -129,8 +129,17 @@ pub(crate) fn agent_server_status(cx: &mut Cx, _p: NoParams) -> Result<Map<Strin
     let sessions = hub.summary();
     let stdio = hub.sessions.values().any(|s| s.transport == "stdio");
     let mut m = Map::new();
-    m.insert("enabled".into(), json!(hub.server_enabled || !sessions.is_empty()));
-    m.insert("endpoint".into(), if stdio { json!("stdio") } else { Value::Null });
+    // D-62 item 1 (C44A-R1-40; 11 §15.1): the endpoint is the one the HTTP server serves on (the discovery file's),
+    // however it was started; `stdio` for a headless server's session; none when nothing serves.
+    m.insert("enabled".into(), json!(hub.serving.is_some() || hub.server_enabled || !sessions.is_empty()));
+    m.insert(
+        "endpoint".into(),
+        match &hub.serving {
+            Some(url) => json!(url),
+            None if stdio => json!("stdio"),
+            None => Value::Null,
+        },
+    );
     m.insert("sessions".into(), Value::Array(sessions));
     m.insert("pendingConfirmations".into(), Value::Array(hub.pending_summary()));
     Ok(m)

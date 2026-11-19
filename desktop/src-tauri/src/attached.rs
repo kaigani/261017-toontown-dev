@@ -331,6 +331,22 @@ impl AttachedIo for WindowIo {
                 json!({ "width": pw, "height": ph, "maxInlinePixels": max_side }),
             ));
         }
+        // D-62 item 2: a capture never contains the agent token. A window showing it is asked to hide it, and the
+        // capture waits (bounded) for the mask to be painted; no window may start showing it until the capture ends.
+        let host = self.host();
+        let app = self.app.clone();
+        let _hidden = host
+            .reveals
+            .begin_capture(budget.min(Duration::from_secs(2)), move || {
+                let _ = app.emit(crate::token_reveal::TOKEN_HIDE_EVENT, ());
+            })
+            .ok_or_else(|| {
+                refusal(
+                    "render.failed",
+                    "the agent token is shown in Preferences and was not hidden in time: nothing was captured",
+                    json!({ "target": target, "reason": "tokenShown" }),
+                )
+            })?;
         let png = crate::capture::snapshot(&webview, budget).map_err(|m| {
             refusal("render.failed", format!("the window could not be captured: {m}"), json!({ "target": target }))
         })?;

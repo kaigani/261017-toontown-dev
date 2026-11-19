@@ -337,6 +337,9 @@ pub(crate) struct AgentHub {
     pub typed_tools_version: u64,
     pub ttl: Option<Duration>,
     pub server_enabled: bool,
+    /// The endpoint the attached-mode HTTP server serves on now, as the host started it (D-62 item 1): the discovery
+    /// file's `endpoint`, however the server was started (the preference or the `--mcp-http` launch option).
+    pub serving: Option<String>,
 }
 
 /// The canonical form of a call's parameters, which a confirmation token is bound to.

@@ -76,6 +76,9 @@ export interface AgentActivity {
   readonly sessionId: string;
   readonly client: string;
   readonly commandId: string;
+  /** A batch's own label and step count (D-62 item 3). */
+  readonly label?: string;
+  readonly steps?: number;
 }
 
 export interface StoreState {
@@ -195,6 +198,8 @@ export function createStore(engine: EngineApi): Store {
           sessionId: text(p['sessionId']),
           client: text(p['client']),
           commandId: text(p['commandId']),
+          ...(typeof p['label'] === 'string' ? { label: p['label'] } : {}),
+          ...(typeof p['steps'] === 'number' ? { steps: p['steps'] } : {}),
         };
         const others = state.acting.filter((a) => a.sessionId !== entry.sessionId);
         set({ ...state, acting: p['acting'] === true ? [...others, entry] : others });

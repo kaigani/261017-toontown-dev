@@ -6,9 +6,9 @@
 // resumes and disconnects, each through its command.
 import { useCallback, useEffect, useState } from 'react';
 
-import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { useActions } from '../shell/actionsApi';
 import { copyText } from '../shell/clipboard';
+import { commandLabel } from '../shell/commandLabel';
 import { optionRef, runChosen } from '../shell/listControl';
 import { useMessages } from '../shell/messagesApi';
 import { useShell, useSlice } from '../state/context';
@@ -28,10 +28,8 @@ type Json = Record<string, unknown>;
 /** A member as text: strings as they are, anything else empty. */
 const text = (v: unknown, fallback = ''): string => (typeof v === 'string' ? v : fallback);
 
-const label = (id: string) =>
-  id === 'batch'
-    ? 'Batch'
-    : ((COMMAND_INDEX as Record<string, { label?: string } | undefined>)[id]?.label ?? id);
+/** D-62 item 3: the registry's label; a batch by its own label or "Batch (n steps)" (`commandLabel`). */
+const label = (id: string, params?: unknown) => commandLabel(id, params);
 
 const SCOPES = [
   'read',
@@ -380,7 +378,7 @@ export function ActivityPanel() {
                 }}
               >
                 <time>{e.time.slice(11, 19)}</time> <span className="client">{e.client}</span>{' '}
-                <span className="what">{label(e.commandId)}</span>{' '}
+                <span className="what">{label(e.commandId, e.params)}</span>{' '}
                 <span className="status">
                   {e.status}
                   {e.errorCode ? ` ${e.errorCode}` : ''}

@@ -790,6 +790,17 @@ impl ExecutorHandle {
         self.audit_logical_call(origin, &AuditCall { tool, command, params, env, took, cached: false });
     }
 
+    /// The host tells the kernel where its attached-mode HTTP server serves (`Some(url)`, the discovery file's
+    /// endpoint) or that it stopped (`None`), so `agent.server.status` reports the serving endpoint however the server
+    /// was started (D-62 item 1, C44A-R1-40; 11 §15.1). Queued without waiting, like the activity record.
+    pub fn set_agent_serving(&self, endpoint: Option<String>) {
+        let _ = self.tx.send(Request::Run(Box::new(move |core| {
+            if let Some(s) = core.session_mut() {
+                s.agents.serving = endpoint;
+            }
+        })));
+    }
+
     /// [`ExecutorHandle::audit_call`] for a call whose answer may have come from the `requestId` cache (`cached`):
     /// the entry is marked, and a replay leaves it out (C14-R2-03). A batch records the steps it committed
     /// (C14-R2-02).
@@ -1029,10 +1040,10 @@ fn document_thread(
                 let _ = reply.send((env, cached));
             }
             Request::Batch(b, origin, reply) => {
-                host::acting(subscribers, &origin, "batch", true);
+                host::acting_batch(subscribers, &origin, "batch", Some((&b.label, b.steps.len())), true);
                 let env = core.batch(&b, &origin);
                 flush(&mut core);
-                host::acting(subscribers, &origin, "batch", false);
+                host::acting_batch(subscribers, &origin, "batch", Some((&b.label, b.steps.len())), false);
                 let _ = reply.send(env);
             }
             Request::Open(doc, options, origin, reply) => {
