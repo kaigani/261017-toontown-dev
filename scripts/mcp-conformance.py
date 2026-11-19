@@ -176,6 +176,16 @@ async def run(binary, workdir):
 def launch_desktop(app, workdir):
     """Starts the desktop application in attached mode and fills HTTP from its discovery file."""
     discovery = Path(workdir) / "discovery.json"
+    # Ruling D-58: attached with `askInApp` on, a confirmation is asked in the app only and the call waits for the person;
+    # this run checks the protocol's elicitation path, so the agent defaults have `askInApp` off (the in-app path is the
+    # D-44 confirmation rows and `crates/mcp/tests/c44a_in_app_confirmation.rs`).
+    settings = Path(workdir) / "user" / "Settings"
+    settings.mkdir(parents=True, exist_ok=True)
+    seed = {"agent.policy.defaults": {"policy": "assist", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048,
+                                      "maxInlineBytes": 52428800, "askInApp": False, "letAgentMoveView": True,
+                                      "highlightAgentChanges": True}}
+    (settings / "preferences.json").write_text(json.dumps({"format": "toontown-settings", "kind": "preferences",
+                                                           "formatVersion": "1.0", "data": seed}), encoding="utf-8")
     log = open(Path(workdir) / "app.log", "ab")
     proc = subprocess.Popen(
         [app, "--user-dir", str(Path(workdir) / "user"), "--mcp-http", "127.0.0.1:0", "--mcp-discovery", str(discovery)],

@@ -519,6 +519,14 @@ export function CanvasView({
           model?.setGeneration(event.generation);
         }
         if (event.name === 'tool.active.changed' || event.name === 'tool.pen.changed') refreshTool();
+        // The arrangement changed (a workspace switch, a panel moved): the canvas may have moved without being resized,
+        // which the resize observer does not see; its presence is reported again once laid out (CI run 44442647850:
+        // "no window shows `drawingView`" after the Drawing workspace was selected, the view on screen).
+        if (event.name === 'workspace.changed') {
+          requestAnimationFrame(() => {
+            if (!stopped && size.width >= 1 && size.height >= 1) reportPresence(true);
+          });
+        }
         // SI-148: the family chosen last runs in the Camera view.
         if (event.name === 'tool.active.changed') sceneFamily = false;
         if (event.name === 'anim.tool.changed') {
