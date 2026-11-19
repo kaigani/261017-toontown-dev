@@ -67,21 +67,36 @@ export function ContextMenu({
   const [place, setPlace] = useState<MenuPlacement | null>(null);
   const [more, setMore] = useState({ above: false, below: false });
 
-  // Placed from its natural size before it is painted (D-60 item 1); again when the window's size changes.
+  // Placed from its natural size before it is painted (D-60 item 1), measured at the client area's corner so the
+  // edge does not narrow it; placed again after every render (the kernel's availability answers add reasons and
+  // labels, which change its size: the live run saw a menu grow 15 px after it was placed) and when the window's size
+  // changes. An unchanged placement keeps the state, so this does not render again.
   const measure = useCallback(() => {
     const el = root.current;
     if (!el) return;
-    const prev = { maxHeight: el.style.maxHeight, maxWidth: el.style.maxWidth };
+    const prev = {
+      left: el.style.left,
+      top: el.style.top,
+      maxHeight: el.style.maxHeight,
+      maxWidth: el.style.maxWidth,
+    };
+    el.style.left = '0px';
+    el.style.top = '0px';
     el.style.maxHeight = '';
     el.style.maxWidth = '';
     const size = { width: el.offsetWidth, height: el.offsetHeight };
-    el.style.maxHeight = prev.maxHeight;
-    el.style.maxWidth = prev.maxWidth;
-    setPlace(placeMenu(at, size, clientArea()));
+    Object.assign(el.style, prev);
+    const next = placeMenu(at, size, clientArea());
+    const same = (old: MenuPlacement | null) =>
+      old?.x === next.x &&
+      old.y === next.y &&
+      old.maxHeight === next.maxHeight &&
+      old.maxWidth === next.maxWidth;
+    setPlace((old) => (same(old) ? old : next));
   }, [at]);
   useLayoutEffect(() => {
     measure();
-  }, [measure, groups]);
+  });
   useEffect(() => {
     window.addEventListener('resize', measure);
     return () => {

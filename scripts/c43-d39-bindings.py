@@ -1906,6 +1906,9 @@ async def build_and_run(t: Table, only: set) -> None:
         await cmd("app.context.set", {"elementId": bob, "frame": 1})
         await clean()
         await focus_view("cameraView")
+        # The family chosen last runs in the Camera view (SI-148): a scene tool chosen now, so the change is announced
+        # even when Select was the scene tool already (a row before ran the Drawing family).
+        await cmd("anim.tool.set", {"tool": "transform"})
         await cmd("anim.tool.set", {"tool": "select"})
         if not ann.get("id"):
             ann["id"] = ((await cmd("element.create", {"type": "drawing", "name": "Ann"})).get("elementIds") or [None])[0]
@@ -2327,8 +2330,13 @@ async def build_and_run(t: Table, only: set) -> None:
         await asyncio.sleep(0.5)
 
     async def indicator_flow():
-        t.click("agent.toggle")
-        await asyncio.sleep(0.5)
+        # Opened only when closed (a click on the indicator toggles it), then the item waited for (D-45).
+        if not t.cdp.js("!!document.querySelector('[data-tt-id=\"agent.popover\"]')"):
+            t.click("agent.toggle")
+        for _ in range(100):
+            if t.cdp.js("!!document.querySelector('[data-tt-id=\"agent.openActivity\"]')"):
+                break
+            await asyncio.sleep(0.1)
         t.clear()
         t.click("agent.openActivity")
         await asyncio.sleep(0.8)
@@ -2381,6 +2389,12 @@ async def build_and_run(t: Table, only: set) -> None:
             if not t.cdp.js("!!document.querySelector('[data-tt-id=\"agent.popover\"]')"):
                 t.click("agent.toggle")
                 await asyncio.sleep(0.5)
+            # The popover lists the session once the window has read the new session (a wait for a state, D-45).
+            ident = json.dumps(f"agent.{second['id']}.{verb}")
+            for _ in range(100):
+                if t.cdp.js("!!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % ident):
+                    break
+                await asyncio.sleep(0.1)
             t.clear()
             t.click(f"agent.{second['id']}.{verb}")
             await asyncio.sleep(1.0)
