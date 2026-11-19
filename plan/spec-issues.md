@@ -2051,19 +2051,22 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   with Delete and Cancel)? Until answered the behaviour stays as 01 states it (ruling D-46 item 5); if a question is
   added, it gets its rows in the D-44 flow table.
 
-## SI-163 — no single MCP answer or event over 1 MiB (found in M4 C4.3b round 4; ruled)
+## SI-163 — large MCP answers and a client's per-event limit (found in M4 C4.3b round 4; ruled, corrected; an open question)
 
 - **Sections:** 11 §6.5 (inline limits), 11 §7.2 (the result envelope), 11 §8 (jobs and `job_wait`).
-- **Problem:** a completed `render.range.run` of 12 000 frames answers `job_wait` with a 4.1 MB record: its `result`
-  lists every output. Over the streamable HTTP transport that answer is one server-sent event, and a common client
-  (Python `mcp` 2.0.0 over `httpx2` 2.12.0) refuses any event over 1 MiB, reporting "SSE stream ended without a
-  response" although the server wrote the whole answer (D-49 item 4; `reviews/evidence/M4-C4.3b-r4/job-wait`).
-- **Ruled (D-51 item 2):** no single MCP answer or event may exceed 1 MiB. A job record's `result` that enumerates
-  outputs carries the count, the output location and naming pattern, the first and last entries and a `truncated`
-  flag; the full list is read in pages.
-- **Built:** not yet. The design (the commands that can exceed the cap, the bounded shape, the paged read, and a gate
-  test that measures the largest answer of each command's example) goes in `reviews/M4-design-agent-surfaces.md` as an
-  item of C4.4a.
+- **Problem:** a completed `render.range.run` of 12 000 frames answered `job_wait` with a 4.1 MB record listing every
+  output. Over the streamable HTTP transport that answer was one server-sent event, and a common client (Python `mcp`
+  2.0.0 over `httpx2` 2.12.0) refuses any event over 1 MiB, reporting "SSE stream ended without a response" although the
+  server wrote the whole answer (D-49 item 4; `reviews/evidence/M4-C4.3b-r4/job-wait`).
+- **Ruled (D-51 item 2, corrected by D-56):** there is no general 1 MiB cap: the spec's limits govern answers (11 §6.5
+  inline images up to 8 MB encoded by default, `doc.blob.get` `maxBytes` up to 64 MiB, a 100 000-frame evaluation
+  delivered whole as the reviewer's `c32_r4_delivery.rs` requires). What stays: a range job's answer is small (SI-181);
+  over HTTP, an answer over 1 MiB with nothing yet sent on its request's stream goes as one plain `application/json`
+  body, which the protocol allows and which no per-event limit applies to (`http.rs` `JSON_BODY_ABOVE`); the worked
+  examples are measured, each under 1 MiB (`c12_kernel_state`).
+- **Open question for the user:** an answer over 1 MiB that follows progress notifications on the same request is still
+  one server-sent event, which such a client refuses. Whether the product should do more for those clients (a smaller
+  answer on request, a file instead) is the user's call; M11's client compatibility checks own the measurement.
 
 ## SI-164 — a failed or cancelled Open and the previous project (found in M4 C4.3b closure; open)
 
@@ -2296,29 +2299,27 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   its D-44 reason; the D-39 check "load report window" in both forms (a folder of a newer minor format with an unknown
   value shows one window; the clean project opened next shows none).
 
-## SI-181 — a range job's bounded answer and the paged read of its outputs (found in M4 C4.4a; partly built, a ruling asked)
+## SI-181 — a range job's bounded answer; the manifest file is the full list (found in M4 C4.4a; ruled)
 
 - **Sections:** 09 §11.4 (the range manifest, `files` one entry per frame), 11 §8 (jobs), A (`render.range.run`).
-- **Problem:** D-51 (SI-163) caps every MCP answer at 1 MiB; a range's manifest lists every frame, 4.1 MB at 12 000
-  frames.
-- **Built:** the job's answer always carries `outputs {count, location, pattern, first, last, truncated}`; it lists
-  `files` only up to 100 frames. The companion manifest file at `manifestPath` still lists every frame and has no
-  `outputs` (`crates/executor/src/commands/render.rs`; `c33_range.rs`).
-- **Asked:** "the full list is read in pages" needs a query, `job.outputs.list {jobId, offset = 0, limit = 1000 (1-1000)}`
-  answering `{total, offset, items}`. Spec A is a read-only copy, and the registry refuses a command spec A does not
-  declare (`crates/registry/src/lib.rs` assembly). Until a ruling adds the row, the full list is the companion manifest
-  file, which `manifestPath` names.
+- **Problem:** a range's manifest lists every frame, 4.1 MB at 12 000 frames, in the job's answer.
+- **Ruled (D-56 item 1 and 4):** the job's answer always carries `outputs {count, location, pattern, first, last,
+  truncated}` and lists `files` only up to 100 frames; the companion manifest file at `manifestPath`, written with the
+  frames, lists every frame and is the full list. There is no paged-read command (`job.outputs.list` would need a spec A
+  row, D-57; it is listed among the spec A additions proposed for the user).
+- **Built:** `crates/executor/src/commands/render.rs` (`Manifest::bounded`, `Outputs`); `c33_range.rs` (150 frames: the
+  summary, the answer's size, the full companion file); the 12 000-frame wait answers in about 1.9 KB on stdio and HTTP
+  (`reviews/evidence/M4-C4.4a/job-wait-cap`).
 
-## SI-182 — inline payloads and every other answer within 1 MiB (found in M4 C4.4a; built)
+## SI-182 — inline payloads keep the spec's limits; large answers over HTTP (found in M4 C4.4a; ruled)
 
 - **Sections:** 11 §6.5 (inline image limit, default 8 MB encoded), 09 §8 item 3 (inline vs. file output),
   10 / A `doc.blob.get` (`maxBytes` default 8 388 608, up to 67 108 864).
-- **Problem:** base64 adds a third, so an 8 MB inline image or blob is about 10.7 MB in one answer; D-51 caps each
-  answer at 1 MiB.
-- **Built:** whatever the session's limits or `maxBytes`, at most 750 KiB of encoded bytes are returned inline
-  (`render::INLINE_ANSWER_BYTES`): a larger image fails with `render.inlineTooLarge` (09 §8: use `output: "file"`), and a
-  larger blob is refused with its `maxBytes`. At the MCP server's writer, any response over 1 MiB becomes
-  `limit.exceeded {limit: "answerBytes", value, size}` (a tool call's as its error envelope) and any notification over
-  it is replaced by a warning notification naming its size. An event's lists over 10 000 entries become `{count, truncated: true}`. Declared
-  behaviour change: inline images between 750 KiB and 8 MB are now written to a file instead. None of the 6 879 PNGs of
-  the M4 GUI runs exceeds 700 KB; a window capture is about 45 KB.
+- **Problem:** base64 adds a third, so an 8 MB inline image or blob is about 10.7 MB in one answer, over some clients'
+  per-event limit when the answer is a server-sent event.
+- **Ruled (D-56 item 2 and 3):** the inline limits are the spec's (the session's limits and `maxBytes`); no answer is
+  replaced by `limit.exceeded` for its size, no notification is replaced and no event list is truncated (all three were
+  built and withdrawn). Over HTTP an answer over 1 MiB sent before anything else on its stream is one `application/json`
+  body (`http.rs` `stream_sse`, `a_large_first_answer_is_a_json_body_and_anything_else_an_event_stream`). The remaining
+  case (progress first) is SI-163's open question.
+

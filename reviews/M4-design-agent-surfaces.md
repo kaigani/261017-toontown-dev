@@ -315,18 +315,20 @@ Already paged and within the cap: `doc.object.find`, `edit.history.get` (`offset
    the same `limit.exceeded` envelope, and a notification over the cap is not sent and is recorded in the audit log.
    This holds for commands not listed above and for any future one.
 
-**As built (C4.4a).** Inline payloads: at most 750 KiB encoded (`render::INLINE_ANSWER_BYTES`), so the base64 answer
-fits one message. A notification over the cap is replaced by a warning notification naming its size (the MCP
-server has no log of its own). The paged read waits for a ruling: spec A is a read-only copy, and the registry refuses an
-undeclared command (SI-181). Until then, the full list is the companion manifest file at `manifestPath`. The gate is
-implemented as follows:
+**As built (C4.4a), after ruling D-56 corrected D-51 item 2.** There is no general 1 MiB cap: the spec's limits govern
+answers. Kept from the design above: the range job's bounded answer (item 1, with the companion manifest file as the full
+list; no paged read, which would need a spec A row, D-57) and the HTTP transport fix (a full queue drops advisory
+progress, never the stream; the answer waits for room). Withdrawn: the inline cap (item 2), the `limit.exceeded`
+answers (item 3), the event truncation (item 4) and the writer's backstop (item 5). New (D-56 item 3): over HTTP an answer
+over 1 MiB with nothing yet sent on its request's stream is one plain `application/json` body (`http.rs` `stream_sse`).
+The measurement:
 
 - `c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog` measures every example's answer and every
-  job example's final record against 1 MiB less 8 KiB for the tool-result wrapper; the largest is `doc.blob.get`, at
-  470 655 bytes;
+  job example's final record, each under 1 MiB less 8 KiB for the tool-result wrapper (a bound on the examples, not on
+  answers);
 - `c33_range::a_long_range_answers_with_its_frames_summarised` runs 150 frames and checks the summary, the answer's
   size and the full companion file;
-- the server's unit tests cover the backstop and the event lists;
+- `http.rs` `a_large_first_answer_is_a_json_body_and_anything_else_an_event_stream`;
 - the 12 000-frame wait over HTTP is checked end to end (receipt).
 
 **The gate test as designed** (no wall-clock assertion, D-45):

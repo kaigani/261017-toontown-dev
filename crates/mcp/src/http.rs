@@ -655,14 +655,48 @@ fn token_ok(presented: Option<&str>, token: &str) -> bool {
     a.len() == b.len() && a.iter().zip(b).fold(0u8, |acc, (x, y)| acc | (x ^ y)) == 0
 }
 
-/// Writes an SSE stream from `rx` until the response for `until_response_for` was written, the subscriber goes away
-/// or a write blocks longer than the write timeout.
+/// An answer over this many bytes, with nothing yet sent on its request's stream, goes as a plain `application/json`
+/// body instead of an event stream (ruling D-56 item 3; the protocol allows either): some clients cap one server-sent
+/// event at about 1 MiB and would lose the answer although the server sent all of it.
+pub const JSON_BODY_ABOVE: usize = 1 << 20;
+
+/// Writes the response to a request from `rx`: an SSE stream until the response for `until_response_for` was written,
+/// the subscriber goes away or a write blocks longer than the write timeout. The head waits for the first message
+/// (D-56 item 3): when that message is the request's own answer and over [`JSON_BODY_ABOVE`] bytes, it is sent as one
+/// `application/json` body; a progress notification, a keep-alive or a smaller answer starts the event stream.
 fn stream_sse(
     stream: &mut TcpStream,
     extra: &[(&str, String)],
     rx: &Receiver<String>,
     until_response_for: Option<&str>,
 ) {
+    let mut quiet = Duration::ZERO;
+    let first = loop {
+        match rx.recv_timeout(CLIENT_CHECK) {
+            Ok(line) => break Some(line),
+            Err(mpsc::RecvTimeoutError::Timeout) => {
+                if client_gone(stream) {
+                    return;
+                }
+                quiet += CLIENT_CHECK;
+                if quiet >= KEEP_ALIVE {
+                    // A keep-alive is the first thing sent: the response is an event stream from here.
+                    break None;
+                }
+            }
+            Err(mpsc::RecvTimeoutError::Disconnected) => return,
+        }
+    };
+    if let Some(line) = &first
+        && line.len() > JSON_BODY_ABOVE
+        && until_response_for.is_some_and(|id| is_answer_to(line, id))
+    {
+        let mut head: Vec<(&str, String)> = vec![("Content-Type", "application/json".to_owned())];
+        head.extend(extra.iter().cloned());
+        respond(stream, "200 OK", &head, line.as_bytes());
+        let _ = stream.shutdown(std::net::Shutdown::Write);
+        return;
+    }
     let mut head = String::from(
         "HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n",
     );
@@ -673,9 +707,33 @@ fn stream_sse(
     if stream.write_all(head.as_bytes()).is_err() {
         return;
     }
+    match first {
+        Some(line) => {
+            if stream.write_all(format!("event: message\ndata: {line}\n\n").as_bytes()).is_err() {
+                return;
+            }
+            let _ = stream.flush();
+            if until_response_for.is_some_and(|id| is_answer_to(&line, id)) {
+                let _ = stream.shutdown(std::net::Shutdown::Write);
+                return;
+            }
+        }
+        None => {
+            if stream.write_all(b": keep-alive\n\n").is_err() {
+                return;
+            }
+        }
+    }
     write_events(stream, rx, until_response_for);
     // The end of the stream is the end of the answer: the client learns it from the server's FIN.
     let _ = stream.shutdown(std::net::Shutdown::Write);
+}
+
+/// Whether `line` is the response (a result or an error) to the request `id`.
+fn is_answer_to(line: &str, id: &str) -> bool {
+    serde_json::from_str::<Value>(line).is_ok_and(|v| {
+        v.get("id").map(id_text).as_deref() == Some(id) && (v.get("result").is_some() || v.get("error").is_some())
+    })
 }
 
 fn write_events(stream: &mut TcpStream, rx: &Receiver<String>, until_response_for: Option<&str>) {
@@ -1334,6 +1392,47 @@ mod tests {
         assert!(ra.try_recv().unwrap_or_default().contains("result"));
         assert!(rb.try_recv().unwrap_or_default().contains("elicitation"));
         assert!(rg.try_recv().unwrap_or_default().contains("resources/updated"));
+    }
+
+    /// The response to `answer` sent as the first (and only) message of a request's stream, as the client reads it.
+    fn response_to(first: Vec<String>) -> String {
+        let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+        let addr = listener.local_addr().unwrap();
+        let client = std::thread::spawn(move || {
+            let mut c = TcpStream::connect(addr).unwrap();
+            let mut out = String::new();
+            let _ = std::io::Read::read_to_string(&mut c, &mut out);
+            out
+        });
+        let (mut server, _) = listener.accept().unwrap();
+        let (tx, rx) = mpsc::sync_channel::<String>(8);
+        for line in first {
+            tx.send(line).unwrap();
+        }
+        stream_sse(&mut server, &[("Mcp-Session-Id", "s".to_owned())], &rx, Some("7"));
+        drop(server);
+        client.join().unwrap()
+    }
+
+    /// D-56 item 3: an answer over 1 MiB with nothing sent before it is one `application/json` body, whole; a progress
+    /// notification first keeps the event stream, and so does a small answer.
+    #[test]
+    fn a_large_first_answer_is_a_json_body_and_anything_else_an_event_stream() {
+        let big = serde_json::json!({ "jsonrpc": "2.0", "id": 7, "result": { "x": "y".repeat(JSON_BODY_ABOVE) } })
+            .to_string();
+        let out = response_to(vec![big.clone()]);
+        assert!(out.starts_with("HTTP/1.1 200 OK"), "{}", &out[..80]);
+        assert!(out.contains("Content-Type: application/json"));
+        assert!(out.contains(&format!("Content-Length: {}", big.len())));
+        assert!(out.ends_with(&big));
+        let progress =
+            serde_json::json!({ "jsonrpc": "2.0", "method": "notifications/progress", "params": {} }).to_string();
+        let out = response_to(vec![progress, big.clone()]);
+        assert!(out.contains("Content-Type: text/event-stream"));
+        assert!(out.contains(&format!("data: {big}")));
+        let small = serde_json::json!({ "jsonrpc": "2.0", "id": 7, "result": {} }).to_string();
+        let out = response_to(vec![small.clone()]);
+        assert!(out.contains("Content-Type: text/event-stream") && out.contains(&format!("data: {small}")));
     }
 
     #[test]

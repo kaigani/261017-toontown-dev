@@ -279,8 +279,7 @@ pub(crate) fn doc_blob_get(cx: &mut Cx, p: BlobParams) -> Result<BlobResult, Com
         }
         _ => return Err(invalid("/ref", "give either `ref` or `entry`")),
     };
-    // D-51: the base64 answer fits one MCP message whatever `maxBytes` asks for.
-    let bytes = read_source(cx, &src, p.max_bytes.min(super::render::INLINE_ANSWER_BYTES))?;
+    let bytes = read_source(cx, &src, p.max_bytes)?;
     Ok(BlobResult {
         media_type: mt,
         size: bytes.len() as u64,

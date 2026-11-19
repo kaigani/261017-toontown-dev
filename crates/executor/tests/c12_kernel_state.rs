@@ -411,9 +411,9 @@ fn clipboard_for(h: &ExecutorHandle, id: &str) {
     }
 }
 
-/// Ruling D-51 (SI-163): no single MCP message over 1 MiB (`tt_mcp::server::MAX_MESSAGE_BYTES`, the server's
-/// backstop). An answer reaches the client inside a tool result (a text summary and the structured envelope), so the
-/// envelope and a job's final record must leave room for that wrapper.
+/// Ruling D-56 (correcting D-51): the worked examples' answers stay under 1 MiB, a measurement of the examples, not a
+/// cap on answers (the spec's own limits govern those: 11 §6.5, `doc.blob.get` `maxBytes`). An answer reaches the client
+/// inside a tool result (a text summary and the structured envelope), so the bound leaves room for that wrapper.
 const ANSWER_CAP: usize = (1 << 20) - 8 * 1024;
 
 #[test]
@@ -423,14 +423,14 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
     let mut schema_checked = 0;
     let mut ran = 0;
     let mut failures = Vec::new();
-    // D-51's gate: the largest answer of every command's example, and of every job example's final record.
+    // D-56's measurement: the largest answer of every command's example, and of every job example's final record.
     let mut largest: (usize, String) = (0, String::new());
     let mut measure = |what: String, bytes: usize, failures: &mut Vec<String>| {
         if bytes > largest.0 {
             largest = (bytes, what.clone());
         }
         if bytes > ANSWER_CAP {
-            failures.push(format!("{what}: {bytes} bytes, over the {ANSWER_CAP}-byte answer cap (D-51)"));
+            failures.push(format!("{what}: {bytes} bytes, over the {ANSWER_CAP}-byte bound on the examples (D-56)"));
         }
     };
     for e in registry.entries() {

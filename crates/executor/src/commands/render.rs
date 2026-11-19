@@ -33,10 +33,6 @@ use crate::cx::Cx;
 pub(crate) const MAX_SIDE: u32 = tt_render::MAX_SIDE;
 /// The default inline image limit (09 §11.1 item 3): 8 MB encoded.
 pub(crate) const INLINE_IMAGE_BYTES: u64 = 8 * 1024 * 1024;
-/// Ruling D-51 (SI-163): no single MCP answer over 1 MiB. An inline payload is base64 (4/3 of its bytes) inside the
-/// envelope, so at most this many encoded bytes are returned inline, whatever the session's limits say; a larger image
-/// is written to a file (`output: "file"`) and a larger blob is refused with its `maxBytes`.
-pub(crate) const INLINE_ANSWER_BYTES: u64 = 750 * 1024;
 /// Work units one frame may spend (path elements and pixels / 1024), as a drawing render.
 const FRAME_WORK_BUDGET: u64 = 200_000_000;
 /// Wall-clock limit of one frame's rasterisation (under the executor's watchdog budget).
@@ -387,7 +383,7 @@ pub(crate) fn sha256_hex(bytes: &[u8]) -> String {
 /// The session's inline limits: the long side and the encoded bytes.
 pub(crate) fn inline_limits(cx: &Cx) -> (u32, u64) {
     let l = &cx.session().agents.limits;
-    (l.max_inline_image_px, INLINE_IMAGE_BYTES.min(l.max_inline_bytes).min(INLINE_ANSWER_BYTES))
+    (l.max_inline_image_px, INLINE_IMAGE_BYTES.min(l.max_inline_bytes))
 }
 
 /// `path` with ` (n)` before the extension, the first that does not exist.
@@ -1002,7 +998,7 @@ pub(crate) struct Manifest {
     /// The document revision rendered.
     document_revision: u64,
     /// One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to
-    /// [`OUTPUTS_INLINE`] frames (ruling D-51, SI-163: no MCP answer over 1 MiB), `outputs` summarising them always.
+    /// [`OUTPUTS_INLINE`] frames (ruling D-51 as corrected by D-56, SI-181: a range's answer stays small), `outputs` summarising them always.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     files: Option<Vec<ManifestFile>>,
     /// The companion manifest file written with the frames (this manifest without itself).
