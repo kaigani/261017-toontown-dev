@@ -501,9 +501,12 @@ async def live3_body(t,step):
     if accept:check(len(sent())==3,'one command per changed policy typed persistence group',sent())
    check((await call(q,'prefs.get',{'keys':keys})).get('result')==after,'agent sees same preferences',await call(q,'prefs.get',{'keys':keys}))
   elif step==2:
-   await prefs();t.clear();t.click('agentAccess.server');t.click('preferences.submit');await pause()
+   await prefs()
+   if not dom('agentAccess.server','e.checked'):
+    t.click('agentAccess.server');t.click('preferences.submit');await pause();await prefs()
+   t.clear();t.click('agentAccess.server');t.click('preferences.submit');await pause()
    check((await call(q,'agent.server.status')).get('status')!='ok','connected client refused after server off',await call(q,'agent.server.status'))
-   nq=fresh('off-probe');check('result' not in await init(nq),'new client refused while off',await init(nq))
+   nq=IndependentHttp(disc,'off-probe');clients.append(nq);offanswer=await init(nq);check('result' not in offanswer,'new client refused while off',offanswer)
    check(True,'off discovery and indicator observation',{'discovery':{k:v for k,v in json.loads(discpath.read_text()).items() if k!='token'},'indicator':t.cdp.js("document.body.innerText.slice(-1200)"),'sent':sent()})
    await prefs();t.click('agentAccess.server');t.click('preferences.submit');await pause()
    nq=fresh('on-probe');check('result' in await init(nq),'new client accepted after on',await call(nq,'agent.server.status'))
