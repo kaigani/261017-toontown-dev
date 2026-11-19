@@ -755,7 +755,22 @@ async def live4_body(t,step):
    held=[asyncio.create_task(call(client,'project.saveAs',{'path':sid,'onExists':'overwrite'})) for client,sid in zip((q,q2,q),ids)];tasks.extend(held);await pause()
    check(dom('confirmSheet.queue') and '1 of 3' in dom('confirmSheet.queue'),'three calls queue',dom('confirmSheet'))
    query=asyncio.create_task(call(q2,'app.state.get'));tasks.append(query);await asyncio.sleep(2);check(query.done() and query.result().get('status')=='ok','other query completes',query.result() if query.done() else 'held behind confirmation')
-   for task,accept in zip(held,(False,False,True)):await answer(task,accept)
+   for accept in (False,False,True):
+    for _ in range(30):
+     if dom('confirmSheet'):break
+     await asyncio.sleep(.1)
+    t.click('confirmSheet.accept' if accept else 'confirmSheet.decline');await pause()
+   answers=await asyncio.gather(*held);check(sum(r.get('status')=='ok' for r in answers)==1 and sum('confirmation.declined' in json.dumps(r) for r in answers)==2,'each queued call receives decision',answers)
+   # A fresh pending call: draw using real pointer input.
+   task,sid,p=await request(q)
+   await c('tool.active.set',{'toolId':'brush'});r=t.rect('drawingView.canvas')
+   import ctypes
+   from ctypes import wintypes
+   o=wintypes.POINT(0,0);d.u32.ClientToScreen(d.front(),ctypes.byref(o));x=int(o.x+r['x']*r['dpr']);y=int(o.y+r['y']*r['dpr'])
+   pos=await t.position();d.u32.SetCursorPos(x,y);d.e6._send_button(True)
+   for i in range(1,8):d.u32.SetCursorPos(x+i*5,y+i*2);await asyncio.sleep(.04)
+   d.e6._send_button(False);await pause();check(await t.position()>pos,'person draws while sheet open');check(task.done() and 'confirmation.expired' in json.dumps(task.result()),'stroke expires pending request')
+   check(True,'window topology',await c('window.panel.list'))
   elif step==6:
    import zipfile
    clean=t.work/'clean.animpkg';bad=t.work/'damaged.animpkg'
