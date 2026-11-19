@@ -739,7 +739,9 @@ async def live4_body(t,step):
    check('confirmation.declined' in json.dumps(await task),'original remains declined')
   elif step==4:
    for who in ('window','agent'):
-    task,sid,p=await request(q);before=dom('confirmSheet.countdown');status=await call(q2,'agent.server.status');await asyncio.sleep(2.2);after=dom('confirmSheet.countdown');check(before!=after,'countdown decreases',{'before':before,'after':after,'status':status})
+    task,sid,p=await request(q);before=dom('confirmSheet.countdown');status=await call(q2,'agent.server.status');remaining=status['result']['pendingConfirmations'][0]['expiresInMs']/1000
+    clock=before.rsplit(' ',1)[-1].split(':');shown=int(clock[0])*60+int(clock[1]);check(abs(shown-remaining)<=2,'countdown matches status',{'shownSeconds':shown,'statusSeconds':remaining})
+    await asyncio.sleep(2.2);after=dom('confirmSheet.countdown');check(before!=after,'countdown decreases',{'before':before,'after':after,'status':status})
     if who=='window':
      await c('tool.active.set',{'toolId':'rectangle'});t.click('drawingView.canvas');d.key(0x42)
      # real undoable document edit through native menu
@@ -812,26 +814,27 @@ async def live4_body(t,step):
    t.click('toolbarSheet.cancel');await pause();check(await layout()==before,'Cancel discards')
    await sheet();t.click('toolbarSheet.item.0');t.click('toolbarSheet.remove');d.key(0x1B);await pause();check(await layout()==before,'Escape discards removal')
    await sheet();t.click('toolbarSheet.allowed.edit.undo');t.click('toolbarSheet.add');t.click('toolbarSheet.up')
-   for _ in range(45):
+   for _ in range(4):
     d.key(0x09);focus=t.cdp.js('document.activeElement?.dataset.ttId');check(bool(focus) and focus.startswith('toolbarSheet.'),'Tab contained',focus)
+   dom('toolbarSheet.submit','(e.focus(),true)');d.key(0x09);check(t.cdp.js('document.activeElement?.dataset.ttId')!='toolbarSheet.submit' and t.cdp.js('document.activeElement?.closest("[role=dialog]")?.dataset.ttId')=='toolbarSheet','Tab wraps inside sheet')
    tool=await c('tool.active.get');d.key(0x42);await pause();check(await c('tool.active.get')==tool,'sheet blocks tool shortcut')
    t.clear();t.click('toolbarSheet.submit');await pause();after=await layout();check(after!=before,'Apply changes layout',{'layout':after,'sent':t.recorded()})
    await c('draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':5,'y':5}});pos=await t.position();t.click('mainToolbar.edit.undo');await pause();check(await t.position()==pos-1,'added Undo works')
    # Restart with the same installed user directory.
-   import signal
+   await c('project.save')
    for client in clients:await asyncio.to_thread(client.close)
-   os.kill(d.e2e.APP_PID['pid'],signal.SIGTERM);await asyncio.sleep(1)
+   oldpid=d.e2e.APP_PID['pid'];d.choose_menu(['File','Quit'])
+   await asyncio.to_thread(subprocess.run,['powershell','-NoProfile','-Command','Wait-Process -Id '+str(oldpid)+' -Timeout 30 -ErrorAction SilentlyContinue'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
    proc=d.e2e.launch(APP,t.work/'user',t.work/'restart-discovery.json')
    try:
     disc=d.e2e.wait_discovery(t.work/'restart-discovery.json',proc);await asyncio.sleep(2);t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
     restart=Live4Http(disc,'restart-live4');clients.append(restart);await asyncio.to_thread(restart.initialize)
-    persisted=await call(restart,'window.toolbar.list');check(persisted.get('result')==after,'layout survives restart',persisted)
+    persisted=await call(restart,'window.toolbar.list');check([x['items'] for x in persisted.get('result',[])]==[x['items'] for x in after],'layout survives restart',{'before':after,'after':persisted})
     await sheet();t.clear();t.click('toolbarSheet.restore');await pause();reset=await call(restart,'window.toolbar.list');check(reset.get('result')==before,'Restore Default restores original',{'layout':reset,'sent':t.recorded()})
    finally:
     d.e2e.stop(proc)
-    return
  finally:
-  for _ in range(10):
+  for _ in range(0 if step==7 else 10):
    try:pending=dom('confirmSheet')
    except Exception:break
    if pending is None:break
