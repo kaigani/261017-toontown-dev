@@ -24,7 +24,7 @@ fn answer_when_shown(
             }
             std::thread::sleep(Duration::from_millis(30));
         }
-        panic!("no in-app request was shown");
+        assert!(Instant::now() < deadline, "no in-app request was shown");
     })
 }
 

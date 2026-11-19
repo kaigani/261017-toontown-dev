@@ -724,11 +724,7 @@ fn stream_sse(
             }
         }
         // A request's stream that stayed quiet up to the keep-alive interval: the keep-alive is its first event.
-        None if until_response_for.is_some() => {
-            if stream.write_all(b": keep-alive\n\n").is_err() {
-                return;
-            }
-        }
+        None if until_response_for.is_some() && stream.write_all(b": keep-alive\n\n").is_err() => return,
         None => {}
     }
     write_events(stream, rx, until_response_for);
