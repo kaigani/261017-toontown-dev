@@ -1,0 +1,237 @@
+{
+  "checks": 10,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-kdzm8ej8",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "all edits staged",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "remote disabled with authorization reason",
+      "ok": true,
+      "detail": "needs the MCP authorization flow (11 \u00a74), which this version does not have"
+    },
+    {
+      "check": "OK commits / Cancel discards False",
+      "ok": true,
+      "detail": {
+        "sent": [],
+        "values": {
+          "values": {
+            "agent.policy.defaults": {
+              "policy": "autonomous",
+              "maxJobs": 2,
+              "maxBatchSteps": 1000,
+              "maxInlineImagePx": 2048,
+              "maxInlineBytes": 52428800,
+              "askInApp": true,
+              "letAgentMoveView": true,
+              "highlightAgentChanges": true
+            },
+            "agent.typedTools": {
+              "enabled": false,
+              "namespaces": []
+            },
+            "agent.activity.persist": false,
+            "agent.server.port": 47215
+          }
+        }
+      }
+    },
+    {
+      "check": "all edits staged",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "remote disabled with authorization reason",
+      "ok": true,
+      "detail": "needs the MCP authorization flow (11 \u00a74), which this version does not have"
+    },
+    {
+      "check": "OK commits / Cancel discards True",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.policy.defaults.set",
+            "params": {
+              "policy": "assist",
+              "maxJobs": 3,
+              "maxBatchSteps": 17,
+              "maxInlineImagePx": 1024,
+              "maxInlineBytes": 12582912,
+              "askInApp": false,
+              "letAgentMoveView": false,
+              "highlightAgentChanges": false
+            }
+          },
+          {
+            "command": "agent.typedTools.set",
+            "params": {
+              "enabled": true,
+              "namespaces": [
+                "draw"
+              ]
+            }
+          },
+          {
+            "command": "agent.activity.persist.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "values": {
+          "values": {
+            "agent.policy.defaults": {
+              "policy": "assist",
+              "maxJobs": 3,
+              "maxBatchSteps": 17,
+              "maxInlineImagePx": 1024,
+              "maxInlineBytes": 12582912,
+              "askInApp": false,
+              "letAgentMoveView": false,
+              "highlightAgentChanges": false
+            },
+            "agent.typedTools": {
+              "enabled": true,
+              "namespaces": [
+                "draw"
+              ]
+            },
+            "agent.activity.persist": true,
+            "agent.server.port": 47215
+          }
+        }
+      }
+    },
+    {
+      "check": "one command per changed policy typed persistence group",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.policy.defaults.set",
+          "params": {
+            "policy": "assist",
+            "maxJobs": 3,
+            "maxBatchSteps": 17,
+            "maxInlineImagePx": 1024,
+            "maxInlineBytes": 12582912,
+            "askInApp": false,
+            "letAgentMoveView": false,
+            "highlightAgentChanges": false
+          }
+        },
+        {
+          "command": "agent.typedTools.set",
+          "params": {
+            "enabled": true,
+            "namespaces": [
+              "draw"
+            ]
+          }
+        },
+        {
+          "command": "agent.activity.persist.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "agent sees same preferences",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "values": {
+            "agent.policy.defaults": {
+              "policy": "assist",
+              "maxJobs": 3,
+              "maxBatchSteps": 17,
+              "maxInlineImagePx": 1024,
+              "maxInlineBytes": 12582912,
+              "askInApp": false,
+              "letAgentMoveView": false,
+              "highlightAgentChanges": false
+            },
+            "agent.typedTools": {
+              "enabled": true,
+              "namespaces": [
+                "draw"
+              ]
+            },
+            "agent.activity.persist": true,
+            "agent.server.port": 47215
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": null
+      }
+    },
+    {
+      "check": "restart preserves preference groups",
+      "ok": true,
+      "detail": {
+        "before": {
+          "values": {
+            "agent.policy.defaults": {
+              "policy": "assist",
+              "maxJobs": 3,
+              "maxBatchSteps": 17,
+              "maxInlineImagePx": 1024,
+              "maxInlineBytes": 12582912,
+              "askInApp": false,
+              "letAgentMoveView": false,
+              "highlightAgentChanges": false
+            },
+            "agent.typedTools": {
+              "enabled": true,
+              "namespaces": [
+                "draw"
+              ]
+            },
+            "agent.activity.persist": true
+          }
+        },
+        "after": {
+          "status": "ok",
+          "result": {
+            "values": {
+              "agent.policy.defaults": {
+                "policy": "assist",
+                "maxJobs": 3,
+                "maxBatchSteps": 17,
+                "maxInlineImagePx": 1024,
+                "maxInlineBytes": 12582912,
+                "askInApp": false,
+                "letAgentMoveView": false,
+                "highlightAgentChanges": false
+              },
+              "agent.typedTools": {
+                "enabled": true,
+                "namespaces": [
+                  "draw"
+                ]
+              },
+              "agent.activity.persist": true
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": null
+        }
+      }
+    }
+  ]
+}

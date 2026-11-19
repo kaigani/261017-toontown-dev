@@ -394,9 +394,9 @@ def live(step):
   stop.set();worker.join();server.terminate();server.wait()
   run.save('transcript.json',run.transcript)
   summary={'checks':len(run.transcript),'failures':run.failures,'raw':str(OUT)}
-  if sys.argv[1] in ('l2a','l2b'):summary['results']=run.transcript
+  if sys.argv[1] in ('l2a','l2b','l3a','l3b'):summary['results']=run.transcript
   suffix='-context-repro' if os.environ.get('REVIEW_CONTEXT_REPRO') else '-dock' if os.environ.get('REVIEW_DOCK_REPRO') else ''
-  (EVID/((sys.argv[1]+'-' if sys.argv[1] in ('l2a','l2b') else '')+'step'+str(step)+suffix+'.json')).write_text(json.dumps(summary,indent=2,default=str)[:190000]+'\n',encoding='utf-8',newline='\n')
+  (EVID/((sys.argv[1]+'-' if sys.argv[1] in ('l2a','l2b','l3a','l3b') else '')+'step'+str(step)+suffix+'.json')).write_text(json.dumps(summary,indent=2,default=str)[:190000]+'\n',encoding='utf-8',newline='\n')
  return int(bool(run.failures))
 
 def regression(step,script,cases):
@@ -416,7 +416,192 @@ def regression(step,script,cases):
  print('STEP',step,'COMPLETE',flush=True)
  preserve_old_receipts()
 
+
+class IndependentHttp:
+ """Reviewer-owned MCP JSON-RPC transport; no product test client."""
+ def __init__(self, discovery, name='review-live3'):
+  self.endpoint=discovery['endpoint'];self.token=discovery['token'];self.sid=None;self.seq=0;self.name=name
+ def rpc(self,method,params=None,notification=False):
+  import urllib.request,urllib.error
+  self.seq+=1
+  body={'jsonrpc':'2.0','method':method,'params':params or {}}
+  if not notification:body['id']=self.seq
+  headers={'Authorization':'Bearer '+self.token,'Content-Type':'application/json','Accept':'application/json, text/event-stream'}
+  if self.sid:headers['Mcp-Session-Id']=self.sid
+  try:
+   with urllib.request.urlopen(urllib.request.Request(self.endpoint,json.dumps(body).encode(),headers),timeout=20) as r:
+    self.sid=r.headers.get('Mcp-Session-Id',self.sid)
+    if notification:return {'http':r.status}
+    if 'text/event-stream' in r.headers.get('Content-Type',''):
+     for line in r:
+      if line.startswith(b'data:'):
+       obj=json.loads(line[5:])
+       if obj.get('id')==self.seq:return obj
+    data=r.read();return json.loads(data) if data else {'http':r.status}
+  except urllib.error.HTTPError as ex:return {'http':ex.code,'body':ex.read().decode()[:1000]}
+  except Exception as ex:return {'transportError':str(ex)}
+ def initialize(self):
+  r=self.rpc('initialize',{'protocolVersion':'2025-06-18','capabilities':{},'clientInfo':{'name':self.name,'version':'1'}})
+  if 'result' in r:self.rpc('notifications/initialized',notification=True)
+  return r
+ def tool(self,name,args):
+  r=self.rpc('tools/call',{'name':name,'arguments':args});v=r.get('result',{})
+  if 'structuredContent' in v:return v['structuredContent']
+  for c in v.get('content',[]):
+   if c.get('type')=='text':
+    try:return json.loads(c['text'])
+    except ValueError:pass
+  return r
+ def command(self,name,params=None):return self.tool('run_command',{'id':name,'params':params or {}})
+ def close(self):
+  import urllib.request
+  if not self.sid:return
+  try:urllib.request.urlopen(urllib.request.Request(self.endpoint,method='DELETE',headers={'Authorization':'Bearer '+self.token,'Mcp-Session-Id':self.sid}),timeout=3).close()
+  except Exception:pass
+
+async def live3_body(t,step):
+ import asyncio,hashlib
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
+ discpath=t.work/'discovery.json'
+ disc=json.loads(discpath.read_text());clients=[]
+ def fresh(name):
+  q=IndependentHttp(json.loads(discpath.read_text()),name);clients.append(q);return q
+ async def call(q,n,p=None):return await asyncio.to_thread(q.command,n,p)
+ async def tool(q,n,p):return await asyncio.to_thread(q.tool,n,p)
+ async def init(q):return await asyncio.to_thread(q.initialize)
+ async def pause():await asyncio.sleep(.7)
+ def dom(i,expr='e.value'):return t.cdp.js('(()=>{const e=document.querySelector('+json.dumps('[data-tt-id="'+i+'"]')+');return e?'+expr+':null})()')
+ async def prefs():
+  d.choose_menu(['File','Preferences']);await pause();t.click('preferences.category.agent');await pause()
+ async def typed(i,v):d.front();dom(i,'(e.focus(),e.select(),true)');d.type_text(str(v));d.key(0x09);await pause()
+ def sent():return [x for x in t.recorded() if x['command'].startswith('agent.') and t.kinds.get(x['command'])!='query']
+ def safe(v):
+  txt=json.dumps(v,default=str)
+  for q in clients:
+   txt=txt.replace(q.token,'<token len='+str(len(q.token))+' sha256='+hashlib.sha256(q.token.encode()).hexdigest()+'>')
+  return json.loads(txt)
+ def check(ok,label,data=None):t.run.check(ok,label,safe(data))
+ q=fresh('review-live3-primary');check('result' in await init(q),'independent HTTP initialize')
+ try:
+  if step==1:
+   keys=['agent.policy.defaults','agent.typedTools','agent.activity.persist','agent.server.port']
+   before=await c('prefs.get',{'keys':keys})
+   for accept in (False,True):
+    await prefs();t.clear()
+    await typed('agentAccess.maxJobs',3);await typed('agentAccess.maxBatchSteps',17);await typed('agentAccess.maxInlineImagePx',1024);await typed('agentAccess.maxInlineBytes',12)
+    await t.do(('select','agentAccess.policy','assist'))
+    for i in ('askInApp','letAgentMoveView','highlightAgentChanges','typedTools','persist'):t.click('agentAccess.'+i)
+    await pause();t.click('agentAccess.namespace.draw');await pause()
+    check(await c('prefs.get',{'keys':keys})==before,'all edits staged',sent())
+    check(dom('agentAccess.allowRemote','e.disabled') is True,'remote disabled with authorization reason',dom('agentAccess.allowRemote','e.parentElement.title'))
+    if accept:t.click('preferences.submit')
+    else:d.key(0x1B)
+    await pause();after=await c('prefs.get',{'keys':keys})
+    check(after!=before if accept else after==before,'OK commits / Cancel discards '+str(accept),{'sent':sent(),'values':after})
+    if accept:check(len(sent())==3,'one command per changed policy typed persistence group',sent())
+   check((await call(q,'prefs.get',{'keys':keys})).get('result')==after,'agent sees same preferences',await call(q,'prefs.get',{'keys':keys}))
+  elif step==2:
+   await prefs();t.clear();t.click('agentAccess.server');t.click('preferences.submit');await pause()
+   check((await call(q,'agent.server.status')).get('status')!='ok','connected client refused after server off',await call(q,'agent.server.status'))
+   nq=fresh('off-probe');check('result' not in await init(nq),'new client refused while off',await init(nq))
+   check(True,'off discovery and indicator observation',{'discovery':{k:v for k,v in json.loads(discpath.read_text()).items() if k!='token'},'indicator':t.cdp.js("document.body.innerText.slice(-1200)"),'sent':sent()})
+   await prefs();t.click('agentAccess.server');t.click('preferences.submit');await pause()
+   nq=fresh('on-probe');check('result' in await init(nq),'new client accepted after on',await call(nq,'agent.server.status'))
+  elif step==3:
+   await r3.modal_fixture(t,'Live3 policy')
+   for policy in ('observe','assist','autonomous'):
+    await prefs();await t.do(('select','agentAccess.policy',policy))
+    if dom('agentAccess.askInApp','e.checked'):t.click('agentAccess.askInApp')
+    await typed('agentAccess.maxBatchSteps',2);t.click('preferences.submit');await pause()
+    nq=fresh('policy-'+policy);await init(nq)
+    read=await call(nq,'app.state.get');mutation=await call(nq,'draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':10,'y':10}})
+    target=t.work/('overwrite-'+policy+'.json');target.write_text('existing')
+    confirm=await call(nq,'agent.activity.export',{'path':str(target),'format':'json','onExists':'overwrite'})
+    check(read.get('status')=='ok' and (mutation.get('status')!='ok' if policy=='observe' else mutation.get('status')=='ok'),'policy '+policy,{'read':read,'mutation':mutation,'confirmable':confirm,'status':await call(nq,'agent.server.status')})
+    batch=await tool(nq,'batch',{'steps':[{'id':'app.state.get','params':{}}]*3})
+    check('limit.exceeded' in json.dumps(batch) if policy!='observe' else True,'batch length enforced '+policy,batch)
+  elif step==4:
+   await prefs();await pause()
+   commands=[('prefs.set',{'values':{'agent.server.enabled':False}}),('prefs.reset',{'keys':['agent.server.enabled']}),('agent.policy.defaults.set',{'policy':'autonomous'}),('agent.session.grant',{'sessionId':q.sid,'scopes':['app']}),('agent.token.regenerate',{}),('agent.server.set',{'enabled':False}),('agent.confirmation.respond',{'confirmationId':'review-fake','accept':True}),('prefs.get',{'keys':['agent.token','agent.server.token']}),('agent.server.status',{}),('agent.activity.list',{})]
+   for n,p in commands:
+    value=await call(q,n,p)
+    check(disc['token'] not in json.dumps(value) and (value.get('status')!='ok' if n in [x[0] for x in commands[:7]] else True),'privilege / secret '+n,{'params':p,'returned':value})
+   for method,params in [('resources/list',{}),('resources/read',{'uri':discpath.as_uri()}),('resources/read',{'uri':'app://state'}),('resources/read',{'uri':'app://activity'})]:
+    value=await asyncio.to_thread(q.rpc,method,params);check(disc['token'] not in json.dumps(value),'resource secret '+str(params),value)
+   for n,p in [('inspect_ui',{}),('screenshot',{'target':'window'})]:
+    value=await tool(q,n,p);t.run.save(n+'.json',safe(value));check(disc['token'] not in json.dumps(value),'Preferences '+n+' no textual token',{'bytes':len(json.dumps(value)),'status':value.get('status')})
+  elif step==5:
+   await prefs();t.clear();t.click('agentAccess.regenerate');await pause()
+   check(dom('message.cancel','e===document.activeElement') is True,'regeneration question defaults Cancel',t.cdp.js("[...document.querySelectorAll('button')].filter(e=>e.closest('[role=dialog]')).map(e=>({text:e.textContent,id:e.dataset.ttId,focused:e===document.activeElement}))"))
+   d.key(0x1B);await pause();check(json.loads(discpath.read_text())==disc,'Cancel keeps token and endpoint')
+   t.click('agentAccess.regenerate');await pause()
+   buttons=t.cdp.js("[...document.querySelectorAll('button')].filter(e=>e.textContent==='Regenerate').map(e=>e.dataset.ttId)")
+   t.click(buttons[0]);await pause();new=json.loads(discpath.read_text())
+   check(new['token']!=disc['token'] and new['endpoint']==disc['endpoint'],'regenerate changes token keeps endpoint',sent())
+   check('result' not in await init(q),'old token refused',await init(q));nq=fresh('new-token');check('result' in await init(nq),'new token accepted')
+   tree=await tool(nq,'inspect_ui',{});logs=[]
+   for f in (t.work/'user').rglob('*'):
+    if f.is_file() and f.suffix in ('.log','.jsonl'):logs.append((str(f.relative_to(t.work)),new['token'].encode() in f.read_bytes()))
+   check(new['token'] not in json.dumps(tree) and not any(x[1] for x in logs),'token absent UI tree and logs',logs)
+   check(False,'token shown or copied in Preferences matches discovery',{'observed':'Agent access has no token display or Copy token control','controls':t.cdp.js("[...document.querySelectorAll('[data-tt-id^=agentAccess]')].map(e=>e.dataset.ttId)")})
+  elif step==6:
+   await r3.modal_fixture(t,'Live3 sessions');nq=fresh('review-live3-secondary');await init(nq)
+   await c('window.panel.set',{'panelId':'activity','visible':True});await pause()
+   status=await c('agent.server.status');check(True,'two independent clients status',status)
+   sid=next(x['sessionId'] for x in status['sessions'] if 'primary' in json.dumps(x['client']))
+   for action in ('pause','resume'):
+    t.clear();t.click('activity.session.'+sid+'.'+action);await pause()
+    a=await call(q,'draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':12,'y':12}});b=await call(nq,'app.state.get')
+    check(('agent.paused' in json.dumps(a) if action=='pause' else a.get('status')=='ok') and b.get('status')=='ok','session '+action+' isolated',{'sent':sent(),'primary':a,'other':b})
+   t.clear();await t.do(('select','activity.session.'+sid+'.policy','observe'));await pause()
+   check('permission.denied' in json.dumps(await call(q,'draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':1,'y':1}})),'grant targets primary',sent())
+   t.clear();t.click('activity.session.'+sid+'.disconnect');await pause();check((await call(q,'app.state.get')).get('status')!='ok' and (await call(nq,'app.state.get')).get('status')=='ok','disconnect isolated',sent())
+  elif step==7:
+   await r3.modal_fixture(t,'Live3 activity');await c('window.panel.set',{'panelId':'activity','visible':True});await pause()
+   for i in range(30):
+    if i==0:await call(q,'agent.server.set',{'enabled':False})
+    elif i==2:await call(q,'draw.rectangle.add',{'data':'data:image/png;base64,review-inline-secret','from':{'x':0,'y':0},'to':{'x':2,'y':2}})
+    elif i==1:await tool(q,'batch',{'steps':[{'id':'app.state.get','params':{}}]})
+    else:await call(q,['app.state.get','draw.drawing.get','tool.options.get'][i%3],{'toolId':'brush'} if i%3==2 else {})
+   await pause();activity=await call(q,'agent.activity.list',{'limit':500});rows=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"activity.entry.\"]')].map(e=>({id:e.dataset.ttId,text:e.textContent}))")
+   check(len(rows)>=30,'30 calls live without reload',{'rows':rows,'activity':activity})
+   ev=await asyncio.to_thread(q.rpc,'resources/read',{'uri':'app://events?after=0'});check('shell.' not in json.dumps(ev),'D-57 event stream excludes shell notices',ev)
+   export=t.work/'activity.jsonl';t.clear();t.click('activity.export');await asyncio.sleep(1.8);d.type_text(str(export));d.key(0x0D);await asyncio.sleep(1.8);value=sent()
+   check(export.exists(),'activity export writes file',value)
+   if export.exists():
+    exported=[json.loads(line) for line in export.read_text().splitlines() if line.strip()];listed=activity.get('result',{})
+    entries=listed if isinstance(listed,list) else listed.get('entries',[])
+    same=[x for x in exported if x.get('seq') in {e.get('seq') for e in entries}]
+    check(same==entries,'export equals list for same seq range',{'exported':len(exported),'listed':len(entries),'sent':value})
+    check('review-inline-secret' not in json.dumps(exported),'inline media replaced by hash',safe(exported))
+    t.run.save('activity-export.json',safe(exported))
+  t.run.save('live3-commands.json',safe(t.recorded()))
+  if step in (1,7):
+   import signal
+   saved=t.work/'live3-restart.animpkg'
+   if step==1:await c('project.create',{'name':'Live3 restart','onUnsaved':'discard'})
+   await c('project.saveAs',{'path':str(saved)})
+   before=await c('prefs.get',{'keys':['agent.policy.defaults','agent.typedTools','agent.activity.persist']})
+   for client in clients:await asyncio.to_thread(client.close)
+   os.kill(d.e2e.APP_PID['pid'],signal.SIGTERM);await asyncio.sleep(1)
+   rd=t.work/'restart-discovery.json';proc=d.e2e.launch(APP,t.work/'user',rd)
+   try:
+    new=d.e2e.wait_discovery(rd,proc);nq=IndependentHttp(new,'restart-review');clients.append(nq);await init(nq)
+    after=await call(nq,'prefs.get',{'keys':['agent.policy.defaults','agent.typedTools','agent.activity.persist']})
+    check(after.get('result')==before,'restart preserves preference groups',{'before':before,'after':after})
+    if step==7:
+     await call(nq,'project.open',{'path':str(saved)})
+     check(True,'restart activity observation',await call(nq,'agent.activity.list',{'limit':500}))
+   finally:d.e2e.stop(proc)
+
+ finally:
+  for client in clients:await asyncio.to_thread(client.close)
+
+
 if __name__=='__main__':
+ if sys.argv[1] in ('l3a','l3b'):
+  live_body=live3_body
+  sys.exit(live(int(sys.argv[2])))
  if sys.argv[1] in ('l2a','l2b'):
   live_body=live2_body
   sys.exit(live(int(sys.argv[2])))
