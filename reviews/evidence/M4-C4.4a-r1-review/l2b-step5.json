@@ -1,7 +1,7 @@
 {
-  "checks": 6,
+  "checks": 7,
   "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-er2cf6jh",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-u0tudei7",
   "results": [
     {
       "check": "tablet staged before OK",
@@ -75,17 +75,39 @@
         "result": {
           "settings": {
             "ignoreTablet": false,
-            "portraitCorrection": false,
-            "compatibilityMode": false,
-            "inputInterface": null
+            "portraitCorrection": true,
+            "compatibilityMode": true,
+            "inputInterface": "alternative"
           },
-          "restartRequired": true
+          "restartRequired": false
         },
         "values": {
           "tablet.ignore": false,
-          "tablet.alternativeInput": false,
-          "tablet.portraitCorrection": false,
-          "tablet.compatibilityMode": false
+          "tablet.alternativeInput": true,
+          "tablet.portraitCorrection": true,
+          "tablet.compatibilityMode": true
+        }
+      }
+    },
+    {
+      "check": "restart preserves tablet preferences",
+      "ok": true,
+      "detail": {
+        "before": {
+          "values": {
+            "tablet.ignore": false,
+            "tablet.alternativeInput": true,
+            "tablet.portraitCorrection": true,
+            "tablet.compatibilityMode": true
+          }
+        },
+        "after": {
+          "values": {
+            "tablet.ignore": false,
+            "tablet.alternativeInput": true,
+            "tablet.portraitCorrection": true,
+            "tablet.compatibilityMode": true
+          }
         }
       }
     }

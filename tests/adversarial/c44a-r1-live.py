@@ -196,6 +196,8 @@ async def live2_body(t,step):
   old=await penstate();pos=await t.position();t.clear();t.click('pen.new');await pause();new=await cur();pid=new['penId']
   t.run.check(len((await penstate())['pens'])==len(old['pens'])+1 and sent()==[{'command':'tool.pen.create','params':{'type':'brush','fromPenId':old['currentBrushPenId']}}],'new pen command and selection',sent())
   await c('edit.undo');t.run.check(await penstate()==old,'New Pen undo restores pens',await penstate());await c('edit.redo');await pause()
+  position=await t.position();t.clear();other=old['currentBrushPenId'];t.click('pen.row.'+other);await pause()
+  t.run.check((await penstate())['currentBrushPenId']==other and await t.position()==position,'select pen command has no undo step',sent());t.click('pen.row.'+pid);await pause()
   t.click('pen.row.'+pid);d.key(0x71);await pause()
   selected=t.cdp.js('({value:document.activeElement.value,start:document.activeElement.selectionStart,end:document.activeElement.selectionEnd})')
   t.run.check(selected.get('start')==0 and selected.get('end')==len(selected.get('value','')),'rename opens selected',selected)
@@ -203,7 +205,10 @@ async def live2_body(t,step):
   t.run.check((await cur())['name']=='Live2 pen','typing replaces rename',{'pen':await cur(),'sent':sent()})
   t.click('pen.row.'+pid);d.key(0x71);await pause();d.type_text('Cancel me');d.key(0x1B);await pause()
   t.run.check((await cur())['name']=='Live2 pen','Escape cancels rename',await cur())
+  await c('edit.undo');await pause();t.run.check((await cur())['name']==new['name'],'Rename Pen undo restores old name',await cur());await c('edit.redo');await pause()
+  beforeDelete=await penstate();family=[x for x in beforeDelete['pens'] if x['type']=='brush'];index=next(i for i,x in enumerate(family) if x['penId']==pid);successor=family[index+1 if index+1<len(family) else index-1]['penId']
   t.clear();t.click('pen.delete');await pause();t.run.check(pid not in [x['penId'] for x in (await penstate())['pens']],'delete removes pen',sent())
+  t.run.check((await penstate())['currentBrushPenId']==successor,'delete selects next else previous',await penstate());await c('edit.undo');t.run.check((await penstate())['pens']==beforeDelete['pens'],'Delete Pen undo restores pen list (selection is UI state)',await penstate());await c('edit.redo')
   for pen in (await penstate())['pens']:
    st=await penstate()
    if pen['type']=='brush' and len([x for x in st['pens'] if x['type']=='brush'])>1:await c('tool.pen.delete',{'penId':pen['penId']})
@@ -220,12 +225,25 @@ async def live2_body(t,step):
    await typed('pen.'+field+'.field',value)
    t.clear();d.front();dom('pen.'+field,'(e.focus(),true)');d.key(0x27);await pause()
    t.run.check(len([x for x in sent() if x['command']=='tool.pen.set'])>=1,'slider keyboard release '+field,sent())
+   import ctypes
+   from ctypes import wintypes
+   r=t.rect('pen.'+field);geom=dom('pen.'+field,'({left:e.getBoundingClientRect().left,width:e.getBoundingClientRect().width,value:Number(e.value),min:Number(e.min),max:Number(e.max)})');origin=wintypes.POINT(0,0);d.u32.ClientToScreen(d.front(),ctypes.byref(origin));x=int(origin.x+r['x']*r['dpr']);y=int(origin.y+r['y']*r['dpr'])
+   start=origin.x+(geom['left']+8+(geom['width']-16)*(geom['value']-geom['min'])/(geom['max']-geom['min']))*r['dpr'];end=origin.x+(geom['left']+8+(geom['width']-16)*(.2 if geom['value']>(geom['max']+geom['min'])/2 else .8))*r['dpr']
+   t.clear();d.u32.SetCursorPos(int(start),y);d.e6._send_button(True);await asyncio.sleep(.1);d.u32.SetCursorPos(int(end),y);await asyncio.sleep(.2)
+   t.run.check(not sent(),'slider sends nothing during drag '+field,sent());d.e6._send_button(False);await pause()
+   t.run.check(len(sent())==1 and sent()[0]['command']=='tool.pen.set','slider one command on release '+field,sent())
+
   for shape in ('oval','square','flat','round'):
    t.clear();await t.do(('select','pen.tipShape',shape));await pause();t.run.check((await cur())['tipShape']==shape,'tip shape '+shape,sent())
   base=t.work/'stroke-base.animpkg';await c('project.saveAs',{'path':str(base)})
+  source=(ROOT/'scripts/c43-d39-bindings.py').read_text(encoding='utf-8');source=source[source.index('class Cdp:'):source.index('# ----- OS input')].replace('class Cdp:','class GestureCdp:').replace('/run_command','/gesture_commit')
+  exec(source,d.__dict__)
+  def capture(self,body):
+   outer=json.loads(body);self.calls.append(json.loads(outer['json']))
+  d.GestureCdp._ipc=capture;gc=d.GestureCdp(d.CDP_PORT);gc.record()
   t.clear();d.front();r=t.rect('drawingView.canvas');x,y=r['x']*r['dpr'],r['y']*r['dpr']
   d.e6.os_drag(d.e2e.APP_PID['pid'],[(x-50,y),(x,y+25),(x+50,y)],.4,.1,{})
-  await asyncio.sleep(1.5);commands=sent();window=await c('draw.drawing.get');t.run.save('stroke-window.json',{'commands':commands,'drawing':window})
+  await asyncio.sleep(1.5);gestures=list(gc.calls);commands=sent();window=await c('draw.drawing.get');t.run.save('stroke-window.json',{'commands':commands,'gestures':gestures,'drawing':window})
   from mcp import ClientSession,StdioServerParameters,types
   from mcp.client.stdio import stdio_client
   async def roots(_):return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='work')])
@@ -233,9 +251,12 @@ async def live2_body(t,step):
   async with stdio_client(StdioServerParameters(command=str(ROOT/'target/release/toontown-headless.exe'),args=args)) as streams:
    async with ClientSession(*streams,list_roots_callback=roots) as hs:
     await hs.initialize();ht=d.Table(hs,t.run,OUT,t.work)
-    for command in commands:
-     if command['command'].startswith('draw.'):await ht.cmd(command['command'],command['params'])
-    head=await ht.cmd('draw.drawing.get')
+    for gesture in gestures:
+     request={k:v for k,v in gesture.items() if k not in ('generation','agentRequest')};request['space']='drawing';request['tool']='brush'
+     for event in request['events']:
+      point=await c('view.coordinates.convert',{'viewId':'drawingView','point':{'x':event['x'],'y':event['y']},'from':'view','to':'drawing'});event.update(point['point'])
+     response=await d.e2e.call(hs,'pointer',request);t.run.save('stroke-replay-response.json',response)
+    head=await ht.cmd('draw.drawing.get');t.run.save('stroke-headless.json',head)
   import re
   def canon(v):
    ids={}
@@ -248,7 +269,7 @@ async def live2_body(t,step):
      return re.sub(r'[a-z]+_[0-9A-Z]{26}',replace,x)
     return x
    return walk(v)
-  t.run.check(bool(commands) and canon(window)==canon(head),'D-32 recorded OS stroke replay equals headless exactly modulo identifiers',{'commands':commands,'equal':canon(window)==canon(head)})
+  t.run.check(bool(gestures) and canon(window)==canon(head),'D-32 recorded OS stroke replay equals headless exactly modulo identifiers',{'gestures':gestures,'commands':commands,'equal':canon(window)==canon(head)})
 
  elif step==3:
   pid=(await cur())['penId'];await c('tool.pen.set',{'penId':pid,'maxSize':53});await pause()
@@ -275,6 +296,15 @@ async def live2_body(t,step):
      await typed(ident,5 if dom(ident)=='4' else 4)
     else:continue
     await pause();t.run.check(bool(sent()),'tool option command '+tool+' '+ident,{'sent':sent(),'state':await c('tool.options.get',{'toolId':tool})})
+   await c('window.panel.set',{'panelId':'drawingView','visible':True,'focus':True});await c('view.active.set',{'viewId':'drawingView'});await pause()
+   before=await c('draw.drawing.get');r=t.rect('drawingView.canvas');x,y=r['x']*r['dpr'],r['y']*r['dpr'];d.front()
+   if tool=='paint':t.click('drawingView.canvas')
+   else:d.e6.os_drag(d.e2e.APP_PID['pid'],[(x-30,y-20),(x,y+20),(x+30,y-20)],.4,.1,{})
+   if tool=='polyline':d.key(0x0D);d.key(0x1B)
+   await asyncio.sleep(.8);after=await c('draw.drawing.get');selection=await c('draw.selection.get')
+   t.run.save('tool-gesture-'+tool+'.json',{'before':before,'after':after,'selection':selection,'options':await c('tool.options.get',{'toolId':tool})})
+   t.run.check(bool(after.get('drawingId')),'real OS gesture completed '+tool,{'changed':before!=after,'selection':selection})
+
   for label,mode in [('Small','small'),('Medium','medium'),('Large','large'),('Off','off')]:
    t.clear();d.choose_menu(['Colour','Auto Close Gap',label]);await pause();t.run.check((await c('colour.gapClosing.get'))['mode']==mode,'menu gap '+mode,sent())
  elif step==5:
@@ -305,13 +335,45 @@ async def live2_body(t,step):
   await c('window.panel.set',{'panelId':'properties','visible':True});await pause();t.click('properties.page.drawing');await pause()
   t.clear();await typed('inspector.name','Live2 drawing');listing=await c('draw.drawing.get');t.run.check('Live2 drawing' in json.dumps(listing),'inspector rename',{'sent':sent(),'drawing':listing})
   st=await c('app.state.get');t.run.save('inspector-state.json',st)
+  declaration=dom('inspector.name','JSON.parse(e.dataset.ttParams)');did=declaration['drawingId']
+  await c('draw.drawing.rename',{'drawingId':did,'name':'Agent renamed live2'});await pause();t.run.check(dom('inspector.name')=='Agent renamed live2','inspector agent rename follows without reload',dom('inspector.name'))
+  if not dom('inspector.preview','e.checked'):t.click('inspector.preview');await pause()
+  rendered=await c('draw.drawing.render',{'drawingId':did,'width':160,'region':'bounds','background':'#FFFFFFFF'})
+  t.run.check(dom('inspector.thumbnail','e.src')=='data:image/png;base64,'+rendered['png'],'inspector preview equals engine final render exactly',{'drawingId':did,'pngBytes':len(rendered['png'])})
+  second=await c('element.drawing.create',{'elementId':listing['elementId'],'name':'Second live2','exposeFrom':30,'exposeTo':40})
+  await c('app.context.set',{'frame':30});await c('draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':80,'y':60}});await pause()
+  t.run.check(dom('inspector.name')=='Second live2','inspector follows current drawing',dom('inspector.name'))
+  secondDrawing=await c('draw.drawing.get');secondRender=await c('draw.drawing.render',{'drawingId':secondDrawing['drawingId'],'width':160,'region':'bounds','background':'#FFFFFFFF'})
+  await c('app.context.set',{'frame':1});await pause();t.run.check(dom('inspector.name')=='Agent renamed live2','inspector returns to first drawing',dom('inspector.name'))
+  d.front();dom('inspector.browse','(e.focus(),true)');d.key(0x27);await pause()
+  t.run.check(dom('inspector.thumbnail','e.src')=='data:image/png;base64,'+secondRender['png'] and (await c('draw.drawing.get'))['drawingId']==did,'Browse renders other drawing without changing current',{'shown':dom('inspector.thumbnail','e.alt'),'current':(await c('draw.drawing.get'))['drawingId']})
   await c('app.context.set',{'frame':100});await pause();controls=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"inspector.\"]')].map(e=>({id:e.dataset.ttId,disabled:e.disabled,title:e.title}))")
   t.run.save('inspector-empty.json',controls)
   t.run.check(not controls or all(x.get('disabled') and x.get('title') for x in controls),'empty drawing surface follows design note 1 section 1 exception',controls)
  if step==5:
-  result=await c('tool.tablet.set',{'ignoreTablet':False,'portraitCorrection':False,'compatibilityMode':False,'inputInterface':'default'});await pause()
-  values=(await c('prefs.get',{'keys':keys}))['values'];t.run.check(values==dict.fromkeys(keys,False),'agent tablet shares preference state',{'result':result,'values':values})
+  result=await c('tool.tablet.set',{'ignoreTablet':False,'portraitCorrection':True,'compatibilityMode':True,'inputInterface':'alternative'});await pause()
+  values=(await c('prefs.get',{'keys':keys}))['values'];t.run.check(values=={'tablet.ignore':False,'tablet.alternativeInput':True,'tablet.portraitCorrection':True,'tablet.compatibilityMode':True},'agent tablet shares preference state',{'result':result,'values':values})
  t.run.save('live2-commands.json',t.recorded())
+
+ if step in (4,5):
+  import contextlib,signal
+  saved=t.work/'restart.animpkg';await c('project.saveAs',{'path':str(saved)})
+  before=await c('tool.options.get',{'toolId':'polyline'}) if step==4 else await c('prefs.get',{'keys':keys})
+  os.kill(d.e2e.APP_PID['pid'],signal.SIGTERM);await asyncio.sleep(1)
+  discovery=t.work/'restart-discovery.json';proc=d.e2e.launch(APP,t.work/'user',discovery)
+  try:
+   disc=d.e2e.wait_discovery(discovery,proc)
+   async with contextlib.AsyncExitStack() as stack:
+    client=await stack.enter_async_context(d.e2e.httpx2.AsyncClient(headers={'Authorization':'Bearer '+disc['token']},timeout=60))
+    streams=await stack.enter_async_context(d.e2e.streamable_http_client(disc['endpoint'],http_client=client))
+    from mcp import ClientSession,types
+    async def roots(_):return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='work')])
+    ns=await stack.enter_async_context(ClientSession(streams[0],streams[1],list_roots_callback=roots));await ns.initialize();nt=d.Table(ns,t.run,OUT,t.work)
+    await nt.cmd('project.open',{'path':str(saved)})
+    after=await nt.cmd('tool.options.get',{'toolId':'polyline'}) if step==4 else await nt.cmd('prefs.get',{'keys':keys})
+    t.run.check(before==after,'restart preserves '+('tool options' if step==4 else 'tablet preferences'),{'before':before,'after':after})
+  finally:d.e2e.stop(proc)
+
 
 
 def live(step):

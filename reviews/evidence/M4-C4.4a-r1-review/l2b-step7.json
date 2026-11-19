@@ -1,7 +1,7 @@
 {
-  "checks": 2,
+  "checks": 7,
   "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-d0dgew_6",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-f9uss6pc",
   "results": [
     {
       "check": "inspector rename",
@@ -11,14 +11,14 @@
           {
             "command": "draw.drawing.rename",
             "params": {
-              "drawingId": "dr_01K7JJN800BFWKFMGD756DC1B5",
+              "drawingId": "dr_01K7JJN800GQP49EHMH5WEH8KA",
               "name": "Live2 drawing"
             }
           }
         ],
         "drawing": {
-          "drawingId": "dr_01K7JJN800BFWKFMGD756DC1B5",
-          "elementId": "el_01K7JJN800PJCXD66RSRXZFFS7",
+          "drawingId": "dr_01K7JJN800GQP49EHMH5WEH8KA",
+          "elementId": "el_01K7JJN8007CCGDGFGBX2WA53C",
           "name": "Live2 drawing",
           "rev": 5,
           "locked": false,
@@ -41,12 +41,12 @@
           "nodes": [
             {
               "type": "layer",
-              "id": "nd_01K7JJN8016ERDS57X1TFMWKBE",
+              "id": "nd_01K7JJN8012H8R1VF04VKWRE43",
               "layerKind": "pencil",
               "strokes": [
                 {
                   "type": "stroke",
-                  "id": "st_01K7JJN8003RNQER433PM4BQ5P",
+                  "id": "st_01K7JJN8002TVYDTDQ6VNXVFTX",
                   "kind": "pencil",
                   "closed": true,
                   "bezier": [
@@ -99,7 +99,7 @@
                       "y": -40.0
                     }
                   ],
-                  "colourId": "col_01M7TTH1XM6168EKTA20EKCDHC",
+                  "colourId": "col_01M7TTQRVB1F37XKKWC1FHEGH9",
                   "lineStyle": {
                     "thickness": 8.0,
                     "lineType": "solid"
@@ -111,18 +111,18 @@
                     "width": 88.0,
                     "height": 88.0
                   },
-                  "leftZoneId": "zn_DCWC5CXMGTA6B25M5YATSD0NZW",
+                  "leftZoneId": "zn_7H38370RSJDEY951C8GXZYR6M8",
                   "rightZoneId": null
                 }
               ],
               "zones": [
                 {
                   "type": "zone",
-                  "id": "zn_DCWC5CXMGTA6B25M5YATSD0NZW",
+                  "id": "zn_7H38370RSJDEY951C8GXZYR6M8",
                   "colourId": null,
                   "textureMatrix": null,
                   "boundaryStrokeIds": [
-                    "st_01K7JJN8003RNQER433PM4BQ5P"
+                    "st_01K7JJN8002TVYDTDQ6VNXVFTX"
                   ],
                   "holes": [],
                   "parentZoneId": null,
@@ -142,6 +142,37 @@
             }
           ]
         }
+      }
+    },
+    {
+      "check": "inspector agent rename follows without reload",
+      "ok": true,
+      "detail": "Agent renamed live2"
+    },
+    {
+      "check": "inspector preview equals engine final render exactly",
+      "ok": true,
+      "detail": {
+        "drawingId": "dr_01K7JJN800GQP49EHMH5WEH8KA",
+        "pngBytes": 620
+      }
+    },
+    {
+      "check": "inspector follows current drawing",
+      "ok": true,
+      "detail": "Second live2"
+    },
+    {
+      "check": "inspector returns to first drawing",
+      "ok": true,
+      "detail": "Agent renamed live2"
+    },
+    {
+      "check": "Browse renders other drawing without changing current",
+      "ok": true,
+      "detail": {
+        "shown": "Preview of Second live2",
+        "current": "dr_01K7JJN800GQP49EHMH5WEH8KA"
       }
     },
     {
