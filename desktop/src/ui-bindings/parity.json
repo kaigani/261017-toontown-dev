@@ -21635,6 +21635,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src-tauri/src/shell.rs",
+        "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/state/store.ts"
       ]
     },
