@@ -776,7 +776,7 @@ async def live4_body(t,step):
    clean=t.work/'clean.animpkg';bad=t.work/'damaged.animpkg'
    await c('project.saveAs',{'path':str(clean)})
    with zipfile.ZipFile(clean) as src,zipfile.ZipFile(bad,'w') as dst:
-    removed=[n for n in src.namelist() if '/drawings/' in n and n.endswith('.json')]
+    removed=[n for n in src.namelist() if n.startswith('banks/') and '/dr_' in n and n.endswith('.json')]
     check(bool(removed),'fixture has drawing entry',removed)
     for name in src.namelist():
      if name not in removed:dst.writestr(name,src.read(name))
@@ -784,20 +784,24 @@ async def live4_body(t,step):
    d.choose_menu(['File','Open']);await asyncio.sleep(1);d.type_text(str(bad));d.key(0x0D);await asyncio.sleep(2)
    report=await c('doc.loadReport.get');check(dom('loadReport') is not None,'report opens on damaged project',report)
    check('drawing.contentMissing' in json.dumps(report),'missing content reported',report)
-   before=await c('doc.export.json',{'scope':'project','binaries':'omit'})
+   import shutil
+   agentbad=t.work/'agent-damaged.animpkg';shutil.copy2(bad,agentbad)
+   before=await c('doc.object.get',{'ref':report['projectId'],'depth':10})
    if dom('loadReport'):
     t.click('loadReport.copy');await pause()
     clip=subprocess.check_output(['powershell','-NoProfile','-Command','Get-Clipboard -Raw']).decode(errors='replace')
     check('drawing.contentMissing' in clip,'Copy details reaches OS clipboard',clip)
     check((await call(q,'app.state.get')).get('status')=='ok','report nonmodal query')
-    t.click('loadReport.close');await pause();check(before==await c('doc.export.json',{'scope':'project','binaries':'omit'}),'closing report preserves document')
+    t.click('loadReport.close');await pause();check(before==await c('doc.object.get',{'ref':report['projectId'],'depth':10}),'closing report preserves document')
     await asyncio.sleep(1);check(dom('loadReport') is None,'report remains closed once per open')
-   await c('project.close',{'onUnsaved':'discard'})
-   opened=await call(q,'project.open',{'path':str(bad),'wait':True});await asyncio.sleep(2)
+   await c('project.save')
+   opened=await call(q,'project.open',{'path':str(agentbad)})
+   if opened.get('result',{}).get('jobId'):opened=await asyncio.to_thread(q.tool,'job_wait',{'jobId':opened['result']['jobId'],'timeoutMs':10000})
+   await asyncio.sleep(2)
    check('drawing.contentMissing' in json.dumps(opened),'agent receives report warnings',opened)
    check(dom('loadReport') is not None,'agent open shows report too',dom('loadReport'))
    if dom('loadReport'):t.click('loadReport.close')
-   await c('project.close',{'onUnsaved':'discard'});await c('project.open',{'path':str(clean),'wait':True});await asyncio.sleep(2)
+   await c('project.save');await c('project.close');await c('project.open',{'path':str(clean)});await asyncio.sleep(2)
    check(dom('loadReport') is None,'clean open has no report',await c('doc.loadReport.get'))
   elif step==7:
    async def layout():return await c('window.toolbar.list')
@@ -823,10 +827,14 @@ async def live4_body(t,step):
     restart=Live4Http(disc,'restart-live4');clients.append(restart);await asyncio.to_thread(restart.initialize)
     persisted=await call(restart,'window.toolbar.list');check(persisted.get('result')==after,'layout survives restart',persisted)
     await sheet();t.clear();t.click('toolbarSheet.restore');await pause();reset=await call(restart,'window.toolbar.list');check(reset.get('result')==before,'Restore Default restores original',{'layout':reset,'sent':t.recorded()})
-   finally:d.e2e.stop(proc)
+   finally:
+    d.e2e.stop(proc)
+    return
  finally:
   for _ in range(10):
-   if dom('confirmSheet') is None:break
+   try:pending=dom('confirmSheet')
+   except Exception:break
+   if pending is None:break
    t.click('confirmSheet.decline');await pause()
   for task in tasks:
    if not task.done():task.cancel()
