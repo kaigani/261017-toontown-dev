@@ -743,7 +743,7 @@ async def live4_body(t,step):
     if who=='window':
      await c('tool.active.set',{'toolId':'rectangle'});t.click('drawingView.canvas');d.key(0x42)
      # real undoable document edit through native menu
-     d.choose_menu(['Edit','Undo'])
+     d.key(0x5A,0x11)
     else:await call(q2,'draw.rectangle.add',{'from':{'x':1,'y':1},'to':{'x':15,'y':15}})
     await pause();check(task.done() and 'confirmation.expired' in json.dumps(task.result()),'revision expires '+who,{'answer':task.result() if task.done() else 'held','sheet':dom('confirmSheet.ended')})
     if not task.done():await answer(task,False)
@@ -754,7 +754,7 @@ async def live4_body(t,step):
    for path in ids:Path(path).write_bytes(b'reviewer sentinel')
    held=[asyncio.create_task(call(client,'project.saveAs',{'path':sid,'onExists':'overwrite'})) for client,sid in zip((q,q2,q),ids)];tasks.extend(held);await pause()
    check(dom('confirmSheet.queue') and '1 of 3' in dom('confirmSheet.queue'),'three calls queue',dom('confirmSheet'))
-   check((await call(q2,'app.state.get')).get('status')=='ok','other query completes')
+   query=asyncio.create_task(call(q2,'app.state.get'));tasks.append(query);await asyncio.sleep(2);check(query.done() and query.result().get('status')=='ok','other query completes',query.result() if query.done() else 'held behind confirmation')
    for task,accept in zip(held,(False,False,True)):await answer(task,accept)
   elif step==6:
    import zipfile
