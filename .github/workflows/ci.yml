@@ -279,6 +279,8 @@ jobs:
           $PY -I scripts/test_c43_measure_assess.py
           # Every dialog and question of the window has its D-44 flow rows or a reason (C43B-R3S-03, ruling D-48).
           $PY -I scripts/test_c43_d44_inventory.py
+          # Every commanded control of the generated control inventory has its D-39 rows or a reason (D-59 item 2).
+          $PY -I scripts/test_c43_d39_inventory.py
 
       # M4 C4.2a round 2 (C42A-R2-01, -02): every point-taking draw.*/colour.* command declares `space`, `view` and
       # `frame` (02 §13.1 item 5; 03 §16.2), checked against the generated schemas.

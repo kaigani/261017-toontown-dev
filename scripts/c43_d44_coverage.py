@@ -119,7 +119,8 @@ COVERAGE: dict[str, dict] = {
                                       "and Close dismisses, neither a command (GUI-only `clipboard`, `dismiss`; loadReport.test.tsx)"},
     "popover:Agent sessions": {"reason": "no question: Pause, Resume and Stop are single actions, each a D-39 row"},
     "popover:Start screen": {"reason": "no question: each entry is a single action (New, Open, a recent project, a "
-                                       "recovery entry), each a D-39 row"},
+                                       "recovery entry); C4.1 controls, listed with their reason in "
+                                       "scripts/c43_d39_coverage.py (D-59 item 2)"},
     "class:error box": {"rows": ["error box › OK"], "class": NO_COMMAND},
     "class:native picker": {"rows": ["native picker › Cancel"], "class": NO_COMMAND},
     "class:notification": {"reason": "non-modal (01 §12.1 rule 6): it offers no choice and holds nothing; dismissing "

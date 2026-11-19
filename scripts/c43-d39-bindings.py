@@ -20,9 +20,11 @@ file dialog), and the row records
   menu and in the window tree (ruling D-38).
 
 A toggle's row clicks twice: the second click must send the opposite value and restore the state. Every row states its
-spec lines. Output: `rows.json`, `transcript.json`, `manifest.json` (kind `toontown.c43b.d39-bindings`); the committed
-receipt is their summary (ruling D-42: `scripts/receipt-summary.py <out> --command ... --delete`). Exit 0 when
-every row holds.
+spec lines. `scripts/c43_d39_coverage.py` maps every commanded control of the generated control inventory (the parity
+manifest's DOM rows) to its rows here or to a reason (ruling D-59 item 2; `scripts/test_c43_d39_inventory.py` in CI); a
+full run checks at the end that every row it names ran. Output: `rows.json`, `transcript.json`, `manifest.json` (kind
+`toontown.c43b.d39-bindings`); the committed receipt is their summary (ruling D-42: `scripts/receipt-summary.py <out>
+--command ... --delete`). Exit 0 when every row holds.
 
 The webview's debugging port is opened for this run only (`WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS`); the script carries
 its own small WebSocket client (standard library), so it needs only the MCP SDK. The OS form is a workstation receipt
@@ -1354,6 +1356,57 @@ async def build_and_run(t: Table, only: set) -> None:
                  "disabled": None,
                  "mcpReason": "a slider's value is chosen by the person's drag or key; the MCP form has no input to move it (its declared reference is the current value)"})
 
+    # D-59 item 2 (C44A-R1S-02): every other slider at its release, and the numeric companion field of every slider
+    # (typed, then Enter), each from known values so the expected parameters are exact. Each control is gone with the
+    # project (the precheck's refusal: no project, no pen), which the disabled checks after the table assert.
+    PEN_START = {"minSize": 2, "maxSize": 20, "smoothness": 3, "tipAngle": 10}
+    PEN_LABELS = {"minSize": "Minimum size", "maxSize": "Maximum size", "smoothness": "Smoothness", "tipAngle": "Tip angle"}
+
+    async def pen_known():
+        await pen_shown()
+        cur = cur_of(await pens_state())
+        for k_, v_ in PEN_START.items():
+            await cmd("tool.pen.set", {"penId": cur, k_: v_})
+        await asyncio.sleep(0.5)
+
+    def slider_flow(setting):
+        async def flow():
+            front()
+            t.cdp.js("document.querySelector('[data-tt-id=\"pen.%s\"]').focus()" % setting)
+            key(0x27)  # Right arrow: one step, sent at the key's release
+            return "focus, then a real Right arrow key (sent at its release)"
+        return flow
+
+    def pen_field_flow(setting, typed):
+        async def flow():
+            front()
+            t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=\"pen.%s.field\"]'); e.focus(); e.select(); return true; })()"
+                     % setting)
+            type_text(typed)
+            key(0x0D)
+            return f"{typed!r} typed in the focused field, then a real Enter"
+        return flow
+
+    for setting, step in (("minSize", 0.5), ("smoothness", 1), ("tipAngle", 1)):
+        value = PEN_START[setting] + step
+        rows.append({"name": f"Pen panel › {PEN_LABELS[setting]} (slider)",
+                     "spec": f"{spec_line('tool.pen.set')} (label \"Set Pen Style\"); 02 §6.1",
+                     "action": ("none",), "custom": slider_flow(setting),
+                     "expect": (lambda k_, v_: lambda b: ("tool.pen.set", {"penId": cur_of(b), k_: v_}))(setting, value),
+                     "label": "Set Pen Style", "setup": pen_known, "state": pens_state,
+                     "effect": (lambda k_, v_: lambda b, a, k: pen_of(a, cur_of(b)).get(k_) == v_)(setting, value),
+                     "disabled": ("dom", f"pen.{setting}"),
+                     "mcpReason": "a slider's value is chosen by the person's drag or key; the MCP form has no input to move it (its declared reference is the current value)"})
+    for setting, typed, value in (("minSize", "4", 4), ("maxSize", "30", 30), ("smoothness", "6", 6), ("tipAngle", "45", 45)):
+        rows.append({"name": f"Pen panel › {PEN_LABELS[setting]} (typed)",
+                     "spec": f"{spec_line('tool.pen.set')} (label \"Set Pen Style\"); 02 §6.1",
+                     "action": ("none",), "custom": pen_field_flow(setting, typed),
+                     "expect": (lambda k_, v_: lambda b: ("tool.pen.set", {"penId": cur_of(b), k_: v_}))(setting, value),
+                     "label": "Set Pen Style", "setup": pen_known, "state": pens_state,
+                     "effect": (lambda k_, v_: lambda b, a, k: pen_of(a, cur_of(b)).get(k_) == v_)(setting, value),
+                     "disabled": ("dom", f"pen.{setting}.field"),
+                     "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+
     async def rename_flow():
         """A real double click on the current pen, a typed name, Enter (02 §12.1 "Rename Pen")."""
         st = await pens_state()
@@ -1474,6 +1527,26 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": tool_page("pencil"), "state": options_of("pencil"),
                  "effect": lambda b, a, k: a.get("thickness") == 3.5, "disabled": None,
                  "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+
+    async def snap_radius_known():
+        await cmd("tool.polyline.options.set", {"snap": True, "snapRadius": 8})
+        await tool_page("polyline")()
+
+    async def snap_radius_flow():
+        """D-59 item 2: a real typed value in the snap radius field, then Enter."""
+        front()
+        t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=\"toolOptions.snapRadius\"]'); e.focus(); e.select(); return true; })()")
+        type_text("12")
+        key(0x0D)
+        return "the value typed in the focused field, then a real Enter"
+
+    rows.append({"name": "Tool options › Polyline: snap radius", "spec": f"{spec_line('tool.polyline.options.set')}; 02 §7.7",
+                 "action": ("none",), "custom": snap_radius_flow,
+                 "expect": ("tool.polyline.options.set", {"snapRadius": 12}), "label": None,
+                 "setup": snap_radius_known, "state": options_of("polyline"),
+                 "effect": lambda b, a, k: b.get("snapRadius") == 8 and a.get("snapRadius") == 12,
+                 "disabled": ("dom", "toolOptions.snapRadius"),
+                 "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
     for mode, label in (("small", "Small"), ("large", "Large"), ("off", "Off")):
         rows.append({"name": f"Colour › Auto Close Gap › {label}", "spec": f"{spec_line('colour.gapClosing.set')}; 03 §8.8 (\"from the main menu\")",
                      "action": ("menu", ["Colour", "Auto Close Gap", label]),
@@ -1528,6 +1601,24 @@ async def build_and_run(t: Table, only: set) -> None:
                      "expect": (lambda e_: lambda b: ("tool.text.options.set", e_))(expect_params), "label": None,
                      "setup": text_shown, "state": text_state,
                      "effect": (lambda r_: lambda b, a, k: r_(a))(read), "disabled": None,
+                     "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+
+    # D-59 item 2 (C44A-R1S-02): Kerning, the margins, Indent and Line spacing, each typed then Enter from a known value
+    # (kerning is sent rounded). Each field is gone with the project (the precheck's refusal), asserted after the table.
+    def text_known(field):
+        async def run():
+            await cmd("tool.text.options.set", {field: 0})
+            await text_shown()
+        return run
+
+    for field, typed, value in (("kerning", "5", 5), ("leftMargin", "12", 12), ("rightMargin", "8", 8),
+                                ("indent", "4", 4), ("lineSpacing", "3", 3)):
+        rows.append({"name": f"Text panel › {field} (typed)", "spec": f"{spec_line('tool.text.options.set')}; 02 §7.6.1",
+                     "action": ("none",), "custom": text_field_flow(f"text.{field}", typed),
+                     "expect": (lambda f_, v_: lambda b: ("tool.text.options.set", {f_: v_}))(field, value), "label": None,
+                     "setup": text_known(field), "state": text_state,
+                     "effect": (lambda f_, v_: lambda b, a, k: b.get(f_) == 0 and a.get(f_) == v_)(field, value),
+                     "disabled": ("dom", f"text.{field}"),
                      "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
 
     # ----- C4.4a: the drawing inspector, the Properties panel's Drawing page (02 §9; design note 1 §6) -----
@@ -2009,6 +2100,47 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": with_second, "state": second_gone, "effect": lambda b, a, k: b is True and a is False,
                  "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE, "after": close_second})
 
+    # D-59 item 2: the indicator's popover acts on a session as the Activity panel does (a fresh second session: the
+    # one above was disconnected). The popover opens with a real click on the indicator when it is not open.
+    async def fresh_second():
+        await close_second()
+        second.pop("id", None)
+        await second_session()
+        await asyncio.sleep(0.5)
+
+    async def live_second():
+        if not second.get("stack"):
+            await fresh_second()
+
+    def popover_flow(verb):
+        async def flow():
+            if not t.cdp.js("!!document.querySelector('[data-tt-id=\"agent.popover\"]')"):
+                t.click("agent.toggle")
+                await asyncio.sleep(0.5)
+            t.clear()
+            t.click(f"agent.{second['id']}.{verb}")
+            await asyncio.sleep(1.0)
+            return f"real clicks: the agent indicator (when closed), then {verb.title()}"
+        return flow
+
+    for verb, session_cmd, setup_, eff_ in (
+            ("pause", "agent.session.pause", fresh_second, lambda b, a, k: b.get("paused") is not True and a.get("paused") is True),
+            ("resume", "agent.session.resume", live_second, lambda b, a, k: b.get("paused") is True and a.get("paused") is False)):
+        rows.append({"name": f"agent indicator › {verb.title()}", "spec": f"{spec_line(session_cmd)}; 11 §6.4",
+                     "action": ("none",), "custom": popover_flow(verb),
+                     "expect": (lambda c: lambda b: (c, {"sessionId": second["id"]}))(session_cmd), "label": None,
+                     "setup": setup_, "state": session_state, "effect": eff_,
+                     "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE})
+
+    async def forget_second():
+        await close_second()
+        second.pop("id", None)
+    rows.append({"name": "agent indicator › Stop", "spec": f"{spec_line('agent.session.disconnect')}; 11 §6.4",
+                 "action": ("none",), "custom": popover_flow("stop"),
+                 "expect": lambda b: ("agent.session.disconnect", {"sessionId": second["id"]}), "label": None,
+                 "setup": live_second, "state": second_gone, "effect": lambda b, a, k: b is True and a is False,
+                 "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE, "after": forget_second})
+
     for r in rows:
         if r.get("skip"):
             await r["setup"]()
@@ -2049,6 +2181,15 @@ async def build_and_run(t: Table, only: set) -> None:
     await cmd("project.close", {"onUnsaved": "fail"})
     await asyncio.sleep(1.5)
     await t.disabled_checks()
+    # D-59 item 2: every row the control coverage names ran, or was named with its reason in the MCP form (a commanded
+    # control cannot be listed and not exercised).
+    if not only:
+        cov39 = _load("c43d39coverage", "c43_d39_coverage.py")
+        ran = {r.get("name") for r in t.rows}
+        missing = sorted(cov39.named_rows() - ran)
+        t.run.check(not missing and not cov39.problems(),
+                    "D-39 coverage: every commanded control has its rows or a reason, and every row named ran",
+                    {"missing": missing, "problems": cov39.problems()})
 
 
 async def load_report_row(t: Table, clean: Path) -> None:
