@@ -1,0 +1,827 @@
+{
+  "checks": 7,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-31x7utep",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "policy observe",
+      "ok": true,
+      "detail": {
+        "read": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7TVP9A2BHNRA5WY7CAZ1KN6",
+              "name": "Live3 policy",
+              "path": null,
+              "dirty": true,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7TVP9A2BHNRA5WY7CAZ1KSA",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN800G2FYTJDESA5R56N4",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "cameraView",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN800G2FYTJDESA5R56N4"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": false
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-ff16bc",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-0b1833",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-bc665d",
+                "name": "policy-observe",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s3-bc665d",
+              "client": "policy-observe",
+              "policy": "observe",
+              "scopes": [
+                "read"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "observe",
+                "maxJobs": 2,
+                "maxBatchSteps": 2,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": false,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        },
+        "mutation": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4,
+          "error": {
+            "code": "permission.denied",
+            "message": "`draw.rectangle.add` needs the scopes [\"edit\"]",
+            "details": {
+              "commandId": "draw.rectangle.add",
+              "missingScopes": [
+                "edit"
+              ]
+            }
+          }
+        },
+        "confirmable": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4,
+          "error": {
+            "code": "permission.denied",
+            "message": "`agent.activity.export` needs the scopes [\"files.write\"]",
+            "details": {
+              "commandId": "agent.activity.export",
+              "missingScopes": [
+                "files.write"
+              ]
+            }
+          }
+        },
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": null,
+            "sessions": [
+              {
+                "sessionId": "s1-ff16bc",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:34:02.694Z",
+                "lastActivity": "2026-11-19T21:34:05.214Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-0b1833",
+                "client": "review-live3-primary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:34:05.088Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-bc665d",
+                "client": "policy-observe",
+                "policy": "observe",
+                "scopes": [
+                  "read"
+                ],
+                "connectedAt": "2026-11-19T21:34:13.593Z",
+                "lastActivity": "2026-11-19T21:34:13.612Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        }
+      }
+    },
+    {
+      "check": "batch length enforced observe",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4,
+        "error": {
+          "code": "limit.exceeded",
+          "message": "a batch of this session has at most 2 steps",
+          "details": {
+            "limit": "maxBatchSteps",
+            "value": 2,
+            "actual": 3
+          }
+        }
+      }
+    },
+    {
+      "check": "policy assist",
+      "ok": true,
+      "detail": {
+        "read": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7TVP9A2BHNRA5WY7CAZ1KN6",
+              "name": "Live3 policy",
+              "path": null,
+              "dirty": true,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7TVP9A2BHNRA5WY7CAZ1KSA",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN800G2FYTJDESA5R56N4",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "cameraView",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN800G2FYTJDESA5R56N4"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": false
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-ff16bc",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-0b1833",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-bc665d",
+                "name": "policy-observe",
+                "acting": false
+              },
+              {
+                "sessionId": "s4-7ea753",
+                "name": "policy-assist",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s4-7ea753",
+              "client": "policy-assist",
+              "policy": "assist",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "assist",
+                "maxJobs": 2,
+                "maxBatchSteps": 2,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": false,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        },
+        "mutation": {
+          "status": "ok",
+          "result": {
+            "drawingId": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+            "strokeIds": [
+              "st_01K7JJN8004TPSH17ZBBA5H8JB"
+            ],
+            "zoneIds": [
+              "zn_32EXXXSMR2NJQG2J3RSTR427P5"
+            ],
+            "layerId": "nd_01K7JJN8012SS8Y3GEJT1AK6RG",
+            "createdIds": [
+              "st_01K7JJN8004TPSH17ZBBA5H8JB",
+              "nd_01K7JJN8012SS8Y3GEJT1AK6RG",
+              "zn_32EXXXSMR2NJQG2J3RSTR427P5"
+            ],
+            "modifiedIds": [],
+            "removedIds": [],
+            "rev": 5
+          },
+          "changes": [
+            {
+              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV/st_01K7JJN8004TPSH17ZBBA5H8JB",
+              "type": "stroke",
+              "op": "created",
+              "rev": 5,
+              "parentId": "dr_01K7JJN800H1W13CEDD1HRMGDV/nd_01K7JJN8012SS8Y3GEJT1AK6RG",
+              "index": 0
+            },
+            {
+              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV/nd_01K7JJN8012SS8Y3GEJT1AK6RG",
+              "type": "drawingNode",
+              "op": "created",
+              "rev": 5,
+              "parentId": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "index": 1
+            },
+            {
+              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "type": "drawing",
+              "op": "modified",
+              "rev": 5,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/nodes/1",
+                  "value": {
+                    "id": "nd_01K7JJN8012SS8Y3GEJT1AK6RG",
+                    "type": "drawingNode"
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-4",
+            "label": "Rectangle Tool"
+          },
+          "warnings": [],
+          "documentRev": 5
+        },
+        "confirmable": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5,
+          "error": {
+            "code": "fs.outsideRoots",
+            "message": "`C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-60dfvf1o\\overwrite-assist.json` is outside the folders this session may access",
+            "details": {
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-60dfvf1o\\overwrite-assist.json",
+              "pointer": "/path",
+              "roots": []
+            },
+            "hint": "ask the user to grant the folder (11 \u00a76.2)"
+          }
+        },
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": null,
+            "sessions": [
+              {
+                "sessionId": "s1-ff16bc",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:34:02.694Z",
+                "lastActivity": "2026-11-19T21:34:05.214Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-0b1833",
+                "client": "review-live3-primary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:34:05.088Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-bc665d",
+                "client": "policy-observe",
+                "policy": "observe",
+                "scopes": [
+                  "read"
+                ],
+                "connectedAt": "2026-11-19T21:34:13.593Z",
+                "lastActivity": "2026-11-19T21:34:13.617Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s4-7ea753",
+                "client": "policy-assist",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:34:21.097Z",
+                "lastActivity": "2026-11-19T21:34:21.113Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        }
+      }
+    },
+    {
+      "check": "batch length enforced assist",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "limit.exceeded",
+          "message": "a batch of this session has at most 2 steps",
+          "details": {
+            "limit": "maxBatchSteps",
+            "value": 2,
+            "actual": 3
+          }
+        }
+      }
+    },
+    {
+      "check": "policy autonomous",
+      "ok": true,
+      "detail": {
+        "read": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7TVP9A2BHNRA5WY7CAZ1KN6",
+              "name": "Live3 policy",
+              "path": null,
+              "dirty": true,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7TVP9A2BHNRA5WY7CAZ1KSA",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN800G2FYTJDESA5R56N4",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "cameraView",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN800G2FYTJDESA5R56N4"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": false
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-ff16bc",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-0b1833",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-bc665d",
+                "name": "policy-observe",
+                "acting": false
+              },
+              {
+                "sessionId": "s4-7ea753",
+                "name": "policy-assist",
+                "acting": false
+              },
+              {
+                "sessionId": "s5-be8d7d",
+                "name": "policy-autonomous",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s5-be8d7d",
+              "client": "policy-autonomous",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "autonomous",
+                "maxJobs": 2,
+                "maxBatchSteps": 2,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": false,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "mutation": {
+          "status": "ok",
+          "result": {
+            "drawingId": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+            "strokeIds": [
+              "st_01K7JJN800SD85G6FCJQKAZ2E8"
+            ],
+            "zoneIds": [
+              "zn_7TN6Y97NX86RATGYFB2QMB0RY1"
+            ],
+            "layerId": "nd_01K7JJN801TS7Z3YGM7SKVA0H6",
+            "createdIds": [
+              "st_01K7JJN800SD85G6FCJQKAZ2E8",
+              "nd_01K7JJN801TS7Z3YGM7SKVA0H6",
+              "zn_7TN6Y97NX86RATGYFB2QMB0RY1"
+            ],
+            "modifiedIds": [],
+            "removedIds": [],
+            "rev": 6
+          },
+          "changes": [
+            {
+              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV/st_01K7JJN800SD85G6FCJQKAZ2E8",
+              "type": "stroke",
+              "op": "created",
+              "rev": 6,
+              "parentId": "dr_01K7JJN800H1W13CEDD1HRMGDV/nd_01K7JJN801TS7Z3YGM7SKVA0H6",
+              "index": 0
+            },
+            {
+              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV/nd_01K7JJN801TS7Z3YGM7SKVA0H6",
+              "type": "drawingNode",
+              "op": "created",
+              "rev": 6,
+              "parentId": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "index": 2
+            },
+            {
+              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "type": "drawing",
+              "op": "modified",
+              "rev": 6,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/nodes/2",
+                  "value": {
+                    "id": "nd_01K7JJN801TS7Z3YGM7SKVA0H6",
+                    "type": "drawingNode"
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-5",
+            "label": "Rectangle Tool"
+          },
+          "warnings": [],
+          "documentRev": 6
+        },
+        "confirmable": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6,
+          "error": {
+            "code": "fs.outsideRoots",
+            "message": "`C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-60dfvf1o\\overwrite-autonomous.json` is outside the folders this session may access",
+            "details": {
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-60dfvf1o\\overwrite-autonomous.json",
+              "pointer": "/path",
+              "roots": []
+            },
+            "hint": "ask the user to grant the folder (11 \u00a76.2)"
+          }
+        },
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": null,
+            "sessions": [
+              {
+                "sessionId": "s1-ff16bc",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:34:02.694Z",
+                "lastActivity": "2026-11-19T21:34:05.214Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-0b1833",
+                "client": "review-live3-primary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:34:05.088Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-bc665d",
+                "client": "policy-observe",
+                "policy": "observe",
+                "scopes": [
+                  "read"
+                ],
+                "connectedAt": "2026-11-19T21:34:13.593Z",
+                "lastActivity": "2026-11-19T21:34:13.617Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s4-7ea753",
+                "client": "policy-assist",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:34:21.097Z",
+                "lastActivity": "2026-11-19T21:34:21.142Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s5-be8d7d",
+                "client": "policy-autonomous",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:34:28.586Z",
+                "lastActivity": "2026-11-19T21:34:28.618Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6
+        }
+      }
+    },
+    {
+      "check": "batch length enforced autonomous",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6,
+        "error": {
+          "code": "limit.exceeded",
+          "message": "a batch of this session has at most 2 steps",
+          "details": {
+            "limit": "maxBatchSteps",
+            "value": 2,
+            "actual": 3
+          }
+        }
+      }
+    }
+  ]
+}

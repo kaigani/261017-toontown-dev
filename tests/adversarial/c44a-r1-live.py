@@ -519,9 +519,9 @@ async def live3_body(t,step):
     nq=fresh('policy-'+policy);await init(nq)
     read=await call(nq,'app.state.get');mutation=await call(nq,'draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':10,'y':10}})
     target=t.work/('overwrite-'+policy+'.json');target.write_text('existing')
-    confirm=await call(nq,'agent.activity.export',{'path':str(target),'format':'json','onExists':'overwrite'})
+    confirm=await call(nq,'agent.activity.export',{'path':str(target),'format':'jsonl','onExists':'overwrite'})
     check(read.get('status')=='ok' and (mutation.get('status')!='ok' if policy=='observe' else mutation.get('status')=='ok'),'policy '+policy,{'read':read,'mutation':mutation,'confirmable':confirm,'status':await call(nq,'agent.server.status')})
-    batch=await tool(nq,'batch',{'steps':[{'id':'app.state.get','params':{}}]*3})
+    batch=await tool(nq,'batch',{'label':'Review limit','steps':[{'id':'app.state.get','params':{}}]*3})
     check('limit.exceeded' in json.dumps(batch) if policy!='observe' else True,'batch length enforced '+policy,batch)
   elif step==4:
    await prefs();await pause()
@@ -564,7 +564,7 @@ async def live3_body(t,step):
    for i in range(30):
     if i==0:await call(q,'agent.server.set',{'enabled':False})
     elif i==2:await call(q,'draw.rectangle.add',{'data':'data:image/png;base64,review-inline-secret','from':{'x':0,'y':0},'to':{'x':2,'y':2}})
-    elif i==1:await tool(q,'batch',{'steps':[{'id':'app.state.get','params':{}}]})
+    elif i==1:await tool(q,'batch',{'label':'Review activity','steps':[{'id':'app.state.get','params':{}}]})
     else:await call(q,['app.state.get','draw.drawing.get','tool.options.get'][i%3],{'toolId':'brush'} if i%3==2 else {})
    await pause();activity=await call(q,'agent.activity.list',{'limit':500});rows=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"activity.entry.\"]')].map(e=>({id:e.dataset.ttId,text:e.textContent}))")
    check(len(rows)>=30,'30 calls live without reload',{'rows':rows,'activity':activity})
