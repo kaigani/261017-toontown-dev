@@ -524,6 +524,17 @@ fn normalize_numbers_at(value: &mut Value, depth: usize) {
                 #[allow(clippy::cast_possible_truncation)]
                 let i = f as i64;
                 *n = Number::from(i);
+            } else if n.is_f64()
+                && let Some(f) = n.as_f64()
+                // An integral double in [2^63, 2^64) is written without an exponent (`format_f64`, ECMAScript) and
+                // reads back as an unsigned integer: it is one here too, so the canonical text is a fixed point (found
+                // by `canonical_json_is_stable` on CI, run 44460181199: 1.153843542720194e19).
+                && f.fract() == 0.0
+                && (9_223_372_036_854_775_808.0..18_446_744_073_709_551_616.0).contains(&f)
+            {
+                #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+                let u = f as u64;
+                *n = Number::from(u);
             }
         }
         Value::Array(items) => items.iter_mut().for_each(|v| normalize_numbers_at(v, depth + 1)),
@@ -536,6 +547,18 @@ fn normalize_numbers_at(value: &mut Value, depth: usize) {
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn an_integral_double_beyond_i64_reads_back_as_itself() {
+        // CI run 44460181199: an integral double in [2^63, 2^64) round-trips as an unsigned integer.
+        let mut v = serde_json::json!({ "/": [1.153_843_542_720_194e19] });
+        normalize_numbers(&mut v);
+        let text = to_canonical_string(&v).unwrap();
+        let mut back: Value = serde_json::from_str(&text).unwrap();
+        normalize_numbers(&mut back);
+        assert_eq!(back, v);
+        assert_eq!(to_canonical_string(&back).unwrap(), text);
+    }
 
     #[test]
     fn numbers_match_ecmascript() {
