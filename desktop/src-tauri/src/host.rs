@@ -44,6 +44,8 @@ pub struct Host {
     seq: AtomicU64,
     /// The attached-mode server.
     pub http: Mutex<Option<tt_mcp::http::HttpServer>>,
+    /// The token the running HTTP server accepts (SI-178: a regenerated token restarts it, the start-up token does not).
+    http_token: Mutex<Option<String>>,
     /// Launch options.
     pub options: HostOptions,
     /// The per-user settings folder.
@@ -193,6 +195,7 @@ impl Host {
             cancels: Mutex::new(HashMap::new()),
             seq: AtomicU64::new(0),
             http: Mutex::new(None),
+            http_token: Mutex::new(None),
             pending_open: Mutex::new(options.open.clone()),
             restart_lock: Mutex::new(()),
             windows: Mutex::new(Windows::default()),
@@ -513,6 +516,7 @@ impl Host {
                 Ok(server) => {
                     let url = server.url();
                     self.write_discovery(Some(&url), Some(&token));
+                    *self.http_token.lock().unwrap_or_else(PoisonError::into_inner) = Some(token.clone());
                     *slot = Some(server);
                     return Ok(url);
                 }
@@ -527,6 +531,12 @@ impl Host {
     pub fn restart_http(&self) -> Option<Result<String, String>> {
         // The address actually bound (a launch on port 0 got an ephemeral one): the endpoint stays what it was.
         let addr = self.http.lock().unwrap_or_else(PoisonError::into_inner).as_ref().map(|s| s.addr)?;
+        // Only a token other than the one the server accepts restarts it: the start-up token, made by the same command
+        // while the server starts (`token`), must not end the sessions of a server that already uses it.
+        let accepted = self.http_token.lock().unwrap_or_else(PoisonError::into_inner).clone();
+        if accepted.is_some() && self.token().ok() == accepted {
+            return None;
+        }
         self.stop_http();
         Some(self.start_http_on(Some(addr)))
     }

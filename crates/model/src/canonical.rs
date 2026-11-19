@@ -528,12 +528,12 @@ fn normalize_numbers_at(value: &mut Value, depth: usize) {
                 && let Some(f) = n.as_f64()
                 // An integral double in [2^63, 2^64) is written without an exponent (`format_f64`, ECMAScript) and
                 // reads back as an unsigned integer: it is one here too, so the canonical text is a fixed point (found
-                // by `canonical_json_is_stable` on CI, run 44460181199: 1.153843542720194e19).
+                // by `canonical_json_is_stable` on CI, run 44460181199: 1.153843542720194e19). The exact integer comes
+                // from its own text (no lossy cast).
                 && f.fract() == 0.0
                 && (9_223_372_036_854_775_808.0..18_446_744_073_709_551_616.0).contains(&f)
+                && let Ok(u) = format!("{f:.0}").parse::<u64>()
             {
-                #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-                let u = f as u64;
                 *n = Number::from(u);
             }
         }
