@@ -1,12 +1,32 @@
 {
-  "checks": 7,
+  "checks": 10,
   "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-31x7utep",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-xk7qe8s_",
   "results": [
     {
       "check": "independent HTTP initialize",
       "ok": true,
       "detail": null
+    },
+    {
+      "check": "confirmable overwrite observe",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "permission.denied",
+          "message": "`agent.activity.export` needs the scopes [\"files.write\"]",
+          "details": {
+            "commandId": "agent.activity.export",
+            "missingScopes": [
+              "files.write"
+            ]
+          }
+        }
+      }
     },
     {
       "check": "policy observe",
@@ -16,26 +36,26 @@
           "status": "ok",
           "result": {
             "project": {
-              "id": "pr_01M7TVP9A2BHNRA5WY7CAZ1KN6",
+              "id": "pr_01M7TVRREPMEWP3T9YN69R6RCG",
               "name": "Live3 policy",
-              "path": null,
-              "dirty": true,
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\policy.animpkg",
+              "dirty": false,
               "globalLibraryDirty": false,
               "readOnly": false
             },
             "scene": {
-              "id": "sc_01M7TVP9A2BHNRA5WY7CAZ1KSA",
+              "id": "sc_01M7TVRREPMEWP3T9YN69R6RGM",
               "name": "Scene-1",
               "frameCount": 24
             },
             "frame": 1,
             "element": {
-              "id": "el_01K7JJN800G2FYTJDESA5R56N4",
+              "id": "el_01K7JJN8006QG8XC6VC5AW1Z9M",
               "name": "ModalUndoSentinel",
               "type": "drawing"
             },
             "drawing": {
-              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "id": "dr_01K7JJN800BGNS9M1NZT80036S",
               "name": "1"
             },
             "mode": "drawing",
@@ -49,7 +69,7 @@
             "selection": {
               "context": "timeline",
               "ids": [
-                "el_01K7JJN800G2FYTJDESA5R56N4"
+                "el_01K7JJN8006QG8XC6VC5AW1Z9M"
               ],
               "kinds": [
                 "element"
@@ -66,24 +86,24 @@
             "modal": null,
             "agentSessions": [
               {
-                "sessionId": "s1-ff16bc",
+                "sessionId": "s1-8eae49",
                 "name": "mcp",
                 "acting": false
               },
               {
-                "sessionId": "s2-0b1833",
+                "sessionId": "s2-6ed581",
                 "name": "review-live3-primary",
                 "acting": false
               },
               {
-                "sessionId": "s3-bc665d",
+                "sessionId": "s3-725069",
                 "name": "policy-observe",
                 "acting": false
               }
             ],
             "fullScreen": false,
             "agent": {
-              "sessionId": "s3-bc665d",
+              "sessionId": "s3-725069",
               "client": "policy-observe",
               "policy": "observe",
               "scopes": [
@@ -104,13 +124,13 @@
           },
           "changes": [],
           "warnings": [],
-          "documentRev": 4
+          "documentRev": 5
         },
         "mutation": {
           "status": "error",
           "changes": [],
           "warnings": [],
-          "documentRev": 4,
+          "documentRev": 5,
           "error": {
             "code": "permission.denied",
             "message": "`draw.rectangle.add` needs the scopes [\"edit\"]",
@@ -126,7 +146,7 @@
           "status": "error",
           "changes": [],
           "warnings": [],
-          "documentRev": 4,
+          "documentRev": 5,
           "error": {
             "code": "permission.denied",
             "message": "`agent.activity.export` needs the scopes [\"files.write\"]",
@@ -145,7 +165,7 @@
             "endpoint": null,
             "sessions": [
               {
-                "sessionId": "s1-ff16bc",
+                "sessionId": "s1-8eae49",
                 "client": "mcp",
                 "policy": "autonomous",
                 "scopes": [
@@ -158,13 +178,13 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:34:02.694Z",
-                "lastActivity": "2026-11-19T21:34:05.214Z",
+                "connectedAt": "2026-11-19T21:35:24.024Z",
+                "lastActivity": "2026-11-19T21:35:26.324Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s2-0b1833",
+                "sessionId": "s2-6ed581",
                 "client": "review-live3-primary",
                 "policy": "autonomous",
                 "scopes": [
@@ -177,20 +197,20 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:34:05.088Z",
+                "connectedAt": "2026-11-19T21:35:26.152Z",
                 "lastActivity": null,
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s3-bc665d",
+                "sessionId": "s3-725069",
                 "client": "policy-observe",
                 "policy": "observe",
                 "scopes": [
                   "read"
                 ],
-                "connectedAt": "2026-11-19T21:34:13.593Z",
-                "lastActivity": "2026-11-19T21:34:13.612Z",
+                "connectedAt": "2026-11-19T21:35:34.726Z",
+                "lastActivity": "2026-11-19T21:35:34.755Z",
                 "paused": false,
                 "transport": "http"
               }
@@ -199,7 +219,7 @@
           },
           "changes": [],
           "warnings": [],
-          "documentRev": 4
+          "documentRev": 5
         }
       }
     },
@@ -210,7 +230,7 @@
         "status": "error",
         "changes": [],
         "warnings": [],
-        "documentRev": 4,
+        "documentRev": 5,
         "error": {
           "code": "limit.exceeded",
           "message": "a batch of this session has at most 2 steps",
@@ -223,6 +243,28 @@
       }
     },
     {
+      "check": "confirmable overwrite assist",
+      "ok": true,
+      "detail": {
+        "status": "needs_confirmation",
+        "result": {
+          "status": "needs_confirmation",
+          "confirmToken": "cf_3d4e8a67e941aefbe596ba69",
+          "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-assist.json` with the agent activity log",
+          "consequences": [
+            {
+              "kind": "overwrite",
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-assist.json"
+            }
+          ],
+          "category": "overwrite"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
       "check": "policy assist",
       "ok": true,
       "detail": {
@@ -230,26 +272,26 @@
           "status": "ok",
           "result": {
             "project": {
-              "id": "pr_01M7TVP9A2BHNRA5WY7CAZ1KN6",
+              "id": "pr_01M7TVRREPMEWP3T9YN69R6RCG",
               "name": "Live3 policy",
-              "path": null,
-              "dirty": true,
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\policy.animpkg",
+              "dirty": false,
               "globalLibraryDirty": false,
               "readOnly": false
             },
             "scene": {
-              "id": "sc_01M7TVP9A2BHNRA5WY7CAZ1KSA",
+              "id": "sc_01M7TVRREPMEWP3T9YN69R6RGM",
               "name": "Scene-1",
               "frameCount": 24
             },
             "frame": 1,
             "element": {
-              "id": "el_01K7JJN800G2FYTJDESA5R56N4",
+              "id": "el_01K7JJN8006QG8XC6VC5AW1Z9M",
               "name": "ModalUndoSentinel",
               "type": "drawing"
             },
             "drawing": {
-              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "id": "dr_01K7JJN800BGNS9M1NZT80036S",
               "name": "1"
             },
             "mode": "drawing",
@@ -263,7 +305,7 @@
             "selection": {
               "context": "timeline",
               "ids": [
-                "el_01K7JJN800G2FYTJDESA5R56N4"
+                "el_01K7JJN8006QG8XC6VC5AW1Z9M"
               ],
               "kinds": [
                 "element"
@@ -280,29 +322,29 @@
             "modal": null,
             "agentSessions": [
               {
-                "sessionId": "s1-ff16bc",
+                "sessionId": "s1-8eae49",
                 "name": "mcp",
                 "acting": false
               },
               {
-                "sessionId": "s2-0b1833",
+                "sessionId": "s2-6ed581",
                 "name": "review-live3-primary",
                 "acting": false
               },
               {
-                "sessionId": "s3-bc665d",
+                "sessionId": "s3-725069",
                 "name": "policy-observe",
                 "acting": false
               },
               {
-                "sessionId": "s4-7ea753",
+                "sessionId": "s4-8e8360",
                 "name": "policy-assist",
                 "acting": false
               }
             ],
             "fullScreen": false,
             "agent": {
-              "sessionId": "s4-7ea753",
+              "sessionId": "s4-8e8360",
               "client": "policy-assist",
               "policy": "assist",
               "scopes": [
@@ -329,56 +371,56 @@
           },
           "changes": [],
           "warnings": [],
-          "documentRev": 4
+          "documentRev": 5
         },
         "mutation": {
           "status": "ok",
           "result": {
-            "drawingId": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+            "drawingId": "dr_01K7JJN800BGNS9M1NZT80036S",
             "strokeIds": [
-              "st_01K7JJN8004TPSH17ZBBA5H8JB"
+              "st_01K7JJN800G5D32YNDYVQKFDAY"
             ],
             "zoneIds": [
-              "zn_32EXXXSMR2NJQG2J3RSTR427P5"
+              "zn_0D8R1RN046E6MZT4XE0X2RXH32"
             ],
-            "layerId": "nd_01K7JJN8012SS8Y3GEJT1AK6RG",
+            "layerId": "nd_01K7JJN801CZN0RD8Y41M68KMC",
             "createdIds": [
-              "st_01K7JJN8004TPSH17ZBBA5H8JB",
-              "nd_01K7JJN8012SS8Y3GEJT1AK6RG",
-              "zn_32EXXXSMR2NJQG2J3RSTR427P5"
+              "st_01K7JJN800G5D32YNDYVQKFDAY",
+              "nd_01K7JJN801CZN0RD8Y41M68KMC",
+              "zn_0D8R1RN046E6MZT4XE0X2RXH32"
             ],
             "modifiedIds": [],
             "removedIds": [],
-            "rev": 5
+            "rev": 6
           },
           "changes": [
             {
-              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV/st_01K7JJN8004TPSH17ZBBA5H8JB",
+              "id": "dr_01K7JJN800BGNS9M1NZT80036S/st_01K7JJN800G5D32YNDYVQKFDAY",
               "type": "stroke",
               "op": "created",
-              "rev": 5,
-              "parentId": "dr_01K7JJN800H1W13CEDD1HRMGDV/nd_01K7JJN8012SS8Y3GEJT1AK6RG",
+              "rev": 6,
+              "parentId": "dr_01K7JJN800BGNS9M1NZT80036S/nd_01K7JJN801CZN0RD8Y41M68KMC",
               "index": 0
             },
             {
-              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV/nd_01K7JJN8012SS8Y3GEJT1AK6RG",
+              "id": "dr_01K7JJN800BGNS9M1NZT80036S/nd_01K7JJN801CZN0RD8Y41M68KMC",
               "type": "drawingNode",
               "op": "created",
-              "rev": 5,
-              "parentId": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "rev": 6,
+              "parentId": "dr_01K7JJN800BGNS9M1NZT80036S",
               "index": 1
             },
             {
-              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "id": "dr_01K7JJN800BGNS9M1NZT80036S",
               "type": "drawing",
               "op": "modified",
-              "rev": 5,
+              "rev": 6,
               "patch": [
                 {
                   "op": "add",
                   "path": "/nodes/1",
                   "value": {
-                    "id": "nd_01K7JJN8012SS8Y3GEJT1AK6RG",
+                    "id": "nd_01K7JJN801CZN0RD8Y41M68KMC",
                     "type": "drawingNode"
                   }
                 }
@@ -390,23 +432,25 @@
             "label": "Rectangle Tool"
           },
           "warnings": [],
-          "documentRev": 5
+          "documentRev": 6
         },
         "confirmable": {
-          "status": "error",
+          "status": "needs_confirmation",
+          "result": {
+            "status": "needs_confirmation",
+            "confirmToken": "cf_3d4e8a67e941aefbe596ba69",
+            "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-assist.json` with the agent activity log",
+            "consequences": [
+              {
+                "kind": "overwrite",
+                "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-assist.json"
+              }
+            ],
+            "category": "overwrite"
+          },
           "changes": [],
           "warnings": [],
-          "documentRev": 5,
-          "error": {
-            "code": "fs.outsideRoots",
-            "message": "`C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-60dfvf1o\\overwrite-assist.json` is outside the folders this session may access",
-            "details": {
-              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-60dfvf1o\\overwrite-assist.json",
-              "pointer": "/path",
-              "roots": []
-            },
-            "hint": "ask the user to grant the folder (11 \u00a76.2)"
-          }
+          "documentRev": 6
         },
         "status": {
           "status": "ok",
@@ -415,7 +459,7 @@
             "endpoint": null,
             "sessions": [
               {
-                "sessionId": "s1-ff16bc",
+                "sessionId": "s1-8eae49",
                 "client": "mcp",
                 "policy": "autonomous",
                 "scopes": [
@@ -428,13 +472,13 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:34:02.694Z",
-                "lastActivity": "2026-11-19T21:34:05.214Z",
+                "connectedAt": "2026-11-19T21:35:24.024Z",
+                "lastActivity": "2026-11-19T21:35:26.324Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s2-0b1833",
+                "sessionId": "s2-6ed581",
                 "client": "review-live3-primary",
                 "policy": "autonomous",
                 "scopes": [
@@ -447,25 +491,25 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:34:05.088Z",
+                "connectedAt": "2026-11-19T21:35:26.152Z",
                 "lastActivity": null,
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s3-bc665d",
+                "sessionId": "s3-725069",
                 "client": "policy-observe",
                 "policy": "observe",
                 "scopes": [
                   "read"
                 ],
-                "connectedAt": "2026-11-19T21:34:13.593Z",
-                "lastActivity": "2026-11-19T21:34:13.617Z",
+                "connectedAt": "2026-11-19T21:35:34.726Z",
+                "lastActivity": "2026-11-19T21:35:34.770Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s4-7ea753",
+                "sessionId": "s4-8e8360",
                 "client": "policy-assist",
                 "policy": "assist",
                 "scopes": [
@@ -477,17 +521,34 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:34:21.097Z",
-                "lastActivity": "2026-11-19T21:34:21.113Z",
+                "connectedAt": "2026-11-19T21:35:42.231Z",
+                "lastActivity": "2026-11-19T21:35:42.247Z",
                 "paused": false,
                 "transport": "http"
               }
             ],
-            "pendingConfirmations": []
+            "pendingConfirmations": [
+              {
+                "confirmationId": "cf_3d4e8a67e941aefbe596ba69",
+                "sessionId": "s4-8e8360",
+                "commandId": "agent.activity.export",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-assist.json` with the agent activity log",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-assist.json"
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": false,
+                "expiresInMs": 299997
+              }
+            ]
           },
           "changes": [],
           "warnings": [],
-          "documentRev": 5
+          "documentRev": 6
         }
       }
     },
@@ -498,7 +559,7 @@
         "status": "error",
         "changes": [],
         "warnings": [],
-        "documentRev": 5,
+        "documentRev": 6,
         "error": {
           "code": "limit.exceeded",
           "message": "a batch of this session has at most 2 steps",
@@ -511,6 +572,21 @@
       }
     },
     {
+      "check": "confirmable overwrite autonomous",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-autonomous.json",
+          "entries": 23,
+          "omitted": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 7
+      }
+    },
+    {
       "check": "policy autonomous",
       "ok": true,
       "detail": {
@@ -518,26 +594,26 @@
           "status": "ok",
           "result": {
             "project": {
-              "id": "pr_01M7TVP9A2BHNRA5WY7CAZ1KN6",
+              "id": "pr_01M7TVRREPMEWP3T9YN69R6RCG",
               "name": "Live3 policy",
-              "path": null,
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\policy.animpkg",
               "dirty": true,
               "globalLibraryDirty": false,
               "readOnly": false
             },
             "scene": {
-              "id": "sc_01M7TVP9A2BHNRA5WY7CAZ1KSA",
+              "id": "sc_01M7TVRREPMEWP3T9YN69R6RGM",
               "name": "Scene-1",
               "frameCount": 24
             },
             "frame": 1,
             "element": {
-              "id": "el_01K7JJN800G2FYTJDESA5R56N4",
+              "id": "el_01K7JJN8006QG8XC6VC5AW1Z9M",
               "name": "ModalUndoSentinel",
               "type": "drawing"
             },
             "drawing": {
-              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "id": "dr_01K7JJN800BGNS9M1NZT80036S",
               "name": "1"
             },
             "mode": "drawing",
@@ -551,7 +627,7 @@
             "selection": {
               "context": "timeline",
               "ids": [
-                "el_01K7JJN800G2FYTJDESA5R56N4"
+                "el_01K7JJN8006QG8XC6VC5AW1Z9M"
               ],
               "kinds": [
                 "element"
@@ -568,34 +644,34 @@
             "modal": null,
             "agentSessions": [
               {
-                "sessionId": "s1-ff16bc",
+                "sessionId": "s1-8eae49",
                 "name": "mcp",
                 "acting": false
               },
               {
-                "sessionId": "s2-0b1833",
+                "sessionId": "s2-6ed581",
                 "name": "review-live3-primary",
                 "acting": false
               },
               {
-                "sessionId": "s3-bc665d",
+                "sessionId": "s3-725069",
                 "name": "policy-observe",
                 "acting": false
               },
               {
-                "sessionId": "s4-7ea753",
+                "sessionId": "s4-8e8360",
                 "name": "policy-assist",
                 "acting": false
               },
               {
-                "sessionId": "s5-be8d7d",
+                "sessionId": "s5-4c3fd1",
                 "name": "policy-autonomous",
                 "acting": false
               }
             ],
             "fullScreen": false,
             "agent": {
-              "sessionId": "s5-be8d7d",
+              "sessionId": "s5-4c3fd1",
               "client": "policy-autonomous",
               "policy": "autonomous",
               "scopes": [
@@ -623,56 +699,56 @@
           },
           "changes": [],
           "warnings": [],
-          "documentRev": 5
+          "documentRev": 6
         },
         "mutation": {
           "status": "ok",
           "result": {
-            "drawingId": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+            "drawingId": "dr_01K7JJN800BGNS9M1NZT80036S",
             "strokeIds": [
-              "st_01K7JJN800SD85G6FCJQKAZ2E8"
+              "st_01K7JJN800NH76STC9C64WRKK8"
             ],
             "zoneIds": [
-              "zn_7TN6Y97NX86RATGYFB2QMB0RY1"
+              "zn_84FY1H1YY3YGTC4EZM9V1GC4BS"
             ],
-            "layerId": "nd_01K7JJN801TS7Z3YGM7SKVA0H6",
+            "layerId": "nd_01K7JJN801J57YTT9AH99SSV2A",
             "createdIds": [
-              "st_01K7JJN800SD85G6FCJQKAZ2E8",
-              "nd_01K7JJN801TS7Z3YGM7SKVA0H6",
-              "zn_7TN6Y97NX86RATGYFB2QMB0RY1"
+              "st_01K7JJN800NH76STC9C64WRKK8",
+              "nd_01K7JJN801J57YTT9AH99SSV2A",
+              "zn_84FY1H1YY3YGTC4EZM9V1GC4BS"
             ],
             "modifiedIds": [],
             "removedIds": [],
-            "rev": 6
+            "rev": 7
           },
           "changes": [
             {
-              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV/st_01K7JJN800SD85G6FCJQKAZ2E8",
+              "id": "dr_01K7JJN800BGNS9M1NZT80036S/st_01K7JJN800NH76STC9C64WRKK8",
               "type": "stroke",
               "op": "created",
-              "rev": 6,
-              "parentId": "dr_01K7JJN800H1W13CEDD1HRMGDV/nd_01K7JJN801TS7Z3YGM7SKVA0H6",
+              "rev": 7,
+              "parentId": "dr_01K7JJN800BGNS9M1NZT80036S/nd_01K7JJN801J57YTT9AH99SSV2A",
               "index": 0
             },
             {
-              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV/nd_01K7JJN801TS7Z3YGM7SKVA0H6",
+              "id": "dr_01K7JJN800BGNS9M1NZT80036S/nd_01K7JJN801J57YTT9AH99SSV2A",
               "type": "drawingNode",
               "op": "created",
-              "rev": 6,
-              "parentId": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "rev": 7,
+              "parentId": "dr_01K7JJN800BGNS9M1NZT80036S",
               "index": 2
             },
             {
-              "id": "dr_01K7JJN800H1W13CEDD1HRMGDV",
+              "id": "dr_01K7JJN800BGNS9M1NZT80036S",
               "type": "drawing",
               "op": "modified",
-              "rev": 6,
+              "rev": 7,
               "patch": [
                 {
                   "op": "add",
                   "path": "/nodes/2",
                   "value": {
-                    "id": "nd_01K7JJN801TS7Z3YGM7SKVA0H6",
+                    "id": "nd_01K7JJN801J57YTT9AH99SSV2A",
                     "type": "drawingNode"
                   }
                 }
@@ -684,23 +760,18 @@
             "label": "Rectangle Tool"
           },
           "warnings": [],
-          "documentRev": 6
+          "documentRev": 7
         },
         "confirmable": {
-          "status": "error",
+          "status": "ok",
+          "result": {
+            "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-autonomous.json",
+            "entries": 23,
+            "omitted": []
+          },
           "changes": [],
           "warnings": [],
-          "documentRev": 6,
-          "error": {
-            "code": "fs.outsideRoots",
-            "message": "`C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-60dfvf1o\\overwrite-autonomous.json` is outside the folders this session may access",
-            "details": {
-              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-60dfvf1o\\overwrite-autonomous.json",
-              "pointer": "/path",
-              "roots": []
-            },
-            "hint": "ask the user to grant the folder (11 \u00a76.2)"
-          }
+          "documentRev": 7
         },
         "status": {
           "status": "ok",
@@ -709,7 +780,7 @@
             "endpoint": null,
             "sessions": [
               {
-                "sessionId": "s1-ff16bc",
+                "sessionId": "s1-8eae49",
                 "client": "mcp",
                 "policy": "autonomous",
                 "scopes": [
@@ -722,13 +793,13 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:34:02.694Z",
-                "lastActivity": "2026-11-19T21:34:05.214Z",
+                "connectedAt": "2026-11-19T21:35:24.024Z",
+                "lastActivity": "2026-11-19T21:35:26.324Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s2-0b1833",
+                "sessionId": "s2-6ed581",
                 "client": "review-live3-primary",
                 "policy": "autonomous",
                 "scopes": [
@@ -741,25 +812,25 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:34:05.088Z",
+                "connectedAt": "2026-11-19T21:35:26.152Z",
                 "lastActivity": null,
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s3-bc665d",
+                "sessionId": "s3-725069",
                 "client": "policy-observe",
                 "policy": "observe",
                 "scopes": [
                   "read"
                 ],
-                "connectedAt": "2026-11-19T21:34:13.593Z",
-                "lastActivity": "2026-11-19T21:34:13.617Z",
+                "connectedAt": "2026-11-19T21:35:34.726Z",
+                "lastActivity": "2026-11-19T21:35:34.770Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s4-7ea753",
+                "sessionId": "s4-8e8360",
                 "client": "policy-assist",
                 "policy": "assist",
                 "scopes": [
@@ -771,13 +842,13 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:34:21.097Z",
-                "lastActivity": "2026-11-19T21:34:21.142Z",
+                "connectedAt": "2026-11-19T21:35:42.231Z",
+                "lastActivity": "2026-11-19T21:35:42.251Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s5-be8d7d",
+                "sessionId": "s5-4c3fd1",
                 "client": "policy-autonomous",
                 "policy": "autonomous",
                 "scopes": [
@@ -790,17 +861,34 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:34:28.586Z",
-                "lastActivity": "2026-11-19T21:34:28.618Z",
+                "connectedAt": "2026-11-19T21:35:49.699Z",
+                "lastActivity": "2026-11-19T21:35:49.749Z",
                 "paused": false,
                 "transport": "http"
               }
             ],
-            "pendingConfirmations": []
+            "pendingConfirmations": [
+              {
+                "confirmationId": "cf_3d4e8a67e941aefbe596ba69",
+                "sessionId": "s4-8e8360",
+                "commandId": "agent.activity.export",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-assist.json` with the agent activity log",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-s9en1h88\\overwrite-assist.json"
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": false,
+                "expiresInMs": 292483
+              }
+            ]
           },
           "changes": [],
           "warnings": [],
-          "documentRev": 6
+          "documentRev": 7
         }
       }
     },
@@ -811,7 +899,7 @@
         "status": "error",
         "changes": [],
         "warnings": [],
-        "documentRev": 6,
+        "documentRev": 7,
         "error": {
           "code": "limit.exceeded",
           "message": "a batch of this session has at most 2 steps",
