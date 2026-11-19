@@ -74,12 +74,18 @@ async def live_body(t,step):
     def flatten(n):return [n]+[x for ch in n.get('children',[]) for x in flatten(ch)]
     items=[x for x in flatten(tree) if x.get('role') in ('menuitem','menuitemcheckbox') and '.drawingMenu.' in x.get('id','')]
     t.run.check(len(items)==22 and required.issubset({x.get('commandId') for x in items}),'L1b context inventory (02 4.4 minus deferred Feather Edges) '+view+' '+str(selection),items)
+    geometry=t.cdp.js("(() => {const m=document.querySelector('.context-menu'),r=m.getBoundingClientRect();return {width:innerWidth,height:innerHeight,menu:{x:r.x,y:r.y,right:r.right,bottom:r.bottom},overflow:getComputedStyle(m).overflowY,clipped:[...m.querySelectorAll('[role^=menuitem]')].filter(e=>{const b=e.getBoundingClientRect();return b.bottom>innerHeight||b.right>innerWidth}).map(e=>({id:e.dataset.ttId,label:e.textContent}))}})()")
+    t.run.save('context-geometry-'+view+'-'+str(selection)+'.json',geometry)
+    t.run.check(not geometry['clipped'],'L1b context menu entries visible/reachable '+view+' '+str(selection),geometry)
+    if geometry['clipped']:t.run.shot('context-overflow-'+view+'-'+str(selection),d.e2e.APP_PID['pid'])
     for initial in items:
      d.key(0x1B)
      await c('draw.selection.set',{'by':'all' if selection else 'none'})
      await open_at(view+'.canvas');now=await d.McpTable.tree(t);node=d.McpTable.node(now,initial['id']);ref=node.get('command',{})
      before=await c('doc.export.json',{'scope':'project','binaries':'omit'});pos=await t.position()
-     t.clear();t.click(initial['id']);await asyncio.sleep(.4)
+     t.clear();d.key(0x24)
+     for _ in range(items.index(initial)):d.key(0x28)
+     d.key(0x0D);await asyncio.sleep(.4)
      sent=[x for x in t.recorded() if t.kinds.get(x['command'])!='query']
      expected=[{'command':ref.get('commandId'),'params':ref.get('params',{})}] if node.get('enabled') else []
      after=await c('doc.export.json',{'scope':'project','binaries':'omit'})
