@@ -2389,12 +2389,23 @@ async def build_and_run(t: Table, only: set) -> None:
             if not t.cdp.js("!!document.querySelector('[data-tt-id=\"agent.popover\"]')"):
                 t.click("agent.toggle")
                 await asyncio.sleep(0.5)
-            # The popover lists the session once the window has read the new session (a wait for a state, D-45).
+            # The popover lists the session once the window has read the new session (a wait for a state, D-45); a
+            # popover opened before that is closed and opened again once, and what it lists is recorded on failure.
             ident = json.dumps(f"agent.{second['id']}.{verb}")
-            for _ in range(100):
-                if t.cdp.js("!!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % ident):
-                    break
-                await asyncio.sleep(0.1)
+            for attempt in range(2):
+                for _ in range(100):
+                    if t.cdp.js("!!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % ident):
+                        break
+                    await asyncio.sleep(0.1)
+                else:
+                    if attempt == 0:
+                        t.click("agent.toggle")
+                        await asyncio.sleep(0.3)
+                        t.click("agent.toggle")
+                        continue
+                    listed = t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"agent.\"]')].map(e => e.dataset.ttId)")
+                    raise RuntimeError(f"the popover does not list {second['id']}: {listed}")
+                break
             t.clear()
             t.click(f"agent.{second['id']}.{verb}")
             await asyncio.sleep(1.0)
@@ -2474,6 +2485,9 @@ async def build_and_run(t: Table, only: set) -> None:
         t.run.check(not missing and not cov39.problems(),
                     "D-39 coverage: every commanded control has its rows or a reason, and every row named ran",
                     {"missing": missing, "problems": cov39.problems()})
+    # A test-only session a failed row left open is closed here, in the task that opened it (left open, it ends the
+    # table's own session with an error at its exit).
+    await close_second()
 
 
 async def load_report_row(t: Table, clean: Path) -> None:
