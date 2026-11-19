@@ -799,6 +799,12 @@ def confirm_rows(t: Flows) -> list:
             agents.append({"session": s2, "id": sid, "stack": stack})
         return agents[:n]
 
+    async def close_agents():
+        # The test-only sessions end with the group (closed in the task that opened them).
+        while agents:
+            with contextlib.suppress(Exception):
+                await agents.pop()["stack"].aclose()
+
     def ask(a: dict, n: int):
         f = t.work / f"confirm-{n}.jsonl"
         f.write_text("x", encoding="utf-8")
@@ -916,7 +922,8 @@ def confirm_rows(t: Flows) -> list:
     rows.append({"name": "Confirmation sheet › expiry", "spec": "11 §6.3 (five minutes); D-58", "path": ["agent request", "sheet"],
                  "choice": "expiry", "setup": nothing, "state": nothing, "flow": expiry_flow, "wait": 0.5,
                  "expect": lambda ctx: [],
-                 "effect": lambda b, a, ctx: ctx["answers"] == ["confirmation.expired"] and "expired" in (ctx.get("ended") or "")})
+                 "effect": lambda b, a, ctx: ctx["answers"] == ["confirmation.expired"] and "expired" in (ctx.get("ended") or ""),
+                 "cleanup": close_agents})
     return rows
 
 
