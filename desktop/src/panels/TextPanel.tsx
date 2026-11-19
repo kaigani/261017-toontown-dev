@@ -109,6 +109,12 @@ export function TextPanel() {
         }}
         params={{ font: font === '' ? null : font }}
       />
+      {/* D-57: system fonts are allowed; only a bundled font lays out the same on Windows and macOS, and none is
+          bundled yet, so every font, the platform default included, is marked. */}
+      <p className="field-hint" data-tt-role="text" data-tt-id="text.fontNotBundled">
+        {font === '' ? 'The platform default font' : `"${font}"`} is not bundled: text lays out with this
+        computer's font files and may differ on another system.
+      </p>
       {NUMBERS.map((n) => (
         <NumberValue
           key={n.key}

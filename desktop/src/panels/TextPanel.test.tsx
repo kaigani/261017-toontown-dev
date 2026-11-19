@@ -67,6 +67,13 @@ const sent = (h: ScriptedHost) =>
     .map((a) => a.params);
 
 describe('the Text panel (02 §7.6.1)', () => {
+  it('marks the font as not bundled (D-57: only a bundled font lays out the same on both systems; none is yet)', async () => {
+    await panel(() => DEFAULTS);
+    await waitFor(() => {
+      expect(el('text.fontNotBundled').textContent).toContain('is not bundled');
+    });
+  });
+
   it('each control sends its declared reference; fields commit on Enter; an empty font clears it', async () => {
     const h = await panel(() => DEFAULTS);
     act(() => {

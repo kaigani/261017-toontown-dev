@@ -343,3 +343,24 @@ The measurement:
 **End to end:** the reviewer's client (Python `mcp` over `httpx2`) waits for that render over HTTP and receives its
 answer. **Spec issues:** SI-181 (`job.outputs.list` and the bounded record), SI-182 (`limit.exceeded` with
 `answerBytes` for the reads, images and the backstop).
+
+## 12. Host-only notices (ruling D-57)
+
+Spec A is edited by the user only, so the window learns of some changes through host-only `shell.*` notices instead of
+registry events. A `shell.*` notice is emitted on the executor's bus for the desktop host and its windows; the MCP server
+drops it before anything is recorded or sent (`crates/mcp/src/server.rs` `pump_events`), which
+`crates/mcp/tests/c44a_shell_notices.rs` checks (none in `app://events`, none in a log notification). None carries
+anything an agent cannot read through a declared query:
+
+| Notice | Emitted by | Payload | What the window does | The declared query with the same information |
+|---|---|---|---|---|
+| `shell.agentActivity` | every recorded agent call (`run.rs` `audit`, C4.4a) | `{entry}`, the entry as stored | the Activity panel and the indicator append it | `agent.activity.list` (the same entries) |
+| `shell.agentSession` | `agent.session.grant` (C4.4a) | `{sessionId}` | the sessions strip and the indicator re-read | `agent.server.status` (`sessions`) |
+| `shell.agentToken` | `agent.token.regenerate` (C4.4a) | `{}` | the desktop host restarts its HTTP server (SI-178) | none needed: it carries nothing |
+| `shell.agentConfirmation` | an in-app confirmation decided, expired or used (C4.4a, D-58) | `{confirmationId}` | the confirmation sheet re-reads | `agent.server.status` (`pendingConfirmations`) |
+| `shell.agentServer` | `agent.server.set` (C4.1, O-21) | `{enabled}` | the host starts or stops the server | `agent.server.status` (`enabled`) |
+| `shell.agentActing` | around an agent request (C4.1) | `{sessionId, client, commandId, acting}` | the indicator's acting state | `agent.server.status` (`lastActivity`) and `agent.activity.list` once it ends |
+| `shell.view`, `shell.window`, `shell.help`, `shell.preferences`, `shell.raiseAll` | the `ui.*` and `window.*` commands (C4.1) | the command's own parameters | the host applies them to the native window | the command's own state queries (`view.list`, `window.geometry.get`, `ui.help.get`) |
+
+The registry events the design proposed instead (`agent.activity.recorded`, `agent.session.changed`,
+`agent.confirmation.resolved`) are listed in `plan/spec-issues.md` under "Spec A additions proposed by M4, for the user".

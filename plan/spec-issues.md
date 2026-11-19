@@ -2132,21 +2132,30 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   (`the_tablet_command_and_the_tablet_preferences_are_one_state`); D-39 rows for the four keys through the Preferences
   dialog (OS form).
 
-## SI-169 — the Text panel's font list and outline colour (found in M4 C4.4a; partly built, a ruling asked)
+## SI-169 — the Text panel's font list, font determinism and outline colour (found in M4 C4.4a; ruled; a proposal for the user)
 
 - **Sections:** 02 §7.6.1 lines 683-699 (the Text panel: font, ..., outline colour), 02 §13.5, A (no query lists
   fonts), ADR-0016 lines 39 and 112-117 (system fonts with `fontdb`; layout depends on the installed font files), D-40
-  answer 3.
-- **Problem:** the panel needs a list of fonts; no command gives one, and adding `draw.font.list` is a spec A addition
-  (spec A is a read-only copy; the registry refuses an undeclared command). Choosing an outline colour needs the palette
-  (M7).
-- **Built:** the Text panel edits every default but the outline colour (`tool.text.options.set`); the font is a typed
-  family name, empty for the platform default (`null`); an outline already set can be removed (`outlineColourId:
-  null`).
-- **Asked:** (1) add `draw.font.list` (query, read scope: `{families: [{name, styles}], default}` from
-  `tt_vector::fonts::installed_families()`) to spec A; (2) the font determinism ruling of design note 1 §5: the
-  system's fonts with only the bundled default deterministic across the two OSes (recommended, the panel marking fonts
-  that are not bundled), or bundled fonts only. The outline colour list comes with the palette (M7).
+  answer 3, D-57.
+- **Problem:** the panel needs a list of fonts; no command gives one, and adding `draw.font.list` is a spec A addition.
+  Choosing an outline colour needs the palette (M7).
+- **Ruled (D-57):** no `draw.font.list` (listed under "Spec A additions proposed by M4, for the user"); the panel keeps
+  the typed family name, empty for the platform default (`null`). System fonts are allowed; only a bundled font is
+  deterministic across the two systems; the panel marks fonts that are not bundled.
+- **Correction:** design note 1 §5 said determinism "holds only for the bundled default (as today)". That was wrong: the
+  product bundles no font. A run whose font is absent, and the default (`null`), lay out with the platform's default
+  sans-serif face (`crates/vector/src/fonts.rs`); B612 under `tests/fixtures/fonts` is a test-only fixture kept out of
+  the product. So today no font is deterministic across the two systems, and the panel marks every font, the platform
+  default included ("… is not bundled: text lays out with this computer's font files and may differ on another
+  system").
+- **Proposal for the user (not built):** bundle one open-licensed default face (for example under the SIL OFL, with its
+  licence in the product's notices), register it with the font database at start-up and use it for the default font,
+  so that text in the default font lays out the same on Windows and macOS. It changes the layout of existing text in the
+  default font, so it needs a format and goldens decision; owner to be named by the user.
+- **Built:** the Text panel edits every default but the outline colour (`tool.text.options.set`); the font field and its
+  "not bundled" note (`TextPanel.tsx`, `TextPanel.test.tsx`); an outline already set can be removed (`outlineColourId:
+  null`). The outline colour list comes with the palette (M7).
+
 ## SI-168 — the drawing inspector's subject before M5, and two commands that rename a drawing (found in M4 C4.4a; decided by the builder)
 
 - **Sections:** 02 §9 lines 858-872 (the inspector shows "the drawing selected in the Cells panel, Exposure Sheet or
@@ -2323,3 +2332,17 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   body (`http.rs` `stream_sse`, `a_large_first_answer_is_a_json_body_and_anything_else_an_event_stream`). The remaining
   case (progress first) is SI-163's open question.
 
+## Spec A additions proposed by M4, for the user
+
+Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row
+below is written as it would appear in spec A, with what the window does without it. None is built.
+
+| Proposed row (A's columns: id, kind, label, parameters, result, undo) | Why | Without it |
+|---|---|---|
+| `draw.font.list` \| query \| Installed font families \| — \| `{families: [{name, styles: [string]}], default: string}` \| n/a | the Text panel's font list (02 §7.6.1; SI-169) | the font is a typed family name; the panel says every font lays out with this computer's font files |
+| `job.outputs.list` \| query \| A job's outputs, paged \| `jobId: id; offset?: int = 0; limit?: int = 1000 (1-1000)` \| `{total, offset, items: [ManifestFile]}` \| n/a | reading a long range's outputs through MCP (SI-181) | the job's answer summarises them (`outputs`); the companion manifest file at `manifestPath` lists every one |
+| `agent.activity.recorded` \| event \| An activity entry was recorded \| — \| `{entry: ActivityEntry}` \| n/a | the Activity panel's live list (SI-175) | the host-only notice `shell.agentActivity` (window only) |
+| `agent.activity.list` parameter `afterSeq?: int` | a gap-free re-read by sequence (SI-175) | the panel re-reads the last 500 entries |
+| `ActivityEntry` members `batchId?: string; changedIds?: [id]; changedIdsTruncated?: bool` | grouping a script's calls; highlighting what an entry changed (SI-175) | the panel groups by entry; selecting an entry highlights nothing |
+| `agent.session.changed` \| event \| A session's grant, pause or resume changed \| — \| `{sessionId}` \| n/a | the sessions strip and the indicator (SI-176) | `agent.paused` and `agent.resumed` exist; a grant is the host-only `shell.agentSession` |
+| `agent.confirmation.resolved` \| event \| A pending confirmation was decided, expired or used \| — \| `{confirmationId, outcome: accepted \| declined \| expired \| used}` \| n/a | the confirmation sheet drops a request decided elsewhere (SI-177) | the host-only `shell.agentConfirmation` and a re-read of `agent.server.status` |

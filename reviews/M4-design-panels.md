@@ -124,7 +124,8 @@ answering `{families: [{name, styles: [regular, bold, italic, boldItalic present
 adds the metrics query. **For the orchestrator:** ADR-0016 line 39 makes layout depend on the installed font files, so a
 font present on one OS and not the other lays out differently; D-40 asks for rendering that stays deterministic across the
 two OSes. Either the font list is restricted to fonts bundled with the application (deterministic, smaller choice), or the
-list is the system's and determinism holds only for the bundled default (as today). The note recommends the second, with
+list is the system's and determinism holds only for a bundled font (correction, D-57: the product bundles none today; the
+default lays out with the platform's sans-serif face, SI-169). The note recommends the second, with
 the panel marking fonts that are not bundled, and asks for the ruling.
 
 ## 6. Drawing inspector (02 §9 lines 858-872)

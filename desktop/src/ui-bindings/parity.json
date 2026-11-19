@@ -21102,6 +21102,12 @@
       ]
     },
     {
+      "command": "text.fontNotBundled",
+      "files": [
+        "desktop/src/panels/TextPanel.tsx"
+      ]
+    },
+    {
       "command": "text.removeOutline",
       "files": [
         "desktop/src/panels/TextPanel.tsx"
