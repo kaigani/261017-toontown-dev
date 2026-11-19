@@ -176,6 +176,106 @@ async def live_body(t,step):
   await c('anim.camera.delete',{'cameraId':second['id']});await asyncio.sleep(.7)
   t.run.check([x['value'] for x in options()]==[first['id']],'L1b camera delete reflected',options())
 
+
+async def live2_body(t,step):
+ import asyncio
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
+ await r3.modal_fixture(t,'Live2 step '+str(step))
+ async def pause(): await asyncio.sleep(.6)
+ def dom(ident,expr='e.value'):
+  return t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id='+JSON.stringify(%s)+']');return e ? %s : null})()"%(json.dumps(ident),expr))
+ async def typed(ident,value,key=0x0D):
+  t.click(ident);d.key(0x41,0x11);d.type_text(str(value));d.key(key);await pause()
+ def sent(): return [x for x in t.recorded() if t.kinds.get(x['command'])!='query']
+ async def penstate():return await c('tool.pen.list')
+ async def cur():
+  st=await penstate();return next(x for x in st['pens'] if x['penId']==st['currentBrushPenId'])
+ if step in (1,2,3):
+  await c('window.panel.set',{'panelId':'pen','visible':True});await c('tool.active.set',{'toolId':'brush'});await pause()
+ if step==1:
+  old=await penstate();pos=await t.position();t.clear();t.click('pen.new');await pause();new=await cur();pid=new['penId']
+  t.run.check(len((await penstate())['pens'])==len(old['pens'])+1 and sent()==[{'command':'tool.pen.create','params':{'type':'brush','fromPenId':old['currentBrushPenId']}}],'new pen command and selection',sent())
+  await c('edit.undo');t.run.check(await penstate()==old,'New Pen undo restores pens',await penstate());await c('edit.redo');await pause()
+  t.click('pen.row.'+pid);d.key(0x71);await pause()
+  selected=t.cdp.js('({value:document.activeElement.value,start:document.activeElement.selectionStart,end:document.activeElement.selectionEnd})')
+  t.run.check(selected.get('start')==0 and selected.get('end')==len(selected.get('value','')),'rename opens selected',selected)
+  t.clear();d.type_text('Live2 pen');d.key(0x0D);await pause()
+  t.run.check((await cur())['name']=='Live2 pen','typing replaces rename',{'pen':await cur(),'sent':sent()})
+  t.click('pen.row.'+pid);d.key(0x71);await pause();d.type_text('Cancel me');d.key(0x1B);await pause()
+  t.run.check((await cur())['name']=='Live2 pen','Escape cancels rename',await cur())
+  t.clear();t.click('pen.delete');await pause();t.run.check(pid not in [x['penId'] for x in (await penstate())['pens']],'delete removes pen',sent())
+  for pen in (await penstate())['pens']:
+   st=await penstate()
+   if pen['type']=='brush' and len([x for x in st['pens'] if x['type']=='brush'])>1:await c('tool.pen.delete',{'penId':pen['penId']})
+  await pause();disabled=dom('pen.delete','({disabled:e.disabled,title:e.title})');t.run.check(disabled and disabled['disabled'] and bool(disabled['title']),'last pen disabled with reason',disabled)
+ elif step==2:
+  pid=(await cur())['penId']
+  for field,value,invalid in [('maxSize',40,101),('minSize',12,-1),('smoothness',6,11),('tipAngle',45,361)]:
+   t.clear();await typed('pen.'+field+'.field',value)
+   t.run.check((await cur())[field]==value,'pen numeric '+field,{'sent':sent(),'pen':await cur()})
+   t.clear();await typed('pen.'+field+'.field',invalid)
+   t.run.check(dom('pen.'+field+'.field')==str(value),'invalid pen value restored '+field,{'field':dom('pen.'+field+'.field'),'engine':(await cur())[field],'sent':sent()})
+   await typed('pen.'+field+'.field',value)
+   t.clear();t.click('pen.'+field);d.key(0x27);await pause()
+   t.run.check(len([x for x in sent() if x['command']=='tool.pen.set'])>=1,'slider keyboard release '+field,sent())
+  for shape in ('oval','square','flat','round'):
+   t.clear();await t.do(('select','pen.tipShape',shape));await pause();t.run.check((await cur())['tipShape']==shape,'tip shape '+shape,sent())
+ elif step==3:
+  pid=(await cur())['penId'];await c('tool.pen.set',{'penId':pid,'maxSize':53});await pause()
+  t.run.check(dom('pen.maxSize.field')=='53','agent pen setting reflected',dom('pen.maxSize.field'))
+  created=await c('tool.pen.create',{'type':'brush'});await pause();st=await penstate();pid=st['currentBrushPenId']
+  t.run.check(dom('pen.row.'+pid,'e.textContent') is not None,'agent creation reflected',created)
+  await c('tool.pen.delete',{'penId':pid});await pause();t.run.check(dom('pen.row.'+pid) is None,'agent deletion reflected',await penstate())
+  pid=(await cur())['penId'];task=asyncio.create_task(c('tool.pen.set',{'penId':pid,'smoothness':7}));await typed('pen.maxSize.field',37);await task;await pause()
+  state=await cur();t.run.check(state['smoothness']==7 and state['maxSize']==37,'concurrent distinct settings retained',state)
+ elif step==4:
+  await c('window.panel.set',{'panelId':'properties','visible':True});await pause()
+  for tool in ('brush','pencil','eraser','select','rectangle','paint','polyline'):
+   await c('tool.active.set',{'toolId':tool});await pause()
+   controls=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"toolOptions.\"]')].filter(e=>['INPUT','SELECT'].includes(e.tagName)).map(e=>({id:e.dataset.ttId,type:e.type,value:e.value,disabled:e.disabled,options:e.options?[...e.options].map(o=>o.value):null}))")
+   for control in controls:
+    if control['disabled']:continue
+    t.clear();ident=control['id']
+    if control['options']:
+     opts=control['options'];await t.do(('select',ident,next((x for x in opts if x!=control['value']),opts[0])))
+    elif control['type']=='checkbox':t.click(ident)
+    elif control['type']=='number':await typed(ident,4)
+    else:continue
+    await pause();t.run.check(bool(sent()),'tool option command '+tool+' '+ident,{'sent':sent(),'state':await c('tool.options.get',{'toolId':tool})})
+  for label,mode in [('Small','small'),('Medium','medium'),('Large','large'),('Off','off')]:
+   t.clear();d.choose_menu(['Colour','Auto Close Gap',label]);await pause();t.run.check((await c('colour.gapClosing.get'))['mode']==mode,'menu gap '+mode,sent())
+ elif step==5:
+  keys=['tablet.ignore','tablet.alternativeInput','tablet.portraitCorrection','tablet.compatibilityMode']
+  await c('prefs.set',{'values':dict.fromkeys(keys,False)})
+  for accept in (False,True):
+   d.choose_menu(['File','Preferences']);await pause();t.click('preferences.category.tablet');await pause();t.clear()
+   for k in keys:t.click('pref.'+k)
+   t.run.check((await c('prefs.get',{'keys':keys}))['values']==dict.fromkeys(keys,False),'tablet staged before OK',sent())
+   if accept:t.click('preferences.submit')
+   else:d.key(0x1B)
+   await pause();values=(await c('prefs.get',{'keys':keys}))['values'];t.run.check(values==dict.fromkeys(keys,accept),'tablet '+('OK' if accept else 'Cancel'),{'values':values,'sent':sent()})
+   if accept:t.run.check(sent()==[{'command':'prefs.set','params':{'values':dict.fromkeys(keys,True)}}],'one prefs.set exactly changed keys',sent())
+ elif step==6:
+  await c('window.panel.set',{'panelId':'text','visible':True});await pause()
+  for field,value,invalid in [('size',48,513),('kerning',12,61),('leftMargin',8,-1),('rightMargin',9,1001),('indent',-12,-100),('lineSpacing',5,1001)]:
+   t.clear();await typed('text.'+field,value);options=(await c('tool.options.get',{'toolId':'text'}))['options'];t.run.check(options[field]==value,'text numeric '+field,{'sent':sent(),'options':options})
+   await typed('text.'+field,invalid);t.run.check(dom('text.'+field)==str(value),'text invalid restored '+field,{'field':dom('text.'+field),'options':(await c('tool.options.get',{'toolId':'text'}))['options']})
+   await typed('text.'+field,value)
+  for flag in ('bold','italic','autoKern'):
+   before=(await c('tool.options.get',{'toolId':'text'}))['options'][flag];t.clear();t.click('text.'+flag);await pause();t.run.check((await c('tool.options.get',{'toolId':'text'}))['options'][flag]!=before,'text flag '+flag,sent())
+  for field,value in [('baseline','superscript'),('align','justify')]:
+   t.clear();await t.do(('select','text.'+field,value));await pause();t.run.check((await c('tool.options.get',{'toolId':'text'}))['options'][field]==value,'text choice '+field,sent())
+  t.clear();await typed('text.font','Live2 Missing Font 673');t.run.check('not bundled' in dom('text.fontNotBundled','e.textContent'),'unbundled font marked',{'sent':sent(),'options':await c('tool.options.get',{'toolId':'text'})})
+ elif step==7:
+  await c('window.panel.set',{'panelId':'properties','visible':True});await pause();t.click('properties.tab.drawing');await pause()
+  t.clear();await typed('inspector.name','Live2 drawing');listing=await c('draw.drawing.get');t.run.check('Live2 drawing' in json.dumps(listing),'inspector rename',{'sent':sent(),'drawing':listing})
+  st=await c('app.state.get');t.run.save('inspector-state.json',st)
+  await c('app.context.set',{'frame':100});await pause();controls=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"inspector.\"]')].map(e=>({id:e.dataset.ttId,disabled:e.disabled,title:e.title}))")
+  t.run.save('inspector-empty.json',controls)
+  t.run.check(bool(controls) and all(x.get('disabled') and x.get('title') for x in controls),'empty drawing controls disabled with reason (design note 1)',controls)
+ t.run.save('live2-commands.json',t.recorded())
+
+
 def live(step):
  import asyncio,threading
  global d,r3
@@ -195,7 +295,7 @@ def live(step):
   run.save('transcript.json',run.transcript)
   summary={'checks':len(run.transcript),'failures':run.failures,'raw':str(OUT)}
   suffix='-context-repro' if os.environ.get('REVIEW_CONTEXT_REPRO') else '-dock' if os.environ.get('REVIEW_DOCK_REPRO') else ''
-  (EVID/('step'+str(step)+suffix+'.json')).write_text(json.dumps(summary,indent=2,default=str)[:190000]+'\n',encoding='utf-8',newline='\n')
+  (EVID/((sys.argv[1]+'-' if sys.argv[1] in ('l2a','l2b') else '')+'step'+str(step)+suffix+'.json')).write_text(json.dumps(summary,indent=2,default=str)[:190000]+'\n',encoding='utf-8',newline='\n')
  return int(bool(run.failures))
 
 def regression(step,script,cases):
@@ -216,6 +316,9 @@ def regression(step,script,cases):
  preserve_old_receipts()
 
 if __name__=='__main__':
+ if sys.argv[1] in ('l2a','l2b'):
+  live_body=live2_body
+  sys.exit(live(int(sys.argv[2])))
  if sys.argv[1]=='l1a':
   step=int(sys.argv[2])
   script,cases={2:('c43b-r1-live.py',['case3','case4','case5','case6','case7','case8']),3:('c43b-r2-live.py',['a2','a3','b1','b2','b3']),4:('c43b-r3-live.py',['a2','a3','b1','b2'])}[step]
