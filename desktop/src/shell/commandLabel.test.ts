@@ -16,7 +16,7 @@ describe('commandLabel', () => {
     }
   });
 
-  it("names a batch by its own label, else by its step count", () => {
+  it('names a batch by its own label, else by its step count', () => {
     expect(commandLabel('batch', { label: 'Tidy layers', steps: [{}, {}] })).toBe('Tidy layers');
     expect(commandLabel('batch', { steps: [{}, {}, {}] })).toBe('Batch (3 steps)');
     expect(commandLabel('batch', { steps: [{}] })).toBe('Batch (1 step)');

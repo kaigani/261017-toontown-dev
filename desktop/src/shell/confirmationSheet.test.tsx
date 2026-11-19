@@ -2,7 +2,7 @@
 // (Return or Escape with the focus inside); Accept only when chosen; queued requests; a request decided elsewhere or
 // expired leaves, the sheet saying why it ended unanswered.
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { App } from '../App';
 import { createHostApi, HostProvider } from '../ipc';
@@ -53,6 +53,23 @@ const responses = (h: ScriptedHost) =>
     .map((a) => a.params);
 
 describe('the confirmation sheet (D-58)', () => {
+  it("D-63 item 2: the countdown starts from the kernel's time left, however long the window was open before", async () => {
+    let pending: unknown[] = [];
+    const h = await sheet(() => pending);
+    // The window has been open a while before the request arrives (the review saw 309 s for 299 s left).
+    const start = Date.now();
+    const clock = vi.spyOn(Date, 'now').mockReturnValue(start + 10_000);
+    pending = [{ ...request(1), expiresInMs: 299_400 }];
+    act(() => {
+      h.event('agent.confirmation.requested', { confirmationId: 'cf_1' });
+    });
+    await screen.findByRole('dialog', { name: 'Agent confirmation' });
+    await waitFor(() => {
+      expect(el('confirmSheet.countdown').textContent).toBe('Expires in 4:59');
+    });
+    clock.mockRestore();
+  });
+
   it('appears without taking the focus; Return inside declines; Accept needs to be chosen', async () => {
     let pending = [request(1), request(2), request(3)];
     const h = await sheet(() => pending);

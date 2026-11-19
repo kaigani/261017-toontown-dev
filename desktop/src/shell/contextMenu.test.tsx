@@ -176,9 +176,11 @@ describe("the views' context menus (02 §4.4; D-40 answers 11, 12)", () => {
     });
     await screen.findByRole('menu', { name: 'Drawing' });
     for (const item of ['cut', 'copy', 'paste', 'selectAll', 'deselectAll']) {
-      expect(JSON.parse(el(`cameraView.drawingMenu.${item}`).getAttribute('data-tt-params') ?? '{}')).toEqual({
-        context: 'drawing',
-      });
+      expect(JSON.parse(el(`cameraView.drawingMenu.${item}`).getAttribute('data-tt-params') ?? '{}')).toEqual(
+        {
+          context: 'drawing',
+        },
+      );
     }
     await waitFor(() => {
       expect(el('cameraView.drawingMenu.selectAll').getAttribute('aria-disabled')).toBe('false');

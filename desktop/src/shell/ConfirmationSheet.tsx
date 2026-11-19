@@ -55,7 +55,10 @@ export function ConfirmationSheet() {
         if (env.status !== 'ok' || typeof env.result !== 'object' || env.result === null) return;
         const r = env.result as Json;
         const pending = Array.isArray(r['pendingConfirmations']) ? (r['pendingConfirmations'] as Json[]) : [];
+        // D-63 item 2 (C44A-R1-61): the time left is the kernel's `expiresInMs` at the moment of its answer; the clock
+        // the countdown measures against is read at that same moment, never a value from before the request arrived.
         const at = Date.now();
+        setNow(at);
         setRequests(
           pending
             .filter((p) => p['inApp'] === true && p['decision'] == null)
@@ -146,7 +149,8 @@ export function ConfirmationSheet() {
       .run('agent.confirmation.respond', { confirmationId: first.confirmationId, accept })
       .done.then(read, read);
   };
-  const left = Math.max(0, Math.round((first.expiresAt - now) / 1000));
+  // Whole seconds left, truncated as the kernel's own count is (299 999 ms left shows 4:59).
+  const left = Math.max(0, Math.floor((first.expiresAt - now) / 1000));
   return (
     <div
       className="confirm-sheet"

@@ -60,7 +60,8 @@ const SHUTDOWN_GRACE: Duration = Duration::from_secs(1);
 /// `mcp-reader`, `mcp-events` and `mcp-calls` (ruling O-20).
 pub const PERSISTENT_THREADS: usize = 5;
 /// `job_wait` calls of one session waiting at once, each on its own `mcp-wait` thread (it blocks on the caller's side,
-/// 11 P5); one more is refused with `limit.exceeded` (`limit: "concurrentJobWaits"`) (ruling O-20).
+/// 11 P5); one more is refused with `limit.exceeded` (`limit: "concurrentJobWaits"`) (ruling O-20). A call held for an
+/// in-app confirmation waits on one of these threads too (D-63 item 1), so the session's other calls go on.
 pub const MAX_JOB_WAITS: usize = 4;
 /// Server-side work threads (`mcp-server-work`: `list_commands`, `describe_command`, `get_docs`) of one session alive
 /// at once: such a thread outlives its call when the work passes its budget; one more is refused with
@@ -147,8 +148,10 @@ struct Shared {
     /// ignored (C14-R3-03). Guarded by the `cancelled` lock's discipline: both sets change only under `cancelled`.
     committed: Mutex<HashSet<String>>,
     closing: Arc<AtomicBool>,
-    /// `mcp-wait` threads alive ([`MAX_JOB_WAITS`]).
+    /// `mcp-wait` threads alive ([`MAX_JOB_WAITS`]): `job_wait` calls and calls held for an in-app confirmation.
     waits: Arc<AtomicUsize>,
+    /// Calls whose answer a held-call thread sends (D-63 item 1): the protocol loop's `answer` leaves them alone.
+    deferred: Mutex<HashSet<String>>,
     /// `mcp-server-work` threads alive ([`MAX_SERVER_WORK`]).
     server_work: Arc<AtomicUsize>,
     /// A roots refresh is running; another was asked meanwhile ([`ROOTS_THREADS`]).
@@ -424,6 +427,7 @@ where
         committed: Mutex::new(HashSet::new()),
         closing: closing.clone(),
         waits: Arc::new(AtomicUsize::new(0)),
+        deferred: Mutex::new(HashSet::new()),
         server_work: Arc::new(AtomicUsize::new(0)),
         roots_busy: AtomicBool::new(false),
         roots_again: AtomicBool::new(false),
@@ -594,6 +598,10 @@ fn answer(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) {
     {
         shared.send(&r);
     }
+    // A call held for an in-app confirmation is answered and released by its own thread (D-63 item 1).
+    if lock(&shared.deferred).remove(&id.to_string()) {
+        return;
+    }
     release(shared, id);
 }
 
@@ -718,7 +726,7 @@ fn request(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) -> Op
             match call_tool(shared, id, name, &args, token) {
                 ToolOutcome::Result(v) => jsonrpc::result(id, v),
                 ToolOutcome::UnknownTool => invalid_params(id, &format!("unknown tool `{name}`")),
-                ToolOutcome::Cancelled => return None,
+                ToolOutcome::Cancelled | ToolOutcome::Deferred => return None,
             }
         }
         "resources/list" => jsonrpc::result(id, json!({ "resources": resources::listing() })),
@@ -866,6 +874,8 @@ enum ToolOutcome {
     Result(Value),
     UnknownTool,
     Cancelled,
+    /// Held for an in-app confirmation on its own thread, which sends the answer (D-63 item 1).
+    Deferred,
 }
 
 fn envelope_error(code: &str, message: String, details: Value, hint: Option<&str>) -> Envelope {
@@ -1063,6 +1073,35 @@ fn call_tool(
                     // token's expiry or a document change (11 §6.3 step 2, "instead"), then settled with the token, so
                     // the agent receives the outcome: the command's result, `confirmation.declined` or
                     // `confirmation.expired`. A request cancelled meanwhile does nothing.
+                    // D-63 item 1 (C44A-R1-60): the held call waits on its own thread, so the session's other calls go
+                    // on (reads are answered, a second confirmable call joins the sheet's queue at once). When every
+                    // waiting thread is taken, it waits here, as before.
+                    if take_slot(&shared.waits, MAX_JOB_WAITS) {
+                        let held = Held {
+                            rid: rid.clone(),
+                            inv: inv.clone(),
+                            token: token.clone(),
+                            origin: origin.clone(),
+                            tool: name.to_owned(),
+                            command: id.clone(),
+                            params: params.clone(),
+                            first: env.clone(),
+                            cached,
+                            started,
+                        };
+                        lock(&shared.deferred).insert(rid.to_string());
+                        let s = shared.clone();
+                        let slots = shared.waits.clone();
+                        let spawned = std::thread::Builder::new().name("mcp-wait".into()).spawn(move || {
+                            finish_held(&s, held);
+                            slots.fetch_sub(1, Ordering::AcqRel);
+                        });
+                        if spawned.is_ok() {
+                            return ToolOutcome::Deferred;
+                        }
+                        lock(&shared.deferred).remove(&rid.to_string());
+                        shared.waits.fetch_sub(1, Ordering::AcqRel);
+                    }
                     if held_until_answered(shared, &token, rid) && shared.begin_effect(rid) {
                         let mut again = inv;
                         again.options.confirm_token = Some(token);
@@ -1372,6 +1411,48 @@ fn asked_in_app(shared: &Shared, origin: &Origin, token: &str) -> bool {
         && shared.handle.hold_in_app(token).unwrap_or(false)
 }
 
+/// A call held for an in-app confirmation, finished on its own `mcp-wait` thread (D-63 item 1).
+struct Held {
+    rid: Value,
+    inv: Invocation,
+    token: String,
+    origin: Origin,
+    tool: String,
+    command: String,
+    params: Value,
+    /// The first answer (`needs_confirmation`), kept when the request is cancelled while held.
+    first: Envelope,
+    cached: bool,
+    started: Instant,
+}
+
+/// Holds the call until the person answers (D-58), settles it with the token, records the logical call, answers the
+/// client and releases the request: what [`call_tool`] does for a held call, off the session's call thread.
+fn finish_held(shared: &Arc<Shared>, h: Held) {
+    let (mut env, mut cached) = (h.first, h.cached);
+    if held_until_answered(shared, &h.token, &h.rid) && shared.begin_effect(&h.rid) {
+        let mut again = h.inv;
+        again.options.confirm_token = Some(h.token);
+        (env, cached) = shared.handle.invoke_served_until(again, &|| shared.is_cancelled(&h.rid));
+    }
+    shared.handle.audit_logical_call(
+        &h.origin,
+        &AuditCall {
+            tool: &h.tool,
+            command: &h.command,
+            params: &h.params,
+            env: &env,
+            took: h.started.elapsed(),
+            cached,
+        },
+    );
+    mark(shared, "app://activity");
+    if !shared.is_cancelled(&h.rid) && !shared.closing() {
+        shared.send(&jsonrpc::result(&h.rid, tool_result(&h.tool, &h.command, &env)));
+    }
+    release(shared, &h.rid);
+}
+
 /// How often a held call looks at its in-app confirmation.
 const IN_APP_POLL: Duration = Duration::from_millis(100);
 
@@ -1380,7 +1461,8 @@ const IN_APP_POLL: Duration = Duration::from_millis(100);
 fn held_until_answered(shared: &Shared, token: &str, rid: &Value) -> bool {
     let deadline = Instant::now() + ELICIT_TIMEOUT + Duration::from_secs(5);
     while Instant::now() < deadline {
-        if shared.is_cancelled(rid) {
+        // A session closing waits for no answer: its held calls end with it.
+        if shared.is_cancelled(rid) || shared.closing() {
             return false;
         }
         if !shared.handle.confirmation_waiting(token).unwrap_or(false) {

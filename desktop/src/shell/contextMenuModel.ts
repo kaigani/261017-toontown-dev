@@ -56,6 +56,8 @@ function axis(
 ): { start: number; max: number | null } {
   const room = area - 2 * margin;
   if (length > room) return { start: margin, max: Math.max(room, 0) };
+  // A pointer past an edge (a press that began outside, a keyboard opening near an edge) counts as at the edge.
+  at = Math.min(Math.max(at, margin), area - margin);
   if (at + length <= area - margin) return { start: Math.max(at, margin), max: null };
   if (at - length >= margin) return { start: at - length, max: null };
   return { start: Math.min(Math.max(at, margin), area - margin - length), max: null };

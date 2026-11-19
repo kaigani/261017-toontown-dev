@@ -3171,7 +3171,9 @@
       "commands": [
         "edit.copy"
       ],
-      "params": {}
+      "params": {
+        "context": "drawing"
+      }
     },
     {
       "id": "cameraView.drawingMenu.cut",
@@ -3179,7 +3181,9 @@
       "commands": [
         "edit.cut"
       ],
-      "params": {}
+      "params": {
+        "context": "drawing"
+      }
     },
     {
       "id": "cameraView.drawingMenu.deselectAll",
@@ -3187,7 +3191,9 @@
       "commands": [
         "edit.deselectAll"
       ],
-      "params": {}
+      "params": {
+        "context": "drawing"
+      }
     },
     {
       "id": "cameraView.drawingMenu.flatten",
@@ -3247,7 +3253,9 @@
       "commands": [
         "edit.paste"
       ],
-      "params": {}
+      "params": {
+        "context": "drawing"
+      }
     },
     {
       "id": "cameraView.drawingMenu.rotate.180",
@@ -3285,7 +3293,9 @@
       "commands": [
         "edit.selectAll"
       ],
-      "params": {}
+      "params": {
+        "context": "drawing"
+      }
     },
     {
       "id": "cameraView.drawingMenu.smooth",
@@ -3309,7 +3319,9 @@
       "commands": [
         "edit.copy"
       ],
-      "params": {}
+      "params": {
+        "context": "staging"
+      }
     },
     {
       "id": "cameraView.sceneMenu.cut",
@@ -3317,7 +3329,9 @@
       "commands": [
         "edit.cut"
       ],
-      "params": {}
+      "params": {
+        "context": "staging"
+      }
     },
     {
       "id": "cameraView.sceneMenu.deselectAll",
@@ -3325,7 +3339,9 @@
       "commands": [
         "edit.deselectAll"
       ],
-      "params": {}
+      "params": {
+        "context": "staging"
+      }
     },
     {
       "id": "cameraView.sceneMenu.paste",
@@ -3333,7 +3349,9 @@
       "commands": [
         "edit.paste"
       ],
-      "params": {}
+      "params": {
+        "context": "staging"
+      }
     },
     {
       "id": "cameraView.sceneMenu.selectAll",
@@ -3341,7 +3359,9 @@
       "commands": [
         "edit.selectAll"
       ],
-      "params": {}
+      "params": {
+        "context": "staging"
+      }
     }
   ],
   "guiOnly": [
@@ -3759,6 +3779,21 @@
       "id": "message.ok",
       "surface": "messageBox",
       "reason": "dismiss"
+    },
+    {
+      "id": "agentAccess.token",
+      "surface": "preferences:agent",
+      "reason": "focus"
+    },
+    {
+      "id": "agentAccess.token.copy",
+      "surface": "preferences:agent",
+      "reason": "clipboard"
+    },
+    {
+      "id": "agentAccess.token.show",
+      "surface": "preferences:agent",
+      "reason": "disclose"
     },
     {
       "id": "preferences.cancel",
@@ -17816,6 +17851,10 @@
       "file": "desktop/src/panels/DrawingInspectorPage.tsx"
     },
     {
+      "command": "prefs.get",
+      "file": "desktop/src/prefs/AgentAccessPage.tsx"
+    },
+    {
       "command": "prefs.list",
       "file": "desktop/src/state/store.ts"
     },
@@ -19130,6 +19169,10 @@
       "query": "agent.server.status"
     },
     {
+      "surface": "preferences:agent",
+      "query": "prefs.get"
+    },
+    {
       "surface": "startScreen",
       "query": "agent.server.status"
     },
@@ -19378,6 +19421,7 @@
       "command": "agent.server.enabled",
       "files": [
         "desktop/src-tauri/src/shell.rs",
+        "desktop/src/prefs/AgentAccessPage.tsx",
         "desktop/src/prefs/agentAccess.ts"
       ]
     },
@@ -19535,6 +19579,30 @@
       ]
     },
     {
+      "command": "agentAccess.token",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.token.copy",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.token.show",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "agentAccess.tokenGroup",
+      "files": [
+        "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
       "command": "agentAccess.typedTools",
       "files": [
         "desktop/src/prefs/AgentAccessPage.tsx"
@@ -19575,6 +19643,12 @@
       "files": [
         "desktop/src-tauri/src/host.rs",
         "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
+      "command": "answer.undelivered",
+      "files": [
+        "desktop/src/shell/commandLabel.ts"
       ]
     },
     {
@@ -19634,7 +19708,10 @@
         "desktop/src-tauri/src/spikes/canvas/mod.rs",
         "desktop/src-tauri/src/spikes/tablet/mod.rs",
         "desktop/src-tauri/src/spikes/tablet/simulate_windows.rs",
-        "desktop/src/ipc/engine.ts"
+        "desktop/src/ipc/engine.ts",
+        "desktop/src/panels/PenPanel.tsx",
+        "desktop/src/panels/TextPanel.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
@@ -20734,7 +20811,8 @@
         "desktop/src-tauri/src/shell.rs",
         "desktop/src/App.tsx",
         "desktop/src/canvas/CanvasView.tsx",
-        "desktop/src/panels/DrawingInspectorPage.tsx"
+        "desktop/src/panels/DrawingInspectorPage.tsx",
+        "desktop/src/prefs/AgentAccessPage.tsx"
       ]
     },
     {
@@ -21015,7 +21093,8 @@
     {
       "command": "shell.agentToken",
       "files": [
-        "desktop/src-tauri/src/shell.rs"
+        "desktop/src-tauri/src/shell.rs",
+        "desktop/src/prefs/AgentAccessPage.tsx"
       ]
     },
     {

@@ -8,7 +8,8 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useActions } from '../shell/actionsApi';
 import { optionRef, runChosen } from '../shell/listControl';
-import { declaredRange, NumericField } from '../shell/NumericField';
+import { declaredRange } from '../shell/numeric';
+import { NumericField } from '../shell/NumericField';
 import { useShell } from '../state/context';
 
 type Json = Record<string, unknown>;
@@ -131,11 +132,9 @@ export function TextPanel() {
               command="tool.text.options.set"
               params={{ [n.key]: value }}
               onCommit={(v) =>
-                actions.run(
-                  'tool.text.options.set',
-                  { [n.key]: n.key === 'kerning' ? Math.round(v) : v },
-                  ['arg.invalid'],
-                )
+                actions.run('tool.text.options.set', { [n.key]: n.key === 'kerning' ? Math.round(v) : v }, [
+                  'arg.invalid',
+                ])
               }
             />
           </label>

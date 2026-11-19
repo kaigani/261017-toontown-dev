@@ -31,7 +31,12 @@ function inside(p: MenuPlacement, menu: Size, area: Size): boolean {
 
 describe('placeMenu', () => {
   it('opens at the pointer when it fits', () => {
-    expect(placeMenu({ x: 100, y: 100 }, MENU, AREA)).toEqual({ x: 100, y: 100, maxHeight: null, maxWidth: null });
+    expect(placeMenu({ x: 100, y: 100 }, MENU, AREA)).toEqual({
+      x: 100,
+      y: 100,
+      maxHeight: null,
+      maxWidth: null,
+    });
   });
 
   it('flips toward the side with room at each corner', () => {
@@ -138,7 +143,8 @@ describe('ContextMenu placement', () => {
     await app();
     sizes({ width: 220, height: 1034 });
     const menu = await openSceneMenu(1115, 690);
-    expect(menu.style.left).toBe(`${String(AREA.width - MENU_MARGIN - 220)}px`);
+    // It would cross the right edge: it flips to end at the pointer.
+    expect(menu.style.left).toBe(`${String(1115 - 220)}px`);
     expect(menu.style.top).toBe(`${String(MENU_MARGIN)}px`);
     expect(menu.style.maxHeight).toBe(`${String(AREA.height - 2 * MENU_MARGIN)}px`);
     expect(menu.querySelectorAll('.context-menu-arrow')).toHaveLength(2);

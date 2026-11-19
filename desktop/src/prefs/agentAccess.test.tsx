@@ -130,7 +130,8 @@ function editAll() {
 describe('Preferences › Agent access (design note 2 §2)', () => {
   it('OK sends one command per changed group in table order, and no prefs.set', async () => {
     const { h, dialog } = await page();
-    act(editAll);
+    // One event at a time, as a person makes them: a numeric field commits what it shows at focus loss (D-61).
+    editAll();
     act(() => {
       fireEvent.click(within(dialog).getByRole('button', { name: 'OK' }));
     });
@@ -154,7 +155,8 @@ describe('Preferences › Agent access (design note 2 §2)', () => {
       host.handlers['agent.policy.defaults.set'] = () =>
         refuse ? fail('arg.invalid', 'maxJobs must be between 1 and 8') : ok({});
     });
-    act(editAll);
+    // One event at a time, as a person makes them: a numeric field commits what it shows at focus loss (D-61).
+    editAll();
     act(() => {
       fireEvent.click(within(dialog).getByRole('button', { name: 'OK' }));
     });

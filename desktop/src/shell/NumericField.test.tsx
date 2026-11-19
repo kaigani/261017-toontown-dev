@@ -3,13 +3,8 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  declaredRange,
-  NumericField,
-  parseNumber,
-  type CommitAnswer,
-  type NumericRange,
-} from './NumericField';
+import { declaredRange, parseNumber, type CommitAnswer, type NumericRange } from './numeric';
+import { NumericField } from './NumericField';
 
 afterEach(cleanup);
 
@@ -90,7 +85,7 @@ describe('NumericField', () => {
 
   it('focus loss commits; an Enter then focus loss sends once', async () => {
     const sent = vi.fn();
-    render(<Harness onCommit={sent} refuse={undefined} />);
+    render(<Harness onCommit={sent} />);
     await typeAnd('30', 'blur');
     expect(sent.mock.calls).toEqual([[30]]);
     fireEvent.change(input(), { target: { value: '40' } });

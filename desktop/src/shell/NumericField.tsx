@@ -14,76 +14,26 @@
 // value, which is how C44A-R1-21's letters became a committed zero.
 import { useId, useRef, useState, type KeyboardEvent, type Ref } from 'react';
 
-import type { Envelope } from '../ipc';
-import { COMMAND_DEFS } from '../ipc/generated/commands';
-import type { Schema, SchemaObject } from '../ipc/schema';
+import { parseNumber, refusalOf, type CommitAnswer, type NumericRange } from './numeric';
 
-/** A numeric control's declared range. */
-export interface NumericRange {
-  readonly min?: number;
-  readonly max?: number;
-  readonly integer?: boolean;
-}
-
-const bound = (b: unknown): number | undefined =>
-  typeof b === 'number' ? b : typeof b === 'bigint' ? Number(b) : undefined;
-
-/** The range `command` declares for its parameter `param` (minimum, maximum, integer), from the generated schema;
- *  `{}` when the schema declares none. */
-export function declaredRange(command: string, param: string): NumericRange {
-  const params = COMMAND_DEFS[`${command}.params`] as Schema | undefined;
-  if (!params || typeof params === 'boolean') return {};
-  const p = params.properties?.[param];
-  if (p === undefined || typeof p === 'boolean') return {};
-  // A nullable number is written as `type: ["number", "null"]` or as `anyOf: [{number}, {null}]`.
-  const s: SchemaObject =
-    p.anyOf?.find((x): x is SchemaObject => typeof x !== 'boolean' && x.type !== 'null') ?? p;
-  const types = Array.isArray(s.type) ? s.type : [s.type];
-  const min = bound(s.minimum);
-  const max = bound(s.maximum);
-  return {
-    ...(min !== undefined && Number.isFinite(min) ? { min } : {}),
-    ...(max !== undefined && Number.isFinite(max) && max <= Number.MAX_SAFE_INTEGER ? { max } : {}),
-    ...(types.includes('integer') ? { integer: true } : {}),
-  };
-}
-
-/** A decimal number as a person types it: optional sign, digits with an optional fraction, optional exponent. */
-const NUMBER = /^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$/;
-
-export type Parsed =
-  | { readonly ok: true; readonly value: number }
-  | { readonly ok: false; readonly problem: string };
-
-function rangeText(r: NumericRange): string {
-  if (r.min !== undefined && r.max !== undefined) return `from ${String(r.min)} to ${String(r.max)}`;
-  if (r.min !== undefined) return `at least ${String(r.min)}`;
-  return `at most ${String(r.max)}`;
-}
-
-/** Strict parsing of a typed entry against a range: the value, or why it is not one. */
-export function parseNumber(text: string, range: NumericRange): Parsed {
-  const t = text.trim();
-  if (t === '') return { ok: false, problem: 'Enter a number.' };
-  if (!NUMBER.test(t)) return { ok: false, problem: `"${t}" is not a number.` };
-  const value = Number(t);
-  if (!Number.isFinite(value)) return { ok: false, problem: `"${t}" is not a number.` };
-  if (range.integer && !Number.isInteger(value)) return { ok: false, problem: 'Enter a whole number.' };
-  if ((range.min !== undefined && value < range.min) || (range.max !== undefined && value > range.max))
-    return { ok: false, problem: `The value is ${rangeText(range)}.` };
-  return { ok: true, value };
-}
-
-/** What `onCommit` may answer: nothing (accepted), the command's envelope, or a refusal's message. */
-export type CommitAnswer = void | null | string | Envelope;
-
-const refusalOf = (a: CommitAnswer): string | null => {
-  if (typeof a === 'string') return a;
-  if (a && typeof a === 'object' && a.status === 'error') return a.error?.message ?? 'The value was refused.';
-  return null;
-};
-
-export function NumericField(props: {
+export function NumericField({
+  id,
+  label,
+  value,
+  range,
+  step,
+  command,
+  params,
+  role,
+  disabled,
+  className,
+  inputRef,
+  inputId,
+  ttLabel,
+  guiOnly,
+  onSubmit,
+  onCommit,
+}: {
   /** `data-tt-id`. */
   id: string;
   /** The accessible name. */
@@ -110,9 +60,8 @@ export function NumericField(props: {
    *  default button, 01 §2). */
   onSubmit?: () => void;
   /** Called with a valid, changed value; its answer says whether the command refused it. */
-  onCommit: (v: number) => CommitAnswer | Promise<CommitAnswer>;
+  onCommit: ((v: number) => void) | ((v: number) => CommitAnswer | Promise<CommitAnswer>);
 }) {
-  const { value, range } = props;
   const [typed, setTyped] = useState<{ from: number; text: string } | null>(null);
   const [problem, setProblem] = useState<{ from: number; text: string } | null>(null);
   const describedBy = useId();
@@ -141,9 +90,10 @@ export function NumericField(props: {
     const from = value;
     sent.current = { from, value: parsed.value };
     setProblem(null);
-    void Promise.resolve(props.onCommit(parsed.value)).then((answer) => {
+    void Promise.resolve(onCommit(parsed.value)).then((answer) => {
       sent.current = null;
-      const refused = refusalOf(answer);
+      // A staged form's commit answers nothing (`void`): accepted.
+      const refused = refusalOf(answer ?? null);
       // The draft goes either way: the display is the retained value, which an accepted commit has changed.
       setTyped((t) => (t?.from === from ? null : t));
       if (refused !== null) setProblem({ from, text: refused });
@@ -154,7 +104,7 @@ export function NumericField(props: {
     if (e.key === 'Enter') {
       // A form's Enter submits the values it holds: a field that has just changed its value takes this Enter.
       if (commit()) e.preventDefault();
-      else props.onSubmit?.();
+      else onSubmit?.();
     } else if (e.key === 'Escape') {
       if (typed?.from === value || shownProblem !== null) {
         e.preventDefault();
@@ -164,8 +114,8 @@ export function NumericField(props: {
     } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       e.preventDefault();
       const base = parseNumber(draft, {});
-      const step = props.step ?? 1;
-      let next = (base.ok ? base.value : value) + (e.key === 'ArrowUp' ? step : -step);
+      const by = step ?? 1;
+      let next = (base.ok ? base.value : value) + (e.key === 'ArrowUp' ? by : -by);
       if (range.min !== undefined) next = Math.max(range.min, next);
       if (range.max !== undefined) next = Math.min(range.max, next);
       setTyped({ from: value, text: String(Number(next.toFixed(6))) });
@@ -174,23 +124,23 @@ export function NumericField(props: {
   return (
     <>
       <input
-        ref={props.inputRef}
-        id={props.inputId}
+        ref={inputRef}
+        id={inputId}
         type="text"
         inputMode="decimal"
-        className={props.className}
+        className={className}
         value={draft}
-        disabled={props.disabled}
-        aria-label={props.label}
+        disabled={disabled}
+        aria-label={label}
         aria-invalid={shownProblem !== null ? true : undefined}
         aria-describedby={shownProblem !== null ? describedBy : undefined}
         title={shownProblem ?? undefined}
-        data-tt-role={props.role ?? 'textField'}
-        data-tt-id={props.id}
-        {...(props.ttLabel ? { 'data-tt-label': props.ttLabel } : {})}
-        {...(props.guiOnly ? { 'data-tt-gui-only': props.guiOnly } : {})}
-        {...(props.command ? { 'data-tt-command': props.command } : {})}
-        {...(props.params ? { 'data-tt-params': JSON.stringify(props.params) } : {})}
+        data-tt-role={role ?? 'textField'}
+        data-tt-id={id}
+        {...(ttLabel ? { 'data-tt-label': ttLabel } : {})}
+        {...(guiOnly ? { 'data-tt-gui-only': guiOnly } : {})}
+        {...(command ? { 'data-tt-command': command } : {})}
+        {...(params ? { 'data-tt-params': JSON.stringify(params) } : {})}
         {...(shownProblem !== null ? { 'data-tt-problem': shownProblem } : {})}
         onChange={(e) => {
           setTyped({ from: value, text: e.target.value });

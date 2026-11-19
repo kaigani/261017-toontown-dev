@@ -90,3 +90,101 @@ fn an_in_app_confirmation_holds_the_call_until_the_persons_answer() {
     drop(h);
     std::fs::remove_dir_all(dir).unwrap();
 }
+
+/// The in-app requests the app shows now (`inApp`, undecided).
+fn shown(h: &tt_executor::ExecutorHandle) -> Vec<String> {
+    let s = h.invoke(tt_executor::Invocation::user("agent.server.status", json!({}))).result.unwrap();
+    s["pendingConfirmations"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|p| p["inApp"] == true && p["decision"].is_null())
+        .map(|p| p["confirmationId"].as_str().unwrap().to_owned())
+        .collect()
+}
+
+/// Waits until the app shows `n` in-app requests (at most 10 s).
+fn until_shown(h: &tt_executor::ExecutorHandle, n: usize) -> Vec<String> {
+    let deadline = Instant::now() + Duration::from_secs(10);
+    loop {
+        let ids = shown(h);
+        if ids.len() >= n || Instant::now() >= deadline {
+            return ids;
+        }
+        std::thread::sleep(Duration::from_millis(30));
+    }
+}
+
+fn held_fixture(name: &str) -> (std::path::PathBuf, tt_executor::ExecutorHandle, Client) {
+    let dir = tmp();
+    let h = executor(&dir.join("user"));
+    h.report_shell(tt_executor::host::ShellReport { attached: Some(true), ..Default::default() });
+    assert!(h.invoke(tt_executor::Invocation::user("project.create", json!({ "name": name }))).is_ok());
+    let mut options = opts(&dir);
+    options.policy = Some(tt_executor::agents::Policy::Assist);
+    let (c, _) = Client::connect(&h, options, json!({}));
+    (dir, h, c)
+}
+
+fn export_call(file: &std::path::Path) -> Value {
+    std::fs::write(file, "x").unwrap();
+    json!({ "name": "run_command", "arguments": { "id": "agent.activity.export",
+        "params": { "path": file.to_string_lossy(), "format": "jsonl", "onExists": "overwrite" } } })
+}
+
+/// Ruling D-63 item 1 (C44A-R1-60): a call held for the person's answer does not occupy the session: a read of the
+/// same session is answered while the request is still open, before any decision.
+#[test]
+fn a_held_call_leaves_the_sessions_other_calls_answered() {
+    let (dir, h, mut c) = held_fixture("Held read");
+    let held = c.send("tools/call", export_call(&dir.join("a.jsonl")));
+    let ids = until_shown(&h, 1);
+    assert_eq!(ids.len(), 1, "the request is shown in the app");
+    let read = c.send("tools/call", json!({ "name": "get_state", "arguments": {} }));
+    let answered = c.wait(read, Duration::from_secs(10));
+    assert!(answered.is_some_and(|m| m.get("error").is_none()), "the read is answered while the call is held");
+    assert_eq!(shown(&h), ids, "and the request is still open, undecided");
+    respond(&h, &ids[0], true);
+    let m = c.wait(held, Duration::from_secs(20)).expect("the held call is answered after the decision");
+    assert_eq!(m["result"]["structuredContent"]["status"], "ok", "{m}");
+    c.close().unwrap();
+    drop(h);
+    std::fs::remove_dir_all(dir).unwrap();
+}
+
+/// Ruling D-63 item 1: a second confirmable call of the same session joins the app's queue at once: both requests are
+/// shown before either is answered, and each held call receives its own outcome.
+#[test]
+fn two_held_calls_of_one_session_are_both_shown_at_once() {
+    let (dir, h, mut c) = held_fixture("Held twice");
+    let first = c.send("tools/call", export_call(&dir.join("a.jsonl")));
+    assert_eq!(until_shown(&h, 1).len(), 1);
+    let second = c.send("tools/call", export_call(&dir.join("b.jsonl")));
+    let ids = until_shown(&h, 2);
+    assert_eq!(ids.len(), 2, "both requests are open at once: {ids:?}");
+    // Accept one, decline the other: each call gets its own outcome.
+    respond(&h, &ids[0], true);
+    respond(&h, &ids[1], false);
+    // Either answer may come first: both are collected.
+    let mut got = std::collections::HashMap::new();
+    let deadline = Instant::now() + Duration::from_secs(20);
+    while got.len() < 2 && Instant::now() < deadline {
+        if let Some(m) = c.next(Duration::from_millis(500))
+            && m.get("method").is_none()
+            && let Some(id) = m.get("id").and_then(Value::as_u64)
+            && (id == first || id == second)
+        {
+            got.insert(id, m);
+        }
+    }
+    assert_eq!(got.len(), 2, "both held calls are answered");
+    let mut outcomes = got
+        .values()
+        .map(|m| m["result"]["structuredContent"]["error"]["code"].as_str().unwrap_or("ok").to_owned())
+        .collect::<Vec<_>>();
+    outcomes.sort();
+    assert_eq!(outcomes, ["confirmation.declined", "ok"]);
+    c.close().unwrap();
+    drop(h);
+    std::fs::remove_dir_all(dir).unwrap();
+}

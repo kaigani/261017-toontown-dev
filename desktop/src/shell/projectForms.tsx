@@ -5,7 +5,8 @@ import type { Envelope } from '../ipc';
 import type { ShellServices } from '../state/context';
 import { Dialog } from './dialogs';
 import { useModalFocus } from './modalFocus';
-import { declaredRange, NumericField, type NumericRange } from './NumericField';
+import { declaredRange, type NumericRange } from './numeric';
+import { NumericField } from './NumericField';
 import { projectFieldProblems } from './projectFields';
 
 type ProjectNumber = 'frameRate' | 'width' | 'height';

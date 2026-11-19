@@ -22,7 +22,9 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-async function agentPage(setup?: (h: ScriptedHost) => void): Promise<{ h: ScriptedHost; dialog: HTMLElement }> {
+async function agentPage(
+  setup?: (h: ScriptedHost) => void,
+): Promise<{ h: ScriptedHost; dialog: HTMLElement }> {
   const h = createScriptedHost();
   setup?.(h);
   render(
@@ -39,7 +41,8 @@ async function agentPage(setup?: (h: ScriptedHost) => void): Promise<{ h: Script
   return { h, dialog };
 }
 
-const field = (dialog: HTMLElement) => within(dialog).getByRole<HTMLInputElement>('textbox', { name: 'Agent token' });
+const field = (dialog: HTMLElement) =>
+  within(dialog).getByRole<HTMLInputElement>('textbox', { name: 'Agent token' });
 const button = (dialog: HTMLElement, name: string) => within(dialog).getByRole('button', { name });
 
 describe('the agent token in Preferences › Agent access', () => {

@@ -9,7 +9,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useActions } from '../shell/actionsApi';
 import type { CommandRef } from '../shell/availability';
 import { optionRef, runChosen } from '../shell/listControl';
-import { declaredRange, NumericField } from '../shell/NumericField';
+import { declaredRange } from '../shell/numeric';
+import { NumericField } from '../shell/NumericField';
 import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell } from '../state/context';
 

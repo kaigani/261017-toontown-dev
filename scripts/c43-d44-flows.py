@@ -815,12 +815,15 @@ def confirm_rows(t: Flows) -> list:
         st = await t.cmd("agent.server.status", {})
         return [p.get("confirmationId") for p in st.get("pendingConfirmations") or [] if p.get("inApp")]
 
-    async def raised(ctx, count=1):
-        sessions = await agent_session(count)
-        ctx["calls"] = [ask(a, i) for i, a in enumerate(sessions)]
+    async def raised(ctx, count=1, order=None):
+        # `order`: which test-only session makes each request (D-63 item 1: A, B, A; a session's second confirmable
+        # call joins the queue at once, while its first is held).
+        order = order or list(range(count))
+        sessions = await agent_session(max(order) + 1)
+        ctx["calls"] = [ask(sessions[a], i) for i, a in enumerate(order)]
         for _ in range(100):
             ids = await pending_ids()
-            if len(ids) >= count:
+            if len(ids) >= len(order):
                 break
             await asyncio.sleep(0.1)
         ctx["ids"] = await pending_ids()
@@ -904,7 +907,13 @@ def confirm_rows(t: Flows) -> list:
                  and "confirmation.expired" in (ctx.get("second") or "") and "already decided" in (ctx.get("second") or "")})
 
     async def queued_flow(ctx):
-        await raised(ctx, 3)
+        # D-63 item 1 (C44A-R1-60): sessions A, B, A. A's second request is shown at once (the sheet counts all three),
+        # and while the requests are open a plain read of B's session is answered.
+        await raised(ctx, 3, [0, 1, 0])
+        started = time.monotonic()
+        state = await asyncio.wait_for(e2e.run_cmd(agents[1]["session"], "app.state.get", {}), timeout=10)
+        ctx["readWhileHeld"] = {"status": state.get("status"), "seconds": round(time.monotonic() - started, 2),
+                                "stillOpen": len(await pending_ids())}
         ctx["queue"] = t.cdp.js("document.querySelector('[data-tt-id=\"confirmSheet.queue\"]')?.textContent ?? null")
         ctx["order"] = []
         for button in ("decline", "accept", "decline"):
@@ -913,12 +922,14 @@ def confirm_rows(t: Flows) -> list:
             t.click(f"confirmSheet.{button}")
             await asyncio.sleep(0.8)
         ctx["answers"] = sorted(await answers(ctx))
-        return "three test-only agents' requests queued in the sheet: Decline, Accept, Decline in turn"
+        return "two test-only agents' requests A, B, A queued in the sheet, a read of B answered meanwhile: Decline, Accept, Decline in turn"
     rows.append({"name": "Confirmation sheet › three queued", "spec": "D-58 (queued requests)", "path": ["agent request", "sheet"],
                  "choice": "queue", "setup": nothing, "state": nothing, "flow": queued_flow, "wait": 0.5,
                  "expect": lambda ctx: [("agent.confirmation.respond", {"confirmationId": ctx["order"][i], "accept": acc}, [])
                                         for i, acc in enumerate((False, True, False))],
                  "effect": lambda b, a, ctx: "1 of 3" in (ctx.get("queue") or "")
+                 and (ctx.get("readWhileHeld") or {}).get("status") == "ok"
+                 and (ctx.get("readWhileHeld") or {}).get("stillOpen") == 3
                  and ctx["answers"] == sorted(["confirmation.declined", "ok", "confirmation.declined"])})
 
     async def expiry_flow(ctx):
