@@ -1,0 +1,37 @@
+[
+  {
+    "case": "a2",
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "a3",
+    "exit": 1,
+    "failLines": [
+      "  + Exception Group Traceback (most recent call last):",
+      "    | Exception Group Traceback (most recent call last):",
+      "      | Traceback (most recent call last):",
+      "      | TypeError: 'function' object is not subscriptable",
+      "FAIL the table ran",
+      "  \"the table ran: \\\"ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [TypeError(\\\\\\\"'function' object is not subscriptable\\\\\\\")])])\\\"\""
+    ]
+  },
+  {
+    "case": "b1",
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "b2",
+    "exit": 1,
+    "failLines": []
+  },
+  {
+    "case": "b3",
+    "exit": 1,
+    "failLines": [
+      "FAIL backup ran",
+      "  \"backup ran: \\\"RuntimeError('setup draw.rectangle.add {\\\\\\\\'from\\\\\\\\': {\\\\\\\\'x\\\\\\\\': 0, \\\\\\\\'y\\\\\\\\': 0}, \\\\\\\\'to\\\\\\\\': {\\\\\\\\'x\\\\\\\\': 10, \\\\\\\\'y\\\\\\\\': 10}}: {\\\\\\\"status\\\\\\\": \\\\\\\"error\\\\\\\", \\\\\\\"changes\\\\\\\": [], \\\\\\\"warnings\\\\\\\": [], \\\\\\\"documentRev\\\\\\\": 6, \\\\\\\"error\\\\\\\": {\\\\\\\"code\\\\\\\": \\\\\\\"drawing.notVectorElement\\\\\\\", \\\\\\\"message\\\\\\\": \\\\\\\"element `D39 Wide` is not a drawing or annotation element\\\\\\\", \\\\\\\"details\\\\\\\": {\\\\\\\"elementId\\\\\\\": \\\\\\\"el_01K7JJN800KNTES7XB9N2D0Q93\\\\\\\"}}}')\\\"\""
+    ]
+  }
+]
