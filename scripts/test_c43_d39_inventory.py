@@ -30,7 +30,23 @@ class Inventory(unittest.TestCase):
                              ("text.indent", "Text panel › indent (typed)"),
                              ("text.lineSpacing", "Text panel › lineSpacing (typed)")):
             self.assertIn(control, cov.inventory())
-            self.assertEqual(cov.COVERAGE[control], {"rows": [row]})
+            self.assertEqual(cov.COVERAGE[control]["rows"][0], row)
+
+    def test_every_numeric_control_has_an_invalid_and_an_out_of_range_row(self):
+        # D-61 item 3: each numeric control's rows include one invalid entry and one out-of-range entry.
+        self.assertEqual(len(cov.NUMERIC), 17)
+        for control, base in cov.NUMERIC.items():
+            self.assertIn(control, cov.inventory())
+            for kind in ("invalid", "out of range"):
+                self.assertIn(f"{base} ({kind})", cov.COVERAGE[control]["rows"])
+
+    def test_every_numeric_field_in_the_window_is_the_one_component(self):
+        # D-61 item 3: no product source builds a numeric input of its own.
+        src = HERE.parent / "desktop" / "src"
+        own = [str(p.relative_to(src)) for p in src.rglob("*.tsx")
+               if ".test." not in p.name and "spikes" not in p.parts and p.name != "NumericField.tsx"
+               and 'type="number"' in p.read_text(encoding="utf-8")]
+        self.assertEqual(own, [])
 
     def test_a_new_control_without_a_row_fails(self):
         items = cov.inventory() + ["brandNew.control"]

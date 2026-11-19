@@ -209,6 +209,23 @@ COVERAGE: dict[str, dict] = {
 }
 
 
+#: D-61 item 3: every numeric control of the table (each is the window's one numeric field, `NumericField.tsx`) with
+#: the name its rows start with. Each has, besides its commit rows, one invalid entry ("… (invalid)") and one
+#: out-of-range entry ("… (out of range)"), both refused at the field with nothing sent.
+NUMERIC: dict[str, str] = {
+    **{f"pen.{k}.field": f"Pen panel › {label}" for k, label in PEN_SLIDERS.items()},
+    **{f"text.{k}": f"Text panel › {k}" for k in ("size", "kerning", "leftMargin", "rightMargin", "indent", "lineSpacing")},
+    "toolOptions.thickness": "Tool options › Pencil: fixed thickness",
+    "toolOptions.snapRadius": "Tool options › Polyline: snap radius",
+    **{f"agentAccess.{k}": f"Preferences › Agent access › {k}"
+       for k in ("port", "maxJobs", "maxBatchSteps", "maxInlineImagePx", "maxInlineBytes")},
+}
+REFUSALS = ("invalid", "out of range")
+for _control, _base in NUMERIC.items():
+    COVERAGE[_control] = {**COVERAGE[_control],
+                          "rows": [*COVERAGE[_control]["rows"], *(f"{_base} ({k})" for k in REFUSALS)]}
+
+
 def _matches(pattern: str, control: str) -> bool:
     return fnmatch.fnmatchcase(control, pattern)
 
@@ -219,6 +236,11 @@ def problems(items: list[str] | None = None) -> list[str]:
            if not any(_matches(p, i) for p in COVERAGE)]
     out += [f"{p}: listed in the D-39 coverage but matches no control of the generated inventory" for p in COVERAGE
             if not any(_matches(p, i) for i in items)]
+    for control, base in NUMERIC.items():
+        rows = COVERAGE.get(control, {}).get("rows", [])
+        for k in REFUSALS:
+            if f"{base} ({k})" not in rows:
+                out.append(f"{control}: a numeric control without its {k} entry row (D-61)")
     templates = table_templates()
     d44 = _d44_rows()
     for p, v in COVERAGE.items():

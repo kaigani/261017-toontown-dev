@@ -72,11 +72,17 @@ describe('start screen and new project (01 §2, §3.1)', () => {
     expect(within(screenEl).getByRole('button', { name: 'Create' }).hasAttribute('disabled')).toBe(true);
     fireEvent.keyDown(name, { key: 'Enter' });
     fireEvent.change(name, { target: { value: 'Ok' } });
-    const width = within(screenEl).getByDisplayValue('1920');
+    const width = within(screenEl).getByDisplayValue<HTMLInputElement>('1920');
+    // D-61: an out-of-range size is refused at the field, which returns to the staged value and says why.
     fireEvent.change(width, { target: { value: '8' } });
-    expect(within(screenEl).getByText('Camera size is 16 to 8192 pixels.')).toBeTruthy();
+    fireEvent.blur(width);
+    expect(within(screenEl).getByText('The value is from 16 to 8192.')).toBeTruthy();
+    expect(width.value).toBe('1920');
     fireEvent.change(width, { target: { value: '1000' } });
+    // The first Enter commits the field; the next one (nothing changed) is Create.
+    fireEvent.keyDown(width, { key: 'Enter' });
     expect(within(screenEl).getByRole<HTMLSelectElement>('combobox').value).toBe('custom');
+    expect(host.actions().filter((a) => a.command === 'project.create')).toHaveLength(0);
     fireEvent.keyDown(width, { key: 'Enter' });
     await vi.waitFor(() => {
       expect(host.actions().filter((a) => a.command === 'project.create')).toHaveLength(1);
@@ -356,7 +362,10 @@ describe('preferences (01 §7.1)', () => {
       host.event('shell.preferences', { category: 'files' });
     });
     let dialog = await screen.findByRole('dialog', { name: 'Preferences' });
-    fireEvent.change(within(dialog).getByDisplayValue('3'), { target: { value: '7' } });
+    const backups = within(dialog).getByDisplayValue('3');
+    fireEvent.change(backups, { target: { value: '7' } });
+    // A real click on OK moves the focus out of the field first: the field commits its value.
+    fireEvent.blur(backups);
     fireEvent.click(within(dialog).getByRole('button', { name: 'OK' }));
     await vi.waitFor(() => {
       expect(host.actions().find((a) => a.command === 'prefs.set')?.params).toEqual({
@@ -424,21 +433,27 @@ describe('preferences (01 §7.1)', () => {
     expect(screen.getByRole('dialog', { name: 'Preferences' })).toBeTruthy();
   });
 
-  it('an out-of-range value keeps the window open and focuses the field', async () => {
+  it('D-61: an out-of-range or non-numeric value is refused at the field (the staged value kept)', async () => {
     const host = renderApp();
     await screen.findByRole('toolbar', { name: 'Main toolbar' });
     act(() => {
       host.event('shell.preferences', { category: 'files' });
     });
     const dialog = await screen.findByRole('dialog', { name: 'Preferences' });
-    const field = within(dialog).getByDisplayValue('3');
+    const field = within(dialog).getByDisplayValue<HTMLInputElement>('3');
     fireEvent.change(field, { target: { value: '99' } });
+    fireEvent.blur(field);
+    expect(field.value).toBe('3');
+    expect(field.getAttribute('aria-invalid')).toBe('true');
+    expect(within(dialog).getByRole('status').textContent).toMatch(/^The value is /);
+    fireEvent.change(field, { target: { value: 'abc' } });
+    fireEvent.keyDown(field, { key: 'Enter' });
+    expect(field.value).toBe('3');
+    expect(within(dialog).getByRole('status').textContent).toBe('"abc" is not a number.');
     fireEvent.click(within(dialog).getByRole('button', { name: 'OK' }));
     await act(async () => {
       await Promise.resolve();
     });
-    expect(screen.getByRole('dialog', { name: 'Preferences' })).toBeTruthy();
-    expect(document.activeElement).toBe(field);
     expect(host.actions().some((a) => a.command === 'prefs.set')).toBe(false);
   });
 });

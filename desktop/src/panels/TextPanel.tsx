@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useActions } from '../shell/actionsApi';
 import { optionRef, runChosen } from '../shell/listControl';
+import { declaredRange, NumericField } from '../shell/NumericField';
 import { useShell } from '../state/context';
 
 type Json = Record<string, unknown>;
@@ -115,20 +116,31 @@ export function TextPanel() {
         {font === '' ? 'The platform default font' : `"${font}"`} is not bundled: text lays out with this
         computer's font files and may differ on another system.
       </p>
-      {NUMBERS.map((n) => (
-        <NumberValue
-          key={n.key}
-          id={`text.${n.key}`}
-          label={n.label}
-          min={n.min}
-          max={n.max}
-          step={n.step}
-          value={typeof options[n.key] === 'number' ? (options[n.key] as number) : 0}
-          onCommit={(v) => {
-            send({ [n.key]: n.key === 'kerning' ? Math.round(v) : v });
-          }}
-        />
-      ))}
+      {NUMBERS.map((n) => {
+        const value = typeof options[n.key] === 'number' ? (options[n.key] as number) : 0;
+        return (
+          <label key={n.key}>
+            {n.label}
+            {/* The window's one numeric field (D-61), with the command's declared range. */}
+            <NumericField
+              id={`text.${n.key}`}
+              label={n.label}
+              value={value}
+              range={declaredRange('tool.text.options.set', n.key)}
+              step={n.step}
+              command="tool.text.options.set"
+              params={{ [n.key]: value }}
+              onCommit={(v) =>
+                actions.run(
+                  'tool.text.options.set',
+                  { [n.key]: n.key === 'kerning' ? Math.round(v) : v },
+                  ['arg.invalid'],
+                )
+              }
+            />
+          </label>
+        );
+      })}
       {FLAGS.map((f) => {
         const on = options[f.key] === true;
         return (
@@ -218,47 +230,6 @@ function TextValue(props: {
         onBlur={() => {
           props.onCommit(draft);
         }}
-      />
-    </label>
-  );
-}
-
-function NumberValue(props: {
-  id: string;
-  label: string;
-  min: number;
-  max: number;
-  step: number;
-  value: number;
-  onCommit: (v: number) => void;
-}) {
-  const [typed, setTyped] = useState<{ from: number; text: string } | null>(null);
-  const draft = typed?.from === props.value ? typed.text : String(props.value);
-  const commit = () => {
-    const v = Number(draft);
-    if (Number.isFinite(v) && v !== props.value) props.onCommit(v);
-  };
-  return (
-    <label>
-      {props.label}
-      <input
-        type="number"
-        min={props.min}
-        max={props.max}
-        step={props.step}
-        value={draft}
-        data-tt-role="textField"
-        data-tt-id={props.id}
-        data-tt-command="tool.text.options.set"
-        data-tt-params={JSON.stringify({ [props.id.slice(5)]: props.value })}
-        onChange={(e) => {
-          setTyped({ from: props.value, text: e.target.value });
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') commit();
-          if (e.key === 'Escape') setTyped(null);
-        }}
-        onBlur={commit}
       />
     </label>
   );

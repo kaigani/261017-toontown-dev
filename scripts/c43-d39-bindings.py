@@ -70,6 +70,14 @@ e6 = _load("c43e6", "c43-e6-coexistence.py")
 e2e, c42 = e6.e2e, e6.c42
 
 
+def _same_number(shown, value) -> bool:
+    """A field's text shows `value` (D-61: the retained value after a refused entry)."""
+    try:
+        return value is not None and float(shown) == float(value)
+    except (TypeError, ValueError):
+        return False
+
+
 def spec_line(command: str) -> str:
     """The spec table row that defines `command`: `<file>:<line>`."""
     for f in sorted((ROOT / "spec").glob("*.md")):
@@ -566,13 +574,15 @@ class Table:
                 expect_steps = [] if label is None else [[label, self.WHO]]
                 got_steps = [list(s) for s in steps]
                 effect = bool(r["effect"](before, after, k))
-                click = {"input": how, "expected": {"command": want[0], "params": want[1]}, "sent": sent,
+                # D-61: an expectation of None is a refused entry: nothing may be sent.
+                expected = [] if want is None else [{"command": want[0], "params": want[1]}]
+                click = {"input": how, "expected": expected[0] if expected else None, "sent": sent,
                          "effect": effect, "steps": got_steps, "expectedSteps": expect_steps,
                          "before": before, "after": after}
-                exact = sent == [{"command": want[0], "params": want[1]}]
+                exact = sent == expected
                 if self.WHO == "agent":
                     click["declared"] = self.declared
-                    exact = exact and self.declared == {"command": want[0], "params": want[1]}
+                    exact = exact and self.declared == (expected[0] if expected else None)
                     self.shown_after = None
                     shown = await self.shows(r, after)
                     click["shown"] = shown
@@ -616,7 +626,8 @@ class Table:
         self.clear()
 
     async def observed(self, want) -> list:
-        return [c for c in self.recorded() if self.kinds.get(c.get("command")) != "query" or c.get("command") == want[0]]
+        wanted = want[0] if want else None
+        return [c for c in self.recorded() if self.kinds.get(c.get("command")) != "query" or c.get("command") == wanted]
 
     async def after_failure(self) -> None:
         with contextlib.suppress(Exception):
@@ -760,7 +771,7 @@ class McpTable(Table):
         for e in sorted(await self.activity(), key=lambda e: e.get("seq", 0)):
             if e.get("seq", 0) <= self.seq or e.get("tool") not in ("run_command", "key"):
                 continue
-            if self.kinds.get(e.get("commandId")) == "query" and e.get("commandId") != want[0]:
+            if self.kinds.get(e.get("commandId")) == "query" and e.get("commandId") != (want[0] if want else None):
                 continue
             out.append({"command": e.get("commandId"), "params": e.get("params") or {}})
         return out
@@ -1359,6 +1370,12 @@ async def build_and_run(t: Table, only: set) -> None:
     # D-59 item 2 (C44A-R1S-02): every other slider at its release, and the numeric companion field of every slider
     # (typed, then Enter), each from known values so the expected parameters are exact. Each control is gone with the
     # project (the precheck's refusal: no project, no pen), which the disabled checks after the table assert.
+    def field_refused(ident, retained):
+        """D-61: the field shows the retained value again and says why (its `data-tt-problem`)."""
+        got = t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                       " return e ? {value: e.value, problem: e.dataset.ttProblem ?? null} : null; })()" % json.dumps(ident))
+        return bool(got) and got["problem"] is not None and _same_number(got["value"], retained)
+
     PEN_START = {"minSize": 2, "maxSize": 20, "smoothness": 3, "tipAngle": 10}
     PEN_LABELS = {"minSize": "Minimum size", "maxSize": "Maximum size", "smoothness": "Smoothness", "tipAngle": "Tip angle"}
 
@@ -1406,6 +1423,18 @@ async def build_and_run(t: Table, only: set) -> None:
                      "effect": (lambda k_, v_: lambda b, a, k: pen_of(a, cur_of(b)).get(k_) == v_)(setting, value),
                      "disabled": ("dom", f"pen.{setting}.field"),
                      "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+    # D-61 (C44A-R1-20, -21): letters and an out-of-range value are refused at the field: nothing is sent, the pen
+    # keeps its value, and the field shows it again with the reason.
+    for setting, out_of_range in (("minSize", "-1"), ("maxSize", "101"), ("smoothness", "11"), ("tipAngle", "361")):
+        for kind, typed in (("invalid", "abc"), ("out of range", out_of_range)):
+            rows.append({"name": f"Pen panel › {PEN_LABELS[setting]} ({kind})",
+                         "spec": f"{spec_line('tool.pen.set')}; 02 §6.1; D-61",
+                         "action": ("none",), "custom": pen_field_flow(setting, typed),
+                         "expect": None, "label": None, "setup": pen_known, "state": pens_state,
+                         "effect": (lambda k_: lambda b, a, k: a == b and field_refused(
+                             f"pen.{k_}.field", pen_of(b, cur_of(b)).get(k_)))(setting),
+                         "disabled": None,
+                         "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
 
     async def rename_flow():
         """A real double click on the current pen, a typed name, Enter (02 §12.1 "Rename Pen")."""
@@ -1540,6 +1569,33 @@ async def build_and_run(t: Table, only: set) -> None:
         key(0x0D)
         return "the value typed in the focused field, then a real Enter"
 
+    def typed_flow(ident, typed):
+        async def flow():
+            front()
+            t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']'); e.focus(); e.select(); return true; })()"
+                     % json.dumps(ident))
+            type_text(typed)
+            key(0x0D)
+            return f"{typed!r} typed in the focused field, then a real Enter"
+        return flow
+
+    async def thickness_known():
+        await cmd("tool.pencil.options.set", {"thicknessSource": "fixed", "thickness": 2})
+        await tool_page("pencil")()
+
+    for ident, setup_, state_, read_, out_of_range, title in (
+            ("toolOptions.thickness", thickness_known, options_of("pencil"), lambda st: st.get("thickness"), "101",
+             "Pencil: fixed thickness"),
+            ("toolOptions.snapRadius", snap_radius_known, options_of("polyline"), lambda st: st.get("snapRadius"), "51",
+             "Polyline: snap radius")):
+        for kind, typed in (("invalid", "abc"), ("out of range", out_of_range)):
+            rows.append({"name": f"Tool options › {title} ({kind})", "spec": "02 §7.7; D-61",
+                         "action": ("none",), "custom": typed_flow(ident, typed), "expect": None, "label": None,
+                         "setup": setup_, "state": state_,
+                         "effect": (lambda i_, r_: lambda b, a, k: a == b and field_refused(i_, r_(b)))(ident, read_),
+                         "disabled": None,
+                         "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+
     rows.append({"name": "Tool options › Polyline: snap radius", "spec": f"{spec_line('tool.polyline.options.set')}; 02 §7.7",
                  "action": ("none",), "custom": snap_radius_flow,
                  "expect": ("tool.polyline.options.set", {"snapRadius": 12}), "label": None,
@@ -1620,6 +1676,17 @@ async def build_and_run(t: Table, only: set) -> None:
                      "effect": (lambda f_, v_: lambda b, a, k: b.get(f_) == 0 and a.get(f_) == v_)(field, value),
                      "disabled": ("dom", f"text.{field}"),
                      "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+
+    # D-61: each Text number refuses letters and an out-of-range value at the field (the values the review typed).
+    for field, out_of_range in (("size", "513"), ("kerning", "61"), ("leftMargin", "-1"), ("rightMargin", "1001"),
+                                ("indent", "-100"), ("lineSpacing", "1001")):
+        for kind, typed in (("invalid", "abc"), ("out of range", out_of_range)):
+            rows.append({"name": f"Text panel › {field} ({kind})", "spec": f"{spec_line('tool.text.options.set')}; 02 §7.6.1; D-61",
+                         "action": ("none",), "custom": text_field_flow(f"text.{field}", typed),
+                         "expect": None, "label": None, "setup": text_shown, "state": text_state,
+                         "effect": (lambda f_: lambda b, a, k: a == b and field_refused(f"text.{f_}", b.get(f_, 0)))(field),
+                         "disabled": None,
+                         "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
 
     # ----- C4.4a: the drawing inspector, the Properties panel's Drawing page (02 §9; design note 1 §6) -----
     async def inspector_shown():
@@ -1966,6 +2033,40 @@ async def build_and_run(t: Table, only: set) -> None:
                      "action": ("none",), "custom": agent_flow(a_edit, a_ident), "expect": a_expect, "label": None,
                      "setup": agent_defaults, "state": agent_prefs, "effect": a_eff, "disabled": None, "after": agent_defaults,
                      "mcpReason": "the controls are staged in the Preferences dialog and sent by its OK"})
+
+    # D-61: the dialog's numeric fields refuse letters and an out-of-range value at the field (read after a real Tab
+    # moves the focus out of it); OK then sends nothing and the preferences keep their values.
+    seen_fields: dict = {}
+
+    def typed_then_tab(ident, text):
+        async def edit():
+            await typed_into(ident, text)()
+            key(0x09)
+            await asyncio.sleep(0.3)
+            seen_fields[ident] = t.cdp.js(
+                "(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                " return e ? {value: e.value, problem: e.dataset.ttProblem ?? null} : null; })()" % json.dumps(ident))
+        return edit
+
+    def staged_refused(ident, retained):
+        got = seen_fields.get(ident) or {}
+        return got.get("problem") is not None and _same_number(got.get("value"), retained)
+
+    MB = 1048576
+    for a_ident, a_bad, a_read in (
+            ("port", "80", lambda v: v.get("agent.server.port")),
+            ("maxJobs", "9", lambda v: pol(v).get("maxJobs")),
+            ("maxBatchSteps", "100001", lambda v: pol(v).get("maxBatchSteps")),
+            ("maxInlineImagePx", "100", lambda v: pol(v).get("maxInlineImagePx")),
+            ("maxInlineBytes", "2000", lambda v: (pol(v).get("maxInlineBytes") or 0) / MB)):
+        for a_kind, a_text in (("invalid", "abc"), ("out of range", a_bad)):
+            f_ident = f"agentAccess.{a_ident}"
+            rows.append({"name": f"Preferences › Agent access › {a_ident} ({a_kind})", "spec": "01 §7.3 (Agent access); D-61",
+                         "action": ("none",), "custom": agent_flow(typed_then_tab(f_ident, a_text), a_ident),
+                         "expect": None, "label": None, "setup": agent_defaults, "state": agent_prefs,
+                         "effect": (lambda i_, r_: lambda b, a, k: a == b and staged_refused(i_, r_(b)))(f_ident, a_read),
+                         "disabled": None, "after": agent_defaults,
+                         "mcpReason": "the controls are staged in the Preferences dialog and sent by its OK"})
 
     async def typed_on():
         await agent_defaults()

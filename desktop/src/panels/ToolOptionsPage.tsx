@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useActions } from '../shell/actionsApi';
 import type { CommandRef } from '../shell/availability';
 import { optionRef, runChosen } from '../shell/listControl';
+import { declaredRange, NumericField } from '../shell/NumericField';
 import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell } from '../state/context';
 
@@ -250,13 +251,6 @@ function Thickness({ options }: { options: Json }) {
   const actions = useActions();
   const source = options['thicknessSource'] === 'fixed' ? 'fixed' : 'penMax';
   const value = typeof options['thickness'] === 'number' ? options['thickness'] : 1;
-  const [typed, setTyped] = useState<{ from: number; text: string } | null>(null);
-  const draft = typed?.from === value ? typed.text : String(value);
-  const send = () => {
-    const v = Number(draft);
-    if (Number.isFinite(v) && (v !== value || source !== 'fixed'))
-      void actions.run('tool.pencil.options.set', { thicknessSource: 'fixed', thickness: v });
-  };
   return (
     <div className="tool-option">
       <ChoiceList
@@ -273,26 +267,18 @@ function Thickness({ options }: { options: Json }) {
         }
         onChange={runChosen(actions)}
       />
-      <input
-        type="number"
-        min={0}
-        max={100}
+      <NumericField
+        id="toolOptions.thickness"
+        label="Thickness"
+        value={value}
+        range={declaredRange('tool.pencil.options.set', 'thickness')}
         step={0.5}
-        value={draft}
         disabled={source !== 'fixed'}
-        aria-label="Thickness"
-        data-tt-role="textField"
-        data-tt-id="toolOptions.thickness"
-        data-tt-command="tool.pencil.options.set"
-        data-tt-params={JSON.stringify({ thicknessSource: 'fixed', thickness: value })}
-        onChange={(e) => {
-          setTyped({ from: value, text: e.target.value });
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') send();
-          if (e.key === 'Escape') setTyped(null);
-        }}
-        onBlur={send}
+        command="tool.pencil.options.set"
+        params={{ thicknessSource: 'fixed', thickness: value }}
+        onCommit={(v) =>
+          actions.run('tool.pencil.options.set', { thicknessSource: 'fixed', thickness: v }, ['arg.invalid'])
+        }
       />
     </div>
   );
@@ -303,12 +289,6 @@ function PolylineSnap({ options }: { options: Json }) {
   const actions = useActions();
   const snap = options['snap'] !== false;
   const radius = typeof options['snapRadius'] === 'number' ? options['snapRadius'] : 8;
-  const [typed, setTyped] = useState<{ from: number; text: string } | null>(null);
-  const draft = typed?.from === radius ? typed.text : String(radius);
-  const send = () => {
-    const v = Number(draft);
-    if (Number.isFinite(v) && v !== radius) void actions.run('tool.polyline.options.set', { snapRadius: v });
-  };
   return (
     <div className="tool-option">
       <label>
@@ -325,25 +305,14 @@ function PolylineSnap({ options }: { options: Json }) {
         />
         Snap to points
       </label>
-      <input
-        type="number"
-        min={1}
-        max={50}
-        step={1}
-        value={draft}
-        aria-label="Snap radius"
-        data-tt-role="textField"
-        data-tt-id="toolOptions.snapRadius"
-        data-tt-command="tool.polyline.options.set"
-        data-tt-params={JSON.stringify({ snapRadius: radius })}
-        onChange={(e) => {
-          setTyped({ from: radius, text: e.target.value });
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') send();
-          if (e.key === 'Escape') setTyped(null);
-        }}
-        onBlur={send}
+      <NumericField
+        id="toolOptions.snapRadius"
+        label="Snap radius"
+        value={radius}
+        range={declaredRange('tool.polyline.options.set', 'snapRadius')}
+        command="tool.polyline.options.set"
+        params={{ snapRadius: radius }}
+        onCommit={(v) => actions.run('tool.polyline.options.set', { snapRadius: v }, ['arg.invalid'])}
       />
     </div>
   );

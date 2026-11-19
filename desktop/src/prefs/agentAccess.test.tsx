@@ -116,8 +116,10 @@ const sent = (h: ScriptedHost) =>
 function editAll() {
   fireEvent.click(el('agentAccess.server'));
   fireEvent.change(el('agentAccess.port'), { target: { value: '47300' } });
+  fireEvent.blur(el('agentAccess.port'));
   fireEvent.change(el('agentAccess.policy'), { target: { value: 'autonomous' } });
   fireEvent.change(el('agentAccess.maxInlineBytes'), { target: { value: '8' } });
+  fireEvent.blur(el('agentAccess.maxInlineBytes'));
   fireEvent.click(el('agentAccess.letAgentMoveView'));
   fireEvent.click(el('agentAccess.typedTools'));
   fireEvent.click(el('agentAccess.namespace.edit'));

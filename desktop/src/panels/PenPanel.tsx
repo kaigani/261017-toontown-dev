@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useActions } from '../shell/actionsApi';
 import type { CommandRef } from '../shell/availability';
 import { optionRef, runChosen } from '../shell/listControl';
+import { declaredRange, NumericField } from '../shell/NumericField';
 import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell } from '../state/context';
 
@@ -348,14 +349,9 @@ function PenSettings({ pen }: { pen: Pen }) {
 function PenValue({ pen, setting }: { pen: Pen; setting: (typeof SETTINGS)[number] }) {
   const actions = useActions();
   const value = pen[setting.key];
-  // Drafts belong to the value they were typed or slid from: a new value from the kernel shows at once.
-  const [typed, setTyped] = useState<{ from: number; text: string } | null>(null);
+  // A slide belongs to the value it started from: a new value from the kernel shows at once.
   const [slid, setSlid] = useState<{ from: number; v: number } | null>(null);
-  const draft = typed?.from === value ? typed.text : String(value);
   const sliding = slid?.from === value ? slid.v : null;
-  const setDraft = (text: string) => {
-    setTyped({ from: value, text });
-  };
   const setSliding = (v: number) => {
     setSlid({ from: value, v });
   };
@@ -388,27 +384,16 @@ function PenValue({ pen, setting }: { pen: Pen; setting: (typeof SETTINGS)[numbe
           if (sliding !== null) send(sliding);
         }}
       />
-      <input
-        type="number"
-        min={setting.min}
-        max={setting.max}
+      {/* The numeric companion: the window's one numeric field (D-61), with the command's declared range. */}
+      <NumericField
+        id={`${id}.field`}
+        label={setting.label}
+        value={value}
+        range={declaredRange('tool.pen.set', setting.key)}
         step={setting.step}
-        value={draft}
-        aria-label={setting.label}
-        data-tt-role="textField"
-        data-tt-id={`${id}.field`}
-        data-tt-command="tool.pen.set"
-        data-tt-params={JSON.stringify({ penId: pen.penId, [setting.key]: value })}
-        onChange={(e) => {
-          setDraft(e.target.value);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') send(Number(draft));
-          if (e.key === 'Escape') setDraft(String(value));
-        }}
-        onBlur={() => {
-          send(Number(draft));
-        }}
+        command="tool.pen.set"
+        params={{ penId: pen.penId, [setting.key]: value }}
+        onCommit={(v) => actions.run('tool.pen.set', { penId: pen.penId, [setting.key]: v }, ['arg.invalid'])}
       />
     </div>
   );

@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { optionRef } from '../shell/listControl';
+import { declaredRange, NumericField, type NumericRange } from '../shell/NumericField';
 import { useMessages } from '../shell/messagesApi';
 import type { ShellServices } from '../state/context';
 import { LIMITS, namespacesOf, type AgentDraft } from './agentAccess';
@@ -15,6 +16,18 @@ const POLICIES: readonly [string, string][] = [
   ['assist', 'Assist (asks before risky changes)'],
   ['autonomous', 'Autonomous'],
 ];
+
+/** A limit's range in the field's unit: the command's declared range (bytes shown as MB are scaled), else the
+ *  table's. */
+function limitRange(l: (typeof LIMITS)[number]): NumericRange {
+  const d = declaredRange('agent.policy.defaults.set', l.key);
+  const scale = l.scale ?? 1;
+  return {
+    min: d.min !== undefined ? Math.ceil(d.min / scale) : l.min,
+    max: d.max !== undefined ? Math.floor(d.max / scale) : l.max,
+    integer: true,
+  };
+}
 
 const TOGGLES: readonly [string, string][] = [
   ['askInApp', 'Ask me in the app when an agent needs confirmation'],
@@ -105,17 +118,16 @@ export function AgentAccessPage({
       </label>
       <label>
         Port{' '}
-        <input
-          type="number"
-          min={1024}
-          max={65535}
+        <NumericField
+          id="agentAccess.port"
+          label="Port"
+          role="field"
           value={server.port}
+          range={{ min: 1024, max: 65535, integer: true, ...declaredRange('agent.server.set', 'port') }}
           disabled={!server.enabled}
-          data-tt-role="field"
-          data-tt-id="agentAccess.port"
-          data-tt-command="agent.server.set"
-          onChange={(e) => {
-            setServer({ port: Number(e.target.value) });
+          command="agent.server.set"
+          onCommit={(v) => {
+            setServer({ port: v });
           }}
         />
       </label>
@@ -157,20 +169,19 @@ export function AgentAccessPage({
       </label>
       {LIMITS.map((l) => {
         const raw = draft.policy[l.key];
-        const shown = typeof raw === 'number' ? raw / (l.scale ?? 1) : '';
+        const shown = typeof raw === 'number' ? raw / (l.scale ?? 1) : l.min;
         return (
           <label key={l.key}>
             {l.label}{' '}
-            <input
-              type="number"
-              min={l.min}
-              max={l.max}
+            <NumericField
+              id={`agentAccess.${l.key}`}
+              label={l.label}
+              role="field"
               value={shown}
-              data-tt-role="field"
-              data-tt-id={`agentAccess.${l.key}`}
-              data-tt-command="agent.policy.defaults.set"
-              onChange={(e) => {
-                setPolicy(l.key, Math.round(Number(e.target.value) * (l.scale ?? 1)));
+              range={limitRange(l)}
+              command="agent.policy.defaults.set"
+              onCommit={(v) => {
+                setPolicy(l.key, Math.round(v * (l.scale ?? 1)));
               }}
             />
           </label>

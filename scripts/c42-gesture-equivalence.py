@@ -16,7 +16,11 @@ engines, each the headless binary opened on its own copy of the same saved proje
 Each row must give, on all three engines, exactly (ruling D-4: no tolerance, identities included; the engines open
 the same saved project, so they draw the same ids): the same commands with the same parameters (a zoom anchor, a view
 pixel of each engine's own view, compared as the drawing point under it), the same drawing content, and at most one
-undo step with the same label. Every row is undone on all three engines before the next. Receipts in <out dir>: `rows.json` (each
+undo step with the same label. Every row is undone on all three engines before the next. Ruling D-61 item 4 (D-32):
+each tool option that changes the committed result (the pencil's fixed thickness for the line tools, Polyline snapping
+and its radius, Select's rectangle rule, another brush or eraser pen, draw on top layer, Draw Behind, Snap to Contour,
+automatic gap closing) has its own row, the option set the same way on the three engines before the gesture and put
+back after it. Receipts in <out dir>: `rows.json` (each
 row's record, commands and comparison), `transcript.json`, `manifest.json` (kind `toontown.c42.gesture-equivalence`).
 Exit 0 when every row holds.
 """
@@ -205,6 +209,23 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
     await rc("draw.rectangle.add", {"from": {"x": 30, "y": -60}, "to": {"x": 150, "y": 60}})
     await rc("draw.line.add", {"from": {"x": -150, "y": 120}, "to": {"x": -10, "y": 120}, "layer": "top"})
     await rc("draw.line.add", {"from": {"x": -6, "y": 118}, "to": {"x": 150, "y": 118}, "layer": "top"})
+    # D-61 item 4: the fixtures of the tool-option rows. An open square (a 3-unit gap at one corner) for automatic gap
+    # closing; a second brush pen and eraser pen with other sizes (pens are the document's, so every engine has them).
+    for a_, b_ in (((180, -40), (260, -40)), ((260, -40), (260, 40)), ((260, 40), (180, 40)), ((180, 40), (180, -37))):
+        await rc("draw.line.add", {"from": {"x": a_[0], "y": a_[1]}, "to": {"x": b_[0], "y": b_[1]}, "layer": "top"})
+    pens0 = await app.result("tool.pen.list", {})
+    first_brush, first_eraser = pens0.get("currentBrushPenId"), pens0.get("currentEraserPenId")
+    await rc("tool.pen.create", {"type": "brush"})
+    await rc("tool.pen.create", {"type": "eraser"})
+    pens1 = await app.result("tool.pen.list", {})
+    other_brush = next((x["penId"] for x in pens1.get("pens") or [] if x.get("type") == "brush" and x["penId"] != first_brush), None)
+    other_eraser = next((x["penId"] for x in pens1.get("pens") or [] if x.get("type") == "eraser" and x["penId"] != first_eraser), None)
+    if other_brush:
+        await rc("tool.pen.set", {"penId": other_brush, "minSize": 6, "maxSize": 14})
+    if other_eraser:
+        await rc("tool.pen.set", {"penId": other_eraser, "minSize": 10, "maxSize": 24})
+    await rc("tool.pen.select", {"penId": first_brush})
+    await rc("tool.pen.select", {"penId": first_eraser})
     saved = work / "equivalence.animpkg"
     env = await job(app, await rc("project.saveAs", {"path": str(saved), "onExists": "overwrite"}))
     run.check(env.get("status") == "ok", "the application saves the fixture project", env.get("error"))
@@ -262,12 +283,59 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
         ("select: rotate", "select", [out_c, (cx - (out_c[1] - cy), cy + (out_c[0] - cx))], [], True),
         ("select: drawing pivot", "select", [(pivot["x"], pivot["y"]), (pivot["x"] + 30, pivot["y"] + 20)], [], False),
     ]
+    # D-61 item 4 (D-32): each tool option that changes the committed result, set the same way on the three engines
+    # before the gesture (and put back after it): the window's gesture, the replay and the direct commands must agree
+    # with the option in force. (command, params) pairs; the values before the row are read back from the window.
+    fixed = [("tool.pencil.options.set", {"thicknessSource": "fixed", "thickness": 6})]
+    rows += [
+        ("pencil: fixed thickness", "pencil", [(-200, -100), (-150, -115), (-100, -130), (-50, -115), (0, -100)], [], False, fixed),
+        ("rectangle: fixed thickness", "rectangle", [(-60, -150), (-10, -125), (40, -100)], [], False, fixed),
+        ("line: fixed thickness", "line", [(-200, 150), (0, 155), (200, 160)], [], False, fixed),
+        ("polyline: fixed thickness", "polyline", "polyline", [], False, fixed),
+        ("polyline: snapping off", "polyline", "polyline", [], False, [("tool.polyline.options.set", {"snap": False})]),
+        ("polyline: snap radius 20", "polyline", "polyline", [], False,
+         [("tool.polyline.options.set", {"snap": True, "snapRadius": 20})]),
+        ("select: rectangle rule intersect", "select", [(-170, -80), (-90, 0), (-10, 80)], [], False,
+         [("tool.select.options.set", {"rectRule": "intersect"})]),
+        ("brush: another pen", "brush", [(-200, 140), (-160, 150), (-120, 160), (-80, 155), (-40, 150)], [], False,
+         [("tool.brush.options.set", {"penId": other_brush})]),
+        ("eraser: another pen", "eraser", [(-160, 0), (-140, 5), (-120, 10), (-100, 5), (-80, 0)], [], False,
+         [("tool.eraser.options.set", {"penId": other_eraser})]),
+        ("brush: draw on top layer", "brush", [(-200, 140), (-160, 150), (-120, 160), (-80, 155), (-40, 150)], [], False,
+         [("tool.drawTopLayer.set", {"enabled": True})]),
+        ("brush: draw behind", "brush", [(-120, -20), (-90, 0), (-60, 20)], [], False,
+         [("tool.placeBehind.set", {"enabled": True})]),
+        ("pencil: snap to contour", "pencil", [(-148, -58), (-100, -90), (-50, -110)], [], False,
+         [("tool.snapToContour.set", {"enabled": True})]),
+        ("paint: automatic gap closing", "paint", [(220, 0), (220, 0)], [], False,
+         [("colour.gapClosing.set", {"mode": "large"})]),
+    ]
+
+    async def option_values(command: str, params: dict) -> dict:
+        """The values `params` changes, as the window holds them now (to put back after the row)."""
+        if command == "colour.gapClosing.set":
+            return {"mode": (await app.result("colour.gapClosing.get", {})).get("mode")}
+        if command in ("tool.drawTopLayer.set", "tool.placeBehind.set", "tool.snapToContour.set"):
+            key = {"tool.drawTopLayer.set": "drawTopLayer", "tool.placeBehind.set": "placeBehind",
+                   "tool.snapToContour.set": "snapToContour"}[command]
+            return {"enabled": bool((await app.result("tool.settings.get", {})).get(key))}
+        if command in ("tool.brush.options.set", "tool.eraser.options.set"):
+            listed = await app.result("tool.pen.list", {})
+            return {"penId": listed.get("currentBrushPenId" if "brush" in command else "currentEraserPenId")}
+        tool = command.split(".")[1]
+        opts = (await app.result("tool.options.get", {"toolId": tool})).get("options") or {}
+        return {k: opts.get(k) for k in params if k in opts}
     results = []
     # `C42_EQUIV_ROWS=brush,pencil` runs only those rows (a debugging aid; CI runs every row).
     only = {x for x in os.environ.get("C42_EQUIV_ROWS", "").split(",") if x}
-    for name, tool, pts, mods, selected in rows:
+    for name, tool, pts, mods, selected, *extra in rows:
         if only and name not in only:
             continue
+        options = extra[0] if extra else []
+        restore = [(c, await option_values(c, prm)) for c, prm in options]
+        for engine in engines:
+            for c, prm in options:
+                await engine.run(c, prm)
         # The same starting state on every engine.
         for engine in engines:
             await engine.run("draw.selection.set", sel_rect if selected else {"by": "none"})
@@ -315,11 +383,14 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
                 rec = st["lastGesture"]
                 break
             await asyncio.sleep(0.25)
-        row = {"name": name, "tool": tool, "input": how, "record": rec}
+        row = {"name": name, "tool": tool, "input": how, "record": rec, "options": options}
         if rec is None or not rec.get("events"):
             run.check(False, f"three-way {name}: the window committed and recorded the gesture", row)
             results.append(row)
             run.save("rows.json", results)
+            for engine in engines:
+                for c, prm in restore:
+                    await engine.run(c, prm)
             continue
         # 2. Engine 2: the recorded samples, as drawing points through the window's own mapping.
         to_d = inverse(rec["drawingToView"])
@@ -357,10 +428,12 @@ async def main(app: Engine, h2: Engine, h3: Engine, run, out: Path, work: Path, 
         results.append(row)
         run.save("rows.json", results)
         run.save("transcript.json", run.transcript)
-        # Back to the fixture on every engine.
+        # Back to the fixture on every engine, the options as they were.
         for engine, lab in zip(engines, labels):
             for _ in lab:
                 await engine.run("edit.undo", {})
+            for c, prm in restore:
+                await engine.run(c, prm)
     return results
 
 

@@ -7,6 +7,7 @@ import { useMemo, useRef, useState } from 'react';
 import { COMMAND_INDEX } from '../ipc/generated/commands';
 import { isMac, nativeNotation, sequenceOf } from '../keys/sequence';
 import { Dialog } from '../shell/dialogs';
+import { NumericField } from '../shell/NumericField';
 import { useMessages } from '../shell/messagesApi';
 import type { ShellServices } from '../state/context';
 import type { Binding, PrefEntry, Theme, Tip } from '../state/types';
@@ -331,6 +332,32 @@ function PrefField({
         </select>
       );
       break;
+    case 'int':
+    case 'number': {
+      // The window's one numeric field (D-61): the staged value, the preference's declared range.
+      const staged = typeof value === 'number' ? value : Number(value);
+      const fallback = typeof pref.default === 'number' ? pref.default : 0;
+      input = (
+        <NumericField
+          id={id}
+          inputId={id}
+          inputRef={register}
+          label={pref.key}
+          ttLabel={pref.key}
+          role="field"
+          value={Number.isFinite(staged) ? staged : fallback}
+          range={{
+            ...(pref.min !== undefined ? { min: pref.min } : {}),
+            ...(pref.max !== undefined ? { max: pref.max } : {}),
+            integer: pref.type === 'int',
+          }}
+          onCommit={(v) => {
+            onChange(v);
+          }}
+        />
+      );
+      break;
+    }
     case 'object':
       input = (
         <span className="pref-object" ref={register}>

@@ -5,7 +5,23 @@ import type { Envelope } from '../ipc';
 import type { ShellServices } from '../state/context';
 import { Dialog } from './dialogs';
 import { useModalFocus } from './modalFocus';
+import { declaredRange, NumericField, type NumericRange } from './NumericField';
 import { projectFieldProblems } from './projectFields';
+
+type ProjectNumber = 'frameRate' | 'width' | 'height';
+
+/** The ranges of 01 §3.1 (frame rate 1-120, camera 16-8192 whole pixels), narrowed by what the command declares. */
+function projectRange(command: string, k: ProjectNumber): NumericRange {
+  const param = k === 'frameRate' ? 'frameRate' : k === 'width' ? 'cameraWidth' : 'cameraHeight';
+  const own: NumericRange = k === 'frameRate' ? { min: 1, max: 120 } : { min: 16, max: 8192, integer: true };
+  return { ...own, ...declaredRange(command, param) };
+}
+
+const PROJECT_LABELS: Readonly<Record<ProjectNumber, string>> = {
+  frameRate: 'Frame rate',
+  width: 'Camera width',
+  height: 'Camera height',
+};
 
 interface PresetEntry {
   readonly id: string;
@@ -30,35 +46,38 @@ export function NewProjectForm({
     presets.find((p) => p.kind === 'mostRecent') ?? presets.find((p) => p.kind === 'default') ?? presets[0];
   const [name, setName] = useState('Untitled');
   const [preset, setPreset] = useState<string>(initial?.id ?? 'custom');
-  const [frameRate, setFrameRate] = useState(String(initial?.frameRate ?? 24));
-  const [width, setWidth] = useState(String(initial?.width ?? 1920));
-  const [height, setHeight] = useState(String(initial?.height ?? 1080));
-  const problems = projectFieldProblems({ name, frameRate, width, height });
+  const [frameRate, setFrameRate] = useState(initial?.frameRate ?? 24);
+  const [width, setWidth] = useState(initial?.width ?? 1920);
+  const [height, setHeight] = useState(initial?.height ?? 1080);
+  const problems = projectFieldProblems({
+    name,
+    frameRate: String(frameRate),
+    width: String(width),
+    height: String(height),
+  });
   const valid = Object.keys(problems).length === 0;
 
   const choose = (id: string) => {
     setPreset(id);
     const p = presets.find((x) => x.id === id);
     if (p) {
-      setFrameRate(String(p.frameRate));
-      setWidth(String(p.width));
-      setHeight(String(p.height));
+      setFrameRate(p.frameRate);
+      setWidth(p.width);
+      setHeight(p.height);
     }
   };
   // Editing a value by hand switches to Custom unless it matches a preset exactly (01 §3.1).
-  const edited = (fps: string, w: string, h: string) => {
-    const match = presets.find(
-      (p) => String(p.frameRate) === fps && String(p.width) === w && String(p.height) === h,
-    );
+  const edited = (fps: number, w: number, h: number) => {
+    const match = presets.find((p) => p.frameRate === fps && p.width === w && p.height === h);
     setPreset(match ? match.id : 'custom');
   };
   const submit = () => {
     if (!valid) return;
     const params: Record<string, unknown> = {
       name,
-      frameRate: Number(frameRate),
-      cameraWidth: Number(width),
-      cameraHeight: Number(height),
+      frameRate,
+      cameraWidth: width,
+      cameraHeight: height,
     };
     if (preset !== 'custom') params['preset'] = preset;
     onCreate(params);
@@ -108,36 +127,28 @@ export function NewProjectForm({
           <option value="custom">Custom</option>
         </select>
       </label>
-      {field(
-        'frameRate',
-        'Frame rate',
-        frameRate,
-        (v) => {
-          setFrameRate(v);
-          edited(v, width, height);
-        },
-        problems['frameRate'],
-      )}
-      {field(
-        'width',
-        'Camera width',
-        width,
-        (v) => {
-          setWidth(v);
-          edited(frameRate, v, height);
-        },
-        problems['width'],
-      )}
-      {field(
-        'height',
-        'Camera height',
-        height,
-        (v) => {
-          setHeight(v);
-          edited(frameRate, width, v);
-        },
-        problems['height'],
-      )}
+      {(['frameRate', 'width', 'height'] as const).map((k) => (
+        <label key={k} className="field">
+          <span>{PROJECT_LABELS[k]}</span>
+          {/* The window's one numeric field (D-61): a staged value, committed on Enter or focus loss. */}
+          <NumericField
+            id={`${idPrefix}.${k}`}
+            label={PROJECT_LABELS[k]}
+            role="field"
+            value={k === 'frameRate' ? frameRate : k === 'width' ? width : height}
+            range={projectRange('project.create', k)}
+            guiOnly="typing"
+            onSubmit={submit}
+            onCommit={(v) => {
+              const next = { frameRate, width, height, [k]: v };
+              setFrameRate(next.frameRate);
+              setWidth(next.width);
+              setHeight(next.height);
+              edited(next.frameRate, next.width, next.height);
+            }}
+          />
+        </label>
+      ))}
       <button
         type="button"
         className="button-default"
@@ -186,20 +197,27 @@ export function ProjectPropertiesDialog({
   services: ShellServices;
   close: (r: Record<string, unknown> | null) => void;
 }) {
-  const [values, setValues] = useState<{ frameRate: string; width: string; height: string } | null>(null);
+  const [values, setValues] = useState<Record<ProjectNumber, number> | null>(null);
   const [asDefault, setAsDefault] = useState(false);
   useEffect(() => {
     void services.engine.run('project.properties.get', {}).done.then((env) => {
       const r = (env.result ?? {}) as Record<string, number | undefined>;
       setValues({
-        frameRate: String(r['frameRate'] ?? 24),
-        width: String(r['cameraWidth'] ?? 1920),
-        height: String(r['cameraHeight'] ?? 1080),
+        frameRate: r['frameRate'] ?? 24,
+        width: r['cameraWidth'] ?? 1920,
+        height: r['cameraHeight'] ?? 1080,
       });
     });
   }, [services]);
-  const problems = values ? projectFieldProblems({ name: 'x', ...values }) : { loading: '' };
-  const set = (k: 'frameRate' | 'width' | 'height') => (v: string) => {
+  const problems = values
+    ? projectFieldProblems({
+        name: 'x',
+        frameRate: String(values.frameRate),
+        width: String(values.width),
+        height: String(values.height),
+      })
+    : { loading: '' };
+  const set = (k: ProjectNumber) => (v: number) => {
     setValues((s) => (s ? { ...s, [k]: v } : s));
   };
   return (
@@ -214,9 +232,9 @@ export function ProjectPropertiesDialog({
       onSubmit={() => {
         if (!values) return;
         close({
-          frameRate: Number(values.frameRate),
-          cameraWidth: Number(values.width),
-          cameraHeight: Number(values.height),
+          frameRate: values.frameRate,
+          cameraWidth: values.width,
+          cameraHeight: values.height,
           setAsDefault: asDefault,
         });
       }}
@@ -224,14 +242,14 @@ export function ProjectPropertiesDialog({
       {values &&
         (['frameRate', 'width', 'height'] as const).map((k) => (
           <label key={k} className="field">
-            <span>{k === 'frameRate' ? 'Frame rate' : k === 'width' ? 'Camera width' : 'Camera height'}</span>
-            <input
+            <span>{PROJECT_LABELS[k]}</span>
+            <NumericField
+              id={`projectProperties.${k}`}
+              label={PROJECT_LABELS[k]}
+              role="field"
               value={values[k]}
-              data-tt-role="field"
-              data-tt-id={`projectProperties.${k}`}
-              onChange={(e) => {
-                set(k)(e.target.value);
-              }}
+              range={projectRange('project.properties.set', k)}
+              onCommit={set(k)}
             />
           </label>
         ))}
