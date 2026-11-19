@@ -1,7 +1,10 @@
 {
-  "checks": 9,
-  "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ttvc1coh",
+  "checks": 11,
+  "failures": [
+    "countdown matches status: {\"shownSeconds\": 309, \"statusSeconds\": 299.182}",
+    "countdown matches status: {\"shownSeconds\": 302, \"statusSeconds\": 299.179}"
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-s408jymi",
   "results": [
     {
       "check": "initial policy",
@@ -11,7 +14,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-6f7a30",
+            "sessionId": "s1-0f0420",
             "client": "mcp",
             "policy": "autonomous",
             "scopes": [
@@ -24,13 +27,13 @@
               "prefs",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:54:16.990Z",
-            "lastActivity": "2026-11-19T21:54:19.545Z",
+            "connectedAt": "2026-11-19T22:08:45.708Z",
+            "lastActivity": "2026-11-19T22:08:48.313Z",
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s2-b789c6",
+            "sessionId": "s2-0292f0",
             "client": "review-live4-primary",
             "policy": "assist",
             "scopes": [
@@ -42,13 +45,13 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:54:26.198Z",
+            "connectedAt": "2026-11-19T22:08:54.921Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s3-5a977e",
+            "sessionId": "s3-f93ce0",
             "client": "review-live4-secondary",
             "policy": "assist",
             "scopes": [
@@ -60,7 +63,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:54:26.224Z",
+            "connectedAt": "2026-11-19T22:08:54.945Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
@@ -72,7 +75,15 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-u9vuurc8\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-u9vuurc8\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-_3u4xokf\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-_3u4xokf\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
+    },
+    {
+      "check": "countdown matches status",
+      "ok": false,
+      "detail": {
+        "shownSeconds": 309,
+        "statusSeconds": 299.182
+      }
     },
     {
       "check": "countdown decreases",
@@ -87,7 +98,7 @@
             "endpoint": null,
             "sessions": [
               {
-                "sessionId": "s1-6f7a30",
+                "sessionId": "s1-0f0420",
                 "client": "mcp",
                 "policy": "autonomous",
                 "scopes": [
@@ -100,13 +111,13 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:54:16.990Z",
-                "lastActivity": "2026-11-19T21:54:26.240Z",
+                "connectedAt": "2026-11-19T22:08:45.708Z",
+                "lastActivity": "2026-11-19T22:08:54.951Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s2-b789c6",
+                "sessionId": "s2-0292f0",
                 "client": "review-live4-primary",
                 "policy": "assist",
                 "scopes": [
@@ -118,13 +129,13 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:54:26.198Z",
+                "connectedAt": "2026-11-19T22:08:54.921Z",
                 "lastActivity": null,
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s3-5a977e",
+                "sessionId": "s3-f93ce0",
                 "client": "review-live4-secondary",
                 "policy": "assist",
                 "scopes": [
@@ -136,7 +147,7 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:54:26.224Z",
+                "connectedAt": "2026-11-19T22:08:54.945Z",
                 "lastActivity": null,
                 "paused": false,
                 "transport": "http"
@@ -144,21 +155,21 @@
             ],
             "pendingConfirmations": [
               {
-                "confirmationId": "cf_a150f9e35182cd68bc0dcee6",
-                "sessionId": "s2-b789c6",
+                "confirmationId": "cf_8aaba48ed389680f19f065e8",
+                "sessionId": "s2-0292f0",
                 "commandId": "project.saveAs",
-                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-u9vuurc8\\overwrite-0.animpkg`",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-_3u4xokf\\overwrite-0.animpkg`",
                 "consequences": [
                   {
                     "kind": "overwrite",
-                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-u9vuurc8\\overwrite-0.animpkg",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-_3u4xokf\\overwrite-0.animpkg",
                     "bytes": 17
                   }
                 ],
                 "category": "overwrite",
                 "decision": null,
                 "inApp": true,
-                "expiresInMs": 299187
+                "expiresInMs": 299182
               }
             ]
           },
@@ -181,7 +192,7 @@
             "code": "confirmation.expired",
             "message": "the confirmation token cannot be used: the document changed since the confirmation was requested",
             "details": {
-              "confirmToken": "cf_a150f9e35182cd68bc0dcee6",
+              "confirmToken": "cf_8aaba48ed389680f19f065e8",
               "reason": "the document changed since the confirmation was requested"
             },
             "hint": "invoke the command again without confirmToken to get a new confirmation"
@@ -200,14 +211,22 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-u9vuurc8\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-u9vuurc8\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-_3u4xokf\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-_3u4xokf\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
+    },
+    {
+      "check": "countdown matches status",
+      "ok": false,
+      "detail": {
+        "shownSeconds": 302,
+        "statusSeconds": 299.179
+      }
     },
     {
       "check": "countdown decreases",
       "ok": true,
       "detail": {
         "before": "Expires in 5:02",
-        "after": "Expires in 4:58",
+        "after": "Expires in 4:57",
         "status": {
           "status": "ok",
           "result": {
@@ -215,7 +234,7 @@
             "endpoint": null,
             "sessions": [
               {
-                "sessionId": "s1-6f7a30",
+                "sessionId": "s1-0f0420",
                 "client": "mcp",
                 "policy": "autonomous",
                 "scopes": [
@@ -228,13 +247,13 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:54:16.990Z",
-                "lastActivity": "2026-11-19T21:54:29.284Z",
+                "connectedAt": "2026-11-19T22:08:45.708Z",
+                "lastActivity": "2026-11-19T22:08:57.985Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s2-b789c6",
+                "sessionId": "s2-0292f0",
                 "client": "review-live4-primary",
                 "policy": "assist",
                 "scopes": [
@@ -246,13 +265,13 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:54:26.198Z",
-                "lastActivity": "2026-11-19T21:54:30.275Z",
+                "connectedAt": "2026-11-19T22:08:54.921Z",
+                "lastActivity": "2026-11-19T22:08:58.972Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s3-5a977e",
+                "sessionId": "s3-f93ce0",
                 "client": "review-live4-secondary",
                 "policy": "assist",
                 "scopes": [
@@ -264,29 +283,29 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-19T21:54:26.224Z",
-                "lastActivity": "2026-11-19T21:54:27.068Z",
+                "connectedAt": "2026-11-19T22:08:54.945Z",
+                "lastActivity": "2026-11-19T22:08:55.773Z",
                 "paused": false,
                 "transport": "http"
               }
             ],
             "pendingConfirmations": [
               {
-                "confirmationId": "cf_fa499d8a9fa5b155f68fca60",
-                "sessionId": "s2-b789c6",
+                "confirmationId": "cf_705d85f157d082c62f9e8425",
+                "sessionId": "s2-0292f0",
                 "commandId": "project.saveAs",
-                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-u9vuurc8\\overwrite-1.animpkg`",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-_3u4xokf\\overwrite-1.animpkg`",
                 "consequences": [
                   {
                     "kind": "overwrite",
-                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-u9vuurc8\\overwrite-1.animpkg",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-_3u4xokf\\overwrite-1.animpkg",
                     "bytes": 17
                   }
                 ],
                 "category": "overwrite",
                 "decision": null,
                 "inApp": true,
-                "expiresInMs": 299215
+                "expiresInMs": 299179
               }
             ]
           },
@@ -309,7 +328,7 @@
             "code": "confirmation.expired",
             "message": "the confirmation token cannot be used: the document changed since the confirmation was requested",
             "details": {
-              "confirmToken": "cf_fa499d8a9fa5b155f68fca60",
+              "confirmToken": "cf_705d85f157d082c62f9e8425",
               "reason": "the document changed since the confirmation was requested"
             },
             "hint": "invoke the command again without confirmToken to get a new confirmation"

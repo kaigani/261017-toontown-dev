@@ -1,7 +1,7 @@
 {
   "checks": 12,
   "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-rf1s_ykd",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-b2o786k1",
   "results": [
     {
       "check": "initial policy",
@@ -11,7 +11,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-9a4c2d",
+            "sessionId": "s1-fb3c31",
             "client": "mcp",
             "policy": "autonomous",
             "scopes": [
@@ -24,13 +24,13 @@
               "prefs",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:50:41.909Z",
-            "lastActivity": "2026-11-19T21:50:44.166Z",
+            "connectedAt": "2026-11-19T22:09:14.160Z",
+            "lastActivity": "2026-11-19T22:09:16.711Z",
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s2-208cd5",
+            "sessionId": "s2-0217d5",
             "client": "review-live4-primary",
             "policy": "assist",
             "scopes": [
@@ -42,13 +42,13 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:50:50.807Z",
+            "connectedAt": "2026-11-19T22:09:23.322Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s3-72a130",
+            "sessionId": "s3-ad4b5a",
             "client": "review-live4-secondary",
             "policy": "assist",
             "scopes": [
@@ -60,7 +60,7 @@
               "files.write",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:50:50.832Z",
+            "connectedAt": "2026-11-19T22:09:23.341Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
@@ -72,7 +72,7 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0vepva4k\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0vepva4k\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
     },
     {
       "check": "outside key preserves request 13",
@@ -102,7 +102,7 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0vepva4k\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0vepva4k\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-1.animpkg, bytes: 17Expires in 5:02DeclineAccept"
     },
     {
       "check": "inside Escape declines",
@@ -112,12 +112,12 @@
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0vepva4k\\overwrite-2.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0vepva4k\\overwrite-2.animpkg, bytes: 17Expires in 5:02DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-2.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-2.animpkg, bytes: 17Expires in 5:04DeclineAccept"
     },
     {
       "check": "call held and sheet open",
       "ok": true,
-      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0vepva4k\\overwrite-3.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0vepva4k\\overwrite-3.animpkg, bytes: 17Expires in 5:01DeclineAccept"
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-3.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-j5zastlo\\overwrite-3.animpkg, bytes: 17Expires in 5:01DeclineAccept"
     },
     {
       "check": "keyboard explicit Accept",

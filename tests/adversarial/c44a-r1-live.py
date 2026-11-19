@@ -695,8 +695,8 @@ async def live4_body(t,step):
     await c('tool.active.set',{'toolId':'select'})
     task,sid,p=await request(q)
     check(all(dom(x) for x in ('confirmSheet.summary','confirmSheet.consequences')) and 'review-live4-primary' in dom('confirmSheet'),'sheet content',dom('confirmSheet'))
-    d.front();d.key(0x42);await pause();check(dom('confirmSheet') is not None,'shortcut leaves request open',await c('tool.active.get'))
-    await answer(task,accept);check((not (await exists(sid))['unchanged']) if accept else (await exists(sid))['unchanged'],'scene outcome',await exists(sid))
+    d.front();d.key(0x42);await pause();check(dom('confirmSheet') is not None and (await c('tool.active.get'))['toolId']=='brush','shortcut leaves request open',await c('tool.active.get'))
+    await answer(task,accept);check((not (await exists(sid))['unchanged']) if accept else (await exists(sid))['unchanged'],'file outcome',await exists(sid))
   elif step==2:
    task,sid,p=await request(q)
    t.click('drawingView.canvas')
@@ -707,9 +707,12 @@ async def live4_body(t,step):
     focus=t.cdp.js('document.activeElement?.dataset.ttId')
     if focus and focus.startswith('confirmSheet.'):break
    check(focus=='confirmSheet.decline','first focus is Decline',focus);d.key(0x0D);await pause();check('confirmation.declined' in json.dumps(await task),'Enter declines')
-   task,sid,p=await request(q);t.click('confirmSheet.summary');d.key(0x09);d.key(0x1B);await pause()
-   if not task.done():t.click('confirmSheet.decline')
-   check('confirmation.declined' in json.dumps(await task),'inside Escape declines')
+   task,sid,p=await request(q)
+   for _ in range(160):
+    d.key(0x09)
+    if t.cdp.js('document.activeElement?.dataset.ttId')=='confirmSheet.decline':break
+   d.key(0x1B);await pause();check(task.done() and 'confirmation.declined' in json.dumps(task.result()),'inside Escape declines')
+   if not task.done():await answer(task,False)
    task,sid,p=await request(q);t.click('confirmSheet.decline');await task
    task,sid,p=await request(q)
    for _ in range(160):
@@ -749,7 +752,7 @@ async def live4_body(t,step):
     else:await call(q2,'draw.rectangle.add',{'from':{'x':1,'y':1},'to':{'x':15,'y':15}})
     await pause();check(task.done() and 'confirmation.expired' in json.dumps(task.result()),'revision expires '+who,{'answer':task.result() if task.done() else 'held','sheet':dom('confirmSheet.ended')})
     if not task.done():await answer(task,False)
-    check((await exists(sid))['unchanged'],'scene retained',await exists(sid))
+    check((await exists(sid))['unchanged'],'file retained',await exists(sid))
   elif step==5:
    # Create fixtures first: creating a scene itself advances revision.
    ids=[str(t.work/('queue-'+str(i)+'.animpkg')) for i in range(3)]
