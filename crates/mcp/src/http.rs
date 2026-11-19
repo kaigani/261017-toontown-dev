@@ -671,20 +671,25 @@ fn stream_sse(
     until_response_for: Option<&str>,
 ) {
     let mut quiet = Duration::ZERO;
-    let first = loop {
-        match rx.recv_timeout(CLIENT_CHECK) {
-            Ok(line) => break Some(line),
-            Err(mpsc::RecvTimeoutError::Timeout) => {
-                if client_gone(stream) {
-                    return;
+    // Only a request's own stream can carry its answer: the GET stream (no request) opens at once, as before.
+    let first = if until_response_for.is_none() {
+        None
+    } else {
+        loop {
+            match rx.recv_timeout(CLIENT_CHECK) {
+                Ok(line) => break Some(line),
+                Err(mpsc::RecvTimeoutError::Timeout) => {
+                    if client_gone(stream) {
+                        return;
+                    }
+                    quiet += CLIENT_CHECK;
+                    if quiet >= KEEP_ALIVE {
+                        // A keep-alive is the first thing sent: the response is an event stream from here.
+                        break None;
+                    }
                 }
-                quiet += CLIENT_CHECK;
-                if quiet >= KEEP_ALIVE {
-                    // A keep-alive is the first thing sent: the response is an event stream from here.
-                    break None;
-                }
+                Err(mpsc::RecvTimeoutError::Disconnected) => return,
             }
-            Err(mpsc::RecvTimeoutError::Disconnected) => return,
         }
     };
     if let Some(line) = &first
@@ -718,11 +723,13 @@ fn stream_sse(
                 return;
             }
         }
-        None => {
+        // A request's stream that stayed quiet up to the keep-alive interval: the keep-alive is its first event.
+        None if until_response_for.is_some() => {
             if stream.write_all(b": keep-alive\n\n").is_err() {
                 return;
             }
         }
+        None => {}
     }
     write_events(stream, rx, until_response_for);
     // The end of the stream is the end of the answer: the client learns it from the server's FIN.

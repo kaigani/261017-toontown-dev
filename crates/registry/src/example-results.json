@@ -103,13 +103,16 @@
               }
             ],
             "category": "overwrite",
-            "decision": null
+            "decision": null,
+            "inApp": false,
+            "expiresInMs": 299999
           }
         ]
       },
       "varies": [
         "/pendingConfirmations/0/confirmationId",
         "/pendingConfirmations/0/consequences/0/bytes",
+        "/pendingConfirmations/0/expiresInMs",
         "/pendingConfirmations/0/sessionId",
         "/sessions/0/connectedAt",
         "/sessions/0/sessionId"
