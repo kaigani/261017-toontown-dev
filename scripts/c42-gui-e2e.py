@@ -755,6 +755,16 @@ def ensure_foreground(h) -> bool:
     finally:
         for other in attached:
             u.AttachThreadInput(mine, other, False)
+    if owns():
+        return True
+    # Windows lets a process take the foreground once it produced the last input: a bare Alt press and release (it
+    # changes nothing in a window), then the window set again. Used only when the calls above were not honoured, for
+    # example while a minimised Settings window keeps the foreground.
+    u.keybd_event(0x12, 0, 0, 0)  # VK_MENU down
+    u.keybd_event(0x12, 0, 0x0002, 0)  # VK_MENU up (KEYEVENTF_KEYUP)
+    u.ShowWindow(h, 9)
+    u.SetForegroundWindow(h)
+    time.sleep(0.2)
     return owns()
 
 
