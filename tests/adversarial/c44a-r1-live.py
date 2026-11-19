@@ -511,7 +511,7 @@ async def live3_body(t,step):
    await prefs();t.click('agentAccess.server');t.click('preferences.submit');await pause()
    nq=fresh('on-probe');check('result' in await init(nq),'new client accepted after on',await call(nq,'agent.server.status'))
   elif step==3:
-   await r3.modal_fixture(t,'Live3 policy')
+   await r3.modal_fixture(t,'Live3 policy');await c('project.saveAs',{'path':str(t.work/'policy.animpkg')})
    for policy in ('observe','assist','autonomous'):
     await prefs();await t.do(('select','agentAccess.policy',policy))
     if dom('agentAccess.askInApp','e.checked'):t.click('agentAccess.askInApp')
@@ -520,6 +520,7 @@ async def live3_body(t,step):
     read=await call(nq,'app.state.get');mutation=await call(nq,'draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':10,'y':10}})
     target=t.work/('overwrite-'+policy+'.json');target.write_text('existing')
     confirm=await call(nq,'agent.activity.export',{'path':str(target),'format':'jsonl','onExists':'overwrite'})
+    check(('permission.denied' in json.dumps(confirm) if policy=='observe' else confirm.get('status')==('needs_confirmation' if policy=='assist' else 'ok')),'confirmable overwrite '+policy,confirm)
     check(read.get('status')=='ok' and (mutation.get('status')!='ok' if policy=='observe' else mutation.get('status')=='ok'),'policy '+policy,{'read':read,'mutation':mutation,'confirmable':confirm,'status':await call(nq,'agent.server.status')})
     batch=await tool(nq,'batch',{'label':'Review limit','steps':[{'id':'app.state.get','params':{}}]*3})
     check('limit.exceeded' in json.dumps(batch) if policy!='observe' else True,'batch length enforced '+policy,batch)
