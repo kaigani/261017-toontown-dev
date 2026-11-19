@@ -1,0 +1,410 @@
+{
+  "checks": 6,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ry2ff15c",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "two independent clients status",
+      "ok": true,
+      "detail": {
+        "enabled": true,
+        "endpoint": null,
+        "sessions": [
+          {
+            "sessionId": "s1-d5c690",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-19T21:37:18.784Z",
+            "lastActivity": "2026-11-19T21:37:21.347Z",
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s2-96ed27",
+            "client": "review-live3-primary",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-19T21:37:21.188Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s3-8850ac",
+            "client": "review-live3-secondary",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-19T21:37:21.343Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          }
+        ],
+        "pendingConfirmations": []
+      }
+    },
+    {
+      "check": "session pause isolated",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.session.pause",
+            "params": {
+              "sessionId": "s2-96ed27"
+            }
+          }
+        ],
+        "primary": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "agent.paused",
+            "message": "the user paused this agent session",
+            "details": {
+              "waitedMs": 10000
+            },
+            "hint": "wait and call again; the user resumes the session in the app"
+          }
+        },
+        "other": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7TVW8TC25TZHK666VVFPCS8",
+              "name": "Live3 sessions",
+              "path": null,
+              "dirty": true,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7TVW8TDGVV061N77EGGR9D3",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN8009GVFVHAJX7KPHWQC",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "activity",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN8009GVFVHAJX7KPHWQC"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": true
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-d5c690",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-96ed27",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-8850ac",
+                "name": "review-live3-secondary",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s3-8850ac",
+              "client": "review-live3-secondary",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "autonomous",
+                "maxJobs": 2,
+                "maxBatchSteps": 1000,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": true,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        }
+      }
+    },
+    {
+      "check": "session resume isolated",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.session.resume",
+            "params": {
+              "sessionId": "s2-96ed27"
+            }
+          }
+        ],
+        "primary": {
+          "status": "ok",
+          "result": {
+            "drawingId": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+            "strokeIds": [
+              "st_01K7JJN80020FPBNSKVJQT3FR9"
+            ],
+            "zoneIds": [
+              "zn_X5042PR0NRSY0Z5W5PKWT8MT1A"
+            ],
+            "layerId": "nd_01K7JJN801542TRCB54V2TKMHG",
+            "createdIds": [
+              "st_01K7JJN80020FPBNSKVJQT3FR9",
+              "nd_01K7JJN801542TRCB54V2TKMHG",
+              "zn_X5042PR0NRSY0Z5W5PKWT8MT1A"
+            ],
+            "modifiedIds": [],
+            "removedIds": [],
+            "rev": 5
+          },
+          "changes": [
+            {
+              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7/st_01K7JJN80020FPBNSKVJQT3FR9",
+              "type": "stroke",
+              "op": "created",
+              "rev": 5,
+              "parentId": "dr_01K7JJN8000CGKDTZ6SAQFE7J7/nd_01K7JJN801542TRCB54V2TKMHG",
+              "index": 0
+            },
+            {
+              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7/nd_01K7JJN801542TRCB54V2TKMHG",
+              "type": "drawingNode",
+              "op": "created",
+              "rev": 5,
+              "parentId": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+              "index": 1
+            },
+            {
+              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+              "type": "drawing",
+              "op": "modified",
+              "rev": 5,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/nodes/1",
+                  "value": {
+                    "id": "nd_01K7JJN801542TRCB54V2TKMHG",
+                    "type": "drawingNode"
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-4",
+            "label": "Rectangle Tool"
+          },
+          "warnings": [],
+          "documentRev": 5
+        },
+        "other": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7TVW8TC25TZHK666VVFPCS8",
+              "name": "Live3 sessions",
+              "path": null,
+              "dirty": true,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7TVW8TDGVV061N77EGGR9D3",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN8009GVFVHAJX7KPHWQC",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "activity",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN8009GVFVHAJX7KPHWQC"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": true
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-d5c690",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-96ed27",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-8850ac",
+                "name": "review-live3-secondary",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s3-8850ac",
+              "client": "review-live3-secondary",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "autonomous",
+                "maxJobs": 2,
+                "maxBatchSteps": 1000,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": true,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        }
+      }
+    },
+    {
+      "check": "grant targets primary",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.session.grant",
+          "params": {
+            "sessionId": "s2-96ed27",
+            "policy": "observe"
+          }
+        }
+      ]
+    },
+    {
+      "check": "disconnect isolated",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.session.disconnect",
+          "params": {
+            "sessionId": "s2-96ed27"
+          }
+        }
+      ]
+    }
+  ]
+}
