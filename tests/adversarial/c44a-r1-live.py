@@ -492,6 +492,11 @@ async def live3_body(t,step):
     await t.do(('select','agentAccess.policy','assist'))
     for i in ('askInApp','letAgentMoveView','highlightAgentChanges','typedTools','persist'):t.click('agentAccess.'+i)
     await pause();t.click('agentAccess.namespace.draw');await pause()
+    if not accept:
+     await typed('agentAccess.port',47216)
+     namespaces=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"agentAccess.namespace.\"]')].map(e=>e.dataset.ttId)")
+     for namespace in namespaces:t.click(namespace)
+     check(True,'every namespace checkbox exercised by OS input',namespaces)
     check(await c('prefs.get',{'keys':keys})==before,'all edits staged',sent())
     check(dom('agentAccess.allowRemote','e.disabled') is True,'remote disabled with authorization reason',dom('agentAccess.allowRemote','e.parentElement.title'))
     if accept:t.click('preferences.submit')
@@ -508,7 +513,8 @@ async def live3_body(t,step):
    check((await call(q,'agent.server.status')).get('status')!='ok','connected client refused after server off',await call(q,'agent.server.status'))
    nq=IndependentHttp(disc,'off-probe');clients.append(nq);offanswer=await init(nq);check('result' not in offanswer,'new client refused while off',offanswer)
    check(True,'off discovery and indicator observation',{'discovery':{k:v for k,v in json.loads(discpath.read_text()).items() if k!='token'},'indicator':t.cdp.js("document.body.innerText.slice(-1200)"),'sent':sent()})
-   await prefs();t.click('agentAccess.server');t.click('preferences.submit');await pause()
+   await prefs();t.click('agentAccess.server');await typed('agentAccess.port',47891);t.clear();t.click('preferences.submit');await pause()
+   check(sent()==[{'command':'agent.server.set','params':{'enabled':True,'port':47891}}],'server port group exactly changed values',sent())
    nq=fresh('on-probe');check('result' in await init(nq),'new client accepted after on',await call(nq,'agent.server.status'))
   elif step==3:
    await r3.modal_fixture(t,'Live3 policy');await c('project.saveAs',{'path':str(t.work/'policy.animpkg')})
@@ -565,6 +571,12 @@ async def live3_body(t,step):
     check(('agent.paused' in json.dumps(a) if action=='pause' else a.get('status')=='ok') and b.get('status')=='ok','session '+action+' isolated',{'sent':sent(),'primary':a,'other':b})
    t.clear();await t.do(('select','activity.session.'+sid+'.policy','observe'));await pause()
    check('permission.denied' in json.dumps(await call(q,'draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':1,'y':1}})),'grant targets primary',sent())
+   samples=[]
+   task=asyncio.create_task(tool(nq,'batch',{'label':'Indicator review','steps':[{'id':'draw.rectangle.add','params':{'from':{'x':0,'y':0},'to':{'x':10,'y':10}}}]*1000}))
+   while not task.done():
+    samples.append(dom('agent','({text:e.textContent,state:e.dataset.ttValue})'));await asyncio.sleep(.02)
+   answer=await task
+   check(any(x and x['state']=='acting' for x in samples),'indicator acting session and label',{'samples':samples,'answerStatus':answer.get('status')})
    t.clear();t.click('activity.session.'+sid+'.disconnect');await pause();check((await call(q,'app.state.get')).get('status')!='ok' and (await call(nq,'app.state.get')).get('status')=='ok','disconnect isolated',sent())
   elif step==7:
    await r3.modal_fixture(t,'Live3 activity');await c('window.panel.set',{'panelId':'activity','visible':True});await pause()
@@ -573,7 +585,15 @@ async def live3_body(t,step):
     elif i==2:await call(q,'draw.rectangle.add',{'data':'data:image/png;base64,review-inline-secret','from':{'x':0,'y':0},'to':{'x':2,'y':2}})
     elif i==1:await tool(q,'batch',{'label':'Review activity','steps':[{'id':'app.state.get','params':{}}]})
     else:await call(q,['app.state.get','draw.drawing.get','tool.options.get'][i%3],{'toolId':'brush'} if i%3==2 else {})
-   await pause();activity=await call(q,'agent.activity.list',{'limit':500});rows=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"activity.entry.\"]')].map(e=>({id:e.dataset.ttId,text:e.textContent}))")
+   await pause();activity=await call(q,'agent.activity.list',{'limit':500});rows=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"activity.entry.\"]')].map(e=>({id:e.dataset.ttId,text:e.textContent,commandId:e.title}))")
+   seqs=[int(x['id'].rsplit('.',1)[1]) for x in rows]
+   check(seqs==sorted(seqs,reverse=True) and len(seqs)==len(set(seqs)),'activity newest first unique sequence',seqs)
+   entries=activity.get('result',[])
+   mismatches=[]
+   for entry in entries:
+    row=next((x for x in rows if x['id']=='activity.entry.'+str(entry['seq'])),None)
+    if row and (row['commandId']!=entry['commandId'] or any(str(value) not in row['text'] for value in (entry['time'][11:19],entry['client'],entry['status']))):mismatches.append(entry['seq'])
+   check(not mismatches,'row time client status agree with log',mismatches)
    check(len(rows)>=30,'30 calls live without reload',{'rows':rows,'activity':activity})
    ev=await asyncio.to_thread(q.rpc,'resources/read',{'uri':'app://events?after=0'});check('shell.' not in json.dumps(ev),'D-57 event stream excludes shell notices',ev)
    export=t.work/'activity.jsonl';t.clear();t.click('activity.export');await asyncio.sleep(1.8);d.type_text(str(export));d.key(0x0D);await asyncio.sleep(1.8);value=sent()
@@ -585,6 +605,9 @@ async def live3_body(t,step):
     check(same==entries,'export equals list for same seq range',{'exported':len(exported),'listed':len(entries),'sent':value})
     check('review-inline-secret' not in json.dumps(exported),'inline media replaced by hash',safe(exported))
     t.run.save('activity-export.json',safe(exported))
+  if step in (5,6):
+   active=clients[-1];ev=await asyncio.to_thread(active.rpc,'resources/read',{'uri':'app://events?after=0'})
+   check('result' in ev and 'shell.' not in json.dumps(ev),'D-57 session/token events exclude shell notices',ev)
   t.run.save('live3-commands.json',safe(t.recorded()))
   if step in (1,7):
    import signal
@@ -601,6 +624,9 @@ async def live3_body(t,step):
     check(after.get('result')==before,'restart preserves preference groups',{'before':before,'after':after})
     if step==7:
      await call(nq,'project.open',{'path':str(saved)})
+     await asyncio.sleep(1);d.choose_menu(['Window','Panels','Activity']);await pause();t.cdp=d.Cdp(d.CDP_PORT)
+     panel=t.cdp.js("document.querySelector('[data-tt-id=activity]')?.textContent")
+     check(panel is not None and 'review-live3-primary' not in panel,'restart panel does not restore unpersisted old session',panel)
      check(True,'restart activity observation',await call(nq,'agent.activity.list',{'limit':500}))
    finally:d.e2e.stop(proc)
 
