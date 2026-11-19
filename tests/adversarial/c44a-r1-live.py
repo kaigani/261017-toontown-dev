@@ -656,6 +656,13 @@ async def live3_body(t,step):
 
 
 
+class Live4Http(IndependentHttp):
+ pass
+# Freeze each RPC id locally: simultaneous held calls must not compare against a later request's id.
+import inspect,textwrap
+_live4_rpc=textwrap.dedent(inspect.getsource(IndependentHttp.rpc)).replace("obj.get('id')==self.seq", "obj.get('id')==body['id']")
+_live4_scope={};exec(_live4_rpc,globals(),_live4_scope);Live4Http.rpc=_live4_scope['rpc']
+
 async def live4_body(t,step):
  import asyncio,hashlib
  t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
@@ -665,7 +672,7 @@ async def live4_body(t,step):
  async def pause():await asyncio.sleep(.8)
  async def call(q,n,p=None):return await asyncio.to_thread(q.command,n,p)
  async def fresh(name):
-  q=IndependentHttp(json.loads((t.work/'discovery.json').read_text()),name);clients.append(q);await asyncio.to_thread(q.initialize);return q
+  q=Live4Http(json.loads((t.work/'discovery.json').read_text()),name);clients.append(q);await asyncio.to_thread(q.initialize);return q
  def check(ok,label,data=None):t.run.check(ok,label,data)
  async def request(q):
   sid=str(t.work/('overwrite-'+str(len(tasks))+'.animpkg'));Path(sid).write_bytes(b'reviewer sentinel');params={'path':sid,'onExists':'overwrite'}
