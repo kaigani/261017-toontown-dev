@@ -1,0 +1,56 @@
+{
+  "before": {
+    "drawing": {
+      "selectedIds": [],
+      "bounds": null,
+      "selectedPoints": []
+    },
+    "staging": {
+      "context": "staging",
+      "ids": [],
+      "kinds": []
+    }
+  },
+  "after": {
+    "drawing": {
+      "selectedIds": [],
+      "bounds": null,
+      "selectedPoints": []
+    },
+    "staging": {
+      "context": "staging",
+      "ids": [
+        "el_01K7JJN800C3GP2ADAZ2369BE8",
+        "el_01M7TSHSY31G824PK27064YZHH",
+        "el_01M7TSHSY31G824PK27064YZHJ",
+        "el_01M7TSHSY31G824PK27064YZHK"
+      ],
+      "kinds": [
+        "element"
+      ]
+    }
+  },
+  "sent": [
+    {
+      "command": "edit.selectAll",
+      "params": {}
+    }
+  ],
+  "state": {
+    "mode": "staging",
+    "activeView": {
+      "viewId": "cameraView",
+      "panelId": "cameraView",
+      "type": "camera"
+    },
+    "element": {
+      "id": "el_01K7JJN800C3GP2ADAZ2369BE8",
+      "name": "ModalUndoSentinel",
+      "type": "drawing"
+    },
+    "drawing": {
+      "id": "dr_01K7JJN800ZBQQVJX5N390VY6P",
+      "name": "1"
+    }
+  }
+}

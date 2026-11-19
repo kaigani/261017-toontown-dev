@@ -1,0 +1,29 @@
+[
+  {
+    "case": "a2",
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "a3",
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "b1",
+    "exit": 1,
+    "failLines": [
+      "  + Exception Group Traceback (most recent call last):",
+      "    | Exception Group Traceback (most recent call last):",
+      "      | Traceback (most recent call last):",
+      "      | Traceback (most recent call last):",
+      "      | RuntimeError: coroutine raised StopIteration",
+      "FAIL b1 ran"
+    ]
+  },
+  {
+    "case": "b2",
+    "exit": 0,
+    "failLines": []
+  }
+]

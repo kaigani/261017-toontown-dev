@@ -1,0 +1,7 @@
+{
+  "checks": 1,
+  "failures": [
+    "Camera drawing-family Select All selects drawing objects, leaves staging alone (02 4.4): {\"before\": {\"drawing\": {\"selectedIds\": [], \"bounds\": null, \"selectedPoints\": []}, \"staging\": {\"context\": \"staging\", \"ids\": [], \"kinds\": []}}, \"after\": {\"drawing\": {\"selectedIds\": [], \"bounds\": null, \"selectedPoints\": []}, \"staging\": {\"context\": \"staging\", \"ids\": [\"el_01K7JJN800C3GP2ADAZ2369BE8\", \"el_01M7TSHSY31G824PK27064YZHH\", \"el_01M7TSHSY31G824PK27064YZHJ\", \"el_01M7TSHSY31G824PK27064YZHK\"], \"kinds\": [\"element\"]}}, \"sent\": [{\"command\": \"agent.server.status\", \"params\": {}}, {\"command\": \"ui.statusBar.get\", \"params\": {}}, {\"command\": \"agent.server.status\", \"params\": {}}, {\"command\": \"ui.statusB"
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-easgfmwm"
+}

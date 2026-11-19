@@ -1,0 +1,32 @@
+[
+  {
+    "case": "case3",
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "case4",
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "case5",
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "case6",
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "case7",
+    "exit": 1,
+    "failLines": []
+  },
+  {
+    "case": "case8",
+    "exit": 0,
+    "failLines": []
+  }
+]

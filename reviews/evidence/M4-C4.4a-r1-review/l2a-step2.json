@@ -1,0 +1,474 @@
+{
+  "checks": 29,
+  "failures": [
+    "invalid pen value restored maxSize: {\"field\": \"101\", \"engine\": 40.0, \"sent\": []}",
+    "nonnumeric pen refused maxSize: {\"field\": \"0\", \"pen\": {\"penId\": \"pen_01M7TV0AD34N74JN1HD0R0WFWN\", \"name\": \"Pen 3\", \"type\": \"brush\", \"tipShape\": \"round\", \"minSize\": 0.0, \"maxSize\": 0.0, \"smoothness\": 3, \"tipAngle\": 0.0}}",
+    "invalid pen value restored minSize: {\"field\": \"-1\", \"engine\": 12.0, \"sent\": []}",
+    "nonnumeric pen refused minSize: {\"field\": \"0\", \"pen\": {\"penId\": \"pen_01M7TV0AD34N74JN1HD0R0WFWN\", \"name\": \"Pen 3\", \"type\": \"brush\", \"tipShape\": \"round\", \"minSize\": 0.0, \"maxSize\": 84.0, \"smoothness\": 3, \"tipAngle\": 0.0}}",
+    "invalid pen value restored smoothness: {\"field\": \"11\", \"engine\": 6, \"sent\": []}",
+    "nonnumeric pen refused smoothness: {\"field\": \"0\", \"pen\": {\"penId\": \"pen_01M7TV0AD34N74JN1HD0R0WFWN\", \"name\": \"Pen 3\", \"type\": \"brush\", \"tipShape\": \"round\", \"minSize\": 84.0, \"maxSize\": 84.0, \"smoothness\": 0, \"tipAngle\": 0.0}}",
+    "invalid pen value restored tipAngle: {\"field\": \"361\", \"engine\": 45.0, \"sent\": []}",
+    "nonnumeric pen refused tipAngle: {\"field\": \"0\", \"pen\": {\"penId\": \"pen_01M7TV0AD34N74JN1HD0R0WFWN\", \"name\": \"Pen 3\", \"type\": \"brush\", \"tipShape\": \"round\", \"minSize\": 84.0, \"maxSize\": 84.0, \"smoothness\": 1, \"tipAngle\": 0.0}}"
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-6pfsv6dz",
+  "results": [
+    {
+      "check": "pen numeric maxSize",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pen.set",
+            "params": {
+              "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+              "maxSize": 40
+            }
+          }
+        ],
+        "pen": {
+          "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 2.0,
+          "maxSize": 40.0,
+          "smoothness": 3,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "invalid pen value restored maxSize",
+      "ok": false,
+      "detail": {
+        "field": "101",
+        "engine": 40.0,
+        "sent": []
+      }
+    },
+    {
+      "check": "nonnumeric pen refused maxSize",
+      "ok": false,
+      "detail": {
+        "field": "0",
+        "pen": {
+          "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 0.0,
+          "maxSize": 0.0,
+          "smoothness": 3,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "slider keyboard release maxSize",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "maxSize": 40.5
+          }
+        }
+      ]
+    },
+    {
+      "check": "slider sends nothing during drag maxSize",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "slider one command on release maxSize",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "maxSize": 84
+          }
+        }
+      ]
+    },
+    {
+      "check": "pen numeric minSize",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pen.set",
+            "params": {
+              "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+              "minSize": 12
+            }
+          }
+        ],
+        "pen": {
+          "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 12.0,
+          "maxSize": 84.0,
+          "smoothness": 3,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "invalid pen value restored minSize",
+      "ok": false,
+      "detail": {
+        "field": "-1",
+        "engine": 12.0,
+        "sent": []
+      }
+    },
+    {
+      "check": "nonnumeric pen refused minSize",
+      "ok": false,
+      "detail": {
+        "field": "0",
+        "pen": {
+          "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 0.0,
+          "maxSize": 84.0,
+          "smoothness": 3,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "slider keyboard release minSize",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "minSize": 12.5
+          }
+        }
+      ]
+    },
+    {
+      "check": "slider sends nothing during drag minSize",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "slider one command on release minSize",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "minSize": 84
+          }
+        }
+      ]
+    },
+    {
+      "check": "pen numeric smoothness",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pen.set",
+            "params": {
+              "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+              "smoothness": 6
+            }
+          }
+        ],
+        "pen": {
+          "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 84.0,
+          "maxSize": 84.0,
+          "smoothness": 6,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "invalid pen value restored smoothness",
+      "ok": false,
+      "detail": {
+        "field": "11",
+        "engine": 6,
+        "sent": []
+      }
+    },
+    {
+      "check": "nonnumeric pen refused smoothness",
+      "ok": false,
+      "detail": {
+        "field": "0",
+        "pen": {
+          "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 84.0,
+          "maxSize": 84.0,
+          "smoothness": 0,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "slider keyboard release smoothness",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "smoothness": 7
+          }
+        }
+      ]
+    },
+    {
+      "check": "slider sends nothing during drag smoothness",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "slider one command on release smoothness",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "smoothness": 1
+          }
+        }
+      ]
+    },
+    {
+      "check": "pen numeric tipAngle",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pen.set",
+            "params": {
+              "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+              "tipAngle": 45
+            }
+          }
+        ],
+        "pen": {
+          "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 84.0,
+          "maxSize": 84.0,
+          "smoothness": 1,
+          "tipAngle": 45.0
+        }
+      }
+    },
+    {
+      "check": "invalid pen value restored tipAngle",
+      "ok": false,
+      "detail": {
+        "field": "361",
+        "engine": 45.0,
+        "sent": []
+      }
+    },
+    {
+      "check": "nonnumeric pen refused tipAngle",
+      "ok": false,
+      "detail": {
+        "field": "0",
+        "pen": {
+          "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 84.0,
+          "maxSize": 84.0,
+          "smoothness": 1,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "slider keyboard release tipAngle",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "tipAngle": 46
+          }
+        }
+      ]
+    },
+    {
+      "check": "slider sends nothing during drag tipAngle",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "slider one command on release tipAngle",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "tipAngle": 303
+          }
+        }
+      ]
+    },
+    {
+      "check": "tip shape oval",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "tipShape": "oval"
+          }
+        }
+      ]
+    },
+    {
+      "check": "tip shape square",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "tipShape": "square"
+          }
+        }
+      ]
+    },
+    {
+      "check": "tip shape flat",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "tipShape": "flat"
+          }
+        }
+      ]
+    },
+    {
+      "check": "tip shape round",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TV0AD34N74JN1HD0R0WFWN",
+            "tipShape": "round"
+          }
+        }
+      ]
+    },
+    {
+      "check": "D-32 recorded OS stroke replay equals headless exactly modulo identifiers",
+      "ok": true,
+      "detail": {
+        "gestures": [
+          {
+            "view": "drawingView",
+            "pointerType": "mouse",
+            "events": [
+              {
+                "type": "down",
+                "x": -50.5,
+                "y": 0.5,
+                "modifiers": [],
+                "dt": 0,
+                "pressure": 1,
+                "button": "left"
+              },
+              {
+                "type": "move",
+                "x": -0.5,
+                "y": -24.5,
+                "modifiers": [],
+                "dt": 214,
+                "pressure": 1
+              },
+              {
+                "type": "move",
+                "x": 49.5,
+                "y": 0.5,
+                "modifiers": [],
+                "dt": 200,
+                "pressure": 1
+              },
+              {
+                "type": "up",
+                "x": 49.5,
+                "y": 0.5,
+                "modifiers": [],
+                "dt": 88,
+                "pressure": 1
+              }
+            ],
+            "generation": 0
+          }
+        ],
+        "commands": [],
+        "equal": true
+      }
+    }
+  ],
+  "rawFiles": [
+    {
+      "name": "live2-commands.json",
+      "bytes": 3500,
+      "sha256": "b17f58e76b514aa1e0ddb84f210a3c8fce80970b41130d15af51a76f2c96d798"
+    },
+    {
+      "name": "stroke-headless.json",
+      "bytes": 12254,
+      "sha256": "5648e32ab328643e3727d702ab2fdb90fefd5bf465ebd7249861e835b0802fa2"
+    },
+    {
+      "name": "stroke-replay-response.json",
+      "bytes": 3735,
+      "sha256": "4c0fc6eb577042005a87302ca324c3d5dbc0d216a1f2ef451eab5d4d94780806"
+    },
+    {
+      "name": "stroke-window.json",
+      "bytes": 14081,
+      "sha256": "bbacb3d7c469865339097c7f84449cb3fbcc8a65f1a20e6f8fd66fdd00b31ef1"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 9266,
+      "sha256": "b8aeec2f759dc2d00aa128c1b61be056a59fe4fb6f7786482e130bd94037bbdb"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2a 2"
+}

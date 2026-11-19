@@ -1,0 +1,128 @@
+{
+  "checks": 7,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-u0tudei7",
+  "results": [
+    {
+      "check": "tablet staged before OK",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "tablet Cancel",
+      "ok": true,
+      "detail": {
+        "values": {
+          "tablet.ignore": false,
+          "tablet.alternativeInput": false,
+          "tablet.portraitCorrection": false,
+          "tablet.compatibilityMode": false
+        },
+        "sent": []
+      }
+    },
+    {
+      "check": "tablet staged before OK",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "tablet OK",
+      "ok": true,
+      "detail": {
+        "values": {
+          "tablet.ignore": true,
+          "tablet.alternativeInput": true,
+          "tablet.portraitCorrection": true,
+          "tablet.compatibilityMode": true
+        },
+        "sent": [
+          {
+            "command": "prefs.set",
+            "params": {
+              "values": {
+                "tablet.ignore": true,
+                "tablet.compatibilityMode": true,
+                "tablet.alternativeInput": true,
+                "tablet.portraitCorrection": true
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "one prefs.set exactly changed keys",
+      "ok": true,
+      "detail": [
+        {
+          "command": "prefs.set",
+          "params": {
+            "values": {
+              "tablet.ignore": true,
+              "tablet.compatibilityMode": true,
+              "tablet.alternativeInput": true,
+              "tablet.portraitCorrection": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "agent tablet shares preference state",
+      "ok": true,
+      "detail": {
+        "result": {
+          "settings": {
+            "ignoreTablet": false,
+            "portraitCorrection": true,
+            "compatibilityMode": true,
+            "inputInterface": "alternative"
+          },
+          "restartRequired": false
+        },
+        "values": {
+          "tablet.ignore": false,
+          "tablet.alternativeInput": true,
+          "tablet.portraitCorrection": true,
+          "tablet.compatibilityMode": true
+        }
+      }
+    },
+    {
+      "check": "restart preserves tablet preferences",
+      "ok": true,
+      "detail": {
+        "before": {
+          "values": {
+            "tablet.ignore": false,
+            "tablet.alternativeInput": true,
+            "tablet.portraitCorrection": true,
+            "tablet.compatibilityMode": true
+          }
+        },
+        "after": {
+          "values": {
+            "tablet.ignore": false,
+            "tablet.alternativeInput": true,
+            "tablet.portraitCorrection": true,
+            "tablet.compatibilityMode": true
+          }
+        }
+      }
+    }
+  ],
+  "rawFiles": [
+    {
+      "name": "live2-commands.json",
+      "bytes": 2282,
+      "sha256": "442ee110010b26c0b2364a33cbf1b26ae448378517c4eae45e59455f0dcd813f"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 2592,
+      "sha256": "da01ad702719150d7d17a571e2e2167304a8c70696f474cebc6bd5f8712fc4b2"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2b 5"
+}

@@ -1,0 +1,101 @@
+{
+  "width": 1280,
+  "height": 800,
+  "menu": {
+    "x": 1115,
+    "y": 690,
+    "right": 1305,
+    "bottom": 1724
+  },
+  "overflow": "visible",
+  "clipped": [
+    {
+      "id": "cameraView.drawingMenu.cut",
+      "label": "Cutnothing is selected in the staging context"
+    },
+    {
+      "id": "cameraView.drawingMenu.copy",
+      "label": "Copynothing is selected in the staging context"
+    },
+    {
+      "id": "cameraView.drawingMenu.paste",
+      "label": "Pastecannot paste drawingObjects in the staging context: drawing objects paste into a drawing"
+    },
+    {
+      "id": "cameraView.drawingMenu.selectAll",
+      "label": "Select All"
+    },
+    {
+      "id": "cameraView.drawingMenu.deselectAll",
+      "label": "Deselect All"
+    },
+    {
+      "id": "cameraView.drawingMenu.arrange.front",
+      "label": "Bring to Frontthere is nothing to arrange"
+    },
+    {
+      "id": "cameraView.drawingMenu.arrange.forward",
+      "label": "Bring Forwardthere is nothing to arrange"
+    },
+    {
+      "id": "cameraView.drawingMenu.arrange.backward",
+      "label": "Send Backwardthere is nothing to arrange"
+    },
+    {
+      "id": "cameraView.drawingMenu.arrange.back",
+      "label": "Send to Backthere is nothing to arrange"
+    },
+    {
+      "id": "cameraView.drawingMenu.flip.horizontal",
+      "label": "Flip Horizontalthere is nothing to flip"
+    },
+    {
+      "id": "cameraView.drawingMenu.flip.vertical",
+      "label": "Flip Verticalthere is nothing to flip"
+    },
+    {
+      "id": "cameraView.drawingMenu.rotate.90cw",
+      "label": "Rotate 90\u00b0 CWthere is nothing to rotate"
+    },
+    {
+      "id": "cameraView.drawingMenu.rotate.90ccw",
+      "label": "Rotate 90\u00b0 CCWthere is nothing to rotate"
+    },
+    {
+      "id": "cameraView.drawingMenu.rotate.180",
+      "label": "Rotate 180\u00b0there is nothing to rotate"
+    },
+    {
+      "id": "cameraView.drawingMenu.group",
+      "label": "Groupthere is nothing to group"
+    },
+    {
+      "id": "cameraView.drawingMenu.ungroup",
+      "label": "Ungroupthere is nothing to ungroup"
+    },
+    {
+      "id": "cameraView.drawingMenu.flatten",
+      "label": "Flattenthere is nothing to flatten"
+    },
+    {
+      "id": "cameraView.drawingMenu.optimize",
+      "label": "Optimizethere is nothing to optimize"
+    },
+    {
+      "id": "cameraView.drawingMenu.smooth",
+      "label": "Smooththere is nothing to smooth"
+    },
+    {
+      "id": "cameraView.drawingMenu.centreLine",
+      "label": "Extract Centre Linethere is nothing to extract"
+    },
+    {
+      "id": "cameraView.drawingMenu.linesToBrush",
+      "label": "Convert Lines to Brushthere is nothing to convert"
+    },
+    {
+      "id": "cameraView.drawingMenu.breakApart",
+      "label": "Break Text Apartthere is nothing to break apart"
+    }
+  ]
+}

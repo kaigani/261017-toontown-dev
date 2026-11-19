@@ -1,0 +1,563 @@
+{
+  "checks": 24,
+  "failures": [
+    "text invalid restored size: {\"field\": \"513\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 0, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 0, \"rightMargin\": 0, \"indent\": 0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "nonnumeric text refused size: {\"field\": \"\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 0, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 0, \"rightMargin\": 0, \"indent\": 0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "text invalid restored kerning: {\"field\": \"61\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 12, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 0, \"rightMargin\": 0, \"indent\": 0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "nonnumeric text refused kerning: {\"field\": \"0\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 0, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 0, \"rightMargin\": 0, \"indent\": 0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "text invalid restored leftMargin: {\"field\": \"-1\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 12, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 8.0, \"rightMargin\": 0, \"indent\": 0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "nonnumeric text refused leftMargin: {\"field\": \"0\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 12, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 0.0, \"rightMargin\": 0, \"indent\": 0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "text invalid restored rightMargin: {\"field\": \"1001\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 12, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 8.0, \"rightMargin\": 9.0, \"indent\": 0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "nonnumeric text refused rightMargin: {\"field\": \"0\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 12, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 8.0, \"rightMargin\": 0.0, \"indent\": 0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "text invalid restored indent: {\"field\": \"-100\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 12, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 8.0, \"rightMargin\": 9.0, \"indent\": -12.0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "nonnumeric text refused indent: {\"field\": \"0\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 12, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 8.0, \"rightMargin\": 9.0, \"indent\": 0.0, \"lineSpacing\": 0, \"outlineColourId\": null}}",
+    "text invalid restored lineSpacing: {\"field\": \"1001\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 12, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 8.0, \"rightMargin\": 9.0, \"indent\": -12.0, \"lineSpacing\": 5.0, \"outlineColourId\": null}}",
+    "nonnumeric text refused lineSpacing: {\"field\": \"0\", \"options\": {\"font\": null, \"size\": 48.0, \"bold\": false, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 12, \"autoKern\": true, \"align\": \"left\", \"leftMargin\": 8.0, \"rightMargin\": 9.0, \"indent\": -12.0, \"lineSpacing\": 0.0, \"outlineColourId\": null}}"
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-vgdbvx_x",
+  "results": [
+    {
+      "check": "text numeric size",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.text.options.set",
+            "params": {
+              "size": 48
+            }
+          }
+        ],
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 0,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text invalid restored size",
+      "ok": false,
+      "detail": {
+        "field": "513",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 0,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "nonnumeric text refused size",
+      "ok": false,
+      "detail": {
+        "field": "",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 0,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text numeric kerning",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.text.options.set",
+            "params": {
+              "kerning": 12
+            }
+          }
+        ],
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text invalid restored kerning",
+      "ok": false,
+      "detail": {
+        "field": "61",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "nonnumeric text refused kerning",
+      "ok": false,
+      "detail": {
+        "field": "0",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 0,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text numeric leftMargin",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.text.options.set",
+            "params": {
+              "leftMargin": 8
+            }
+          }
+        ],
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text invalid restored leftMargin",
+      "ok": false,
+      "detail": {
+        "field": "-1",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "nonnumeric text refused leftMargin",
+      "ok": false,
+      "detail": {
+        "field": "0",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 0.0,
+          "rightMargin": 0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text numeric rightMargin",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.text.options.set",
+            "params": {
+              "rightMargin": 9
+            }
+          }
+        ],
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 9.0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text invalid restored rightMargin",
+      "ok": false,
+      "detail": {
+        "field": "1001",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 9.0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "nonnumeric text refused rightMargin",
+      "ok": false,
+      "detail": {
+        "field": "0",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 0.0,
+          "indent": 0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text numeric indent",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.text.options.set",
+            "params": {
+              "indent": -12
+            }
+          }
+        ],
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 9.0,
+          "indent": -12.0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text invalid restored indent",
+      "ok": false,
+      "detail": {
+        "field": "-100",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 9.0,
+          "indent": -12.0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "nonnumeric text refused indent",
+      "ok": false,
+      "detail": {
+        "field": "0",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 9.0,
+          "indent": 0.0,
+          "lineSpacing": 0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text numeric lineSpacing",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.text.options.set",
+            "params": {
+              "lineSpacing": 5
+            }
+          }
+        ],
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 9.0,
+          "indent": -12.0,
+          "lineSpacing": 5.0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text invalid restored lineSpacing",
+      "ok": false,
+      "detail": {
+        "field": "1001",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 9.0,
+          "indent": -12.0,
+          "lineSpacing": 5.0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "nonnumeric text refused lineSpacing",
+      "ok": false,
+      "detail": {
+        "field": "0",
+        "options": {
+          "font": null,
+          "size": 48.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 12,
+          "autoKern": true,
+          "align": "left",
+          "leftMargin": 8.0,
+          "rightMargin": 9.0,
+          "indent": -12.0,
+          "lineSpacing": 0.0,
+          "outlineColourId": null
+        }
+      }
+    },
+    {
+      "check": "text flag bold",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.text.options.set",
+          "params": {
+            "bold": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "text flag italic",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.text.options.set",
+          "params": {
+            "italic": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "text flag autoKern",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.text.options.set",
+          "params": {
+            "autoKern": false
+          }
+        }
+      ]
+    },
+    {
+      "check": "text choice baseline",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.text.options.set",
+          "params": {
+            "baseline": "superscript"
+          }
+        }
+      ]
+    },
+    {
+      "check": "text choice align",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.text.options.set",
+          "params": {
+            "align": "justify"
+          }
+        }
+      ]
+    },
+    {
+      "check": "unbundled font marked",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.text.options.set",
+            "params": {
+              "font": "Live2 Missing Font 673"
+            }
+          }
+        ],
+        "options": {
+          "toolId": "text",
+          "options": {
+            "font": "Live2 Missing Font 673",
+            "size": 48.0,
+            "bold": true,
+            "italic": true,
+            "baseline": "superscript",
+            "kerning": 12,
+            "autoKern": false,
+            "align": "justify",
+            "leftMargin": 8.0,
+            "rightMargin": 9.0,
+            "indent": -12.0,
+            "lineSpacing": 5.0,
+            "outlineColourId": null
+          }
+        }
+      }
+    }
+  ],
+  "rawFiles": [
+    {
+      "name": "live2-commands.json",
+      "bytes": 926,
+      "sha256": "d92e4bb204bcf1205ff99617e475203494bd541187d3ca77ba75eaab6d8693da"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 11505,
+      "sha256": "12c94426f00de85c8e05b21fc327d552bbfaab62faeb7babb2ea171ade568fdc"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2b 6"
+}

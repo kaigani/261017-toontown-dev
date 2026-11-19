@@ -1,0 +1,53 @@
+{
+  "width": 1280,
+  "height": 800,
+  "menu": {
+    "x": 499,
+    "y": 454,
+    "right": 793.140625,
+    "bottom": 1055
+  },
+  "overflow": "visible",
+  "clipped": [
+    {
+      "id": "drawingView.drawingMenu.rotate.90ccw",
+      "label": "Rotate 90\u00b0 CCW"
+    },
+    {
+      "id": "drawingView.drawingMenu.rotate.180",
+      "label": "Rotate 180\u00b0"
+    },
+    {
+      "id": "drawingView.drawingMenu.group",
+      "label": "Group"
+    },
+    {
+      "id": "drawingView.drawingMenu.ungroup",
+      "label": "Ungroup"
+    },
+    {
+      "id": "drawingView.drawingMenu.flatten",
+      "label": "Flatten"
+    },
+    {
+      "id": "drawingView.drawingMenu.optimize",
+      "label": "Optimize"
+    },
+    {
+      "id": "drawingView.drawingMenu.smooth",
+      "label": "Smooth"
+    },
+    {
+      "id": "drawingView.drawingMenu.centreLine",
+      "label": "Extract Centre Linethere is nothing to extract"
+    },
+    {
+      "id": "drawingView.drawingMenu.linesToBrush",
+      "label": "Convert Lines to Brush"
+    },
+    {
+      "id": "drawingView.drawingMenu.breakApart",
+      "label": "Break Text Apart"
+    }
+  ]
+}

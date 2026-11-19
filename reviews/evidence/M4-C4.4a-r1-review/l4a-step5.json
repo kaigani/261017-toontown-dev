@@ -1,0 +1,333 @@
+{
+  "checks": 8,
+  "failures": [
+    "three calls queue: \"review-live4-primary asks to Save As\\u2026 1 of 2Overwrite `C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\c44fixture-jyibklhh\\\\queue-0.animpkg`kind: overwrite, path: C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\c44fixture-jyibklhh\\\\queue-0.animpkg, bytes: 17Expires in 5:09DeclineAccept\"",
+    "other query completes: \"held behind confirmation\""
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-joi3d54t",
+  "results": [
+    {
+      "check": "initial policy",
+      "ok": true,
+      "detail": {
+        "enabled": true,
+        "endpoint": null,
+        "sessions": [
+          {
+            "sessionId": "s1-fdaa8d",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-19T21:55:41.573Z",
+            "lastActivity": "2026-11-19T21:55:44.150Z",
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s2-55f64b",
+            "client": "review-live4-primary",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-19T21:55:50.814Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s3-256aa3",
+            "client": "review-live4-secondary",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-19T21:55:50.829Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          }
+        ],
+        "pendingConfirmations": []
+      }
+    },
+    {
+      "check": "three calls queue",
+      "ok": false,
+      "detail": "review-live4-primary asks to Save As\u2026 1 of 2Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-jyibklhh\\queue-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-jyibklhh\\queue-0.animpkg, bytes: 17Expires in 5:09DeclineAccept"
+    },
+    {
+      "check": "other query completes",
+      "ok": false,
+      "detail": "held behind confirmation"
+    },
+    {
+      "check": "each queued call receives decision",
+      "ok": true,
+      "detail": [
+        {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5,
+          "error": {
+            "code": "confirmation.declined",
+            "message": "the user declined the action",
+            "details": {
+              "confirmToken": "cf_500a37468cd7cf4956bb06a0"
+            }
+          }
+        },
+        {
+          "status": "ok",
+          "result": {
+            "jobId": "job-2"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5,
+          "error": {
+            "code": "confirmation.declined",
+            "message": "the user declined the action",
+            "details": {
+              "confirmToken": "cf_9c6068001939c6a357e97b8c"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "call held and sheet open",
+      "ok": true,
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-jyibklhh\\overwrite-4.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-jyibklhh\\overwrite-4.animpkg, bytes: 17Expires in 5:02DeclineAccept"
+    },
+    {
+      "check": "person draws while sheet open",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "stroke expires pending request",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "window topology",
+      "ok": true,
+      "detail": [
+        {
+          "panelId": "cameraView",
+          "title": "Camera view",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": true
+        },
+        {
+          "panelId": "drawingView",
+          "title": "Drawing view",
+          "visible": true,
+          "floating": false,
+          "area": "central",
+          "current": true,
+          "focused": false
+        },
+        {
+          "panelId": "topView",
+          "title": "Top view",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "sideView",
+          "title": "Side view",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "timeline",
+          "title": "Timeline",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "xsheet",
+          "title": "Exposure sheet",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 0,
+          "current": true,
+          "focused": false
+        },
+        {
+          "panelId": "functionEditor",
+          "title": "Function editor",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "properties",
+          "title": "Properties",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "colour",
+          "title": "Colour",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 1,
+          "current": true,
+          "focused": false
+        },
+        {
+          "panelId": "pen",
+          "title": "Pen",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 1,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "text",
+          "title": "Text",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 1,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "cells",
+          "title": "Cells",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "library",
+          "title": "Library",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "storyline",
+          "title": "Storyline",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "sceneManager",
+          "title": "Scene manager",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "effectPreview",
+          "title": "Effect preview",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "motionRecording",
+          "title": "Motion recording",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "lipSync",
+          "title": "Lip-sync",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "history",
+          "title": "History",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "activity",
+          "title": "Activity",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "soundEditor",
+          "title": "Sound element editor",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "capture",
+          "title": "Capture window",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "width": 1280,
+  "height": 800,
+  "menu": {
+    "x": 499,
+    "y": 454,
+    "right": 818.578125,
+    "bottom": 1055
+  },
+  "overflow": "visible",
+  "clipped": [
+    {
+      "id": "drawingView.drawingMenu.rotate.90ccw",
+      "label": "Rotate 90\u00b0 CCWthere is nothing to rotate"
+    },
+    {
+      "id": "drawingView.drawingMenu.rotate.180",
+      "label": "Rotate 180\u00b0there is nothing to rotate"
+    },
+    {
+      "id": "drawingView.drawingMenu.group",
+      "label": "Groupthere is nothing to group"
+    },
+    {
+      "id": "drawingView.drawingMenu.ungroup",
+      "label": "Ungroupthere is nothing to ungroup"
+    },
+    {
+      "id": "drawingView.drawingMenu.flatten",
+      "label": "Flattenthere is nothing to flatten"
+    },
+    {
+      "id": "drawingView.drawingMenu.optimize",
+      "label": "Optimizethere is nothing to optimize"
+    },
+    {
+      "id": "drawingView.drawingMenu.smooth",
+      "label": "Smooththere is nothing to smooth"
+    },
+    {
+      "id": "drawingView.drawingMenu.centreLine",
+      "label": "Extract Centre Linethere is nothing to extract"
+    },
+    {
+      "id": "drawingView.drawingMenu.linesToBrush",
+      "label": "Convert Lines to Brushthere is nothing to convert"
+    },
+    {
+      "id": "drawingView.drawingMenu.breakApart",
+      "label": "Break Text Apartthere is nothing to break apart"
+    }
+  ]
+}
