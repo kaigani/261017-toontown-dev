@@ -1,7 +1,9 @@
 {
-  "checks": 6,
-  "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ry2ff15c",
+  "checks": 9,
+  "failures": [
+    "indicator acting session and label: {\"samples\": [{\"text\": \"Agent acting: review-live3-secondary (agent.server.status)\", \"state\": \"acting\"}, {\"text\": \"Agent acting: review-live3-secondary (batch)\", \"state\": \"acting\"}, {\"text\": \"Agent acting: review-live3-secondary (batch)\", \"state\": \"acting\"}, {\"text\": \"Agent acting: review-live3-secondary (batch)\", \"state\": \"acting\"}, {\"text\": \"Agent acting: review-live3-secondary (batch)\", \"state\": \"acting\"}, {\"text\": \"Agent acting: review-live3-secondary (batch)\", \"state\": \"acting\"}, {\"text\": \"Agent acting: review-live3-secondary (batch)\", \"state\": \"acting\"}, {\"text\": \"Agent acting: review-liv"
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-x347pxl4",
   "results": [
     {
       "check": "independent HTTP initialize",
@@ -16,7 +18,7 @@
         "endpoint": null,
         "sessions": [
           {
-            "sessionId": "s1-d5c690",
+            "sessionId": "s1-c3a6ce",
             "client": "mcp",
             "policy": "autonomous",
             "scopes": [
@@ -29,13 +31,13 @@
               "prefs",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:37:18.784Z",
-            "lastActivity": "2026-11-19T21:37:21.347Z",
+            "connectedAt": "2026-11-19T21:43:21.952Z",
+            "lastActivity": "2026-11-19T21:43:24.463Z",
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s2-96ed27",
+            "sessionId": "s2-101851",
             "client": "review-live3-primary",
             "policy": "autonomous",
             "scopes": [
@@ -48,13 +50,13 @@
               "prefs",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:37:21.188Z",
+            "connectedAt": "2026-11-19T21:43:24.356Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
           },
           {
-            "sessionId": "s3-8850ac",
+            "sessionId": "s3-864334",
             "client": "review-live3-secondary",
             "policy": "autonomous",
             "scopes": [
@@ -67,7 +69,7 @@
               "prefs",
               "library.global"
             ],
-            "connectedAt": "2026-11-19T21:37:21.343Z",
+            "connectedAt": "2026-11-19T21:43:24.460Z",
             "lastActivity": null,
             "paused": false,
             "transport": "http"
@@ -84,7 +86,7 @@
           {
             "command": "agent.session.pause",
             "params": {
-              "sessionId": "s2-96ed27"
+              "sessionId": "s2-101851"
             }
           }
         ],
@@ -106,7 +108,7 @@
           "status": "ok",
           "result": {
             "project": {
-              "id": "pr_01M7TVW8TC25TZHK666VVFPCS8",
+              "id": "pr_01M7TW7BEEAESWWJTS3JZVDSE5",
               "name": "Live3 sessions",
               "path": null,
               "dirty": true,
@@ -114,18 +116,18 @@
               "readOnly": false
             },
             "scene": {
-              "id": "sc_01M7TVW8TDGVV061N77EGGR9D3",
+              "id": "sc_01M7TW7BEEAESWWJTS3JZVDSJ9",
               "name": "Scene-1",
               "frameCount": 24
             },
             "frame": 1,
             "element": {
-              "id": "el_01K7JJN8009GVFVHAJX7KPHWQC",
+              "id": "el_01K7JJN800ADQXTCAVACSCDJHP",
               "name": "ModalUndoSentinel",
               "type": "drawing"
             },
             "drawing": {
-              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+              "id": "dr_01K7JJN8004BPVG0JZZ65N9Z35",
               "name": "1"
             },
             "mode": "drawing",
@@ -139,7 +141,7 @@
             "selection": {
               "context": "timeline",
               "ids": [
-                "el_01K7JJN8009GVFVHAJX7KPHWQC"
+                "el_01K7JJN800ADQXTCAVACSCDJHP"
               ],
               "kinds": [
                 "element"
@@ -156,24 +158,24 @@
             "modal": null,
             "agentSessions": [
               {
-                "sessionId": "s1-d5c690",
+                "sessionId": "s1-c3a6ce",
                 "name": "mcp",
                 "acting": false
               },
               {
-                "sessionId": "s2-96ed27",
+                "sessionId": "s2-101851",
                 "name": "review-live3-primary",
                 "acting": false
               },
               {
-                "sessionId": "s3-8850ac",
+                "sessionId": "s3-864334",
                 "name": "review-live3-secondary",
                 "acting": false
               }
             ],
             "fullScreen": false,
             "agent": {
-              "sessionId": "s3-8850ac",
+              "sessionId": "s3-864334",
               "client": "review-live3-secondary",
               "policy": "autonomous",
               "scopes": [
@@ -213,25 +215,25 @@
           {
             "command": "agent.session.resume",
             "params": {
-              "sessionId": "s2-96ed27"
+              "sessionId": "s2-101851"
             }
           }
         ],
         "primary": {
           "status": "ok",
           "result": {
-            "drawingId": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+            "drawingId": "dr_01K7JJN8004BPVG0JZZ65N9Z35",
             "strokeIds": [
-              "st_01K7JJN80020FPBNSKVJQT3FR9"
+              "st_01K7JJN800P5KP72RW684HXK5J"
             ],
             "zoneIds": [
-              "zn_X5042PR0NRSY0Z5W5PKWT8MT1A"
+              "zn_ZJ19EX80KPJC3QKSTMK2JWAS6D"
             ],
-            "layerId": "nd_01K7JJN801542TRCB54V2TKMHG",
+            "layerId": "nd_01K7JJN801J7TF71QJZTT33H1G",
             "createdIds": [
-              "st_01K7JJN80020FPBNSKVJQT3FR9",
-              "nd_01K7JJN801542TRCB54V2TKMHG",
-              "zn_X5042PR0NRSY0Z5W5PKWT8MT1A"
+              "st_01K7JJN800P5KP72RW684HXK5J",
+              "nd_01K7JJN801J7TF71QJZTT33H1G",
+              "zn_ZJ19EX80KPJC3QKSTMK2JWAS6D"
             ],
             "modifiedIds": [],
             "removedIds": [],
@@ -239,23 +241,23 @@
           },
           "changes": [
             {
-              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7/st_01K7JJN80020FPBNSKVJQT3FR9",
+              "id": "dr_01K7JJN8004BPVG0JZZ65N9Z35/st_01K7JJN800P5KP72RW684HXK5J",
               "type": "stroke",
               "op": "created",
               "rev": 5,
-              "parentId": "dr_01K7JJN8000CGKDTZ6SAQFE7J7/nd_01K7JJN801542TRCB54V2TKMHG",
+              "parentId": "dr_01K7JJN8004BPVG0JZZ65N9Z35/nd_01K7JJN801J7TF71QJZTT33H1G",
               "index": 0
             },
             {
-              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7/nd_01K7JJN801542TRCB54V2TKMHG",
+              "id": "dr_01K7JJN8004BPVG0JZZ65N9Z35/nd_01K7JJN801J7TF71QJZTT33H1G",
               "type": "drawingNode",
               "op": "created",
               "rev": 5,
-              "parentId": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+              "parentId": "dr_01K7JJN8004BPVG0JZZ65N9Z35",
               "index": 1
             },
             {
-              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+              "id": "dr_01K7JJN8004BPVG0JZZ65N9Z35",
               "type": "drawing",
               "op": "modified",
               "rev": 5,
@@ -264,7 +266,7 @@
                   "op": "add",
                   "path": "/nodes/1",
                   "value": {
-                    "id": "nd_01K7JJN801542TRCB54V2TKMHG",
+                    "id": "nd_01K7JJN801J7TF71QJZTT33H1G",
                     "type": "drawingNode"
                   }
                 }
@@ -282,7 +284,7 @@
           "status": "ok",
           "result": {
             "project": {
-              "id": "pr_01M7TVW8TC25TZHK666VVFPCS8",
+              "id": "pr_01M7TW7BEEAESWWJTS3JZVDSE5",
               "name": "Live3 sessions",
               "path": null,
               "dirty": true,
@@ -290,18 +292,18 @@
               "readOnly": false
             },
             "scene": {
-              "id": "sc_01M7TVW8TDGVV061N77EGGR9D3",
+              "id": "sc_01M7TW7BEEAESWWJTS3JZVDSJ9",
               "name": "Scene-1",
               "frameCount": 24
             },
             "frame": 1,
             "element": {
-              "id": "el_01K7JJN8009GVFVHAJX7KPHWQC",
+              "id": "el_01K7JJN800ADQXTCAVACSCDJHP",
               "name": "ModalUndoSentinel",
               "type": "drawing"
             },
             "drawing": {
-              "id": "dr_01K7JJN8000CGKDTZ6SAQFE7J7",
+              "id": "dr_01K7JJN8004BPVG0JZZ65N9Z35",
               "name": "1"
             },
             "mode": "drawing",
@@ -315,7 +317,7 @@
             "selection": {
               "context": "timeline",
               "ids": [
-                "el_01K7JJN8009GVFVHAJX7KPHWQC"
+                "el_01K7JJN800ADQXTCAVACSCDJHP"
               ],
               "kinds": [
                 "element"
@@ -332,24 +334,24 @@
             "modal": null,
             "agentSessions": [
               {
-                "sessionId": "s1-d5c690",
+                "sessionId": "s1-c3a6ce",
                 "name": "mcp",
                 "acting": false
               },
               {
-                "sessionId": "s2-96ed27",
+                "sessionId": "s2-101851",
                 "name": "review-live3-primary",
                 "acting": false
               },
               {
-                "sessionId": "s3-8850ac",
+                "sessionId": "s3-864334",
                 "name": "review-live3-secondary",
                 "acting": false
               }
             ],
             "fullScreen": false,
             "agent": {
-              "sessionId": "s3-8850ac",
+              "sessionId": "s3-864334",
               "client": "review-live3-secondary",
               "policy": "autonomous",
               "scopes": [
@@ -388,11 +390,942 @@
         {
           "command": "agent.session.grant",
           "params": {
-            "sessionId": "s2-96ed27",
+            "sessionId": "s2-101851",
             "policy": "observe"
           }
         }
       ]
+    },
+    {
+      "check": "scope grant applies to primary only",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.session.grant",
+            "params": {
+              "sessionId": "s2-101851",
+              "scopes": [
+                "read",
+                "edit"
+              ]
+            }
+          }
+        ],
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": null,
+            "sessions": [
+              {
+                "sessionId": "s1-c3a6ce",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:43:21.952Z",
+                "lastActivity": "2026-11-19T21:43:25.172Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-101851",
+                "client": "review-live3-primary",
+                "policy": "observe",
+                "scopes": [
+                  "read",
+                  "edit"
+                ],
+                "connectedAt": "2026-11-19T21:43:24.356Z",
+                "lastActivity": "2026-11-19T21:43:44.845Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-864334",
+                "client": "review-live3-secondary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-19T21:43:24.460Z",
+                "lastActivity": "2026-11-19T21:43:38.445Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6
+        }
+      }
+    },
+    {
+      "check": "indicator acting session and label",
+      "ok": false,
+      "detail": {
+        "samples": [
+          {
+            "text": "Agent acting: review-live3-secondary (agent.server.status)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (batch)",
+            "state": "acting"
+          }
+        ],
+        "answerStatus": "ok"
+      }
     },
     {
       "check": "disconnect isolated",
@@ -401,10 +1334,27 @@
         {
           "command": "agent.session.disconnect",
           "params": {
-            "sessionId": "s2-96ed27"
+            "sessionId": "s2-101851"
           }
         }
       ]
+    },
+    {
+      "check": "D-57 session/token events exclude shell notices",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 8,
+        "result": {
+          "contents": [
+            {
+              "uri": "app://events?after=0",
+              "mimeType": "application/json",
+              "text": "{\"eventCount\": 15, \"types\": {\"agent.session.connected\": 1, \"workspace.changed\": 1, \"app.state.changed\": 1, \"agent.paused\": 1, \"agent.resumed\": 1, \"doc.changed\": 3, \"draw.drawing.changed\": 3, \"edit.history.changed\": 3, \"agent.session.disconnected\": 1}, \"firstSeq\": 1, \"lastSeq\": 15, \"rawTextBytes\": 950078, \"sha256\": \"5c9fcef25084962fd0c1d689076f317a98e3d7705eb1101b07ef2261d2cb35be\"}"
+            }
+          ]
+        }
+      }
     }
   ]
 }

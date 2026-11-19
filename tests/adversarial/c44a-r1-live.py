@@ -395,6 +395,7 @@ def live(step):
   run.save('transcript.json',run.transcript)
   summary={'checks':len(run.transcript),'failures':run.failures,'raw':str(OUT)}
   if sys.argv[1] in ('l2a','l2b','l3a','l3b'):summary['results']=run.transcript
+  if sys.argv[1] in ('l3a','l3b'):summary=live3_compact(summary)
   suffix='-context-repro' if os.environ.get('REVIEW_CONTEXT_REPRO') else '-dock' if os.environ.get('REVIEW_DOCK_REPRO') else ''
   (EVID/((sys.argv[1]+'-' if sys.argv[1] in ('l2a','l2b','l3a','l3b') else '')+'step'+str(step)+suffix+'.json')).write_text(json.dumps(summary,indent=2,default=str)[:190000]+'\n',encoding='utf-8',newline='\n')
  return int(bool(run.failures))
@@ -416,6 +417,18 @@ def regression(step,script,cases):
  print('STEP',step,'COMPLETE',flush=True)
  preserve_old_receipts()
 
+
+def live3_compact(value):
+ if isinstance(value,list):return [live3_compact(x) for x in value]
+ if not isinstance(value,dict):return value
+ if str(value.get('uri','')).startswith('app://events') and 'text' in value:
+  import hashlib,collections
+  data=json.loads(value['text']);events=data.get('events',[])
+  brief={'eventCount':len(events),'types':dict(collections.Counter(x['type'] for x in events)),
+         'firstSeq':events[0]['seq'] if events else None,'lastSeq':events[-1]['seq'] if events else None,
+         'rawTextBytes':len(value['text'].encode()),'sha256':hashlib.sha256(value['text'].encode()).hexdigest()}
+  return {**value,'text':json.dumps(brief)}
+ return {k:live3_compact(v) for k,v in value.items()}
 
 class IndependentHttp:
  """Reviewer-owned MCP JSON-RPC transport; no product test client."""
@@ -578,7 +591,7 @@ async def live3_body(t,step):
    while not task.done():
     samples.append(dom('agent','({text:e.textContent,state:e.dataset.ttValue})'));await asyncio.sleep(.02)
    answer=await task
-   check(any(x and x['state']=='acting' for x in samples),'indicator acting session and label',{'samples':samples,'answerStatus':answer.get('status')})
+   check(any(x and x['state']=='acting' for x in samples) and not any(x and ('(batch)' in x['text'] or '(agent.server.status)' in x['text']) for x in samples),'indicator acting session and label',{'samples':samples,'answerStatus':answer.get('status')})
    t.clear();t.click('activity.session.'+sid+'.disconnect');await pause();check((await call(q,'app.state.get')).get('status')!='ok' and (await call(nq,'app.state.get')).get('status')=='ok','disconnect isolated',sent())
   elif step==7:
    await r3.modal_fixture(t,'Live3 activity');await c('window.panel.set',{'panelId':'activity','visible':True});await pause()
