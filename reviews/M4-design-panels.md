@@ -14,6 +14,11 @@ context menus. The Preferences dialog's Agent access category is with the other 
 - **Commit on release, one undo step per commit** (the C4.1 conventions; 02 §6.1 line 376 for pens). A slider sends
   nothing while dragged and one command at release; a text field commits on Enter or blur; a list choice commits at once.
   Commands that are UI state (kind `ui` or `toggle`) make no undo step (02 §12.1).
+- **One numeric field (ruling D-61, C44A-R1-20, -21).** Every numeric control is `NumericField.tsx`: it parses
+  strictly (an empty or non-numeric entry is never a number: nothing is sent and the field returns to the retained
+  value), refuses a value outside the command's declared range with the reason shown, commits on Enter and focus loss,
+  restores on Escape, shows a command's refusal on the field, and always displays the kernel's (or the form's staged)
+  value. A draft belongs to the value it was typed from, so a change made elsewhere shows at once.
 - **Keyboard reach.** Every control is reachable with Tab and Shift+Tab in reading order, operable with Space or Enter,
   arrows in lists and sliders (Page Up and Down for coarse steps), Escape leaves an edit unchanged. Each panel's manual
   script (`reviews/manual/M4/C4.4a-keyboard.md`) walks it with the keyboard only.
