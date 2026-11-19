@@ -1,0 +1,153 @@
+{
+  "checks": 2,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-d0dgew_6",
+  "results": [
+    {
+      "check": "inspector rename",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "draw.drawing.rename",
+            "params": {
+              "drawingId": "dr_01K7JJN800BFWKFMGD756DC1B5",
+              "name": "Live2 drawing"
+            }
+          }
+        ],
+        "drawing": {
+          "drawingId": "dr_01K7JJN800BFWKFMGD756DC1B5",
+          "elementId": "el_01K7JJN800PJCXD66RSRXZFFS7",
+          "name": "Live2 drawing",
+          "rev": 5,
+          "locked": false,
+          "space": {
+            "units": "du",
+            "duPerField": 100,
+            "yAxis": "up",
+            "origin": "drawingCentre"
+          },
+          "pivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "nd_01K7JJN8016ERDS57X1TFMWKBE",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN8003RNQER433PM4BQ5P",
+                  "kind": "pencil",
+                  "closed": true,
+                  "bezier": [
+                    {
+                      "x": -40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": -40.0
+                    }
+                  ],
+                  "colourId": "col_01M7TTH1XM6168EKTA20EKCDHC",
+                  "lineStyle": {
+                    "thickness": 8.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -44.0,
+                    "y": -44.0,
+                    "width": 88.0,
+                    "height": 88.0
+                  },
+                  "leftZoneId": "zn_DCWC5CXMGTA6B25M5YATSD0NZW",
+                  "rightZoneId": null
+                }
+              ],
+              "zones": [
+                {
+                  "type": "zone",
+                  "id": "zn_DCWC5CXMGTA6B25M5YATSD0NZW",
+                  "colourId": null,
+                  "textureMatrix": null,
+                  "boundaryStrokeIds": [
+                    "st_01K7JJN8003RNQER433PM4BQ5P"
+                  ],
+                  "holes": [],
+                  "parentZoneId": null,
+                  "area": 6400,
+                  "bounds": {
+                    "x": -40,
+                    "y": -40,
+                    "width": 80,
+                    "height": 80
+                  },
+                  "interiorPoint": {
+                    "x": 0,
+                    "y": -34.2890625
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "empty drawing surface follows design note 1 section 1 exception",
+      "ok": true,
+      "detail": []
+    }
+  ]
+}
