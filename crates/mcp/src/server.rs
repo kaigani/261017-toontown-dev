@@ -1048,22 +1048,36 @@ fn call_tool(
             // A confirmation the client can ask its user for (11 §6.3 rule 1). The answer settles the same logical
             // call: it is re-invoked with its token and its requestId, so the executor remembers the final outcome
             // under that id (C14-R1-04). Anything but an explicit `accept` with `confirm: true` declines (C14-R1-02).
-            if env.status == Status::NeedsConfirmation
-                && let Some(token) =
+            let token = (env.status == Status::NeedsConfirmation)
+                .then(|| {
                     env.result.as_ref().and_then(|r| r.get("confirmToken")).and_then(Value::as_str).map(str::to_owned)
-                && let Some(accepted) = elicit(shared, &env, rid)
-                // A request cancelled before acting on the answer does nothing: the token stays pending, unused.
-                && shared.begin_effect(rid)
-            {
-                if !accepted {
-                    let _ = shared.handle.invoke(Invocation::user(
-                        "agent.confirmation.respond",
-                        json!({ "confirmationId": token, "accept": false }),
-                    ));
+                })
+                .flatten();
+            if let Some(token) = token {
+                if asked_in_app(shared, &origin, &token) {
+                    // Ruling D-58 (R-a): the person at the window answers; the call is held until the answer, the
+                    // token's expiry or a document change (11 §6.3 step 2, "instead"), then settled with the token, so
+                    // the agent receives the outcome: the command's result, `confirmation.declined` or
+                    // `confirmation.expired`. A request cancelled meanwhile does nothing.
+                    if held_until_answered(shared, &token, rid) && shared.begin_effect(rid) {
+                        let mut again = inv;
+                        again.options.confirm_token = Some(token);
+                        (env, cached) = shared.handle.invoke_served_until(again, &|| shared.is_cancelled(rid));
+                    }
+                } else if let Some(accepted) = elicit(shared, &env, rid)
+                    // A request cancelled before acting on the answer does nothing: the token stays pending, unused.
+                    && shared.begin_effect(rid)
+                {
+                    if !accepted {
+                        let _ = shared.handle.invoke(Invocation::user(
+                            "agent.confirmation.respond",
+                            json!({ "confirmationId": token, "accept": false }),
+                        ));
+                    }
+                    let mut again = inv;
+                    again.options.confirm_token = Some(token);
+                    (env, cached) = shared.handle.invoke_served_until(again, &|| shared.is_cancelled(rid));
                 }
-                let mut again = inv;
-                again.options.confirm_token = Some(token);
-                (env, cached) = shared.handle.invoke_served_until(again, &|| shared.is_cancelled(rid));
             }
             // One activity entry for the logical call, with its final status and whole duration (C14-R1-12).
             // A requestId retry answered from the cache is recorded as such: it executed nothing (C14-R2-03).
@@ -1343,6 +1357,34 @@ fn project_state(mut env: Envelope, args: &Map<String, Value>) -> Envelope {
         m.retain(|k, _| keys.contains(k.as_str()));
     }
     env
+}
+
+/// Ruling D-58 (R-a): attached, a window present and the session's `askInApp` on, a confirmation goes to the app only
+/// (no elicitation): the request is marked in-app, which makes its token unusable before the person accepts.
+fn asked_in_app(shared: &Shared, origin: &Origin, token: &str) -> bool {
+    let Origin::Agent { session, .. } = origin else { return false };
+    shared.handle.attached()
+        && shared.handle.agent_status(session).is_ok_and(|s| s.limits.ask_in_app)
+        && shared.handle.hold_in_app(token).unwrap_or(false)
+}
+
+/// How often a held call looks at its in-app confirmation.
+const IN_APP_POLL: Duration = Duration::from_millis(100);
+
+/// Waits while the in-app confirmation is unanswered (D-58), at most the token's lifetime and a margin; `false` when the
+/// request was cancelled meanwhile (nothing is done; the token stays pending, unused).
+fn held_until_answered(shared: &Shared, token: &str, rid: &Value) -> bool {
+    let deadline = Instant::now() + ELICIT_TIMEOUT + Duration::from_secs(5);
+    while Instant::now() < deadline {
+        if shared.is_cancelled(rid) {
+            return false;
+        }
+        if !shared.handle.confirmation_waiting(token).unwrap_or(false) {
+            return true;
+        }
+        std::thread::sleep(IN_APP_POLL);
+    }
+    true
 }
 
 /// Asks the user through the client (MCP elicitation) when the client offers it (11 §6.3 rule 1). `None`: no

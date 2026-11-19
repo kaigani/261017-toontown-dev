@@ -2267,6 +2267,32 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   re-reads on it and on the four events. The registry event the design proposed (`agent.session.changed`) needs spec A
   and waits with SI-175's ruling.
 
+## SI-177 — confirmations asked in the app, and 11 §6.3's order (found in M4 C4.4a; ruled, D-58)
+
+- **Sections:** 11 §6.3 steps 1 and 2 (elicitation when the client supports it; otherwise `needs_confirmation`, and "in
+  attached mode the user may instead be shown the confirmation in the GUI"), 11 §6.4, `reviews/M4-design-agent-surfaces.md`
+  §4, D-49 item 2.
+- **Problem:** read literally, step 1 sends an elicitation first whenever the client supports it, so in attached mode the
+  agent's own client would answer for the person at the application, who owns the document. A token of an in-app request
+  was also usable before anyone answered (`take` let it through unless declined).
+- **Ruled (D-58):** attached, a window present and the session's `askInApp` on, the request goes to the app only, with no
+  elicitation (interim default, because the person at the application owns the document); the MCP server holds the call
+  until the answer, the token's expiry or a document change, and the agent receives the outcome (the command's result,
+  `confirmation.declined` or `confirmation.expired`). An in-app token is refused until the person accepts. The sheet is
+  not modal, never takes the focus, Decline is its default (Return and Escape inside it decline; Accept needs a click or
+  the focus moved to it), and it says why a request ended unanswered. A revision change ends the request.
+- **Open for the user:** whether step 1's order should change in the spec for attached mode (this interim reading puts
+  the app first).
+- **Built:** `agents.rs` (`Pending.in_app`, `expired`; `take` refuses an unanswered in-app token without consuming it;
+  `waiting`, `expire_stale`; `pendingConfirmations` with `inApp` and `expiresInMs`), `run.rs` (a revision change expires
+  open requests), `agent.rs` (`agent.confirmation.respond` announces the decision), `lib.rs` (`hold_in_app`,
+  `confirmation_waiting`), `crates/mcp/src/server.rs` (`asked_in_app`, `held_until_answered`), the host-only notice
+  `shell.agentConfirmation` (D-57 table), `ConfirmationSheet.tsx`; tests `c44a_agent.rs`
+  (`an_in_app_token_waits_for_the_persons_answer`, written first), `c44a_in_app_confirmation.rs` (the held call over MCP:
+  accepted, declined, document changed), `confirmationSheet.test.tsx`; parity `confirmSheet`; D-44 rows in a session of
+  their own (Accept, Decline, Return, document changed, decided in another window, three queued, expiry), each request
+  raised by a test-only MCP client held on its call.
+
 ## SI-178 — Regenerate token disconnects the HTTP clients and keeps the endpoint (found in M4 C4.4a; decided by the builder)
 
 - **Sections:** 11 §15.1 (`agent.token.regenerate`: "connected HTTP clients are disconnected"), 11 §4, ADR-0022.

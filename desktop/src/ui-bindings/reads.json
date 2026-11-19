@@ -7,6 +7,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
@@ -60,6 +61,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
@@ -121,6 +123,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -193,6 +196,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -232,6 +236,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -273,6 +278,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -314,6 +320,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -355,6 +362,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -396,6 +404,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -437,6 +446,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -478,6 +488,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -520,6 +531,12 @@
     "loadReport": {
       "description": "loadReport",
       "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
         "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
         "anim.camera.list": ["desktop/src/shell/Toolbars.tsx"],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -558,6 +575,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ]
       }
@@ -569,6 +587,7 @@
         "agent.server.status": [
           "desktop/src/panels/ActivityPanel.tsx",
           "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
         ],
         "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
@@ -585,6 +604,17 @@
         "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
         "workspace.get": ["desktop/src/state/store.ts"],
         "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "confirmSheet": {
+      "description": "confirmSheet",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ]
       }
     }
   },

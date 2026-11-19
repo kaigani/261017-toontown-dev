@@ -80,3 +80,85 @@ fn the_server_command_and_the_server_preferences_are_one_state() {
     assert_eq!(err(&h, "agent.server.set", json!({ "enabled": true, "port": 80 })).code, "arg.invalid");
     assert_eq!(err(&h, "prefs.set", json!({ "values": { "agent.server.port": 80 } })).code, "prefs.outOfRange");
 }
+
+fn agent(h: &tt_executor::ExecutorHandle, root: &std::path::Path) -> tt_executor::Origin {
+    let s = h
+        .connect_agent(tt_executor::agents::AgentConnect {
+            client: "c44a".into(),
+            policy: Some(tt_executor::agents::Policy::Assist),
+            roots: vec![root.to_path_buf()],
+            transport: "test".into(),
+            ..Default::default()
+        })
+        .unwrap();
+    tt_executor::Origin::Agent { session: s.session_id, name: s.client, scopes: s.scopes }
+}
+
+fn as_agent(
+    h: &tt_executor::ExecutorHandle,
+    o: &tt_executor::Origin,
+    params: Value,
+    token: Option<&str>,
+) -> tt_executor::Envelope {
+    let options = tt_executor::InvokeOptions { confirm_token: token.map(str::to_owned), ..Default::default() };
+    h.invoke(tt_executor::Invocation { command: "agent.activity.export".into(), params, options, origin: o.clone() })
+}
+
+/// Ruling D-58 (R-a), the kernel half, first: a token asked in the app is refused until the person accepts (and stays
+/// pending while refused); a decline is the agent's `confirmation.declined`; a document revision change ends the request
+/// (`confirmation.expired`), and every decision and expiry is announced to the windows (`shell.agentConfirmation`).
+#[test]
+fn an_in_app_token_waits_for_the_persons_answer() {
+    let dir = std::env::temp_dir().join(format!("tt-c44a-confirm-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).unwrap();
+    let h = spawn_in(&dir.join("user"));
+    ok(&h, "project.create", json!({ "name": "Confirm" }));
+    let file = dir.join("log.jsonl");
+    std::fs::write(&file, "x").unwrap();
+    let a = agent(&h, &dir);
+    let params = json!({ "path": file.to_string_lossy(), "format": "jsonl", "onExists": "overwrite" });
+    let token = |env: &tt_executor::Envelope| -> String {
+        assert_eq!(env.status, tt_executor::Status::NeedsConfirmation, "{env:?}");
+        env.result.as_ref().unwrap()["confirmToken"].as_str().unwrap().to_owned()
+    };
+    let rx = h.subscribe();
+    // Accepted.
+    let t1 = token(&as_agent(&h, &a, params.clone(), None));
+    assert!(h.hold_in_app(&t1).unwrap());
+    assert!(h.confirmation_waiting(&t1).unwrap());
+    let pending = ok(&h, "agent.server.status", json!({}))["pendingConfirmations"].clone();
+    assert_eq!(pending[0]["inApp"], true, "{pending}");
+    let refused = as_agent(&h, &a, params.clone(), Some(&t1));
+    let e = refused.error.unwrap();
+    assert_eq!(
+        (e.code.as_str(), e.details["reason"].as_str()),
+        ("confirmation.expired", Some("waiting for the user's answer in the app"))
+    );
+    assert!(h.confirmation_waiting(&t1).unwrap(), "a refused in-app token stays pending");
+    ok(&h, "agent.confirmation.respond", json!({ "confirmationId": t1, "accept": true }));
+    assert!(!h.confirmation_waiting(&t1).unwrap());
+    assert!(as_agent(&h, &a, params.clone(), Some(&t1)).is_ok());
+    // Declined.
+    let t2 = token(&as_agent(&h, &a, params.clone(), None));
+    assert!(h.hold_in_app(&t2).unwrap());
+    ok(&h, "agent.confirmation.respond", json!({ "confirmationId": t2, "accept": false }));
+    assert_eq!(as_agent(&h, &a, params.clone(), Some(&t2)).error.unwrap().code, "confirmation.declined");
+    // The document changed while the request was open.
+    let t3 = token(&as_agent(&h, &a, params.clone(), None));
+    assert!(h.hold_in_app(&t3).unwrap());
+    let scene = ok(&h, "doc.object.find", json!({ "type": "scene" }))["items"][0]["id"].as_str().map(str::to_owned);
+    ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 1 } } }));
+    assert!(!h.confirmation_waiting(&t3).unwrap());
+    assert!(ok(&h, "agent.server.status", json!({}))["pendingConfirmations"].as_array().unwrap().is_empty());
+    let e = as_agent(&h, &a, params, Some(&t3)).error.unwrap();
+    assert_eq!(e.code, "confirmation.expired", "{e:?}");
+    let outcomes: Vec<String> = rx
+        .try_iter()
+        .filter(|e| e.name == "shell.agentConfirmation")
+        .map(|e| e.payload["outcome"].as_str().unwrap_or_default().to_owned())
+        .collect();
+    assert_eq!(outcomes, ["requested", "accepted", "requested", "declined", "requested", "expired"]);
+    drop(h);
+    let _ = std::fs::remove_dir_all(&dir);
+}

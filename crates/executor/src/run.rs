@@ -1246,6 +1246,15 @@ impl Core {
         {
             s.emit("project.dirty.changed", json!({ "projectDirty": d, "globalLibraryDirty": false }));
         }
+        // D-58: an in-app confirmation is bound to the document revision; a change ends it (the held call answers
+        // `confirmation.expired`; the sheet says why).
+        let rev = s.project.as_ref().map(|p| p.doc.document_rev());
+        for id in s.agents.expire_stale(rev) {
+            s.emit(
+                "shell.agentConfirmation",
+                json!({ "confirmationId": id, "outcome": "expired", "reason": "the document changed" }),
+            );
+        }
         if after.drawing != before.drawing {
             s.env.save_drawing(&after.drawing);
             for n in s.env.take_notices() {

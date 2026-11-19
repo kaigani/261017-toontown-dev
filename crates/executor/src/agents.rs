@@ -249,6 +249,10 @@ pub(crate) struct Pending {
     pub decision: Option<bool>,
     /// Extra binding checked again when the token is used (e.g. the project file's identity, SI-045).
     pub binding: Option<Value>,
+    /// Asked in the app (ruling D-58, R-a): the person at the window answers; the token is unusable before an accept.
+    pub in_app: bool,
+    /// Why an in-app request ended without an answer (the document changed), shown by the sheet.
+    pub expired: Option<String>,
 }
 
 /// One activity-log entry (11 §11). Its schema is the declared result item of `agent.activity.list` (C34-R5-01):
@@ -418,12 +422,17 @@ impl AgentHub {
 
     /// The pending confirmations (attached mode shows them; `agent.server.status`).
     pub fn pending_summary(&self) -> Vec<Value> {
+        let ttl = self.ttl.unwrap_or(CONFIRMATION_TTL);
         self.pending
             .values()
+            // Only requests that can still be answered (D-58: a request decided, expired or overtaken leaves the sheet).
+            .filter(|p| p.expired.is_none() && p.created.elapsed() <= ttl)
             .map(|p| {
                 json!({
                     "confirmationId": p.id, "sessionId": p.session, "commandId": p.command, "summary": p.summary,
                     "consequences": p.consequences, "category": p.category.as_str(), "decision": p.decision,
+                    "inApp": p.in_app,
+                    "expiresInMs": u64::try_from(ttl.saturating_sub(p.created.elapsed()).as_millis()).unwrap_or(0),
                 })
             })
             .collect()
@@ -463,6 +472,17 @@ impl AgentHub {
             )
             .hint("invoke the command again without confirmToken to get a new confirmation")
         };
+        // D-58 (R-a): an in-app request is the person's to answer; until they accept, its token is refused and stays
+        // pending (the MCP server holds the agent's call until the answer).
+        if let Some(p) = self.pending.get(token)
+            && p.in_app
+            && p.decision.is_none()
+            && p.expired.is_none()
+            && p.created.elapsed() <= ttl
+            && p.document_rev == document_rev
+        {
+            return Err(expired("waiting for the user's answer in the app"));
+        }
         let Some(p) = self.pending.remove(token) else { return Err(expired("unknown or already used")) };
         if p.created.elapsed() > ttl {
             return Err(expired("expired"));
@@ -484,6 +504,33 @@ impl AgentHub {
             ));
         }
         Ok(())
+    }
+
+    /// Whether an in-app request still waits for the person's answer (D-58): pending, unanswered, within its lifetime
+    /// and bound to the document revision `rev`.
+    #[must_use]
+    pub fn waiting(&self, token: &str, rev: Option<u64>) -> bool {
+        let ttl = self.ttl.unwrap_or(CONFIRMATION_TTL);
+        self.pending.get(token).is_some_and(|p| {
+            p.in_app
+                && p.decision.is_none()
+                && p.expired.is_none()
+                && p.created.elapsed() <= ttl
+                && p.document_rev == rev
+        })
+    }
+
+    /// The in-app requests the document revision `rev` no longer matches (11 §6.3: a token is bound to the revision):
+    /// each is marked expired and returned (D-58).
+    pub fn expire_stale(&mut self, rev: Option<u64>) -> Vec<String> {
+        let mut out = Vec::new();
+        for p in self.pending.values_mut() {
+            if p.in_app && p.decision.is_none() && p.expired.is_none() && p.document_rev != rev {
+                p.expired = Some("the document changed".into());
+                out.push(p.id.clone());
+            }
+        }
+        out
     }
 
     /// Drops expired confirmations.

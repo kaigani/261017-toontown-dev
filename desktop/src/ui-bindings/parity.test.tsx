@@ -341,6 +341,34 @@ async function surfaces(): Promise<Surface[]> {
     });
   }
 
+  // The confirmation sheet (M4 C4.4a, D-58): an agent's request asked in the app, two queued.
+  const statusBefore = h.handlers['agent.server.status'];
+  const pendingRequest = (n: number) => ({
+    confirmationId: `cf_${String(n)}`,
+    sessionId: 's1',
+    commandId: 'agent.activity.export',
+    summary: 'Overwrite the log',
+    consequences: [{ kind: 'overwrite', path: '/w/log.jsonl' }],
+    decision: null,
+    inApp: true,
+    expiresInMs: 300000,
+  });
+  h.handlers['agent.server.status'] = () =>
+    ok({ ...SESSIONS, pendingConfirmations: [pendingRequest(1), pendingRequest(2)] });
+  mark(h);
+  act(() => {
+    h.event('agent.confirmation.requested', { confirmationId: 'cf_1' });
+  });
+  out.push(await settled('confirmSheet', await screen.findByRole('dialog', { name: 'Agent confirmation' })));
+  if (statusBefore) h.handlers['agent.server.status'] = statusBefore;
+  else delete h.handlers['agent.server.status'];
+  act(() => {
+    h.event('shell.agentConfirmation', { confirmationId: 'cf_1', outcome: 'declined' });
+  });
+  await waitFor(() => {
+    expect(screen.queryByRole('dialog', { name: 'Agent confirmation' })).toBeNull();
+  });
+
   // The load report window (M4 C4.4a, design note 2 §7): an open with repairs and warnings.
   h.handlers['doc.loadReport.get'] = () =>
     ok({

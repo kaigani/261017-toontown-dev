@@ -9,6 +9,7 @@
     "dockTabContextMenu",
     "viewContextMenu:scene",
     "viewContextMenu:drawing",
+    "confirmSheet",
     "loadReport",
     "dialog:About Toontown",
     "dialog:Project Info",
@@ -84,6 +85,28 @@
       "commands": [
         "agent.session.disconnect"
       ]
+    },
+    {
+      "id": "confirmSheet.accept",
+      "surface": "confirmSheet",
+      "commands": [
+        "agent.confirmation.respond"
+      ],
+      "params": {
+        "confirmationId": "cf_1",
+        "accept": true
+      }
+    },
+    {
+      "id": "confirmSheet.decline",
+      "surface": "confirmSheet",
+      "commands": [
+        "agent.confirmation.respond"
+      ],
+      "params": {
+        "confirmationId": "cf_1",
+        "accept": false
+      }
     },
     {
       "id": "checkProject.repair",
@@ -17589,12 +17612,20 @@
       "file": "desktop/src/shell/StatusBar.tsx"
     },
     {
+      "command": "agent.confirmation.respond",
+      "file": "desktop/src/shell/ConfirmationSheet.tsx"
+    },
+    {
       "command": "agent.server.status",
       "file": "desktop/src/panels/ActivityPanel.tsx"
     },
     {
       "command": "agent.server.status",
       "file": "desktop/src/prefs/AgentAccessPage.tsx"
+    },
+    {
+      "command": "agent.server.status",
+      "file": "desktop/src/shell/ConfirmationSheet.tsx"
     },
     {
       "command": "agent.server.status",
@@ -18097,6 +18128,10 @@
     {
       "surface": "agentPopover",
       "query": "agent.activity.list"
+    },
+    {
+      "surface": "confirmSheet",
+      "query": "agent.server.status"
     },
     {
       "surface": "dialog:About Toontown",
@@ -18888,6 +18923,10 @@
     },
     {
       "surface": "loadReport",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "loadReport",
       "query": "anim.camera.current.get"
     },
     {
@@ -19281,6 +19320,18 @@
       ]
     },
     {
+      "command": "agent.confirmation.requested",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
+      ]
+    },
+    {
+      "command": "agent.confirmation.respond",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
+      ]
+    },
+    {
       "command": "agent.openActivity",
       "files": [
         "desktop/src/shell/StatusBar.tsx"
@@ -19349,6 +19400,7 @@
       "files": [
         "desktop/src/panels/ActivityPanel.tsx",
         "desktop/src/prefs/AgentAccessPage.tsx",
+        "desktop/src/shell/ConfirmationSheet.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -19378,6 +19430,7 @@
       "files": [
         "desktop/src/panels/ActivityPanel.tsx",
         "desktop/src/prefs/AgentAccessPage.tsx",
+        "desktop/src/shell/ConfirmationSheet.tsx",
         "desktop/src/state/store.ts"
       ]
     },
@@ -19675,6 +19728,54 @@
       "command": "command.unknown",
       "files": [
         "desktop/src/ipc/mockTransport.ts"
+      ]
+    },
+    {
+      "command": "confirmSheet.accept",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
+      ]
+    },
+    {
+      "command": "confirmSheet.consequences",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
+      ]
+    },
+    {
+      "command": "confirmSheet.countdown",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
+      ]
+    },
+    {
+      "command": "confirmSheet.decline",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
+      ]
+    },
+    {
+      "command": "confirmSheet.dismissEnded",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
+      ]
+    },
+    {
+      "command": "confirmSheet.ended",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
+      ]
+    },
+    {
+      "command": "confirmSheet.queue",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
+      ]
+    },
+    {
+      "command": "confirmSheet.summary",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
       ]
     },
     {
@@ -20707,6 +20808,7 @@
         "desktop/src/panels/TextPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
+        "desktop/src/shell/ConfirmationSheet.tsx",
         "desktop/src/shell/LoadReportWindow.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
@@ -20768,6 +20870,7 @@
         "desktop/src/panels/TextPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/panels/ViewChrome.tsx",
+        "desktop/src/shell/ConfirmationSheet.tsx",
         "desktop/src/shell/LoadReportWindow.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
@@ -20889,6 +20992,12 @@
       "command": "shell.agentActivity",
       "files": [
         "desktop/src/panels/ActivityPanel.tsx"
+      ]
+    },
+    {
+      "command": "shell.agentConfirmation",
+      "files": [
+        "desktop/src/shell/ConfirmationSheet.tsx"
       ]
     },
     {

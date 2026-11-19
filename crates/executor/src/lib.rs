@@ -681,6 +681,49 @@ impl ExecutorHandle {
         })
     }
 
+    /// Asks the person in the app for a pending confirmation (ruling D-58, R-a: attached, a window present and the
+    /// session's `askInApp` on): the request is marked in-app, so its token is refused until the person accepts, and
+    /// the windows re-read the pending requests (`shell.agentConfirmation`). `false` when no such request is pending.
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal` (executor stopped).
+    pub fn hold_in_app(&self, token: &str) -> Result<bool, CommandError> {
+        let token = token.to_owned();
+        self.call("agent.holdInApp", |r| {
+            Request::Run(Box::new(move |core| {
+                let marked = core.session_mut().is_some_and(|s| {
+                    let found = s.agents.pending.get_mut(&token).map(|p| p.in_app = true).is_some();
+                    if found {
+                        s.emit(
+                            "shell.agentConfirmation",
+                            serde_json::json!({ "confirmationId": token, "outcome": "requested" }),
+                        );
+                    }
+                    found
+                });
+                let _ = r.send(marked);
+            }))
+        })
+    }
+
+    /// Whether an in-app confirmation still waits for the person's answer (D-58): unanswered, within its lifetime and
+    /// bound to the current document revision.
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal` (executor stopped).
+    pub fn confirmation_waiting(&self, token: &str) -> Result<bool, CommandError> {
+        let token = token.to_owned();
+        self.call("agent.confirmationWaiting", |r| {
+            Request::Run(Box::new(move |core| {
+                let waiting = core.session().is_some_and(|s| {
+                    let rev = s.project.as_ref().map(|p| p.doc.document_rev());
+                    s.agents.waiting(&token, rev)
+                });
+                let _ = r.send(waiting);
+            }))
+        })
+    }
+
     /// Sets how long confirmation tokens are valid (11 §6.3: five minutes; tests shorten it).
     ///
     /// # Errors

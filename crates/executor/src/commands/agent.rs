@@ -536,6 +536,11 @@ pub(crate) fn agent_confirmation_respond(cx: &mut Cx, p: ConfirmParams) -> Resul
         )
     })?;
     pending.decision = Some(p.accept);
+    // The sheet in every window drops the request (host-only, D-57/D-58; `agent.server.status` gives the same).
+    cx.emit(
+        "shell.agentConfirmation",
+        json!({ "confirmationId": p.confirmation_id, "outcome": if p.accept { "accepted" } else { "declined" } }),
+    );
     Ok(Confirmed { confirmation_id: p.confirmation_id, accepted: p.accept })
 }
 

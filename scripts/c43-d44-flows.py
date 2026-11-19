@@ -65,8 +65,8 @@ FLOW_COMMANDS = {
     "workspace.rename", "prefs.set", "job.cancel", "project.properties.set", "doc.repair",
     # M4 C4.4a: the toolbar customisation sheet; Preferences › Agent access's Regenerate token.
     "window.toolbar.items.set", "window.toolbar.items.reset", "agent.token.regenerate",
-    # The Activity panel's Undo back to before an entry.
-    "edit.history.move",
+    # The Activity panel's Undo back to before an entry; the confirmation sheet (D-58).
+    "edit.history.move", "agent.confirmation.respond",
 }
 
 
@@ -772,6 +772,154 @@ UNUSED_ASSET = {
 }
 
 
+def confirm_rows(t: Flows) -> list:
+    """The confirmation sheet (11 §6.3 step 2; M4 C4.4a, ruling D-58), in a session of its own. Each request is raised by
+    a test-only MCP session (a real client, held on its call) whose policy is Assist, so an overwrite asks; this runner's
+    own session drives the rest. Each row checks the command the sheet sends and the answer the held call receives."""
+    rows = []
+    agents: list = []
+
+    async def agent_session(n: int):
+        while len(agents) < n:
+            d = json.loads(t.discovery.read_text(encoding="utf-8"))
+            before = {x.get("sessionId") for x in (await t.cmd("agent.server.status", {})).get("sessions") or []}
+            stack = contextlib.AsyncExitStack()
+            client = await stack.enter_async_context(
+                e2e.httpx2.AsyncClient(headers={"Authorization": f"Bearer {d['token']}"}, timeout=e2e.httpx2.Timeout(400.0)))
+            streams = await stack.enter_async_context(e2e.streamable_http_client(d["endpoint"], http_client=client))
+            s2 = await stack.enter_async_context(e2e.ClientSession(streams[0], streams[1]))
+            await s2.initialize()
+            await asyncio.sleep(0.4)
+            after = {x.get("sessionId") for x in (await t.cmd("agent.server.status", {})).get("sessions") or []}
+            sid = sorted(after - before)[0]
+            # Assist: an overwrite asks (the person's grant, from the page; scope `app`).
+            t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command: 'agent.session.grant',"
+                     " params: {sessionId: %s, policy: 'assist'}})}).then(() => true)" % json.dumps(sid))
+            await asyncio.sleep(0.4)
+            agents.append({"session": s2, "id": sid, "stack": stack})
+        return agents[:n]
+
+    def ask(a: dict, n: int):
+        f = t.work / f"confirm-{n}.jsonl"
+        f.write_text("x", encoding="utf-8")
+        return asyncio.create_task(e2e.run_cmd(a["session"], "agent.activity.export",
+                                               {"path": str(f), "format": "jsonl", "onExists": "overwrite"}))
+
+    async def pending_ids():
+        st = await t.cmd("agent.server.status", {})
+        return [p.get("confirmationId") for p in st.get("pendingConfirmations") or [] if p.get("inApp")]
+
+    async def raised(ctx, count=1):
+        sessions = await agent_session(count)
+        ctx["calls"] = [ask(a, i) for i, a in enumerate(sessions)]
+        for _ in range(100):
+            ids = await pending_ids()
+            if len(ids) >= count:
+                break
+            await asyncio.sleep(0.1)
+        ctx["ids"] = await pending_ids()
+        if not await t.wait_for("confirmSheet.accept"):
+            raise RuntimeError("the confirmation sheet did not appear")
+        ctx["focus"] = t.cdp.js("document.activeElement && document.activeElement.dataset.ttId")
+
+    async def answers(ctx):
+        out = []
+        for c in ctx.get("calls") or []:
+            env = await asyncio.wait_for(c, timeout=400)
+            out.append(env.get("status") if env.get("status") != "error" else (env.get("error") or {}).get("code"))
+        return out
+
+    async def nothing(_ctx):
+        return None
+
+    def answer_row(name, button, accept):
+        async def flow(ctx):
+            await raised(ctx)
+            t.click(f"confirmSheet.{button}")
+            await asyncio.sleep(0.6)
+            ctx["answers"] = await answers(ctx)
+            return f"a test-only agent's overwrite asked in the sheet (focus not taken: {ctx['focus']}), a real click on {name}"
+        rows.append({"name": f"Confirmation sheet › {name}", "spec": "11 §6.3 step 2; D-58", "path": ["agent request", "sheet"],
+                     "choice": name, "setup": nothing, "state": nothing, "flow": flow, "wait": 0.5,
+                     "expect": lambda ctx: [("agent.confirmation.respond", {"confirmationId": ctx["ids"][0], "accept": accept}, [])],
+                     "effect": lambda b, a, ctx: ctx["answers"] == (["ok"] if accept else ["confirmation.declined"])
+                     and ctx["focus"] != f"confirmSheet.{button}"})
+    answer_row("Accept", "accept", True)
+    answer_row("Decline", "decline", False)
+
+    async def enter_flow(ctx):
+        await raised(ctx)
+        t.cdp.js("document.querySelector('[data-tt-id=\"confirmSheet.decline\"]').focus()")
+        d39.key(VK_RETURN)
+        await asyncio.sleep(0.6)
+        ctx["answers"] = await answers(ctx)
+        return "the focus moved into the sheet, then a real Return (Decline is the default)"
+    rows.append({"name": "Confirmation sheet › Return (default Decline)", "spec": "D-58; D-49 item 2", "path": ["agent request", "sheet"],
+                 "choice": "Return", "setup": nothing, "state": nothing, "flow": enter_flow, "wait": 0.5,
+                 "expect": lambda ctx: [("agent.confirmation.respond", {"confirmationId": ctx["ids"][0], "accept": False}, [])],
+                 "effect": lambda b, a, ctx: ctx["answers"] == ["confirmation.declined"]})
+
+    async def revision_flow(ctx):
+        await raised(ctx)
+        # The person edits the document while the request is open (from the page: the user's origin).
+        scene = (await t.cmd("doc.object.find", {"type": "scene"})).get("items", [{}])[0].get("id")
+        t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command: 'doc.object.patch', params:"
+                 " {targets: [%s], props: {meta: {d44: 1}}}})}).then(() => true)" % json.dumps(scene))
+        await asyncio.sleep(1.0)
+        ctx["answers"] = await answers(ctx)
+        ctx["ended"] = t.cdp.js("document.querySelector('[data-tt-id=\"confirmSheet.ended\"]')?.textContent ?? null")
+        return "a request open in the sheet, then the person's own edit of the document"
+    rows.append({"name": "Confirmation sheet › document changed", "spec": "11 §6.3 (bound to the revision); D-58", "path": ["agent request", "sheet"],
+                 "choice": "revision change", "setup": nothing, "state": nothing, "flow": revision_flow, "wait": 0.5,
+                 "expect": lambda ctx: [],
+                 "effect": lambda b, a, ctx: ctx["answers"] == ["confirmation.expired"] and "document changed" in (ctx.get("ended") or "")})
+
+    async def elsewhere_flow(ctx):
+        await raised(ctx)
+        # Answered by another window: its own command entry point, not this sheet's buttons.
+        t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command: 'agent.confirmation.respond',"
+                 " params: {confirmationId: %s, accept: true}})}).then(() => true)" % json.dumps(ctx["ids"][0]))
+        await asyncio.sleep(1.0)
+        ctx["answers"] = await answers(ctx)
+        ctx["gone"] = not t.exists("confirmSheet.accept")
+        return "a request open in the sheet, answered by another window (no click in the sheet)"
+    rows.append({"name": "Confirmation sheet › decided in another window", "spec": "D-58", "path": ["agent request", "sheet"],
+                 "choice": "elsewhere", "setup": nothing, "state": nothing, "flow": elsewhere_flow, "wait": 0.5,
+                 "expect": lambda ctx: [("agent.confirmation.respond", {"confirmationId": ctx["ids"][0], "accept": True}, [])],
+                 "effect": lambda b, a, ctx: ctx["answers"] == ["ok"] and ctx["gone"]})
+
+    async def queued_flow(ctx):
+        await raised(ctx, 3)
+        ctx["queue"] = t.cdp.js("document.querySelector('[data-tt-id=\"confirmSheet.queue\"]')?.textContent ?? null")
+        ctx["order"] = []
+        for button in ("decline", "accept", "decline"):
+            shown = t.cdp.js("document.querySelector('[data-tt-id=\"confirmSheet.accept\"]')?.dataset.ttParams ?? null")
+            ctx["order"].append(json.loads(shown or "{}").get("confirmationId"))
+            t.click(f"confirmSheet.{button}")
+            await asyncio.sleep(0.8)
+        ctx["answers"] = sorted(await answers(ctx))
+        return "three test-only agents' requests queued in the sheet: Decline, Accept, Decline in turn"
+    rows.append({"name": "Confirmation sheet › three queued", "spec": "D-58 (queued requests)", "path": ["agent request", "sheet"],
+                 "choice": "queue", "setup": nothing, "state": nothing, "flow": queued_flow, "wait": 0.5,
+                 "expect": lambda ctx: [("agent.confirmation.respond", {"confirmationId": ctx["order"][i], "accept": acc}, [])
+                                        for i, acc in enumerate((False, True, False))],
+                 "effect": lambda b, a, ctx: "1 of 3" in (ctx.get("queue") or "")
+                 and ctx["answers"] == sorted(["confirmation.declined", "ok", "confirmation.declined"])})
+
+    async def expiry_flow(ctx):
+        await raised(ctx)
+        # The token lives five minutes (11 §6.3); nothing is clicked.
+        ctx["answers"] = await answers(ctx)
+        await asyncio.sleep(1.5)
+        ctx["ended"] = t.cdp.js("document.querySelector('[data-tt-id=\"confirmSheet.ended\"]')?.textContent ?? null")
+        return "a request left unanswered for the token's five minutes"
+    rows.append({"name": "Confirmation sheet › expiry", "spec": "11 §6.3 (five minutes); D-58", "path": ["agent request", "sheet"],
+                 "choice": "expiry", "setup": nothing, "state": nothing, "flow": expiry_flow, "wait": 0.5,
+                 "expect": lambda ctx: [],
+                 "effect": lambda b, a, ctx: ctx["answers"] == ["confirmation.expired"] and "expired" in (ctx.get("ended") or "")})
+    return rows
+
+
 def token_rows(t: Flows) -> list:
     """Preferences › Agent access › Regenerate token (11 §15.1; M4 C4.4a, design note 2 §2; SI-178), in a session of its
     own: Regenerate ends this runner's HTTP session, so it runs last and its effect is read without it, from the
@@ -1198,6 +1346,8 @@ async def session(app: str, run, out: Path, work: Path, group: str, only: set, s
                         *form_rows(t), *dismiss_rows(t), *default_rows(t), *modal_kind_rows(t), jobs_row(t)]
             elif group == "token":
                 rows = token_rows(t)
+            elif group == "confirm":
+                rows = confirm_rows(t)
             else:
                 rows = unsaved_rows(t, group.removeprefix("quit-"))
             for r in rows:
@@ -1237,10 +1387,12 @@ def main() -> int:
     started = time.monotonic()
     rows: list = []
     try:
-        for group in ("main", "quit-discard", "quit-save", "token"):
+        for group in ("main", "quit-discard", "quit-save", "confirm", "token"):
             if group.startswith("quit-") and only and not any("Quit" in o for o in only):
                 continue
             if group == "token" and only and not any("Regenerate" in o for o in only):
+                continue
+            if group == "confirm" and only and not any("Confirmation" in o for o in only):
                 continue
             before = len(rows)
             try:

@@ -299,6 +299,8 @@ impl Cx {
                 category,
                 decision: None,
                 binding,
+                in_app: false,
+                expired: None,
             },
         );
         Err(CommandError::with_details(

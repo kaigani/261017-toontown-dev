@@ -1,11 +1,6 @@
 {
   "$comment": "The commands whose GUI location belongs to a checkpoint that has not passed (rulings D-30, D-31): the owner checkpoint, the spec section that defines the location, and the location. The parity gate (crates/executor/tests/c43/parity.rs) requires every implemented command to be bound in parity.json, declared agent-only, or listed here, and exactly one of the three; an owner must not have passed.",
   "deferred": {
-    "agent.confirmation.respond": {
-      "owner": "M4 C4.4",
-      "section": "11 §6.3, §6.4",
-      "location": "the agent confirmation sheet"
-    },
     "anim.camera.create": {
       "owner": "M6 C6.2",
       "section": "05 §19.3 (Command table)",
