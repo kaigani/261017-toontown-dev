@@ -1,7 +1,7 @@
 {
-  "checks": 5,
+  "checks": 6,
   "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-wex4f3lc",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-9yh62vag",
   "results": [
     {
       "check": "independent HTTP initialize",
@@ -44,6 +44,19 @@
       }
     },
     {
+      "check": "server port group exactly changed values",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.set",
+          "params": {
+            "enabled": true,
+            "port": 47891
+          }
+        }
+      ]
+    },
+    {
       "check": "new client accepted after on",
       "ok": true,
       "detail": {
@@ -53,7 +66,7 @@
           "endpoint": null,
           "sessions": [
             {
-              "sessionId": "s3-aa7dbe",
+              "sessionId": "s3-b58129",
               "client": "on-probe",
               "policy": "autonomous",
               "scopes": [
@@ -66,7 +79,7 @@
                 "prefs",
                 "library.global"
               ],
-              "connectedAt": "2026-11-19T21:32:51.249Z",
+              "connectedAt": "2026-11-19T21:41:26.747Z",
               "lastActivity": null,
               "paused": false,
               "transport": "http"

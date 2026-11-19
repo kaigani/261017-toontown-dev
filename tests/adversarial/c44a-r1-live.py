@@ -571,6 +571,8 @@ async def live3_body(t,step):
     check(('agent.paused' in json.dumps(a) if action=='pause' else a.get('status')=='ok') and b.get('status')=='ok','session '+action+' isolated',{'sent':sent(),'primary':a,'other':b})
    t.clear();await t.do(('select','activity.session.'+sid+'.policy','observe'));await pause()
    check('permission.denied' in json.dumps(await call(q,'draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':1,'y':1}})),'grant targets primary',sent())
+   t.clear();t.click('activity.session.'+sid+'.scopes');await pause();t.click('activity.session.'+sid+'.scope.edit');t.click('activity.session.'+sid+'.scopes.ok');await pause()
+   check((await call(q,'draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':2,'y':2}})).get('status')=='ok','scope grant applies to primary only',{'sent':sent(),'status':await call(nq,'agent.server.status')})
    samples=[]
    task=asyncio.create_task(tool(nq,'batch',{'label':'Indicator review','steps':[{'id':'draw.rectangle.add','params':{'from':{'x':0,'y':0},'to':{'x':10,'y':10}}}]*1000}))
    while not task.done():
