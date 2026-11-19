@@ -721,13 +721,21 @@ async def live4_body(t,step):
    status=await call(q2,'agent.server.status');activity=await call(q2,'agent.activity.list',{'limit':100});events=await asyncio.to_thread(q2.rpc,'resources/read',{'uri':'app://events?after=0'})
    check(True,'token surfaces',{'status':status,'activity':activity,'events':live3_compact(events),'firstReturned':task.done()})
    pending=(status.get('result') or {}).get('pendingConfirmations',[]);cid=pending[0]['confirmationId']
+   probes=[]
    for client in (q,q2):
     for token in ('guessed-confirm-token',cid):
-     r=await asyncio.to_thread(client.tool,'run_command',{'id':'project.saveAs','params':p,'confirmToken':token});check(r.get('status')!='ok','token bypass refused',r)
-    r=await call(client,'agent.confirmation.respond',{'confirmationId':cid,'accept':True});check(r.get('status')!='ok','agent response refused',r)
-    probe=asyncio.create_task(asyncio.to_thread(client.tool,'run_command',{'id':'project.saveAs','params':p,'confirm':True}));tasks.append(probe);await pause()
-    check(not probe.done() or probe.result().get('status')!='ok','confirm true no bypass',probe.result() if probe.done() else 'held')
-   while dom('confirmSheet') is not None:t.click('confirmSheet.decline');await pause()
+     probe=asyncio.create_task(asyncio.to_thread(client.tool,'run_command',{'id':'project.saveAs','params':p,'confirmToken':token}));probes.append(('token '+client.name,probe));tasks.append(probe)
+    probe=asyncio.create_task(call(client,'agent.confirmation.respond',{'confirmationId':cid,'accept':True}));probes.append(('respond '+client.name,probe));tasks.append(probe)
+    probe=asyncio.create_task(asyncio.to_thread(client.tool,'run_command',{'id':'project.saveAs','params':p,'confirm':True}));probes.append(('confirm true '+client.name,probe));tasks.append(probe)
+   await asyncio.sleep(2)
+   check((await exists(sid))['unchanged'],'bypasses did not write before accept')
+   check(True,'bypass states before decline',[{'probe':name,'returned':probe.result() if probe.done() else 'held'} for name,probe in probes])
+   for _ in range(15):
+    if dom('confirmSheet'):t.click('confirmSheet.decline')
+    await pause()
+    if task.done() and all(probe.done() for name,probe in probes):break
+   for name,probe in probes:
+    r=await asyncio.wait_for(asyncio.shield(probe),10);check(r.get('status')!='ok','bypass refused '+name,r)
    check('confirmation.declined' in json.dumps(await task),'original remains declined')
   elif step==4:
    for who in ('window','agent'):
@@ -748,7 +756,59 @@ async def live4_body(t,step):
    check(dom('confirmSheet.queue') and '1 of 3' in dom('confirmSheet.queue'),'three calls queue',dom('confirmSheet'))
    check((await call(q2,'app.state.get')).get('status')=='ok','other query completes')
    for task,accept in zip(held,(False,False,True)):await answer(task,accept)
-  else:check(False,'unimplemented step')
+  elif step==6:
+   import zipfile
+   clean=t.work/'clean.animpkg';bad=t.work/'damaged.animpkg'
+   await c('project.saveAs',{'path':str(clean)})
+   with zipfile.ZipFile(clean) as src,zipfile.ZipFile(bad,'w') as dst:
+    removed=[n for n in src.namelist() if '/drawings/' in n and n.endswith('.json')]
+    check(bool(removed),'fixture has drawing entry',removed)
+    for name in src.namelist():
+     if name not in removed:dst.writestr(name,src.read(name))
+   await c('project.close',{'onUnsaved':'discard'})
+   d.choose_menu(['File','Open']);await asyncio.sleep(1);d.type_text(str(bad));d.key(0x0D);await asyncio.sleep(2)
+   report=await c('doc.loadReport.get');check(dom('loadReport') is not None,'report opens on damaged project',report)
+   check('drawing.contentMissing' in json.dumps(report),'missing content reported',report)
+   before=await c('doc.export.json',{'scope':'project','binaries':'omit'})
+   if dom('loadReport'):
+    t.click('loadReport.copy');await pause()
+    clip=subprocess.check_output(['powershell','-NoProfile','-Command','Get-Clipboard -Raw']).decode(errors='replace')
+    check('drawing.contentMissing' in clip,'Copy details reaches OS clipboard',clip)
+    check((await call(q,'app.state.get')).get('status')=='ok','report nonmodal query')
+    t.click('loadReport.close');await pause();check(before==await c('doc.export.json',{'scope':'project','binaries':'omit'}),'closing report preserves document')
+    await asyncio.sleep(1);check(dom('loadReport') is None,'report remains closed once per open')
+   await c('project.close',{'onUnsaved':'discard'})
+   opened=await call(q,'project.open',{'path':str(bad),'wait':True});await asyncio.sleep(2)
+   check('drawing.contentMissing' in json.dumps(opened),'agent receives report warnings',opened)
+   check(dom('loadReport') is not None,'agent open shows report too',dom('loadReport'))
+   if dom('loadReport'):t.click('loadReport.close')
+   await c('project.close',{'onUnsaved':'discard'});await c('project.open',{'path':str(clean),'wait':True});await asyncio.sleep(2)
+   check(dom('loadReport') is None,'clean open has no report',await c('doc.loadReport.get'))
+  elif step==7:
+   async def layout():return await c('window.toolbar.list')
+   async def sheet():d.choose_menu(['Window','Customize Toolbar']);await pause()
+   before=await layout()
+   await sheet();t.click('toolbarSheet.allowed.edit.undo');t.click('toolbarSheet.add');t.click('toolbarSheet.up');await pause()
+   check(await layout()==before,'add and reorder staged')
+   t.click('toolbarSheet.cancel');await pause();check(await layout()==before,'Cancel discards')
+   await sheet();t.click('toolbarSheet.item.0');t.click('toolbarSheet.remove');d.key(0x1B);await pause();check(await layout()==before,'Escape discards removal')
+   await sheet();t.click('toolbarSheet.allowed.edit.undo');t.click('toolbarSheet.add');t.click('toolbarSheet.up')
+   for _ in range(45):
+    d.key(0x09);focus=t.cdp.js('document.activeElement?.dataset.ttId');check(bool(focus) and focus.startswith('toolbarSheet.'),'Tab contained',focus)
+   tool=await c('tool.active.get');d.key(0x42);await pause();check(await c('tool.active.get')==tool,'sheet blocks tool shortcut')
+   t.clear();t.click('toolbarSheet.submit');await pause();after=await layout();check(after!=before,'Apply changes layout',{'layout':after,'sent':t.recorded()})
+   await c('draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':5,'y':5}});pos=await t.position();t.click('mainToolbar.edit.undo');await pause();check(await t.position()==pos-1,'added Undo works')
+   # Restart with the same installed user directory.
+   import signal
+   for client in clients:await asyncio.to_thread(client.close)
+   os.kill(d.e2e.APP_PID['pid'],signal.SIGTERM);await asyncio.sleep(1)
+   proc=d.e2e.launch(APP,t.work/'user',t.work/'restart-discovery.json')
+   try:
+    disc=d.e2e.wait_discovery(t.work/'restart-discovery.json',proc);await asyncio.sleep(2);t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+    restart=Live4Http(disc,'restart-live4');clients.append(restart);await asyncio.to_thread(restart.initialize)
+    persisted=await call(restart,'window.toolbar.list');check(persisted.get('result')==after,'layout survives restart',persisted)
+    await sheet();t.clear();t.click('toolbarSheet.restore');await pause();reset=await call(restart,'window.toolbar.list');check(reset.get('result')==before,'Restore Default restores original',{'layout':reset,'sent':t.recorded()})
+   finally:d.e2e.stop(proc)
  finally:
   for _ in range(10):
    if dom('confirmSheet') is None:break
