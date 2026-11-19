@@ -216,10 +216,40 @@ async def live2_body(t,step):
    t.clear();await typed('pen.'+field+'.field',invalid)
    t.run.check(dom('pen.'+field+'.field')==str(value),'invalid pen value restored '+field,{'field':dom('pen.'+field+'.field'),'engine':(await cur())[field],'sent':sent()})
    await typed('pen.'+field+'.field',value)
+   await typed('pen.'+field+'.field','abc');t.run.check((await cur())[field]==value and dom('pen.'+field+'.field')==str(value),'nonnumeric pen refused '+field,{'field':dom('pen.'+field+'.field'),'pen':await cur()})
+   await typed('pen.'+field+'.field',value)
    t.clear();d.front();dom('pen.'+field,'(e.focus(),true)');d.key(0x27);await pause()
    t.run.check(len([x for x in sent() if x['command']=='tool.pen.set'])>=1,'slider keyboard release '+field,sent())
   for shape in ('oval','square','flat','round'):
    t.clear();await t.do(('select','pen.tipShape',shape));await pause();t.run.check((await cur())['tipShape']==shape,'tip shape '+shape,sent())
+  base=t.work/'stroke-base.animpkg';await c('project.saveAs',{'path':str(base)})
+  t.clear();d.front();r=t.rect('drawingView.canvas');x,y=r['x']*r['dpr'],r['y']*r['dpr']
+  d.e6.os_drag(d.e2e.APP_PID['pid'],[(x-50,y),(x,y+25),(x+50,y)],.4,.1,{})
+  await asyncio.sleep(1.5);commands=sent();window=await c('draw.drawing.get');t.run.save('stroke-window.json',{'commands':commands,'drawing':window})
+  from mcp import ClientSession,StdioServerParameters,types
+  from mcp.client.stdio import stdio_client
+  async def roots(_):return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='work')])
+  args=['--mcp-stdio','--project',str(base),'--policy','autonomous','--allow-path',str(t.work),'--user-dir',str(t.work/'headless-user')]
+  async with stdio_client(StdioServerParameters(command=str(ROOT/'target/release/toontown-headless.exe'),args=args)) as streams:
+   async with ClientSession(*streams,list_roots_callback=roots) as hs:
+    await hs.initialize();ht=d.Table(hs,t.run,OUT,t.work)
+    for command in commands:
+     if command['command'].startswith('draw.'):await ht.cmd(command['command'],command['params'])
+    head=await ht.cmd('draw.drawing.get')
+  import re
+  def canon(v):
+   ids={}
+   def walk(x):
+    if isinstance(x,dict):return {k:walk(v) for k,v in x.items() if k!='rev'}
+    if isinstance(x,list):return [walk(v) for v in x]
+    if isinstance(x,str):
+     def replace(m):
+      key=m[0];ids.setdefault(key,key.split('_')[0]+'_'+str(len(ids)));return ids[key]
+     return re.sub(r'[a-z]+_[0-9A-Z]{26}',replace,x)
+    return x
+   return walk(v)
+  t.run.check(bool(commands) and canon(window)==canon(head),'D-32 recorded OS stroke replay equals headless exactly modulo identifiers',{'commands':commands,'equal':canon(window)==canon(head)})
+
  elif step==3:
   pid=(await cur())['penId'];await c('tool.pen.set',{'penId':pid,'maxSize':53});await pause()
   t.run.check(dom('pen.maxSize.field')=='53','agent pen setting reflected',dom('pen.maxSize.field'))
@@ -263,6 +293,8 @@ async def live2_body(t,step):
   for field,value,invalid in [('size',48,513),('kerning',12,61),('leftMargin',8,-1),('rightMargin',9,1001),('indent',-12,-100),('lineSpacing',5,1001)]:
    t.clear();await typed('text.'+field,value);options=(await c('tool.options.get',{'toolId':'text'}))['options'];t.run.check(options[field]==value,'text numeric '+field,{'sent':sent(),'options':options})
    await typed('text.'+field,invalid);t.run.check(dom('text.'+field)==str(value),'text invalid restored '+field,{'field':dom('text.'+field),'options':(await c('tool.options.get',{'toolId':'text'}))['options']})
+   await typed('text.'+field,value)
+   await typed('text.'+field,'abc');t.run.check((await c('tool.options.get',{'toolId':'text'}))['options'][field]==value and dom('text.'+field)==str(value),'nonnumeric text refused '+field,{'field':dom('text.'+field),'options':(await c('tool.options.get',{'toolId':'text'}))['options']})
    await typed('text.'+field,value)
   for flag in ('bold','italic','autoKern'):
    before=(await c('tool.options.get',{'toolId':'text'}))['options'][flag];t.clear();t.click('text.'+flag);await pause();t.run.check((await c('tool.options.get',{'toolId':'text'}))['options'][flag]!=before,'text flag '+flag,sent())
