@@ -166,8 +166,11 @@ async def live_body(t,step):
   t.clear();r=t.rect('mainToolbar.cameraList');h=d.front();o=wintypes.POINT(0,0);d.u32.ClientToScreen(h,ctypes.byref(o))
   height=t.cdp.js("document.querySelector('[data-tt-id=\"mainToolbar.cameraList\"]').getBoundingClientRect().height")
   t.click('mainToolbar.cameraList');await asyncio.sleep(.3)
-  # Two-option native select popup: first option at selected row, second one row below it.
-  d.click_screen(o.x+r['x']*r['dpr'],o.y+(r['y']+height/2)*r['dpr']+5+24*1.5)
+  from PIL import ImageGrab
+  ImageGrab.grab().save(OUT/'camera-popup.png')
+  # Native popup rows follow the DOM option order (new cameras can appear first).
+  index=next(i for i,opt in enumerate(options()) if opt['value']==target['value'])
+  d.click_screen(o.x+r['x']*r['dpr'],o.y+(r['y']+height/2)*r['dpr']+5+24*(index+.5))
   await asyncio.sleep(.5);sent=[x for x in t.recorded() if t.kinds.get(x['command'])!='query']
   t.run.check(sent==[{'command':target['command'],'params':target['params']}] and (await c('anim.camera.current.get'))['cameraId']==second['id'],'L1b mouse declared choice exactly once',{'target':target,'sent':sent})
   await c('anim.camera.delete',{'cameraId':second['id']});await asyncio.sleep(.7)
