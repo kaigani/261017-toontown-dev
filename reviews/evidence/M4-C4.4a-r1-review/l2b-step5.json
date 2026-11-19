@@ -111,5 +111,18 @@
         }
       }
     }
-  ]
+  ],
+  "rawFiles": [
+    {
+      "name": "live2-commands.json",
+      "bytes": 2282,
+      "sha256": "442ee110010b26c0b2364a33cbf1b26ae448378517c4eae45e59455f0dcd813f"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 2592,
+      "sha256": "da01ad702719150d7d17a571e2e2167304a8c70696f474cebc6bd5f8712fc4b2"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2b 5"
 }

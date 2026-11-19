@@ -180,5 +180,28 @@
       "ok": true,
       "detail": []
     }
-  ]
+  ],
+  "rawFiles": [
+    {
+      "name": "inspector-empty.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "name": "inspector-state.json",
+      "bytes": 1746,
+      "sha256": "2f15a52f9d5c936b1728758774e5c18a28d34cc58d562a8d1f9520d4350123f1"
+    },
+    {
+      "name": "live2-commands.json",
+      "bytes": 21661,
+      "sha256": "c70bd3b43f88abcb793590dc3ad394a7ba5e2d5c130b9814123f9704d2039175"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 4768,
+      "sha256": "8591fe9bca27500c7bcd7db14f48e503d151e0a50dc217a8b21fd167cc36f26b"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2b 7"
 }

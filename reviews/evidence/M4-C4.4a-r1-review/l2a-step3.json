@@ -121,5 +121,18 @@
       }
     }
   ],
-  "sha256": "409e79b22cf0d43f7df690b0968d191a62be6b7c8fab58fc84f39506382b9057"
+  "sha256": "409e79b22cf0d43f7df690b0968d191a62be6b7c8fab58fc84f39506382b9057",
+  "rawFiles": [
+    {
+      "name": "live2-commands.json",
+      "bytes": 20896,
+      "sha256": "53c7f4545277f0ed99f85d4877a0a9ddf71317a0ece56ee23abc3dc8675ab6a5"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 3047,
+      "sha256": "409e79b22cf0d43f7df690b0968d191a62be6b7c8fab58fc84f39506382b9057"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2a 3"
 }

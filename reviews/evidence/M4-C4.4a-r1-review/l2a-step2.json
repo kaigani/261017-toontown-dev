@@ -442,5 +442,33 @@
         "equal": true
       }
     }
-  ]
+  ],
+  "rawFiles": [
+    {
+      "name": "live2-commands.json",
+      "bytes": 3500,
+      "sha256": "b17f58e76b514aa1e0ddb84f210a3c8fce80970b41130d15af51a76f2c96d798"
+    },
+    {
+      "name": "stroke-headless.json",
+      "bytes": 12254,
+      "sha256": "5648e32ab328643e3727d702ab2fdb90fefd5bf465ebd7249861e835b0802fa2"
+    },
+    {
+      "name": "stroke-replay-response.json",
+      "bytes": 3735,
+      "sha256": "4c0fc6eb577042005a87302ca324c3d5dbc0d216a1f2ef451eab5d4d94780806"
+    },
+    {
+      "name": "stroke-window.json",
+      "bytes": 14081,
+      "sha256": "bbacb3d7c469865339097c7f84449cb3fbcc8a65f1a20e6f8fd66fdd00b31ef1"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 9266,
+      "sha256": "b8aeec2f759dc2d00aa128c1b61be056a59fe4fb6f7786482e130bd94037bbdb"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2a 2"
 }

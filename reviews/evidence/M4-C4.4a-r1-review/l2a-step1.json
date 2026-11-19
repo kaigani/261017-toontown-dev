@@ -390,5 +390,18 @@
         "title": "`Pen 5` is the last brush pen"
       }
     }
-  ]
+  ],
+  "rawFiles": [
+    {
+      "name": "live2-commands.json",
+      "bytes": 11697,
+      "sha256": "70546f6be245ed2d2a8cc58b73dc836d41578d9a36bea84a2c61fc16da10562c"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 9973,
+      "sha256": "3ed4c84d295e280743130bf06ddf574ab1e298cb84ed98cf7f78f0e16f405838"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2a 1"
 }

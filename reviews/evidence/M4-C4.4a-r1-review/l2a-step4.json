@@ -1,7 +1,7 @@
 {
-  "checks": 33,
+  "checks": 41,
   "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-2ocgmofi",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-84o4tpk3",
   "results": [
     {
       "check": "tool option command brush toolOptions.pen",
@@ -11,7 +11,7 @@
           {
             "command": "tool.brush.options.set",
             "params": {
-              "penId": "pen_01M7TTANJ0FVYR93MKCAQ8BJ6E"
+              "penId": "pen_01M7TV33T5X1N9TX7W6BGEHPZT"
             }
           }
         ],
@@ -72,6 +72,18 @@
         "state": {
           "toolId": "brush",
           "options": {}
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed brush",
+      "ok": true,
+      "detail": {
+        "changed": true,
+        "selection": {
+          "selectedIds": [],
+          "bounds": null,
+          "selectedPoints": []
         }
       }
     },
@@ -140,6 +152,18 @@
       }
     },
     {
+      "check": "real OS gesture completed pencil",
+      "ok": true,
+      "detail": {
+        "changed": true,
+        "selection": {
+          "selectedIds": [],
+          "bounds": null,
+          "selectedPoints": []
+        }
+      }
+    },
+    {
       "check": "tool option command eraser toolOptions.pen",
       "ok": true,
       "detail": {
@@ -147,7 +171,7 @@
           {
             "command": "tool.eraser.options.set",
             "params": {
-              "penId": "pen_01M7TTANJ0FVYR93MKCAQ8BJ6K"
+              "penId": "pen_01M7TV33T5X1N9TX7W6BGEHPZZ"
             }
           }
         ],
@@ -212,6 +236,18 @@
       }
     },
     {
+      "check": "real OS gesture completed eraser",
+      "ok": true,
+      "detail": {
+        "changed": true,
+        "selection": {
+          "selectedIds": [],
+          "bounds": null,
+          "selectedPoints": []
+        }
+      }
+    },
+    {
       "check": "tool option command select toolOptions.rectRule",
       "ok": true,
       "detail": {
@@ -268,6 +304,28 @@
           "options": {
             "rectRule": "intersect"
           }
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed select",
+      "ok": true,
+      "detail": {
+        "changed": false,
+        "selection": {
+          "selectedIds": [
+            "st_01K7JJN800B4X8733VKH7RH78E",
+            "st_01K7JJN800Q1023B2K7STRAN7W",
+            "zn_KG70CVAW7JNAKBG056AB1JCJYS",
+            "zn_Q2GPF999HMMS23T5M661KHEHTG"
+          ],
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "selectedPoints": []
         }
       }
     },
@@ -378,6 +436,28 @@
       }
     },
     {
+      "check": "real OS gesture completed rectangle",
+      "ok": true,
+      "detail": {
+        "changed": false,
+        "selection": {
+          "selectedIds": [
+            "st_01K7JJN800B4X8733VKH7RH78E",
+            "st_01K7JJN800Q1023B2K7STRAN7W",
+            "zn_KG70CVAW7JNAKBG056AB1JCJYS",
+            "zn_Q2GPF999HMMS23T5M661KHEHTG"
+          ],
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "selectedPoints": []
+        }
+      }
+    },
+    {
       "check": "tool option command paint toolOptions.gapClosing",
       "ok": true,
       "detail": {
@@ -428,6 +508,28 @@
         "state": {
           "toolId": "paint",
           "options": {}
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed paint",
+      "ok": true,
+      "detail": {
+        "changed": true,
+        "selection": {
+          "selectedIds": [
+            "st_01K7JJN800B4X8733VKH7RH78E",
+            "st_01K7JJN800Q1023B2K7STRAN7W",
+            "zn_KG70CVAW7JNAKBG056AB1JCJYS",
+            "zn_Q2GPF999HMMS23T5M661KHEHTG"
+          ],
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "selectedPoints": []
         }
       }
     },
@@ -594,6 +696,28 @@
       }
     },
     {
+      "check": "real OS gesture completed polyline",
+      "ok": true,
+      "detail": {
+        "changed": false,
+        "selection": {
+          "selectedIds": [
+            "st_01K7JJN800B4X8733VKH7RH78E",
+            "st_01K7JJN800Q1023B2K7STRAN7W",
+            "zn_KG70CVAW7JNAKBG056AB1JCJYS",
+            "zn_Q2GPF999HMMS23T5M661KHEHTG"
+          ],
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "selectedPoints": []
+        }
+      }
+    },
+    {
       "check": "menu gap small",
       "ok": true,
       "detail": [
@@ -640,6 +764,78 @@
           }
         }
       ]
+    },
+    {
+      "check": "restart preserves tool options",
+      "ok": true,
+      "detail": {
+        "before": {
+          "toolId": "polyline",
+          "options": {
+            "snap": true,
+            "snapRadius": 4.0,
+            "thicknessSource": "fixed",
+            "thickness": 4.0
+          }
+        },
+        "after": {
+          "toolId": "polyline",
+          "options": {
+            "snap": true,
+            "snapRadius": 4,
+            "thicknessSource": "fixed",
+            "thickness": 4
+          }
+        }
+      }
     }
-  ]
+  ],
+  "rawFiles": [
+    {
+      "name": "live2-commands.json",
+      "bytes": 981,
+      "sha256": "1a70ddf38ed0d267cfb4d8787ce79456a4c2faa56a3a220808f929fb8e9f1349"
+    },
+    {
+      "name": "tool-gesture-brush.json",
+      "bytes": 14380,
+      "sha256": "19b4a8021cf49235a583317ae61d9ad36529145f7bf07fa778907a077a878171"
+    },
+    {
+      "name": "tool-gesture-eraser.json",
+      "bytes": 29170,
+      "sha256": "efa283abfb52897d06e3aab59e371b132ec4610316f42f0af91aa57e79e437d9"
+    },
+    {
+      "name": "tool-gesture-paint.json",
+      "bytes": 33461,
+      "sha256": "8600a913f5cd1671cf611d30b31254737b40eea0b6a17fc6dde82f52398285d3"
+    },
+    {
+      "name": "tool-gesture-pencil.json",
+      "bytes": 23901,
+      "sha256": "ccfb0962a9761e192abc251306357347451c65354b4791809f1fa8b76de335eb"
+    },
+    {
+      "name": "tool-gesture-polyline.json",
+      "bytes": 33604,
+      "sha256": "629d0d2c0f58c6965e671f1cf0323d6f01d9b0a87be85619605d9c5f55eb3c20"
+    },
+    {
+      "name": "tool-gesture-rectangle.json",
+      "bytes": 33502,
+      "sha256": "8a5c6c1391af3923ea45319bda632387f9bbfe2605ea99412df3e36cc4b6aca3"
+    },
+    {
+      "name": "tool-gesture-select.json",
+      "bytes": 33471,
+      "sha256": "bd4c5ac574b33cd1a73f175898a1aab159eeea854869501b9a62c76f262109f2"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 16590,
+      "sha256": "edc78a993d8f4aa1ec2f3629d97c57d5ad162a6e6964a3e0ed600c1f87a1b3c5"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2a 4"
 }
