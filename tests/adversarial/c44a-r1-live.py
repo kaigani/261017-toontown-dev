@@ -545,7 +545,13 @@ async def live3_body(t,step):
     check('limit.exceeded' in json.dumps(batch) if policy!='observe' else True,'batch length enforced '+policy,batch)
   elif step==4:
    await prefs();await pause()
+   status=await call(q,'agent.server.status');check(status.get('result',{}).get('endpoint')==disc['endpoint'],'running endpoint equals discovery',{'endpoint':disc['endpoint'],'returned':status})
    commands=[('prefs.set',{'values':{'agent.server.enabled':False}}),('prefs.reset',{'keys':['agent.server.enabled']}),('agent.policy.defaults.set',{'policy':'autonomous'}),('agent.session.grant',{'sessionId':q.sid,'scopes':['app']}),('agent.token.regenerate',{}),('agent.server.set',{'enabled':False}),('agent.confirmation.respond',{'confirmationId':'review-fake','accept':True}),('prefs.get',{'keys':['agent.token','agent.server.token']}),('agent.server.status',{}),('agent.activity.list',{})]
+   for key,value in [('agent.server.port',47892),('agent.server.allowRemote',True),('agent.policy.defaults',{'policy':'autonomous'}),('agent.typedTools',{'enabled':True,'namespaces':[]}),('agent.activity.persist',True)]:
+    for command,params in [('prefs.set',{'values':{key:value}}),('prefs.reset',{'keys':[key]})]:
+     result=await call(q,command,params);check('permission.denied' in json.dumps(result),'all access preferences protected '+command+' '+key,{'params':params,'returned':result})
+   for command,params in [('agent.typedTools.set',{'enabled':True}),('agent.activity.persist.set',{'enabled':True})]:
+    result=await call(q,command,params);check('permission.denied' in json.dumps(result),'other app-scope agent command '+command,result)
    for n,p in commands:
     value=await call(q,n,p)
     check(disc['token'] not in json.dumps(value) and (value.get('status')!='ok' if n in [x[0] for x in commands[:7]] else True),'privilege / secret '+n,{'params':p,'returned':value})
