@@ -1,0 +1,10 @@
+{
+  "checks": 16,
+  "failures": [
+    "invalid pen value restored maxSize: {\"field\": \"101\", \"engine\": 40.0, \"sent\": []}",
+    "invalid pen value restored minSize: {\"field\": \"-1\", \"engine\": 12.0, \"sent\": []}",
+    "invalid pen value restored smoothness: {\"field\": \"11\", \"engine\": 6, \"sent\": []}",
+    "invalid pen value restored tipAngle: {\"field\": \"361\", \"engine\": 45.0, \"sent\": []}"
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-f556tl6d"
+}

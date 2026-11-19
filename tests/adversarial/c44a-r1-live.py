@@ -185,7 +185,7 @@ async def live2_body(t,step):
  def dom(ident,expr='e.value'):
   return t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id='+JSON.stringify(%s)+']');return e ? %s : null})()"%(json.dumps(ident),expr))
  async def typed(ident,value,key=0x0D):
-  t.click(ident);d.key(0x41,0x11);d.type_text(str(value));d.key(key);await pause()
+  d.front();dom(ident,'(e.focus(),e.select(),true)');d.type_text(str(value));d.key(key);await pause()
  def sent(): return [x for x in t.recorded() if t.kinds.get(x['command'])!='query']
  async def penstate():return await c('tool.pen.list')
  async def cur():
@@ -216,7 +216,7 @@ async def live2_body(t,step):
    t.clear();await typed('pen.'+field+'.field',invalid)
    t.run.check(dom('pen.'+field+'.field')==str(value),'invalid pen value restored '+field,{'field':dom('pen.'+field+'.field'),'engine':(await cur())[field],'sent':sent()})
    await typed('pen.'+field+'.field',value)
-   t.clear();t.click('pen.'+field);d.key(0x27);await pause()
+   t.clear();d.front();dom('pen.'+field,'(e.focus(),true)');d.key(0x27);await pause()
    t.run.check(len([x for x in sent() if x['command']=='tool.pen.set'])>=1,'slider keyboard release '+field,sent())
   for shape in ('oval','square','flat','round'):
    t.clear();await t.do(('select','pen.tipShape',shape));await pause();t.run.check((await cur())['tipShape']==shape,'tip shape '+shape,sent())
@@ -267,7 +267,7 @@ async def live2_body(t,step):
    t.clear();await t.do(('select','text.'+field,value));await pause();t.run.check((await c('tool.options.get',{'toolId':'text'}))['options'][field]==value,'text choice '+field,sent())
   t.clear();await typed('text.font','Live2 Missing Font 673');t.run.check('not bundled' in dom('text.fontNotBundled','e.textContent'),'unbundled font marked',{'sent':sent(),'options':await c('tool.options.get',{'toolId':'text'})})
  elif step==7:
-  await c('window.panel.set',{'panelId':'properties','visible':True});await pause();t.click('properties.tab.drawing');await pause()
+  await c('window.panel.set',{'panelId':'properties','visible':True});await pause();t.click('properties.page.drawing');await pause()
   t.clear();await typed('inspector.name','Live2 drawing');listing=await c('draw.drawing.get');t.run.check('Live2 drawing' in json.dumps(listing),'inspector rename',{'sent':sent(),'drawing':listing})
   st=await c('app.state.get');t.run.save('inspector-state.json',st)
   await c('app.context.set',{'frame':100});await pause();controls=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"inspector.\"]')].map(e=>({id:e.dataset.ttId,disabled:e.disabled,title:e.title}))")
