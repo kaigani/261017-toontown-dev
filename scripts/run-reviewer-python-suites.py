@@ -70,6 +70,10 @@ NOT_SUITES = {
     "c43b-r1-regression-runner.py": "the reviewer's wrapper that its live runner (c43b-r1-live.py case7) calls with a "
     "probe's path and arguments to run an earlier probe with its receipts redirected; without them it has nothing to "
     "run",
+    # M4 C4.4a round 1 (declared in reviews/M4-C4.4a-handoff-r2.md): the reviewer's live runner.
+    "c44a-r1-live.py": "Windows live runner of the running application (round 1 sessions l1a to l4b): needs the release "
+    "binary and a session and step argument (without one it stops at its argument check); its steps are run by hand "
+    "for the round-2 handoff, results in reviews/M4-C4.4a-handoff-r2.md",
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
     "inventory.json and asserts the register ends at SI-110 (SI-111 is ruled in round 2); its live counterpart is "
     "scripts/check-merge-note-inventory.py",

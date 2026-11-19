@@ -547,7 +547,8 @@ pub(crate) fn agent_confirmation_respond(cx: &mut Cx, p: ConfirmParams) -> Resul
     // Ruling D-59 (C44A-R1S-01): the first decision settles the request. A later answer, from a second window whose
     // sheet has not caught up, is refused and changes nothing (a Decline is never turned into an Accept, nor the
     // reverse).
-    if let Some(decided) = pending.decision {
+    if pending.decision.is_some() {
+        let decided = pending.decision == Some(true);
         return Err(CommandError::with_details(
             "confirmation.expired",
             format!(

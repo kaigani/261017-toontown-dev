@@ -174,6 +174,17 @@ receives the user's decision". Proposal:
    (accepted) or returns `confirmation.declined`. If the token expires, the call returns `confirmation.expired`. This
    reuses the elicitation path (`run.rs:1289`): the executor is free while the call is held, so the agent's other calls
    and the user's work go on.
+
+   **As built after ruling D-63 item 1 (C44A-R1-60).** The executor was free, but the MCP session was not: the held call
+   waited on the session's one call thread (`mcp-calls`), so the same session's later calls, reads included, queued
+   behind it, and its second confirmable call reached the kernel only after the first was answered (the sheet counted
+   "1 of 2" for A, B, A). Now a held call finishes on its own `mcp-wait` thread (`finish_held`: the wait, the re-invoke
+   with the token, the activity entry, the answer, the release), and the call thread goes on at once. The held calls
+   share the four `mcp-wait` slots with `job_wait` (both wait on the caller's side), so a session keeps O-20's bound of
+   20 threads; a fifth held call at once waits on the call thread, as before. Tests:
+   `c44a_in_app_confirmation.rs` (a read answered while a call is held; two held calls of one session both shown before
+   either is answered, each with its own outcome); the D-44 row "Confirmation sheet › three queued" with sessions A, B, A
+   showing "1 of 3" and a read of B answered while the requests are open.
 3. **A token of an in-app request is usable only after an accept** (kernel gap 3). `take` refuses it while the decision
    is open (`confirmation.expired` with reason "waiting for the user's answer in the app"). Today an agent that reads the
    token from the `needs_confirmation` result can retry and bypass the person. The fix and a kernel test that fails
@@ -191,7 +202,9 @@ is not counted in `userBusy`. While the person holds one of its buttons down, th
 
 - the client's name, the command's label, the `summary`, and the `consequences` as a list;
 - Accept (default button) and Decline, each sending `agent.confirmation.respond {confirmationId, accept}`;
-- a countdown to the token's expiry;
+- a countdown to the token's expiry, computed from the kernel's `expiresInMs` and the clock read when that answer
+  arrived (ruling D-63 item 2, C44A-R1-61: a clock read before the request arrived made 299 s show as 309 s), in whole
+  seconds truncated as the kernel counts them;
 - several pending requests queue in one sheet, with "1 of 3".
 
 On a new event, `agent.confirmation.resolved {confirmationId, outcome: accepted | declined | expired | used}` (kernel
