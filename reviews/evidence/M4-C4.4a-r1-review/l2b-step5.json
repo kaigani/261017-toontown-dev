@@ -1,0 +1,93 @@
+{
+  "checks": 6,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-er2cf6jh",
+  "results": [
+    {
+      "check": "tablet staged before OK",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "tablet Cancel",
+      "ok": true,
+      "detail": {
+        "values": {
+          "tablet.ignore": false,
+          "tablet.alternativeInput": false,
+          "tablet.portraitCorrection": false,
+          "tablet.compatibilityMode": false
+        },
+        "sent": []
+      }
+    },
+    {
+      "check": "tablet staged before OK",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "tablet OK",
+      "ok": true,
+      "detail": {
+        "values": {
+          "tablet.ignore": true,
+          "tablet.alternativeInput": true,
+          "tablet.portraitCorrection": true,
+          "tablet.compatibilityMode": true
+        },
+        "sent": [
+          {
+            "command": "prefs.set",
+            "params": {
+              "values": {
+                "tablet.ignore": true,
+                "tablet.compatibilityMode": true,
+                "tablet.alternativeInput": true,
+                "tablet.portraitCorrection": true
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "one prefs.set exactly changed keys",
+      "ok": true,
+      "detail": [
+        {
+          "command": "prefs.set",
+          "params": {
+            "values": {
+              "tablet.ignore": true,
+              "tablet.compatibilityMode": true,
+              "tablet.alternativeInput": true,
+              "tablet.portraitCorrection": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "agent tablet shares preference state",
+      "ok": true,
+      "detail": {
+        "result": {
+          "settings": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "restartRequired": true
+        },
+        "values": {
+          "tablet.ignore": false,
+          "tablet.alternativeInput": false,
+          "tablet.portraitCorrection": false,
+          "tablet.compatibilityMode": false
+        }
+      }
+    }
+  ]
+}
