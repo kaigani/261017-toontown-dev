@@ -1,9 +1,9 @@
 {
-  "checks": 10,
+  "checks": 11,
   "failures": [
     "token shown or copied in Preferences matches discovery: {\"observed\": \"Agent access has no token display or Copy token control\", \"controls\": [\"agentAccess\", \"agentAccess.status\", \"agentAccess.server\", \"agentAccess.port\", \"agentAccess.allowRemote\", \"agentAccess.policy\", \"agentAccess.policy.observe\", \"agentAccess.policy.assist\", \"agentAccess.policy.autonomous\", \"agentAccess.maxJobs\", \"agentAccess.maxBatchSteps\", \"agentAccess.maxInlineImagePx\", \"agentAccess.maxInlineBytes\", \"agentAccess.askInApp\", \"agentAccess.letAgentMoveView\", \"agentAccess.highlightAgentChanges\", \"agentAccess.typedTools\", \"agentAccess.namespace.agent\", \"agentAccess.namespace.anim\", \""
   ],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-7mc538vz",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-kqfehbyy",
   "results": [
     {
       "check": "independent HTTP initialize",
@@ -124,12 +124,22 @@
     {
       "check": "regenerate changes token keeps endpoint",
       "ok": true,
-      "detail": [
-        {
-          "command": "agent.token.regenerate",
-          "params": {}
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.token.regenerate",
+            "params": {}
+          }
+        ],
+        "oldFingerprint": {
+          "length": 48,
+          "sha256": "734f86a71d73d7d0c0d9c800c36c8f6d71bf5492daf631e456c2761dd71b5421"
+        },
+        "newFingerprint": {
+          "length": 48,
+          "sha256": "cdb6aa69019316c45119d7b16b84e4ef6f9b93bad6d38c7ec1fc8516416a8732"
         }
-      ]
+      }
     },
     {
       "check": "old token refused",
@@ -159,7 +169,7 @@
           "endpoint": null,
           "sessions": [
             {
-              "sessionId": "s3-de75e0",
+              "sessionId": "s3-99a546",
               "client": "new-token",
               "policy": "autonomous",
               "scopes": [
@@ -172,8 +182,8 @@
                 "prefs",
                 "library.global"
               ],
-              "connectedAt": "2026-11-19T21:36:44.164Z",
-              "lastActivity": "2026-11-19T21:36:44.221Z",
+              "connectedAt": "2026-11-19T21:45:36.065Z",
+              "lastActivity": "2026-11-19T21:45:36.123Z",
               "paused": false,
               "transport": "http"
             }
@@ -251,6 +261,23 @@
           "agentAccess.persist",
           "agentAccess.regenerate"
         ]
+      }
+    },
+    {
+      "check": "D-57 session/token events exclude shell notices",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "contents": [
+            {
+              "uri": "app://events?after=0",
+              "mimeType": "application/json",
+              "text": "{\"eventCount\": 5, \"types\": {\"agent.session.connected\": 1, \"app.state.changed\": 3, \"workspace.changed\": 1}, \"firstSeq\": 1, \"lastSeq\": 5, \"rawTextBytes\": 3327, \"sha256\": \"f2c920b2eafaa3eb39d28435b73724c89c6ecebb19823b8dad54a569104e4e77\"}"
+            }
+          ]
+        }
       }
     }
   ]
