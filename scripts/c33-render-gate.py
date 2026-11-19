@@ -130,6 +130,12 @@ async def run(binary, out, work):
                 manifest.pop(key, None)
             for f in manifest.get("files", []):
                 f["path"] = Path(f["path"]).name
+            # The answer's `outputs` summary (SI-181): its location and the first and last paths are this machine's.
+            outputs = manifest.get("outputs") or {}
+            outputs.pop("location", None)
+            for k in ("first", "last"):
+                if isinstance(outputs.get(k), dict) and "path" in outputs[k]:
+                    outputs[k]["path"] = Path(outputs[k]["path"]).name
             (out / "sequence" / "manifest.json").write_text(stable(manifest), encoding="utf-8", newline="\n")
 
 

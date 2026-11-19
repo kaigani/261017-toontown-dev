@@ -74011,7 +74011,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
       },
       files: {
-        description: "One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to\n[`OUTPUTS_INLINE`] frames (ruling D-51, SI-163: no MCP answer over 1 MiB), `outputs` summarising them always.",
+        description: "One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to\n[`OUTPUTS_INLINE`] frames (ruling D-51 as corrected by D-56, SI-181: a range's answer stays small), `outputs` summarising them always.",
         type: [
           "array",
           "null",
@@ -81089,7 +81089,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: false,
       },
       inputInterface: {
-        description: "The input interface (`null`: the platform default).",
+        description: "The input interface: `alternative`, or `null` for the platform default (01 §7.3 `tablet.alternativeInput`).",
         type: [
           "string",
           "null",
@@ -81335,7 +81335,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: false,
       },
       inputInterface: {
-        description: "The input interface (`null`: the platform default).",
+        description: "The input interface: `alternative`, or `null` for the platform default (01 §7.3 `tablet.alternativeInput`).",
         type: [
           "string",
           "null",
@@ -103498,7 +103498,7 @@ export interface render_range_run_Manifest {
   range: unknown;
   /** The document revision rendered. */
   documentRevision: number | bigint;
-  /** One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to [`OUTPUTS_INLINE`] frames (ruling D-51, SI-163: no MCP answer over 1 MiB), `outputs` summarising them always. */
+  /** One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to [`OUTPUTS_INLINE`] frames (ruling D-51 as corrected by D-56, SI-181: a range's answer stays small), `outputs` summarising them always. */
   files?: render_range_run_ManifestFile[] | null;
   /** The companion manifest file written with the frames (this manifest without itself). */
   manifestPath: string;
@@ -105407,7 +105407,7 @@ export interface tool_settings_get_TabletSetting {
   portraitCorrection?: boolean;
   /** Compatibility handling. */
   compatibilityMode?: boolean;
-  /** The input interface (`null`: the platform default). */
+  /** The input interface: `alternative`, or `null` for the platform default (01 §7.3 `tablet.alternativeInput`). */
   inputInterface?: string | null;
 }
 
@@ -105482,7 +105482,7 @@ export interface tool_tablet_set_TabletSetting {
   portraitCorrection?: boolean;
   /** Compatibility handling. */
   compatibilityMode?: boolean;
-  /** The input interface (`null`: the platform default). */
+  /** The input interface: `alternative`, or `null` for the platform default (01 §7.3 `tablet.alternativeInput`). */
   inputInterface?: string | null;
 }
 
