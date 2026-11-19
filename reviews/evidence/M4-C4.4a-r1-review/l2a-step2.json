@@ -6,5 +6,248 @@
     "invalid pen value restored smoothness: {\"field\": \"11\", \"engine\": 6, \"sent\": []}",
     "invalid pen value restored tipAngle: {\"field\": \"361\", \"engine\": 45.0, \"sent\": []}"
   ],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-f556tl6d"
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-f556tl6d",
+  "results": [
+    {
+      "check": "pen numeric maxSize",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pen.set",
+            "params": {
+              "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+              "maxSize": 40
+            }
+          }
+        ],
+        "pen": {
+          "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 2.0,
+          "maxSize": 40.0,
+          "smoothness": 3,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "invalid pen value restored maxSize",
+      "ok": false,
+      "detail": {
+        "field": "101",
+        "engine": 40.0,
+        "sent": []
+      }
+    },
+    {
+      "check": "slider keyboard release maxSize",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+            "maxSize": 40.5
+          }
+        }
+      ]
+    },
+    {
+      "check": "pen numeric minSize",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pen.set",
+            "params": {
+              "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+              "minSize": 12
+            }
+          }
+        ],
+        "pen": {
+          "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 12.0,
+          "maxSize": 40.5,
+          "smoothness": 3,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "invalid pen value restored minSize",
+      "ok": false,
+      "detail": {
+        "field": "-1",
+        "engine": 12.0,
+        "sent": []
+      }
+    },
+    {
+      "check": "slider keyboard release minSize",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+            "minSize": 12.5
+          }
+        }
+      ]
+    },
+    {
+      "check": "pen numeric smoothness",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pen.set",
+            "params": {
+              "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+              "smoothness": 6
+            }
+          }
+        ],
+        "pen": {
+          "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 12.5,
+          "maxSize": 40.5,
+          "smoothness": 6,
+          "tipAngle": 0.0
+        }
+      }
+    },
+    {
+      "check": "invalid pen value restored smoothness",
+      "ok": false,
+      "detail": {
+        "field": "11",
+        "engine": 6,
+        "sent": []
+      }
+    },
+    {
+      "check": "slider keyboard release smoothness",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+            "smoothness": 7
+          }
+        }
+      ]
+    },
+    {
+      "check": "pen numeric tipAngle",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pen.set",
+            "params": {
+              "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+              "tipAngle": 45
+            }
+          }
+        ],
+        "pen": {
+          "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+          "name": "Pen 3",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 12.5,
+          "maxSize": 40.5,
+          "smoothness": 7,
+          "tipAngle": 45.0
+        }
+      }
+    },
+    {
+      "check": "invalid pen value restored tipAngle",
+      "ok": false,
+      "detail": {
+        "field": "361",
+        "engine": 45.0,
+        "sent": []
+      }
+    },
+    {
+      "check": "slider keyboard release tipAngle",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+            "tipAngle": 46
+          }
+        }
+      ]
+    },
+    {
+      "check": "tip shape oval",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+            "tipShape": "oval"
+          }
+        }
+      ]
+    },
+    {
+      "check": "tip shape square",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+            "tipShape": "square"
+          }
+        }
+      ]
+    },
+    {
+      "check": "tip shape flat",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+            "tipShape": "flat"
+          }
+        }
+      ]
+    },
+    {
+      "check": "tip shape round",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7TT3TQNZ1ZRTXTZ6HTNHES7",
+            "tipShape": "round"
+          }
+        }
+      ]
+    }
+  ],
+  "sha256": "ed46514af0c2a49492cb6e566c432b1dbc2d6cee0a2d82c4f61dfb972e00b1fc"
 }

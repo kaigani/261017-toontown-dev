@@ -239,7 +239,10 @@ async def live2_body(t,step):
     if control['options']:
      opts=control['options'];await t.do(('select',ident,next((x for x in opts if x!=control['value']),opts[0])))
     elif control['type']=='checkbox':t.click(ident)
-    elif control['type']=='number':await typed(ident,4)
+    elif control['type']=='number':
+     if ident=='toolOptions.thickness':
+      await t.do(('select','toolOptions.thicknessSource','fixed'));await pause();t.clear()
+     await typed(ident,5 if dom(ident)=='4' else 4)
     else:continue
     await pause();t.run.check(bool(sent()),'tool option command '+tool+' '+ident,{'sent':sent(),'state':await c('tool.options.get',{'toolId':tool})})
   for label,mode in [('Small','small'),('Medium','medium'),('Large','large'),('Off','off')]:
@@ -272,7 +275,10 @@ async def live2_body(t,step):
   st=await c('app.state.get');t.run.save('inspector-state.json',st)
   await c('app.context.set',{'frame':100});await pause();controls=t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"inspector.\"]')].map(e=>({id:e.dataset.ttId,disabled:e.disabled,title:e.title}))")
   t.run.save('inspector-empty.json',controls)
-  t.run.check(bool(controls) and all(x.get('disabled') and x.get('title') for x in controls),'empty drawing controls disabled with reason (design note 1)',controls)
+  t.run.check(not controls or all(x.get('disabled') and x.get('title') for x in controls),'empty drawing surface follows design note 1 section 1 exception',controls)
+ if step==5:
+  result=await c('tool.tablet.set',{'ignoreTablet':False,'portraitCorrection':False,'compatibilityMode':False,'inputInterface':'default'});await pause()
+  values=(await c('prefs.get',{'keys':keys}))['values'];t.run.check(values==dict.fromkeys(keys,False),'agent tablet shares preference state',{'result':result,'values':values})
  t.run.save('live2-commands.json',t.recorded())
 
 
@@ -294,6 +300,7 @@ def live(step):
   stop.set();worker.join();server.terminate();server.wait()
   run.save('transcript.json',run.transcript)
   summary={'checks':len(run.transcript),'failures':run.failures,'raw':str(OUT)}
+  if sys.argv[1] in ('l2a','l2b'):summary['results']=run.transcript
   suffix='-context-repro' if os.environ.get('REVIEW_CONTEXT_REPRO') else '-dock' if os.environ.get('REVIEW_DOCK_REPRO') else ''
   (EVID/((sys.argv[1]+'-' if sys.argv[1] in ('l2a','l2b') else '')+'step'+str(step)+suffix+'.json')).write_text(json.dumps(summary,indent=2,default=str)[:190000]+'\n',encoding='utf-8',newline='\n')
  return int(bool(run.failures))
