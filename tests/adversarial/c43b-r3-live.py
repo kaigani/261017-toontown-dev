@@ -516,6 +516,8 @@ async def b1_body(t):
   await t.cmd('workspace.select',{'name':'Drawing'});await asyncio.sleep(.4)
   node=d.McpTable.node(await d.McpTable.tree(t),ident)
   options=[c for c in node.get('children',[]) if c.get('command')]
+  # D-60 item 3e: a list with a single option has no different option to choose.
+  if len(options)<2:continue
   for opt in options:
    for mode in ('mouse','keyboard','current','other-focus'):
     await t.cmd('workspace.select',{'name':'Drawing'});await asyncio.sleep(.25)

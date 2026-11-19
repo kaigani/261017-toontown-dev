@@ -104,6 +104,10 @@ COVERAGE: dict[str, dict] = {
     "cameraView.focus": {"reason": BEFORE_D39},
     # The views' context menus (C4.4a, design note 1 §9; D-40 answer 12).
     **{f"cameraView.drawingMenu.{i}": {"rows": [f"Drawing view context menu › {label}"]} for i, label in DRAWING_MENU.items()},
+    # D-60 item 2: the edit items of the Drawing family in the Camera view act on the drawing's selection.
+    **{f"cameraView.drawingMenu.{i}": {"rows": [f"Drawing view context menu › {label}",
+                                                f"Camera view context menu (drawing tool) › {label}"]}
+       for i, label in SCENE_MENU.items()},
     **{f"cameraView.sceneMenu.{i}": {"rows": [f"Camera view context menu (scene tool) › {label}"]}
        for i, label in SCENE_MENU.items()},
     # Dialog buttons: their D-44 rows.

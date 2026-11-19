@@ -204,6 +204,30 @@ select:focus-visible {
   text-align: left;
 }
 
+/* D-60 item 1: the items scroll inside a menu taller than the window, between two arrows. */
+.context-menu-items {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.context-menu-arrow {
+  flex: none;
+  padding: 1px 0;
+  font-size: 0.7em;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--tt-text);
+  cursor: default;
+  user-select: none;
+}
+
+.context-menu-arrow.spent {
+  color: var(--tt-textMuted);
+  opacity: 0.4;
+}
+
 .context-menu button:hover {
   background: var(--tt-selection);
 }

@@ -192,6 +192,37 @@ the panel marking fonts that are not bundled, and asks for the ruling.
   tool maps it in 02 §13.3). On macOS a Control-click is the secondary click, but Control (or Command) is also taken as the
   temporary-select modifier (`CanvasView.tsx:784`): the SI proposes that on macOS the temporary-select modifier is Command
   alone and Control-click is the context menu, as macOS applications behave.
+- **Inside the client area (ruling D-60 item 1, C44A-R1-01).** A context menu is always fully inside the window's client
+  area. `placeMenu` (`contextMenuModel.ts`) places it from its natural size, measured in the layout pass before the first
+  paint: on each axis it opens from the pointer toward the side with room, flips to end at the pointer when it would cross
+  the far edge, and shifts inside when neither side has room, keeping a 4 px margin. A menu taller than the client area
+  starts at the top margin and scrolls within the client area's height, with an arrow at each end (dimmed when there is
+  nothing more that way) that scrolls about three items per press; the wheel scrolls it, and the keyboard's focus brings
+  each item into view. The arrows are not items (no role, `aria-hidden`). A wider menu is bounded the same way. The menu
+  is placed again when the window's size changes. Submenus, when a menu has one, are placed by the same function from
+  their parent item (none of today's menus has a submenu). Tests: `contextMenuPlacement.test.tsx` (the four corners, the
+  reported 499,454 case, a menu taller and one wider than the window, the component's placement and arrows), and the D-39
+  row "context menus › inside the client area at 1280 by 800" (both views' menus opened where they would cross an edge,
+  every item's box inside the client area, the last item activated by a real click).
+- **Each family's edit items name their selection context (ruling D-60 item 2, C44A-R1-02).** 01 §6.4 keeps a selection
+  per context, and the Camera view's focus says nothing about which family's menu was opened. The edit items therefore
+  send the commands' own `context` parameter (spec A: `auto|drawing|staging|...`) and never rely on focus:
+
+  | Family | View | Command | Parameters | The selection that changes (the other is left as it was) |
+  |---|---|---|---|---|
+  | Drawing | Drawing | `edit.cut` / `edit.copy` / `edit.paste` | `{context: "drawing"}` | the current drawing's (cut removes, paste adds; copy fills the clipboard) |
+  | Drawing | Drawing | `edit.selectAll` / `edit.deselectAll` | `{context: "drawing"}` | the current drawing's |
+  | Drawing | Camera (a drawing tool) | `edit.cut` / `edit.copy` / `edit.paste` | `{context: "drawing"}` | the current drawing's; the staging selection unchanged |
+  | Drawing | Camera (a drawing tool) | `edit.selectAll` / `edit.deselectAll` | `{context: "drawing"}` | the current drawing's; the staging selection unchanged |
+  | Scene | Camera (a scene tool) | `edit.cut` / `edit.copy` / `edit.paste` | `{context: "staging"}` | the staging selection (elements) |
+  | Scene | Camera (a scene tool) | `edit.selectAll` / `edit.deselectAll` | `{context: "staging"}` | the staging selection |
+
+  The Drawing view has no scene family. The Drawing family's other items (`draw.*`) act on the current drawing's
+  selection already. A refusal names the context the item named (Cut with nothing selected in the drawing names the
+  drawing, never staging). Tests: the Vitest "each family's edit items name its selection context, in either view" and
+  the D-39 rows "Camera view context menu (drawing tool) › Cut, Copy, Paste, Select All, Deselect All" (each with a
+  staging selection it must leave unchanged), beside the existing Drawing view and scene-family rows, which now expect
+  the explicit context.
 
 ## 10. Spec issues raised before code (numbers from SI-165: SI-163 and SI-164 were taken by D-51 and D-53)
 

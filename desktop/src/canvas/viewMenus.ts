@@ -2,23 +2,30 @@
 // command its main-menu item sends (02 §4.4 line 296; `menu.json`), with the main menu's availability.
 import type { MenuGroup } from '../shell/contextMenuModel';
 
-/** The general edit items (01 §6), as the Edit menu sends them; the kernel picks the target from the view's context. */
-const EDIT: MenuGroup = {
-  items: [
-    { id: 'cut', label: 'Cut', command: 'edit.cut' },
-    { id: 'copy', label: 'Copy', command: 'edit.copy' },
-    { id: 'paste', label: 'Paste', command: 'edit.paste' },
-    { id: 'selectAll', label: 'Select All', command: 'edit.selectAll' },
-    { id: 'deselectAll', label: 'Deselect All', command: 'edit.deselectAll' },
-  ],
-};
+/**
+ * The general edit items (01 §6), each naming the selection context the menu was opened for (D-60 item 2,
+ * C44A-R1-02; 01 §6.4 keeps a selection per context): the Drawing family acts on the drawing's selection and
+ * the scene family on the staging selection, in either view, whichever panel has the focus. The commands'
+ * `context` parameter (spec A: `auto|drawing|staging|...`) is the command layer's own way to say so.
+ */
+function editItems(context: 'drawing' | 'staging'): MenuGroup {
+  return {
+    items: [
+      { id: 'cut', label: 'Cut', command: 'edit.cut', params: { context } },
+      { id: 'copy', label: 'Copy', command: 'edit.copy', params: { context } },
+      { id: 'paste', label: 'Paste', command: 'edit.paste', params: { context } },
+      { id: 'selectAll', label: 'Select All', command: 'edit.selectAll', params: { context } },
+      { id: 'deselectAll', label: 'Deselect All', command: 'edit.deselectAll', params: { context } },
+    ],
+  };
+}
 
 /**
  * The Drawing family (02 §4.4 lines 291-296): the Drawing view's menu, and the Camera view's while a drawing tool is
  * active. Feather Edges has no item until its owner implements `draw.feather.apply` (D-40 answer 11).
  */
 export const DRAWING_MENU: readonly MenuGroup[] = [
-  EDIT,
+  editItems('drawing'),
   {
     label: 'Arrange',
     items: [
@@ -85,4 +92,4 @@ export const DRAWING_MENU: readonly MenuGroup[] = [
  * The scene family (the Camera view with a scene tool; D-40 answer 12): the general edit items only. The items of 05
  * §3.2 lines 326-328 are M6 C6.1's (D-30) and keep their `deferred` owners; the menu grows in M6.
  */
-export const SCENE_MENU: readonly MenuGroup[] = [EDIT];
+export const SCENE_MENU: readonly MenuGroup[] = [editItems('staging')];

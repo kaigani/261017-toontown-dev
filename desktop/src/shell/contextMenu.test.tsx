@@ -145,7 +145,49 @@ describe("the views' context menus (02 §4.4; D-40 answers 11, 12)", () => {
       fireEvent.click(el('cameraView.sceneMenu.copy'));
     });
     await waitFor(() => {
-      expect(sent(h, 'edit.copy')).toEqual([{}]);
+      expect(sent(h, 'edit.copy')).toEqual([{ context: 'staging' }]);
+    });
+  });
+
+  it("D-60 item 2: each family's edit items name its selection context, in either view", async () => {
+    const h = await app((host) => {
+      host.available = () => ({ enabled: true });
+    });
+    const view = await waitFor(() => el('cameraView.canvas'));
+    // The scene family (a scene tool): the staging selection.
+    act(() => {
+      fireEvent.contextMenu(view, { clientX: 50, clientY: 50 });
+    });
+    await screen.findByRole('menu', { name: 'Scene' });
+    for (const item of ['cut', 'copy', 'paste', 'selectAll', 'deselectAll']) {
+      expect(JSON.parse(el(`cameraView.sceneMenu.${item}`).getAttribute('data-tt-params') ?? '{}')).toEqual({
+        context: 'staging',
+      });
+    }
+    act(() => {
+      fireEvent.keyDown(screen.getByRole('menu', { name: 'Scene' }), { key: 'Escape' });
+    });
+    // The Drawing family (a drawing tool) in the Camera view: the drawing's selection, not the staging one.
+    act(() => {
+      h.event('tool.active.changed', { toolId: 'select' });
+    });
+    act(() => {
+      fireEvent.contextMenu(view, { clientX: 50, clientY: 50 });
+    });
+    await screen.findByRole('menu', { name: 'Drawing' });
+    for (const item of ['cut', 'copy', 'paste', 'selectAll', 'deselectAll']) {
+      expect(JSON.parse(el(`cameraView.drawingMenu.${item}`).getAttribute('data-tt-params') ?? '{}')).toEqual({
+        context: 'drawing',
+      });
+    }
+    await waitFor(() => {
+      expect(el('cameraView.drawingMenu.selectAll').getAttribute('aria-disabled')).toBe('false');
+    });
+    act(() => {
+      fireEvent.click(el('cameraView.drawingMenu.selectAll'));
+    });
+    await waitFor(() => {
+      expect(sent(h, 'edit.selectAll')).toEqual([{ context: 'drawing' }]);
     });
   });
 

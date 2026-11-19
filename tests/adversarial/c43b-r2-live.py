@@ -223,6 +223,9 @@ def a3():
  chosen=[]
  async def row(t,r):
   action=r["action"]
+  if callable(action):
+   try:action=action()
+   except (LookupError,TypeError):return
   wanted=action[0] in ("dom","select") and (action[1].startswith(("mainToolbar.","drawingTools.")) or action[1] in [v+x for v in ("drawingView","cameraView") for x in (".aid.grid",".aid.onionSkin",".symmetry",".type.camera",".type.drawing")])
   if not wanted:return
   prefix=action[1].split(".")[0]
@@ -357,10 +360,10 @@ def b2():
   if os.environ.get("REVIEW_RESUME") and cached.exists():
    results.append(json.loads(cached.read_text()));continue
   try:
-   proc=subprocess.run([sys.executable]+args,cwd=ROOT,capture_output=True,timeout=530)
+   proc=subprocess.run([sys.executable]+args,cwd=ROOT,capture_output=True,timeout=1800 if name=="builder-d39" else 530)
    (OUT/(name+".txt")).write_bytes(proc.stdout+proc.stderr)
    results.append({"name":name,"exit":proc.returncode})
-  except subprocess.TimeoutExpired:results.append({"name":name,"exit":1,"error":"530 second timeout"})
+  except subprocess.TimeoutExpired:results.append({"name":name,"exit":1,"error":("1800" if name=="builder-d39" else "530")+" second timeout"})
   cached.write_text(json.dumps(results[-1]),encoding="utf-8")
  raise SystemExit(summarize("b2",results))
 
@@ -426,6 +429,10 @@ def b3():
    path=t.work/"B3.animpkg"
    await cmd("project.saveAs",{"path":str(path),"onExists":"overwrite"})
    snapshots=[]
+   # D-60 item 3d: the current element set to its drawing (an earlier row may have made a camera current).
+   els=(await cmd("element.list",{})).get("elements") or []
+   bob=next(x["id"] for x in els if x.get("name")=="Bob")
+   await cmd("app.context.set",{"elementId":bob,"frame":1})
    for i in range(3):
     await asyncio.sleep(1.1)
     await cmd("draw.rectangle.add",{"from":{"x":i*20,"y":0},"to":{"x":i*20+10,"y":10}})

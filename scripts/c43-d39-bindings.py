@@ -1733,11 +1733,12 @@ async def build_and_run(t: Table, only: set) -> None:
     async def copy_left_only():
         d = await drawing()
         await cmd("draw.selection.set", {"by": "ids", "ids": [strokes_of(d)[0]["id"]]})
-        await cmd("edit.copy", {})
+        # The drawing's selection named: in the Camera view the focused context is the staging one (D-60 item 2).
+        await cmd("edit.copy", {"context": "drawing"})
 
     async def copy_all():
         await select_all()
-        await cmd("edit.copy", {})
+        await cmd("edit.copy", {"context": "drawing"})
 
     for item, label, command, spec_label, steps, eff in (
         ("cut", "Cut", "edit.cut", "Cut", [lambda: rect(0, 0), select_all], lambda b, a, k: a["strokes"] < b["strokes"]),
@@ -1750,9 +1751,54 @@ async def build_and_run(t: Table, only: set) -> None:
          lambda b, a, k: b["selected"] > 0 and a["selected"] == 0),
     ):
         rows.append({"name": f"Drawing view context menu › {label}", "spec": f"{spec_line(command)}; 01 §6; 02 §4.4 lines 291-296",
-                     "action": ("context", "drawingView.canvas", f"drawingView.drawingMenu.{item}"), "expect": (command, {}),
+                     "action": ("context", "drawingView.canvas", f"drawingView.drawingMenu.{item}"),
+                     "expect": (command, {"context": "drawing"}),
                      "label": spec_label, "setup": in_bob(lambda: focus_view("drawingView"), *steps), "state": edit_state,
                      "effect": eff, "disabled": None})
+
+    # D-60 item 2 (C44A-R1-02): the Camera view's Drawing family (a drawing tool active) acts on the drawing's
+    # selection, never the staging one (01 §6.4). Each row starts with a staging selection the item must leave as it
+    # was: Bob selected in staging (empty for Select All, which must not select the scene's elements).
+    async def both_state():
+        st = await edit_state()
+        staging = await cmd("edit.selection.get", {"context": "staging"})
+        els = (await e2e.run_cmd(t.s, "element.list", {})).get("result") or {}
+        els = els.get("elements") if isinstance(els, dict) else els
+        return {**st, "staging": sorted(staging.get("ids") or []), "elements": len(els or [])}
+
+    async def camera_drawing_family():
+        await focus_view("cameraView")
+        # The family chosen last runs in the Camera view (SI-148): a drawing tool chosen now.
+        await cmd("tool.active.set", {"toolId": "brush"})
+        await cmd("tool.active.set", {"toolId": "select"})
+
+    async def staging_bob():
+        await cmd("edit.selection.set", {"context": "staging", "ids": [bob]})
+
+    async def staging_none():
+        await cmd("edit.selection.set", {"context": "staging", "ids": []})
+
+    def kept(eff):
+        return lambda b, a, k: eff(b, a, k) and a["staging"] == b["staging"] and a["elements"] == b["elements"]
+
+    for item, label, command, spec_label, steps, eff in (
+        ("cut", "Cut", "edit.cut", "Cut", [lambda: rect(0, 0), select_all, staging_bob],
+         lambda b, a, k: a["strokes"] < b["strokes"]),
+        ("copy", "Copy", "edit.copy", None, [lambda: rect(-150, 0), copy_left_only, lambda: rect(150, 0), select_all, staging_bob],
+         lambda b, a, k: a["clipboard"] != b["clipboard"]),
+        ("paste", "Paste", "edit.paste", "Paste", [lambda: rect(0, 0), copy_all, staging_bob],
+         lambda b, a, k: a["strokes"] > b["strokes"]),
+        ("selectAll", "Select All", "edit.selectAll", None, [lambda: rect(-100, 0), lambda: rect(100, 0), deselect, staging_none],
+         lambda b, a, k: b["selected"] == 0 and a["selected"] > 0),
+        ("deselectAll", "Deselect All", "edit.deselectAll", None, [lambda: rect(0, 0), select_all, staging_bob],
+         lambda b, a, k: b["selected"] > 0 and a["selected"] == 0),
+    ):
+        rows.append({"name": f"Camera view context menu (drawing tool) › {label}",
+                     "spec": f"{spec_line(command)}; 01 §6.4; 02 §4.4 lines 291-296; D-60 item 2",
+                     "action": ("context", "cameraView.canvas", f"cameraView.drawingMenu.{item}"),
+                     "expect": (command, {"context": "drawing"}),
+                     "label": spec_label, "setup": in_bob(camera_drawing_family, *steps), "state": both_state,
+                     "effect": kept(eff), "disabled": None})
 
     # The Camera view's scene family (a scene tool running): the same items act on the staging selection.
     ann = {}
@@ -1802,7 +1848,8 @@ async def build_and_run(t: Table, only: set) -> None:
         ("cut", "Cut", "edit.cut", "Cut", [select_ann], lambda b, a, k: a["elements"] < b["elements"], ann_back),
     ):
         rows.append({"name": f"Camera view context menu (scene tool) › {label}", "spec": f"{spec_line(command)}; 01 §6; D-40 answer 12",
-                     "action": ("context", "cameraView.canvas", f"cameraView.sceneMenu.{item}"), "expect": (command, {}),
+                     "action": ("context", "cameraView.canvas", f"cameraView.sceneMenu.{item}"),
+                     "expect": (command, {"context": "staging"}),
                      "label": spec_label, "setup": scene_setup(*steps), "state": scene_state, "effect": eff,
                      "disabled": None, **({"after": after} if after else {})})
 
@@ -2170,7 +2217,13 @@ async def build_and_run(t: Table, only: set) -> None:
                 await custom_row(t, r, own_action=True)
             else:
                 await t.row(r)
+        # D-60 item 3: a row that creates or selects something (a camera made current, an element created) leaves the
+        # stated fixture behind it: the current element is Bob at frame 1 again, so a later row or a probe starts from
+        # it. Tolerated when it has nothing to do (a row that replaced the project).
+        await e2e.run_cmd(t.s, "app.context.set", {"elementId": bob, "frame": 1})
 
+    if not only or any("context menus" in o for o in only):
+        await menu_bounds_row(t, bob)
     await jobs_row(t)
     await recent_hint_row(t)
     # Saved first: the agent's session may not discard (its policy), and the close must not ask.
@@ -2322,6 +2375,105 @@ async def jobs_row(t: Table) -> None:
     except Exception as ex:  # noqa: BLE001
         rec.update({"ok": False, "error": repr(ex)})
         t.run.check(False, "D-39 status bar › jobs: ran", repr(ex))
+    t.rows.append(rec)
+    t.run.save("rows.json", t.rows)
+
+
+MENU_GEOMETRY_JS = """(() => {
+  const menu = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');
+  if (!menu) return null;
+  const box = (e) => { const r = e.getBoundingClientRect(); return {l: r.left, t: r.top, r: r.right, b: r.bottom}; };
+  const items = [...menu.querySelectorAll('[role^="menuitem"]')].map((e) => {
+    // Each item brought into view the way the person scrolls the menu (a menu taller than the window scrolls).
+    e.scrollIntoView({block: 'nearest'});
+    return {id: e.dataset.ttId, box: box(e), disabled: e.getAttribute('aria-disabled') === 'true',
+            command: e.dataset.ttCommand, params: JSON.parse(e.dataset.ttParams || '{}')};
+  });
+  return {menu: box(menu), scrolls: menu.classList.contains('scrolls'),
+          arrows: menu.querySelectorAll('.context-menu-arrow').length, items,
+          area: {w: document.documentElement.clientWidth, h: document.documentElement.clientHeight}};
+})()"""
+
+
+async def menu_bounds_row(t: Table, bob) -> None:
+    """D-60 item 1 (C44A-R1-01): at the product's 1280 by 800 window, each view's context menu opened where it would
+    cross an edge (the Drawing view's centre, as reported, and the Camera view's bottom-right corner, with a drawing
+    tool) is fully inside the client area: the menu's box and every item's box, each item brought into view as the
+    person scrolls a menu taller than the window. The last item is then activated by a real click and sends its
+    declared reference once."""
+    rec = {"name": "context menus › inside the client area at 1280 by 800",
+           "spec": "D-60 item 1 (C44A-R1-01); 01 §5.3 line 373; 02 §4.4 lines 291-296; design note 1 §9"}
+    if isinstance(t, McpTable):
+        reason = "the menu's geometry is the window's layout, read through the webview's debugging port in the OS form"
+        rec.update({"ok": True, "notRun": reason})
+        t.run.check(True, f"D-39 {rec['name']}: runs in the OS form only ({reason})", None)
+        t.rows.append(rec)
+        t.run.save("rows.json", t.rows)
+        return
+    cases = []
+    try:
+        h = front()
+        # SWP_NOMOVE | SWP_NOZORDER: the window at the size tauri.conf.json gives it.
+        u32.SetWindowPos(h, 0, 0, 0, 1280, 800, 0x0002 | 0x0004)
+        await asyncio.sleep(1.0)
+        for view, corner in (("drawingView", "centre"), ("cameraView", "bottomRight")):
+            await e2e.run_cmd(t.s, "app.context.set", {"elementId": bob, "frame": 1})
+            await t.cmd("window.panel.set", {"panelId": view, "visible": True, "focus": True})
+            await t.cmd("view.active.set", {"viewId": view})
+            # A drawing tool chosen now: the Camera view runs the Drawing family (SI-148).
+            await t.cmd("tool.active.set", {"toolId": "brush"})
+            await t.cmd("tool.active.set", {"toolId": "select"})
+            # The last item (Break Text Apart) enabled: a text object and a rectangle, both selected.
+            await t.cmd("draw.rectangle.add", {"from": {"x": -60, "y": -40}, "to": {"x": 60, "y": 40}, "layer": "new"})
+            await t.cmd("draw.text.add", {"position": {"x": -40, "y": 60}, "text": "Ab"})
+            await t.cmd("draw.selection.set", {"by": "all"})
+            await asyncio.sleep(0.6)
+            key(0x1B)
+            canvas = t.cdp.js("(() => { const r = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')"
+                              ".getBoundingClientRect(); return {l: r.left, t: r.top, r: r.right, b: r.bottom,"
+                              " dpr: window.devicePixelRatio || 1}; })()" % json.dumps(f"{view}.canvas"))
+            x, y = ((canvas["l"] + canvas["r"]) / 2, (canvas["t"] + canvas["b"]) / 2) if corner == "centre" else (
+                canvas["r"] - 12, canvas["b"] - 12)
+            hw = front()
+            origin = wintypes.POINT(0, 0)
+            u32.ClientToScreen(hw, ctypes.byref(origin))
+            right_click_screen(origin.x + x * canvas["dpr"], origin.y + y * canvas["dpr"])
+            menu_id = f"{view}.drawingMenu"
+            geo = None
+            for _ in range(50):
+                geo = t.cdp.js(MENU_GEOMETRY_JS % json.dumps(menu_id))
+                if geo and geo["items"] and not all(i["disabled"] for i in geo["items"]):
+                    break
+                await asyncio.sleep(0.1)
+            if not geo:
+                raise RuntimeError(f"the menu did not open: {menu_id}")
+            w, hh = geo["area"]["w"], geo["area"]["h"]
+
+            def within(b):
+                return b["l"] >= 0 and b["t"] >= 0 and b["r"] <= w and b["b"] <= hh
+            outside = [i["id"] for i in geo["items"] if not within(i["box"])]
+            last = geo["items"][-1]
+            await asyncio.sleep(0.3)
+            t.clear()
+            how = t.click(last["id"])
+            await asyncio.sleep(1.0)
+            sent = [c for c in t.recorded() if t.kinds.get(c.get("command")) != "query"]
+            want = [{"command": last["command"], "params": last["params"]}]
+            gone = t.cdp.js("!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % json.dumps(menu_id))
+            ok = (within(geo["menu"]) and not outside and not last["disabled"] and sent == want and bool(gone))
+            cases.append({"view": view, "openedAt": {"x": x, "y": y}, "area": geo["area"], "menu": geo["menu"],
+                          "scrolls": geo["scrolls"], "arrows": geo["arrows"], "items": len(geo["items"]),
+                          "outside": outside, "last": last, "input": how, "sent": sent, "expected": want,
+                          "closed": gone, "ok": ok})
+            key(0x1B)
+            await e2e.run_cmd(t.s, "draw.selection.set", {"by": "none"})
+        ok_all = bool(cases) and all(c["ok"] for c in cases)
+        rec.update({"cases": cases, "ok": ok_all})
+        t.run.check(ok_all, f"D-39 {rec['name']}: every item inside the client area, the last activated by a real click",
+                    cases)
+    except Exception as ex:  # noqa: BLE001
+        rec.update({"ok": False, "error": repr(ex), "cases": cases})
+        t.run.check(False, f"D-39 {rec['name']}: ran", repr(ex))
     t.rows.append(rec)
     t.run.save("rows.json", t.rows)
 

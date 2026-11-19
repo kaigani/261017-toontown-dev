@@ -14,6 +14,15 @@ def load(name, path):
 e = load('e', R/'scripts/c41-gui-e2e.py')
 c = load('c', R/'scripts/mcp-conformance.py')
 def launch(app, work):
+    # D-60 item 3a: the agent defaults seeded with askInApp off, as scripts/mcp-conformance.py launch_desktop does.
+    import json
+    settings = Path(work)/'user'/'Settings'
+    settings.mkdir(parents=True, exist_ok=True)
+    seed = {'agent.policy.defaults': {'policy': 'assist', 'maxJobs': 2, 'maxBatchSteps': 1000, 'maxInlineImagePx': 2048,
+                                      'maxInlineBytes': 52428800, 'askInApp': False, 'letAgentMoveView': True,
+                                      'highlightAgentChanges': True}}
+    (settings/'preferences.json').write_text(json.dumps({'format': 'toontown-settings', 'kind': 'preferences',
+                                                          'formatVersion': '1.0', 'data': seed}), encoding='utf-8')
     p = e.launch(app, Path(work)/'user', Path(work)/'discovery.json')
     d = e.wait_discovery(Path(work)/'discovery.json', p)
     c.HTTP.update(endpoint=d['endpoint'], token=d['token'])
