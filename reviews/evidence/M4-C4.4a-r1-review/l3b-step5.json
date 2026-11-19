@@ -1,0 +1,257 @@
+{
+  "checks": 10,
+  "failures": [
+    "token shown or copied in Preferences matches discovery: {\"observed\": \"Agent access has no token display or Copy token control\", \"controls\": [\"agentAccess\", \"agentAccess.status\", \"agentAccess.server\", \"agentAccess.port\", \"agentAccess.allowRemote\", \"agentAccess.policy\", \"agentAccess.policy.observe\", \"agentAccess.policy.assist\", \"agentAccess.policy.autonomous\", \"agentAccess.maxJobs\", \"agentAccess.maxBatchSteps\", \"agentAccess.maxInlineImagePx\", \"agentAccess.maxInlineBytes\", \"agentAccess.askInApp\", \"agentAccess.letAgentMoveView\", \"agentAccess.highlightAgentChanges\", \"agentAccess.typedTools\", \"agentAccess.namespace.agent\", \"agentAccess.namespace.anim\", \""
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-7mc538vz",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "regeneration question defaults Cancel",
+      "ok": true,
+      "detail": [
+        {
+          "text": "Create",
+          "id": "start.create",
+          "focused": false
+        },
+        {
+          "text": "Open other\u2026",
+          "id": "start.openOther",
+          "focused": false
+        },
+        {
+          "text": "Sample project",
+          "id": "start.sample",
+          "focused": false
+        },
+        {
+          "text": "Documentation",
+          "id": "start.docs",
+          "focused": false
+        },
+        {
+          "text": "General",
+          "id": "preferences.category.general",
+          "focused": false
+        },
+        {
+          "text": "Files and safety",
+          "id": "preferences.category.files",
+          "focused": false
+        },
+        {
+          "text": "New-project defaults",
+          "id": "preferences.category.newProject",
+          "focused": false
+        },
+        {
+          "text": "Interface",
+          "id": "preferences.category.interface",
+          "focused": false
+        },
+        {
+          "text": "Drawing aids",
+          "id": "preferences.category.drawingAids",
+          "focused": false
+        },
+        {
+          "text": "Display",
+          "id": "preferences.category.display",
+          "focused": false
+        },
+        {
+          "text": "Tablet",
+          "id": "preferences.category.tablet",
+          "focused": false
+        },
+        {
+          "text": "Staging",
+          "id": "preferences.category.staging",
+          "focused": false
+        },
+        {
+          "text": "Timing",
+          "id": "preferences.category.timing",
+          "focused": false
+        },
+        {
+          "text": "Edit",
+          "id": "preferences.category.edit",
+          "focused": false
+        },
+        {
+          "text": "Agent access",
+          "id": "preferences.category.agent",
+          "focused": false
+        },
+        {
+          "text": "Keyboard",
+          "id": "preferences.category.keyboard",
+          "focused": false
+        },
+        {
+          "text": "Tips",
+          "id": "preferences.category.tips",
+          "focused": false
+        },
+        {
+          "text": "Regenerate token\u2026",
+          "id": "agentAccess.regenerate",
+          "focused": false
+        },
+        {
+          "text": "Cancel",
+          "id": "preferences.cancel",
+          "focused": false
+        },
+        {
+          "text": "OK",
+          "id": "preferences.submit",
+          "focused": false
+        }
+      ]
+    },
+    {
+      "check": "Cancel keeps token and endpoint",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "regenerate changes token keeps endpoint",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.token.regenerate",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "old token refused",
+      "ok": true,
+      "detail": {
+        "http": 401,
+        "body": ""
+      }
+    },
+    {
+      "check": "new token accepted",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "token absent UI tree and logs",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "regeneration disconnects existing HTTP sessions",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "enabled": true,
+          "endpoint": null,
+          "sessions": [
+            {
+              "sessionId": "s3-de75e0",
+              "client": "new-token",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "connectedAt": "2026-11-19T21:36:44.164Z",
+              "lastActivity": "2026-11-19T21:36:44.221Z",
+              "paused": false,
+              "transport": "http"
+            }
+          ],
+          "pendingConfirmations": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": null
+      }
+    },
+    {
+      "check": "token absent actual activity export",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "token shown or copied in Preferences matches discovery",
+      "ok": false,
+      "detail": {
+        "observed": "Agent access has no token display or Copy token control",
+        "controls": [
+          "agentAccess",
+          "agentAccess.status",
+          "agentAccess.server",
+          "agentAccess.port",
+          "agentAccess.allowRemote",
+          "agentAccess.policy",
+          "agentAccess.policy.observe",
+          "agentAccess.policy.assist",
+          "agentAccess.policy.autonomous",
+          "agentAccess.maxJobs",
+          "agentAccess.maxBatchSteps",
+          "agentAccess.maxInlineImagePx",
+          "agentAccess.maxInlineBytes",
+          "agentAccess.askInApp",
+          "agentAccess.letAgentMoveView",
+          "agentAccess.highlightAgentChanges",
+          "agentAccess.typedTools",
+          "agentAccess.namespace.agent",
+          "agentAccess.namespace.anim",
+          "agentAccess.namespace.app",
+          "agentAccess.namespace.capture",
+          "agentAccess.namespace.cell",
+          "agentAccess.namespace.checkpoint",
+          "agentAccess.namespace.colour",
+          "agentAccess.namespace.doc",
+          "agentAccess.namespace.draw",
+          "agentAccess.namespace.drawAid",
+          "agentAccess.namespace.edit",
+          "agentAccess.namespace.element",
+          "agentAccess.namespace.export",
+          "agentAccess.namespace.fx",
+          "agentAccess.namespace.import",
+          "agentAccess.namespace.inspect",
+          "agentAccess.namespace.job",
+          "agentAccess.namespace.keymap",
+          "agentAccess.namespace.library",
+          "agentAccess.namespace.lipsync",
+          "agentAccess.namespace.media",
+          "agentAccess.namespace.playback",
+          "agentAccess.namespace.prefs",
+          "agentAccess.namespace.print",
+          "agentAccess.namespace.project",
+          "agentAccess.namespace.render",
+          "agentAccess.namespace.sound",
+          "agentAccess.namespace.storyline",
+          "agentAccess.namespace.timeline",
+          "agentAccess.namespace.tool",
+          "agentAccess.namespace.ui",
+          "agentAccess.namespace.view",
+          "agentAccess.namespace.window",
+          "agentAccess.namespace.workspace",
+          "agentAccess.namespace.xsheet",
+          "agentAccess.persist",
+          "agentAccess.regenerate"
+        ]
+      }
+    }
+  ]
+}

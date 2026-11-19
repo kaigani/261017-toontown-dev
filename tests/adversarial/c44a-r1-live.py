@@ -547,6 +547,12 @@ async def live3_body(t,step):
    for f in (t.work/'user').rglob('*'):
     if f.is_file() and f.suffix in ('.log','.jsonl'):logs.append((str(f.relative_to(t.work)),new['token'].encode() in f.read_bytes()))
    check(new['token'] not in json.dumps(tree) and not any(x[1] for x in logs),'token absent UI tree and logs',logs)
+   status=await call(nq,'agent.server.status');check('review-live3-primary' not in json.dumps(status),'regeneration disconnects existing HTTP sessions',status)
+   d.key(0x1B);d.choose_menu(['Window','Panels','Activity']);await pause()
+   export=t.work/'token-activity.jsonl';t.click('activity.export');await asyncio.sleep(1.8);d.type_text(str(export));d.key(0x0D);await asyncio.sleep(1.8)
+   check(export.exists() and new['token'] not in export.read_text(),'token absent actual activity export')
+   await prefs()
+
    check(False,'token shown or copied in Preferences matches discovery',{'observed':'Agent access has no token display or Copy token control','controls':t.cdp.js("[...document.querySelectorAll('[data-tt-id^=agentAccess]')].map(e=>e.dataset.ttId)")})
   elif step==6:
    await r3.modal_fixture(t,'Live3 sessions');nq=fresh('review-live3-secondary');await init(nq)
