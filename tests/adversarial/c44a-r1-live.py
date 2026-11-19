@@ -394,10 +394,10 @@ def live(step):
   stop.set();worker.join();server.terminate();server.wait()
   run.save('transcript.json',run.transcript)
   summary={'checks':len(run.transcript),'failures':run.failures,'raw':str(OUT)}
-  if sys.argv[1] in ('l2a','l2b','l3a','l3b'):summary['results']=run.transcript
+  if sys.argv[1] in ('l2a','l2b','l3a','l3b','l4a','l4b'):summary['results']=run.transcript
   if sys.argv[1] in ('l3a','l3b'):summary=live3_compact(summary)
   suffix='-context-repro' if os.environ.get('REVIEW_CONTEXT_REPRO') else '-dock' if os.environ.get('REVIEW_DOCK_REPRO') else ''
-  (EVID/((sys.argv[1]+'-' if sys.argv[1] in ('l2a','l2b','l3a','l3b') else '')+'step'+str(step)+suffix+'.json')).write_text(json.dumps(summary,indent=2,default=str)[:190000]+'\n',encoding='utf-8',newline='\n')
+  (EVID/((sys.argv[1]+'-' if sys.argv[1] in ('l2a','l2b','l3a','l3b','l4a','l4b') else '')+'step'+str(step)+suffix+'.json')).write_text(json.dumps(summary,indent=2,default=str)[:190000]+'\n',encoding='utf-8',newline='\n')
  return int(bool(run.failures))
 
 def regression(step,script,cases):
@@ -655,7 +655,105 @@ async def live3_body(t,step):
   for client in clients:await asyncio.to_thread(client.close)
 
 
+
+async def live4_body(t,step):
+ import asyncio,hashlib
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();c=t.cmd
+ clients=[];tasks=[]
+ def dom(i,expr='e.textContent'):
+  return t.cdp.js('(()=>{const e=document.querySelector('+json.dumps('[data-tt-id="'+i+'"]')+');return e?'+expr+':null})()')
+ async def pause():await asyncio.sleep(.8)
+ async def call(q,n,p=None):return await asyncio.to_thread(q.command,n,p)
+ async def fresh(name):
+  q=IndependentHttp(json.loads((t.work/'discovery.json').read_text()),name);clients.append(q);await asyncio.to_thread(q.initialize);return q
+ def check(ok,label,data=None):t.run.check(ok,label,data)
+ async def request(q):
+  sid=str(t.work/('overwrite-'+str(len(tasks))+'.animpkg'));Path(sid).write_bytes(b'reviewer sentinel');params={'path':sid,'onExists':'overwrite'}
+  task=asyncio.create_task(call(q,'project.saveAs',params));tasks.append(task);await pause()
+  check(not task.done() and dom('confirmSheet') is not None,'call held and sheet open',task.result() if task.done() else dom('confirmSheet'))
+  return task,sid,params
+ async def answer(task,accept):
+  t.clear();t.click('confirmSheet.accept' if accept else 'confirmSheet.decline');await pause()
+  result=await asyncio.wait_for(asyncio.shield(task),8)
+  check(result.get('status')=='ok' if accept else 'confirmation.declined' in json.dumps(result),'decision delivered',{'answer':result,'sent':t.recorded()});return result
+ async def exists(sid):return {'unchanged':Path(sid).read_bytes()==b'reviewer sentinel'}
+ try:
+  await r3.modal_fixture(t,'Live4 step '+str(step))
+  await c('project.saveAs',{'path':str(t.work/'base.animpkg')})
+  d.choose_menu(['File','Preferences']);await pause();t.click('preferences.category.agent');await pause();await t.do(('select','agentAccess.policy','assist'));t.click('preferences.submit');await pause()
+  q=await fresh('review-live4-primary');q2=await fresh('review-live4-secondary')
+  check(True,'initial policy',await c('agent.server.status'))
+  if step==1:
+   for accept in (True,False):
+    await c('tool.active.set',{'toolId':'select'})
+    task,sid,p=await request(q)
+    check(all(dom(x) for x in ('confirmSheet.summary','confirmSheet.consequences')) and 'review-live4-primary' in dom('confirmSheet'),'sheet content',dom('confirmSheet'))
+    d.front();d.key(0x42);await pause();check(dom('confirmSheet') is not None,'shortcut leaves request open',await c('tool.active.get'))
+    await answer(task,accept);check((not (await exists(sid))['unchanged']) if accept else (await exists(sid))['unchanged'],'scene outcome',await exists(sid))
+  elif step==2:
+   task,sid,p=await request(q)
+   t.click('drawingView.canvas')
+   for key in (0x0D,0x20,0x1B):d.key(key);await pause();check(not task.done(),'outside key preserves request '+str(key))
+   # Enter sheet through its first tab stop, using real Tab until reached.
+   for _ in range(160):
+    d.key(0x09)
+    focus=t.cdp.js('document.activeElement?.dataset.ttId')
+    if focus and focus.startswith('confirmSheet.'):break
+   check(focus=='confirmSheet.decline','first focus is Decline',focus);d.key(0x0D);await pause();check('confirmation.declined' in json.dumps(await task),'Enter declines')
+   task,sid,p=await request(q);t.click('confirmSheet.summary');d.key(0x09);d.key(0x1B);await pause()
+   if not task.done():t.click('confirmSheet.decline')
+   check('confirmation.declined' in json.dumps(await task),'inside Escape declines')
+   task,sid,p=await request(q);t.click('confirmSheet.decline');await task
+   task,sid,p=await request(q)
+   for _ in range(160):
+    d.key(0x09)
+    if t.cdp.js('document.activeElement?.dataset.ttId')=='confirmSheet.accept':break
+   d.key(0x0D);await pause();check((await task).get('status')=='ok','keyboard explicit Accept')
+  elif step==3:
+   task,sid,p=await request(q)
+   status=await call(q2,'agent.server.status');activity=await call(q2,'agent.activity.list',{'limit':100});events=await asyncio.to_thread(q2.rpc,'resources/read',{'uri':'app://events?after=0'})
+   check(True,'token surfaces',{'status':status,'activity':activity,'events':live3_compact(events),'firstReturned':task.done()})
+   pending=(status.get('result') or {}).get('pendingConfirmations',[]);cid=pending[0]['confirmationId']
+   for client in (q,q2):
+    for token in ('guessed-confirm-token',cid):
+     r=await asyncio.to_thread(client.tool,'run_command',{'id':'project.saveAs','params':p,'confirmToken':token});check(r.get('status')!='ok','token bypass refused',r)
+    r=await call(client,'agent.confirmation.respond',{'confirmationId':cid,'accept':True});check(r.get('status')!='ok','agent response refused',r)
+    probe=asyncio.create_task(asyncio.to_thread(client.tool,'run_command',{'id':'project.saveAs','params':p,'confirm':True}));tasks.append(probe);await pause()
+    check(not probe.done() or probe.result().get('status')!='ok','confirm true no bypass',probe.result() if probe.done() else 'held')
+   while dom('confirmSheet') is not None:t.click('confirmSheet.decline');await pause()
+   check('confirmation.declined' in json.dumps(await task),'original remains declined')
+  elif step==4:
+   for who in ('window','agent'):
+    task,sid,p=await request(q);before=dom('confirmSheet.countdown');status=await call(q2,'agent.server.status');await asyncio.sleep(2.2);after=dom('confirmSheet.countdown');check(before!=after,'countdown decreases',{'before':before,'after':after,'status':status})
+    if who=='window':
+     await c('tool.active.set',{'toolId':'rectangle'});t.click('drawingView.canvas');d.key(0x42)
+     # real undoable document edit through native menu
+     d.choose_menu(['Edit','Undo'])
+    else:await call(q2,'draw.rectangle.add',{'from':{'x':1,'y':1},'to':{'x':15,'y':15}})
+    await pause();check(task.done() and 'confirmation.expired' in json.dumps(task.result()),'revision expires '+who,{'answer':task.result() if task.done() else 'held','sheet':dom('confirmSheet.ended')})
+    if not task.done():await answer(task,False)
+    check((await exists(sid))['unchanged'],'scene retained',await exists(sid))
+  elif step==5:
+   # Create fixtures first: creating a scene itself advances revision.
+   ids=[str(t.work/('queue-'+str(i)+'.animpkg')) for i in range(3)]
+   for path in ids:Path(path).write_bytes(b'reviewer sentinel')
+   held=[asyncio.create_task(call(client,'project.saveAs',{'path':sid,'onExists':'overwrite'})) for client,sid in zip((q,q2,q),ids)];tasks.extend(held);await pause()
+   check(dom('confirmSheet.queue') and '1 of 3' in dom('confirmSheet.queue'),'three calls queue',dom('confirmSheet'))
+   check((await call(q2,'app.state.get')).get('status')=='ok','other query completes')
+   for task,accept in zip(held,(False,False,True)):await answer(task,accept)
+  else:check(False,'unimplemented step')
+ finally:
+  for _ in range(10):
+   if dom('confirmSheet') is None:break
+   t.click('confirmSheet.decline');await pause()
+  for task in tasks:
+   if not task.done():task.cancel()
+  for client in clients:await asyncio.to_thread(client.close)
+
 if __name__=='__main__':
+ if sys.argv[1] in ('l4a','l4b'):
+  live_body=live4_body
+  sys.exit(live(int(sys.argv[2])))
  if sys.argv[1] in ('l3a','l3b'):
   live_body=live3_body
   sys.exit(live(int(sys.argv[2])))
