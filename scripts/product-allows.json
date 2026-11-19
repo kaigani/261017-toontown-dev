@@ -121,6 +121,10 @@
   "desktop/src-tauri/src/capture.rs": {
     "unsafe_code": 1
   },
+  "desktop/src-tauri/src/menu_hint.rs": {
+    "$ruling": "D-59 (C44A-R1S-03): the Windows-only menu highlight hint, on the ruling's conditions",
+    "unsafe_code": 1
+  },
   "desktop/src-tauri/src/spikes/canvas/renderlist.rs": {
     "missing_docs": 1
   },

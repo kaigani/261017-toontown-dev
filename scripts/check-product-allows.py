@@ -43,13 +43,25 @@ def scan():
     return found
 
 
+#: Ruling D-59: the inventory's total stays at or below this many allowed lints.
+MAX_TOTAL = 97
+
+
+def counts(entry):
+    """A file's lint counts, without its metadata (keys starting with `$`, such as `$ruling`)."""
+    return {k: v for k, v in entry.items() if not k.startswith("$")}
+
+
 def main(argv):
     found = scan()
     if "--update" in argv:
-        INVENTORY.write_text(json.dumps(found, indent=2) + "\n", encoding="utf-8")
+        # Metadata a ruling attached to a file's entry (`$ruling`) is kept for the files that still allow something.
+        old = json.loads(INVENTORY.read_text(encoding="utf-8")) if INVENTORY.exists() else {}
+        out = {f: {**{k: v for k, v in old.get(f, {}).items() if k.startswith("$")}, **lints} for f, lints in found.items()}
+        INVENTORY.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
         print(f"inventory updated: {sum(sum(v.values()) for v in found.values())} allowed lints in {len(found)} files")
         return 0
-    known = json.loads(INVENTORY.read_text(encoding="utf-8"))
+    known = {f: counts(e) for f, e in json.loads(INVENTORY.read_text(encoding="utf-8")).items()}
     added, removed = [], []
     for f in sorted(set(found) | set(known)):
         now, before = found.get(f, {}), known.get(f, {})
@@ -65,7 +77,10 @@ def main(argv):
         print(f"removed    {r} (run with --update to shrink the inventory)")
     total = sum(sum(v.values()) for v in found.values())
     print(f"{total} allowed lints in {len(found)} product files; {len(added)} new, {len(removed)} removed")
-    return 1 if added or removed else 0
+    over = total > MAX_TOTAL
+    if over:
+        print(f"OVER LIMIT {total} > {MAX_TOTAL} (ruling D-59)")
+    return 1 if added or removed or over else 0
 
 
 if __name__ == "__main__":

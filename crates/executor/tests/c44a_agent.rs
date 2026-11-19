@@ -162,3 +162,46 @@ fn an_in_app_token_waits_for_the_persons_answer() {
     drop(h);
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+/// Ruling D-59 (C44A-R1S-01): the first decision settles an in-app request. A second, conflicting answer (another
+/// window whose sheet had not caught up) before the agent's call uses the token is refused with `confirmation.expired`
+/// ("already decided") and changes nothing, in both orders; the token then gives the first decision's outcome.
+#[test]
+fn the_first_decision_settles_an_in_app_request() {
+    let dir = std::env::temp_dir().join(format!("tt-c44a-decide-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).unwrap();
+    let h = spawn_in(&dir.join("user"));
+    ok(&h, "project.create", json!({ "name": "Decide" }));
+    let file = dir.join("log.jsonl");
+    std::fs::write(&file, "x").unwrap();
+    let a = agent(&h, &dir);
+    let params = json!({ "path": file.to_string_lossy(), "format": "jsonl", "onExists": "overwrite" });
+    for (first, second) in [(false, true), (true, false)] {
+        let asked = as_agent(&h, &a, params.clone(), None);
+        assert_eq!(asked.status, tt_executor::Status::NeedsConfirmation, "{asked:?}");
+        let t = asked.result.as_ref().unwrap()["confirmToken"].as_str().unwrap().to_owned();
+        assert!(h.hold_in_app(&t).unwrap());
+        ok(&h, "agent.confirmation.respond", json!({ "confirmationId": t, "accept": first }));
+        let e = err(&h, "agent.confirmation.respond", json!({ "confirmationId": t, "accept": second }));
+        assert_eq!(e.code, "confirmation.expired", "{e:?}");
+        assert_eq!(e.details["reason"], "already decided", "{e:?}");
+        assert_eq!(e.details["decision"], first, "{e:?}");
+        let used = as_agent(&h, &a, params.clone(), Some(&t));
+        if first {
+            assert!(used.is_ok(), "the first answer, Accept, settles it: {used:?}");
+        } else {
+            assert_eq!(used.error.unwrap().code, "confirmation.declined", "the first answer, Decline, settles it");
+        }
+    }
+    // An expired request (the document changed) refuses an answer too.
+    let asked = as_agent(&h, &a, params.clone(), None);
+    let t = asked.result.as_ref().unwrap()["confirmToken"].as_str().unwrap().to_owned();
+    assert!(h.hold_in_app(&t).unwrap());
+    let scene = ok(&h, "doc.object.find", json!({ "type": "scene" }))["items"][0]["id"].clone();
+    ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 1 } } }));
+    let e = err(&h, "agent.confirmation.respond", json!({ "confirmationId": t, "accept": true }));
+    assert_eq!((e.code.as_str(), e.details["reason"].as_str()), ("confirmation.expired", Some("the document changed")));
+    drop(h);
+    let _ = std::fs::remove_dir_all(&dir);
+}

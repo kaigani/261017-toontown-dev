@@ -301,6 +301,8 @@ impl BufRead for ChannelReader {
 struct RouterWriter {
     routes: Arc<Mutex<Routes>>,
     pending: Vec<u8>,
+    /// Ids of answers that could not be delivered (D-59 item 4): the protocol loop records each in the activity log.
+    undelivered: Arc<Mutex<Vec<String>>>,
 }
 
 fn id_text(v: &Value) -> String {
@@ -340,8 +342,10 @@ fn offer_answer(tx: &SyncSender<String>, line: &str) -> bool {
     }
 }
 
-fn route(routes: &Mutex<Routes>, line: &str) {
-    let Ok(msg) = serde_json::from_str::<Value>(line) else { return };
+/// Routes one line of the protocol loop's output. Returns the request id of an answer that could not be delivered
+/// (its client went away or stopped reading for [`ANSWER_WAIT`]); the command it answers ran all the same.
+fn route(routes: &Mutex<Routes>, line: &str) -> Option<String> {
+    let Ok(msg) = serde_json::from_str::<Value>(line) else { return None };
     let mut r = routes.lock().unwrap_or_else(PoisonError::into_inner);
     let is_response = msg.get("id").is_some() && (msg.get("result").is_some() || msg.get("error").is_some());
     if is_response {
@@ -350,9 +354,11 @@ fn route(routes: &Mutex<Routes>, line: &str) {
             let (_, _, tx) = r.requests.remove(pos);
             // The routes are released while the answer waits for room.
             drop(r);
-            let _ = offer_answer(&tx, line);
+            if !offer_answer(&tx, line) {
+                return Some(id);
+            }
         }
-        return;
+        return None;
     }
     // Progress belongs to the request that asked for it.
     if msg.get("method").and_then(Value::as_str) == Some("notifications/progress")
@@ -369,7 +375,7 @@ fn route(routes: &Mutex<Routes>, line: &str) {
                     r.requests.remove(pos);
                 }
             }
-            return;
+            return None;
         }
     }
     // A server request (elicitation) goes to the newest open request stream; other notifications to the GET stream.
@@ -378,11 +384,11 @@ fn route(routes: &Mutex<Routes>, line: &str) {
         if !offer(tx, line) {
             r.requests.pop();
         }
-        return;
+        return None;
     }
     if let Some(get) = &r.get {
         if offer(get, line) {
-            return;
+            return None;
         }
         // The GET subscriber stopped reading or went away: dropped; messages wait for the next one.
         r.get = None;
@@ -390,6 +396,7 @@ fn route(routes: &Mutex<Routes>, line: &str) {
     if is_request && r.backlog.len() < 256 {
         r.backlog.push(line.to_owned());
     }
+    None
 }
 
 impl Write for RouterWriter {
@@ -397,8 +404,10 @@ impl Write for RouterWriter {
         self.pending.extend_from_slice(data);
         while let Some(i) = self.pending.iter().position(|b| *b == b'\n') {
             let line: Vec<u8> = self.pending.drain(..=i).collect();
-            if let Ok(text) = std::str::from_utf8(&line[..line.len() - 1]) {
-                route(&self.routes, text);
+            if let Ok(text) = std::str::from_utf8(&line[..line.len() - 1])
+                && let Some(id) = route(&self.routes, text)
+            {
+                self.undelivered.lock().unwrap_or_else(PoisonError::into_inner).push(id);
             }
         }
         Ok(data.len())
@@ -1296,8 +1305,11 @@ fn open_session(shared: &Shared) -> Result<(String, Entered), (&'static str, &'s
     }
     let guard = InFlight { sessions: shared.sessions.clone(), sid: sid.clone() };
     let reader = ChannelReader { rx, buf: Vec::new(), pos: 0 };
-    let writer = RouterWriter { routes: routes.clone(), pending: Vec::new() };
-    let (h, o, map, id2) = (shared.handle.clone(), shared.server_opts.clone(), shared.sessions.clone(), sid.clone());
+    let undelivered = Arc::new(Mutex::new(Vec::new()));
+    let writer = RouterWriter { routes: routes.clone(), pending: Vec::new(), undelivered: undelivered.clone() };
+    let mut o = shared.server_opts.clone();
+    o.undelivered = Some(undelivered);
+    let (h, map, id2) = (shared.handle.clone(), shared.sessions.clone(), sid.clone());
     let spawned = std::thread::Builder::new().name("mcp-http-session".into()).spawn(move || {
         let _ = crate::serve(h, o, reader, writer);
         let ended = map.lock().unwrap_or_else(PoisonError::into_inner).remove(&id2);
@@ -1449,5 +1461,29 @@ mod tests {
         assert!(routes.lock().unwrap_or_else(PoisonError::into_inner).get.is_some(), "two fit the backlog");
         route(&routes, note);
         assert!(routes.lock().unwrap_or_else(PoisonError::into_inner).get.is_none(), "the third finds it full");
+    }
+
+    /// D-59 item 4: an answer whose client went away is reported by its request id (the protocol loop records it in the
+    /// activity log); a delivered answer, an answer to no open request and a notification report nothing.
+    #[test]
+    fn an_answer_nobody_reads_is_reported_undelivered() {
+        let routes = Mutex::new(Routes::default());
+        let (read, kept) = mpsc::sync_channel(8);
+        let (gone, dropped) = mpsc::sync_channel(8);
+        drop(dropped);
+        {
+            let mut r = routes.lock().unwrap_or_else(PoisonError::into_inner);
+            r.requests.push(("1".into(), None, read));
+            r.requests.push(("\"q\"".into(), None, gone));
+        }
+        assert_eq!(route(&routes, r#"{"jsonrpc":"2.0","id":1,"result":{}}"#), None);
+        assert!(kept.try_recv().unwrap_or_default().contains("result"));
+        assert_eq!(
+            route(&routes, r#"{"jsonrpc":"2.0","id":"q","error":{"code":1,"message":"m"}}"#),
+            Some("\"q\"".to_owned())
+        );
+        assert!(routes.lock().unwrap_or_else(PoisonError::into_inner).requests.is_empty());
+        assert_eq!(route(&routes, r#"{"jsonrpc":"2.0","id":5,"result":{}}"#), None, "no open request");
+        assert_eq!(route(&routes, r#"{"jsonrpc":"2.0","method":"notifications/message","params":{}}"#), None);
     }
 }

@@ -885,14 +885,23 @@ def confirm_rows(t: Flows) -> list:
         # Answered by another window: its own command entry point, not this sheet's buttons.
         t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command: 'agent.confirmation.respond',"
                  " params: {confirmationId: %s, accept: true}})}).then(() => true)" % json.dumps(ctx["ids"][0]))
-        await asyncio.sleep(1.0)
+        await asyncio.sleep(0.3)
+        # D-59 (C44A-R1S-01): a second, conflicting answer (a window whose sheet had not caught up) is refused and changes
+        # nothing; the held call receives the first decision.
+        ctx["second"] = t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command:"
+                                 " 'agent.confirmation.respond', params: {confirmationId: %s, accept: false}})})"
+                                 ".then(r => typeof r === 'string' ? r : JSON.stringify(r), e => String(e))"
+                                 % json.dumps(ctx["ids"][0]))
+        await asyncio.sleep(0.7)
         ctx["answers"] = await answers(ctx)
         ctx["gone"] = not t.exists("confirmSheet.accept")
-        return "a request open in the sheet, answered by another window (no click in the sheet)"
+        return "a request open in the sheet, answered by another window (no click in the sheet), then a conflicting second answer"
     rows.append({"name": "Confirmation sheet › decided in another window", "spec": "D-58", "path": ["agent request", "sheet"],
                  "choice": "elsewhere", "setup": nothing, "state": nothing, "flow": elsewhere_flow, "wait": 0.5,
-                 "expect": lambda ctx: [("agent.confirmation.respond", {"confirmationId": ctx["ids"][0], "accept": True}, [])],
-                 "effect": lambda b, a, ctx: ctx["answers"] == ["ok"] and ctx["gone"]})
+                 "expect": lambda ctx: [("agent.confirmation.respond", {"confirmationId": ctx["ids"][0], "accept": True}, []),
+                                        ("agent.confirmation.respond", {"confirmationId": ctx["ids"][0], "accept": False}, [])],
+                 "effect": lambda b, a, ctx: ctx["answers"] == ["ok"] and ctx["gone"]
+                 and "confirmation.expired" in (ctx.get("second") or "") and "already decided" in (ctx.get("second") or "")})
 
     async def queued_flow(ctx):
         await raised(ctx, 3)

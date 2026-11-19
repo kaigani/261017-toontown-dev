@@ -98,16 +98,21 @@ pub fn install(app: &AppHandle) {
     windows_hint::install(app);
 }
 
+// Ruling D-59 (C44A-R1S-03): the one granted `unsafe_code` exception of the product, for this Windows-only module only
+// (the platform gives the menu highlight no other way). Its conditions, kept here: every unsafe block states the
+// invariant it relies on; no handle or pointer outlives the callback that received it; the subclass is removed when the
+// window is destroyed; the menu text is read into a bounded buffer whose returned length is checked; a failure inside
+// the callback degrades to no hint, never a crash (`catch_unwind`).
 #[cfg(windows)]
-#[allow(unsafe_code, reason = "the menu's highlight is a Win32 message read through foreign calls (D-48 item 8)")]
+#[allow(unsafe_code, reason = "the menu's highlight is a Win32 message read through foreign calls (D-48 item 8; D-59)")]
 mod windows_hint {
     use std::ffi::c_void;
 
     use tauri::{AppHandle, Manager};
     use windows::Win32::Foundation::{HWND, LPARAM, LRESULT, WPARAM};
-    use windows::Win32::UI::Shell::{DefSubclassProc, SetWindowSubclass};
+    use windows::Win32::UI::Shell::{DefSubclassProc, RemoveWindowSubclass, SetWindowSubclass};
     use windows::Win32::UI::WindowsAndMessaging::{
-        GetMenuItemCount, GetMenuItemID, GetMenuStringW, HMENU, MF_BYPOSITION, MF_POPUP, WM_MENUSELECT,
+        GetMenuItemCount, GetMenuItemID, GetMenuStringW, HMENU, MF_BYPOSITION, MF_POPUP, WM_MENUSELECT, WM_NCDESTROY,
     };
 
     /// The subclass's id (any constant unique to this subclass).
@@ -118,7 +123,8 @@ mod windows_hint {
         let Ok(raw) = window.hwnd() else { return };
         let hwnd = HWND(raw.0.cast::<c_void>());
         // SAFETY: `hwnd` is the main window's live handle, on the thread that owns it (setup runs on the main thread);
-        // the procedure is a plain function and the subclass lives as long as the window.
+        // the procedure is a plain function with no captured state (reference data 0), and the subclass is removed in
+        // `proc` on `WM_NCDESTROY`, so it never outlives the window.
         unsafe {
             let _ = SetWindowSubclass(hwnd, Some(proc), SUBCLASS_ID, 0);
         }
@@ -133,10 +139,24 @@ mod windows_hint {
         _data: usize,
     ) -> LRESULT {
         if msg == WM_MENUSELECT {
-            // SAFETY: the message's own menu handle, read while the menu is shown.
-            unsafe { selected(wparam, lparam) };
+            // A failure while reading the menu degrades to no hint: a panic never unwinds across this foreign frame.
+            let shown = std::panic::catch_unwind(|| {
+                // SAFETY: `lparam` is the menu handle of this very message, valid while the system delivers it; it is
+                // used only inside this call and never stored.
+                unsafe { selected(wparam, lparam) }
+            });
+            if shown.is_err() {
+                super::send(None);
+            }
         }
-        // SAFETY: the default processing of the same message.
+        if msg == WM_NCDESTROY {
+            // SAFETY: the same window, procedure and id `install` registered; removed before the window's last message,
+            // so the subclass never outlives the window.
+            unsafe {
+                let _ = RemoveWindowSubclass(hwnd, Some(proc), SUBCLASS_ID);
+            }
+        }
+        // SAFETY: the default processing of the same message, with the arguments the system gave this call.
         unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) }
     }
 
@@ -153,17 +173,19 @@ mod windows_hint {
             super::send(None); // a submenu's own item (Open Recent itself) is highlighted
             return;
         }
-        // SAFETY: `hmenu` is the menu the system reports as shown.
-        let count = unsafe { GetMenuItemCount(Some(hmenu)) }.max(0);
+        // SAFETY: `hmenu` is the menu the system reports as shown in this message; read here only, never kept.
+        // The count is bounded so a corrupt answer cannot make the loop run away.
+        let count = unsafe { GetMenuItemCount(Some(hmenu)) }.clamp(0, 256);
         let mut labels = Vec::with_capacity(count as usize);
         let mut position = None;
         for i in 0..count {
-            // SAFETY: `i` is a position inside `hmenu`.
+            // SAFETY: `i` is a position inside `hmenu` (0 to the count the system just gave).
             if unsafe { GetMenuItemID(hmenu, i) } == item && position.is_none() {
                 position = Some(i as usize);
             }
             let mut buf = [0u16; 512];
-            // SAFETY: the buffer outlives the call and its length is passed.
+            // SAFETY: the buffer is a local that outlives the call, and its length is passed with it (the slice), so
+            // the system writes at most that many units; the returned length is checked against the buffer below.
             let n = unsafe { GetMenuStringW(hmenu, i as u32, Some(&mut buf), MF_BYPOSITION) }.max(0) as usize;
             labels.push(String::from_utf16_lossy(&buf[..n.min(buf.len())]));
         }

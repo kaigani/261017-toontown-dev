@@ -103,6 +103,12 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
     ("agent", "A message an agent asked the application to show (it named no message id)."),
     ("agent.disconnected", "The user disconnected this agent session; the call did not run. Reconnect to continue."),
     ("agent.paused", "The user paused this agent session and did not resume it in time; call again later."),
+    // D-59 item 4: an activity entry, never an answer (the answer is the thing that could not be delivered).
+    (
+        "transport.answerDropped",
+        "An answer could not be delivered (the client went away or stopped reading); the command ran. Read the \
+         activity log and the document to learn its outcome.",
+    ),
     ("describe.emptyExposure", "The exposure shows a drawing with nothing in it."),
     ("describe.soundUnavailable", "Sounds and mouth shapes are not described yet."),
     ("drawing.cellOccupied", "The cell already shows a drawing; replacing it needs confirmation or onConflict."),

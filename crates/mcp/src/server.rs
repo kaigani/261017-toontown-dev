@@ -89,6 +89,9 @@ pub struct ServerOptions {
     pub preauthorized: BTreeSet<Category>,
     /// How long a call waits while the session is paused before failing with `agent.paused` (11 §6.4).
     pub pause_wait: Duration,
+    /// Request ids whose answers the transport could not deliver (Streamable HTTP: the client went away or stopped
+    /// reading); each is recorded in the activity log as `transport.answerDropped` (D-59 item 4). `None` for stdio.
+    pub undelivered: Option<Arc<Mutex<Vec<String>>>>,
 }
 
 impl Default for ServerOptions {
@@ -100,6 +103,7 @@ impl Default for ServerOptions {
             roots: Vec::new(),
             preauthorized: BTreeSet::new(),
             pause_wait: Duration::from_secs(10),
+            undelivered: None,
         }
     }
 }
@@ -1675,6 +1679,7 @@ fn pump_events(shared: &Shared, rx: &mpsc::Receiver<tt_executor::Event>) {
             Err(RecvTimeoutError::Disconnected) => break,
         }
         flush_updates(shared);
+        record_undelivered(shared);
         if last_poll.elapsed() >= Duration::from_millis(250) {
             last_poll = Instant::now();
             if lock(&shared.st).session.is_some() {
@@ -1704,6 +1709,42 @@ fn pump_events(shared: &Shared, rx: &mpsc::Receiver<tt_executor::Event>) {
         if shared.closing.load(Ordering::Relaxed) {
             break;
         }
+    }
+    // A drop reported while the session was closing is still recorded.
+    record_undelivered(shared);
+}
+
+/// Records each answer the transport could not deliver in the activity log (D-59 item 4): the command ran and its
+/// own entry stands; this one says its answer never reached the client, which can still read the activity log, the
+/// document state and the job record (design note §11).
+fn record_undelivered(shared: &Shared) {
+    let Some(list) = &shared.opts.undelivered else { return };
+    let ids: Vec<String> = std::mem::take(&mut *list.lock().unwrap_or_else(PoisonError::into_inner));
+    if ids.is_empty() {
+        return;
+    }
+    let Some(origin) = shared.origin() else { return };
+    for id in ids {
+        // The id is the request's JSON text (a number, or a quoted string).
+        let request_id = serde_json::from_str::<Value>(&id).unwrap_or(Value::String(id));
+        let params = json!({ "requestId": request_id });
+        let env = envelope_error(
+            "transport.answerDropped",
+            "the answer to this request could not be delivered: the client went away or stopped reading".to_owned(),
+            json!({ "requestId": request_id, "reason": "client not reading" }),
+            None,
+        );
+        shared.handle.audit_logical_call(
+            &origin,
+            &AuditCall {
+                tool: "transport",
+                command: "answer.undelivered",
+                params: &params,
+                env: &env,
+                took: Duration::ZERO,
+                cached: false,
+            },
+        );
     }
 }
 

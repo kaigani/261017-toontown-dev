@@ -344,6 +344,28 @@ The measurement:
 answer. **Spec issues:** SI-181 (`job.outputs.list` and the bounded record), SI-182 (`limit.exceeded` with
 `answerBytes` for the reads, images and the backstop).
 
+**An answer that cannot be delivered (ruling D-59 item 4).**
+
+- **When it is dropped.** Over HTTP, a request's answer waits up to 10 s for room in its stream's queue (`http.rs`
+  `offer_answer`, `ANSWER_WAIT`). If the client went away, or stopped reading for that long, the answer is dropped. The
+  command has already run by then: it committed, refused or started its job exactly as it would have with a reader.
+- **What is recorded.**
+  - The call's own activity entry stands, with its status, `undoStepId`, `documentRev` and changed count.
+  - A second entry follows it: tool `transport`, command `answer.undelivered`, params `{requestId}`, status `error`,
+    code `transport.answerDropped` and reason "client not reading".
+  - The route reports the dropped request's id (`route` returns it), and the session's protocol loop records the entry
+    (`server.rs` `record_undelivered`, through `ServerOptions::undelivered`). stdio has no such queue and records
+    nothing.
+- **What the agent can still learn.**
+  - **The activity log** (`agent.activity.list`, or the `app://activity` resource) names the call by command and
+    params, with its outcome and the drop that followed. An agent that retries with the same `requestId` gets the
+    cached answer and runs nothing twice (C14-R2-03).
+  - **The document state.** `doc.state.get` (its revision) and a read of the objects the call named show what changed;
+    `edit.history.get` shows the undo step by its label.
+  - **The job record**, for a call that started a job: `job.list` and `job.wait`.
+- **Tests.** `http.rs` `an_answer_nobody_reads_is_reported_undelivered` checks that the route reports the dropped id
+  and nothing else. Written under the GUI hold; not yet run.
+
 ## 12. Host-only notices (ruling D-57)
 
 Spec A is edited by the user only, so the window learns of some changes through host-only `shell.*` notices instead of

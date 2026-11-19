@@ -254,6 +254,14 @@ jobs:
             cargo fmt -p "$p" --check
           done
 
+      # Ruling D-59 (C44A-R1S-03): product code gains no lint `allow` the inventory (`scripts/product-allows.json`) does not
+      # name, loses none silently, and the total stays at or below 97; a NEW ALLOW fails this job.
+      - name: Product allow inventory
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          $PY -I scripts/check-product-allows.py
+
       # M4 C4.1 closure, ruling O-24: every refusal a GUI command's handler can return is classified in
       # docs/availability-inventory.md, and every pair marked `precheck` is reachable from the command's precheck.
       - name: Availability inventory

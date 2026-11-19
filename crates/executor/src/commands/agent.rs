@@ -535,6 +535,27 @@ pub(crate) fn agent_confirmation_respond(cx: &mut Cx, p: ConfirmParams) -> Resul
             json!({ "confirmationId": p.confirmation_id }),
         )
     })?;
+    // Ruling D-59 (C44A-R1S-01): the first decision settles the request. A later answer, from a second window whose
+    // sheet has not caught up, is refused and changes nothing (a Decline is never turned into an Accept, nor the
+    // reverse).
+    if let Some(decided) = pending.decision {
+        return Err(CommandError::with_details(
+            "confirmation.expired",
+            format!(
+                "confirmation `{}` was already {}",
+                p.confirmation_id,
+                if decided { "accepted" } else { "declined" }
+            ),
+            json!({ "confirmationId": p.confirmation_id, "reason": "already decided", "decision": decided }),
+        ));
+    }
+    if let Some(why) = pending.expired.clone() {
+        return Err(CommandError::with_details(
+            "confirmation.expired",
+            format!("confirmation `{}` has expired: {why}", p.confirmation_id),
+            json!({ "confirmationId": p.confirmation_id, "reason": why }),
+        ));
+    }
     pending.decision = Some(p.accept);
     // The sheet in every window drops the request (host-only, D-57/D-58; `agent.server.status` gives the same).
     cx.emit(
