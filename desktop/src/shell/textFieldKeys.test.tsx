@@ -89,7 +89,7 @@ const EDITING: readonly (Press & { command: string })[] = [
     key: 'End',
     code: 'End',
     shiftKey: true,
-    command: 'view.fit',
+    command: 'project.save',
   },
   { name: 'Delete', seq: 'Delete', key: 'Delete', code: 'Delete', command: 'edit.delete' },
   { name: 'Backspace', seq: 'Backspace', key: 'Backspace', code: 'Backspace', command: 'edit.delete' },
@@ -132,14 +132,20 @@ const OPEN = {
 };
 
 /** D-69 item 2: function keys reach the keymap from a field (F5 bound here to a command); Shift+F10 stays the field's. */
-const F5: Press & { command: string } = { name: 'F5', seq: 'F5', key: 'F5', code: 'F5', command: 'view.fit' };
+const F5: Press & { command: string } = {
+  name: 'F5',
+  seq: 'F5',
+  key: 'F5',
+  code: 'F5',
+  command: 'project.save',
+};
 const SHIFT_F5: Press & { command: string } = {
   name: 'Shift+F5',
   seq: 'Shift+F5',
   key: 'F5',
   code: 'F5',
   shiftKey: true,
-  command: 'view.fit',
+  command: 'project.save',
 };
 /** Bound so that a dispatch would show; with the alternate key held it is what a dead key's physical key spells. */
 const ALT_E: Press & { command: string } = {
@@ -148,7 +154,7 @@ const ALT_E: Press & { command: string } = {
   key: 'e',
   code: 'KeyE',
   altKey: true,
-  command: 'view.fit',
+  command: 'project.save',
 };
 
 async function app(): Promise<ScriptedHost> {
@@ -372,18 +378,20 @@ describe('dead keys, compositions and function keys in a text field (D-69 item 2
     e.type = 'text';
     return e;
   };
-  it('the rule: a dead key and any key of a composition are the field\'s; function keys are not, but Shift+F10', () => {
+  it("the rule: a dead key and any key of a composition are the field's; function keys are not, but Shift+F10", () => {
     const base = { altKey: false, ctrlKey: false, metaKey: false };
     expect(fieldOwnsKey(input(), 'Alt+E', { ...base, key: 'Dead', altKey: true }, true)).toBe(true);
-    expect(fieldOwnsKey(input(), 'Primary+A', { ...base, key: 'a', ctrlKey: true, isComposing: true }, false)).toBe(true);
+    expect(
+      fieldOwnsKey(input(), 'Primary+A', { ...base, key: 'a', ctrlKey: true, isComposing: true }, false),
+    ).toBe(true);
     expect(fieldOwnsKey(input(), 'A', { ...base, key: 'Process', keyCode: 229 }, false)).toBe(true);
     expect(fieldOwnsKey(input(), 'F5', { ...base, key: 'F5' }, false)).toBe(false);
     expect(fieldOwnsKey(input(), 'Shift+F5', { ...base, key: 'F5' }, false)).toBe(false);
     expect(fieldOwnsKey(input(), 'Shift+F10', { ...base, key: 'F10' }, false)).toBe(true);
     // Outside a text field a dead key is nobody's in particular.
-    expect(fieldOwnsKey(document.createElement('button'), 'Alt+E', { ...base, key: 'Dead', altKey: true }, true)).toBe(
-      false,
-    );
+    expect(
+      fieldOwnsKey(document.createElement('button'), 'Alt+E', { ...base, key: 'Dead', altKey: true }, true),
+    ).toBe(false);
   });
 
   it('the macOS dead key, exactly as it arrives, types in the field: not cancelled, nothing sent', async () => {
@@ -399,11 +407,11 @@ describe('dead keys, compositions and function keys in a text field (D-69 item 2
     // The same physical key without a dead key is the bound chord, which the dispatcher sends.
     expect(fireEvent.keyDown(field, { key: 'e', code: 'KeyE', altKey: true })).toBe(false);
     await waitFor(() => {
-      expect(h.actions().some((a) => a.command === 'view.fit')).toBe(true);
+      expect(h.actions().some((a) => a.command === 'project.save')).toBe(true);
     });
   });
 
-  it('a composition sequence is the field\'s from its start to its end', async () => {
+  it("a composition sequence is the field's from its start to its end", async () => {
     const h = await app();
     const [field] = testFields();
     if (!field) throw new Error('no field');
@@ -422,21 +430,23 @@ describe('dead keys, compositions and function keys in a text field (D-69 item 2
     expect(h.actions().slice(before)).toEqual([]);
   });
 
-  it('function keys reach the keymap from a field; Shift+F10 stays the field\'s', async () => {
+  it("function keys reach the keymap from a field; Shift+F10 stays the field's", async () => {
     const h = await app();
     const [field] = testFields();
     if (!field) throw new Error('no field');
     field.focus();
     expect(press(field, F5)).toBe(false);
     await waitFor(() => {
-      expect(h.actions().filter((a) => a.command === 'view.fit')).toHaveLength(1);
+      expect(h.actions().filter((a) => a.command === 'project.save')).toHaveLength(1);
     });
     expect(press(field, SHIFT_F5)).toBe(false);
     await waitFor(() => {
-      expect(h.actions().filter((a) => a.command === 'view.fit')).toHaveLength(2);
+      expect(h.actions().filter((a) => a.command === 'project.save')).toHaveLength(2);
     });
     const before = h.actions().length;
-    expect(press(field, { name: 'Shift+F10', seq: 'Shift+F10', key: 'F10', code: 'F10', shiftKey: true })).toBe(true);
+    expect(
+      press(field, { name: 'Shift+F10', seq: 'Shift+F10', key: 'F10', code: 'F10', shiftKey: true }),
+    ).toBe(true);
     await settle();
     expect(h.actions().slice(before)).toEqual([]);
   });

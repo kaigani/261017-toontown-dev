@@ -23,6 +23,7 @@ import { StatusBar } from './shell/StatusBar';
 import { MainToolbar, ToolPaletteRail } from './shell/Toolbars';
 import {
   useEngineMirror,
+  useNoBrowserMenus,
   usePageReady,
   useShortcuts,
   useTextFocusReport,
@@ -140,6 +141,7 @@ function FloatWindow({ panelId }: { panelId: string }) {
   useShortcuts(services, actions, keymap, isMac());
   useTextFocusReport(services);
   usePageReady(services);
+  useNoBrowserMenus();
   const node = useCallback(
     (): UiNode => ({ role: 'window', id: `float-${panelId}`, label: title }),
     [panelId, title],
@@ -362,6 +364,7 @@ function Window() {
   useShortcuts(services, actions, keymap, mac);
   useTextFocusReport(services);
   usePageReady(services);
+  useNoBrowserMenus();
   const mainNode = useCallback((): UiNode => {
     const app = services.store.getState().slices.appState as AppState | undefined;
     return {

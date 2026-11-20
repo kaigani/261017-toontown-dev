@@ -357,14 +357,26 @@ impl AttachedIo for WindowIo {
         let ask_rect = || {
             let app = self.app.clone();
             host.reveals.ask_rect(bound, move |request| {
-                let _ = app.emit_to(crate::token_reveal::MAIN, crate::token_reveal::TOKEN_RECT_EVENT, json!({ "request": request }));
+                let _ = app.emit_to(
+                    crate::token_reveal::MAIN,
+                    crate::token_reveal::TOKEN_RECT_EVENT,
+                    json!({ "request": request }),
+                );
             })
         };
-        let before = if field { Some(ask_rect().ok_or_else(|| token_refusal("its place was not reported in time"))?) } else { None };
+        let before = if field {
+            Some(ask_rect().ok_or_else(|| token_refusal("its place was not reported in time"))?)
+        } else {
+            None
+        };
         let png = crate::capture::snapshot(&webview, budget).map_err(|m| {
             refusal("render.failed", format!("the window could not be captured: {m}"), json!({ "target": target }))
         })?;
-        let after = if field { Some(ask_rect().ok_or_else(|| token_refusal("its place was not reported in time"))?) } else { None };
+        let after = if field {
+            Some(ask_rect().ok_or_else(|| token_refusal("its place was not reported in time"))?)
+        } else {
+            None
+        };
         let (w, h, mut px) = tt_render::decode_png(&png, 16_384)
             .ok_or_else(|| refusal("render.failed", "the window capture is not a PNG", json!({ "target": target })))?;
         let (w, h) = (u32::from(w), u32::from(h));

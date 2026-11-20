@@ -14,6 +14,15 @@ import { collectUiTree, type UiNode } from './uiTree';
 /** How long after the last change the rendered UI tree is reported (a frame or two; product value). */
 export const TREE_REPORT_MS = 30;
 
+/** The browser's own navigation keys (D-70 item 2b): never the page's to act on, in a text field or not. */
+const BROWSER_KEYS = new Set([
+  'BrowserBack',
+  'BrowserForward',
+  'BrowserRefresh',
+  'BrowserHome',
+  'BrowserStop',
+]);
+
 /** Browser accelerators the webview must not act on outside text fields (reload, find, print, zoom, navigation). */
 export function isBrowserAccelerator(seq: string): boolean {
   return (
@@ -156,6 +165,13 @@ export function useShortcuts(
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.defaultPrevented) return;
+      // D-70 item 2b: the person cannot reload or navigate the page by any key: the browser's own keys are cancelled
+      // everywhere; F5, Ctrl+R, Ctrl+Shift+R, Ctrl+F5, Alt+Left, Alt+Right, Backspace and their macOS forms are not the
+      // field's (`fieldOwnsKey`) and are cancelled by the accelerator guard below unless the keymap binds them.
+      if (BROWSER_KEYS.has(e.key)) {
+        e.preventDefault();
+        return;
+      }
       // D-69 item 2: a dead key or a composition in a text field is the field's, never cancelled or dispatched.
       if (isTextField(e.target) && isComposition(e)) return;
       const seq = sequenceOf(e, mac);
@@ -199,6 +215,30 @@ export function useShortcuts(
       window.removeEventListener('keydown', onKey);
     };
   }, [actions, keymap, mac, services]);
+}
+
+/** D-70 item 2a: in the product the webview's own context menu opens only on text-entry elements (where it offers
+ *  text editing); a secondary click anywhere else opens the application's own menu (its handler cancels the default
+ *  first) or nothing, so no browser entry (Back, Forward, Reload, Save as, Print, Inspect, View source) is ever shown.
+ *  The listener is the window's, in the bubbling phase, so the application's menus have handled the event first. The
+ *  mouse's Back and Forward buttons navigate nothing either (D-70 item 2b). */
+export function useNoBrowserMenus(): void {
+  useEffect(() => {
+    const onMenu = (e: MouseEvent) => {
+      if (!isTextField(e.target)) e.preventDefault();
+    };
+    const onButton = (e: MouseEvent) => {
+      if (e.button === 3 || e.button === 4) e.preventDefault();
+    };
+    window.addEventListener('contextmenu', onMenu);
+    window.addEventListener('mouseup', onButton);
+    window.addEventListener('auxclick', onButton);
+    return () => {
+      window.removeEventListener('contextmenu', onMenu);
+      window.removeEventListener('mouseup', onButton);
+      window.removeEventListener('auxclick', onButton);
+    };
+  }, []);
 }
 
 /** Whether this document has told the host it painted (once per document: a later report would retire the deliveries

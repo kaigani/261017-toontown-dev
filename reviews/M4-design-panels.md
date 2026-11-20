@@ -242,6 +242,23 @@ the panel marking fonts that are not bundled, and asks for the ruling.
   minimum window size" (the window asked for 320 by 240 and kept at its minimum; both views' menus; the outer box and
   arrows inside; End and Home by the real keyboard, a real click on the lower arrow, the real wheel, the pointer resting
   on the arrow; the last item clicked by a real click after that real scrolling, sending its declared reference once).
+- **No browser chrome in the product (ruling D-70 item 2).** The webview's own context menu opens only on text-entry
+  elements, where it offers text editing (cut, copy, paste, select all, undo, redo, and what the platform adds for
+  text); a window-level `contextmenu` listener, in the bubbling phase after the application's own menus, cancels the
+  default everywhere else (`useNoBrowserMenus`, `windowHooks.ts`), so a secondary click opens the application's menu or
+  nothing and no Back, Forward, Reload, Save as, Print, Inspect or View source entry is ever shown. The person cannot
+  reload or navigate the page: F5, Shift+F5, Ctrl+F5, Ctrl+R, Ctrl+Shift+R, Alt+Left, Alt+Right and Backspace outside a
+  field (and Cmd+R, Cmd+Shift+R, Cmd+[ and Cmd+] on macOS) are cancelled by the accelerator guard unless the keymap
+  binds them, in a text field too (they are not text editing, D-69 item 2), and the browser's own keys (BrowserBack,
+  BrowserForward, BrowserRefresh, BrowserHome, BrowserStop) and the mouse's Back and Forward buttons are cancelled
+  everywhere. **An engine restart does not reload the page:** `restart_engine` starts a new engine process behind the
+  same window; the page stays (its state, the token controller, any marker), learns the new generation
+  (`GENERATION_EVENT`), resyncs its mirror from the new engine and reports its facts again (ruling O-9, O-14). Tests:
+  `browserChrome.test.tsx` (a text field keeps the default; a toolbar button, the toolbar, a Pen panel row, the canvas,
+  empty panel space and the page cancel it; every reload and navigation key cancelled in the token field, a text field,
+  on the canvas and on the page) and the D-39 row "browser chrome › no native menu, no reload" (real right-clicks on a
+  toolbar button and a Pen panel row add no visible top-level window and their defaults are cancelled; real F5 and
+  Ctrl+R with the focus on the canvas and in the token field leave a marker set in the page in place).
 - **Shift+F10 (ruling D-66 item 3).** The dispatcher's function-key guard (which keeps the page's own F-key accelerators
   off) cancelled the browser's `contextmenu` for Shift+F10, so only the context-menu key opened a menu. Shift+F10 now sends
   the same `contextmenu` event to the focused control (no pointer position: the menu opens at the control), in the

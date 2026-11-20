@@ -209,7 +209,6 @@ pub fn path(p: &Path) -> String {
 /// Ruling D-46 item 4 (D-45), as `crates/executor/tests/common/timing.rs`: with `TT_TIMING_DIR` set (CI), appends one
 /// JSON line to `<dir>/<binary>.jsonl` with a timing figure and the bound its assertion holds it to; otherwise nothing.
 pub fn record_timing(place: &str, figure: Duration, bound: Duration) {
-
     let Some(dir) = std::env::var_os("TT_TIMING_DIR") else { return };
     let dir = PathBuf::from(dir);
     let _ = std::fs::create_dir_all(&dir);

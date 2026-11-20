@@ -571,11 +571,14 @@ pub fn token_field(host: State<'_, Host>, window: tauri::Window, json: String) -
 pub fn token_rect(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
     main_only(window.label())?;
     let v: Value = parse(&json)?;
-    let request = v.get("request").and_then(Value::as_u64).ok_or_else(|| arg_invalid("/request", "a request number"))?;
+    let request =
+        v.get("request").and_then(Value::as_u64).ok_or_else(|| arg_invalid("/request", "a request number"))?;
     let rect = match v.get("rect") {
         None | Some(Value::Null) => None,
         Some(r) => {
-            let f = |k: &str| r.get(k).and_then(Value::as_f64).ok_or_else(|| arg_invalid(&format!("/rect/{k}"), "a number"));
+            let f = |k: &str| {
+                r.get(k).and_then(Value::as_f64).ok_or_else(|| arg_invalid(&format!("/rect/{k}"), "a number"))
+            };
             Some([f("x")?, f("y")?, f("width")?, f("height")?])
         }
     };

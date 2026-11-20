@@ -20776,6 +20776,12 @@
       ]
     },
     {
+      "command": "permission.denied",
+      "files": [
+        "desktop/src-tauri/src/ipc.rs"
+      ]
+    },
+    {
       "command": "preferences.categories",
       "files": [
         "desktop/src/prefs/PreferencesDialog.tsx"

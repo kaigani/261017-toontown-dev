@@ -2638,6 +2638,8 @@ async def build_and_run(t: Table, only: set) -> None:
 
     if not only or any("context menus" in o for o in only):
         await menu_bounds_row(t, bob)
+    if not only or any("browser" in o for o in only):
+        await browser_chrome_row(t)
     await jobs_row(t)
     await recent_hint_row(t)
     # Saved first: the agent's session may not discard (its policy), and the close must not ask.
@@ -3026,6 +3028,110 @@ async def menu_bounds_row(t: Table, bob) -> None:
                     "activated by a real click", cases)
     except Exception as ex:  # noqa: BLE001
         rec.update({"ok": False, "error": repr(ex), "cases": cases})
+        t.run.check(False, f"D-39 {rec['name']}: ran", repr(ex))
+    t.rows.append(rec)
+    t.run.save("rows.json", t.rows)
+
+
+def visible_popups() -> set:
+    """The visible top-level windows of the desktop (a native context menu adds one: `#32768` or a Chromium popup)."""
+    found = set()
+    if not u32:
+        return found
+    proc = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+
+    def each(h, _):
+        if u32.IsWindowVisible(h):
+            name = ctypes.create_unicode_buffer(128)
+            u32.GetClassNameW(h, name, 128)
+            found.add((int(h or 0), name.value))
+        return True
+    u32.EnumWindows(proc(each), 0)
+    return found
+
+
+async def browser_chrome_row(t: Table) -> None:
+    """D-70 item 2 (product build): real secondary clicks on a main toolbar button and on a Pen panel row open no native
+    popup (no new visible top-level window; the event's default cancelled), and F5 and Ctrl+R with the focus in the
+    token field and on the canvas do not reload the page (a marker set in the page survives)."""
+    rec = {"name": "browser chrome › no native menu, no reload", "spec": "D-70 item 2"}
+    if isinstance(t, McpTable):
+        reason = "real secondary clicks and real keys of the person, which the MCP form does not perform"
+        rec.update({"ok": True, "notRun": reason})
+        t.run.check(True, f"D-39 {rec['name']}: runs in the OS form only ({reason})", None)
+        t.rows.append(rec)
+        t.run.save("rows.json", t.rows)
+        return
+    checks = {}
+    try:
+        front()
+        t.cdp.js("window.__ttMenus = []; window.addEventListener('contextmenu', (e) => window.__ttMenus.push("
+                 "e.defaultPrevented)); window.__ttMarker = 'd70'; true")
+
+        async def right_click(ident):
+            r = t.rect(ident)
+            if not r or r.get("hidden"):
+                raise RuntimeError(f"absent: {ident}")
+            h = front()
+            origin = wintypes.POINT(0, 0)
+            u32.ClientToScreen(h, ctypes.byref(origin))
+            before = visible_popups()
+            right_click_screen(origin.x + r["x"] * r["dpr"], origin.y + r["y"] * r["dpr"])
+            await asyncio.sleep(0.8)
+            new = sorted(c for _, c in visible_popups() - before)
+            key(0x1B)
+            await asyncio.sleep(0.3)
+            return new
+
+        button = t.cdp.js("document.querySelector('[data-tt-id=\"mainToolbar\"] button[data-tt-id]')?.dataset.ttId ?? null")
+        if not button:
+            raise RuntimeError("no main toolbar button")
+        checks["toolbarNoPopup"] = await right_click(button)
+        await t.cmd("window.panel.set", {"panelId": "pen", "visible": True, "focus": True})
+        await asyncio.sleep(0.6)
+        pens = await t.cmd("tool.pen.list", {})
+        row = f"pen.row.{pens.get('currentBrushPenId')}"
+        checks["penRowNoPopup"] = await right_click(row)
+        prevented = t.cdp.js("window.__ttMenus") or []
+        checks["defaultsCancelled"] = prevented
+
+        def marker():
+            try:
+                return t.cdp.js("window.__ttMarker ?? null")
+            except Exception:  # noqa: BLE001 - a reloaded page drops the connection
+                return None
+
+        async def reloads(where):
+            out = {}
+            for name, (vk, mods) in (("F5", (0x74, ())), ("Ctrl+R", (0x52, (0x11,)))):
+                key(vk, *mods)
+                await asyncio.sleep(1.5)
+                out[name] = marker()
+            return {where: out}
+
+        # The canvas focused.
+        t.click("drawingView.canvas")
+        await asyncio.sleep(0.3)
+        checks.update(await reloads("canvas"))
+        # The token field focused (Preferences › Agent access).
+        choose_menu(["File", "Preferences"])
+        await asyncio.sleep(1.0)
+        t.click("preferences.category.agent")
+        await asyncio.sleep(0.6)
+        t.click("agentAccess.token")
+        await asyncio.sleep(0.3)
+        checks["tokenFocused"] = t.cdp.js("document.activeElement?.dataset?.ttId ?? null")
+        checks.update(await reloads("tokenField"))
+        key(0x1B)
+        await asyncio.sleep(0.5)
+        ok = (checks["toolbarNoPopup"] == [] and checks["penRowNoPopup"] == [] and len(prevented) >= 2
+              and all(prevented) and checks["tokenFocused"] == "agentAccess.token"
+              and all(v == "d70" for w in ("canvas", "tokenField") for v in checks[w].values()))
+        rec.update({"checks": checks, "ok": ok})
+        t.run.check(ok, f"D-39 {rec['name']}: no native popup on a toolbar button or a panel row; F5 and Ctrl+R reload "
+                    "nothing in the token field or on the canvas", checks)
+    except Exception as ex:  # noqa: BLE001
+        rec.update({"ok": False, "error": repr(ex), "checks": checks})
         t.run.check(False, f"D-39 {rec['name']}: ran", repr(ex))
     t.rows.append(rec)
     t.run.save("rows.json", t.rows)

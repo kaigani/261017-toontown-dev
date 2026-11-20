@@ -368,7 +368,9 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     onTokenRect(handler) {
       return transport.listen('token-rect', (payload) => {
         const request =
-          typeof payload === 'object' && payload !== null ? (payload as Record<string, unknown>)['request'] : null;
+          typeof payload === 'object' && payload !== null
+            ? (payload as Record<string, unknown>)['request']
+            : null;
         if (typeof request === 'number') handler(request);
       });
     },
