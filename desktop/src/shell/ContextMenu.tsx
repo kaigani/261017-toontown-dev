@@ -22,6 +22,7 @@ import {
 import { useActions } from './actionsApi';
 import type { CommandRef } from './availability';
 import {
+  MENU_MARGIN,
   placeMenu,
   type MenuAt,
   type MenuCommand,
@@ -68,9 +69,10 @@ export function ContextMenu({
   const [more, setMore] = useState({ above: false, below: false });
 
   // Placed from its natural size before it is painted (D-60 item 1), measured at the client area's corner so the
-  // edge does not narrow it; placed again after every render (the kernel's availability answers add reasons and
+  // edge does not narrow it; measured again after every render (the kernel's availability answers add reasons and
   // labels, which change its size: the live run saw a menu grow 15 px after it was placed) and when the window's size
-  // changes. An unchanged placement keeps the state, so this does not render again.
+  // changes. Once shown it keeps its place while its new size still fits inside the client area, so the item under
+  // the pointer does not move away from it; it is placed again only when it would cross an edge.
   const measure = useCallback(() => {
     const el = root.current;
     if (!el) return;
@@ -86,13 +88,23 @@ export function ContextMenu({
     el.style.maxWidth = '';
     const size = { width: el.offsetWidth, height: el.offsetHeight };
     Object.assign(el.style, prev);
-    const next = placeMenu(at, size, clientArea());
-    const same = (old: MenuPlacement | null) =>
-      old?.x === next.x &&
-      old.y === next.y &&
-      old.maxHeight === next.maxHeight &&
-      old.maxWidth === next.maxWidth;
-    setPlace((old) => (same(old) ? old : next));
+    const area = clientArea();
+    const next = placeMenu(at, size, area);
+    const keeps = (old: MenuPlacement | null) =>
+      old !== null &&
+      ((old.x === next.x &&
+        old.y === next.y &&
+        old.maxHeight === next.maxHeight &&
+        old.maxWidth === next.maxWidth) ||
+        (old.maxHeight === null &&
+          old.maxWidth === null &&
+          next.maxHeight === null &&
+          next.maxWidth === null &&
+          old.x >= MENU_MARGIN &&
+          old.y >= MENU_MARGIN &&
+          old.x + size.width <= area.width - MENU_MARGIN &&
+          old.y + size.height <= area.height - MENU_MARGIN));
+    setPlace((old) => (keeps(old) ? old : next));
   }, [at]);
   useLayoutEffect(() => {
     measure();

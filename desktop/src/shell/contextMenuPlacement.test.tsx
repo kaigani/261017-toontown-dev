@@ -163,4 +163,23 @@ describe('ContextMenu placement', () => {
     expect(menu.style.maxHeight).toBe('');
     expect(menu.querySelectorAll('.context-menu-arrow')).toHaveLength(0);
   });
+  it('a shown menu keeps its place while it still fits, and moves only when it would cross an edge', async () => {
+    await app();
+    sizes({ width: 200, height: 120 });
+    const menu = await openSceneMenu(100, 100);
+    expect([menu.style.left, menu.style.top]).toEqual(['100px', '100px']);
+    // The availability answers widen it; it still fits where it is: it does not move (the item under the pointer
+    // stays under it).
+    vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(320);
+    act(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
+    expect([menu.style.left, menu.style.top]).toEqual(['100px', '100px']);
+    // Grown past the bottom edge: placed again, inside.
+    vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(760);
+    act(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
+    expect(menu.style.top).toBe(`${String(AREA.height - MENU_MARGIN - 760)}px`);
+  });
 });
