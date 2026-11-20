@@ -140,7 +140,14 @@ async def menus(t,step):
      await t.settle_dialogs()
    await setup('drawingView');await openat('drawingView');resize(900 if size[0]==1280 else 1280,600);await pause();t.run.save('resize-open-'+str(size[0])+'.json',geometry());d.key(0x1B)
  elif step==6:
-  await setup('drawingView');resize(800,500);await pause();t.click('drawingView.canvas');before=t.cdp.js('document.activeElement?.dataset.ttId');d.key(0x79,0x10);await pause();g=geometry();t.run.check(bool(g['menu']),'design note 1 section 1 keyboard open Shift F10',g)
+  await setup('drawingView');resize(800,500);await pause();r=dom(t,'drawingView.canvas','(()=>{const r=e.getBoundingClientRect();return {x:Math.max(0,r.x),y:Math.max(0,r.y),right:Math.min(innerWidth,r.right),bottom:Math.min(innerHeight,r.bottom)}})()');point((r['x']+r['right'])/2,(r['y']+r['bottom'])/2);before=t.cdp.js('document.activeElement?.dataset.ttId')
+  for _ in range(100):
+   if before=='drawingView.canvas':break
+   d.key(0x09);before=t.cdp.js('document.activeElement?.dataset.ttId')
+  t.run.check(before=='drawingView.canvas','design note 1 section 1 canvas reachable by keyboard',before)
+  t.run.save('keyboard-before.json',{'focus':before,'element':t.cdp.js('document.activeElement?.outerHTML')});d.key(0x79,0x10);await pause();g=geometry();t.run.check(bool(g['menu']),'design note 1 section 1 keyboard open Shift F10',g)
+  if not g['menu']:
+   d.key(0x5D);await pause();g=geometry();t.run.check(bool(g['menu']),'design note 1 section 9 context-menu key opens',{'focus':t.cdp.js('document.activeElement?.dataset.ttId'),'geometry':g})
   if not g['menu']:await openat('drawingView')
   path=[]
   for _ in range(30):
@@ -150,7 +157,7 @@ async def menus(t,step):
   d.key(0x24);d.key(0x28);d.key(0x28);d.key(0x28)
   await pause();t.run.save('keyboard-scroll.json',{'geometry':geometry(),'focus':t.cdp.js('document.activeElement?.dataset.ttId')});t.clear();d.key(0x0D);await pause();t.run.check(not t.cdp.js('!!document.querySelector(".context-menu")'),'keyboard Enter activates/closes',sent(t));await t.settle_dialogs()
   opener=t.cdp.js('document.activeElement?.dataset.ttId');await openat('drawingView');d.key(0x1B);await pause();t.run.check(not t.cdp.js('!!document.querySelector(".context-menu")') and t.cdp.js('document.activeElement?.dataset.ttId')==opener,'keyboard Escape closes and returns focus',{'before':before,'menuFocus':opener,'after':t.cdp.js('document.activeElement?.dataset.ttId')})
-  await openat('drawingView');t.clear();t.click('mainToolbar.edit.undo');await pause();t.run.save('outside-click.json',{'sent':sent(t),'geometry':geometry()})
+  await openat('drawingView');t.clear();point(5,t.cdp.js('innerHeight')-5);await pause();t.run.check(not t.cdp.js('!!document.querySelector(".context-menu")'),'design note 1 section 9 outside click closes',{'sent':sent(t),'geometry':geometry()})
  elif step==7:
   for view in ['drawingView','cameraView']:
    for family in ['drawing','scene']:

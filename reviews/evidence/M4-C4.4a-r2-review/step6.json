@@ -1,0 +1,1169 @@
+{
+  "checks": 8,
+  "failures": [
+    "design note 1 section 1 keyboard open Shift F10: {\"client\": {\"w\": 800, \"h\": 500}, \"menu\": null, \"arrows\": [], \"items\": []}",
+    "design note 1 section 9 arrows cross scroll boundary visibly: [{\"id\": \"drawingView.drawingMenu.copy\", \"rect\": {\"x\": 323, \"y\": 44.90625, \"width\": 284.625, \"height\": 23, \"top\": 44.90625, \"right\": 607.625, \"bottom\": 67.90625, \"left\": 323}, \"w\": 800, \"h\": 500}, {\"id\": \"drawingView.drawingMenu.paste\", \"rect\": {\"x\": 323, \"y\": 67.90625, \"width\": 190.171875, \"height\": 23, \"top\": 67.90625, \"right\": 513.171875, \"bottom\": 90.90625, \"left\": 323}, \"w\": 800, \"h\": 500}, {\"id\": \"drawingView.drawingMenu.selectAll\", \"rect\": {\"x\": 323, \"y\": 90.90625, \"width\": 85.3125, \"height\": 23, \"top\": 90.90625, \"right\": 408.3125, \"bottom\": 113.90625, \"left\": 323}, \"w\": 800, \"h\": 500}, "
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-b_x8jd0w",
+  "results": [
+    {
+      "check": "spec 01 panel/view focus mounts drawingView",
+      "ok": true,
+      "detail": {
+        "view": "drawingView",
+        "canvasPresent": true,
+        "state": {
+          "project": {
+            "id": "pr_01M7VTZPW69DJ72A96Y1SPSNY7",
+            "name": "Round 2 live 6",
+            "path": null,
+            "dirty": true,
+            "globalLibraryDirty": false,
+            "readOnly": false
+          },
+          "scene": {
+            "id": "sc_01M7VTZPW69DJ72A96Y1SPSP2B",
+            "name": "Scene-1",
+            "frameCount": 24
+          },
+          "frame": 1,
+          "element": {
+            "id": "el_01K7JJN8006J3478BN9Z6QM7HK",
+            "name": "ModalUndoSentinel",
+            "type": "drawing"
+          },
+          "drawing": {
+            "id": "dr_01K7JJN8001XWZE4BPEPW296WZ",
+            "name": "1"
+          },
+          "mode": "drawing",
+          "activeView": {
+            "viewId": "drawingView",
+            "panelId": "drawingView",
+            "type": "drawing"
+          },
+          "focusedPanel": "drawingView",
+          "activeTool": null,
+          "selection": {
+            "context": "timeline",
+            "ids": [
+              "el_01K7JJN8006J3478BN9Z6QM7HK"
+            ],
+            "kinds": [
+              "element"
+            ]
+          },
+          "workspace": {
+            "name": "Drawing",
+            "modified": false
+          },
+          "playback": {
+            "playing": false
+          },
+          "startScreenVisible": false,
+          "modal": null,
+          "agentSessions": [
+            {
+              "sessionId": "s1-f7ec15",
+              "name": "mcp",
+              "acting": false
+            }
+          ],
+          "fullScreen": false,
+          "agent": {
+            "sessionId": "s1-f7ec15",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "paused": false,
+            "limits": {
+              "policy": "autonomous",
+              "maxJobs": 2,
+              "maxBatchSteps": 1000,
+              "maxInlineImagePx": 2048,
+              "maxInlineBytes": 52428800,
+              "askInApp": true,
+              "letAgentMoveView": true,
+              "highlightAgentChanges": true
+            }
+          }
+        },
+        "panels": [
+          {
+            "panelId": "cameraView",
+            "title": "Camera view",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "drawingView",
+            "title": "Drawing view",
+            "visible": true,
+            "floating": false,
+            "area": "central",
+            "current": true,
+            "focused": true
+          },
+          {
+            "panelId": "topView",
+            "title": "Top view",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "sideView",
+            "title": "Side view",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "timeline",
+            "title": "Timeline",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "xsheet",
+            "title": "Exposure sheet",
+            "visible": true,
+            "floating": false,
+            "area": "right",
+            "tabGroup": 0,
+            "current": true,
+            "focused": false
+          },
+          {
+            "panelId": "functionEditor",
+            "title": "Function editor",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "properties",
+            "title": "Properties",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "colour",
+            "title": "Colour",
+            "visible": true,
+            "floating": false,
+            "area": "right",
+            "tabGroup": 1,
+            "current": true,
+            "focused": false
+          },
+          {
+            "panelId": "pen",
+            "title": "Pen",
+            "visible": true,
+            "floating": false,
+            "area": "right",
+            "tabGroup": 1,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "text",
+            "title": "Text",
+            "visible": true,
+            "floating": false,
+            "area": "right",
+            "tabGroup": 1,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "cells",
+            "title": "Cells",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "library",
+            "title": "Library",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "storyline",
+            "title": "Storyline",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "sceneManager",
+            "title": "Scene manager",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "effectPreview",
+            "title": "Effect preview",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "motionRecording",
+            "title": "Motion recording",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "lipSync",
+            "title": "Lip-sync",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "history",
+            "title": "History",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "activity",
+            "title": "Activity",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "soundEditor",
+            "title": "Sound element editor",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          },
+          {
+            "panelId": "capture",
+            "title": "Capture window",
+            "visible": false,
+            "floating": false,
+            "current": false,
+            "focused": false
+          }
+        ],
+        "body": "Grid\nSquare grid\n12-field grid\n16-field grid\nOverlay\nOnion skin\n0\n1\n2\n3\n0\n1\n2\n3\nAuto light table\nFirst frame\nPlay/Stop\nLast frame\nLoop playback on/off\nOpen/raise the lip-sync panel\nCamera\nScene\nDefault\nStaging\nDrawing\nFocused drawing\nD\nselectcontourEditorperspectiverepositionAllbrushpencilrectangleellipsepolylinelinepaintunpaintpaintUnpainteddroppercloseGapstrokeeditTextureerasercutterscissorzoomgrabbertext\nA\nDrawing view\n\u00d7\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nExposure sheet\n\u00d7\nExposure sheet\n\nThis panel's content arrives with M5 C5.2.\n\nColour\n\u00d7\nPen\n\u00d7\nText\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nText opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get application state)"
+      }
+    },
+    {
+      "check": "design note 1 section 1 canvas reachable by keyboard",
+      "ok": true,
+      "detail": "drawingView.canvas"
+    },
+    {
+      "check": "design note 1 section 1 keyboard open Shift F10",
+      "ok": false,
+      "detail": {
+        "client": {
+          "w": 800,
+          "h": 500
+        },
+        "menu": null,
+        "arrows": [],
+        "items": []
+      }
+    },
+    {
+      "check": "design note 1 section 9 context-menu key opens",
+      "ok": true,
+      "detail": {
+        "focus": "drawingView.drawingMenu.cut",
+        "geometry": {
+          "client": {
+            "w": 800,
+            "h": 500
+          },
+          "menu": {
+            "x": 318,
+            "y": 4,
+            "width": 334.578125,
+            "height": 502,
+            "top": 4,
+            "right": 652.578125,
+            "bottom": 506,
+            "left": 318
+          },
+          "arrows": [
+            {
+              "text": "\u25b2",
+              "rect": {
+                "x": 323,
+                "y": 9,
+                "width": 324.578125,
+                "height": 12.90625,
+                "top": 9,
+                "right": 647.578125,
+                "bottom": 21.90625,
+                "left": 323
+              },
+              "class": "context-menu-arrow spent"
+            },
+            {
+              "text": "\u25bc",
+              "rect": {
+                "x": 323,
+                "y": 488.09375,
+                "width": 324.578125,
+                "height": 12.90625,
+                "top": 488.09375,
+                "right": 647.578125,
+                "bottom": 501,
+                "left": 323
+              },
+              "class": "context-menu-arrow"
+            }
+          ],
+          "items": [
+            {
+              "id": "drawingView.drawingMenu.cut",
+              "rect": {
+                "x": 323,
+                "y": 21.90625,
+                "width": 274.828125,
+                "height": 23,
+                "top": 21.90625,
+                "right": 597.828125,
+                "bottom": 44.90625,
+                "left": 323
+              },
+              "label": "Cutnothing is selected in the drawing context"
+            },
+            {
+              "id": "drawingView.drawingMenu.copy",
+              "rect": {
+                "x": 323,
+                "y": 44.90625,
+                "width": 284.625,
+                "height": 23,
+                "top": 44.90625,
+                "right": 607.625,
+                "bottom": 67.90625,
+                "left": 323
+              },
+              "label": "Copynothing is selected in the drawing context"
+            },
+            {
+              "id": "drawingView.drawingMenu.paste",
+              "rect": {
+                "x": 323,
+                "y": 67.90625,
+                "width": 190.171875,
+                "height": 23,
+                "top": 67.90625,
+                "right": 513.171875,
+                "bottom": 90.90625,
+                "left": 323
+              },
+              "label": "Pastethe clipboard is empty"
+            },
+            {
+              "id": "drawingView.drawingMenu.selectAll",
+              "rect": {
+                "x": 323,
+                "y": 90.90625,
+                "width": 85.3125,
+                "height": 23,
+                "top": 90.90625,
+                "right": 408.3125,
+                "bottom": 113.90625,
+                "left": 323
+              },
+              "label": "Select All"
+            },
+            {
+              "id": "drawingView.drawingMenu.deselectAll",
+              "rect": {
+                "x": 323,
+                "y": 113.90625,
+                "width": 99.828125,
+                "height": 23,
+                "top": 113.90625,
+                "right": 422.828125,
+                "bottom": 136.90625,
+                "left": 323
+              },
+              "label": "Deselect All"
+            },
+            {
+              "id": "drawingView.drawingMenu.arrange.front",
+              "rect": {
+                "x": 323,
+                "y": 165.90625,
+                "width": 261.25,
+                "height": 23,
+                "top": 165.90625,
+                "right": 584.25,
+                "bottom": 188.90625,
+                "left": 323
+              },
+              "label": "Bring to Frontthere is nothing to arrange"
+            },
+            {
+              "id": "drawingView.drawingMenu.arrange.forward",
+              "rect": {
+                "x": 323,
+                "y": 188.90625,
+                "width": 262.09375,
+                "height": 23,
+                "top": 188.90625,
+                "right": 585.09375,
+                "bottom": 211.90625,
+                "left": 323
+              },
+              "label": "Bring Forwardthere is nothing to arrange"
+            },
+            {
+              "id": "drawingView.drawingMenu.arrange.backward",
+              "rect": {
+                "x": 323,
+                "y": 211.90625,
+                "width": 268.71875,
+                "height": 23,
+                "top": 211.90625,
+                "right": 591.71875,
+                "bottom": 234.90625,
+                "left": 323
+              },
+              "label": "Send Backwardthere is nothing to arrange"
+            },
+            {
+              "id": "drawingView.drawingMenu.arrange.back",
+              "rect": {
+                "x": 323,
+                "y": 234.90625,
+                "width": 256.125,
+                "height": 23,
+                "top": 234.90625,
+                "right": 579.125,
+                "bottom": 257.90625,
+                "left": 323
+              },
+              "label": "Send to Backthere is nothing to arrange"
+            },
+            {
+              "id": "drawingView.drawingMenu.flip.horizontal",
+              "rect": {
+                "x": 323,
+                "y": 286.90625,
+                "width": 242.953125,
+                "height": 23,
+                "top": 286.90625,
+                "right": 565.953125,
+                "bottom": 309.90625,
+                "left": 323
+              },
+              "label": "Flip Horizontalthere is nothing to flip"
+            },
+            {
+              "id": "drawingView.drawingMenu.flip.vertical",
+              "rect": {
+                "x": 323,
+                "y": 309.90625,
+                "width": 225.3125,
+                "height": 23,
+                "top": 309.90625,
+                "right": 548.3125,
+                "bottom": 332.90625,
+                "left": 323
+              },
+              "label": "Flip Verticalthere is nothing to flip"
+            },
+            {
+              "id": "drawingView.drawingMenu.rotate.90cw",
+              "rect": {
+                "x": 323,
+                "y": 332.90625,
+                "width": 256.9375,
+                "height": 23,
+                "top": 332.90625,
+                "right": 579.9375,
+                "bottom": 355.90625,
+                "left": 323
+              },
+              "label": "Rotate 90\u00b0 CWthere is nothing to rotate"
+            },
+            {
+              "id": "drawingView.drawingMenu.rotate.90ccw",
+              "rect": {
+                "x": 323,
+                "y": 355.90625,
+                "width": 264.640625,
+                "height": 23,
+                "top": 355.90625,
+                "right": 587.640625,
+                "bottom": 378.90625,
+                "left": 323
+              },
+              "label": "Rotate 90\u00b0 CCWthere is nothing to rotate"
+            },
+            {
+              "id": "drawingView.drawingMenu.rotate.180",
+              "rect": {
+                "x": 323,
+                "y": 378.90625,
+                "width": 240.203125,
+                "height": 23,
+                "top": 378.90625,
+                "right": 563.203125,
+                "bottom": 401.90625,
+                "left": 323
+              },
+              "label": "Rotate 180\u00b0there is nothing to rotate"
+            },
+            {
+              "id": "drawingView.drawingMenu.group",
+              "rect": {
+                "x": 323,
+                "y": 410.90625,
+                "width": 209.890625,
+                "height": 23,
+                "top": 410.90625,
+                "right": 532.890625,
+                "bottom": 433.90625,
+                "left": 323
+              },
+              "label": "Groupthere is nothing to group"
+            },
+            {
+              "id": "drawingView.drawingMenu.ungroup",
+              "rect": {
+                "x": 323,
+                "y": 433.90625,
+                "width": 237.4375,
+                "height": 23,
+                "top": 433.90625,
+                "right": 560.4375,
+                "bottom": 456.90625,
+                "left": 323
+              },
+              "label": "Ungroupthere is nothing to ungroup"
+            },
+            {
+              "id": "drawingView.drawingMenu.flatten",
+              "rect": {
+                "x": 323,
+                "y": 465.90625,
+                "width": 214.609375,
+                "height": 23,
+                "top": 465.90625,
+                "right": 537.609375,
+                "bottom": 488.90625,
+                "left": 323
+              },
+              "label": "Flattenthere is nothing to flatten"
+            },
+            {
+              "id": "drawingView.drawingMenu.optimize",
+              "rect": {
+                "x": 323,
+                "y": 488.90625,
+                "width": 238.65625,
+                "height": 23,
+                "top": 488.90625,
+                "right": 561.65625,
+                "bottom": 511.90625,
+                "left": 323
+              },
+              "label": "Optimizethere is nothing to optimize"
+            },
+            {
+              "id": "drawingView.drawingMenu.smooth",
+              "rect": {
+                "x": 323,
+                "y": 511.90625,
+                "width": 226.515625,
+                "height": 23,
+                "top": 511.90625,
+                "right": 549.515625,
+                "bottom": 534.90625,
+                "left": 323
+              },
+              "label": "Smooththere is nothing to smooth"
+            },
+            {
+              "id": "drawingView.drawingMenu.centreLine",
+              "rect": {
+                "x": 323,
+                "y": 534.90625,
+                "width": 284.140625,
+                "height": 23,
+                "top": 534.90625,
+                "right": 607.140625,
+                "bottom": 557.90625,
+                "left": 323
+              },
+              "label": "Extract Centre Linethere is nothing to extract"
+            },
+            {
+              "id": "drawingView.drawingMenu.linesToBrush",
+              "rect": {
+                "x": 323,
+                "y": 557.90625,
+                "width": 309.578125,
+                "height": 23,
+                "top": 557.90625,
+                "right": 632.578125,
+                "bottom": 580.90625,
+                "left": 323
+              },
+              "label": "Convert Lines to Brushthere is nothing to convert"
+            },
+            {
+              "id": "drawingView.drawingMenu.breakApart",
+              "rect": {
+                "x": 323,
+                "y": 589.90625,
+                "width": 293.09375,
+                "height": 23,
+                "top": 589.90625,
+                "right": 616.09375,
+                "bottom": 612.90625,
+                "left": 323
+              },
+              "label": "Break Text Apartthere is nothing to break apart"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "design note 1 section 9 arrows cross scroll boundary visibly",
+      "ok": false,
+      "detail": [
+        {
+          "id": "drawingView.drawingMenu.copy",
+          "rect": {
+            "x": 323,
+            "y": 44.90625,
+            "width": 284.625,
+            "height": 23,
+            "top": 44.90625,
+            "right": 607.625,
+            "bottom": 67.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.paste",
+          "rect": {
+            "x": 323,
+            "y": 67.90625,
+            "width": 190.171875,
+            "height": 23,
+            "top": 67.90625,
+            "right": 513.171875,
+            "bottom": 90.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.selectAll",
+          "rect": {
+            "x": 323,
+            "y": 90.90625,
+            "width": 85.3125,
+            "height": 23,
+            "top": 90.90625,
+            "right": 408.3125,
+            "bottom": 113.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.deselectAll",
+          "rect": {
+            "x": 323,
+            "y": 113.90625,
+            "width": 99.828125,
+            "height": 23,
+            "top": 113.90625,
+            "right": 422.828125,
+            "bottom": 136.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.arrange.front",
+          "rect": {
+            "x": 323,
+            "y": 165.90625,
+            "width": 261.25,
+            "height": 23,
+            "top": 165.90625,
+            "right": 584.25,
+            "bottom": 188.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.arrange.forward",
+          "rect": {
+            "x": 323,
+            "y": 188.90625,
+            "width": 262.09375,
+            "height": 23,
+            "top": 188.90625,
+            "right": 585.09375,
+            "bottom": 211.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.arrange.backward",
+          "rect": {
+            "x": 323,
+            "y": 211.90625,
+            "width": 268.71875,
+            "height": 23,
+            "top": 211.90625,
+            "right": 591.71875,
+            "bottom": 234.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.arrange.back",
+          "rect": {
+            "x": 323,
+            "y": 234.90625,
+            "width": 256.125,
+            "height": 23,
+            "top": 234.90625,
+            "right": 579.125,
+            "bottom": 257.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.flip.horizontal",
+          "rect": {
+            "x": 323,
+            "y": 286.90625,
+            "width": 242.953125,
+            "height": 23,
+            "top": 286.90625,
+            "right": 565.953125,
+            "bottom": 309.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.flip.vertical",
+          "rect": {
+            "x": 323,
+            "y": 309.90625,
+            "width": 225.3125,
+            "height": 23,
+            "top": 309.90625,
+            "right": 548.3125,
+            "bottom": 332.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.rotate.90cw",
+          "rect": {
+            "x": 323,
+            "y": 332.90625,
+            "width": 256.9375,
+            "height": 23,
+            "top": 332.90625,
+            "right": 579.9375,
+            "bottom": 355.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.rotate.90ccw",
+          "rect": {
+            "x": 323,
+            "y": 355.90625,
+            "width": 264.640625,
+            "height": 23,
+            "top": 355.90625,
+            "right": 587.640625,
+            "bottom": 378.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.rotate.180",
+          "rect": {
+            "x": 323,
+            "y": 378.90625,
+            "width": 240.203125,
+            "height": 23,
+            "top": 378.90625,
+            "right": 563.203125,
+            "bottom": 401.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.group",
+          "rect": {
+            "x": 323,
+            "y": 410.90625,
+            "width": 209.890625,
+            "height": 23,
+            "top": 410.90625,
+            "right": 532.890625,
+            "bottom": 433.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.ungroup",
+          "rect": {
+            "x": 323,
+            "y": 433.90625,
+            "width": 237.4375,
+            "height": 23,
+            "top": 433.90625,
+            "right": 560.4375,
+            "bottom": 456.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.flatten",
+          "rect": {
+            "x": 323,
+            "y": 465.90625,
+            "width": 214.609375,
+            "height": 23,
+            "top": 465.90625,
+            "right": 537.609375,
+            "bottom": 488.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.optimize",
+          "rect": {
+            "x": 323,
+            "y": 488.90625,
+            "width": 238.65625,
+            "height": 23,
+            "top": 488.90625,
+            "right": 561.65625,
+            "bottom": 511.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.smooth",
+          "rect": {
+            "x": 323,
+            "y": 511.90625,
+            "width": 226.515625,
+            "height": 23,
+            "top": 511.90625,
+            "right": 549.515625,
+            "bottom": 534.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.centreLine",
+          "rect": {
+            "x": 323,
+            "y": 534.90625,
+            "width": 284.140625,
+            "height": 23,
+            "top": 534.90625,
+            "right": 607.140625,
+            "bottom": 557.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.linesToBrush",
+          "rect": {
+            "x": 323,
+            "y": 557.90625,
+            "width": 309.578125,
+            "height": 23,
+            "top": 557.90625,
+            "right": 632.578125,
+            "bottom": 580.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.breakApart",
+          "rect": {
+            "x": 323,
+            "y": 589.90625,
+            "width": 293.09375,
+            "height": 23,
+            "top": 589.90625,
+            "right": 616.09375,
+            "bottom": 612.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.cut",
+          "rect": {
+            "x": 323,
+            "y": 21.90625,
+            "width": 274.828125,
+            "height": 23,
+            "top": 21.90625,
+            "right": 597.828125,
+            "bottom": 44.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.copy",
+          "rect": {
+            "x": 323,
+            "y": 44.90625,
+            "width": 284.625,
+            "height": 23,
+            "top": 44.90625,
+            "right": 607.625,
+            "bottom": 67.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.paste",
+          "rect": {
+            "x": 323,
+            "y": 67.90625,
+            "width": 190.171875,
+            "height": 23,
+            "top": 67.90625,
+            "right": 513.171875,
+            "bottom": 90.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.selectAll",
+          "rect": {
+            "x": 323,
+            "y": 90.90625,
+            "width": 85.3125,
+            "height": 23,
+            "top": 90.90625,
+            "right": 408.3125,
+            "bottom": 113.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.deselectAll",
+          "rect": {
+            "x": 323,
+            "y": 113.90625,
+            "width": 99.828125,
+            "height": 23,
+            "top": 113.90625,
+            "right": 422.828125,
+            "bottom": 136.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.arrange.front",
+          "rect": {
+            "x": 323,
+            "y": 165.90625,
+            "width": 261.25,
+            "height": 23,
+            "top": 165.90625,
+            "right": 584.25,
+            "bottom": 188.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.arrange.forward",
+          "rect": {
+            "x": 323,
+            "y": 188.90625,
+            "width": 262.09375,
+            "height": 23,
+            "top": 188.90625,
+            "right": 585.09375,
+            "bottom": 211.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.arrange.backward",
+          "rect": {
+            "x": 323,
+            "y": 211.90625,
+            "width": 268.71875,
+            "height": 23,
+            "top": 211.90625,
+            "right": 591.71875,
+            "bottom": 234.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        },
+        {
+          "id": "drawingView.drawingMenu.arrange.back",
+          "rect": {
+            "x": 323,
+            "y": 234.90625,
+            "width": 256.125,
+            "height": 23,
+            "top": 234.90625,
+            "right": 579.125,
+            "bottom": 257.90625,
+            "left": 323
+          },
+          "w": 800,
+          "h": 500
+        }
+      ]
+    },
+    {
+      "check": "keyboard Enter activates/closes",
+      "ok": true,
+      "detail": [
+        {
+          "command": "edit.selectAll",
+          "params": {
+            "context": "drawing"
+          }
+        }
+      ]
+    },
+    {
+      "check": "keyboard Escape closes and returns focus",
+      "ok": true,
+      "detail": {
+        "before": "drawingView.canvas",
+        "menuFocus": "drawingView.canvas",
+        "after": "drawingView.canvas"
+      }
+    },
+    {
+      "check": "design note 1 section 9 outside click closes",
+      "ok": true,
+      "detail": {
+        "sent": [],
+        "geometry": {
+          "client": {
+            "w": 800,
+            "h": 500
+          },
+          "menu": null,
+          "arrows": [],
+          "items": []
+        }
+      }
+    }
+  ],
+  "focus": {
+    "focus": "drawingView.canvas",
+    "element": "<div class=\"view-canvas\" tabindex=\"0\" aria-label=\"Canvas\" data-tt-role=\"canvas\" data-tt-id=\"drawingView.canvas\" data-tt-value=\"{&quot;backend&quot;:&quot;webgl2&quot;,&quot;generation&quot;:0,&quot;drawings&quot;:[{&quot;id&quot;:&quot;dr_01K7JJN8001XWZE4BPEPW296WZ&quot;,&quot;rev&quot;:5,&quot;bucket&quot;:0}],&quot;failures&quot;:[],&quot;gesture&quot;:{&quot;status&quot;:&quot;ok&quot;},&quot;selection&quot;:{&quot;objects&quot;:0,&quot;handles&quot;:0,&quot;points&quot;:0,&quot;pivot&quot;:false},&quot;viewType&quot;:&quot;drawing&quot;,&quot;overlay&quot;:false,&quot;drawn&quot;:1,&quot;residentDrawings&quot;:1,&quot;residentBytes&quot;:10777168,&quot;lastError&quot;:null,&quot;lastGesture&quot;:{&quot;origin&quot;:&quot;user&quot;,&quot;tool&quot;:&quot;brush&quot;,&quot;view&quot;:&quot;drawingView&quot;,&quot;pointerType&quot;:&quot;mouse&quot;,&quot;drawingToView&quot;:[1,0,0,-1,269.5,166.5],&quot;events&quot;:[{&quot;type&quot;:&quot;down&quot;,&quot;x&quot;:269,&quot;y&quot;:166,&quot;modifiers&quot;:[],&quot;dt&quot;:0,&quot;pressure&quot;:1,&quot;button&quot;:&quot;left&quot;},{&quot;type&quot;:&quot;up&quot;,&quot;x&quot;:269,&quot;y&quot;:166,&quot;modifiers&quot;:[],&quot;dt&quot;:51,&quot;pressure&quot;:1}],&quot;eventCount&quot;:2,&quot;status&quot;:&quot;ok&quot;,&quot;code&quot;:null,&quot;commands&quot;:[{&quot;commandId&quot;:&quot;draw.stroke.add&quot;,&quot;params&quot;:{&quot;kind&quot;:&quot;brush&quot;,&quot;points&quot;:[{&quot;x&quot;:-0.5,&quot;y&quot;:0.5,&quot;pressure&quot;:1},{&quot;x&quot;:-0.5,&quot;y&quot;:0.5,&quot;pressure&quot;:1}],&quot;fit&quot;:true,&quot;penId&quot;:&quot;pen_01M7VTZPW69DJ72A96Y1SPSP24&quot;,&quot;colourId&quot;:&quot;col_01M7VTZPW69DJ72A96Y1SPSNYA&quot;,&quot;layer&quot;:&quot;auto&quot;,&quot;symmetry&quot;:true}}]}}\"><canvas class=\"view-canvas-surface\" width=\"539\" height=\"333\"></canvas></div>"
+  }
+}
