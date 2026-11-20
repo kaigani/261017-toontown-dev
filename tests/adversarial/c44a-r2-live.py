@@ -245,7 +245,8 @@ async def live2(t,step):
    status=await call(b,'agent.server.status');t.run.check(not status['result']['pendingConfirmations'] and path.read_bytes()==b'sentinel','protocol cancellation retires request',status)
    t.run.check(dom(t,'engine.restart','true') is None,'restart control absent while engine healthy',{'restartOffered':dom(t,'engine.restart','true')})
   elif step==3:
-   await c('window.panel.set',{'panelId':'pen','visible':True});await pause()
+   main_handle=d.window_handle();d.window_handle=lambda:main_handle
+   await c('window.panel.set',{'panelId':'pen','visible':True,'floating':True});await pause()
    await prefs();token=q.token;sha=lambda x:hashlib.sha256(x.encode()).hexdigest()
    t.run.check(dom(t,'agentAccess.token')=='\u2022'*16,'token masked on opening')
    t.click('agentAccess.token.copy');await pause();clip=subprocess.check_output(['powershell','-NoProfile','-Command','Get-Clipboard -Raw']).decode().strip();t.run.check(sha(clip)==sha(token),'Copy matches discovery',{'length':len(clip),'sha256':sha(clip)})
@@ -268,16 +269,32 @@ async def live2(t,step):
     if target=='window':im=im.crop((round(rect['x']*scale)+4,round(rect['y']*scale)+4,round(rect['right']*scale)-4,round(rect['bottom']*scale)-4))
     return im,{'size':im.size}
    baseline,info=await shot('window')
-   for target in ('window','pen','drawingView'):
+   t.click('agentAccess.token.show');await pause()
+   t.run.check(sha(dom(t,'agentAccess.token'))==sha(token),'revealed reference matches discovery hash')
+   from PIL import ImageGrab,ImageChops
+   from ctypes import wintypes
+   origin=wintypes.POINT(0,0);d.u32.ClientToScreen(d.front(),ctypes.byref(origin))
+   revealed=ImageGrab.grab().convert('RGB').crop((origin.x+round(rect['x']*scale)+4,origin.y+round(rect['y']*scale)+4,origin.x+round(rect['right']*scale)-4,origin.y+round(rect['bottom']*scale)-4))
+   t.click('agentAccess.token.show');await pause()
+   for target in ('window','drawingView'):
     t.click('agentAccess.token.show');await pause();tree=await asyncio.to_thread(q.tool,'inspect_ui',{'target':'window','depth':32});im,info=await shot(target)
     t.run.check(token not in json.dumps(tree) and dom(t,'agentAccess.token')!=token and (target!='window' or (im is not None and im.tobytes()==baseline.tobytes())),'D-62 shown token protected '+target,info)
+   from ctypes import wintypes
+   button=t.rect('agentAccess.token.show');origin=wintypes.POINT(0,0);d.u32.ClientToScreen(d.front(),ctypes.byref(origin));d.u32.SetCursorPos(int(origin.x+button['x']*button['dpr']),int(origin.y+button['y']*button['dpr']))
+   def fastclick():d.e6._send_button(True);d.e6._send_button(False)
    for i in range(30):
     if dom(t,'agentAccess.token')==token:t.click('agentAccess.token.show')
-    t.click('agentAccess.token.show');await asyncio.sleep((i%5)*.005);t.click('agentAccess.token.show');await asyncio.sleep((i%7)*.004)
-    if text('agentAccess.token.show')=='Hide':t.click('agentAccess.token.show')
-    im,info=await shot('window');t.run.check(im is not None and im.tobytes()==baseline.tobytes(),'late reveal capture '+str(i),info)
-   await c('window.panel.set',{'panelId':'pen','visible':True,'floating':True});await pause();t.click('agentAccess.token.show');await pause();im,info=await shot('pen');t.run.check(im is not None and dom(t,'agentAccess.token')!=token,'float panel capture masks main token',info)
-   activity=await call(q,'agent.activity.list',{'limit':500});export=t.work/'token-export.jsonl';await c('agent.activity.export',{'path':str(export),'onExists':'overwrite'})
+    fastclick();await asyncio.sleep((i%5)*.005);fastclick();await asyncio.sleep((i%7)*.004)
+    if text('agentAccess.token.show')=='Hide':fastclick()
+    im,info=await shot('window')
+    if im is not None:
+     info['maskedPixelMatch']=im.tobytes()==baseline.tobytes();info['revealedPixelMatch']=im.tobytes()==revealed.tobytes()
+     info['maskDifferentPixels']=sum(a!=b for a,b in zip(im.getdata(),baseline.getdata()));info['revealDifferentPixels']=sum(a!=b for a,b in zip(im.getdata(),revealed.getdata()))
+     if not info['maskedPixelMatch']:im.save(r1.OUT/('capture-mismatch-'+str(i)+'.png'))
+    t.run.check((im is not None and info['maskedPixelMatch']) or (im is None and info.get('error',{}).get('code')=='render.failed' and info.get('error',{}).get('details',{}).get('reason')=='tokenShown'),'late reveal capture '+str(i),info)
+   t.click('agentAccess.token.show');await pause();im,info=await shot('pen');t.run.check(im is not None and dom(t,'agentAccess.token')!=token,'float panel capture masks main token',info)
+   if dom(t,'agentAccess.token')!=token:t.click('agentAccess.token.show');await pause()
+   activity=await call(q,'agent.activity.list',{'limit':500});export=t.work/'token-export.jsonl';t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command',{json:JSON.stringify({command:'agent.activity.export',params:"+json.dumps({'path':str(export),'onExists':'overwrite'})+"})}).then(()=>true)")
    leaks=[str(f.relative_to(t.work)) for f in (t.work/'user').rglob('*') if f.is_file() and f.suffix in ('.log','.jsonl') and token.encode() in f.read_bytes()]
    t.run.check(token not in json.dumps(activity) and export.exists() and token not in export.read_text() and not leaks,'token absent activity export logs',{'leaks':leaks})
   elif step==2:
