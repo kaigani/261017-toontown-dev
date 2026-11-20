@@ -1,0 +1,1813 @@
+{
+  "case": "n1b",
+  "step": 5,
+  "exit": 0,
+  "results": [
+    {
+      "check": "in-memory references distinguish token",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 copy",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 regenerate",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 background",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 ok",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 cancel",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 escape",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": false,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 float",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "pen",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    },
+    {
+      "check": "D-62/D-65 simultaneous",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "target": "window",
+        "fieldPresent": true,
+        "errorTokenFree": true
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r3-batch-_y52ub53\\n1b5"
+}
