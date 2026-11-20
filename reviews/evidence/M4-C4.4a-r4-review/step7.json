@@ -1,0 +1,1613 @@
+{
+  "checks": 176,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-tcjfea2r",
+  "results": [
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Shift+F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Shift+F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+R",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+R",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+Shift+R",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+Shift+R",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Alt+Left",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Alt+Left",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Alt+Right",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Alt+Right",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Backspace",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Backspace",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas MouseBack",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas MouseBack",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas MouseForward",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas MouseForward",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas F12",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas F12",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+Shift+I",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+Shift+I",
+      "ok": true,
+      "detail": {
+        "commands": [
+          {
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "properties",
+              "visible": true
+            }
+          }
+        ],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+U",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+U",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+P",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+P",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+F",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+F",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+G",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+G",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+J",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+J",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas F7",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas F7",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+plus",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+plus",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+minus",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+minus",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+0",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+0",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only canvas Ctrl+wheel",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker canvas Ctrl+wheel",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Shift+F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Shift+F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+R",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+R",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+Shift+R",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+Shift+R",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Alt+Left",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Alt+Left",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Alt+Right",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Alt+Right",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Backspace",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Backspace",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text MouseBack",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text MouseBack",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text MouseForward",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text MouseForward",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text F12",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text F12",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+Shift+I",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+Shift+I",
+      "ok": true,
+      "detail": {
+        "commands": [
+          {
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "properties",
+              "visible": false
+            }
+          }
+        ],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+U",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+U",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+P",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+P",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+F",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+F",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+G",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+G",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+J",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+J",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text F7",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text F7",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+plus",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+plus",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+minus",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+minus",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+0",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+0",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only text Ctrl+wheel",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker text Ctrl+wheel",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": null,
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Shift+F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Shift+F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+R",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+R",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+Shift+R",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+Shift+R",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Alt+Left",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Alt+Left",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Alt+Right",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Alt+Right",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Backspace",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Backspace",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token MouseBack",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token MouseBack",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token MouseForward",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token MouseForward",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token F12",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token F12",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+Shift+I",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+Shift+I",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+U",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+U",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+P",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+P",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+F",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+F",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+G",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+G",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+J",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+J",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token F7",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token F7",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+plus",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+plus",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+minus",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+minus",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+0",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+0",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only token Ctrl+wheel",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker token Ctrl+wheel",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Shift+F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Shift+F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+F5",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+F5",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+R",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+R",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+Shift+R",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+Shift+R",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Alt+Left",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Alt+Left",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Alt+Right",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Alt+Right",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Backspace",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Backspace",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog MouseBack",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog MouseBack",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog MouseForward",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog MouseForward",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": false
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog F12",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog F12",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+Shift+I",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+Shift+I",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+U",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+U",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+P",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+P",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+F",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+F",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+G",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+G",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+J",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+J",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog F7",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog F7",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+plus",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+plus",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+minus",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+minus",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+0",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+0",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    },
+    {
+      "check": "Plan 3.2 diagnostics development-only dialog Ctrl+wheel",
+      "ok": true,
+      "detail": {
+        "developerWindows": 0
+      }
+    },
+    {
+      "check": "D-70 marker dialog Ctrl+wheel",
+      "ok": true,
+      "detail": {
+        "commands": [],
+        "scale": 1,
+        "dialog": "preferences",
+        "newWindows": [],
+        "observation": true
+      }
+    }
+  ],
+  "captures": {
+    "overpainted": 0,
+    "outside": 0,
+    "refused": 0,
+    "revealed": 0
+  }
+}

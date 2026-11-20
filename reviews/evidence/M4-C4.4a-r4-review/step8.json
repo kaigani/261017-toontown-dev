@@ -1,0 +1,750 @@
+{
+  "checks": 37,
+  "failures": [
+    {
+      "check": "D-68 other read answered while roots pending",
+      "ok": false,
+      "detail": {
+        "readMs": 1964.5320000126958
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-fzq3jd0m",
+  "results": [
+    {
+      "check": "D-68 roots 1",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 328.16,
+        "readMs": 285.94,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 2",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 308.28,
+        "readMs": 252.97,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 3",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 307.54,
+        "readMs": 256.89,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 4",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 307.55,
+        "readMs": 259.72,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 5",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 309.05,
+        "readMs": 259.11,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 6",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 331.4,
+        "readMs": 284.18,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 7",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 317.64,
+        "readMs": 268.33,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 8",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 315.26,
+        "readMs": 270.59,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 9",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 354.95,
+        "readMs": 305.81,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 10",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 324.2,
+        "readMs": 274.18,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 11",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 317.86,
+        "readMs": 270.45,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 12",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 315.64,
+        "readMs": 265.26,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 13",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 315.37,
+        "readMs": 266.21,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 14",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 332.39,
+        "readMs": 283.34,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 15",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 318.9,
+        "readMs": 269.12,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 16",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 335.89,
+        "readMs": 291.39,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 17",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 335.38,
+        "readMs": 287.43,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 18",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 323.89,
+        "readMs": 272.54,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 19",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 342.04,
+        "readMs": 293.51,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 20",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 334.11,
+        "readMs": 289.62,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 21",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 321.36,
+        "readMs": 271.56,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 22",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 316.65,
+        "readMs": 264.72,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 23",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 317.87,
+        "readMs": 274.36,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 24",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 333.36,
+        "readMs": 290.91,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 25",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 312.25,
+        "readMs": 261.92,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 26",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 323.9,
+        "readMs": 270.62,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 27",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 318.23,
+        "readMs": 276.88,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 28",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 312.43,
+        "readMs": 263.32,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 29",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 310.12,
+        "readMs": 261.19,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 30",
+      "ok": true,
+      "detail": {
+        "delayMs": 300.0,
+        "elapsedMs": 329.15,
+        "readMs": 280.81,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 31",
+      "ok": true,
+      "detail": {
+        "delayMs": null,
+        "elapsedMs": 2019.62,
+        "readMs": 1964.53,
+        "status": "error",
+        "code": "fs.outsideRoots",
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 other read answered while roots pending",
+      "ok": false,
+      "detail": {
+        "readMs": 1964.5320000126958
+      }
+    },
+    {
+      "check": "D-68 roots 32",
+      "ok": true,
+      "detail": {
+        "delayMs": 0,
+        "elapsedMs": 9.26,
+        "readMs": 2.07,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 33",
+      "ok": true,
+      "detail": {
+        "delayMs": 0,
+        "elapsedMs": 7.93,
+        "readMs": 17.08,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 34",
+      "ok": true,
+      "detail": {
+        "delayMs": 0,
+        "elapsedMs": 6.25,
+        "readMs": 17.52,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 35",
+      "ok": true,
+      "detail": {
+        "delayMs": 0,
+        "elapsedMs": 9.72,
+        "readMs": 8.62,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    },
+    {
+      "check": "D-68 roots 36",
+      "ok": true,
+      "detail": {
+        "delayMs": 0,
+        "elapsedMs": 9.56,
+        "readMs": 15.16,
+        "status": "ok",
+        "code": null,
+        "rootsRequested": true
+      }
+    }
+  ],
+  "captures": {
+    "overpainted": 0,
+    "outside": 0,
+    "refused": 0,
+    "revealed": 0
+  },
+  "roots-figures.json": [
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 328.16,
+      "readMs": 285.94,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 308.28,
+      "readMs": 252.97,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 307.54,
+      "readMs": 256.89,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 307.55,
+      "readMs": 259.72,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 309.05,
+      "readMs": 259.11,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 331.4,
+      "readMs": 284.18,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 317.64,
+      "readMs": 268.33,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 315.26,
+      "readMs": 270.59,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 354.95,
+      "readMs": 305.81,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 324.2,
+      "readMs": 274.18,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 317.86,
+      "readMs": 270.45,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 315.64,
+      "readMs": 265.26,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 315.37,
+      "readMs": 266.21,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 332.39,
+      "readMs": 283.34,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 318.9,
+      "readMs": 269.12,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 335.89,
+      "readMs": 291.39,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 335.38,
+      "readMs": 287.43,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 323.89,
+      "readMs": 272.54,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 342.04,
+      "readMs": 293.51,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 334.11,
+      "readMs": 289.62,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 321.36,
+      "readMs": 271.56,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 316.65,
+      "readMs": 264.72,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 317.87,
+      "readMs": 274.36,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 333.36,
+      "readMs": 290.91,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 312.25,
+      "readMs": 261.92,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 323.9,
+      "readMs": 270.62,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 318.23,
+      "readMs": 276.88,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 312.43,
+      "readMs": 263.32,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 310.12,
+      "readMs": 261.19,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 300.0,
+      "elapsedMs": 329.15,
+      "readMs": 280.81,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": null,
+      "elapsedMs": 2019.62,
+      "readMs": 1964.53,
+      "status": "error",
+      "code": "fs.outsideRoots",
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 0,
+      "elapsedMs": 9.26,
+      "readMs": 2.07,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 0,
+      "elapsedMs": 7.93,
+      "readMs": 17.08,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 0,
+      "elapsedMs": 6.25,
+      "readMs": 17.52,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 0,
+      "elapsedMs": 9.72,
+      "readMs": 8.62,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    },
+    {
+      "delayMs": 0,
+      "elapsedMs": 9.56,
+      "readMs": 15.16,
+      "status": "ok",
+      "code": null,
+      "rootsRequested": true
+    }
+  ]
+}
