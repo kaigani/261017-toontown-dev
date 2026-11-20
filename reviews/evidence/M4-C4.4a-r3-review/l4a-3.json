@@ -1,0 +1,693 @@
+{
+  "case": "l4a",
+  "step": 3,
+  "exit": 0,
+  "results": [
+    {
+      "check": "initial policy",
+      "ok": true,
+      "detail": {
+        "enabled": true,
+        "endpoint": "http://127.0.0.1:57444/mcp",
+        "sessions": [
+          {
+            "sessionId": "s1-fc5563",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T12:17:18.043Z",
+            "lastActivity": "2026-11-20T12:17:18.358Z",
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s2-29ec6f",
+            "client": "review-live4-primary",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T12:17:24.982Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s3-3f1239",
+            "client": "review-live4-secondary",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T12:17:24.985Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          }
+        ],
+        "pendingConfirmations": []
+      }
+    },
+    {
+      "check": "call held and sheet open",
+      "ok": true,
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-91llbuqa\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-91llbuqa\\overwrite-0.animpkg, bytes: 17Expires in 4:59DeclineAccept"
+    },
+    {
+      "check": "token surfaces",
+      "ok": true,
+      "detail": {
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:57444/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-fc5563",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T12:17:18.043Z",
+                "lastActivity": "2026-11-20T12:17:24.988Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-29ec6f",
+                "client": "review-live4-primary",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T12:17:24.982Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-3f1239",
+                "client": "review-live4-secondary",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T12:17:24.985Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": [
+              {
+                "confirmationId": "cf_3c27c2a9827401823404246c",
+                "sessionId": "s2-29ec6f",
+                "commandId": "project.saveAs",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-91llbuqa\\overwrite-0.animpkg`",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-91llbuqa\\overwrite-0.animpkg",
+                    "bytes": 17
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": true,
+                "expiresInMs": 299200
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "activity": {
+          "status": "ok",
+          "result": [
+            {
+              "seq": 1,
+              "time": "2026-11-20T12:17:18.111Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 62
+            },
+            {
+              "seq": 2,
+              "time": "2026-11-20T12:17:18.197Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 3,
+              "time": "2026-11-20T12:17:18.245Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "project.create",
+              "params": {
+                "name": "Live4 step 3",
+                "onUnsaved": "fail"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 1,
+              "durationMs": 40
+            },
+            {
+              "seq": 4,
+              "time": "2026-11-20T12:17:18.261Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "element.create",
+              "params": {
+                "type": "drawing",
+                "name": "ModalUndoSentinel"
+              },
+              "status": "ok",
+              "undoStepId": "u-1",
+              "changedCount": 4,
+              "documentRev": 2,
+              "durationMs": 7
+            },
+            {
+              "seq": 5,
+              "time": "2026-11-20T12:17:18.265Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "element.drawing.create",
+              "params": {
+                "elementId": "el_01K7JJN80078RAZP148DR2S6M3",
+                "name": "1",
+                "exposeFrom": 1,
+                "exposeTo": 24
+              },
+              "status": "ok",
+              "undoStepId": "u-2",
+              "changedCount": 3,
+              "documentRev": 3,
+              "durationMs": 1
+            },
+            {
+              "seq": 6,
+              "time": "2026-11-20T12:17:18.271Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "app.context.set",
+              "params": {
+                "elementId": "el_01K7JJN80078RAZP148DR2S6M3",
+                "frame": 1
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 3,
+              "durationMs": 1
+            },
+            {
+              "seq": 7,
+              "time": "2026-11-20T12:17:18.280Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "workspace.select",
+              "params": {
+                "name": "Drawing"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 3,
+              "durationMs": 6
+            },
+            {
+              "seq": 8,
+              "time": "2026-11-20T12:17:18.284Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "view.active.set",
+              "params": {
+                "viewId": "drawingView"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 3,
+              "durationMs": 1
+            },
+            {
+              "seq": 9,
+              "time": "2026-11-20T12:17:18.289Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.rectangle.add",
+              "params": {
+                "from": {
+                  "x": -40,
+                  "y": -40
+                },
+                "to": {
+                  "x": 40,
+                  "y": 40
+                }
+              },
+              "status": "ok",
+              "undoStepId": "u-3",
+              "changedCount": 3,
+              "documentRev": 4,
+              "durationMs": 1
+            },
+            {
+              "seq": 10,
+              "time": "2026-11-20T12:17:18.333Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "project.saveAs",
+              "params": {
+                "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-91llbuqa\\base.animpkg"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 2,
+              "documentRev": 5,
+              "durationMs": 39
+            },
+            {
+              "seq": 11,
+              "time": "2026-11-20T12:17:18.358Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "job_wait",
+              "commandId": "job.wait",
+              "params": {
+                "jobId": "job-1",
+                "timeoutMs": 120000
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 5,
+              "durationMs": 18
+            },
+            {
+              "seq": 12,
+              "time": "2026-11-20T12:17:24.988Z",
+              "sessionId": "s1-fc5563",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "agent.server.status",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 5,
+              "durationMs": 0
+            },
+            {
+              "seq": 13,
+              "time": "2026-11-20T12:17:25.812Z",
+              "sessionId": "s3-3f1239",
+              "client": "review-live4-secondary",
+              "tool": "run_command",
+              "commandId": "agent.server.status",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 5,
+              "durationMs": 2
+            }
+          ],
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "events": {
+          "jsonrpc": "2.0",
+          "id": 5,
+          "result": {
+            "contents": [
+              {
+                "uri": "app://events?after=0",
+                "mimeType": "application/json",
+                "text": "{\"eventCount\": 2, \"types\": {\"agent.session.connected\": 1, \"agent.confirmation.requested\": 1}, \"firstSeq\": 1, \"lastSeq\": 2, \"rawTextBytes\": 921, \"sha256\": \"4f39049587aa76c3933c6163a40640d270eae17dabca3d14cd038ceb5579f10a\"}"
+              }
+            ]
+          }
+        },
+        "firstReturned": false
+      }
+    },
+    {
+      "check": "bypasses did not write before accept",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "bypass states before decline",
+      "ok": true,
+      "detail": [
+        {
+          "probe": "token review-live4-primary",
+          "returned": {
+            "status": "error",
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5,
+            "error": {
+              "code": "confirmation.expired",
+              "message": "the confirmation token cannot be used: unknown or already used",
+              "details": {
+                "confirmToken": "guessed-confirm-token",
+                "reason": "unknown or already used"
+              },
+              "hint": "invoke the command again without confirmToken to get a new confirmation"
+            }
+          }
+        },
+        {
+          "probe": "token review-live4-primary",
+          "returned": {
+            "status": "error",
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5,
+            "error": {
+              "code": "confirmation.expired",
+              "message": "the confirmation token cannot be used: waiting for the user's answer in the app",
+              "details": {
+                "confirmToken": "cf_3c27c2a9827401823404246c",
+                "reason": "waiting for the user's answer in the app"
+              },
+              "hint": "invoke the command again without confirmToken to get a new confirmation"
+            }
+          }
+        },
+        {
+          "probe": "respond review-live4-primary",
+          "returned": {
+            "status": "error",
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5,
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.confirmation.respond` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.confirmation.respond",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "probe": "confirm true review-live4-primary",
+          "returned": "held"
+        },
+        {
+          "probe": "token review-live4-secondary",
+          "returned": {
+            "status": "error",
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5,
+            "error": {
+              "code": "confirmation.expired",
+              "message": "the confirmation token cannot be used: unknown or already used",
+              "details": {
+                "confirmToken": "guessed-confirm-token",
+                "reason": "unknown or already used"
+              },
+              "hint": "invoke the command again without confirmToken to get a new confirmation"
+            }
+          }
+        },
+        {
+          "probe": "token review-live4-secondary",
+          "returned": {
+            "status": "error",
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5,
+            "error": {
+              "code": "confirmation.expired",
+              "message": "the confirmation token cannot be used: waiting for the user's answer in the app",
+              "details": {
+                "confirmToken": "cf_3c27c2a9827401823404246c",
+                "reason": "waiting for the user's answer in the app"
+              },
+              "hint": "invoke the command again without confirmToken to get a new confirmation"
+            }
+          }
+        },
+        {
+          "probe": "respond review-live4-secondary",
+          "returned": {
+            "status": "error",
+            "changes": [],
+            "warnings": [],
+            "documentRev": 5,
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.confirmation.respond` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.confirmation.respond",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "probe": "confirm true review-live4-secondary",
+          "returned": "held"
+        }
+      ]
+    },
+    {
+      "check": "bypass refused token review-live4-primary",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "confirmation.expired",
+          "message": "the confirmation token cannot be used: unknown or already used",
+          "details": {
+            "confirmToken": "guessed-confirm-token",
+            "reason": "unknown or already used"
+          },
+          "hint": "invoke the command again without confirmToken to get a new confirmation"
+        }
+      }
+    },
+    {
+      "check": "bypass refused token review-live4-primary",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "confirmation.expired",
+          "message": "the confirmation token cannot be used: waiting for the user's answer in the app",
+          "details": {
+            "confirmToken": "cf_3c27c2a9827401823404246c",
+            "reason": "waiting for the user's answer in the app"
+          },
+          "hint": "invoke the command again without confirmToken to get a new confirmation"
+        }
+      }
+    },
+    {
+      "check": "bypass refused respond review-live4-primary",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "permission.denied",
+          "message": "`agent.confirmation.respond` needs the scopes [\"app\"]",
+          "details": {
+            "commandId": "agent.confirmation.respond",
+            "missingScopes": [
+              "app"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "check": "bypass refused confirm true review-live4-primary",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "confirmation.declined",
+          "message": "the user declined the action",
+          "details": {
+            "confirmToken": "cf_0ad219ee9418b6055a019a7d"
+          }
+        }
+      }
+    },
+    {
+      "check": "bypass refused token review-live4-secondary",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "confirmation.expired",
+          "message": "the confirmation token cannot be used: unknown or already used",
+          "details": {
+            "confirmToken": "guessed-confirm-token",
+            "reason": "unknown or already used"
+          },
+          "hint": "invoke the command again without confirmToken to get a new confirmation"
+        }
+      }
+    },
+    {
+      "check": "bypass refused token review-live4-secondary",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "confirmation.expired",
+          "message": "the confirmation token cannot be used: waiting for the user's answer in the app",
+          "details": {
+            "confirmToken": "cf_3c27c2a9827401823404246c",
+            "reason": "waiting for the user's answer in the app"
+          },
+          "hint": "invoke the command again without confirmToken to get a new confirmation"
+        }
+      }
+    },
+    {
+      "check": "bypass refused respond review-live4-secondary",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "permission.denied",
+          "message": "`agent.confirmation.respond` needs the scopes [\"app\"]",
+          "details": {
+            "commandId": "agent.confirmation.respond",
+            "missingScopes": [
+              "app"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "check": "bypass refused confirm true review-live4-secondary",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "confirmation.declined",
+          "message": "the user declined the action",
+          "details": {
+            "confirmToken": "cf_9170a1dea618604750a062ec"
+          }
+        }
+      }
+    },
+    {
+      "check": "original remains declined",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r3-batch-_y52ub53\\l4a3"
+}
