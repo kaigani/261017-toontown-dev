@@ -1,0 +1,20 @@
+{
+  "schedules": {
+    "reload": {
+      "masked": 40,
+      "refused": 0,
+      "revealed": 0,
+      "other": 0
+    }
+  },
+  "reloadKeys": [
+    {
+      "key": 116,
+      "reloaded": true
+    },
+    {
+      "key": 82,
+      "reloaded": false
+    }
+  ]
+}

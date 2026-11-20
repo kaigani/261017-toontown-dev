@@ -1,0 +1,72 @@
+[
+  {
+    "id": "text.font",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.size",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.kerning",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.leftMargin",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.rightMargin",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.indent",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.lineSpacing",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.bold",
+    "type": "checkbox",
+    "disabled": false
+  },
+  {
+    "id": "text.italic",
+    "type": "checkbox",
+    "disabled": false
+  },
+  {
+    "id": "text.autoKern",
+    "type": "checkbox",
+    "disabled": false
+  },
+  {
+    "id": "newProject.name",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "newProject.frameRate",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "newProject.width",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "newProject.height",
+    "type": "text",
+    "disabled": false
+  }
+]

@@ -1,0 +1,239 @@
+{
+  "case": "l3b",
+  "step": 5,
+  "exit": 0,
+  "failLines": [],
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "regeneration question defaults Cancel",
+      "ok": true,
+      "detail": [
+        {
+          "text": "Create",
+          "id": "start.create",
+          "focused": false
+        },
+        {
+          "text": "Open other\u2026",
+          "id": "start.openOther",
+          "focused": false
+        },
+        {
+          "text": "Sample project",
+          "id": "start.sample",
+          "focused": false
+        },
+        {
+          "text": "Documentation",
+          "id": "start.docs",
+          "focused": false
+        },
+        {
+          "text": "General",
+          "id": "preferences.category.general",
+          "focused": false
+        },
+        {
+          "text": "Files and safety",
+          "id": "preferences.category.files",
+          "focused": false
+        },
+        {
+          "text": "New-project defaults",
+          "id": "preferences.category.newProject",
+          "focused": false
+        },
+        {
+          "text": "Interface",
+          "id": "preferences.category.interface",
+          "focused": false
+        },
+        {
+          "text": "Drawing aids",
+          "id": "preferences.category.drawingAids",
+          "focused": false
+        },
+        {
+          "text": "Display",
+          "id": "preferences.category.display",
+          "focused": false
+        },
+        {
+          "text": "Tablet",
+          "id": "preferences.category.tablet",
+          "focused": false
+        },
+        {
+          "text": "Staging",
+          "id": "preferences.category.staging",
+          "focused": false
+        },
+        {
+          "text": "Timing",
+          "id": "preferences.category.timing",
+          "focused": false
+        },
+        {
+          "text": "Edit",
+          "id": "preferences.category.edit",
+          "focused": false
+        },
+        {
+          "text": "Agent access",
+          "id": "preferences.category.agent",
+          "focused": false
+        },
+        {
+          "text": "Keyboard",
+          "id": "preferences.category.keyboard",
+          "focused": false
+        },
+        {
+          "text": "Tips",
+          "id": "preferences.category.tips",
+          "focused": false
+        },
+        {
+          "text": "Show",
+          "id": "agentAccess.token.show",
+          "focused": false
+        },
+        {
+          "text": "Copy",
+          "id": "agentAccess.token.copy",
+          "focused": false
+        },
+        {
+          "text": "Regenerate token\u2026",
+          "id": "agentAccess.regenerate",
+          "focused": false
+        },
+        {
+          "text": "Cancel",
+          "id": "preferences.cancel",
+          "focused": false
+        },
+        {
+          "text": "OK",
+          "id": "preferences.submit",
+          "focused": false
+        }
+      ]
+    },
+    {
+      "check": "Cancel keeps token and endpoint",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "regenerate changes token keeps endpoint",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.token.regenerate",
+            "params": {}
+          }
+        ],
+        "oldFingerprint": {
+          "length": 48,
+          "sha256": "b3b2f7b4c6bbe23baec8af1c805df0c4591defd0c6e75078f63d86f9b5030e24"
+        },
+        "newFingerprint": {
+          "length": 48,
+          "sha256": "1c6ddba8d14dad4168dc92f2408af4748d1b08b4014a831f15da5c835835590f"
+        }
+      }
+    },
+    {
+      "check": "old token refused",
+      "ok": true,
+      "detail": {
+        "http": 401,
+        "body": ""
+      }
+    },
+    {
+      "check": "new token accepted",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "token absent UI tree and logs",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "regeneration disconnects existing HTTP sessions",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "enabled": true,
+          "endpoint": "http://127.0.0.1:58835/mcp",
+          "sessions": [
+            {
+              "sessionId": "s3-3318ef",
+              "client": "new-token",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "connectedAt": "2026-11-20T12:15:26.534Z",
+              "lastActivity": "2026-11-20T12:15:26.586Z",
+              "paused": false,
+              "transport": "http"
+            }
+          ],
+          "pendingConfirmations": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": null
+      }
+    },
+    {
+      "check": "token absent actual activity export",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "token shown or copied in Preferences matches discovery",
+      "ok": true,
+      "detail": {
+        "clipboardLength": 48,
+        "clipboardSha256": "1c6ddba8d14dad4168dc92f2408af4748d1b08b4014a831f15da5c835835590f"
+      }
+    },
+    {
+      "check": "D-57 session/token events exclude shell notices",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "contents": [
+            {
+              "uri": "app://events?after=0",
+              "mimeType": "application/json",
+              "text": "{\n  \"events\": [\n    {\n      \"seq\": 1,\n      \"time\": \"2026-11-20T12:15:26.534Z\",\n      \"type\": \"agent.session.connected\",\n      \"origin\": \"system\",\n      \"payload\": {\n        \"sessionId\": \"s3-3318ef\",\n        \"client\": \"new-token\",\n        \"policy\": \"autonomous\"\n      }\n    },\n    {\n      \"seq\": 2,\n      \"time\": \"2026-11-20T12:15:26.614Z\",\n      \"type\": \"app.state.changed\",\n      \"origin\": \"system\",\n      \"payload\": {\n        \"changed\": [\n          \"modal\"\n        ],\n        \"state\": {\n          \"project\": null,\n          \"scene\": null,\n          \"frame\": null,\n          \"element\": null,\n          \"drawing\": null,\n          \"mode\": null,\n          \"activeView\": null,\n          \"focusedPanel\": \"cameraView\",\n          \"activeTool\": null,\n          \"selection\": {\n            \"context\": \"staging\",\n            \"ids\": [],\n            \"kinds\": []\n          },\n          \"workspace\": {\n            \"name\": \"Default\",\n            \"modified\": false\n          },\n          \"playback\": {\n            \"playing\": false\n          },\n          \"startScreenVisible\": true,\n          \"modal\": null,\n          \"agentSessions\": [],\n          \"fullScreen\": false\n        }\n      }\n    },\n    {\n      \"seq\": 3,\n      \"time\": \"2026-11-20T12:15:28.205Z\",\n      \"type\": \"workspace.changed\",\n      \"origin\": \"system\",\n      \"payload\": {\n        \"name\": \"Default\",\n        \"modified\": true\n      }\n    },\n    {\n      \"seq\": 4,\n      \"time\": \"2026-11-20T12:15:28.205Z\",\n      \"type\": \"app.state.changed\",\n      \"origin\": \"system\",\n      \"payload\": {\n        \"changed\": [\n          \"focusedPanel\",\n          \"workspace\"\n        ],\n        \"state\": {\n          \"project\": null,\n          \"scene\": null,\n          \"frame\": null,\n          \"element\": null,\n          \"drawing\": null,\n          \"mode\": null,\n          \"activeView\": null,\n          \"focusedPanel\": \"activity\",\n          \"activeTool\": null,\n          \"selection\": {\n            \"context\": \"staging\",\n            \"ids\": [],\n            \"kinds\": []\n          },\n          \"workspace\": {\n            \"name\": \"Default\",\n            \"modified\": true\n          },\n          \"playback\": {\n            \"playing\": false\n          },\n          \"startScreenVisible\": true,\n          \"modal\": null,\n          \"agentSessions\": [],\n          \"fullScreen\": false\n        }\n      }\n    },\n    {\n      \"seq\": 5,\n      \"time\": \"2026-11-20T12:15:34.779Z\",\n      \"type\": \"app.state.changed\",\n      \"origin\": \"system\",\n      \"payload\": {\n        \"changed\": [\n          \"modal\"\n        ],\n        \"state\": {\n          \"project\": null,\n          \"scene\": null,\n          \"frame\": null,\n          \"element\": null,\n          \"drawing\": null,\n          \"mode\": null,\n          \"activeView\": null,\n          \"focusedPanel\": \"activity\",\n          \"activeTool\": null,\n          \"selection\": {\n            \"context\": \"staging\",\n            \"ids\": [],\n            \"kinds\": []\n          },\n          \"workspace\": {\n            \"name\": \"Default\",\n            \"modified\": true\n          },\n          \"playback\": {\n            \"playing\": false\n          },\n          \"startScreenVisible\": true,\n          \"modal\": {\n            \"kind\": \"dialog\",\n            \"title\": \"Preferences\"\n          },\n          \"agentSessions\": [],\n          \"fullScreen\": false\n        }\n      }\n    }\n  ],\n  \"lastSeq\": 5,\n  \"oldestSeq\": 1\n}"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r3-batch-_y52ub53\\20-l3b5"
+}

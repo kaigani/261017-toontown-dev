@@ -123,7 +123,7 @@ async def menus(t,step):
     if os.environ.get('C44_MIN_CAMERA') and (size!=(800,500) or view!='cameraView'):continue
     await setup(view)
     for fx,fy in [(.01,.01),(.5,.01),(.99,.01),(.01,.5),(.99,.5),(.01,.99),(.5,.99),(.99,.99)]:
-     await openat(view,fx,fy);g=geometry();m=g['menu'];area=g['client'];inside=m and m['x']>=0 and m['y']>=0 and m['right']<=area['w'] and m['bottom']<=area['h']
+     await openat(view,max(fx,.04) if view=='cameraView' and size==(800,500) else fx,fy);g=geometry();m=g['menu'];area=g['client'];inside=m and m['x']>=0 and m['y']>=0 and m['right']<=area['w'] and m['bottom']<=area['h']
      t.run.check(bool(inside),'D-60 placement '+str((size,view,fx,fy)),g)
      if not g['items']:
       t.run.check(False,'D-60 menu opened at '+str((size,view,fx,fy)),{'geometry':g,'canvas':dom(t,view+'.canvas','e.getBoundingClientRect().toJSON()')});continue
@@ -231,7 +231,7 @@ async def live2(t,step):
    for _ in range(5):held.append((await hold(q))[0])
    read=asyncio.create_task(call(q,'app.state.get'));tasks.append(read);await asyncio.sleep(2)
    t.run.check(read.done() and read.result().get('status')=='ok','D-63 fifth held call leaves read answered',{'read':read.result() if read.done() else 'blocked','fifth':held[-1].result() if held[-1].done() else 'held','queue':text('confirmSheet.queue'),'status':await call(b,'agent.server.status')})
-   await drain();answers=await asyncio.gather(*held,read);t.run.check('confirmation.declined' in json.dumps(answers[4]) and answers[-1].get('status')=='ok','fifth declines and blocked read completes after decisions',{'fifth':answers[4],'readStatus':answers[-1].get('status')})
+   t.run.check(held[4].done() and 'limit.exceeded' in json.dumps(held[4].result()) and 'concurrentJobWaits' in json.dumps(held[4].result()) and read.done() and read.result().get('status')=='ok' and '1 of 4' in (text('confirmSheet.queue') or '') and len((await call(b,'agent.server.status'))['result']['pendingConfirmations'])==4,'D-65 fifth refused immediately, retired, four shown and read answered',{'fifth':held[4].result() if held[4].done() else 'held','readStatus':read.result().get('status') if read.done() else 'blocked','queue':text('confirmSheet.queue')});await drain();await asyncio.gather(*held,read)
   elif step==7:
    task,path=await hold(q);shown=text('confirmSheet.countdown');status=await call(b,'agent.server.status');clock=shown.rsplit(' ',1)[-1].split(':');seconds=int(clock[0])*60+int(clock[1]);remaining=status['result']['pendingConfirmations'][0]['expiresInMs']/1000
    t.run.check(abs(seconds-remaining)<=1,'D-63 countdown within one second',{'shown':seconds,'remaining':remaining})

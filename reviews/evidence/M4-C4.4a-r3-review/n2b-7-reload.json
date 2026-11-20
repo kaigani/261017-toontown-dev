@@ -1,0 +1,1371 @@
+{
+  "checks": 41,
+  "results": [
+    {
+      "check": "in-memory references distinguish token",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 reload 0",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 1",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 2",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 3",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 4",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 5",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 6",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 7",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 8",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 9",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 10",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 11",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 12",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 13",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 14",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 15",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 16",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 17",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 18",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 19",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 20",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 21",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 22",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 23",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 24",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 25",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 26",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 27",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 28",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 29",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 30",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 31",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 32",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 33",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 34",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 35",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 36",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 37",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 38",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "D-65 reload 39",
+      "ok": true,
+      "detail": {
+        "kind": "masked",
+        "differences": {
+          "revealDifference": 1.0,
+          "maskedDifference": 1.0,
+          "safeDifference": 1.0,
+          "bytes": [
+            7065,
+            7065,
+            7065,
+            7065
+          ],
+          "extrema": [
+            [
+              243,
+              243
+            ],
+            [
+              243,
+              243
+            ],
+            [
+              245,
+              245
+            ]
+          ]
+        },
+        "errorCode": null,
+        "status": "ok"
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-8_bhzs2a"
+}

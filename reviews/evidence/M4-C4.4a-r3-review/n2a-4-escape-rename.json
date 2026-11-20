@@ -1,0 +1,31 @@
+{
+  "old": "Pen 1",
+  "after": null,
+  "commands": [
+    {
+      "command": "agent.server.status",
+      "params": {}
+    },
+    {
+      "command": "ui.statusBar.get",
+      "params": {}
+    },
+    {
+      "command": "agent.server.status",
+      "params": {}
+    },
+    {
+      "command": "ui.statusBar.get",
+      "params": {}
+    },
+    {
+      "command": "agent.server.status",
+      "params": {}
+    },
+    {
+      "command": "ui.statusBar.get",
+      "params": {}
+    }
+  ],
+  "dialog": null
+}

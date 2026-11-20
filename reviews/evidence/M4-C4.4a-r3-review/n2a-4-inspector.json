@@ -1,0 +1,52 @@
+{
+  "checks": 2,
+  "results": [
+    {
+      "check": "D-61 Escape inspector",
+      "ok": true,
+      "detail": {
+        "after": "1",
+        "commands": [
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          }
+        ]
+      }
+    },
+    {
+      "check": "D-61 Enter once inspector",
+      "ok": true,
+      "detail": [
+        {
+          "command": "draw.drawing.rename",
+          "params": {
+            "drawingId": "dr_01K7JJN8004QP4RMP4A5CKZV0G",
+            "name": "Review name"
+          }
+        }
+      ]
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-6h_469xd"
+}

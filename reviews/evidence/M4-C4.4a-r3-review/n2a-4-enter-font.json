@@ -1,0 +1,29 @@
+{
+  "after": "Review name",
+  "commands": [
+    {
+      "command": "tool.text.options.set",
+      "params": {
+        "font": "Review name"
+      }
+    },
+    {
+      "command": "tool.pen.list",
+      "params": {}
+    },
+    {
+      "command": "tool.active.get",
+      "params": {}
+    },
+    {
+      "command": "tool.settings.get",
+      "params": {}
+    },
+    {
+      "command": "tool.options.get",
+      "params": {
+        "toolId": "text"
+      }
+    }
+  ]
+}

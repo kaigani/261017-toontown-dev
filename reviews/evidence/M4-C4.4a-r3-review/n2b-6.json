@@ -1,0 +1,2300 @@
+{
+  "checks": 13,
+  "results": [
+    {
+      "check": "D-66 dock checklist",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 111,
+          "y": 4,
+          "width": 554.203125,
+          "height": 492,
+          "top": 4,
+          "right": 665.203125,
+          "bottom": 496,
+          "left": 111
+        },
+        "list": {
+          "x": 116,
+          "y": 21.90625,
+          "width": 544.203125,
+          "height": 456.1875,
+          "top": 21.90625,
+          "right": 660.203125,
+          "bottom": 478.09375,
+          "left": 116
+        },
+        "arrows": [
+          {
+            "box": {
+              "x": 116,
+              "y": 9,
+              "width": 544.203125,
+              "height": 12.90625,
+              "top": 9,
+              "right": 660.203125,
+              "bottom": 21.90625,
+              "left": 116
+            }
+          },
+          {
+            "box": {
+              "x": 116,
+              "y": 478.09375,
+              "width": 544.203125,
+              "height": 12.90625,
+              "top": 478.09375,
+              "right": 660.203125,
+              "bottom": 491,
+              "left": 116
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "panelChecklist.cameraView",
+            "box": {
+              "x": 116,
+              "y": 21.90625,
+              "width": 105.921875,
+              "height": 23,
+              "top": 21.90625,
+              "right": 221.921875,
+              "bottom": 44.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "cameraView",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.drawingView",
+            "box": {
+              "x": 116,
+              "y": 44.90625,
+              "width": 529.203125,
+              "height": 23,
+              "top": 44.90625,
+              "right": 645.203125,
+              "bottom": 67.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "drawingView",
+              "visible": false
+            }
+          },
+          {
+            "id": "panelChecklist.topView",
+            "box": {
+              "x": 116,
+              "y": 67.90625,
+              "width": 82.9375,
+              "height": 23,
+              "top": 67.90625,
+              "right": 198.9375,
+              "bottom": 90.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "topView",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.sideView",
+            "box": {
+              "x": 116,
+              "y": 90.90625,
+              "width": 86.640625,
+              "height": 23,
+              "top": 90.90625,
+              "right": 202.640625,
+              "bottom": 113.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "sideView",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.timeline",
+            "box": {
+              "x": 116,
+              "y": 113.90625,
+              "width": 81.421875,
+              "height": 23,
+              "top": 113.90625,
+              "right": 197.421875,
+              "bottom": 136.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "timeline",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.xsheet",
+            "box": {
+              "x": 116,
+              "y": 136.90625,
+              "width": 119.4375,
+              "height": 23,
+              "top": 136.90625,
+              "right": 235.4375,
+              "bottom": 159.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "xsheet",
+              "visible": false
+            }
+          },
+          {
+            "id": "panelChecklist.functionEditor",
+            "box": {
+              "x": 116,
+              "y": 159.90625,
+              "width": 120.3125,
+              "height": 23,
+              "top": 159.90625,
+              "right": 236.3125,
+              "bottom": 182.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "functionEditor",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.properties",
+            "box": {
+              "x": 116,
+              "y": 182.90625,
+              "width": 91.25,
+              "height": 23,
+              "top": 182.90625,
+              "right": 207.25,
+              "bottom": 205.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "properties",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.colour",
+            "box": {
+              "x": 116,
+              "y": 205.90625,
+              "width": 71.3125,
+              "height": 23,
+              "top": 205.90625,
+              "right": 187.3125,
+              "bottom": 228.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "colour",
+              "visible": false
+            }
+          },
+          {
+            "id": "panelChecklist.pen",
+            "box": {
+              "x": 116,
+              "y": 228.90625,
+              "width": 53.96875,
+              "height": 23,
+              "top": 228.90625,
+              "right": 169.96875,
+              "bottom": 251.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "pen",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.text",
+            "box": {
+              "x": 116,
+              "y": 251.90625,
+              "width": 55.71875,
+              "height": 23,
+              "top": 251.90625,
+              "right": 171.71875,
+              "bottom": 274.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "text",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.cells",
+            "box": {
+              "x": 116,
+              "y": 274.90625,
+              "width": 59.671875,
+              "height": 23,
+              "top": 274.90625,
+              "right": 175.671875,
+              "bottom": 297.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "cells",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.library",
+            "box": {
+              "x": 116,
+              "y": 297.90625,
+              "width": 71.859375,
+              "height": 23,
+              "top": 297.90625,
+              "right": 187.859375,
+              "bottom": 320.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "library",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.storyline",
+            "box": {
+              "x": 116,
+              "y": 320.90625,
+              "width": 82.78125,
+              "height": 23,
+              "top": 320.90625,
+              "right": 198.78125,
+              "bottom": 343.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "storyline",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.sceneManager",
+            "box": {
+              "x": 116,
+              "y": 343.90625,
+              "width": 121.1875,
+              "height": 23,
+              "top": 343.90625,
+              "right": 237.1875,
+              "bottom": 366.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "sceneManager",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.effectPreview",
+            "box": {
+              "x": 116,
+              "y": 366.90625,
+              "width": 113.015625,
+              "height": 23,
+              "top": 366.90625,
+              "right": 229.015625,
+              "bottom": 389.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "effectPreview",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.motionRecording",
+            "box": {
+              "x": 116,
+              "y": 389.90625,
+              "width": 133.65625,
+              "height": 23,
+              "top": 389.90625,
+              "right": 249.65625,
+              "bottom": 412.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "motionRecording",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.lipSync",
+            "box": {
+              "x": 116,
+              "y": 412.90625,
+              "width": 80.28125,
+              "height": 23,
+              "top": 412.90625,
+              "right": 196.28125,
+              "bottom": 435.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "lipSync",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.history",
+            "box": {
+              "x": 116,
+              "y": 435.90625,
+              "width": 73.734375,
+              "height": 23,
+              "top": 435.90625,
+              "right": 189.734375,
+              "bottom": 458.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "history",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.activity",
+            "box": {
+              "x": 116,
+              "y": 458.90625,
+              "width": 75.015625,
+              "height": 23,
+              "top": 458.90625,
+              "right": 191.015625,
+              "bottom": 481.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "activity",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.soundEditor",
+            "box": {
+              "x": 116,
+              "y": 481.90625,
+              "width": 157.671875,
+              "height": 23,
+              "top": 481.90625,
+              "right": 273.671875,
+              "bottom": 504.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "soundEditor",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.capture",
+            "box": {
+              "x": 116,
+              "y": 504.90625,
+              "width": 126.515625,
+              "height": 23,
+              "top": 504.90625,
+              "right": 242.515625,
+              "bottom": 527.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "capture",
+              "visible": true
+            }
+          }
+        ],
+        "area": {
+          "w": 785,
+          "h": 500
+        }
+      }
+    },
+    {
+      "check": "D-66 checklist scroll",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 111,
+          "y": 4,
+          "width": 554.203125,
+          "height": 492,
+          "top": 4,
+          "right": 665.203125,
+          "bottom": 496,
+          "left": 111
+        },
+        "list": {
+          "x": 116,
+          "y": 21.90625,
+          "width": 544.203125,
+          "height": 456.1875,
+          "top": 21.90625,
+          "right": 660.203125,
+          "bottom": 478.09375,
+          "left": 116
+        },
+        "arrows": [
+          {
+            "box": {
+              "x": 116,
+              "y": 9,
+              "width": 544.203125,
+              "height": 12.90625,
+              "top": 9,
+              "right": 660.203125,
+              "bottom": 21.90625,
+              "left": 116
+            }
+          },
+          {
+            "box": {
+              "x": 116,
+              "y": 478.09375,
+              "width": 544.203125,
+              "height": 12.90625,
+              "top": 478.09375,
+              "right": 660.203125,
+              "bottom": 491,
+              "left": 116
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "panelChecklist.cameraView",
+            "box": {
+              "x": 116,
+              "y": -28.09375,
+              "width": 105.921875,
+              "height": 23,
+              "top": -28.09375,
+              "right": 221.921875,
+              "bottom": -5.09375,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "cameraView",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.drawingView",
+            "box": {
+              "x": 116,
+              "y": -5.09375,
+              "width": 529.203125,
+              "height": 23,
+              "top": -5.09375,
+              "right": 645.203125,
+              "bottom": 17.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "drawingView",
+              "visible": false
+            }
+          },
+          {
+            "id": "panelChecklist.topView",
+            "box": {
+              "x": 116,
+              "y": 17.90625,
+              "width": 82.9375,
+              "height": 23,
+              "top": 17.90625,
+              "right": 198.9375,
+              "bottom": 40.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "topView",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.sideView",
+            "box": {
+              "x": 116,
+              "y": 40.90625,
+              "width": 86.640625,
+              "height": 23,
+              "top": 40.90625,
+              "right": 202.640625,
+              "bottom": 63.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "sideView",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.timeline",
+            "box": {
+              "x": 116,
+              "y": 63.90625,
+              "width": 81.421875,
+              "height": 23,
+              "top": 63.90625,
+              "right": 197.421875,
+              "bottom": 86.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "timeline",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.xsheet",
+            "box": {
+              "x": 116,
+              "y": 86.90625,
+              "width": 119.4375,
+              "height": 23,
+              "top": 86.90625,
+              "right": 235.4375,
+              "bottom": 109.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "xsheet",
+              "visible": false
+            }
+          },
+          {
+            "id": "panelChecklist.functionEditor",
+            "box": {
+              "x": 116,
+              "y": 109.90625,
+              "width": 120.3125,
+              "height": 23,
+              "top": 109.90625,
+              "right": 236.3125,
+              "bottom": 132.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "functionEditor",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.properties",
+            "box": {
+              "x": 116,
+              "y": 132.90625,
+              "width": 91.25,
+              "height": 23,
+              "top": 132.90625,
+              "right": 207.25,
+              "bottom": 155.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "properties",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.colour",
+            "box": {
+              "x": 116,
+              "y": 155.90625,
+              "width": 71.3125,
+              "height": 23,
+              "top": 155.90625,
+              "right": 187.3125,
+              "bottom": 178.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "colour",
+              "visible": false
+            }
+          },
+          {
+            "id": "panelChecklist.pen",
+            "box": {
+              "x": 116,
+              "y": 178.90625,
+              "width": 53.96875,
+              "height": 23,
+              "top": 178.90625,
+              "right": 169.96875,
+              "bottom": 201.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "pen",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.text",
+            "box": {
+              "x": 116,
+              "y": 201.90625,
+              "width": 55.71875,
+              "height": 23,
+              "top": 201.90625,
+              "right": 171.71875,
+              "bottom": 224.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "text",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.cells",
+            "box": {
+              "x": 116,
+              "y": 224.90625,
+              "width": 59.671875,
+              "height": 23,
+              "top": 224.90625,
+              "right": 175.671875,
+              "bottom": 247.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "cells",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.library",
+            "box": {
+              "x": 116,
+              "y": 247.90625,
+              "width": 71.859375,
+              "height": 23,
+              "top": 247.90625,
+              "right": 187.859375,
+              "bottom": 270.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "library",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.storyline",
+            "box": {
+              "x": 116,
+              "y": 270.90625,
+              "width": 82.78125,
+              "height": 23,
+              "top": 270.90625,
+              "right": 198.78125,
+              "bottom": 293.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "storyline",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.sceneManager",
+            "box": {
+              "x": 116,
+              "y": 293.90625,
+              "width": 121.1875,
+              "height": 23,
+              "top": 293.90625,
+              "right": 237.1875,
+              "bottom": 316.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "sceneManager",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.effectPreview",
+            "box": {
+              "x": 116,
+              "y": 316.90625,
+              "width": 113.015625,
+              "height": 23,
+              "top": 316.90625,
+              "right": 229.015625,
+              "bottom": 339.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "effectPreview",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.motionRecording",
+            "box": {
+              "x": 116,
+              "y": 339.90625,
+              "width": 133.65625,
+              "height": 23,
+              "top": 339.90625,
+              "right": 249.65625,
+              "bottom": 362.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "motionRecording",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.lipSync",
+            "box": {
+              "x": 116,
+              "y": 362.90625,
+              "width": 80.28125,
+              "height": 23,
+              "top": 362.90625,
+              "right": 196.28125,
+              "bottom": 385.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "lipSync",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.history",
+            "box": {
+              "x": 116,
+              "y": 385.90625,
+              "width": 73.734375,
+              "height": 23,
+              "top": 385.90625,
+              "right": 189.734375,
+              "bottom": 408.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "history",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.activity",
+            "box": {
+              "x": 116,
+              "y": 408.90625,
+              "width": 75.015625,
+              "height": 23,
+              "top": 408.90625,
+              "right": 191.015625,
+              "bottom": 431.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "activity",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.soundEditor",
+            "box": {
+              "x": 116,
+              "y": 431.90625,
+              "width": 157.671875,
+              "height": 23,
+              "top": 431.90625,
+              "right": 273.671875,
+              "bottom": 454.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "soundEditor",
+              "visible": true
+            }
+          },
+          {
+            "id": "panelChecklist.capture",
+            "box": {
+              "x": 116,
+              "y": 454.90625,
+              "width": 126.515625,
+              "height": 23,
+              "top": 454.90625,
+              "right": 242.515625,
+              "bottom": 477.90625,
+              "left": 116
+            },
+            "command": "window.panel.set",
+            "params": {
+              "panelId": "capture",
+              "visible": true
+            }
+          }
+        ],
+        "area": {
+          "w": 785,
+          "h": 500
+        }
+      }
+    },
+    {
+      "check": "D-66 Camera scene menu",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 440,
+          "y": 276,
+          "width": 291.234375,
+          "height": 125,
+          "top": 276,
+          "right": 731.234375,
+          "bottom": 401,
+          "left": 440
+        },
+        "list": {
+          "x": 445,
+          "y": 281,
+          "width": 281.234375,
+          "height": 115,
+          "top": 281,
+          "right": 726.234375,
+          "bottom": 396,
+          "left": 445
+        },
+        "arrows": [],
+        "items": [
+          {
+            "id": "cameraView.sceneMenu.cut",
+            "box": {
+              "x": 445,
+              "y": 281,
+              "width": 271.4375,
+              "height": 23,
+              "top": 281,
+              "right": 716.4375,
+              "bottom": 304,
+              "left": 445
+            },
+            "command": "edit.cut",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.copy",
+            "box": {
+              "x": 445,
+              "y": 304,
+              "width": 281.234375,
+              "height": 23,
+              "top": 304,
+              "right": 726.234375,
+              "bottom": 327,
+              "left": 445
+            },
+            "command": "edit.copy",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.paste",
+            "box": {
+              "x": 445,
+              "y": 327,
+              "width": 190.171875,
+              "height": 23,
+              "top": 327,
+              "right": 635.171875,
+              "bottom": 350,
+              "left": 445
+            },
+            "command": "edit.paste",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.selectAll",
+            "box": {
+              "x": 445,
+              "y": 350,
+              "width": 85.3125,
+              "height": 23,
+              "top": 350,
+              "right": 530.3125,
+              "bottom": 373,
+              "left": 445
+            },
+            "command": "edit.selectAll",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.deselectAll",
+            "box": {
+              "x": 445,
+              "y": 373,
+              "width": 99.828125,
+              "height": 23,
+              "top": 373,
+              "right": 544.828125,
+              "bottom": 396,
+              "left": 445
+            },
+            "command": "edit.deselectAll",
+            "params": {
+              "context": "staging"
+            }
+          }
+        ],
+        "area": {
+          "w": 785,
+          "h": 500
+        }
+      }
+    },
+    {
+      "check": "D-66 resize open",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 388,
+          "y": 4,
+          "width": 334.578125,
+          "height": 492,
+          "top": 4,
+          "right": 722.578125,
+          "bottom": 496,
+          "left": 388
+        },
+        "list": {
+          "x": 393,
+          "y": 21.90625,
+          "width": 324.578125,
+          "height": 456.1875,
+          "top": 21.90625,
+          "right": 717.578125,
+          "bottom": 478.09375,
+          "left": 393
+        },
+        "arrows": [
+          {
+            "box": {
+              "x": 393,
+              "y": 9,
+              "width": 324.578125,
+              "height": 12.90625,
+              "top": 9,
+              "right": 717.578125,
+              "bottom": 21.90625,
+              "left": 393
+            }
+          },
+          {
+            "box": {
+              "x": 393,
+              "y": 478.09375,
+              "width": 324.578125,
+              "height": 12.90625,
+              "top": 478.09375,
+              "right": 717.578125,
+              "bottom": 491,
+              "left": 393
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "drawingView.drawingMenu.cut",
+            "box": {
+              "x": 393,
+              "y": 21.90625,
+              "width": 274.828125,
+              "height": 23,
+              "top": 21.90625,
+              "right": 667.828125,
+              "bottom": 44.90625,
+              "left": 393
+            },
+            "command": "edit.cut",
+            "params": {
+              "context": "drawing"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.copy",
+            "box": {
+              "x": 393,
+              "y": 44.90625,
+              "width": 284.625,
+              "height": 23,
+              "top": 44.90625,
+              "right": 677.625,
+              "bottom": 67.90625,
+              "left": 393
+            },
+            "command": "edit.copy",
+            "params": {
+              "context": "drawing"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.paste",
+            "box": {
+              "x": 393,
+              "y": 67.90625,
+              "width": 190.171875,
+              "height": 23,
+              "top": 67.90625,
+              "right": 583.171875,
+              "bottom": 90.90625,
+              "left": 393
+            },
+            "command": "edit.paste",
+            "params": {
+              "context": "drawing"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.selectAll",
+            "box": {
+              "x": 393,
+              "y": 90.90625,
+              "width": 85.3125,
+              "height": 23,
+              "top": 90.90625,
+              "right": 478.3125,
+              "bottom": 113.90625,
+              "left": 393
+            },
+            "command": "edit.selectAll",
+            "params": {
+              "context": "drawing"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.deselectAll",
+            "box": {
+              "x": 393,
+              "y": 113.90625,
+              "width": 99.828125,
+              "height": 23,
+              "top": 113.90625,
+              "right": 492.828125,
+              "bottom": 136.90625,
+              "left": 393
+            },
+            "command": "edit.deselectAll",
+            "params": {
+              "context": "drawing"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.arrange.front",
+            "box": {
+              "x": 393,
+              "y": 165.90625,
+              "width": 261.25,
+              "height": 23,
+              "top": 165.90625,
+              "right": 654.25,
+              "bottom": 188.90625,
+              "left": 393
+            },
+            "command": "draw.arrange.apply",
+            "params": {
+              "to": "front"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.arrange.forward",
+            "box": {
+              "x": 393,
+              "y": 188.90625,
+              "width": 262.09375,
+              "height": 23,
+              "top": 188.90625,
+              "right": 655.09375,
+              "bottom": 211.90625,
+              "left": 393
+            },
+            "command": "draw.arrange.apply",
+            "params": {
+              "to": "forward"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.arrange.backward",
+            "box": {
+              "x": 393,
+              "y": 211.90625,
+              "width": 268.71875,
+              "height": 23,
+              "top": 211.90625,
+              "right": 661.71875,
+              "bottom": 234.90625,
+              "left": 393
+            },
+            "command": "draw.arrange.apply",
+            "params": {
+              "to": "backward"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.arrange.back",
+            "box": {
+              "x": 393,
+              "y": 234.90625,
+              "width": 256.125,
+              "height": 23,
+              "top": 234.90625,
+              "right": 649.125,
+              "bottom": 257.90625,
+              "left": 393
+            },
+            "command": "draw.arrange.apply",
+            "params": {
+              "to": "back"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.flip.horizontal",
+            "box": {
+              "x": 393,
+              "y": 286.90625,
+              "width": 242.953125,
+              "height": 23,
+              "top": 286.90625,
+              "right": 635.953125,
+              "bottom": 309.90625,
+              "left": 393
+            },
+            "command": "draw.flip.apply",
+            "params": {
+              "axis": "horizontal"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.flip.vertical",
+            "box": {
+              "x": 393,
+              "y": 309.90625,
+              "width": 225.3125,
+              "height": 23,
+              "top": 309.90625,
+              "right": 618.3125,
+              "bottom": 332.90625,
+              "left": 393
+            },
+            "command": "draw.flip.apply",
+            "params": {
+              "axis": "vertical"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.rotate.90cw",
+            "box": {
+              "x": 393,
+              "y": 332.90625,
+              "width": 256.9375,
+              "height": 23,
+              "top": 332.90625,
+              "right": 649.9375,
+              "bottom": 355.90625,
+              "left": 393
+            },
+            "command": "draw.rotate.apply",
+            "params": {
+              "by": "90cw"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.rotate.90ccw",
+            "box": {
+              "x": 393,
+              "y": 355.90625,
+              "width": 264.640625,
+              "height": 23,
+              "top": 355.90625,
+              "right": 657.640625,
+              "bottom": 378.90625,
+              "left": 393
+            },
+            "command": "draw.rotate.apply",
+            "params": {
+              "by": "90ccw"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.rotate.180",
+            "box": {
+              "x": 393,
+              "y": 378.90625,
+              "width": 240.203125,
+              "height": 23,
+              "top": 378.90625,
+              "right": 633.203125,
+              "bottom": 401.90625,
+              "left": 393
+            },
+            "command": "draw.rotate.apply",
+            "params": {
+              "by": "180"
+            }
+          },
+          {
+            "id": "drawingView.drawingMenu.group",
+            "box": {
+              "x": 393,
+              "y": 410.90625,
+              "width": 209.890625,
+              "height": 23,
+              "top": 410.90625,
+              "right": 602.890625,
+              "bottom": 433.90625,
+              "left": 393
+            },
+            "command": "draw.group.create",
+            "params": {}
+          },
+          {
+            "id": "drawingView.drawingMenu.ungroup",
+            "box": {
+              "x": 393,
+              "y": 433.90625,
+              "width": 237.4375,
+              "height": 23,
+              "top": 433.90625,
+              "right": 630.4375,
+              "bottom": 456.90625,
+              "left": 393
+            },
+            "command": "draw.group.delete",
+            "params": {}
+          },
+          {
+            "id": "drawingView.drawingMenu.flatten",
+            "box": {
+              "x": 393,
+              "y": 465.90625,
+              "width": 214.609375,
+              "height": 23,
+              "top": 465.90625,
+              "right": 607.609375,
+              "bottom": 488.90625,
+              "left": 393
+            },
+            "command": "draw.flatten.apply",
+            "params": {}
+          },
+          {
+            "id": "drawingView.drawingMenu.optimize",
+            "box": {
+              "x": 393,
+              "y": 488.90625,
+              "width": 238.65625,
+              "height": 23,
+              "top": 488.90625,
+              "right": 631.65625,
+              "bottom": 511.90625,
+              "left": 393
+            },
+            "command": "draw.optimize.apply",
+            "params": {}
+          },
+          {
+            "id": "drawingView.drawingMenu.smooth",
+            "box": {
+              "x": 393,
+              "y": 511.90625,
+              "width": 226.515625,
+              "height": 23,
+              "top": 511.90625,
+              "right": 619.515625,
+              "bottom": 534.90625,
+              "left": 393
+            },
+            "command": "draw.smooth.apply",
+            "params": {}
+          },
+          {
+            "id": "drawingView.drawingMenu.centreLine",
+            "box": {
+              "x": 393,
+              "y": 534.90625,
+              "width": 284.140625,
+              "height": 23,
+              "top": 534.90625,
+              "right": 677.140625,
+              "bottom": 557.90625,
+              "left": 393
+            },
+            "command": "draw.centreLine.apply",
+            "params": {}
+          },
+          {
+            "id": "drawingView.drawingMenu.linesToBrush",
+            "box": {
+              "x": 393,
+              "y": 557.90625,
+              "width": 309.578125,
+              "height": 23,
+              "top": 557.90625,
+              "right": 702.578125,
+              "bottom": 580.90625,
+              "left": 393
+            },
+            "command": "draw.linesToBrush.apply",
+            "params": {}
+          },
+          {
+            "id": "drawingView.drawingMenu.breakApart",
+            "box": {
+              "x": 393,
+              "y": 589.90625,
+              "width": 293.09375,
+              "height": 23,
+              "top": 589.90625,
+              "right": 686.09375,
+              "bottom": 612.90625,
+              "left": 393
+            },
+            "command": "draw.breakApart.apply",
+            "params": {}
+          }
+        ],
+        "area": {
+          "w": 785,
+          "h": 500
+        }
+      }
+    },
+    {
+      "check": "D-66 float (640, 480)",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 320,
+          "y": 273,
+          "width": 291.234375,
+          "height": 125,
+          "top": 273,
+          "right": 611.234375,
+          "bottom": 398,
+          "left": 320
+        },
+        "list": {
+          "x": 325,
+          "y": 278,
+          "width": 281.234375,
+          "height": 115,
+          "top": 278,
+          "right": 606.234375,
+          "bottom": 393,
+          "left": 325
+        },
+        "arrows": [],
+        "items": [
+          {
+            "id": "cameraView.sceneMenu.cut",
+            "box": {
+              "x": 325,
+              "y": 278,
+              "width": 271.4375,
+              "height": 23,
+              "top": 278,
+              "right": 596.4375,
+              "bottom": 301,
+              "left": 325
+            },
+            "command": "edit.cut",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.copy",
+            "box": {
+              "x": 325,
+              "y": 301,
+              "width": 281.234375,
+              "height": 23,
+              "top": 301,
+              "right": 606.234375,
+              "bottom": 324,
+              "left": 325
+            },
+            "command": "edit.copy",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.paste",
+            "box": {
+              "x": 325,
+              "y": 324,
+              "width": 190.171875,
+              "height": 23,
+              "top": 324,
+              "right": 515.171875,
+              "bottom": 347,
+              "left": 325
+            },
+            "command": "edit.paste",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.selectAll",
+            "box": {
+              "x": 325,
+              "y": 347,
+              "width": 85.3125,
+              "height": 23,
+              "top": 347,
+              "right": 410.3125,
+              "bottom": 370,
+              "left": 325
+            },
+            "command": "edit.selectAll",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.deselectAll",
+            "box": {
+              "x": 325,
+              "y": 370,
+              "width": 99.828125,
+              "height": 23,
+              "top": 370,
+              "right": 424.828125,
+              "bottom": 393,
+              "left": 325
+            },
+            "command": "edit.deselectAll",
+            "params": {
+              "context": "staging"
+            }
+          }
+        ],
+        "area": {
+          "w": 640,
+          "h": 480
+        }
+      }
+    },
+    {
+      "check": "D-66 float wheel (640, 480)",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 320,
+          "y": 273,
+          "width": 291.234375,
+          "height": 125,
+          "top": 273,
+          "right": 611.234375,
+          "bottom": 398,
+          "left": 320
+        },
+        "list": {
+          "x": 325,
+          "y": 278,
+          "width": 281.234375,
+          "height": 115,
+          "top": 278,
+          "right": 606.234375,
+          "bottom": 393,
+          "left": 325
+        },
+        "arrows": [],
+        "items": [
+          {
+            "id": "cameraView.sceneMenu.cut",
+            "box": {
+              "x": 325,
+              "y": 278,
+              "width": 271.4375,
+              "height": 23,
+              "top": 278,
+              "right": 596.4375,
+              "bottom": 301,
+              "left": 325
+            },
+            "command": "edit.cut",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.copy",
+            "box": {
+              "x": 325,
+              "y": 301,
+              "width": 281.234375,
+              "height": 23,
+              "top": 301,
+              "right": 606.234375,
+              "bottom": 324,
+              "left": 325
+            },
+            "command": "edit.copy",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.paste",
+            "box": {
+              "x": 325,
+              "y": 324,
+              "width": 190.171875,
+              "height": 23,
+              "top": 324,
+              "right": 515.171875,
+              "bottom": 347,
+              "left": 325
+            },
+            "command": "edit.paste",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.selectAll",
+            "box": {
+              "x": 325,
+              "y": 347,
+              "width": 85.3125,
+              "height": 23,
+              "top": 347,
+              "right": 410.3125,
+              "bottom": 370,
+              "left": 325
+            },
+            "command": "edit.selectAll",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.deselectAll",
+            "box": {
+              "x": 325,
+              "y": 370,
+              "width": 99.828125,
+              "height": 23,
+              "top": 370,
+              "right": 424.828125,
+              "bottom": 393,
+              "left": 325
+            },
+            "command": "edit.deselectAll",
+            "params": {
+              "context": "staging"
+            }
+          }
+        ],
+        "area": {
+          "w": 640,
+          "h": 480
+        }
+      }
+    },
+    {
+      "check": "D-66 float hover (640, 480)",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 320,
+          "y": 273,
+          "width": 291.234375,
+          "height": 125,
+          "top": 273,
+          "right": 611.234375,
+          "bottom": 398,
+          "left": 320
+        },
+        "list": {
+          "x": 325,
+          "y": 278,
+          "width": 281.234375,
+          "height": 115,
+          "top": 278,
+          "right": 606.234375,
+          "bottom": 393,
+          "left": 325
+        },
+        "arrows": [],
+        "items": [
+          {
+            "id": "cameraView.sceneMenu.cut",
+            "box": {
+              "x": 325,
+              "y": 278,
+              "width": 271.4375,
+              "height": 23,
+              "top": 278,
+              "right": 596.4375,
+              "bottom": 301,
+              "left": 325
+            },
+            "command": "edit.cut",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.copy",
+            "box": {
+              "x": 325,
+              "y": 301,
+              "width": 281.234375,
+              "height": 23,
+              "top": 301,
+              "right": 606.234375,
+              "bottom": 324,
+              "left": 325
+            },
+            "command": "edit.copy",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.paste",
+            "box": {
+              "x": 325,
+              "y": 324,
+              "width": 190.171875,
+              "height": 23,
+              "top": 324,
+              "right": 515.171875,
+              "bottom": 347,
+              "left": 325
+            },
+            "command": "edit.paste",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.selectAll",
+            "box": {
+              "x": 325,
+              "y": 347,
+              "width": 85.3125,
+              "height": 23,
+              "top": 347,
+              "right": 410.3125,
+              "bottom": 370,
+              "left": 325
+            },
+            "command": "edit.selectAll",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.deselectAll",
+            "box": {
+              "x": 325,
+              "y": 370,
+              "width": 99.828125,
+              "height": 23,
+              "top": 370,
+              "right": 424.828125,
+              "bottom": 393,
+              "left": 325
+            },
+            "command": "edit.deselectAll",
+            "params": {
+              "context": "staging"
+            }
+          }
+        ],
+        "area": {
+          "w": 640,
+          "h": 480
+        }
+      }
+    },
+    {
+      "check": "D-66 float (160, 120)",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 4,
+          "y": 4,
+          "width": 152,
+          "height": 112,
+          "top": 4,
+          "right": 156,
+          "bottom": 116,
+          "left": 4
+        },
+        "list": {
+          "x": 9,
+          "y": 21.90625,
+          "width": 142,
+          "height": 76.1875,
+          "top": 21.90625,
+          "right": 151,
+          "bottom": 98.09375,
+          "left": 9
+        },
+        "arrows": [
+          {
+            "box": {
+              "x": 9,
+              "y": 9,
+              "width": 142,
+              "height": 12.90625,
+              "top": 9,
+              "right": 151,
+              "bottom": 21.90625,
+              "left": 9
+            }
+          },
+          {
+            "box": {
+              "x": 9,
+              "y": 98.09375,
+              "width": 142,
+              "height": 12.90625,
+              "top": 98.09375,
+              "right": 151,
+              "bottom": 111,
+              "left": 9
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "cameraView.sceneMenu.cut",
+            "box": {
+              "x": 9,
+              "y": 21.90625,
+              "width": 127,
+              "height": 68,
+              "top": 21.90625,
+              "right": 136,
+              "bottom": 89.90625,
+              "left": 9
+            },
+            "command": "edit.cut",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.copy",
+            "box": {
+              "x": 9,
+              "y": 89.90625,
+              "width": 127,
+              "height": 68,
+              "top": 89.90625,
+              "right": 136,
+              "bottom": 157.90625,
+              "left": 9
+            },
+            "command": "edit.copy",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.paste",
+            "box": {
+              "x": 9,
+              "y": 157.90625,
+              "width": 127.0625,
+              "height": 53,
+              "top": 157.90625,
+              "right": 136.0625,
+              "bottom": 210.90625,
+              "left": 9
+            },
+            "command": "edit.paste",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.selectAll",
+            "box": {
+              "x": 9,
+              "y": 210.90625,
+              "width": 85.3125,
+              "height": 23,
+              "top": 210.90625,
+              "right": 94.3125,
+              "bottom": 233.90625,
+              "left": 9
+            },
+            "command": "edit.selectAll",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.deselectAll",
+            "box": {
+              "x": 9,
+              "y": 233.90625,
+              "width": 99.828125,
+              "height": 23,
+              "top": 233.90625,
+              "right": 108.828125,
+              "bottom": 256.90625,
+              "left": 9
+            },
+            "command": "edit.deselectAll",
+            "params": {
+              "context": "staging"
+            }
+          }
+        ],
+        "area": {
+          "w": 160,
+          "h": 120
+        }
+      }
+    },
+    {
+      "check": "D-66 float wheel (160, 120)",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 4,
+          "y": 4,
+          "width": 152,
+          "height": 112,
+          "top": 4,
+          "right": 156,
+          "bottom": 116,
+          "left": 4
+        },
+        "list": {
+          "x": 9,
+          "y": 21.90625,
+          "width": 142,
+          "height": 76.1875,
+          "top": 21.90625,
+          "right": 151,
+          "bottom": 98.09375,
+          "left": 9
+        },
+        "arrows": [
+          {
+            "box": {
+              "x": 9,
+              "y": 9,
+              "width": 142,
+              "height": 12.90625,
+              "top": 9,
+              "right": 151,
+              "bottom": 21.90625,
+              "left": 9
+            }
+          },
+          {
+            "box": {
+              "x": 9,
+              "y": 98.09375,
+              "width": 142,
+              "height": 12.90625,
+              "top": 98.09375,
+              "right": 151,
+              "bottom": 111,
+              "left": 9
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "cameraView.sceneMenu.cut",
+            "box": {
+              "x": 9,
+              "y": -137.09375,
+              "width": 127,
+              "height": 68,
+              "top": -137.09375,
+              "right": 136,
+              "bottom": -69.09375,
+              "left": 9
+            },
+            "command": "edit.cut",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.copy",
+            "box": {
+              "x": 9,
+              "y": -69.09375,
+              "width": 127,
+              "height": 68,
+              "top": -69.09375,
+              "right": 136,
+              "bottom": -1.09375,
+              "left": 9
+            },
+            "command": "edit.copy",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.paste",
+            "box": {
+              "x": 9,
+              "y": -1.09375,
+              "width": 127.0625,
+              "height": 53,
+              "top": -1.09375,
+              "right": 136.0625,
+              "bottom": 51.90625,
+              "left": 9
+            },
+            "command": "edit.paste",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.selectAll",
+            "box": {
+              "x": 9,
+              "y": 51.90625,
+              "width": 85.3125,
+              "height": 23,
+              "top": 51.90625,
+              "right": 94.3125,
+              "bottom": 74.90625,
+              "left": 9
+            },
+            "command": "edit.selectAll",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.deselectAll",
+            "box": {
+              "x": 9,
+              "y": 74.90625,
+              "width": 99.828125,
+              "height": 23,
+              "top": 74.90625,
+              "right": 108.828125,
+              "bottom": 97.90625,
+              "left": 9
+            },
+            "command": "edit.deselectAll",
+            "params": {
+              "context": "staging"
+            }
+          }
+        ],
+        "area": {
+          "w": 160,
+          "h": 120
+        }
+      }
+    },
+    {
+      "check": "D-66 float hover (160, 120)",
+      "ok": true,
+      "detail": {
+        "menu": {
+          "x": 4,
+          "y": 4,
+          "width": 152,
+          "height": 112,
+          "top": 4,
+          "right": 156,
+          "bottom": 116,
+          "left": 4
+        },
+        "list": {
+          "x": 9,
+          "y": 21.90625,
+          "width": 142,
+          "height": 76.1875,
+          "top": 21.90625,
+          "right": 151,
+          "bottom": 98.09375,
+          "left": 9
+        },
+        "arrows": [
+          {
+            "box": {
+              "x": 9,
+              "y": 9,
+              "width": 142,
+              "height": 12.90625,
+              "top": 9,
+              "right": 151,
+              "bottom": 21.90625,
+              "left": 9
+            }
+          },
+          {
+            "box": {
+              "x": 9,
+              "y": 98.09375,
+              "width": 142,
+              "height": 12.90625,
+              "top": 98.09375,
+              "right": 151,
+              "bottom": 111,
+              "left": 9
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "cameraView.sceneMenu.cut",
+            "box": {
+              "x": 9,
+              "y": -137.09375,
+              "width": 127,
+              "height": 68,
+              "top": -137.09375,
+              "right": 136,
+              "bottom": -69.09375,
+              "left": 9
+            },
+            "command": "edit.cut",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.copy",
+            "box": {
+              "x": 9,
+              "y": -69.09375,
+              "width": 127,
+              "height": 68,
+              "top": -69.09375,
+              "right": 136,
+              "bottom": -1.09375,
+              "left": 9
+            },
+            "command": "edit.copy",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.paste",
+            "box": {
+              "x": 9,
+              "y": -1.09375,
+              "width": 127.0625,
+              "height": 53,
+              "top": -1.09375,
+              "right": 136.0625,
+              "bottom": 51.90625,
+              "left": 9
+            },
+            "command": "edit.paste",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.selectAll",
+            "box": {
+              "x": 9,
+              "y": 51.90625,
+              "width": 85.3125,
+              "height": 23,
+              "top": 51.90625,
+              "right": 94.3125,
+              "bottom": 74.90625,
+              "left": 9
+            },
+            "command": "edit.selectAll",
+            "params": {
+              "context": "staging"
+            }
+          },
+          {
+            "id": "cameraView.sceneMenu.deselectAll",
+            "box": {
+              "x": 9,
+              "y": 74.90625,
+              "width": 99.828125,
+              "height": 23,
+              "top": 74.90625,
+              "right": 108.828125,
+              "bottom": 97.90625,
+              "left": 9
+            },
+            "command": "edit.deselectAll",
+            "params": {
+              "context": "staging"
+            }
+          }
+        ],
+        "area": {
+          "w": 160,
+          "h": 120
+        }
+      }
+    },
+    {
+      "check": "D-66 other menu bounds mainToolbar",
+      "ok": true,
+      "detail": {
+        "surface": "mainToolbar",
+        "customMenu": null,
+        "popups": [
+          {
+            "x": 416,
+            "y": 88,
+            "right": 686,
+            "bottom": 304,
+            "classicMenuClass": false
+          }
+        ],
+        "client": {
+          "x": 38,
+          "y": 81,
+          "right": 838,
+          "bottom": 581
+        }
+      }
+    },
+    {
+      "check": "D-66 other menu bounds pen.row.pen_01M7WK9XK6D2M3T8NY6EA424JF",
+      "ok": true,
+      "detail": {
+        "surface": "pen.row.pen_01M7WK9XK6D2M3T8NY6EA424JF",
+        "customMenu": null,
+        "popups": [
+          {
+            "x": 543,
+            "y": 326,
+            "right": 813,
+            "bottom": 542,
+            "classicMenuClass": false
+          }
+        ],
+        "client": {
+          "x": 38,
+          "y": 81,
+          "right": 838,
+          "bottom": 581
+        }
+      }
+    },
+    {
+      "check": "D-66 other menu bounds text.font",
+      "ok": false,
+      "detail": {
+        "surface": "text.font",
+        "customMenu": null,
+        "popups": [
+          {
+            "x": 587,
+            "y": 326,
+            "right": 890,
+            "bottom": 726,
+            "classicMenuClass": false
+          }
+        ],
+        "client": {
+          "x": 38,
+          "y": 81,
+          "right": 838,
+          "bottom": 581
+        }
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-t_80_od8"
+}

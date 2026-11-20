@@ -1,0 +1,24 @@
+{
+  "fourWaitsPending": true,
+  "waitAnswers": [
+    "pending",
+    "pending",
+    "pending",
+    "pending"
+  ],
+  "confirmable": {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": null,
+    "error": {
+      "code": "limit.exceeded",
+      "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+      "details": {
+        "limit": "concurrentJobWaits",
+        "value": 4
+      },
+      "hint": "wait for an earlier held call or job to end, then call again"
+    }
+  }
+}
