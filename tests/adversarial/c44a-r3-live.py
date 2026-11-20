@@ -138,6 +138,34 @@ async def body(t,step):
    t.run.check(not leaks(tree),'D-62 complete inspect_ui prefix-free');t.run.check(not leaks(activity) and export.exists() and not leaks(export.read_text()),'D-62 activity/export prefix-free')
    t.run.check(not any(leaks(f.read_text(errors='replace')) for f in files),'D-62 logs prefix-free',{'files':len(files)})
    for i in range(20):await show(False);await capture(label='error prefix audit')
+  elif step==8:
+   totals={}
+   def fastclick(ident):
+    r=t.rect(ident);o=wintypes.POINT();d.u32.ClientToScreen(d.front(),ctypes.byref(o));scale=t.cdp.js('devicePixelRatio');d.u32.SetCursorPos(int(o.x+r['x']*scale),int(o.y+r['y']*scale));d._send_mouse(0x0002);d._send_mouse(0x0004)
+   for trigger in ('category','ok','cancel','escape'):
+    counts.update(masked=0,refused=0,revealed=0,other=0)
+    for i in range(40):
+     await show();rect=r2.dom(t,'agentAccess.token','e.getBoundingClientRect().toJSON()')
+     if trigger=='category':fastclick('preferences.category.general')
+     elif trigger=='ok':fastclick('preferences.submit')
+     elif trigger=='cancel':fastclick('preferences.cancel')
+     else:d.u32.keybd_event(0x1B,0,0,0);d.u32.keybd_event(0x1B,0,2,0)
+     actionAt=time.perf_counter();await asyncio.sleep((i%17)/1000)
+     # Even when the DOM no longer contains the field, audit its just-measured old pixels.
+     requestedDelayMs=(time.perf_counter()-actionAt)*1000
+     a=await call(q,'inspect.screenshot',{'target':'window'});data=png(a)
+     if data:
+      field=crop(Image.open(io.BytesIO(base64.b64decode(data))),rect).tobytes()
+      kind='revealed' if field==revealed else 'masked'
+     else:kind='refused' if a.get('error',{}).get('code')=='render.failed' and a.get('error',{}).get('details',{}).get('reason')=='tokenShown' else 'other'
+     counts[kind]+=1;t.run.check(kind in ('masked','refused'),'D-65 leave '+trigger+' '+str(i),{'kind':kind,'requestedDelayMs':round(requestedDelayMs,2)})
+     if trigger=='category':t.click('preferences.category.agent');await r2.pause()
+    totals[trigger]=dict(counts)
+   await show()
+   reloads=[]
+   for vk,mods in ((0x74,()),(0x52,(0x11,))):
+    before=t.cdp.js('performance.timeOrigin');d.key(vk,*mods);await r2.pause();after=t.cdp.js('performance.timeOrigin');reloads.append({'key':vk,'reloaded':before!=after})
+   t.run.save('leave-token-summary.json',{'schedules':totals,'reloadKeys':reloads})
   if step==6:t.run.check(not any(leaks(client.received) for client in clients),'D-62 received events prefix-free',{'objects':sum(len(client.received) for client in clients)})
   t.run.save('schedule-summary.json',{'counts':counts,'personAfter':person})
  finally:
@@ -146,6 +174,173 @@ async def body(t,step):
   for client in clients:await asyncio.to_thread(client.close)
   for task in tasks:
    if not task.done():task.cancel()
+async def menu_extra(t,step):
+ d=r1.d;c=t.cmd;t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+ from ctypes import wintypes
+ await r1.r3.modal_fixture(t,'Round 3 menus')
+ def resize(w,h):
+  handle=d.front();a=wintypes.RECT();b=wintypes.RECT();d.u32.GetWindowRect(handle,ctypes.byref(a));d.u32.GetClientRect(handle,ctypes.byref(b));scale=t.cdp.js('devicePixelRatio');d.u32.MoveWindow(handle,30,30,int(w*scale)+a.right-a.left-b.right,int(h*scale)+a.bottom-a.top-b.bottom,True)
+ def screen(x,y):
+  o=wintypes.POINT();d.u32.ClientToScreen(d.front(),ctypes.byref(o));scale=t.cdp.js('devicePixelRatio');return o.x+x*scale,o.y+y*scale
+ def geo():return t.cdp.js("""(()=>{const m=document.querySelector('.context-menu');if(!m)return null;const box=e=>e.getBoundingClientRect().toJSON();return {menu:box(m),list:box(m.querySelector('.context-menu-items')),arrows:[...m.querySelectorAll('.context-menu-arrow')].map(e=>({box:box(e)})),items:[...m.querySelectorAll('[role^=menuitem]')].map(e=>({id:e.dataset.ttId,box:box(e),command:e.dataset.ttCommand,params:JSON.parse(e.dataset.ttParams||'{}')})),area:{w:document.documentElement.clientWidth,h:document.documentElement.clientHeight}}})()""")
+ async def openmenu(ident):
+  d.key(0x1B);r=t.rect(ident);d.right_click_screen(*screen(r['x'],r['y']));await r2.pause();return geo()
+ def inside(g):
+  return g and g.get('menu') and all(r['x']>=0 and r['y']>=0 and r['right']<=g['area']['w'] and r['bottom']<=g['area']['h'] for r in [g['menu']]+[x['box'] for x in g['arrows']])
+ resize(800,500);await r2.pause()
+ for view in ('drawingView','cameraView') if step==5 else ('drawingView',):
+  await c('window.panel.set',{'panelId':view,'visible':True});await c('view.active.set',{'viewId':view});await r2.pause()
+  for method in ('click','hover','wheel','down','end'):
+   await c('tool.active.set',{'toolId':'brush'});await c('draw.text.add',{'position':{'x':0,'y':0},'text':'Review'});await c('edit.selectAll');await r2.pause()
+   g=await openmenu(view+'.canvas');t.run.check(bool(inside(g)),'D-66 outer/arrows '+view+' '+method,g)
+   if not g:continue
+   top=g
+   if g['arrows']:
+    arrow=g['arrows'][-1]['box'];x,y=screen(arrow['x']+arrow['width']/2,arrow['y']+arrow['height']/2)
+    if method=='click':
+     for _ in range(12):d.click_screen(x,y)
+    elif method=='hover':d.u32.SetCursorPos(int(x),int(y));await asyncio.sleep(3)
+    elif method=='wheel':
+     b=g['list'];d.wheel_screen(*screen(b['x']+b['width']/2,b['y']+b['height']/2),20)
+   if method=='down':
+    for _ in range(len(g['items'])+2):d.key(0x28)
+   elif method=='end':d.key(0x23)
+   await r2.pause();g=geo();last=g['items'][-1];b=last['box'];l=g['list'];visible=b['y']>=l['y'] and b['bottom']<=l['bottom']
+   t.run.save(view+'-'+method+'.json',{'top':top,'bottom':g})
+   t.run.check(visible,'D-66 last visible '+view+' '+method)
+   t.clear()
+   if method in ('down','end'):d.key(0x0D)
+   else:d.click_screen(*screen(b['x']+b['width']/2,b['y']+b['height']/2))
+   await r2.pause();commands=r2.sent(t)
+   t.run.check(sum(x['command']==last['command'] and x.get('params',{})==last['params'] for x in commands)==1,'D-66 declared command once '+view+' '+method,{'declared':last,'commands':commands})
+   await t.settle_dialogs()
+  for vk,mods in ((0x79,(0x10,)),(0x5D,())):
+   t.click(view+'.canvas');d.key(vk,*mods);await r2.pause();t.run.check(bool(geo()),'D-66 keyboard menu '+view+' '+str(vk));d.key(0x1B)
+ if step==6:
+  g=await openmenu('tab.drawingView');t.run.check(bool(inside(g)),'D-66 dock checklist',g);d.key(0x1B)
+  resize(1280,800);await openmenu('drawingView.canvas');resize(800,500);await r2.pause();g=geo();t.run.check(bool(inside(g)),'D-66 resize open',g)
+  d.key(0x1B);main=d.window_handle();original=d.window_handle;maincdp=t.cdp
+  await c('window.panel.set',{'panelId':'drawingView','visible':True,'floating':True});await r2.pause()
+  handles=[]
+  callback=ctypes.WINFUNCTYPE(wintypes.BOOL,wintypes.HWND,wintypes.LPARAM)
+  def visit(h,_):
+   pid=wintypes.DWORD();d.u32.GetWindowThreadProcessId(h,ctypes.byref(pid))
+   if pid.value==d.e2e.APP_PID['pid'] and h!=main and d.u32.IsWindowVisible(h):handles.append(h)
+   return True
+  d.u32.EnumWindows(callback(visit),0);assert handles,'no floating window'
+  init=textwrap.dedent(inspect.getsource(d.Cdp.__init__)).replace('"float" in (p.get("url") or "")','"float" not in (p.get("url") or "")')
+  lines=init.splitlines()
+  for i,line in enumerate(lines):
+   if 'if self.js(' in line:lines[i]="        if self.js('!!document.querySelector(\"canvas\")'):"
+  namespace={};exec('\n'.join(lines),d.__dict__,namespace)
+  FloatCdp=type('FloatCdp',(d.Cdp,),{'__init__':namespace['__init__']})
+  try:
+   d.window_handle=lambda:handles[0];d.front();t.cdp=FloatCdp(d.CDP_PORT);t.cdp.record()
+   for size in ((640,480),(160,120)):
+    resize(*size);await r2.pause();g=await openmenu('drawingView.canvas');t.run.check(bool(inside(g)),'D-66 float '+str(size),g)
+    if g:
+     d.key(0x23);await r2.pause();t.run.save('float-'+str(size[0])+'.json',geo());d.key(0x1B)
+  finally:
+   t.cdp=maincdp;d.window_handle=original;d.front()
+
+
+async def fields(t,step):
+ d=r1.d;c=t.cmd;t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+ await r1.r3.modal_fixture(t,'Round 3 text keys')
+ await c('project.saveAs',{'path':str(t.work/'base.animpkg')})
+ await c('draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':10,'y':10}})
+ await c('edit.selectAll')
+ async def openfield(kind):
+  d.key(0x1B);await asyncio.sleep(.2)
+  if kind in ('pen','rename','font'):
+   await c('window.panel.set',{'panelId':'text' if kind=='font' else 'pen','visible':True});await r2.pause()
+   if kind=='rename':
+    row=t.cdp.js('[...document.querySelectorAll("[data-tt-id]")].find(e=>e.dataset.ttId.startsWith("pen.row."))?.dataset.ttId')
+    assert row, 'pen row absent'
+    t.click(row);d.key(0x71);await r2.pause();return 'pen.rename'
+   if kind=='font':return t.cdp.js('[...document.querySelectorAll(".text-panel input")].find(e=>e.inputMode!=="decimal")?.dataset.ttId')
+   return 'pen.maxSize.field'
+  if kind in ('search','pref','keymap'):
+   d.choose_menu(['File','Preferences']);await r2.pause()
+   if kind=='keymap':t.click('preferences.category.keyboard');await r2.pause()
+   return {'search':'preferences.search','pref':'pref.general.recentProjects.maxCount','keymap':'keymap.filter'}[kind]
+  if kind=='toolbar':d.choose_menu(['Window','Customize Toolbar']);await r2.pause();return 'toolbarSheet.filter'
+  if kind=='new':
+   await r1.r3.preserve_fixture(t);d.choose_menu(['File','New Project']);await r2.pause();return 'newProject.name'
+  d.choose_menu(['File','Project Properties']);await r2.pause();return 'projectProperties.frameRate'
+ for kind in ('pen','rename','font','search','pref','keymap','new','props','toolbar'):
+  await c('draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':10,'y':10}});await c('edit.selectAll')
+  ident=await openfield(kind);await r1.r3.wait(t,ident)
+  inventory=t.cdp.js('[...document.querySelectorAll("input,textarea,[contenteditable=true]")].map(e=>({id:e.dataset.ttId,type:e.type,disabled:e.disabled}))')
+  t.run.save('inventory-'+kind+'.json',inventory)
+  await c('edit.selectAll');await c('edit.copy');docclip=await c('edit.clipboard.get')
+  t.click(ident);old=r2.dom(t,ident);pos=await t.position();tool=await c('tool.active.get');t.clear()
+  if step==2:
+   d.key(0x41,0x11);selection=r2.dom(t,ident,'({start:e.selectionStart,end:e.selectionEnd,value:e.value})')
+   t.run.check(selection['start']==0 and selection['end']==len(old),'D-66 select field '+kind,selection)
+   d.type_text('alpha beta');d.key(0x41,0x11);d.key(0x43,0x11)
+   clip=__import__('subprocess').check_output(['powershell','-NoProfile','-Command','Get-Clipboard -Raw']).decode().strip()
+   d.key(0x58,0x11);empty=r2.dom(t,ident);d.key(0x56,0x11);pasted=r2.dom(t,ident)
+   d.key(0x5A,0x11);undo=r2.dom(t,ident);d.key(0x59,0x11);redo=r2.dom(t,ident)
+   t.run.check(clip=='alpha beta' and empty=='' and pasted=='alpha beta','D-66 clipboard '+kind,{'clipboard':clip,'cut':empty,'paste':pasted})
+   t.run.check(undo=='' and redo=='alpha beta','D-66 field undo redo '+kind,{'undo':undo,'redo':redo})
+   for vk,mods in [(0x25,(0x11,)),(0x27,(0x11,)),(0x25,(0x10,)),(0x24,()),(0x23,()),(0x2E,()),(0x08,()),(0x08,(0x11,))]:d.key(vk,*mods)
+   d.key(0x42);d.key(0x20)
+   commands=t.recorded();t.run.check(not r2.sent(t) and await t.position()==pos and await c('tool.active.get')==tool and await c('edit.clipboard.get')==docclip,'D-66 text ownership '+kind,{'commands':commands,'undo':undo,'redo':redo,'value':r2.dom(t,ident)})
+  elif step==3:
+   d.key(0x53,0x11);await r2.pause();commands=t.recorded()
+   modal=t.cdp.js('!!document.activeElement.closest("[role=dialog]")')
+   t.run.check(any(x['command']=='project.save' for x in commands) or modal,'D-66 Save keymap/modal '+kind,commands)
+   d.key(0x1B);await r2.pause()
+   if t.cdp.js('!!document.querySelector("[role=dialog]")'):d.key(0x1B);await r2.pause()
+   t.click('drawingView.canvas');t.clear();d.key(0x41,0x11);d.key(0x5A,0x11);d.key(0x42);await r2.pause()
+   cmds=[x['command'] for x in r2.sent(t)]
+   t.run.check(all(x in cmds for x in ('edit.selectAll','edit.undo','tool.active.set')),'D-66 document resumes '+kind,cmds)
+  else:
+   d.key(0x41,0x11);d.type_text('7' if kind in ('pen','pref','props') else 'Review name');d.key(0x1B);await r2.pause()
+   t.run.save('escape-'+kind+'.json',{'old':old,'after':r2.dom(t,ident),'commands':t.recorded(),'dialog':t.cdp.js('document.querySelector("[role=dialog]")?.dataset.ttId')})
+   # Numeric and rename fields have an explicit restoration contract; staged forms use their modal Cancel.
+   if kind in ('pen','pref','props','rename'):t.run.check(not r2.sent(t) and (r2.dom(t,ident)==old or kind in ('rename','pref','props') and r2.dom(t,ident) is None),'D-61 Escape '+kind,{'after':r2.dom(t,ident),'commands':t.recorded()})
+   ident=await openfield(kind);await r1.r3.wait(t,ident);t.click(ident);t.clear();d.key(0x41,0x11);d.type_text('8' if kind in ('pen','pref','props') else 'Review name');d.key(0x0D);await r2.pause()
+   t.run.save('enter-'+kind+'.json',{'after':r2.dom(t,ident),'commands':t.recorded()})
+   cmds=r2.sent(t);t.run.check(len(cmds)<=1,'D-61 Enter once '+kind,cmds)
+  d.key(0x1B);await r2.pause()
+ await c('window.panel.set',{'panelId':'activity','visible':True});await r2.pause()
+ t.run.save('activity-fields.json',t.cdp.js('[...document.querySelectorAll(".activity-panel input")].map(e=>({id:e.dataset.ttId,type:e.type}))'))
+
+if __name__=='__main__' and sys.argv[1] in ('n2a','n2b'):
+ case,step=sys.argv[1],int(sys.argv[2])
+ r1.EVID=r1.ROOT/'reviews/evidence/M4-C4.4a-r3-review'
+ if case=='n2a' and step==1:
+  import subprocess,os,tempfile
+  results=[]
+  for i in (2,3,4):
+   raw=Path(tempfile.mkdtemp(prefix='c44-r3-earlier-'))
+   result=subprocess.run([sys.executable,str(Path(__file__).with_name('c44a-r2-live.py')),'m1a',str(i)],env={**os.environ,'REVIEW_RAW':str(raw)},timeout=530)
+   results.append({'step':i,'exit':result.returncode,'raw':str(raw)})
+   subprocess.run(['git','checkout','--','reviews/evidence/M4-C4.4a-r2-review'],check=True)
+  (r1.EVID/'n2a-1.json').write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8',newline='\n')
+  sys.exit(int(any(x['exit'] for x in results)))
+ if case=='n2b' and step==5:
+  import subprocess,os,tempfile
+  earlier=[]
+  for i in (5,6,7):
+   raw=Path(tempfile.mkdtemp(prefix='c44-r3-earlier-'))
+   result=subprocess.run([sys.executable,str(Path(__file__).with_name('c44a-r2-live.py')),'m1b',str(i)],env={**os.environ,'REVIEW_RAW':str(raw)},timeout=530)
+   earlier.append({'step':i,'exit':result.returncode,'raw':str(raw)})
+   subprocess.run(['git','checkout','--','reviews/evidence/M4-C4.4a-r2-review'],check=True)
+  (r1.EVID/'n2b-5-earlier.json').write_text(json.dumps(earlier,indent=2)+'\n',encoding='utf-8',newline='\n')
+ r1.live_body=fields if case=='n2a' else menu_extra if step in (5,6) else body
+ logical=step
+ if case=='n2b' and step==7:step=8
+ result=r1.live(step)
+ transcript=json.loads((r1.OUT/'transcript.json').read_text())
+ receipt={'checks':len(transcript),'results':transcript,'raw':str(r1.OUT)}
+ text=json.dumps(receipt,indent=2,default=str)+'\n'
+ assert len(text.encode())<=200000,'summary too large'
+ (r1.EVID/(case+'-'+str(logical)+'.json')).write_text(text,encoding='utf-8',newline='\n')
+ sys.exit(result)
+
 if __name__=='__main__':
  case,step=sys.argv[1],int(sys.argv[2]);assert case in ('n1a','n1b')
  if case=='n1a':

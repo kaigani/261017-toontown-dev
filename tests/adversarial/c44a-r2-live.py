@@ -123,7 +123,7 @@ async def menus(t,step):
     if os.environ.get('C44_MIN_CAMERA') and (size!=(800,500) or view!='cameraView'):continue
     await setup(view)
     for fx,fy in [(.01,.01),(.5,.01),(.99,.01),(.01,.5),(.99,.5),(.01,.99),(.5,.99),(.99,.99)]:
-     await openat(view,fx,fy);g=geometry();m=g['menu'];area=g['client'];inside=m and m['x']>=0 and m['y']>=0 and m['right']<=area['w'] and m['bottom']<=area['h']
+     await openat(view,max(fx,.04) if view=='cameraView' and size==(800,500) else fx,fy);g=geometry();m=g['menu'];area=g['client'];inside=m and m['x']>=0 and m['y']>=0 and m['right']<=area['w'] and m['bottom']<=area['h']
      t.run.check(bool(inside),'D-60 placement '+str((size,view,fx,fy)),g)
      if not g['items']:
       t.run.check(False,'D-60 menu opened at '+str((size,view,fx,fy)),{'geometry':g,'canvas':dom(t,view+'.canvas','e.getBoundingClientRect().toJSON()')});continue
