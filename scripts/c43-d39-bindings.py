@@ -2386,26 +2386,26 @@ async def build_and_run(t: Table, only: set) -> None:
 
     def popover_flow(verb):
         async def flow():
-            if not t.cdp.js("!!document.querySelector('[data-tt-id=\"agent.popover\"]')"):
-                t.click("agent.toggle")
-                await asyncio.sleep(0.5)
-            # The popover lists the session once the window has read the new session (a wait for a state, D-45); a
-            # popover opened before that is closed and opened again once, and what it lists is recorded on failure.
+            # The popover open (the toggle's aria-expanded, clicked again while it reads closed) and the session's
+            # button listed (waits for states, D-45); what was tried is recorded on failure.
             ident = json.dumps(f"agent.{second['id']}.{verb}")
-            for attempt in range(2):
-                for _ in range(100):
-                    if t.cdp.js("!!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % ident):
-                        break
-                    await asyncio.sleep(0.1)
-                else:
-                    if attempt == 0:
-                        t.click("agent.toggle")
-                        await asyncio.sleep(0.3)
-                        t.click("agent.toggle")
-                        continue
-                    listed = t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"agent.\"]')].map(e => e.dataset.ttId)")
-                    raise RuntimeError(f"the popover does not list {second['id']}: {listed}")
-                break
+            tried = []
+            for _ in range(3):
+                state = t.cdp.js("(() => { const b = document.querySelector('[data-tt-id=\"agent.toggle\"]');"
+                                 " return {expanded: b && b.getAttribute('aria-expanded'),"
+                                 " popover: !!document.querySelector('[data-tt-id=\"agent.popover\"]')}; })()")
+                if state and state.get("expanded") == "true" and state.get("popover"):
+                    break
+                tried.append({"before": state, "click": t.click("agent.toggle"),
+                              "rect": t.rect("agent.toggle")})
+                await asyncio.sleep(0.5)
+            for _ in range(100):
+                if t.cdp.js("!!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % ident):
+                    break
+                await asyncio.sleep(0.1)
+            else:
+                listed = t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"agent.\"]')].map(e => e.dataset.ttId)")
+                raise RuntimeError(f"the popover does not list {second['id']}: {listed}; tried {tried}")
             t.clear()
             t.click(f"agent.{second['id']}.{verb}")
             await asyncio.sleep(1.0)
