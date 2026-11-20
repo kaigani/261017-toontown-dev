@@ -255,7 +255,7 @@ async def menu_extra(t,step):
 
   resize(1280,800);await openmenu('drawingView.canvas');resize(800,500);await r2.pause();g=geo();t.run.check(bool(inside(g)),'D-66 resize open',g)
   d.key(0x1B);main=d.window_handle();original=d.window_handle;maincdp=t.cdp
-  await c('window.panel.set',{'panelId':'drawingView','visible':True,'floating':True});await r2.pause()
+  await c('window.panel.set',{'panelId':'cameraView','visible':True,'floating':True});await r2.pause()
   handles=[]
   callback=ctypes.WINFUNCTYPE(wintypes.BOOL,wintypes.HWND,wintypes.LPARAM)
   def visit(h,_):
@@ -263,7 +263,7 @@ async def menu_extra(t,step):
    if pid.value==d.e2e.APP_PID['pid'] and h!=main and d.u32.IsWindowVisible(h):handles.append(h)
    return True
   d.u32.EnumWindows(callback(visit),0);assert handles,'no floating window'
-  init=textwrap.dedent(inspect.getsource(d.Cdp.__init__)).replace('"float" in (p.get("url") or "")','"float" not in (p.get("url") or "")')
+  init=textwrap.dedent(inspect.getsource(d.Cdp.__init__)).replace('"float" in (p.get("url") or "")','"panel=" not in (p.get("url") or "")')
   lines=init.splitlines()
   for i,line in enumerate(lines):
    if 'if self.js(' in line:lines[i]="        if self.js('!!document.querySelector(\"canvas\")'):"
@@ -272,7 +272,7 @@ async def menu_extra(t,step):
   try:
    d.window_handle=lambda:handles[0];d.front();t.cdp=FloatCdp(d.CDP_PORT);t.cdp.record()
    for size in ((640,480),(160,120)):
-    resize(*size);await r2.pause();g=await openmenu('drawingView.canvas');t.run.check(bool(inside(g)),'D-66 float '+str(size),g)
+    resize(*size);await r2.pause();g=await openmenu('cameraView.canvas');t.run.check(bool(inside(g)),'D-66 float '+str(size),g)
     if g:
      top=g;b=g['list'];d.wheel_screen(*screen(b['x']+b['width']/2,b['y']+b['height']/2),30);await r2.pause();bottom=geo();last=bottom['items'][-1]['box'];t.run.check(last['bottom']<=bottom['list']['bottom'],'D-66 float wheel '+str(size),bottom)
      d.key(0x24);await r2.pause();g=geo()
