@@ -9,6 +9,12 @@
 // client area (D-60 item 1, `placeMenu`): measured before it is painted, it opens toward the side with room,
 // flips or shifts at an edge, and a menu taller than the window scrolls, with an arrow at each end that shows
 // there is more and scrolls to it.
+// D-66 item 1 (C44A-R1-01, at 800 by 500): the menu's outer box (border and padding included: it is sized
+// `border-box`, and has no margin) and both arrows fit the client area at every window size down to the product's
+// minimum (the main window's 800 by 500, a float's 160 by 120). An arrow scrolls on a click and while the pointer rests
+// on it; moving the focus with the keyboard scrolls the focused item fully into view; the wheel scrolls the items. The
+// menu's natural size is measured without losing the items' scroll position (measuring it unbounded had reset it, so
+// no scrolling stayed).
 import {
   useCallback,
   useEffect,
@@ -42,7 +48,21 @@ function clientArea(): { width: number; height: number } {
 }
 
 /** How far one press on a scroll arrow scrolls: about three items. */
-const ARROW_STEP_PX = 72;
+export const ARROW_STEP_PX = 72;
+/** While the pointer rests on (or holds) an arrow: after this delay, the items scroll by `HOLD_STEP_PX` every
+ *  `HOLD_REPEAT_MS` until the end is reached or the pointer leaves. */
+export const HOLD_DELAY_MS = 250;
+export const HOLD_REPEAT_MS = 40;
+export const HOLD_STEP_PX = 12;
+
+/** Scrolls `list` so that `item` is fully inside its visible part (D-66 item 1: keyboard focus never rests on an item
+ *  outside the client area). */
+function reveal(list: HTMLElement, item: HTMLElement): void {
+  const l = list.getBoundingClientRect();
+  const r = item.getBoundingClientRect();
+  if (r.top < l.top) list.scrollTop -= l.top - r.top;
+  else if (r.bottom > l.bottom) list.scrollTop += Math.min(r.bottom - l.bottom, r.top - l.top);
+}
 
 export function ContextMenu({
   id,
@@ -86,14 +106,20 @@ export function ContextMenu({
       top: el.style.top,
       maxHeight: el.style.maxHeight,
       maxWidth: el.style.maxWidth,
+      minWidth: el.style.minWidth,
     };
+    // Unbounded for a moment the items do not overflow, and the browser drops their scroll position: it is kept and
+    // put back (D-66 item 1: without this, every scroll re-rendered, re-measured and jumped back to the top).
+    const scrollTop = list.current?.scrollTop ?? 0;
     el.style.left = '0px';
     el.style.top = '0px';
     el.style.maxHeight = '';
     el.style.maxWidth = '';
+    el.style.minWidth = '';
     const size = { width: el.offsetWidth, height: el.offsetHeight };
     const at0 = el.getBoundingClientRect();
     Object.assign(el.style, prev);
+    if (list.current && list.current.scrollTop !== scrollTop) list.current.scrollTop = scrollTop;
     setOrigin((o) => (o.x === at0.left && o.y === at0.top ? o : { x: at0.left, y: at0.top }));
     const area = clientArea();
     const next = placeMenu(at, size, area);
@@ -125,15 +151,56 @@ export function ContextMenu({
   const scrolled = useCallback(() => {
     const l = list.current;
     if (!l) return;
-    setMore({ above: l.scrollTop > 0, below: l.scrollTop + l.clientHeight < l.scrollHeight - 1 });
+    const above = l.scrollTop > 0;
+    const below = l.scrollTop + l.clientHeight < l.scrollHeight - 1;
+    // Unchanged: no new render (a render measures the menu again).
+    setMore((m) => (m.above === above && m.below === below ? m : { above, below }));
   }, []);
   useLayoutEffect(() => {
     scrolled();
   }, [place, scrolled]);
-  const scrollList = (dy: number) => {
-    list.current?.scrollBy({ top: dy });
-    scrolled();
-  };
+  const scrollList = useCallback(
+    (dy: number) => {
+      const l = list.current;
+      if (!l) return;
+      l.scrollTop = Math.min(Math.max(l.scrollTop + dy, 0), Math.max(l.scrollHeight - l.clientHeight, 0));
+      scrolled();
+    },
+    [scrolled],
+  );
+  // An arrow scrolls while the pointer rests on it or holds it (D-66 item 1).
+  const hold = useRef<{ delay: number | null; repeat: number | null }>({ delay: null, repeat: null });
+  const stopHold = useCallback(() => {
+    const h = hold.current;
+    if (h.delay !== null) window.clearTimeout(h.delay);
+    if (h.repeat !== null) window.clearInterval(h.repeat);
+    hold.current = { delay: null, repeat: null };
+  }, []);
+  const startHold = useCallback(
+    (dir: 1 | -1) => {
+      stopHold();
+      hold.current.delay = window.setTimeout(() => {
+        hold.current.delay = null;
+        hold.current.repeat = window.setInterval(() => {
+          scrollList(dir * HOLD_STEP_PX);
+        }, HOLD_REPEAT_MS);
+      }, HOLD_DELAY_MS);
+    },
+    [scrollList, stopHold],
+  );
+  useEffect(() => stopHold, [stopHold]);
+  const arrowProps = (dir: 1 | -1) => ({
+    onPointerDown: (e: { preventDefault: () => void }) => {
+      // Not a press outside, and the focused item keeps the focus.
+      e.preventDefault();
+      scrollList(dir * ARROW_STEP_PX);
+      startHold(dir);
+    },
+    onPointerEnter: () => {
+      startHold(dir);
+    },
+    onPointerLeave: stopHold,
+  });
 
   // Focus moves into the menu when it opens and back to what had it when it closes.
   useLayoutEffect(() => {
@@ -161,7 +228,11 @@ export function ContextMenu({
     const at = all.indexOf(document.activeElement as HTMLElement);
     const go = (i: number) => {
       e.preventDefault();
-      all[(i + all.length) % all.length]?.focus();
+      const next = all[(i + all.length) % all.length];
+      if (!next) return;
+      next.focus({ preventScroll: true });
+      if (list.current) reveal(list.current, next);
+      scrolled();
     };
     if (e.key === 'ArrowDown') go(at + 1);
     else if (e.key === 'ArrowUp') go(at < 0 ? all.length - 1 : at - 1);
@@ -191,10 +262,13 @@ export function ContextMenu({
           ? {
               left: place.x - origin.x,
               top: place.y - origin.y,
+              // The bounds are the outer box's: border and padding inside them (D-66 item 1).
+              boxSizing: 'border-box',
               ...(place.maxHeight !== null ? { maxHeight: place.maxHeight } : {}),
-              ...(place.maxWidth !== null ? { maxWidth: place.maxWidth } : {}),
+              // A bounded width wins over the menu's least width (a float's 160 px client area).
+              ...(place.maxWidth !== null ? { maxWidth: place.maxWidth, minWidth: 0 } : {}),
             }
-          : { left: 0, top: 0 }
+          : { left: 0, top: 0, boxSizing: 'border-box' }
       }
       data-tt-role="menu"
       data-tt-id={id}
@@ -207,11 +281,8 @@ export function ContextMenu({
         <div
           className={more.above ? 'context-menu-arrow' : 'context-menu-arrow spent'}
           aria-hidden="true"
-          onPointerDown={(e) => {
-            // Not a press outside, and the focused item keeps the focus.
-            e.preventDefault();
-            scrollList(-ARROW_STEP_PX);
-          }}
+          data-tt-arrow="up"
+          {...arrowProps(-1)}
         >
           {'\u25B2'}
         </div>
@@ -281,10 +352,8 @@ export function ContextMenu({
         <div
           className={more.below ? 'context-menu-arrow' : 'context-menu-arrow spent'}
           aria-hidden="true"
-          onPointerDown={(e) => {
-            e.preventDefault();
-            scrollList(ARROW_STEP_PX);
-          }}
+          data-tt-arrow="down"
+          {...arrowProps(1)}
         >
           {'\u25BC'}
         </div>

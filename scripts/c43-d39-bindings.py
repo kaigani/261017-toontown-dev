@@ -1498,6 +1498,130 @@ async def build_and_run(t: Table, only: set) -> None:
                  "label": "Rename Pen", "setup": pen_shown, "state": pens_state,
                  "effect": lambda b, a, k: pen_of(a, cur_of(b)).get("name") == "Renamed D39", "disabled": None,
                  "mcpReason": "the rename field opens on a double click or F2 on the pen, real input the MCP form does not perform"})
+    # ----- D-66 item 2 (C44A-R2-01; 01 §8.4 "platform text-editing shortcuts act on the focused text field"): with the
+    # focus in a text field, the real Ctrl+A then a typed key replaces the field's text, the real Ctrl+Z does not undo
+    # the document, and a tool's letter (B, Brush) types the letter. Nothing is sent and no history step is made. One
+    # numeric field (the pen's Maximum size), the pen rename field and a Preferences text field (its search). -----
+    text_keys_case: dict = {}
+
+    def field_text(ident):
+        return t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                        " return e ? {value: e.value, start: e.selectionStart, end: e.selectionEnd,"
+                        " focused: document.activeElement === e} : null; })()" % json.dumps(ident))
+
+    async def focused_field(ident, timeout=5.0):
+        # A wait for a state (D-45): the field has the focus.
+        end = time.monotonic() + timeout
+        while time.monotonic() < end:
+            got = field_text(ident)
+            if got and got["focused"]:
+                return got
+            await asyncio.sleep(0.1)
+        return None
+
+    async def history_state():
+        return await cmd("edit.history.get", {"limit": 1000})
+
+    async def undoable_change():
+        # A document change for Ctrl+Z to find: had the key reached the keymap, it would undo it.
+        await e2e.run_cmd(t.s, "draw.rectangle.add", {"from": {"x": -30, "y": -20}, "to": {"x": 30, "y": 20}, "layer": "new"})
+        h = await cmd("edit.history.get", {"limit": 1})
+        if not h or not h.get("position"):
+            raise RuntimeError(f"no undoable step to test Ctrl+Z against: {h}")
+
+    def text_keys_flow(name, ident, open_field):
+        async def flow():
+            front()
+            how = await open_field()
+            got = await focused_field(ident)
+            if not got:
+                raise RuntimeError(f"the field did not take the focus: {ident}")
+            case = {"field": ident, "opened": how, "initial": got["value"]}
+            # Opening it is not this row's (the Preferences menu item has its own row): the row records the keys only.
+            t.clear()
+            # The real Ctrl+A selects the field's whole text.
+            key(0x41, 0x11)
+            await asyncio.sleep(0.2)
+            got = field_text(ident)
+            case["afterSelectAll"] = got
+            selected = bool(got) and got["start"] == 0 and got["end"] == len(got["value"]) and len(got["value"]) > 0
+            # Typing replaces it (a real X key).
+            key(0x58)
+            await asyncio.sleep(0.2)
+            got = field_text(ident)
+            case["afterTyping"] = got
+            replaced = bool(got) and got["value"].lower() == "x"
+            # A tool's letter types the letter (a real B key; B is Brush in the keymap).
+            key(0x42)
+            await asyncio.sleep(0.3)
+            got = field_text(ident)
+            case["afterToolLetter"] = got
+            letter = bool(got) and got["value"].lower() == "xb" and got["focused"]
+            # The real Ctrl+Z is the field's: the document's history stays where it was.
+            hist = await cmd("edit.history.get", {"limit": 1})
+            key(0x5A, 0x11)
+            await asyncio.sleep(0.5)
+            hist_after = await cmd("edit.history.get", {"limit": 1})
+            got = field_text(ident)
+            case["afterUndo"] = got
+            kept = (hist or {}).get("position") == (hist_after or {}).get("position") and bool(got) and got["focused"]
+            case.update({"selectAllSelects": selected, "typingReplaces": replaced, "toolLetterTypes": letter,
+                         "undoLeavesDocument": kept, "historyBefore": (hist or {}).get("position"),
+                         "historyAfter": (hist_after or {}).get("position")})
+            case["ok"] = selected and replaced and letter and kept
+            text_keys_case[name] = case
+            # Escape: the field's own rule (the numeric field and the rename restore; the dialog closes).
+            key(0x1B)
+            await asyncio.sleep(0.3)
+            return ("real keys in the focused field: Ctrl+A, X, B, Ctrl+Z, then Escape (" + how + ")")
+        return flow
+
+    async def open_numeric():
+        t.click("pen.maxSize.field")
+        return "a real click on the field"
+
+    async def open_rename():
+        st = await pens_state()
+        r = t.rect(f"pen.row.{cur_of(st)}")
+        h = front()
+        origin = wintypes.POINT(0, 0)
+        u32.ClientToScreen(h, ctypes.byref(origin))
+        u32.SetCursorPos(int(origin.x + r["x"] * r["dpr"]), int(origin.y + r["y"] * r["dpr"]))
+        time.sleep(0.1)
+        for _ in range(2):
+            e6._send_button(True)
+            time.sleep(0.02)
+            e6._send_button(False)
+            time.sleep(0.05)
+        await asyncio.sleep(0.4)
+        return "a real double click on the pen"
+
+    async def open_prefs_search():
+        choose_menu(["File", "Preferences"])
+        end = time.monotonic() + 10.0
+        while time.monotonic() < end and not field_text("preferences.search"):
+            await asyncio.sleep(0.1)
+        t.click("preferences.search")
+        return "File › Preferences, then a real click on its search field"
+
+    async def numeric_setup():
+        await pen_known()
+        await undoable_change()
+
+    async def rename_setup():
+        await pen_shown()
+        await undoable_change()
+
+    for tk_name, tk_ident, tk_open, tk_setup in (
+            ("Pen panel › Maximum size (text-editing keys)", "pen.maxSize.field", open_numeric, numeric_setup),
+            ("Pen panel › rename (text-editing keys)", "pen.rename", open_rename, rename_setup),
+            ("Preferences › search (text-editing keys)", "preferences.search", open_prefs_search, undoable_change)):
+        rows.append({"name": tk_name, "spec": "01 §8.4; D-66 item 2 (C44A-R2-01)",
+                     "action": ("none",), "custom": text_keys_flow(tk_name, tk_ident, tk_open),
+                     "expect": None, "label": None, "setup": tk_setup, "state": history_state,
+                     "effect": (lambda n_: lambda b, a, k: a == b and bool(text_keys_case.get(n_, {}).get("ok")))(tk_name),
+                     "disabled": None, "osOnly": True, "after": close_dialogs,
+                     "mcpReason": "real keys typed into a focused text field: an agent's `key` tool is refused while a text field has the focus"})
     rows.append({"name": "Pen panel › Delete", "spec": f"{spec_line('tool.pen.delete')} (label \"Delete Pen\"); 02 §6.1",
                  "action": ("dom", "pen.delete"),
                  "expect": lambda b: ("tool.pen.delete", {"penId": cur_of(b)}), "label": "Delete Pen",
@@ -2653,26 +2777,61 @@ MENU_GEOMETRY_JS = """(() => {
   const menu = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');
   if (!menu) return null;
   const box = (e) => { const r = e.getBoundingClientRect(); return {l: r.left, t: r.top, r: r.right, b: r.bottom}; };
-  const items = [...menu.querySelectorAll('[role^="menuitem"]')].map((e) => {
-    // Each item brought into view the way the person scrolls the menu (a menu taller than the window scrolls).
-    e.scrollIntoView({block: 'nearest'});
-    return {id: e.dataset.ttId, box: box(e), disabled: e.getAttribute('aria-disabled') === 'true',
-            command: e.dataset.ttCommand, params: JSON.parse(e.dataset.ttParams || '{}')};
-  });
-  return {menu: box(menu), scrolls: menu.classList.contains('scrolls'),
-          arrows: menu.querySelectorAll('.context-menu-arrow').length, items,
-          area: {w: document.documentElement.clientWidth, h: document.documentElement.clientHeight}};
+  const list = menu.querySelector('.context-menu-items');
+  // Read as laid out now: nothing is scrolled by the script (D-66 item 1: the person's real scrolling only).
+  const items = [...menu.querySelectorAll('[role^="menuitem"]')].map((e) => ({
+    id: e.dataset.ttId, box: box(e), disabled: e.getAttribute('aria-disabled') === 'true',
+    command: e.dataset.ttCommand, params: JSON.parse(e.dataset.ttParams || '{}')}));
+  const arrows = [...menu.querySelectorAll('.context-menu-arrow')].map((a) => ({
+    dir: a.dataset.ttArrow, box: box(a), spent: a.classList.contains('spent')}));
+  return {menu: box(menu), list: list ? box(list) : null, scrollTop: list ? list.scrollTop : 0,
+          maxScroll: list ? list.scrollHeight - list.clientHeight : 0, scrolls: menu.classList.contains('scrolls'),
+          arrows, items, focused: document.activeElement && document.activeElement.dataset
+            ? document.activeElement.dataset.ttId || null : null,
+          area: {w: document.documentElement.clientWidth, h: document.documentElement.clientHeight},
+          dpr: window.devicePixelRatio || 1};
 })()"""
 
 
+def _send_mouse(flags: int, data: int = 0) -> bool:
+    """One mouse event through `SendInput` (0x0002/0x0004 left down/up, 0x0800 wheel with `data` in 120ths)."""
+    class MOUSEINPUT(ctypes.Structure):
+        _fields_ = [("dx", wintypes.LONG), ("dy", wintypes.LONG), ("mouseData", wintypes.DWORD),
+                    ("dwFlags", wintypes.DWORD), ("time", wintypes.DWORD), ("dwExtraInfo", ctypes.c_size_t)]
+
+    class MINPUT(ctypes.Structure):
+        _fields_ = [("type", wintypes.DWORD), ("mi", MOUSEINPUT)]
+
+    i = MINPUT(type=0, mi=MOUSEINPUT(0, 0, data & 0xFFFFFFFF, flags, 0, 0))
+    return u32.SendInput(1, ctypes.byref(i), ctypes.sizeof(MINPUT)) == 1
+
+
+def wheel_screen(x: int, y: int, notches: int) -> None:
+    """The real wheel over (x, y): `notches` > 0 scrolls down."""
+    u32.SetCursorPos(int(x), int(y))
+    time.sleep(0.08)
+    for _ in range(abs(notches)):
+        _send_mouse(0x0800, -120 if notches > 0 else 120)
+        time.sleep(0.06)
+    time.sleep(0.25)
+
+
+# The least window size requested of the operating system; the host's minimum (tauri.conf.json `minWidth` 800,
+# `minHeight` 500, the inner size) is what the window takes.
+MENU_SIZES = (("1280 by 800", 1280, 800), ("the minimum window size", 320, 240))
+
+
 async def menu_bounds_row(t: Table, bob) -> None:
-    """D-60 item 1 (C44A-R1-01): at the product's 1280 by 800 window, each view's context menu opened where it would
-    cross an edge (the Drawing view's centre, as reported, and the Camera view's bottom-right corner, with a drawing
-    tool) is fully inside the client area: the menu's box and every item's box, each item brought into view as the
-    person scrolls a menu taller than the window. The last item is then activated by a real click and sends its
-    declared reference once."""
-    rec = {"name": "context menus › inside the client area at 1280 by 800",
-           "spec": "D-60 item 1 (C44A-R1-01); 01 §5.3 line 373; 02 §4.4 lines 291-296; design note 1 §9"}
+    """D-60 item 1 and D-66 item 1 (C44A-R1-01): at the 1280 by 800 window and at the least size the host allows (the
+    window asked for 320 by 240 and kept at its minimum, 800 by 500 inner), each view's context menu opened where it
+    would cross an edge (the Drawing view's centre, as reported, and the Camera view's bottom-right corner, with a
+    drawing tool) has its outer box and both arrows inside the client area. A menu that scrolls is then scrolled by
+    real input only: End and Home by the real keyboard (the focused item fully inside the visible items each time), a
+    real click on the lower arrow (it scrolls), the real wheel (up to the top, then down until the last item shows),
+    and the pointer resting on the lower arrow (the items scroll until the last item shows). The last item is then
+    activated by a real click and sends its declared reference once."""
+    rec = {"name": "context menus › inside the client area at 1280 by 800 and at the minimum window size",
+           "spec": "D-60 item 1, D-66 item 1 (C44A-R1-01); 01 §5.3 line 373; 02 §4.4 lines 291-296; design note 1 §9"}
     if isinstance(t, McpTable):
         reason = "the menu's geometry is the window's layout, read through the webview's debugging port in the OS form"
         rec.update({"ok": True, "notRun": reason})
@@ -2681,66 +2840,137 @@ async def menu_bounds_row(t: Table, bob) -> None:
         t.run.save("rows.json", t.rows)
         return
     cases = []
-    try:
-        h = front()
-        # SWP_NOMOVE | SWP_NOZORDER: the window at the size tauri.conf.json gives it.
-        u32.SetWindowPos(h, 0, 0, 0, 1280, 800, 0x0002 | 0x0004)
-        await asyncio.sleep(1.0)
-        for view, corner in (("drawingView", "centre"), ("cameraView", "bottomRight")):
-            await e2e.run_cmd(t.s, "app.context.set", {"elementId": bob, "frame": 1})
-            await t.cmd("window.panel.set", {"panelId": view, "visible": True, "focus": True})
-            await t.cmd("view.active.set", {"viewId": view})
-            # A drawing tool chosen now: the Camera view runs the Drawing family (SI-148).
-            await t.cmd("tool.active.set", {"toolId": "brush"})
-            await t.cmd("tool.active.set", {"toolId": "select"})
-            # The last item (Break Text Apart) enabled: a text object and a rectangle, both selected.
-            await t.cmd("draw.rectangle.add", {"from": {"x": -60, "y": -40}, "to": {"x": 60, "y": 40}, "layer": "new"})
-            await t.cmd("draw.text.add", {"position": {"x": -40, "y": 60}, "text": "Ab"})
-            await t.cmd("draw.selection.set", {"by": "all"})
-            await asyncio.sleep(0.6)
-            key(0x1B)
-            canvas = t.cdp.js("(() => { const r = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')"
-                              ".getBoundingClientRect(); return {l: r.left, t: r.top, r: r.right, b: r.bottom,"
-                              " dpr: window.devicePixelRatio || 1}; })()" % json.dumps(f"{view}.canvas"))
-            x, y = ((canvas["l"] + canvas["r"]) / 2, (canvas["t"] + canvas["b"]) / 2) if corner == "centre" else (
-                canvas["r"] - 12, canvas["b"] - 12)
-            hw = front()
-            origin = wintypes.POINT(0, 0)
-            u32.ClientToScreen(hw, ctypes.byref(origin))
-            right_click_screen(origin.x + x * canvas["dpr"], origin.y + y * canvas["dpr"])
-            menu_id = f"{view}.drawingMenu"
-            geo = None
-            for _ in range(50):
-                geo = t.cdp.js(MENU_GEOMETRY_JS % json.dumps(menu_id))
-                if geo and geo["items"] and not all(i["disabled"] for i in geo["items"]):
-                    break
-                await asyncio.sleep(0.1)
-            if not geo:
-                raise RuntimeError(f"the menu did not open: {menu_id}")
-            w, hh = geo["area"]["w"], geo["area"]["h"]
 
-            def within(b):
-                return b["l"] >= 0 and b["t"] >= 0 and b["r"] <= w and b["b"] <= hh
-            outside = [i["id"] for i in geo["items"] if not within(i["box"])]
-            last = geo["items"][-1]
-            await asyncio.sleep(0.3)
-            t.clear()
-            how = t.click(last["id"])
+    def geometry(menu_id):
+        return t.cdp.js(MENU_GEOMETRY_JS % json.dumps(menu_id))
+
+    def inside(b, w, hh):
+        return b is not None and b["l"] >= 0 and b["t"] >= 0 and b["r"] <= w and b["b"] <= hh
+
+    def shows(item, g):
+        lb = g["list"]
+        return lb is not None and item["box"]["t"] >= lb["t"] - 0.5 and item["box"]["b"] <= lb["b"] + 0.5
+
+    def screen_of(g, x, y):
+        hw = front()
+        origin = wintypes.POINT(0, 0)
+        u32.ClientToScreen(hw, ctypes.byref(origin))
+        return origin.x + x * g["dpr"], origin.y + y * g["dpr"]
+
+    def centre(b):
+        return (b["l"] + b["r"]) / 2, (b["t"] + b["b"]) / 2
+
+    async def until(menu_id, test, bound_s=10.0):
+        """D-45: waits for a state of the menu, bounded."""
+        g = None
+        for _ in range(int(bound_s / 0.1)):
+            g = geometry(menu_id)
+            if g and test(g):
+                return g, True
+            await asyncio.sleep(0.1)
+        return g, False
+
+    try:
+        for size_name, ww, wh in MENU_SIZES:
+            h = front()
+            # SWP_NOMOVE | SWP_NOZORDER; for the minimum the OS keeps the window at the host's least size.
+            u32.SetWindowPos(h, 0, 0, 0, ww, wh, 0x0002 | 0x0004)
             await asyncio.sleep(1.0)
-            sent = [c for c in t.recorded() if t.kinds.get(c.get("command")) != "query"]
-            want = [{"command": last["command"], "params": last["params"]}]
-            gone = t.cdp.js("!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % json.dumps(menu_id))
-            ok = (within(geo["menu"]) and not outside and not last["disabled"] and sent == want and bool(gone))
-            cases.append({"view": view, "openedAt": {"x": x, "y": y}, "area": geo["area"], "menu": geo["menu"],
-                          "scrolls": geo["scrolls"], "arrows": geo["arrows"], "items": len(geo["items"]),
-                          "outside": outside, "last": last, "input": how, "sent": sent, "expected": want,
-                          "closed": gone, "ok": ok})
-            key(0x1B)
-            await e2e.run_cmd(t.s, "draw.selection.set", {"by": "none"})
-        ok_all = bool(cases) and all(c["ok"] for c in cases)
+            for view, corner in (("drawingView", "centre"), ("cameraView", "bottomRight")):
+                await e2e.run_cmd(t.s, "app.context.set", {"elementId": bob, "frame": 1})
+                await t.cmd("window.panel.set", {"panelId": view, "visible": True, "focus": True})
+                await t.cmd("view.active.set", {"viewId": view})
+                # A drawing tool chosen now: the Camera view runs the Drawing family (SI-148).
+                await t.cmd("tool.active.set", {"toolId": "brush"})
+                await t.cmd("tool.active.set", {"toolId": "select"})
+                # The last item (Break Text Apart) enabled: a text object and a rectangle, both selected.
+                await t.cmd("draw.rectangle.add", {"from": {"x": -60, "y": -40}, "to": {"x": 60, "y": 40}, "layer": "new"})
+                await t.cmd("draw.text.add", {"position": {"x": -40, "y": 60}, "text": "Ab"})
+                await t.cmd("draw.selection.set", {"by": "all"})
+                await asyncio.sleep(0.6)
+                key(0x1B)
+                canvas = t.cdp.js("(() => { const r = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')"
+                                  ".getBoundingClientRect(); return {l: r.left, t: r.top, r: r.right, b: r.bottom,"
+                                  " dpr: window.devicePixelRatio || 1}; })()" % json.dumps(f"{view}.canvas"))
+                x, y = ((canvas["l"] + canvas["r"]) / 2, (canvas["t"] + canvas["b"]) / 2) if corner == "centre" else (
+                    canvas["r"] - 12, canvas["b"] - 12)
+                sx, sy = screen_of({"dpr": canvas["dpr"]}, x, y)
+                right_click_screen(sx, sy)
+                menu_id = f"{view}.drawingMenu"
+                geo, opened = await until(menu_id, lambda g: g["items"] and not all(i["disabled"] for i in g["items"]), 5.0)
+                if not geo:
+                    raise RuntimeError(f"the menu did not open: {menu_id}")
+                w, hh = geo["area"]["w"], geo["area"]["h"]
+                case = {"size": size_name, "view": view, "openedAt": {"x": x, "y": y}, "area": geo["area"],
+                        "menu": geo["menu"], "arrows": geo["arrows"], "scrolls": geo["scrolls"],
+                        "items": len(geo["items"])}
+                boxes_ok = inside(geo["menu"], w, hh) and all(inside(a["box"], w, hh) for a in geo["arrows"])
+                case["outerBoxAndArrowsInside"] = boxes_ok
+                last_index = len(geo["items"]) - 1
+                checks = {}
+                if geo["scrolls"]:
+                    # The real keyboard: End focuses the last item, fully inside the visible items; Home the first.
+                    key(0x23)
+                    g, _ = await until(menu_id, lambda g: g["focused"] == g["items"][-1]["id"], 3.0)
+                    checks["endShowsLast"] = bool(g) and g["focused"] == g["items"][-1]["id"] and shows(g["items"][-1], g) \
+                        and inside(g["items"][-1]["box"], w, hh)
+                    key(0x24)
+                    g, _ = await until(menu_id, lambda g: g["focused"] == g["items"][0]["id"] and g["scrollTop"] == 0, 3.0)
+                    checks["homeShowsFirst"] = bool(g) and g["scrollTop"] == 0 and shows(g["items"][0], g)
+                    # A real click on the lower arrow scrolls (the pointer leaves it before the hold would start).
+                    down = next(a for a in geo["arrows"] if a["dir"] == "down")
+                    ax, ay = screen_of(geo, *centre(down["box"]))
+                    lx, ly = screen_of(geo, *centre(geo["list"]))
+                    u32.SetCursorPos(int(ax), int(ay))
+                    time.sleep(0.03)
+                    _send_mouse(0x0002)
+                    time.sleep(0.03)
+                    _send_mouse(0x0004)
+                    u32.SetCursorPos(int(lx), int(ly))
+                    g, moved = await until(menu_id, lambda g: g["scrollTop"] > 0, 2.0)
+                    checks["arrowClickScrolls"] = moved
+                    case["afterArrowClick"] = g["scrollTop"] if g else None
+                    # The real wheel: up to the top, then down until the last item shows.
+                    wheel_screen(lx, ly, -10)
+                    g, top = await until(menu_id, lambda g: g["scrollTop"] == 0, 2.0)
+                    checks["wheelUpScrolls"] = top
+                    reached = False
+                    for _ in range(40):
+                        wheel_screen(lx, ly, 1)
+                        g = geometry(menu_id)
+                        if g and shows(g["items"][-1], g):
+                            reached = True
+                            break
+                    checks["wheelDownReachesLast"] = reached
+                    wheel_screen(lx, ly, -40)
+                    # The pointer resting on the lower arrow scrolls until the last item shows.
+                    u32.SetCursorPos(int(ax), int(ay))
+                    g, rested = await until(menu_id, lambda g: shows(g["items"][-1], g), 15.0)
+                    checks["arrowHoverReachesLast"] = rested
+                    geo = g or geometry(menu_id)
+                last = geo["items"][last_index]
+                checks["lastShows"] = (not geo["scrolls"] or shows(last, geo)) and inside(last["box"], w, hh)
+                await asyncio.sleep(0.3)
+                t.clear()
+                cx, cy = screen_of(geo, *centre(last["box"]))
+                click_screen(cx, cy)
+                await asyncio.sleep(1.0)
+                sent = [c for c in t.recorded() if t.kinds.get(c.get("command")) != "query"]
+                want = [{"command": last["command"], "params": last["params"]}]
+                gone = t.cdp.js("!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % json.dumps(menu_id))
+                ok = (boxes_ok and all(checks.values()) and not last["disabled"] and sent == want and bool(gone))
+                case.update({"checks": checks, "last": last, "input": "real scrolling, then a real OS click",
+                             "sent": sent, "expected": want, "closed": gone, "ok": ok})
+                cases.append(case)
+                key(0x1B)
+                await e2e.run_cmd(t.s, "draw.selection.set", {"by": "none"})
+        # The window back at the product's size for the rows after this one.
+        u32.SetWindowPos(front(), 0, 0, 0, 1280, 800, 0x0002 | 0x0004)
+        await asyncio.sleep(1.0)
+        ok_all = len(cases) == 2 * len(MENU_SIZES) and all(c["ok"] for c in cases)
         rec.update({"cases": cases, "ok": ok_all})
-        t.run.check(ok_all, f"D-39 {rec['name']}: every item inside the client area, the last activated by a real click",
-                    cases)
+        t.run.check(ok_all, f"D-39 {rec['name']}: the outer box and arrows inside, scrolled by real input, the last item "
+                    "activated by a real click", cases)
     except Exception as ex:  # noqa: BLE001
         rec.update({"ok": False, "error": repr(ex), "cases": cases})
         t.run.check(False, f"D-39 {rec['name']}: ran", repr(ex))

@@ -191,6 +191,8 @@ select:focus-visible {
   z-index: 50;
   display: flex;
   flex-direction: column;
+  /* D-66 item 1: the placement's bounds are the outer box's (border and padding included). */
+  box-sizing: border-box;
   min-width: 180px;
   padding: 4px;
   background: var(--tt-surface);

@@ -264,3 +264,34 @@ describe("the views' context menus (02 §4.4; D-40 answers 11, 12)", () => {
     expect(h.sent.some((s) => s.command.startsWith('gesture'))).toBe(false);
   });
 });
+
+// D-66 item 3: Shift+F10 opens the focused control's context menu, as the context-menu key does (the platform's
+// convention for keyboard reach). The dispatcher's function-key guard had cancelled the browser's own event for it.
+describe('Shift+F10 (D-66 item 3)', () => {
+  it("opens the focused dock tab's checklist and the focused view's menu at the control, sending nothing", async () => {
+    const h = await app();
+    const tab = await waitFor(() => el('tab.colour'));
+    tab.focus();
+    const before = h.actions().length;
+    let kept = true;
+    act(() => {
+      kept = fireEvent.keyDown(tab, { key: 'F10', code: 'F10', shiftKey: true });
+    });
+    // Consumed: the browser does not act on it a second time.
+    expect(kept).toBe(false);
+    const menu = await screen.findByRole('menu', { name: 'Panels' });
+    expect(menu.contains(document.activeElement)).toBe(true);
+    act(() => {
+      fireEvent.keyDown(menu, { key: 'Escape' });
+    });
+    await waitFor(() => {
+      expect(screen.queryByRole('menu')).toBeNull();
+    });
+    const view = await waitFor(() => el('cameraView.canvas'));
+    act(() => {
+      fireEvent.keyDown(view, { key: 'F10', code: 'F10', shiftKey: true });
+    });
+    expect(await screen.findByRole('menu', { name: 'Scene' })).toBeTruthy();
+    expect(h.actions().slice(before)).toEqual([]);
+  });
+});

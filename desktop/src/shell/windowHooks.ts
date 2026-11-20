@@ -24,10 +24,61 @@ export function isBrowserAccelerator(seq: string): boolean {
 export function isTextField(el: EventTarget | null): boolean {
   if (!(el instanceof HTMLElement)) return false;
   if (el.isContentEditable) return true;
+  // Editable by its own attribute (also where `isContentEditable` is not computed).
+  const editable = el.getAttribute('contenteditable');
+  if (editable !== null && editable !== 'false') return true;
   if (el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement) return true;
   return (
     el instanceof HTMLInputElement && !['checkbox', 'radio', 'button', 'submit', 'reset'].includes(el.type)
   );
+}
+
+const ARROWS = ['Left', 'Right', 'Up', 'Down'];
+
+/** The platform's text-editing chords (01 §8.4: "platform text-editing shortcuts act on the focused text field"; ruling
+ *  D-66 item 2): select all, cut, copy, paste, undo and redo of the field's own text, word and line navigation and
+ *  selection, word deletion. Keys without Primary, Ctrl or Alt (characters, Shift with a character, Home, End, Delete,
+ *  Backspace, the arrows, Enter, Escape) are the field's anyway. */
+const TEXT_EDITING: Readonly<Record<'mac' | 'other', ReadonlySet<string>>> = {
+  other: new Set([
+    ...['A', 'X', 'C', 'V', 'Z', 'Y', 'Insert', 'Backspace', 'Delete', 'Home', 'End', ...ARROWS].map(
+      (k) => `Primary+${k}`,
+    ),
+    ...['Z', 'Home', 'End', ...ARROWS].map((k) => `Primary+Shift+${k}`),
+    'Alt+Backspace',
+  ]),
+  mac: new Set([
+    ...['A', 'X', 'C', 'V', 'Z', 'Backspace', 'Delete', ...ARROWS].map((k) => `Primary+${k}`),
+    ...['Z', ...ARROWS].map((k) => `Primary+Shift+${k}`),
+    ...['Backspace', 'Delete', ...ARROWS].map((k) => `Alt+${k}`),
+    ...ARROWS.map((k) => `Alt+Shift+${k}`),
+    // The Cocoa text system's Control keys (line start and end, kill, character and line moves).
+    ...['A', 'E', 'K', 'B', 'F', 'N', 'P', 'D', 'H', 'T', 'Y', 'O'].map((k) => `Ctrl+${k}`),
+    ...['A', 'E', 'B', 'F', 'N', 'P'].map((k) => `Ctrl+Shift+${k}`),
+  ]),
+};
+
+/** Whether a key pressed in `target` belongs to the focused text-entry element and never reaches the keymap (ruling
+ *  D-66 item 2, C44A-R2-01): in a text field (the numeric field, text inputs, text areas, an inline rename, anything
+ *  editable) the keys without Primary, Ctrl or Alt, a character typed with AltGr (or Option on macOS), and the
+ *  platform's text-editing chords. Escape and Enter keep the field's own rules (its handlers act on them). Every other
+ *  chord (Save, for one) still reaches the keymap. */
+export function fieldOwnsKey(
+  target: EventTarget | null,
+  seq: string,
+  e: Pick<KeyboardEvent, 'key' | 'altKey' | 'ctrlKey' | 'metaKey'> & {
+    getModifierState?: (k: string) => boolean;
+  },
+  mac: boolean,
+): boolean {
+  if (!isTextField(target)) return false;
+  if (isUnmodified(seq)) return true;
+  // A list box is not text entry: only its typing-ahead (the keys above) is its own.
+  if (target instanceof HTMLSelectElement) return false;
+  const typed = e.key.length === 1 && e.key !== ' ';
+  if (typed && e.getModifierState?.('AltGraph') === true) return true;
+  if (typed && mac && e.altKey && !e.metaKey && !e.ctrlKey) return true;
+  return TEXT_EDITING[mac ? 'mac' : 'other'].has(seq);
 }
 
 /** Engine events applied in order; a resync at start and after a gap (IPC freshness). */
@@ -79,8 +130,9 @@ function isActivatable(el: EventTarget | null): boolean {
   );
 }
 
-/** Shortcuts (01 §8.4): the kernel's keymap decides; a text field keeps unmodified keys. Keys inside a modal dialog or
- *  message box are the dialog's (its buttons, its Escape), and Enter or Space on a focused control activates it: the
+/** Shortcuts (01 §8.4): the kernel's keymap decides; a text field keeps its keys (`fieldOwnsKey`, D-66 item 2: the
+ *  platform's text-editing keys act on the field and never reach the keymap, in a dialog too). Keys inside a modal dialog
+ *  or message box are the dialog's (its buttons, its Escape), and Enter or Space on a focused control activates it: the
  *  keymap's Enter (Play) once took a message box's default button's Enter (found by the D-39 table, C4.3b round 3). */
 export function useShortcuts(
   services: ShellServices,
@@ -93,8 +145,8 @@ export function useShortcuts(
       if (e.defaultPrevented) return;
       const seq = sequenceOf(e, mac);
       if (!seq) return;
-      const field = isTextField(e.target);
-      if (field && isUnmodified(seq)) return;
+      // The field's own: not consumed, so the browser's text editing acts on it (Primary+A selects its text).
+      if (fieldOwnsKey(e.target, seq, e, mac)) return;
       // D-49 item 3: no key reaches the keymap while an application modal is open, wherever the focus is (decided by
       // the modal being open, not by the event's target); the page's own accelerators (reload, print) stay off.
       if (anyModalOpen()) {
@@ -102,6 +154,15 @@ export function useShortcuts(
         return;
       }
       if ((seq === 'Enter' || seq === 'Space') && isActivatable(e.target)) return;
+      // D-66 item 3: Shift+F10 opens the focused control's context menu, as the context-menu key does (the platform's
+      // keyboard reach, 01 §5.4). The function-key guard below would cancel the browser's own `contextmenu` for it, so
+      // the same event is sent to the focused control here (no pointer position: the menu opens at the control).
+      if (seq === 'Shift+F10') {
+        e.preventDefault();
+        const at = e.target instanceof Element ? e.target : document.activeElement;
+        at?.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 0, clientY: 0 }));
+        return;
+      }
       const bound = keymap.some((b) => b.keys === seq);
       if (!bound && !isBrowserAccelerator(seq)) return;
       e.preventDefault();

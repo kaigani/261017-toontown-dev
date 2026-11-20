@@ -22,6 +22,19 @@ context menus. The Preferences dialog's Agent access category is with the other 
 - **Keyboard reach.** Every control is reachable with Tab and Shift+Tab in reading order, operable with Space or Enter,
   arrows in lists and sliders (Page Up and Down for coarse steps), Escape leaves an edit unchanged. Each panel's manual
   script (`reviews/manual/M4/C4.4a-keyboard.md`) walks it with the keyboard only.
+- **A text field keeps its editing keys (ruling D-66 item 2, C44A-R2-01; 01 §8.4).** With the focus in any text-entry
+  element (the numeric field, a text input, a text area, an inline rename, anything editable), the platform's
+  text-editing keys belong to the field and never reach the keymap: select all, cut, copy, paste, undo and redo of the
+  field's own text, word and line navigation and selection, word deletion, Home, End, Delete, Backspace, and plain
+  characters, tool letters included; a character typed with AltGr (or Option on macOS) too. Escape and Enter keep the
+  field's own rules. Other chords (Save) still reach the keymap; inside a dialog none does (D-49 item 3). The decision is
+  made in one place, `fieldOwnsKey` in the key dispatcher (`windowHooks.ts`), ahead of the dialog guard, which had also
+  cancelled Ctrl+A in the Preferences fields. Tests: `textFieldKeys.test.tsx` (the rule over every key and element kind
+  on both platforms; each key in each text-entry kind and in every text field the main window renders, its default kept
+  and nothing sent; Save still dispatched; the Preferences numeric fields inside the modal), and the D-39 rows "Pen panel
+  › Maximum size", "Pen panel › rename" and "Preferences › search" (text-editing keys): the real Ctrl+A selects the
+  whole text and a typed key replaces it, the real B types "b", the real Ctrl+Z leaves the document's history where it
+  was, nothing is sent.
 - **Disabled rather than hidden.** A control whose command the kernel refuses now is shown disabled with the refusal's
   reason as its tooltip, from the shared availability store (`useAvailability`, ruling O-10, C43B-R1S-09). A control
   appears or goes only with its surface (a project, a selection that gives the inspector a drawing).
@@ -209,6 +222,31 @@ the panel marking fonts that are not bundled, and asks for the ruling.
   reported 499,454 case, a menu taller and one wider than the window, the component's placement and arrows), and the D-39
   row "context menus › inside the client area at 1280 by 800" (both views' menus opened where they would cross an edge,
   every item's box inside the client area, the last item activated by a real click).
+- **At every window size down to the minimum (ruling D-66 item 1, C44A-R1-01 at 800 by 500).** The live run at an 800 by
+  500 client area saw a menu 502 px tall from top 4, its lower arrow at 501, an arrow click that did not scroll and the
+  keyboard's focus moving onto items below the client area. Two causes: the placement's bound was applied as the content
+  box's `max-height`, so the menu's padding and border (10 px) fell outside it; and the menu was measured after every
+  render with its bound removed for a moment, so the items stopped overflowing and the browser dropped their scroll
+  position: every scroll (arrow, wheel, the focus) re-rendered the arrows and jumped back to the top. Now the menu is
+  sized `border-box` (the bound is the outer box's, arrows inside; it has no margin), the items' scroll position is kept
+  across the measurement and a scroll that changes nothing re-renders nothing, and a bounded width overrides the menu's
+  180 px least width (a float's client area can be 160 px wide). An arrow scrolls about three items on a press and, after
+  250 ms resting on it (or held), 12 px every 40 ms until the end or until the pointer leaves; the keyboard's focus (the
+  arrows, Home, End) scrolls the focused item fully into view; the wheel scrolls the items. The least client areas are the
+  main window's 800 by 500 (`tauri.conf.json` `minWidth`, `minHeight`: the host enforces them as the inner size) and a
+  float's 160 by 120 (`floats.rs` `min_inner_size`). Tests: `contextMenuPlacement.test.tsx` (every corner and edge
+  placement at both least sizes; the component at both, the outer box and both arrows inside; an arrow press scrolls and
+  the position survives a new measurement, the wheel's too; resting on an arrow scrolls to the last item and stops when
+  the pointer leaves; the keyboard's focus keeps each item fully in view, the browser's loss of the position on an
+  unbounded measurement reproduced), and the D-39 row "context menus › inside the client area at 1280 by 800 and at the
+  minimum window size" (the window asked for 320 by 240 and kept at its minimum; both views' menus; the outer box and
+  arrows inside; End and Home by the real keyboard, a real click on the lower arrow, the real wheel, the pointer resting
+  on the arrow; the last item clicked by a real click after that real scrolling, sending its declared reference once).
+- **Shift+F10 (ruling D-66 item 3).** The dispatcher's function-key guard (which keeps the page's own F-key accelerators
+  off) cancelled the browser's `contextmenu` for Shift+F10, so only the context-menu key opened a menu. Shift+F10 now sends
+  the same `contextmenu` event to the focused control (no pointer position: the menu opens at the control), in the
+  dispatcher, before the keymap; in a text field the field keeps it (its own menu). Test: `contextMenu.test.tsx` (the
+  dock tab's checklist and the Camera view's menu opened by Shift+F10, the key consumed, nothing sent).
 - **Each family's edit items name their selection context (ruling D-60 item 2, C44A-R1-02).** 01 §6.4 keeps a selection
   per context, and the Camera view's focus says nothing about which family's menu was opened. The edit items therefore
   send the commands' own `context` parameter (spec A: `auto|drawing|staging|...`) and never rely on focus:
