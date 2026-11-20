@@ -1,0 +1,647 @@
+{
+  "checks": 160,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-hll0m6xt",
+  "results": [
+    {
+      "check": "L1b context inventory (02 4.4 minus deferred Feather Edges) drawingView False",
+      "ok": true
+    },
+    {
+      "check": "L1b context menu entries visible/reachable drawingView False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.cut selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.copy selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.paste selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.selectAll selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b selection effect drawingView.drawingMenu.selectAll",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.deselectAll selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b selection effect drawingView.drawingMenu.deselectAll",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.arrange.front selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.arrange.forward selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.arrange.backward selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.arrange.back selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.flip.horizontal selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.flip.vertical selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.rotate.90cw selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.rotate.90ccw selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.rotate.180 selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.group selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.ungroup selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.flatten selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.optimize selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.smooth selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.centreLine selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.linesToBrush selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.breakApart selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context inventory (02 4.4 minus deferred Feather Edges) drawingView True",
+      "ok": true
+    },
+    {
+      "check": "L1b context menu entries visible/reachable drawingView True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.cut selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.copy selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.paste selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.selectAll selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b selection effect drawingView.drawingMenu.selectAll",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.deselectAll selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b selection effect drawingView.drawingMenu.deselectAll",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.arrange.front selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.arrange.forward selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.arrange.backward selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.arrange.back selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.flip.horizontal selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.flip.vertical selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.rotate.90cw selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.rotate.90ccw selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.rotate.180 selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.group selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.ungroup selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.flatten selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.optimize selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.smooth selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.centreLine selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.linesToBrush selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration drawingView.drawingMenu.breakApart selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context inventory (02 4.4 minus deferred Feather Edges) cameraView False",
+      "ok": true
+    },
+    {
+      "check": "L1b context menu entries visible/reachable cameraView False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.cut selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.copy selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.paste selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.selectAll selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b selection effect cameraView.drawingMenu.selectAll",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.deselectAll selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b selection effect cameraView.drawingMenu.deselectAll",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.arrange.front selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.arrange.forward selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.arrange.backward selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.arrange.back selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.flip.horizontal selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.flip.vertical selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.rotate.90cw selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.rotate.90ccw selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.rotate.180 selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.group selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.ungroup selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.flatten selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.optimize selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.smooth selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.centreLine selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.linesToBrush selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.breakApart selection=False",
+      "ok": true
+    },
+    {
+      "check": "L1b context inventory (02 4.4 minus deferred Feather Edges) cameraView True",
+      "ok": true
+    },
+    {
+      "check": "L1b context menu entries visible/reachable cameraView True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.cut selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.copy selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.paste selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.selectAll selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b selection effect cameraView.drawingMenu.selectAll",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.deselectAll selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b selection effect cameraView.drawingMenu.deselectAll",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.arrange.front selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.arrange.forward selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.arrange.backward selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.arrange.back selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.flip.horizontal selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.flip.vertical selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.rotate.90cw selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.rotate.90ccw selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.rotate.180 selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.group selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.ungroup selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.flatten selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.optimize selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.smooth selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.centreLine selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.linesToBrush selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b context declaration cameraView.drawingMenu.breakApart selection=True",
+      "ok": true
+    },
+    {
+      "check": "L1b Camera scene inventory False",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.cut False",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.copy False",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.paste False",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.selectAll False",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.deselectAll False",
+      "ok": true
+    },
+    {
+      "check": "L1b Camera scene inventory True",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.cut True",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.copy True",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.paste True",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.selectAll True",
+      "ok": true
+    },
+    {
+      "check": "L1b scene declaration cameraView.sceneMenu.deselectAll True",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist present",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.cameraView",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.cameraView",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.drawingView",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.topView",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.topView",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.sideView",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.sideView",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.timeline",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.timeline",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.xsheet",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.xsheet",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.functionEditor",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.functionEditor",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.properties",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.properties",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.colour",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.colour",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.pen",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.pen",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.text",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.text",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.cells",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.cells",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.library",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.library",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.storyline",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.storyline",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.sceneManager",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.sceneManager",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.effectPreview",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.effectPreview",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.motionRecording",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.motionRecording",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.lipSync",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.lipSync",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.history",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.history",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.activity",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.activity",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.soundEditor",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.soundEditor",
+      "ok": true
+    },
+    {
+      "check": "L1b dock checklist declaration panelChecklist.capture",
+      "ok": true
+    },
+    {
+      "check": "L1b dock visibility effect panelChecklist.capture",
+      "ok": true
+    }
+  ]
+}
