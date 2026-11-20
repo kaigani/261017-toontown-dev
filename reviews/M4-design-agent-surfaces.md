@@ -201,11 +201,12 @@ receives the user's decision". Proposal:
    **As built after ruling D-65 item 1.** A held call never runs on the request path. When no waiting slot is free,
    the call is refused at once with the limit error the job waits already use (11 §6.5: `limit.exceeded`, details
    `{limit: "concurrentJobWaits", value: 4}`, nothing run), and its pending confirmation is retired before the app is
-   asked (declined through `agent.confirmation.respond`, so its token can never be used and the sheet never shows a
-   request nobody waits on); the request path stays free. Tests: `c44a_in_app_confirmation.rs` (a read answered while
+   asked: declined through `agent.confirmation.respond`, then settled with its token as a declined elicitation is (the
+   re-invocation answers `confirmation.declined` and runs nothing), so it leaves `agent.server.status`'s pending list,
+   the sheet never shows a request nobody waits on and its token can never be used; the request path stays free. Tests: `c44a_in_app_confirmation.rs` (a read answered while
    a call is held; two held calls of one session both shown before either is answered, each with its own outcome; four
    held calls, a fifth refused with `limit.exceeded` within 5 s, then a read answered within 5 s, the sheet showing
-   four); the D-44 row "Confirmation sheet › three queued" with sessions A, B, A showing "1 of 3" and a read of B
+   four, the pending list holding only the four, the refused export having written nothing); the D-44 row "Confirmation sheet › three queued" with sessions A, B, A showing "1 of 3" and a read of B
    answered while the requests are open.
 3. **A token of an in-app request is usable only after an accept** (kernel gap 3). `take` refuses it while the decision
    is open (`confirmation.expired` with reason "waiting for the user's answer in the app"). Today an agent that reads the

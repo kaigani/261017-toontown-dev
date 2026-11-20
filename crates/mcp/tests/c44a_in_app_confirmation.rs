@@ -209,6 +209,10 @@ fn a_fifth_held_call_is_refused_and_the_request_path_stays_free() {
     let answered = c.wait(read, Duration::from_secs(5));
     assert!(answered.is_some_and(|m| m.get("error").is_none()), "the read is answered while four calls are held");
     assert_eq!(shown(&h).len(), 4, "the refused call's confirmation is not shown");
+    // Retired, not merely hidden: the pending list holds the four held requests only, and the fifth export ran nothing.
+    let status = h.invoke(tt_executor::Invocation::user("agent.server.status", json!({}))).result.unwrap();
+    assert_eq!(status["pendingConfirmations"].as_array().unwrap().len(), 4, "{status}");
+    assert_eq!(std::fs::read_to_string(dir.join("fifth.jsonl")).unwrap(), "x", "the refused export wrote nothing");
     for id in shown(&h) {
         respond(&h, &id, false);
     }

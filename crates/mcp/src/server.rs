@@ -1109,10 +1109,10 @@ fn call_tool(
                     // No thread could start: the request was marked, so retiring it also takes it off the sheet.
                     lock(&shared.deferred).remove(&rid.to_string());
                     shared.waits.fetch_sub(1, Ordering::AcqRel);
-                    env = refuse_unheld(shared, &token);
+                    env = refuse_unheld(shared, &token, inv.clone());
                     cached = false;
                 } else if in_app && !slot {
-                    env = refuse_unheld(shared, &token);
+                    env = refuse_unheld(shared, &token, inv.clone());
                     cached = false;
                 } else if let Some(accepted) = elicit(shared, &env, rid)
                     // A request cancelled before acting on the answer does nothing: the token stays pending, unused.
@@ -1417,13 +1417,16 @@ fn in_app_applies(shared: &Shared, origin: &Origin) -> bool {
     shared.handle.attached() && shared.handle.agent_status(session).is_ok_and(|s| s.limits.ask_in_app)
 }
 
-/// D-65 item 1: an in-app confirmation with no waiting thread for its held call. The confirmation is retired (declined,
-/// so its token can never be used and the sheet never shows it) and the call is refused at once with the job waits'
-/// limit error (11 §6.5): nothing was run.
-fn refuse_unheld(shared: &Shared, token: &str) -> Envelope {
+/// D-65 item 1: an in-app confirmation with no waiting thread for its held call. The confirmation is retired: declined,
+/// then settled with its token as a declined elicitation is (the re-invocation answers `confirmation.declined` and runs
+/// nothing), so it leaves the pending list, the sheet never shows it and its token can never be used. The call is
+/// refused at once with the job waits' limit error (11 §6.5): nothing was run.
+fn refuse_unheld(shared: &Shared, token: &str, mut inv: Invocation) -> Envelope {
     let _ = shared
         .handle
         .invoke(Invocation::user("agent.confirmation.respond", json!({ "confirmationId": token, "accept": false })));
+    inv.options.confirm_token = Some(token.to_owned());
+    let _ = shared.handle.invoke(inv);
     envelope_error(
         "limit.exceeded",
         format!(
