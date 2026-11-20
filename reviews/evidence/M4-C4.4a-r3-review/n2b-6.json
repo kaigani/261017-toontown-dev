@@ -1,5 +1,5 @@
 {
-  "checks": 10,
+  "checks": 13,
   "results": [
     {
       "check": "D-66 dock checklist",
@@ -2225,7 +2225,76 @@
           "h": 120
         }
       }
+    },
+    {
+      "check": "D-66 other menu bounds mainToolbar",
+      "ok": true,
+      "detail": {
+        "surface": "mainToolbar",
+        "customMenu": null,
+        "popups": [
+          {
+            "x": 416,
+            "y": 88,
+            "right": 686,
+            "bottom": 304,
+            "nativeMenu": false
+          }
+        ],
+        "client": {
+          "x": 38,
+          "y": 81,
+          "right": 838,
+          "bottom": 581
+        }
+      }
+    },
+    {
+      "check": "D-66 other menu bounds pen.row.pen_01M7WK9XK6D2M3T8NY6EA424JF",
+      "ok": true,
+      "detail": {
+        "surface": "pen.row.pen_01M7WK9XK6D2M3T8NY6EA424JF",
+        "customMenu": null,
+        "popups": [
+          {
+            "x": 543,
+            "y": 326,
+            "right": 813,
+            "bottom": 542,
+            "nativeMenu": false
+          }
+        ],
+        "client": {
+          "x": 38,
+          "y": 81,
+          "right": 838,
+          "bottom": 581
+        }
+      }
+    },
+    {
+      "check": "D-66 other menu bounds text.font",
+      "ok": false,
+      "detail": {
+        "surface": "text.font",
+        "customMenu": null,
+        "popups": [
+          {
+            "x": 587,
+            "y": 326,
+            "right": 890,
+            "bottom": 726,
+            "nativeMenu": false
+          }
+        ],
+        "client": {
+          "x": 38,
+          "y": 81,
+          "right": 838,
+          "bottom": 581
+        }
+      }
     }
   ],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-e6e1uuyg"
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-t_80_od8"
 }

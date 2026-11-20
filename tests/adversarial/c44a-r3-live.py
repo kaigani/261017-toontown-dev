@@ -338,8 +338,11 @@ async def fields(t,step):
   if kind=='toolbar':d.choose_menu(['Window','Customize Toolbar']);await r2.pause();return 'toolbarSheet.filter'
   if kind=='new':
    await r1.r3.preserve_fixture(t);d.choose_menu(['File','New Project']);await r2.pause();return 'newProject.name'
+  if kind=='inspector':
+   await c('window.panel.set',{'panelId':'properties','visible':True});await r2.pause();t.click('properties.page.drawing');await r2.pause();return 'inspector.name'
   d.choose_menu(['File','Project Properties']);await r2.pause();return 'projectProperties.frameRate'
- for kind in ('pen','rename','font','search','pref','keymap','new','props','toolbar'):
+ for kind in ('pen','rename','font','search','pref','keymap','new','props','toolbar','inspector'):
+  if __import__('os').environ.get('C44_N2_FIELD_ONLY') and kind!=__import__('os').environ['C44_N2_FIELD_ONLY']:continue
   await c('draw.rectangle.add',{'from':{'x':0,'y':0},'to':{'x':10,'y':10}});await c('edit.selectAll')
   ident=await openfield(kind);await r1.r3.wait(t,ident)
   inventory=t.cdp.js('[...document.querySelectorAll("input,textarea,[contenteditable=true]")].map(e=>({id:e.dataset.ttId,type:e.type,disabled:e.disabled}))')
@@ -377,7 +380,7 @@ async def fields(t,step):
    d.key(0x41,0x11);d.type_text('7' if kind in ('pen','pref','props') else 'Review name');d.key(0x1B);await r2.pause()
    t.run.save('escape-'+kind+'.json',{'old':old,'after':r2.dom(t,ident),'commands':t.recorded(),'dialog':t.cdp.js('document.querySelector("[role=dialog]")?.dataset.ttId')})
    # Numeric and rename fields have an explicit restoration contract; staged forms use their modal Cancel.
-   if kind in ('pen','pref','props','rename'):t.run.check(not r2.sent(t) and (r2.dom(t,ident)==old or kind in ('rename','pref','props') and r2.dom(t,ident) is None),'D-61 Escape '+kind,{'after':r2.dom(t,ident),'commands':t.recorded()})
+   if kind in ('pen','pref','props','rename','inspector'):t.run.check(not r2.sent(t) and (r2.dom(t,ident)==old or kind in ('rename','pref','props') and r2.dom(t,ident) is None),'D-61 Escape '+kind,{'after':r2.dom(t,ident),'commands':t.recorded()})
    ident=await openfield(kind);await r1.r3.wait(t,ident);t.click(ident);t.clear();d.key(0x41,0x11);d.type_text('8' if kind in ('pen','pref','props') else 'Review name');d.key(0x0D);await r2.pause()
    if r2.dom(t,ident) is not None:d.key(0x09);await r2.pause()
    t.run.save('enter-'+kind+'.json',{'after':r2.dom(t,ident),'commands':t.recorded()})
@@ -410,7 +413,7 @@ if __name__=='__main__' and sys.argv[1] in ('n2a','n2b'):
    subprocess.run(['git','checkout','--','reviews/evidence/M4-C4.4a-r2-review'],check=True)
   (r1.EVID/'n2b-5-earlier.json').write_text(json.dumps(earlier,indent=2)+'\n',encoding='utf-8',newline='\n')
  r1.live_body=fields if case=='n2a' else menu_extra if step in (5,6) else body
- logical=str(step)+('-reload' if __import__('os').environ.get('C44_N2_RELOAD_ONLY') else '')
+ logical=str(step)+('-reload' if __import__('os').environ.get('C44_N2_RELOAD_ONLY') else '')+('-'+__import__('os').environ['C44_N2_FIELD_ONLY'] if __import__('os').environ.get('C44_N2_FIELD_ONLY') else '')
  if case=='n2b' and step==7:step=8
  old_receipt=r1.EVID/('step'+str(step)+'.json');saved=old_receipt.read_bytes() if old_receipt.exists() else None
  result=r1.live(step)
