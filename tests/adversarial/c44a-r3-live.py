@@ -296,7 +296,7 @@ async def menu_extra(t,step):
    def one(h,_):
     if d.u32.IsWindowVisible(h):
      b=wintypes.RECT();d.u32.GetWindowRect(h,ctypes.byref(b));name=ctypes.create_unicode_buffer(256);d.u32.GetClassNameW(h,name,256)
-     if b.right>b.left and b.bottom>b.top and 'tooltip' not in name.value.lower():found[int(h)]={'x':b.left,'y':b.top,'right':b.right,'bottom':b.bottom,'nativeMenu':name.value=='#32768'}
+     if b.right>b.left and b.bottom>b.top and 'tooltip' not in name.value.lower():found[int(h)]={'x':b.left,'y':b.top,'right':b.right,'bottom':b.bottom,'classicMenuClass':name.value=='#32768'}
     return True
    d.u32.EnumWindows(callback(one),0);return found
   other=[]

@@ -10,7 +10,7 @@
           "y": 88,
           "right": 686,
           "bottom": 304,
-          "nativeMenu": false
+          "classicMenuClass": false
         }
       ],
       "client": {
@@ -29,7 +29,7 @@
           "y": 326,
           "right": 813,
           "bottom": 542,
-          "nativeMenu": false
+          "classicMenuClass": false
         }
       ],
       "client": {
@@ -48,7 +48,7 @@
           "y": 326,
           "right": 890,
           "bottom": 726,
-          "nativeMenu": false
+          "classicMenuClass": false
         }
       ],
       "client": {

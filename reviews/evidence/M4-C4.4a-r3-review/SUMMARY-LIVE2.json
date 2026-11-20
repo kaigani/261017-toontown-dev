@@ -1,0 +1,91 @@
+{
+  "product": "16802673",
+  "base": "f255e9f0",
+  "verdicts": {
+    "N2a": "APPROVE",
+    "N2b": "REQUEST CHANGES"
+  },
+  "steps": [
+    {
+      "step": 1,
+      "result": "PASS",
+      "earlierChecks": [
+        160,
+        120,
+        8
+      ]
+    },
+    {
+      "step": 2,
+      "result": "PASS",
+      "fieldKinds": 10,
+      "checks": 40
+    },
+    {
+      "step": 3,
+      "result": "PASS",
+      "fieldKinds": 10,
+      "checks": 20
+    },
+    {
+      "step": 4,
+      "result": "PASS",
+      "fieldKinds": 10,
+      "checks": 15
+    },
+    {
+      "step": 5,
+      "result": "PASS",
+      "earlierChecks": [
+        70,
+        7,
+        72
+      ],
+      "independentChecks": 34
+    },
+    {
+      "step": 6,
+      "result": "FAIL",
+      "finding": "C44A-R3-20",
+      "checks": 13,
+      "failed": 1
+    },
+    {
+      "step": 7,
+      "result": "PASS",
+      "validCaptures": 200,
+      "maskedOrTokenAbsent": 200,
+      "safelyRefused": 0,
+      "revealed": 0,
+      "leaveRequestDelayMs": [
+        0,
+        15
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "C44A-R3-20",
+      "severity": "P2",
+      "case": "N2b",
+      "step": 6,
+      "rule": "D-66 item 1",
+      "reproductions": 2,
+      "overflowPixels": {
+        "right": 52,
+        "bottom": 145
+      }
+    }
+  ],
+  "closures": {
+    "C44A-R2-01 on Windows": "CLOSED",
+    "C44A-R1-01": "NOT CLOSED",
+    "C44A-R1-41": "not reproduced live; static finding stands"
+  },
+  "cleanup": {
+    "applicationClosed": true,
+    "independentClientsClosed": true,
+    "temporaryServerClosed": true
+  },
+  "report": "reviews/M4-C4.4a-r3.md"
+}
