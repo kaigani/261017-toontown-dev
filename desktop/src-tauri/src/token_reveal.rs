@@ -426,7 +426,7 @@ mod tests {
             for x in 0..w {
                 let i = ((y * w + x) * 4) as usize;
                 let inside = (10..20).contains(&x) && (4..10).contains(&y);
-                assert_eq!(&px[i..i + 4] == OVERPAINT_RGBA, inside, "pixel {x},{y}");
+                assert_eq!(px[i..i + 4] == OVERPAINT_RGBA, inside, "pixel {x},{y}");
             }
         }
         // Clamped at the image's edges.
