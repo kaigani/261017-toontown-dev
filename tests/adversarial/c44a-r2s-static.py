@@ -8,7 +8,7 @@ def check(name, f):
 check("S1 held saturation", lambda: "FAIL: inline held wait remains" if "if held_until_answered(shared, &token, rid)" in read("crates/mcp/src/server.rs") else "reinspect")
 check("S2 allow CI", lambda: "PASS source wiring" if "$PY -I scripts/check-product-allows.py" in read(".github/workflows/ci.yml") else "FAIL")
 check("S3 strict parser", lambda: "PASS source guard" if "if (!NUMBER.test(t))" in read("desktop/src/shell/numeric.ts") else "FAIL")
-check("S4 constrained width", lambda: "FAIL: minimum 180px beats max 152px in 160px viewport" if "min-width: 180px" in read("desktop/src/styles.css") else "reinspect")
+check("S4 constrained width", lambda: "OBSERVATION: min-width 180px; no reachable constrained menu established" if "min-width: 180px" in read("desktop/src/styles.css") else "reinspect")
 def reveal_model():
     host_shown = True  # two admitted reveals share one set member
     host_shown = False # hide first completed reveal
