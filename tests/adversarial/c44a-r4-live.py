@@ -290,7 +290,7 @@ async def body(t,step):
    ImageGrab.grab().save(t.out/'page-800.png')
    rail=bounds('toolPalettes');o=wintypes.POINT();d.u32.ClientToScreen(d.front(),ctypes.byref(o));scale=t.cdp.js('devicePixelRatio');d.u32.SetCursorPos(round(o.x+(rail['x']+rail['width']/2)*scale),round(o.y+(rail['y']+rail['height']/2)*scale))
    for _ in range(20):d.u32.mouse_event(0x800,0,0,ctypes.c_ulong(-120).value,0);await asyncio.sleep(.02)
-   last=t.cdp.js("[...document.querySelectorAll('.tool-rail button')].at(-1)?.dataset.ttId");rr=bounds(last);t.run.check(rr['bottom']<=rail['bottom'],'D-68 last tool wheel-visible',{'last':last,'rect':rr,'rail':rail});t.clear();t.click(last);await r2.pause();t.run.check(bool(r2.sent(t)),'D-68 last tool chosen',r2.sent(t))
+   last=t.cdp.js("[...document.querySelectorAll('.tool-rail button')].at(-1)?.dataset.ttId");rr=bounds(last);t.run.check(rr['bottom']<=rail['bottom'],'D-68 last tool wheel-visible',{'last':last,'rect':rr,'rail':rail});t.clear();t.click(last);await r2.pause();sent=r2.sent(t);active=await c('tool.active.get');t.run.check(bool(sent) and active.get('toolId')==last.split('.')[-1],'D-68 last tool chosen',{'commands':sent,'active':active})
    await c('window.panel.set',{'panelId':'pen','visible':True});await r2.pause()
    d.choose_menu(['File','Preferences']);await r2.pause();t.click('preferences.category.keyboard');await r2.pause();t.click('keymap.filter');d.type_text('edit.selectAll');await r2.pause();t.click('keymap.command.edit.selectAll');await r2.pause();t.click('keymap.capture');d.key(0x75);await r2.pause()
    if dom('keymap.conflict.override','e.textContent') is not None:t.click('keymap.conflict.override')
