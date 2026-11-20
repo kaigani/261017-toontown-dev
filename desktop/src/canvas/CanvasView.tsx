@@ -48,6 +48,7 @@ import { CanvasModel } from './model';
 import { ContextMenu } from '../shell/ContextMenu';
 import { menuAt, type MenuAt } from '../shell/contextMenuModel';
 import { isMac } from '../keys/sequence';
+import { sceneFamilyChosen } from './toolFamily';
 import { DRAWING_MENU, SCENE_MENU } from './viewMenus';
 import { selectionCursor, selectionOverlay, type SelectionOverlay } from './selection';
 import type { Renderer } from './renderer';
@@ -138,7 +139,8 @@ export function CanvasView({
     // The Camera view (camera-view note §6): the scene tool and family (SI-148, SI-152: a new session runs the scene
     // tools, Select), the active view for click-to-activate (V9), the drawing mapping asked again per scene revision.
     let sceneTool = 'select';
-    let sceneFamily = true;
+    // The family chosen last in this window, even before this canvas mounted (SI-148).
+    let sceneFamily = sceneFamilyChosen();
     // Where a secondary press went down (design note 1 §9); the menu opens at its release unless it was dragged.
     let secondary: { x: number; y: number } | null = null;
     const mac = isMac();

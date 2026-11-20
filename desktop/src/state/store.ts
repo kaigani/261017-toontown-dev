@@ -5,6 +5,7 @@
 // freshness) and a gap in the numbering triggers a full resync.
 import type { EngineApi, EngineEvent, Envelope } from '../ipc';
 import { refKey, type Availability, type CommandRef } from '../shell/availability';
+import { noteToolFamily, resetToolFamily } from '../canvas/toolFamily';
 
 /** A slice name and the query that fills it. */
 export const SLICES = {
@@ -115,6 +116,7 @@ export interface Store {
 }
 
 export function createStore(engine: EngineApi): Store {
+  resetToolFamily();
   let state: StoreState = { slices: {}, errors: {}, seq: 0, generation: 0, acting: [] };
   const listeners = new Set<Listener>();
   const hooks = new Set<EventHook>();
@@ -191,6 +193,8 @@ export function createStore(engine: EngineApi): Store {
         return;
       }
       const gap = state.seq !== 0 && event.seq > state.seq + 1;
+      // SI-148: the family chosen last, for a Camera view canvas that mounts later.
+      noteToolFamily(event.name);
       if (event.name === 'shell.agentActing') {
         const p = (event.payload ?? {}) as Record<string, unknown>;
         const text = (v: unknown) => (typeof v === 'string' ? v : '');

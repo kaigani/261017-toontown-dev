@@ -19635,7 +19635,8 @@
     {
       "command": "anim.tool.changed",
       "files": [
-        "desktop/src/canvas/CanvasView.tsx"
+        "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/canvas/toolFamily.ts"
       ]
     },
     {
@@ -21312,6 +21313,7 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/canvas/toolFamily.ts",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/shell/Toolbars.tsx",
