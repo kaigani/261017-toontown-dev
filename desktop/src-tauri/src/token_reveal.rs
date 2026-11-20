@@ -5,8 +5,9 @@
 //! on screen until it is retired, and it is retired only by:
 //! - an acknowledgement (`token_hidden`) the page's window-level controller sends after the replacement has been painted
 //!   (the mask, or the page without the field), never by an unmounting component; or
-//! - the page's bootstrap report that a new document has painted (`page_ready`) after a navigation: the old document's
-//!   deliveries end with its pixels; or
+//! - the page's bootstrap report that a new document has painted (`page_ready`) after a navigation the host has itself
+//!   seen start and finish (its own page-load events), once per navigation (ruling D-72 item 1): the old document's
+//!   deliveries end with its pixels; a report at any other time is ignored; or
 //! - the window's destruction.
 //!
 //! A navigation start retires nothing: it marks the window loading, not capturable, until the new document says it
@@ -44,6 +45,15 @@ pub fn caller_allowed(window: &str) -> bool {
 /// A rectangle `[x, y, width, height]` in the window's CSS pixels.
 pub type Rect = [f64; 4];
 
+/// Where a window's navigation stands, from the host's own page-load events (D-72 item 1).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Navigation {
+    /// Started, not finished: a `page_ready` now is too early.
+    Started,
+    /// Finished: the new document's `page_ready` is awaited (accepted once).
+    Finished,
+}
+
 #[derive(Debug, Default)]
 struct State {
     /// Deliveries not yet retired, with the window each went to.
@@ -52,8 +62,11 @@ struct State {
     next: u64,
     /// Captures in progress.
     capturing: usize,
-    /// Windows between a navigation start and their new document's `page_ready`: not capturable.
+    /// Windows between a navigation start and their new document's accepted `page_ready`: not capturable.
     loading: HashSet<String>,
+    /// D-72 item 1: each window's navigation as the host's own page-load events report it; `page_ready` is accepted
+    /// only in `Finished`, once.
+    navigations: HashMap<String, Navigation>,
     /// Whether the main window's page shows the token field now (`token_field`).
     field: bool,
     /// The last rectangle request's number, and the answers received (`None`: the page has no field).
@@ -118,17 +131,36 @@ impl TokenReveals {
         self.notify();
     }
 
-    /// A navigation started in `window` (a reload): its old document's pixels stay on screen until the new one paints,
-    /// so nothing is retired; the window is not capturable until [`Self::page_ready`].
+    /// A navigation started in `window` (the host's own page-load event; a reload, or the first load): its old
+    /// document's pixels stay on screen until the new one paints, so nothing is retired; the window is not capturable
+    /// until its new document's accepted [`Self::page_ready`].
     pub fn navigation_started(&self, window: &str) {
-        self.lock().loading.insert(window.to_owned());
+        let mut s = self.lock();
+        s.loading.insert(window.to_owned());
+        s.navigations.insert(window.to_owned(), Navigation::Started);
+        drop(s);
         self.notify();
     }
 
-    /// `window`'s new document has painted (its bootstrap's report after the first frame): the old document's
-    /// deliveries end with its pixels, and the window is capturable again.
-    pub fn page_ready(&self, window: &str) {
+    /// The navigation of `window` finished loading (the host's own page-load event): its new document's `page_ready`
+    /// may now be accepted, once.
+    pub fn navigation_finished(&self, window: &str) {
         let mut s = self.lock();
+        if s.navigations.get(window) == Some(&Navigation::Started) {
+            s.navigations.insert(window.to_owned(), Navigation::Finished);
+        }
+    }
+
+    /// `window`'s new document reports it has painted (its bootstrap's report after the first frame). Accepted only for
+    /// a navigation the host saw start and finish, once (D-72 item 1): then the old document's deliveries end with its
+    /// pixels and the window is capturable again. A report with no navigation, before the load finished or a second
+    /// time is ignored and changes nothing. Whether it was accepted.
+    pub fn page_ready(&self, window: &str) -> bool {
+        let mut s = self.lock();
+        if s.navigations.get(window) != Some(&Navigation::Finished) {
+            return false;
+        }
+        s.navigations.remove(window);
         s.loading.remove(window);
         s.outstanding.retain(|_, w| w != window);
         if window == MAIN {
@@ -136,6 +168,7 @@ impl TokenReveals {
         }
         drop(s);
         self.notify();
+        true
     }
 
     /// A destroyed window shows nothing: its deliveries are retired.
@@ -143,6 +176,7 @@ impl TokenReveals {
         let mut s = self.lock();
         s.outstanding.retain(|_, w| w != window);
         s.loading.remove(window);
+        s.navigations.remove(window);
         if window == MAIN {
             s.field = false;
         }
@@ -341,7 +375,10 @@ mod tests {
         let page = r.clone();
         let guard = r.begin_capture(MAIN, Duration::from_secs(5), move || {
             let page = page.clone();
-            std::thread::spawn(move || page.page_ready(MAIN));
+            std::thread::spawn(move || {
+                page.navigation_finished(MAIN);
+                assert!(page.page_ready(MAIN));
+            });
         });
         assert!(guard.is_some(), "granted once the new document has painted");
         drop(guard);
@@ -355,8 +392,42 @@ mod tests {
         r.navigation_started(MAIN);
         assert!(r.begin_capture(MAIN, Duration::from_millis(20), || {}).is_none());
         assert!(r.begin_capture("float-pen", Duration::from_millis(20), || {}).is_some(), "another window is not");
-        r.page_ready(MAIN);
+        r.navigation_finished(MAIN);
+        assert!(r.page_ready(MAIN));
         assert!(r.begin_capture(MAIN, Duration::from_millis(20), || {}).is_some());
+    }
+
+    /// D-72 item 1: `page_ready` carries no identity, so the host accepts it only for a navigation it saw start and
+    /// finish, once. A report with no navigation, between start and finish, or a second time changes nothing: the
+    /// delivery stays outstanding and the field stays protected.
+    #[test]
+    fn page_ready_is_accepted_only_after_a_navigation_the_host_saw_start_and_finish() {
+        let r = TokenReveals::default();
+        let d = r.deliver(MAIN).unwrap();
+        r.field_shown(MAIN, true);
+        let protected = |r: &TokenReveals| r.any() && r.field_present();
+        // No navigation at all (a window that never navigated never accepts one).
+        assert!(!r.page_ready(MAIN));
+        assert!(protected(&r), "a report with no navigation changes nothing");
+        // Between the start and the finish of a navigation.
+        r.navigation_started(MAIN);
+        assert!(!r.page_ready(MAIN));
+        assert!(protected(&r), "a report before the load finished changes nothing");
+        assert!(r.begin_capture(MAIN, Duration::from_millis(20), || {}).is_none(), "still not capturable");
+        // The legitimate order: started, finished, then the report.
+        r.navigation_finished(MAIN);
+        assert!(r.page_ready(MAIN));
+        assert!(!r.any() && !r.field_present(), "the old document's delivery is retired");
+        // A second report for the same navigation changes nothing.
+        let d2 = r.deliver(MAIN).unwrap();
+        r.field_shown(MAIN, true);
+        assert!(!r.page_ready(MAIN));
+        assert!(protected(&r), "a second report changes nothing");
+        // A finish with no start is ignored too.
+        r.navigation_finished(MAIN);
+        assert!(!r.page_ready(MAIN));
+        assert!(protected(&r));
+        let _ = (d, d2);
     }
 
     #[test]

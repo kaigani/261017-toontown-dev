@@ -154,9 +154,10 @@ export interface EngineApi {
   tokenHidden(delivery: number): Promise<void>;
   /** `token-hide`: a window capture is about to run; a shown token must be masked now. */
   onTokenHide(handler: () => void): Promise<Unlisten>;
-  /** `page_ready` (D-69 item 1): this window's document has painted after its bootstrap: the host retires the token
-   *  deliveries of the document it replaced and lets captures of the window through again. */
-  pageReady(): Promise<void>;
+  /** `page_ready` (D-69 item 1, D-72 item 1): this window's document has painted after its bootstrap. Whether the host
+   *  accepted it: only for a navigation it saw start and finish, once; it then retires the token deliveries of the
+   *  document this one replaced and lets captures of the window through again. */
+  pageReady(): Promise<boolean>;
   /** `token_field` (D-69 item 1): the main window shows the token field (`true`, from its mount) or no longer does. */
   tokenField(present: boolean): Promise<void>;
   /** `token_rect` (D-69 item 1): the answer to a `token-rect` request: the field's rectangle in CSS pixels, or `null`. */
@@ -357,7 +358,8 @@ export function createEngineApi(transport: HostTransport): EngineApi {
       });
     },
     async pageReady() {
-      decode(await invoke('page_ready', {}));
+      const v = decode(await invoke('page_ready', {}));
+      return typeof v === 'object' && v !== null && (v as Record<string, unknown>)['accepted'] === true;
     },
     async tokenField(present) {
       decode(await invoke('token_field', { present }));

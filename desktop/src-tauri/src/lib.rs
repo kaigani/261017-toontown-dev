@@ -172,6 +172,13 @@ pub fn run() -> Result<(), DesktopError> {
         .on_window_event(shell::on_window_event)
         // A reloaded page reports from scratch: what the old page reported ends with it (ruling O-9).
         .on_page_load(|webview, payload| {
+            // D-72 item 1: the host's own record of a navigation's finish; only then is the page's `page_ready` taken.
+            if matches!(payload.event(), tauri::webview::PageLoadEvent::Finished) {
+                use tauri::Manager;
+                if let Some(host) = webview.app_handle().try_state::<host::Host>() {
+                    host.reveals.navigation_finished(webview.label());
+                }
+            }
             if matches!(payload.event(), tauri::webview::PageLoadEvent::Started) {
                 use tauri::Manager;
                 if let Some(host) = webview.app_handle().try_state::<host::Host>() {

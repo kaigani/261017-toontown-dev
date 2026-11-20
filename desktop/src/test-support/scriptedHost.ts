@@ -116,6 +116,8 @@ export interface ScriptedHost extends HostTransport {
   tokenHiddenFailures: number;
   /** `page_ready` calls; the `token_field` reports in order; the `token_rect` answers in order. */
   pageReadyCalls: number;
+  /** D-72 item 1: the first `pageReadyRefusals` reports are not accepted (the load had not finished). */
+  pageReadyRefusals: number;
   readonly tokenFieldReports: boolean[];
   readonly tokenRectAnswers: { request: number; rect: unknown }[];
   readonly reports: Record<string, unknown>[];
@@ -153,6 +155,7 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
     tokenHiddenAcks: [],
     tokenHiddenFailures: 0,
     pageReadyCalls: 0,
+    pageReadyRefusals: 0,
     tokenFieldReports: [],
     tokenRectAnswers: [],
     releaseToken() {
@@ -293,7 +296,7 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
         }
         case 'page_ready':
           host.pageReadyCalls += 1;
-          return Promise.resolve({});
+          return Promise.resolve({ accepted: host.pageReadyCalls > host.pageReadyRefusals });
         case 'token_field':
           host.tokenFieldReports.push(json['present'] === true);
           return Promise.resolve({});

@@ -112,8 +112,11 @@ Facts from the code at `93cf2ea9`:
     two frames after the commit that removes it (Hide, leaving the page, closing Preferences), a never-painted one at
     once, and a lost `token_hidden` is sent again (100 ms, doubling to 2 s) until the host has it. A reload's navigation
     start retires nothing: the host marks the window loading, not capturable, until the new document's bootstrap reports
-    that it has painted (`page_ready`, once per document, two frames after the first commit), which retires the old
-    document's deliveries. `agent_token`, `token_hidden`, `token_field` and `token_rect` are refused from any window but
+    that it has painted (`page_ready`, two frames after the first commit), which retires the old document's
+    deliveries. The host accepts `page_ready` only for a navigation it has itself seen start and finish (its own
+    page-load events), once per navigation (ruling D-72 item 1): a report with no navigation, before the load finished
+    or a second time is ignored and changes nothing; the page reports again every 200 ms (up to 50 times) until the host
+    accepts. `agent_token`, `token_hidden`, `token_field` and `token_rect` are refused from any window but
     the main one (`permission.denied`).
   - **The host's overpaint (D-69 item 1, belt and braces).** While the page reports the field (`token_field`), a capture
     of the main window asks the page for the field's rectangle (`token-rect`, answered by `token_rect`) just before and

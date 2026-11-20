@@ -705,15 +705,11 @@ fn wait_for_roots(shared: &Shared, bound: Duration) {
 }
 
 /// Whether a call's arguments carry an absolute path anywhere (a batch's steps included): every path parameter is
-/// absolute (01 §12.1 rule 2) and is checked against the session's roots, so such a call needs them.
+/// absolute (01 §12.1 rule 2) and is checked against the session's roots, so such a call needs them. The test is the
+/// file layer's own (`fsx::absolute`, D-72 item 2), so the root `/` counts as it does there.
 fn mentions_absolute_path(v: &Value) -> bool {
     match v {
-        Value::String(s) => {
-            let b = s.as_bytes();
-            (b.len() > 1 && b[0] == b'/')
-                || s.starts_with("\\\\")
-                || (b.len() > 2 && b[0].is_ascii_alphabetic() && b[1] == b':' && (b[2] == b'\\' || b[2] == b'/'))
-        }
+        Value::String(s) => tt_persist::fsx::absolute(s, "").is_ok(),
         Value::Array(a) => a.iter().any(mentions_absolute_path),
         Value::Object(m) => m.values().any(mentions_absolute_path),
         _ => false,
@@ -1993,6 +1989,27 @@ fn flush_updates(shared: &Shared) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// D-72 item 2: a call needs the roots exactly when the file layer would take one of its strings as an absolute
+    /// path, the root `/` included.
+    #[test]
+    fn a_call_needs_the_roots_when_the_file_layer_sees_an_absolute_path() {
+        let cases = ["/", "/a", "/a/b.animpkg", "C:\\", "C:\\x", "C:/x", "\\\\srv\\share\\x", "rel", "a/b", "", "/a/../b"];
+        for c in cases {
+            assert_eq!(
+                mentions_absolute_path(&json!(c)),
+                tt_persist::fsx::absolute(c, "").is_ok(),
+                "{c}"
+            );
+            assert_eq!(mentions_absolute_path(&json!({ "steps": [{ "params": { "path": c } }] })), mentions_absolute_path(&json!(c)));
+        }
+        if cfg!(windows) {
+            assert!(mentions_absolute_path(&json!("C:\\")));
+        } else {
+            assert!(mentions_absolute_path(&json!("/")), "the root is an absolute path");
+        }
+        assert!(!mentions_absolute_path(&json!("rel")));
+    }
 
     /// Ruling O-20: the per-session thread caps take a slot below the cap and refuse at it; K is their sum.
     #[test]

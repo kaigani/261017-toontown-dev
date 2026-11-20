@@ -536,15 +536,18 @@ fn main_only(label: &str) -> Result<(), String> {
     }))
 }
 
-/// D-69 item 1: a page's bootstrap reports that its new document has painted (after its first frame): the old
-/// document's token deliveries end with its pixels, and the window is capturable again.
+/// D-69 item 1, D-72 item 1: a page's bootstrap reports that its new document has painted (after its first frame): for
+/// a navigation the host saw start and finish, the old document's token deliveries end with its pixels and the window is
+/// capturable again; any other report is ignored.
 ///
 /// # Errors
 /// None today (the JSON text of `internal` is reserved).
 #[tauri::command]
 pub fn page_ready(host: State<'_, Host>, window: tauri::Window) -> Result<Response, String> {
-    host.reveals.page_ready(window.label());
-    respond(&json!({}))
+    // D-72 item 1: accepted only for a navigation the host saw start and finish, once; `{accepted}` tells the page
+    // whether to report again (a report that came before the load finished is ignored).
+    let accepted = host.reveals.page_ready(window.label());
+    respond(&json!({ "accepted": accepted }))
 }
 
 /// D-69 item 1: the main window's page shows the token field (`{present: true}`, from its mount) or no longer does

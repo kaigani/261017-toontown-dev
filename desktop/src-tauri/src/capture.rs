@@ -7,12 +7,16 @@
 //! thread or an MCP worker). The platform calls are foreign-function calls, which Rust marks `unsafe`; this file is
 //! the only place in the host that makes them for a product feature.
 //!
-//! Ruling D-70 item 2 adds the webview's own menus and keys ([`harden`], Windows): the default context menu is shown
-//! only on editable content, with its text-editing items only; browser accelerator keys (F5, Ctrl+R, Ctrl+P, Ctrl+F,
-//! zoom, F12) and autofill are off. The page's own rules (`useNoBrowserMenus`, the key dispatcher) stay in front.
+//! The webview's own menus and keys ([`harden`], Windows; the requirement is D-70 item 2): the default context menu is
+//! shown only on editable content, with its text-editing items only; browser accelerator keys (F5, Ctrl+R, Ctrl+P,
+//! Ctrl+F, zoom, F12) and autofill are off. The page's own rules (`useNoBrowserMenus`, the key dispatcher) stay in
+//! front. The two `unsafe` blocks this adds (the menu filter and the settings) are authorised by ruling D-72 item 4 on
+//! D-59 item 3's conditions: a SAFETY comment on each block, nothing borrowed outliving the call (the event handler
+//! owns no borrowed data; the webview holds it by COM reference count), and any failure degrading to the unfiltered
+//! menu and default settings without a crash (every COM result is checked or ignored, nothing unwraps).
 #![allow(
     unsafe_code,
-    reason = "the webview snapshot, menu and settings APIs are foreign (COM, Objective-C) calls (rulings D-6, D-70)"
+    reason = "the webview snapshot, menu and settings APIs are foreign (COM, Objective-C) calls (rulings D-6, D-72)"
 )]
 
 use std::sync::mpsc;

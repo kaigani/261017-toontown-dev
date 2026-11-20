@@ -259,6 +259,9 @@ export function useNoBrowserMenus(): void {
 /** Whether this document has told the host it painted (once per document: a later report would retire the deliveries
  *  of a token the page shows). */
 let pageReadySent = false;
+/** D-72 item 1: how often, and how many more times, a report the host did not accept is sent again. */
+const PAGE_READY_RETRY_MS = 200;
+const PAGE_READY_TRIES = 50;
 
 /** D-69 item 1: once this window's document has painted after its bootstrap (two frames after the first commit), the
  *  host is told (`page_ready`): it retires the token deliveries of the document this one replaced and lets captures
@@ -266,11 +269,23 @@ let pageReadySent = false;
 export function usePageReady(services: ShellServices): void {
   useEffect(() => {
     let stopped = false;
+    // D-72 item 1: the host takes the report only once its own page-load event says the load finished; a report that
+    // came earlier is ignored, so it is sent again (every 200 ms, up to 50 times) until the host accepts it.
+    const report = (left: number) => {
+      if (stopped || pageReadySent) return;
+      void services.engine
+        .pageReady()
+        .then((accepted) => {
+          if (accepted) pageReadySent = true;
+          else if (left > 0) setTimeout(() => report(left - 1), PAGE_READY_RETRY_MS);
+        })
+        .catch(() => {
+          if (left > 0) setTimeout(() => report(left - 1), PAGE_READY_RETRY_MS);
+        });
+    };
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        if (stopped || pageReadySent) return;
-        pageReadySent = true;
-        void services.engine.pageReady().catch(() => undefined);
+        report(PAGE_READY_TRIES);
       });
     });
     return () => {

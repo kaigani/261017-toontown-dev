@@ -246,7 +246,12 @@ the panel marking fonts that are not bundled, and asks for the ruling.
   elements, where it offers text editing (cut, copy, paste, select all, undo, redo, and what the platform adds for
   text); a window-level `contextmenu` listener, in the bubbling phase after the application's own menus, cancels the
   default everywhere else (`useNoBrowserMenus`, `windowHooks.ts`), so a secondary click opens the application's menu or
-  nothing and no Back, Forward, Reload, Save as, Print, Inspect or View source entry is ever shown. The person cannot
+  nothing and no Back, Forward, Reload, Save as, Print, Inspect or View source entry is ever shown. On Windows the host
+  also filters WebView2's own menu (`capture.rs` `harden`: none outside editable content, the text-editing items only
+  on it) and turns the browser's accelerator keys and autofill off. **On macOS the page's rule alone applies** (no host
+  filter): what the system adds to a text field's menu for text (Look Up, spelling, substitutions, speech, services,
+  search) is allowed (ruling D-72 item 3); Reload, Back, Forward, Inspect Element and any link or download entry must
+  be absent, checked by the person's Mac run (`reviews/manual/M4/C4.4a-keyboard.md`, the macOS section). The person cannot
   reload or navigate the page: F5, Shift+F5, Ctrl+F5, Ctrl+R, Ctrl+Shift+R, Alt+Left, Alt+Right and Backspace outside a
   field (and Cmd+R, Cmd+Shift+R, Cmd+[ and Cmd+] on macOS) are cancelled by the accelerator guard unless the keymap
   binds them, in a text field too (they are not text editing, D-69 item 2), and the browser's own keys (BrowserBack,
