@@ -22,7 +22,11 @@
         "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
         "job.list": ["desktop/src/shell/StatusBar.tsx"],
         "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
-        "prefs.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/DrawingInspectorPage.tsx"],
+        "prefs.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/DrawingInspectorPage.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx"
+        ],
         "prefs.list": ["desktop/src/state/store.ts"],
         "project.presets.list": ["desktop/src/state/store.ts"],
         "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
@@ -76,7 +80,11 @@
         "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
         "job.list": ["desktop/src/shell/StatusBar.tsx"],
         "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
-        "prefs.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/DrawingInspectorPage.tsx"],
+        "prefs.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/DrawingInspectorPage.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx"
+        ],
         "prefs.list": ["desktop/src/state/store.ts"],
         "project.presets.list": ["desktop/src/state/store.ts"],
         "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
@@ -513,7 +521,11 @@
       "reads": {
         "draw.drawing.render": ["desktop/src/panels/DrawingInspectorPage.tsx"],
         "element.drawing.list": ["desktop/src/panels/DrawingInspectorPage.tsx"],
-        "prefs.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/DrawingInspectorPage.tsx"]
+        "prefs.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/DrawingInspectorPage.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx"
+        ]
       }
     },
     "dialog:Customize Toolbar": {
@@ -577,6 +589,11 @@
           "desktop/src/prefs/AgentAccessPage.tsx",
           "desktop/src/shell/ConfirmationSheet.tsx",
           "desktop/src/state/store.ts"
+        ],
+        "prefs.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/DrawingInspectorPage.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx"
         ]
       }
     },
