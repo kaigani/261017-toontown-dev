@@ -353,7 +353,7 @@ fn apply(app: &AppHandle, wanted: &[Wanted]) {
                     }
                     Err(e) => {
                         if let Some(host) = app.try_state::<Host>() {
-                            host.forget_window_reports(&l);
+                            host.window_destroyed(&l);
                         }
                         crate::shell::notice(
                             app,
@@ -431,7 +431,7 @@ pub fn on_window_event(window: &tauri::Window, event: &WindowEvent) {
         }
         WindowEvent::Destroyed => {
             if let Some(host) = app.try_state::<Host>() {
-                host.forget_window_reports(&l);
+                host.window_destroyed(&l);
             }
         }
         WindowEvent::Focused(true) => {

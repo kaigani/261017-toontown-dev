@@ -500,6 +500,7 @@ pub fn canvas_presence(host: State<'_, Host>, window: tauri::Window, json: Strin
 /// The JSON text of `internal` when no token can be read or made.
 #[tauri::command]
 pub fn agent_token(host: State<'_, Host>, window: tauri::Window) -> Result<Response, String> {
+    main_only(window.label())?;
     let token = host.agent_token().map_err(internal)?;
     match host.reveals.deliver(window.label()) {
         Some(delivery) => respond(&json!({ "token": token, "delivery": delivery })),
@@ -514,10 +515,71 @@ pub fn agent_token(host: State<'_, Host>, window: tauri::Window) -> Result<Respo
 /// The JSON text of `arg.invalid` for a malformed request.
 #[tauri::command]
 pub fn token_hidden(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
+    main_only(window.label())?;
     let v: Value = parse(&json)?;
     let delivery =
         v.get("delivery").and_then(Value::as_u64).ok_or_else(|| arg_invalid("/delivery", "a delivery number"))?;
     host.reveals.hidden(window.label(), delivery);
+    respond(&json!({}))
+}
+
+/// D-69 item 1: the agent token's calls are the main window's only (Preferences lives there); any other window's call
+/// is refused (`permission.denied`) and changes nothing.
+fn main_only(label: &str) -> Result<(), String> {
+    if crate::token_reveal::caller_allowed(label) {
+        return Ok(());
+    }
+    Err(error_json(&tt_engine::ErrorInfo {
+        code: "permission.denied".into(),
+        message: format!("window `{label}` may not call the agent token's host calls"),
+        details: json!({ "window": label }),
+    }))
+}
+
+/// D-69 item 1: a page's bootstrap reports that its new document has painted (after its first frame): the old
+/// document's token deliveries end with its pixels, and the window is capturable again.
+///
+/// # Errors
+/// None today (the JSON text of `internal` is reserved).
+#[tauri::command]
+pub fn page_ready(host: State<'_, Host>, window: tauri::Window) -> Result<Response, String> {
+    host.reveals.page_ready(window.label());
+    respond(&json!({}))
+}
+
+/// D-69 item 1: the main window's page shows the token field (`{present: true}`, from its mount) or no longer does
+/// (`{present: false}`, after the page without it has painted). While present, a capture of the main window
+/// overpaints it.
+///
+/// # Errors
+/// `permission.denied` from another window; `arg.invalid` for a malformed request.
+#[tauri::command]
+pub fn token_field(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
+    main_only(window.label())?;
+    let v: Value = parse(&json)?;
+    let present = v.get("present").and_then(Value::as_bool).ok_or_else(|| arg_invalid("/present", "true or false"))?;
+    host.reveals.field_shown(window.label(), present);
+    respond(&json!({}))
+}
+
+/// D-69 item 1: the main window's answer to a `token-rect` request: `{request, rect: {x, y, width, height} | null}` in
+/// its CSS pixels (`null`: no field).
+///
+/// # Errors
+/// `permission.denied` from another window; `arg.invalid` for a malformed request.
+#[tauri::command]
+pub fn token_rect(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
+    main_only(window.label())?;
+    let v: Value = parse(&json)?;
+    let request = v.get("request").and_then(Value::as_u64).ok_or_else(|| arg_invalid("/request", "a request number"))?;
+    let rect = match v.get("rect") {
+        None | Some(Value::Null) => None,
+        Some(r) => {
+            let f = |k: &str| r.get(k).and_then(Value::as_f64).ok_or_else(|| arg_invalid(&format!("/rect/{k}"), "a number"));
+            Some([f("x")?, f("y")?, f("width")?, f("height")?])
+        }
+    };
+    host.reveals.answer_rect(window.label(), request, rect);
     respond(&json!({}))
 }
 

@@ -331,29 +331,50 @@ impl AttachedIo for WindowIo {
                 json!({ "width": pw, "height": ph, "maxInlinePixels": max_side }),
             ));
         }
-        // D-62 item 2, D-65 item 2: a capture never contains the agent token. The guard is granted only when every
-        // delivery of the token has been acknowledged hidden: the windows are asked to hide it, and the capture waits
-        // (bounded) for the acknowledgements; nothing is delivered until the capture ends.
+        // D-62 item 2, D-65 item 2, D-69 item 1: a capture never contains the agent token. The guard is granted only
+        // when every delivery of the token has been retired and the captured window is not between a navigation start
+        // and its new document's paint: the windows are asked to hide it, and the capture waits (bounded) for the
+        // acknowledgements; nothing is delivered until the capture ends.
         let host = self.host();
         let app = self.app.clone();
+        let bound = budget.min(Duration::from_secs(2));
+        let token_refusal = |why: &str| {
+            refusal(
+                "render.failed",
+                format!("the agent token is shown in Preferences and {why}: nothing was captured"),
+                json!({ "target": target, "reason": "tokenShown" }),
+            )
+        };
         let _hidden = host
             .reveals
-            .begin_capture(budget.min(Duration::from_secs(2)), move || {
+            .begin_capture(&window, bound, move || {
                 let _ = app.emit(crate::token_reveal::TOKEN_HIDE_EVENT, ());
             })
-            .ok_or_else(|| {
-                refusal(
-                    "render.failed",
-                    "the agent token is shown in Preferences and was not hidden in time: nothing was captured",
-                    json!({ "target": target, "reason": "tokenShown" }),
-                )
-            })?;
+            .ok_or_else(|| token_refusal("was not hidden in time"))?;
+        // D-69 item 1, belt and braces: while the token field exists, a capture of the main window has the field's
+        // rectangle painted over by the host, from the page's answers just before and just after the snapshot.
+        let field = window == crate::token_reveal::MAIN && host.reveals.field_present();
+        let ask_rect = || {
+            let app = self.app.clone();
+            host.reveals.ask_rect(bound, move |request| {
+                let _ = app.emit_to(crate::token_reveal::MAIN, crate::token_reveal::TOKEN_RECT_EVENT, json!({ "request": request }));
+            })
+        };
+        let before = if field { Some(ask_rect().ok_or_else(|| token_refusal("its place was not reported in time"))?) } else { None };
         let png = crate::capture::snapshot(&webview, budget).map_err(|m| {
             refusal("render.failed", format!("the window could not be captured: {m}"), json!({ "target": target }))
         })?;
-        let (w, h, px) = tt_render::decode_png(&png, 16_384)
+        let after = if field { Some(ask_rect().ok_or_else(|| token_refusal("its place was not reported in time"))?) } else { None };
+        let (w, h, mut px) = tt_render::decode_png(&png, 16_384)
             .ok_or_else(|| refusal("render.failed", "the window capture is not a PNG", json!({ "target": target })))?;
         let (w, h) = (u32::from(w), u32::from(h));
+        if field {
+            match crate::token_reveal::overpaint_rect(before.flatten(), after.flatten()) {
+                crate::token_reveal::Overpaint::Nothing => {}
+                crate::token_reveal::Overpaint::Paint(r) => crate::token_reveal::overpaint(&mut px, w, h, r, scale),
+                crate::token_reveal::Overpaint::Refuse => return Err(token_refusal("moved during the capture")),
+            }
+        }
         // Crop in device pixels, clamped to the capture.
         let x0 = ((keep[0] * scale).round().max(0.0) as u32).min(w.saturating_sub(1));
         let y0 = ((keep[1] * scale).round().max(0.0) as u32).min(h.saturating_sub(1));

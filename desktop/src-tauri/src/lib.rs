@@ -66,6 +66,9 @@ command_registry![
     ipc::canvas_presence,
     ipc::agent_token,
     ipc::token_hidden,
+    ipc::page_ready,
+    ipc::token_field,
+    ipc::token_rect,
 ];
 
 #[cfg(feature = "m0-diagnostics")]
@@ -87,6 +90,9 @@ command_registry![
     ipc::canvas_presence,
     ipc::agent_token,
     ipc::token_hidden,
+    ipc::page_ready,
+    ipc::token_field,
+    ipc::token_rect,
     diagnostics::bench_plan,
     diagnostics::bench_report,
     spikes::tablet::spike_mode,
@@ -170,6 +176,9 @@ pub fn run() -> Result<(), DesktopError> {
                 use tauri::Manager;
                 if let Some(host) = webview.app_handle().try_state::<host::Host>() {
                     host.forget_window_reports(webview.label());
+                    // D-69 item 1: the old document's pixels stay until the new one paints: nothing is retired, and
+                    // the window is not capturable until its bootstrap reports the paint (`page_ready`).
+                    host.reveals.navigation_started(webview.label());
                     if let Some(io) = host.attached() {
                         io.forget_window(webview.label());
                     }
@@ -280,7 +289,11 @@ mod tests {
                 "canvas_presence",
                 // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
                 "agent_token",
-                "token_hidden"
+                "token_hidden",
+                // D-69 item 1: a page's paint after a navigation; the token field's presence and place.
+                "page_ready",
+                "token_field",
+                "token_rect"
             ]
         );
         for path in COMMANDS {
@@ -294,7 +307,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..17],
+            &names[..20],
             [
                 "ping",
                 "app_info",
@@ -313,7 +326,11 @@ mod tests {
                 "canvas_presence",
                 // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
                 "agent_token",
-                "token_hidden"
+                "token_hidden",
+                // D-69 item 1: a page's paint after a navigation; the token field's presence and place.
+                "page_ready",
+                "token_field",
+                "token_rect"
             ]
         );
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));

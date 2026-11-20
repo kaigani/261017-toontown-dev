@@ -154,6 +154,23 @@ export interface EngineApi {
   tokenHidden(delivery: number): Promise<void>;
   /** `token-hide`: a window capture is about to run; a shown token must be masked now. */
   onTokenHide(handler: () => void): Promise<Unlisten>;
+  /** `page_ready` (D-69 item 1): this window's document has painted after its bootstrap: the host retires the token
+   *  deliveries of the document it replaced and lets captures of the window through again. */
+  pageReady(): Promise<void>;
+  /** `token_field` (D-69 item 1): the main window shows the token field (`true`, from its mount) or no longer does. */
+  tokenField(present: boolean): Promise<void>;
+  /** `token_rect` (D-69 item 1): the answer to a `token-rect` request: the field's rectangle in CSS pixels, or `null`. */
+  tokenRect(request: number, rect: TokenRect | null): Promise<void>;
+  /** `token-rect`: the host asks where the token field is, just before and just after a capture of the main window. */
+  onTokenRect(handler: (request: number) => void): Promise<Unlisten>;
+}
+
+/** The token field's rectangle in the window's CSS pixels (D-69 item 1). */
+export interface TokenRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 /** An agent's `pointer` request routed to this window (attached mode). */
@@ -337,6 +354,22 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     onTokenHide(handler) {
       return transport.listen('token-hide', () => {
         handler();
+      });
+    },
+    async pageReady() {
+      decode(await invoke('page_ready', {}));
+    },
+    async tokenField(present) {
+      decode(await invoke('token_field', { present }));
+    },
+    async tokenRect(request, rect) {
+      decode(await invoke('token_rect', { request, rect }));
+    },
+    onTokenRect(handler) {
+      return transport.listen('token-rect', (payload) => {
+        const request =
+          typeof payload === 'object' && payload !== null ? (payload as Record<string, unknown>)['request'] : null;
+        if (typeof request === 'number') handler(request);
       });
     },
     async gestureCommit(request) {

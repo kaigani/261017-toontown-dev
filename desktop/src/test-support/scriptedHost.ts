@@ -112,6 +112,12 @@ export interface ScriptedHost extends HostTransport {
   readonly tokenHiddenAcks: number[];
   /** Answers the oldest held `agent_token` call; false when none is held. */
   releaseToken(): boolean;
+  /** D-69 item 1: the next `tokenHiddenFailures` `token_hidden` calls are lost (rejected), as a dropped message. */
+  tokenHiddenFailures: number;
+  /** `page_ready` calls; the `token_field` reports in order; the `token_rect` answers in order. */
+  pageReadyCalls: number;
+  readonly tokenFieldReports: boolean[];
+  readonly tokenRectAnswers: { request: number; rect: unknown }[];
   readonly reports: Record<string, unknown>[];
   /** The exact JSON text of each `report_shell` call, as the host receives it. */
   readonly rawReports: string[];
@@ -145,6 +151,10 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
     tokenDeliveries: [],
     tokenOutstanding: new Set<number>(),
     tokenHiddenAcks: [],
+    tokenHiddenFailures: 0,
+    pageReadyCalls: 0,
+    tokenFieldReports: [],
+    tokenRectAnswers: [],
     releaseToken() {
       const next = heldTokens.shift();
       if (!next) return false;
@@ -272,11 +282,24 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
           );
         }
         case 'token_hidden': {
+          if (host.tokenHiddenFailures > 0) {
+            host.tokenHiddenFailures -= 1;
+            return Promise.reject(new Error('the message was lost'));
+          }
           const delivery = Number(json['delivery']);
           host.tokenHiddenAcks.push(delivery);
           host.tokenOutstanding.delete(delivery);
           return Promise.resolve({});
         }
+        case 'page_ready':
+          host.pageReadyCalls += 1;
+          return Promise.resolve({});
+        case 'token_field':
+          host.tokenFieldReports.push(json['present'] === true);
+          return Promise.resolve({});
+        case 'token_rect':
+          host.tokenRectAnswers.push({ request: Number(json['request']), rect: json['rect'] ?? null });
+          return Promise.resolve({});
         case 'restart_engine':
           host.restarts += 1;
           host.generation += 1;

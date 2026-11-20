@@ -22,6 +22,8 @@ export {
   type RunOptions,
   type Running,
   type ShellReport,
+  type TokenDelivery,
+  type TokenRect,
 } from './engine';
 export { createMockTransport, MOCK_ENGINE_INFO, type MockTransport } from './mockTransport';
 export type { SpikeApi } from './spikeApi';

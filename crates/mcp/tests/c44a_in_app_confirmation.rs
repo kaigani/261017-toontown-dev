@@ -200,13 +200,19 @@ fn a_fifth_held_call_is_refused_and_the_request_path_stays_free() {
         held.push(c.send("tools/call", export_call(&dir.join(format!("held-{i}.jsonl")))));
         assert_eq!(until_shown(&h, i + 1).len(), i + 1, "request {i} shown");
     }
+    let bound = Duration::from_secs(5);
+    let asked = Instant::now();
     let fifth = c.send("tools/call", export_call(&dir.join("fifth.jsonl")));
-    let m = c.wait(fifth, Duration::from_secs(5)).expect("the fifth call is answered at once");
+    let m = c.wait(fifth, bound).expect("the fifth call is answered at once");
+    // D-69 item 3 (D-45): the figure against its bound, recorded for the runners.
+    record_timing("c44a_in_app_confirmation fifth held call refused", asked.elapsed(), bound);
     let env = &m["result"]["structuredContent"];
     assert_eq!(env["error"]["code"], "limit.exceeded", "{m}");
     assert_eq!(env["error"]["details"]["limit"], "concurrentJobWaits", "{m}");
+    let asked = Instant::now();
     let read = c.send("tools/call", json!({ "name": "get_state", "arguments": {} }));
-    let answered = c.wait(read, Duration::from_secs(5));
+    let answered = c.wait(read, bound);
+    record_timing("c44a_in_app_confirmation read with four held calls", asked.elapsed(), bound);
     assert!(answered.is_some_and(|m| m.get("error").is_none()), "the read is answered while four calls are held");
     assert_eq!(shown(&h).len(), 4, "the refused call's confirmation is not shown");
     // Retired, not merely hidden: the pending list holds the four held requests only, and the fifth export ran nothing.

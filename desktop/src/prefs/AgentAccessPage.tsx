@@ -12,6 +12,7 @@ import { NumericField } from '../shell/NumericField';
 import { useMessages } from '../shell/messagesApi';
 import type { ShellServices } from '../state/context';
 import { LIMITS, namespacesOf, type AgentDraft } from './agentAccess';
+import { tokenController } from './tokenController';
 
 const POLICIES: readonly [string, string][] = [
   ['observe', 'Observe (read only)'],
@@ -57,6 +58,10 @@ const MASK = '\u2022'.repeat(16);
  * - in the page, one reveal in flight at a time (Show disabled), each with a generation: Hide, leaving the page, the
  *   window losing focus or closing, a regenerated token and `token-hide` end the current generation, and an answer of
  *   an ended generation is acknowledged hidden without being painted;
+ * - every acknowledgement goes through the window's controller (`tokenController.ts`, D-69 item 1), which outlives this
+ *   component: a painted delivery is acknowledged only after its replacement has been painted (Hide, leaving the page,
+ *   closing Preferences), a lost acknowledgement is sent again, and the field's presence and place are reported for
+ *   the host's overpaint of captures;
  * - the token is fetched from the host only for a reveal or a Copy and held only while shown; it is never a registry
  *   command's answer, so neither the activity log, its export nor the event stream can carry it, and the page logs
  *   nothing.
@@ -73,7 +78,9 @@ function AgentToken({ services }: { services: ShellServices }) {
   const [pending, setPending] = useState(false);
   /** The delivery on screen now, if any. */
   const painted = useRef<number | null>(null);
+  const field = useRef<HTMLInputElement | null>(null);
   const engine = services.engine;
+  const controller = useMemo(() => tokenController(engine), [engine]);
   /** Ends the current reveal generation and masks the field; the host hears the painted delivery hidden once the mask
    *  is painted (two frames), so a capture waiting for it never sees the token. */
   const hide = useCallback(() => {
@@ -82,13 +89,10 @@ function AgentToken({ services }: { services: ShellServices }) {
     if (delivery === null) return;
     painted.current = null;
     setShown(null);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        void engine.tokenHidden(delivery).catch(() => undefined);
-      });
-    });
-  }, [engine]);
+    controller.hiddenAfterPaint(delivery);
+  }, [controller]);
   useEffect(() => {
+    controller.fieldMounted(() => field.current);
     let off: (() => void) | null = null;
     let offEvents: (() => void) | null = null;
     let stopped = false;
@@ -114,14 +118,16 @@ function AgentToken({ services }: { services: ShellServices }) {
       offEvents?.();
       window.removeEventListener('blur', hide);
       window.removeEventListener('pagehide', hide);
-      // Leaving the page (another category, the dialog closed): the field is gone with it, and an answer still in
-      // flight belongs to an ended generation.
+      // Leaving the page (another category, the dialog closed): an answer still in flight belongs to an ended
+      // generation, and the delivery on screen is acknowledged by the window's controller once the page without the
+      // field has been painted (D-69 item 1b), not by this unmounting component.
       generation.current += 1;
       const delivery = painted.current;
       painted.current = null;
-      if (delivery !== null) void engine.tokenHidden(delivery).catch(() => undefined);
+      if (delivery !== null) controller.hiddenAfterPaint(delivery);
+      controller.fieldUnmounted();
     };
-  }, [engine, hide]);
+  }, [engine, hide, controller]);
   const reveal = async () => {
     if (inFlight.current || painted.current !== null) return;
     setProblem(null);
@@ -138,7 +144,7 @@ function AgentToken({ services }: { services: ShellServices }) {
     }
     if (asked !== generation.current) {
       // A late answer of an ended reveal: dropped without painting (C44A-R1-41).
-      void engine.tokenHidden(answer.delivery).catch(() => undefined);
+      controller.hiddenNow(answer.delivery);
       return;
     }
     painted.current = answer.delivery;
@@ -155,7 +161,7 @@ function AgentToken({ services }: { services: ShellServices }) {
     try {
       await copyText(answer.token);
     } finally {
-      void engine.tokenHidden(answer.delivery).catch(() => undefined);
+      controller.hiddenNow(answer.delivery);
     }
     setCopied(true);
   };
@@ -164,6 +170,7 @@ function AgentToken({ services }: { services: ShellServices }) {
       <label>
         Token{' '}
         <input
+          ref={field}
           readOnly
           className="agent-token-value"
           value={shown ?? MASK}

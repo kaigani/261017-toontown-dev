@@ -263,7 +263,7 @@ pub fn on_window_event(window: &tauri::Window, event: &WindowEvent) {
         WindowEvent::Destroyed => {
             // The window's reports end with it (ruling O-9).
             if let Some(host) = window.app_handle().try_state::<Host>() {
-                host.forget_window_reports(window.label());
+                host.window_destroyed(window.label());
             }
         }
         WindowEvent::Moved(_) | WindowEvent::Resized(_) => {

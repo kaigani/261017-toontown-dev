@@ -419,11 +419,19 @@ impl Host {
         self.exec().report_shell(report);
     }
 
+    /// A window was destroyed: its reports end with it, and so do the token deliveries it held (D-69 item 1).
+    pub fn window_destroyed(&self, label: &str) {
+        self.forget_window_reports(label);
+        self.reveals.forget(label);
+    }
+
     /// Clears the sensor facts a window reported (ruling O-9): its modal state and text focus end with it when it is
     /// destroyed, reloaded or replaced, so a report whose reporter went away cannot block agents or shortcuts. It
     /// leaves the freshness quorum at once (a wait pending on it is released by the recomputed combination). The
     /// other windows' facts stay; the executor gets the new combination (ruling O-2).
     pub fn forget_window_reports(&self, label: &str) {
+        // D-69 item 1: a reload is not a destruction: token deliveries are retired by the new document's paint
+        // (`TokenReveals::page_ready`) or by `window_destroyed`, never here.
         // An agent gesture routed to it answers at once, nothing committed (D-7a); what its canvases reported about the
         // views they showed ends with it, so a later pointer or screenshot finds the window showing the view now
         // (C42B-R1-05: a destroyed float kept the Drawing view's route).
@@ -431,7 +439,6 @@ impl Host {
         if let Some(io) = self.attached() {
             io.forget_window(label);
         }
-        self.reveals.forget(label);
         let combined = {
             let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
             w.facts.remove(label);

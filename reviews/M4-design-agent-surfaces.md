@@ -106,6 +106,21 @@ Facts from the code at `93cf2ea9`:
     capture's budget and 2 s, for the acknowledgements; if one does not come, nothing is captured and the call is
     refused (`render.failed`, `reason: "tokenShown"`). While a guard is held `agent_token` delivers nothing
     (`{token: null, delivery: null}`; the page keeps the mask and says why).
+  - **What retires a delivery (ruling D-69 item 1).** Only an acknowledgement sent after the replacement has been
+    painted, or the window's destruction. Acknowledgements come from the window's controller
+    (`desktop/src/prefs/tokenController.ts`), which outlives the Agent access page: a painted delivery is acknowledged
+    two frames after the commit that removes it (Hide, leaving the page, closing Preferences), a never-painted one at
+    once, and a lost `token_hidden` is sent again (100 ms, doubling to 2 s) until the host has it. A reload's navigation
+    start retires nothing: the host marks the window loading, not capturable, until the new document's bootstrap reports
+    that it has painted (`page_ready`, once per document, two frames after the first commit), which retires the old
+    document's deliveries. `agent_token`, `token_hidden`, `token_field` and `token_rect` are refused from any window but
+    the main one (`permission.denied`).
+  - **The host's overpaint (D-69 item 1, belt and braces).** While the page reports the field (`token_field`), a capture
+    of the main window asks the page for the field's rectangle (`token-rect`, answered by `token_rect`) just before and
+    just after the snapshot, and paints the union of both, grown by 4 CSS px, in grey (0x808080) in the captured image,
+    revealed or not. Answers that differ by more than 4 px, a field that appears or goes between them, or no answer
+    within the capture's bound (at most 2 s) refuse the capture (`render.failed`, `reason: "tokenShown"`). The delivery
+    accounting stays the first line.
   - **In the page,** one reveal is in flight at a time (a second Show before the answer does nothing), and each reveal
     carries a generation. Hide, leaving the page, the window losing focus (`blur`) or closing (`pagehide`), a
     regenerated token and `token-hide` end the current generation; an answer of an ended generation is acknowledged

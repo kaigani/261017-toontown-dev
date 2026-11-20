@@ -2286,6 +2286,16 @@ async def build_and_run(t: Table, only: set) -> None:
         x1, y1 = min(w, int((f["x"] + f["w"]) * k)), min(h, int((f["y"] + f["h"]) * k))
         return [bytes(r[x0 * ch:x1 * ch]) for r in rows_[y0:y1]]
 
+    def overpainted(png, f):
+        """Every pixel of the field's rectangle is the host's overpaint colour (D-69 item 1: 0x80 grey)."""
+        w, h, ch, rows_ = c42.png_rgba(png)
+        k = w / f["vw"]
+        x0, y0 = int(f["x"] * k), int(f["y"] * k)
+        x1, y1 = min(w, int((f["x"] + f["w"]) * k)), min(h, int((f["y"] + f["h"]) * k))
+        grey = bytes([0x80, 0x80, 0x80])
+        return x1 > x0 and y1 > y0 and all(bytes(r[x * ch:x * ch + 3]) == grey
+                                           for r in rows_[y0:y1] for x in range(x0, x1))
+
     async def token_copy_flow():
         await open_agent_page()
         t.clear()
@@ -2312,6 +2322,8 @@ async def build_and_run(t: Table, only: set) -> None:
         await asyncio.sleep(0.3)
         token_case["afterCapture"] = (token_field() or {}).get("value")
         token_case["sameAsMasked"] = bool(masked and shot and before and crop(masked, before) == crop(shot, before))
+        # D-69 item 1: the host painted the field's rectangle over in the capture taken while it is shown.
+        token_case["overpainted"] = bool(shot and before and overpainted(shot, before))
         export = t.work / "token-activity.jsonl"
         await e2e.run_cmd(t.s, "agent.activity.export", {"path": str(export), "onExists": "overwrite"})
         await asyncio.sleep(0.5)
@@ -2341,7 +2353,7 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": None, "state": nothing_state,
                  "effect": lambda b, a, k: token_case.get("shown") == sha(discovery_token())
                  and token_absent(token_case.get("tree")) and '"redacted"' in (token_case.get("tree") or "")
-                 and token_case.get("sameAsMasked") is True
+                 and token_case.get("sameAsMasked") is True and token_case.get("overpainted") is True
                  and token_absent(token_case.get("afterCapture"))
                  and token_absent(token_case.get("export")) and token_absent(token_case.get("log")),
                  "disabled": None, "osOnly": True, "after": close_dialogs,

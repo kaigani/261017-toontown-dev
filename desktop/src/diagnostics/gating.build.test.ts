@@ -76,6 +76,9 @@ describe('M0 diagnostics gating (C0.4)', () => {
       // D-62 item 2: Preferences › Agent access shows the agent token to the person (never a registry command).
       'agent_token',
       'token_hidden',
+      'page_ready',
+      'token_field',
+      'token_rect',
     ]);
     expect(DIAGNOSTIC).toContain('bench_plan');
     expect(DIAGNOSTIC).toContain('spike_canvas_scene');

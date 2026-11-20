@@ -21,7 +21,13 @@ import { MessageHost } from './shell/messages';
 import { useMessages } from './shell/messagesApi';
 import { StatusBar } from './shell/StatusBar';
 import { MainToolbar, ToolPaletteRail } from './shell/Toolbars';
-import { useEngineMirror, useShortcuts, useTextFocusReport, useTreeReporter } from './shell/windowHooks';
+import {
+  useEngineMirror,
+  usePageReady,
+  useShortcuts,
+  useTextFocusReport,
+  useTreeReporter,
+} from './shell/windowHooks';
 import { toolbarRefs } from './shell/toolbarItems';
 import type { UiNode } from './shell/uiTree';
 import { StartScreen } from './start/StartScreen';
@@ -133,6 +139,7 @@ function FloatWindow({ panelId }: { panelId: string }) {
   useEngineMirror(services, false);
   useShortcuts(services, actions, keymap, isMac());
   useTextFocusReport(services);
+  usePageReady(services);
   const node = useCallback(
     (): UiNode => ({ role: 'window', id: `float-${panelId}`, label: title }),
     [panelId, title],
@@ -354,6 +361,7 @@ function Window() {
 
   useShortcuts(services, actions, keymap, mac);
   useTextFocusReport(services);
+  usePageReady(services);
   const mainNode = useCallback((): UiNode => {
     const app = services.store.getState().slices.appState as AppState | undefined;
     return {
