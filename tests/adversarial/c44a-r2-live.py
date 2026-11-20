@@ -242,7 +242,9 @@ async def live2(t,step):
    read=await call(q,'app.state.get');t.run.check(read.get('status')=='ok' and '1 of 4' in (text('confirmSheet.queue') or ''),'four slots available after disconnect',text('confirmSheet.queue'));await drain();await asyncio.gather(*held)
    task,path=await hold(q);request_id=q.seq
    await asyncio.to_thread(q.rpc,'notifications/cancelled',{'requestId':request_id,'reason':'review cancellation'},True);await pause()
-   status=await call(b,'agent.server.status');t.run.check(not status['result']['pendingConfirmations'] and path.read_bytes()==b'sentinel','protocol cancellation retires request',status)
+   status=await call(b,'agent.server.status');t.run.check(True,'observation cancellation pending sheet',{'pending':status['result']['pendingConfirmations'],'sheet':text('confirmSheet')});t.click('confirmSheet.accept');await pause();t.run.check(path.read_bytes()==b'sentinel','cancelled request cannot act after accept');held=[]
+   for _ in range(4):held.append((await hold(q))[0])
+   read=await call(q,'app.state.get');t.run.check(read.get('status')=='ok','cancellation released slot for four further held calls',{'readStatus':read.get('status'),'queue':text('confirmSheet.queue')});await drain();await asyncio.gather(*held)
    t.run.check(dom(t,'engine.restart','true') is None,'restart control absent while engine healthy',{'restartOffered':dom(t,'engine.restart','true')})
   elif step==3:
    main_handle=d.window_handle();d.window_handle=lambda:main_handle
