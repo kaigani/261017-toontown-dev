@@ -235,7 +235,10 @@ class Flows(d39.Table):
             rec.update({"input": how, "expected": printable(want), "sent": sent, "dryRuns": [c for c in calls if c.get("dryRun")],
                         "otherSent": [c for c in calls if not c.get("dryRun") and c.get("command") not in FLOW_COMMANDS
                                       and self.kinds.get(c.get("command")) != "query"],
-                        "exact": exact, "effect": effect, "before": before, "after": after, "ok": ok})
+                        "exact": exact, "effect": effect, "before": before, "after": after, "ok": ok,
+                        # What the row observed beyond the commands (answers of held calls, refusals, queue text).
+                        "observed": {k: ctx[k] for k in ("answers", "gone", "second", "readWhileHeld", "queue", "ended",
+                                                          "default", "order") if k in ctx}})
             self.run.check(ok, f"D-44 {r['name']}: the choice sends exactly its commands and has its effect ({r['spec']})",
                            {k: rec[k] for k in ("expected", "sent", "exact", "effect")})
         except Exception as ex:  # noqa: BLE001 - the row fails with its text, the table goes on
@@ -893,7 +896,9 @@ def confirm_rows(t: Flows) -> list:
         # nothing; the held call receives the first decision.
         ctx["second"] = t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command', {json: JSON.stringify({command:"
                                  " 'agent.confirmation.respond', params: {confirmationId: %s, accept: false}})})"
-                                 ".then(r => typeof r === 'string' ? r : JSON.stringify(r), e => String(e))"
+                                 # The host answers bytes (an ArrayBuffer): decoded to the envelope's text.
+                                 ".then(r => typeof r === 'string' ? r : (r instanceof ArrayBuffer || ArrayBuffer.isView(r))"
+                                 " ? new TextDecoder().decode(r) : JSON.stringify(r), e => String(e))"
                                  % json.dumps(ctx["ids"][0]))
         await asyncio.sleep(0.7)
         ctx["answers"] = await answers(ctx)
@@ -1048,7 +1053,11 @@ def undo_back_rows(t: Flows) -> list:
                 await asyncio.sleep(0.1)
             t.click("activity.undoBack")
             if not await t.wait_for("message.agent.undoBack"):
-                raise RuntimeError("the Undo back question did not appear")
+                item = t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=\"activity.undoBack\"]');"
+                                " return e ? {disabled: e.disabled, title: e.title, text: e.textContent} : null; })()")
+                selected = t.cdp.js("[...document.querySelectorAll('[aria-selected=\"true\"]')].map(e => e.dataset.ttId)")
+                raise RuntimeError(f"the Undo back question did not appear: item {item}, selected {selected}, "
+                                   f"entry {ctx['seq']}, step index {ctx['index']}")
             ctx["default"] = t.cdp.js("document.activeElement && document.activeElement.dataset.ttId")
             if choice == "enter":
                 key(VK_RETURN)
