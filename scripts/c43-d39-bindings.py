@@ -562,6 +562,17 @@ class Table:
                 await asyncio.sleep(0.1)
             if state != "false":
                 raise RuntimeError(f"menu item absent or disabled after the secondary click: {action[2]} ({state})")
+            # The menu is placed again while the kernel's availability answers change its size (D-60 item 1): the item
+            # is clicked once its box reads the same twice in a row (a wait for a state, D-45).
+            box = None
+            for _ in range(50):
+                now = self.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                                  " if (!e) return null; const b = e.getBoundingClientRect(); return [b.x, b.y, b.width, b.height]; })()"
+                                  % json.dumps(action[2]))
+                if now is not None and now == box:
+                    break
+                box = now
+                await asyncio.sleep(0.1)
             how = self.click(action[2])
             return f"a real secondary click on {action[1]}, then {how} on the item"
         if kind == "none":
@@ -1994,12 +2005,23 @@ async def build_and_run(t: Table, only: set) -> None:
         await user_cmd("agent.typedTools.set", {"enabled": False, "namespaces": []})
         await user_cmd("agent.activity.persist.set", {"enabled": False})
 
+    async def shown_dom(ident, timeout=10.0):
+        # A wait for a state (D-45): the element is in the page.
+        end = time.monotonic() + timeout
+        while time.monotonic() < end:
+            if t.cdp.js("!!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % json.dumps(ident)):
+                return True
+            await asyncio.sleep(0.1)
+        return False
+
     def agent_flow(edit, label):
         async def flow():
             choose_menu(["File", "Preferences"])
-            await asyncio.sleep(0.8)
+            if not await shown_dom("preferences.category.agent"):
+                raise RuntimeError("the Preferences dialog did not open")
             t.click("preferences.category.agent")
-            await asyncio.sleep(0.6)
+            if not await shown_dom("agentAccess.status"):
+                raise RuntimeError("the Agent access page did not show")
             # Opening the dialog is the menu item's own command (its own row): the row records what OK sends.
             t.clear()
             await edit()
@@ -2011,6 +2033,7 @@ async def build_and_run(t: Table, only: set) -> None:
 
     def typed_into(ident, text):
         async def edit():
+            await shown_dom(ident)
             front()
             t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']'); e.focus(); e.select(); return true; })()"
                      % json.dumps(ident))
@@ -2110,9 +2133,11 @@ async def build_and_run(t: Table, only: set) -> None:
 
     async def open_agent_page():
         choose_menu(["File", "Preferences"])
-        await asyncio.sleep(0.8)
+        if not await shown_dom("preferences.category.agent"):
+            raise RuntimeError("the Preferences dialog did not open")
         t.click("preferences.category.agent")
-        await asyncio.sleep(0.6)
+        if not await shown_dom("agentAccess.token"):
+            raise RuntimeError("the Agent access page did not show")
 
     def token_field():
         return t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=\"agentAccess.token\"]'); if (!e) return null;"

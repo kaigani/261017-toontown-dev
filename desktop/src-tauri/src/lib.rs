@@ -277,7 +277,10 @@ mod tests {
                 "canvas_load",
                 "gesture_commit",
                 "gesture_abort",
-                "canvas_presence"
+                "canvas_presence",
+                // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
+                "agent_token",
+                "token_shown"
             ]
         );
         for path in COMMANDS {
@@ -291,7 +294,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..15],
+            &names[..17],
             [
                 "ping",
                 "app_info",
@@ -307,7 +310,10 @@ mod tests {
                 "canvas_load",
                 "gesture_commit",
                 "gesture_abort",
-                "canvas_presence"
+                "canvas_presence",
+                // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
+                "agent_token",
+                "token_shown"
             ]
         );
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));
