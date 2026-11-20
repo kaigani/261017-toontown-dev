@@ -1,34 +1,375 @@
 {
   "case": "n1b",
   "step": 7,
-  "exit": 1,
+  "exit": 0,
   "results": [
     {
       "check": "D-65 four slots cycle 0",
-      "ok": false,
+      "ok": true,
       "detail": null
     },
     {
       "check": "D-65 fifth refused/read/mutation cycle 0",
-      "ok": false,
+      "ok": true,
       "detail": {
         "fifth": {
-          "status": "ok",
-          "result": {
-            "jobId": "job-6"
-          },
+          "status": "error",
           "changes": [],
           "warnings": [],
-          "documentRev": 5
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
         },
-        "pending": 0
+        "pending": 4
       }
     },
     {
-      "check": "probe completed",
-      "ok": false,
-      "detail": "ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [RuntimeError('control absent or hidden: confirmSheet.accept')])])"
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 1",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 1",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 2",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 2",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 3",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 3",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 4",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 4",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 5",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 5",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 6",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 6",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 7",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 7",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 8",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 8",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 9",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 9",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 four slots cycle 10",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 fifth refused/read/mutation cycle 10",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "pending": 4
+      }
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-65 reconnect four holds",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-58 two accept two decline",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "long job created",
+      "ok": true,
+      "detail": null
     }
   ],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r3-batch-_y52ub53\\n1b7"
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r3-load-final"
 }

@@ -77,28 +77,31 @@ async def body(t,step):
   q=await fresh();b=await fresh()
   if step==7:
    await prefs();await t.do(('select','agentAccess.policy','assist'));t.click('preferences.submit');await r2.pause()
+   for client in clients:await asyncio.to_thread(client.close)
+   q=await fresh();b=await fresh()
    async def hold(client):
     path=t.work/('held-'+str(len(tasks))+'.animpkg');path.write_bytes(b'sentinel');task=asyncio.create_task(call(client,'project.saveAs',{'path':str(path),'onExists':'overwrite'}));tasks.append(task);await asyncio.sleep(.2);return task
    async def decide(held):
     for i in range(4):
      t.click('confirmSheet.accept' if i<2 else 'confirmSheet.decline');await asyncio.sleep(.25)
     answers=await asyncio.gather(*held);t.run.check(sum(a.get('status')=='ok' for a in answers)==2 and sum('confirmation.declined' in json.dumps(a) for a in answers)==2,'D-58 two accept two decline')
-   for cycle in range(11):
-    held=[await hold(q) for _ in range(4)]
-    t.run.check(all(not a.done() for a in held) and '1 of 4' in (r2.dom(t,'confirmSheet.queue','e.textContent') or ''),'D-65 four slots cycle '+str(cycle))
-    fifth=await hold(q);await asyncio.sleep(.25)
-    read=await call(q,'app.state.get');mutation=await call(q,'tool.active.set',{'toolId':'brush'})
-    answer=fifth.result() if fifth.done() else {};status=await call(b,'agent.server.status')
-    t.run.check(fifth.done() and 'limit.exceeded' in json.dumps(answer) and len(status['result']['pendingConfirmations'])==4 and read.get('status')=='ok' and mutation.get('status')=='ok','D-65 fifth refused/read/mutation cycle '+str(cycle),{'fifth':answer,'pending':len(status['result']['pendingConfirmations'])})
-    await decide(held)
-   held=[await hold(q) for _ in range(4)];await asyncio.to_thread(q.close);await asyncio.gather(*held);q=await fresh();held=[await hold(q) for _ in range(4)]
-   t.run.check(all(not a.done() for a in held) and '1 of 4' in (r2.dom(t,'confirmSheet.queue','e.textContent') or ''),'D-65 reconnect four holds');await decide(held)
-   job=await c('render.range.run',{'from':1,'to':100000,'width':32,'height':32,'directory':str(t.work/'long-render'),'createDirs':True})
+   if not __import__('os').environ.get('C44_SHARED_ONLY'):
+    for cycle in range(11):
+     held=[await hold(q) for _ in range(4)]
+     t.run.check(all(not a.done() for a in held) and '1 of 4' in (r2.dom(t,'confirmSheet.queue','e.textContent') or ''),'D-65 four slots cycle '+str(cycle))
+     fifth=await hold(q);await asyncio.sleep(.25)
+     read=await call(q,'app.state.get');mutation=await call(q,'tool.active.set',{'toolId':'brush'})
+     answer=fifth.result() if fifth.done() else {};status=await call(b,'agent.server.status')
+     t.run.check(fifth.done() and 'limit.exceeded' in json.dumps(answer) and len(status['result']['pendingConfirmations'])==4 and read.get('status')=='ok' and mutation.get('status')=='ok','D-65 fifth refused/read/mutation cycle '+str(cycle),{'fifth':answer,'pending':len(status['result']['pendingConfirmations'])})
+     await decide(held)
+    held=[await hold(q) for _ in range(4)];await asyncio.to_thread(q.close);await asyncio.gather(*held);q=await fresh();held=[await hold(q) for _ in range(4)]
+    t.run.check(all(not a.done() for a in held) and '1 of 4' in (r2.dom(t,'confirmSheet.queue','e.textContent') or ''),'D-65 reconnect four holds');await decide(held)
+   job=(await call(q,'render.range.run',{'from':1,'to':100000,'width':32,'height':32,'directory':str(t.work/'long-render'),'createDirs':True})).get('result',{})
    jid=job.get('jobId');t.run.check(bool(jid),'long job created')
    waits=[asyncio.create_task(asyncio.to_thread(q.tool,'job_wait',{'jobId':jid,'timeoutMs':60000})) for _ in range(4)];tasks.extend(waits);await asyncio.sleep(.25)
    fifth=await hold(q);await asyncio.sleep(.25)
-   t.run.save('shared-slots-observation.json',{'fourWaitsPending':all(not w.done() for w in waits),'confirmable':fifth.result() if fifth.done() else 'held'})
-   await c('job.cancel',{'jobId':jid});await asyncio.gather(*waits)
+   t.run.save('shared-slots-observation.json',{'fourWaitsPending':all(not w.done() for w in waits),'waitAnswers':[w.result() if w.done() else 'pending' for w in waits],'confirmable':fifth.result() if fifth.done() else 'held'})
+   await call(q,'job.cancel',{'jobId':jid});await asyncio.gather(*waits)
    if not fifth.done():t.click('confirmSheet.decline')
    await fifth
    return
