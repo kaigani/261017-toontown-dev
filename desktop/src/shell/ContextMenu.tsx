@@ -19,6 +19,8 @@ import {
   type KeyboardEvent,
 } from 'react';
 
+import { createPortal } from 'react-dom';
+
 import { useActions } from './actionsApi';
 import type { CommandRef } from './availability';
 import {
@@ -173,7 +175,10 @@ export function ContextMenu({
   };
 
   const scrolls = place !== null && place.maxHeight !== null;
-  return (
+  // Rendered at the top of the page (a portal into the document's body), whoever opened it: inside the dock's tab or a
+  // view it would sit in that container's stacking context, drawn beneath later panels, and a person's click on an
+  // item would land on the panel above it (D-60 item 1: every item reachable).
+  return createPortal(
     <div
       ref={root}
       className={scrolls ? 'context-menu scrolls' : 'context-menu'}
@@ -284,6 +289,7 @@ export function ContextMenu({
           {'\u25BC'}
         </div>
       )}
-    </div>
+    </div>,
+    document.body,
   );
 }
