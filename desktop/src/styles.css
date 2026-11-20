@@ -541,6 +541,21 @@ select:focus-visible {
   color: var(--tt-danger);
 }
 
+/* D-67: the token group's width does not depend on what it shows (it fills the button row, whose items are pushed to
+   the end), and its notes have a line of their own, its height reserved: a note never moves the field. */
+.agent-token {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.agent-token-notes {
+  min-height: 1.5em;
+}
+
+.agent-token-notes > small + small {
+  margin-left: 8px;
+}
+
 .busy-overlay {
   position: fixed;
   right: 16px;

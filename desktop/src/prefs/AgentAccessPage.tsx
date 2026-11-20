@@ -201,12 +201,16 @@ function AgentToken({ services }: { services: ShellServices }) {
       >
         Copy
       </button>
-      {copied && <small className="field-hint">Copied to the clipboard.</small>}
-      {problem && (
-        <small className="field-problem" role="status">
-          {problem}
-        </small>
-      )}
+      {/* The notes have a line of their own, always present: a note appearing (a reveal refused during a capture)
+          never moves the field, so what a capture shows at the field's place stays the field (D-67). */}
+      <div className="agent-token-notes">
+        {copied && <small className="field-hint">Copied to the clipboard.</small>}
+        {problem && (
+          <small className="field-problem" role="status">
+            {problem}
+          </small>
+        )}
+      </div>
     </div>
   );
 }
