@@ -34,3 +34,5 @@ orchestrator's trim (D-40), the open spec issues, and the final head with its ru
   50 ms margin (500 ms budget) on the 3-core macOS runner (run 44592525640, `53a1014e`). The test now runs with a 5 s
   budget (500 ms margin), `timeoutMs <= 4500` and a job that outlasts the wait on any runner; the margin is no longer an
   M11 item.
+- **Retired (D-45, a builder test):** `crates/executor/tests/c34_round4.rs::a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start`
+  raced the 100 ms margin of a 1,000 ms budget on the macOS runner (run 44668936063); it now runs with 5,000 ms.

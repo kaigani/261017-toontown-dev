@@ -336,13 +336,19 @@ fn apply(app: &AppHandle, wanted: &[Wanted]) {
                     .inner_size(f64::from(wd), f64::from(ht))
                     .position(f64::from(x), f64::from(y))
                     .min_inner_size(160.0, 120.0)
-                    .visible(shown)
+                    // Built hidden: a new window gets the application's menu bar, which takes about 20 px of its client
+                    // area until it is removed; shown only once it has its own geometry (the reviewer's float probe
+                    // measured the window at its first visible moment, 20 px short, run 44668936063).
+                    .visible(false)
                     .build();
                 match built {
                     // A float has no menu bar of its own (design note §2); on macOS the menu is the application's.
                     Ok(win) => {
                         if !cfg!(target_os = "macos") {
                             let _ = win.remove_menu();
+                        }
+                        if shown {
+                            let _ = win.show();
                         }
                     }
                     Err(e) => {

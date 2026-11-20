@@ -269,7 +269,11 @@ fn executor_timestamps_parse_to_epoch_milliseconds() {
 fn a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start() {
     let _t = turn();
     let _reset = Reset;
-    let budget = Duration::from_millis(1000);
+    // D-45 (as D-64 for `c34_r1_contract`): a budget whose margin (a tenth) a loaded runner meets. With 1,000 ms the
+    // queued batch's reply had to arrive within 100 ms of its waited step's end; the 3-core macOS runner missed it
+    // once (run 44668936063: `command.timeout`, no step envelopes). The rule checked (the deadline counts from the
+    // enqueue) is the same at any budget.
+    let budget = Duration::from_millis(5000);
     let h = fixture_with(ExecutorConfig { budget });
     let base = std::env::temp_dir().join(format!("c34-round4-queued-wait-{}", std::process::id()));
     let waited = |dir: &std::path::Path| -> BatchRequest {
