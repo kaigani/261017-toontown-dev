@@ -1,5 +1,5 @@
 {
-  "checks": 3,
+  "checks": 4,
   "results": [
     {
       "check": "D-63 one held read mutation second call",
@@ -34,10 +34,10 @@
           "status": "ok",
           "result": {
             "enabled": true,
-            "endpoint": "http://127.0.0.1:58015/mcp",
+            "endpoint": "http://127.0.0.1:53222/mcp",
             "sessions": [
               {
-                "sessionId": "s1-889ae5",
+                "sessionId": "s1-e6336a",
                 "client": "mcp",
                 "policy": "autonomous",
                 "scopes": [
@@ -50,13 +50,13 @@
                   "prefs",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-20T07:20:44.239Z",
-                "lastActivity": "2026-11-20T07:20:44.796Z",
+                "connectedAt": "2026-11-20T07:24:22.102Z",
+                "lastActivity": "2026-11-20T07:24:22.481Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s2-2603a1",
+                "sessionId": "s2-f0d272",
                 "client": "round2-A",
                 "policy": "assist",
                 "scopes": [
@@ -68,13 +68,13 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-20T07:20:51.128Z",
-                "lastActivity": "2026-11-20T07:20:58.716Z",
+                "connectedAt": "2026-11-20T07:24:28.812Z",
+                "lastActivity": "2026-11-20T07:24:37.383Z",
                 "paused": false,
                 "transport": "http"
               },
               {
-                "sessionId": "s3-1d504c",
+                "sessionId": "s3-5e186f",
                 "client": "round2-B",
                 "policy": "assist",
                 "scopes": [
@@ -86,97 +86,97 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-11-20T07:20:51.131Z",
-                "lastActivity": "2026-11-20T07:20:59.741Z",
+                "connectedAt": "2026-11-20T07:24:28.815Z",
+                "lastActivity": "2026-11-20T07:24:36.386Z",
                 "paused": false,
                 "transport": "http"
               }
             ],
             "pendingConfirmations": [
               {
-                "confirmationId": "cf_1259514d13c60d2d48d78506",
-                "sessionId": "s2-2603a1",
+                "confirmationId": "cf_0817f314ea94f62815772f85",
+                "sessionId": "s2-f0d272",
                 "commandId": "project.saveAs",
-                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-6.animpkg`",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-6.animpkg`",
                 "consequences": [
                   {
                     "kind": "overwrite",
-                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-6.animpkg",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-6.animpkg",
                     "bytes": 8
                   }
                 ],
                 "category": "overwrite",
                 "decision": null,
                 "inApp": true,
-                "expiresInMs": 296387
+                "expiresInMs": 296335
               },
               {
-                "confirmationId": "cf_4dfa65818d7fa980755ba336",
-                "sessionId": "s2-2603a1",
+                "confirmationId": "cf_2f09959c48fe854a248e07a2",
+                "sessionId": "s2-f0d272",
                 "commandId": "project.saveAs",
-                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-8.animpkg`",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-9.animpkg`",
                 "consequences": [
                   {
                     "kind": "overwrite",
-                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-8.animpkg",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-9.animpkg",
                     "bytes": 8
                   }
                 ],
                 "category": "overwrite",
                 "decision": null,
                 "inApp": true,
-                "expiresInMs": 297177
+                "expiresInMs": 297579
               },
               {
-                "confirmationId": "cf_a2b88fab8dc676af4fc03118",
-                "sessionId": "s2-2603a1",
+                "confirmationId": "cf_8d172b14dd15a3b17bc0750e",
+                "sessionId": "s2-f0d272",
                 "commandId": "project.saveAs",
-                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-5.animpkg`",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-8.animpkg`",
                 "consequences": [
                   {
                     "kind": "overwrite",
-                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-5.animpkg",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-8.animpkg",
                     "bytes": 8
                   }
                 ],
                 "category": "overwrite",
                 "decision": null,
                 "inApp": true,
-                "expiresInMs": 295979
+                "expiresInMs": 297169
               },
               {
-                "confirmationId": "cf_deb78a2a2f24643573649211",
-                "sessionId": "s2-2603a1",
+                "confirmationId": "cf_b10f9b44bbe771146f8cb805",
+                "sessionId": "s2-f0d272",
                 "commandId": "project.saveAs",
-                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-9.animpkg`",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-5.animpkg`",
                 "consequences": [
                   {
                     "kind": "overwrite",
-                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-9.animpkg",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-5.animpkg",
                     "bytes": 8
                   }
                 ],
                 "category": "overwrite",
                 "decision": null,
                 "inApp": true,
-                "expiresInMs": 297585
+                "expiresInMs": 295928
               },
               {
-                "confirmationId": "cf_f7af1ebe785ede325221a10f",
-                "sessionId": "s2-2603a1",
+                "confirmationId": "cf_fbe640e365d75afdd40cf78a",
+                "sessionId": "s2-f0d272",
                 "commandId": "project.saveAs",
-                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-7.animpkg`",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-7.animpkg`",
                 "consequences": [
                   {
                     "kind": "overwrite",
-                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-uz0kd9fa\\sentinel-7.animpkg",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-absus7up\\sentinel-7.animpkg",
                     "bytes": 8
                   }
                 ],
                 "category": "overwrite",
                 "decision": null,
                 "inApp": true,
-                "expiresInMs": 296789
+                "expiresInMs": 296747
               }
             ]
           },
@@ -185,7 +185,27 @@
           "documentRev": 5
         }
       }
+    },
+    {
+      "check": "fifth declines and blocked read completes after decisions",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5,
+          "error": {
+            "code": "confirmation.declined",
+            "message": "the user declined the action",
+            "details": {
+              "confirmToken": "cf_2f09959c48fe854a248e07a2"
+            }
+          }
+        },
+        "readStatus": "ok"
+      }
     }
   ],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-zzsoxt9t"
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-qosi62e4"
 }
