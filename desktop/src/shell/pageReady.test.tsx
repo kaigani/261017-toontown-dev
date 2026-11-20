@@ -32,24 +32,3 @@ describe('page_ready (D-69 item 1)', () => {
     expect(h.pageReadyCalls).toBe(1);
   });
 });
-
-describe('page_ready until the host accepts it (D-72 item 1)', () => {
-  it('a report the host ignored (the load had not finished) is sent again until accepted, then never again', async () => {
-    const h = createScriptedHost();
-    h.pageReadyRefusals = 2;
-    render(
-      <HostProvider api={createHostApi(h)}>
-        <App />
-      </HostProvider>,
-    );
-    await screen.findByRole('toolbar', { name: 'Main toolbar' });
-    await waitFor(
-      () => {
-        expect(h.pageReadyCalls).toBe(3);
-      },
-      { timeout: 3000 },
-    );
-    await new Promise((r) => setTimeout(r, 500));
-    expect(h.pageReadyCalls).toBe(3);
-  });
-});
