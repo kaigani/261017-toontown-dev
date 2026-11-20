@@ -79,7 +79,8 @@ async def body(t,step):
   d.key(0x0D);await pause();t.run.check((await current(t))['maxSize']==49 and dom(t,ident)=='49','D-61 external kernel value retained',dom(t,ident))
   for menu,field,ok in [(['File','Preferences'],'pref.general.recentProjects.maxCount','preferences.submit'),(['File','Project Properties'],'projectProperties.frameRate','projectProperties.submit')]:
    d.choose_menu(menu);await pause();old=dom(t,field);t.clear();await typein(t,field,'abc',None);t.click(ok);await pause()
-   t.run.check(not any('abc' in json.dumps(x) for x in sent(t)),'D-61 staged invalid cannot be applied '+field,{'retained':old,'sent':sent(t)})
+   actual=(await c('prefs.get',{'keys':['general.recentProjects.maxCount']}))['values']['general.recentProjects.maxCount'] if field.startswith('pref.') else (await c('project.properties.get'))['frameRate']
+   t.run.check(actual==float(old),'D-61 staged invalid cannot be applied '+field,{'retained':old,'kernel':actual,'sent':sent(t)})
  else:await menus(t,step)
 
 async def menus(t,step):
@@ -121,7 +122,11 @@ async def menus(t,step):
  elif step==6:
   await setup('drawingView');t.click('drawingView.canvas');before=t.cdp.js('document.activeElement?.dataset.ttId');d.key(0x79,0x10);await pause();g=geometry();t.run.check(bool(g['menu']),'design note 1 section 1 keyboard open Shift F10',g)
   if not g['menu']:await openat('drawingView')
-  for _ in range(30):d.key(0x28)
+  path=[]
+  for _ in range(30):
+   d.key(0x28)
+   path.append(t.cdp.js('(()=>{const e=document.activeElement,r=e.getBoundingClientRect();return {id:e.dataset.ttId,rect:r.toJSON(),w:innerWidth,h:innerHeight}})()'))
+  t.run.check(all(x['rect']['y']>=0 and x['rect']['bottom']<=x['h'] for x in path),'design note 1 section 9 arrows cross scroll boundary visibly',path)
   d.key(0x24);d.key(0x28);d.key(0x28);d.key(0x28)
   await pause();t.run.save('keyboard-scroll.json',{'geometry':geometry(),'focus':t.cdp.js('document.activeElement?.dataset.ttId')});t.clear();d.key(0x0D);await pause();t.run.check(not t.cdp.js('!!document.querySelector(".context-menu")'),'keyboard Enter activates/closes',sent(t));await t.settle_dialogs()
   await openat('drawingView');opener=t.cdp.js('document.activeElement?.dataset.ttId');d.key(0x1B);await pause();t.run.check(not t.cdp.js('!!document.querySelector(".context-menu")'),'keyboard Escape closes',{'before':before,'menuFocus':opener,'after':t.cdp.js('document.activeElement?.dataset.ttId')})
@@ -133,6 +138,9 @@ async def menus(t,step):
     if family=='scene':await c('anim.tool.set',{'tool':'transform'});await c('anim.tool.set',{'tool':'select'})
     else:await c('tool.active.set',{'toolId':'brush'});await c('tool.active.set',{'toolId':'select'})
     for action in ['selectAll','deselectAll','copy','cut','paste']:
+     await r1.r3.modal_fixture(t,'Family '+view+' '+family+' '+action);await setup(view)
+     if family=='scene':await c('anim.tool.set',{'tool':'transform'});await c('anim.tool.set',{'tool':'select'})
+     else:await c('tool.active.set',{'toolId':'brush'});await c('tool.active.set',{'toolId':'select'})
      await c('draw.selection.set',{'by':'all'});await c('window.panel.set',{'panelId':'pen','visible':True});await pause();t.click('pen.maxSize.field');await openat(view)
      items=geometry()['items'];suffix=('.sceneMenu.' if family=='scene' and view=='cameraView' else '.drawingMenu.')+action
      item=next((x for x in items if x['id'].endswith(suffix)),None)
