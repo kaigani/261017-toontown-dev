@@ -275,8 +275,18 @@ const FLOOR: std::time::Duration = std::time::Duration::from_millis(1);
 /// catches a gross regression.
 const CEILING: std::time::Duration = std::time::Duration::from_millis(100);
 
+/// Ruling D-71 item 2 (D-45): the selection case's first pass reads the 10,101-id selection once after the change
+/// (ruling O-24's memo) against 100 ids, so its ratio is structurally the largest: 9.0 on the workstation, 20.4 on the
+/// macOS runner of run 44809024880 (22.785 ms against 1.115 ms). Its bound is 40, more than four times the workstation
+/// figure; every other figure keeps `RATIO`, and all keep `CEILING`.
+const SELECTION_FIRST_PASS_RATIO: u32 = 40;
+
 fn within(large: std::time::Duration, small: std::time::Duration) -> bool {
-    large <= small.max(FLOOR) * RATIO && large <= CEILING
+    within_ratio(large, small, RATIO)
+}
+
+fn within_ratio(large: std::time::Duration, small: std::time::Duration, ratio: u32) -> bool {
+    large <= small.max(FLOOR) * ratio && large <= CEILING
 }
 
 /// Ruling O-23's passes stay constant on a large project (ruling D-41's CI form): a project of 10,000 command-created
@@ -324,7 +334,8 @@ fn passes_stay_constant_on_a_large_project() {
             cl.steady,
             cs.steady
         );
-        assert!(within(hl, hs), "{}: the first pass's longest request {hl:?} vs small {hs:?}", cl.what);
+        let ratio = if cl.what == "selected elements" { SELECTION_FIRST_PASS_RATIO } else { RATIO };
+        assert!(within_ratio(hl, hs, ratio), "{}: the first pass's longest request {hl:?} vs small {hs:?}", cl.what);
         assert!(within(cl.steady, cs.steady), "{}: steady pass {:?} vs small {:?}", cl.what, cl.steady, cs.steady);
     }
     let (wl, ws) = (worst_chunk(&large), worst_chunk(&small));

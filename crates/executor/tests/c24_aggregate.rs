@@ -86,12 +86,19 @@ fn observe(h: &ExecutorHandle, command: &str, params: &Value) -> Value {
 #[test]
 #[ignore = "measurement; run with TT_MEASURE=1 and --ignored in release"]
 fn aggregate_break_apart_and_size_limit_render_raw_observations() {
-    let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_secs(30) }).unwrap();
-    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+    // Setup (ruling D-71 item 3, D-45): the 100,000-character text is added by an executor with a 120 s budget (run
+    // 44809024880's Windows runner passed the 30 s watchdog in this setup); the measured calls below keep the 30 s
+    // executor, which opens the document the setup built.
+    let setup = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_secs(120) }).unwrap();
+    assert!(setup.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
     let t = Instant::now();
     let added =
-        ok(&h, "draw.text.add", json!({ "drawingId": D1, "position": {"x": 0, "y": 0}, "text": text(100_000) }));
+        ok(&setup, "draw.text.add", json!({ "drawingId": D1, "position": {"x": 0, "y": 0}, "text": text(100_000) }));
     let text_add = t.elapsed().as_secs_f64();
+    let built = setup.snapshot().unwrap().unwrap();
+    drop(setup);
+    let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_secs(30) }).unwrap();
+    assert!(h.open_document(built, None, false).is_ok());
     let apart = json!({ "drawingId": D1, "textIds": [added["textId"]] });
     let break_apart: Vec<Value> = (0..REPETITIONS).map(|_| observe(&h, "draw.breakApart.apply", &apart)).collect();
     for b in &break_apart {

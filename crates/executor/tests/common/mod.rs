@@ -27,7 +27,15 @@ pub fn run(h: &ExecutorHandle, id: &str, params: Value) -> Envelope {
 
 pub fn ok(h: &ExecutorHandle, id: &str, params: Value) -> Value {
     let env = run(h, id, params.clone());
-    assert_eq!(env.status, Status::Ok, "{id} {params}: {:?}", env.error);
+    // Ruling D-71 item 3: a failure names the call and prints its whole envelope; long parameters (a 100,000-character
+    // text) are cut, so the log keeps the message.
+    let text = params.to_string();
+    let shown = if text.chars().count() > 500 {
+        format!("{}... ({} bytes)", text.chars().take(500).collect::<String>(), text.len())
+    } else {
+        text
+    };
+    assert_eq!(env.status, Status::Ok, "{id} {shown}: envelope {env:?}");
     env.result.clone().unwrap_or(Value::Null)
 }
 
