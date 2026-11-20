@@ -1,0 +1,349 @@
+{
+  "checks": 2,
+  "results": [
+    {
+      "check": "D-66 Save keymap/modal inspector",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "project.save",
+          "params": {}
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "prefs.get",
+          "params": {
+            "keys": [
+              "drawing.inspectorPreview"
+            ]
+          }
+        },
+        {
+          "command": "element.drawing.list",
+          "params": {
+            "elementId": "el_01K7JJN800P2Q8XJQMZ7W29AS3"
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "job.wait",
+          "params": {
+            "jobId": "job-2",
+            "timeoutMs": 20000
+          }
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "draw.drawing.render",
+          "params": {
+            "drawingId": "dr_01K7JJN800HFEB6DPD5JEA6BG2",
+            "width": 160,
+            "region": "bounds",
+            "background": "#FFFFFFFF"
+          }
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "edit.history.get",
+          "params": {
+            "limit": 1000
+          }
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "prefs.get",
+          "params": {
+            "keys": [
+              "drawing.inspectorPreview"
+            ]
+          }
+        },
+        {
+          "command": "element.drawing.list",
+          "params": {
+            "elementId": "el_01K7JJN800P2Q8XJQMZ7W29AS3"
+          }
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "prefs.get",
+          "params": {
+            "keys": [
+              "drawing.inspectorPreview"
+            ]
+          }
+        },
+        {
+          "command": "element.drawing.list",
+          "params": {
+            "elementId": "el_01K7JJN800P2Q8XJQMZ7W29AS3"
+          }
+        },
+        {
+          "command": "draw.drawing.render",
+          "params": {
+            "drawingId": "dr_01K7JJN800HFEB6DPD5JEA6BG2",
+            "width": 160,
+            "region": "bounds",
+            "background": "#FFFFFFFF"
+          }
+        },
+        {
+          "command": "prefs.get",
+          "params": {
+            "keys": [
+              "drawing.inspectorPreview"
+            ]
+          }
+        },
+        {
+          "command": "element.drawing.list",
+          "params": {
+            "elementId": "el_01K7JJN800P2Q8XJQMZ7W29AS3"
+          }
+        },
+        {
+          "command": "draw.drawing.render",
+          "params": {
+            "drawingId": "dr_01K7JJN800HFEB6DPD5JEA6BG2",
+            "width": 160,
+            "region": "bounds",
+            "background": "#FFFFFFFF"
+          }
+        },
+        {
+          "command": "draw.drawing.render",
+          "params": {
+            "drawingId": "dr_01K7JJN800HFEB6DPD5JEA6BG2",
+            "width": 160,
+            "region": "bounds",
+            "background": "#FFFFFFFF"
+          }
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "edit.history.get",
+          "params": {
+            "limit": 1000
+          }
+        },
+        {
+          "command": "project.recent.list",
+          "params": {}
+        },
+        {
+          "command": "project.recovery.list",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "prefs.get",
+          "params": {
+            "keys": [
+              "drawing.inspectorPreview"
+            ]
+          }
+        },
+        {
+          "command": "element.drawing.list",
+          "params": {
+            "elementId": "el_01K7JJN800P2Q8XJQMZ7W29AS3"
+          }
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "prefs.get",
+          "params": {
+            "keys": [
+              "drawing.inspectorPreview"
+            ]
+          }
+        },
+        {
+          "command": "element.drawing.list",
+          "params": {
+            "elementId": "el_01K7JJN800P2Q8XJQMZ7W29AS3"
+          }
+        },
+        {
+          "command": "draw.drawing.render",
+          "params": {
+            "drawingId": "dr_01K7JJN800HFEB6DPD5JEA6BG2",
+            "width": 160,
+            "region": "bounds",
+            "background": "#FFFFFFFF"
+          }
+        },
+        {
+          "command": "prefs.get",
+          "params": {
+            "keys": [
+              "drawing.inspectorPreview"
+            ]
+          }
+        },
+        {
+          "command": "element.drawing.list",
+          "params": {
+            "elementId": "el_01K7JJN800P2Q8XJQMZ7W29AS3"
+          }
+        },
+        {
+          "command": "draw.drawing.render",
+          "params": {
+            "drawingId": "dr_01K7JJN800HFEB6DPD5JEA6BG2",
+            "width": 160,
+            "region": "bounds",
+            "background": "#FFFFFFFF"
+          }
+        },
+        {
+          "command": "draw.drawing.render",
+          "params": {
+            "drawingId": "dr_01K7JJN800HFEB6DPD5JEA6BG2",
+            "width": 160,
+            "region": "bounds",
+            "background": "#FFFFFFFF"
+          }
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes inspector",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-c8gadqfw"
+}

@@ -1,0 +1,4 @@
+{
+  "afterClick": "inspector.name",
+  "afterTab": "drawingView.canvas"
+}
