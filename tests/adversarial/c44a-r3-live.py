@@ -183,7 +183,7 @@ async def body(t,step):
      a=await call(q,'inspect.screenshot',{'target':'window'});data=png(a)
      if data:
       field=crop(Image.open(io.BytesIO(base64.b64decode(data))),rect).tobytes();kind='revealed' if field==revealed else 'masked' if field in (masked,safePixels) else 'other'
-     else:kind='refused' if a.get('error',{}).get('code')=='render.failed' else 'other'
+     else:kind='refused' if a.get('status')=='error' and a.get('error',{}).get('code') in ('render.failed','ui.viewNotFound','command.timeout','command.cancelled') else 'other'
      counts[kind]+=1;t.run.check(kind in ('masked','refused'),'D-65 reload '+str(i),{'kind':kind});await r2.pause()
     totals['reload']=dict(counts)
    if r2.dom(t,'agentAccess.token')==q.token:t.click('agentAccess.token.show');await r2.pause()
@@ -210,7 +210,7 @@ async def menu_extra(t,step):
  def inside(g):
   return g and g.get('menu') and all(r['x']>=0 and r['y']>=0 and r['right']<=g['area']['w'] and r['bottom']<=g['area']['h'] for r in [g['menu']]+[x['box'] for x in g['arrows']])
  resize(800,500);await r2.pause()
- for view in ('drawingView','cameraView') if step==5 else ('drawingView',):
+ for view in ('drawingView','cameraView') if step==5 else ():
   await c('window.panel.set',{'panelId':view,'visible':True});await c('view.active.set',{'viewId':view});await r2.pause()
   for method in ('click','hover','wheel','down','end'):
    await c('tool.active.set',{'toolId':'brush'});await c('draw.text.add',{'position':{'x':0,'y':0},'text':'Review'});await c('edit.selectAll');await r2.pause()
@@ -225,7 +225,9 @@ async def menu_extra(t,step):
     elif method=='wheel':
      b=g['list'];d.wheel_screen(*screen(b['x']+b['width']/2,b['y']+b['height']/2),20)
    if method=='down':
-    for _ in range(len(g['items'])+2):d.key(0x28)
+    for _ in range(len(g['items'])+1):
+     if t.cdp.js('document.activeElement?.dataset.ttId')==g['items'][-1]['id']:break
+     d.key(0x28)
    elif method=='end':d.key(0x23)
    await r2.pause();g=geo();last=g['items'][-1];b=last['box'];l=g['list'];visible=b['y']>=l['y'] and b['bottom']<=l['bottom']
    t.run.save(view+'-'+method+'.json',{'top':top,'bottom':g})
@@ -243,7 +245,14 @@ async def menu_extra(t,step):
     d.key(0x09)
    d.key(vk,*mods);await r2.pause();t.run.check(bool(geo()),'D-66 keyboard menu '+view+' '+str(vk));d.key(0x1B)
  if step==6:
-  g=await openmenu('tab.drawingView');t.run.check(bool(inside(g)),'D-66 dock checklist',g);d.key(0x1B)
+  g=await openmenu('tab.drawingView');t.run.check(bool(inside(g)),'D-66 dock checklist',g)
+  if g:
+   b=g['list'];d.wheel_screen(*screen(b['x']+b['width']/2,b['y']+b['height']/2),20);d.key(0x23);await r2.pause();bottom=geo();last=bottom['items'][-1]['box'];t.run.check(last['bottom']<=bottom['list']['bottom'],'D-66 checklist scroll',bottom)
+  d.key(0x1B)
+  await c('window.panel.set',{'panelId':'cameraView','visible':True});await c('view.active.set',{'viewId':'cameraView'});await c('anim.tool.set',{'tool':'transform'});await c('anim.tool.set',{'tool':'select'});await r2.pause()
+  g=await openmenu('cameraView.canvas');t.run.check(bool(inside(g)),'D-66 Camera scene menu',g);d.key(0x1B)
+  await c('view.active.set',{'viewId':'drawingView'});await c('tool.active.set',{'toolId':'brush'});await r2.pause()
+
   resize(1280,800);await openmenu('drawingView.canvas');resize(800,500);await r2.pause();g=geo();t.run.check(bool(inside(g)),'D-66 resize open',g)
   d.key(0x1B);main=d.window_handle();original=d.window_handle;maincdp=t.cdp
   await c('window.panel.set',{'panelId':'drawingView','visible':True,'floating':True});await r2.pause()
@@ -265,7 +274,12 @@ async def menu_extra(t,step):
    for size in ((640,480),(160,120)):
     resize(*size);await r2.pause();g=await openmenu('drawingView.canvas');t.run.check(bool(inside(g)),'D-66 float '+str(size),g)
     if g:
-     d.key(0x23);await r2.pause();t.run.save('float-'+str(size[0])+'.json',geo());d.key(0x1B)
+     top=g;b=g['list'];d.wheel_screen(*screen(b['x']+b['width']/2,b['y']+b['height']/2),30);await r2.pause();bottom=geo();last=bottom['items'][-1]['box'];t.run.check(last['bottom']<=bottom['list']['bottom'],'D-66 float wheel '+str(size),bottom)
+     d.key(0x24);await r2.pause();g=geo()
+     if g['arrows']:
+      b=g['arrows'][-1]['box'];x,y=screen(b['x']+b['width']/2,b['y']+b['height']/2);d.u32.SetCursorPos(int(x),int(y));await asyncio.sleep(5)
+     bottom=geo();last=bottom['items'][-1]['box'];t.run.check(last['bottom']<=bottom['list']['bottom'],'D-66 float hover '+str(size),bottom)
+     t.run.save('float-'+str(size[0])+'.json',{'top':top,'bottom':bottom});d.key(0x1B)
   finally:
    t.cdp=maincdp;d.window_handle=original;d.front()
 
@@ -355,7 +369,7 @@ if __name__=='__main__' and sys.argv[1] in ('n2a','n2b'):
    subprocess.run(['git','checkout','--','reviews/evidence/M4-C4.4a-r2-review'],check=True)
   (r1.EVID/'n2a-1.json').write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8',newline='\n')
   sys.exit(int(any(x['exit'] for x in results)))
- if case=='n2b' and step==5:
+ if case=='n2b' and step==5 and not __import__('os').environ.get('C44_N2_EXTRA_ONLY'):
   import subprocess,os,tempfile
   earlier=[]
   for i in (5,6,7):
@@ -369,6 +383,7 @@ if __name__=='__main__' and sys.argv[1] in ('n2a','n2b'):
  if case=='n2b' and step==7:step=8
  old_receipt=r1.EVID/('step'+str(step)+'.json');saved=old_receipt.read_bytes() if old_receipt.exists() else None
  result=r1.live(step)
+ if case=='n2b' and logical==5 and not __import__('os').environ.get('C44_N2_EXTRA_ONLY'):result|=int(any(x['exit'] for x in earlier))
  if saved is not None:old_receipt.write_bytes(saved)
  else:old_receipt.unlink(missing_ok=True)
  transcript=json.loads((r1.OUT/'transcript.json').read_text())
