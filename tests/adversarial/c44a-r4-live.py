@@ -137,6 +137,7 @@ async def body(t,step):
     t.run.check(not leaks(value),'D-69 prefix-free '+label,{'files':len(files)} if label=='logs' else None)
   elif step==6:
    await c('window.panel.set',{'panelId':'pen','visible':True});await r2.pause()
+   t.click('pen.advanced');await r2.pause()
    def windows():
     found=set()
     def one(h,_):
@@ -153,7 +154,7 @@ async def body(t,step):
     good=bool(items) and all(any(x.lower().startswith(a) for a in ('emoji','undo','redo','cut','copy','paste','select all','writing direction')) for x in items) if text else not extra
     t.run.check(good,'D-70 secondary '+ident,{'items':items,'nativePopups':extra,'addedWindows':len(after-before)});d.key(0x1b);await asyncio.sleep(.1)
    ids=t.cdp.js("[...document.querySelectorAll('[data-tt-id]')].filter(e=>e.dataset.ttId.startsWith('pen.row.')).map(e=>e.dataset.ttId)")
-   selectors=['.main-toolbar button','.main-toolbar select','input[type=range]','input[type=checkbox]','.pen-panel','.tool-rail','.status-bar','.dv-content-container','.dv-tab','.drawing-view canvas']
+   selectors=['.main-toolbar button','.main-toolbar select','input[type=range]','input[type=checkbox]','.pen-panel','.tool-rail','.status-bar','.pen-preview','.dock-tab','[data-tt-id="drawingView.canvas"]']
    # Discover each requested type from its actual DOM element; stable IDs are recorded.
    for idx,sel in enumerate(selectors):
     ident=t.cdp.js("(()=>{let e=document.querySelector("+json.dumps(sel)+");while(e&&!e.dataset.ttId)e=e.parentElement;return e?.dataset.ttId})()")
@@ -186,6 +187,14 @@ async def body(t,step):
       d.u32.keybd_event(0x11,0,0,0);d.u32.mouse_event(0x800,0,0,120,0);d.u32.keybd_event(0x11,0,2,0)
      await asyncio.sleep(.15)
      survived=t.cdp.js('window.__closureMarker')==marker
+     devtools=[]
+     def dev(h,_):
+      if d.u32.IsWindowVisible(h):
+       text=ctypes.create_unicode_buffer(512);d.u32.GetWindowTextW(h,text,512)
+       if 'devtools' in text.value.lower() or 'developer tools' in text.value.lower():devtools.append(text.value)
+      return True
+     d.u32.EnumWindows(ctypes.WINFUNCTYPE(ctypes.c_bool,wintypes.HWND,wintypes.LPARAM)(dev),0)
+     t.run.check(not devtools,'Plan 3.2 diagnostics development-only '+focus+' '+name,{'developerWindows':len(devtools)})
      t.run.check(survived,'D-70 marker '+focus+' '+name,{'commands':r2.sent(t),'scale':t.cdp.js('devicePixelRatio'),'dialog':t.cdp.js("document.querySelector('[role=dialog]')?.getAttribute('data-tt-id')"),'observation':(name,key,mods) in observations})
   elif step==8:
    import contextlib,httpx
@@ -195,7 +204,9 @@ async def body(t,step):
    async def trial(delay):
     got=asyncio.Event()
     async def roots(_):
-     got.set();await asyncio.sleep(delay)
+     got.set()
+     if delay is None:await asyncio.Event().wait()
+     else:await asyncio.sleep(delay)
      return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='fixture')])
     async with contextlib.AsyncExitStack() as stack:
      http=await stack.enter_async_context(httpx.AsyncClient(headers={'Authorization':'Bearer '+discovery['token']},timeout=20))
@@ -205,11 +216,11 @@ async def body(t,step):
      await asyncio.sleep(.05);readstart=time.perf_counter();read=await session.call_tool('run_command',{'id':'app.state.get','params':{}});readms=(time.perf_counter()-readstart)*1000
      response=await pending;ms=(time.perf_counter()-start)*1000
      content=response.structuredContent or json.loads(response.content[0].text)
-     row={'delayMs':delay*1000,'elapsedMs':round(ms,2),'readMs':round(readms,2),'status':content.get('status'),'code':content.get('error',{}).get('code'),'rootsRequested':got.is_set()};figures.append(row)
-     t.run.check(row['code']=='fs.outsideRoots' if delay>2 else row['status']=='ok','D-68 roots '+str(len(figures)),row)
-     if delay>2:t.run.check(not pending.cancelled() and not read.isError,'D-68 other read answered while roots pending',{'readMs':readms})
+     row={'delayMs':None if delay is None else delay*1000,'elapsedMs':round(ms,2),'readMs':round(readms,2),'status':content.get('status'),'code':content.get('error',{}).get('code'),'rootsRequested':got.is_set()};figures.append(row)
+     t.run.check(row['code']=='fs.outsideRoots' if delay is None else row['status']=='ok','D-68 roots '+str(len(figures)),row)
+     if delay is None:t.run.check(not pending.cancelled() and not read.isError and readms<ms,'D-68 other read answered while roots pending',{'readMs':readms})
    for i in range(30):await trial(.3)
-   await trial(3)
+   await trial(None)
    for i in range(5):await trial(0)
    t.run.save('roots-figures.json',figures)
   elif step==9:
@@ -246,6 +257,8 @@ if __name__=='__main__':
  # Only compact summaries enter the repository.
  rows=json.loads((r1.OUT/'transcript.json').read_text())
  summary={'checks':len(rows),'failures':[x for x in rows if not x.get('ok',False)],'raw':str(r1.OUT)}
+ captures=[x.get('detail') for x in rows if isinstance(x.get('detail'),dict) and 'kind' in x['detail']]
+ summary['captures']={kind:sum(x['kind']==kind for x in captures) for kind in ('overpainted','outside','refused','revealed')}
  for pattern in ('pixels-*.json','schedules.json','roots-figures.json','preferences-movement.json'):
   for f in r1.OUT.glob(pattern):summary[f.name]=json.loads(f.read_text())
  (r1.EVID/('step'+str(step)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8',newline='\n')
