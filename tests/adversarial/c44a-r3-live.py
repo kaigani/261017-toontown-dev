@@ -144,6 +144,14 @@ async def body(t,step):
     r=t.rect(ident);o=wintypes.POINT();d.u32.ClientToScreen(d.front(),ctypes.byref(o));scale=t.cdp.js('devicePixelRatio');d.u32.SetCursorPos(int(o.x+r['x']*scale),int(o.y+r['y']*scale));d._send_mouse(0x0002);d._send_mouse(0x0004)
    for trigger in ('category','ok','cancel','escape'):
     counts.update(masked=0,refused=0,revealed=0,other=0)
+    await prefs();safeRect=r2.dom(t,'agentAccess.token','e.getBoundingClientRect().toJSON()')
+    if r2.dom(t,'agentAccess.token')==q.token:t.click('agentAccess.token.show');await r2.pause()
+    if trigger=='category':t.click('preferences.category.general')
+    elif trigger=='ok':t.click('preferences.submit')
+    elif trigger=='cancel':t.click('preferences.cancel')
+    else:d.key(0x1B)
+    await r2.pause();safeAnswer=await call(q,'inspect.screenshot',{'target':'window'});safePixels=crop(Image.open(io.BytesIO(base64.b64decode(png(safeAnswer)))),safeRect).tobytes()
+    if trigger=='category':t.click('preferences.category.agent');await r2.pause()
     for i in range(40):
      await show();rect=r2.dom(t,'agentAccess.token','e.getBoundingClientRect().toJSON()')
      if trigger=='category':fastclick('preferences.category.general')
@@ -156,7 +164,7 @@ async def body(t,step):
      a=await call(q,'inspect.screenshot',{'target':'window'});data=png(a)
      if data:
       field=crop(Image.open(io.BytesIO(base64.b64decode(data))),rect).tobytes()
-      kind='revealed' if field==revealed else 'masked'
+      kind='revealed' if field==revealed else 'masked' if field in (masked,safePixels) else 'other'
      else:kind='refused' if a.get('error',{}).get('code')=='render.failed' and a.get('error',{}).get('details',{}).get('reason')=='tokenShown' else 'other'
      counts[kind]+=1;t.run.check(kind in ('masked','refused'),'D-65 leave '+trigger+' '+str(i),{'kind':kind,'requestedDelayMs':round(requestedDelayMs,2)})
      if trigger=='category':t.click('preferences.category.agent');await r2.pause()
