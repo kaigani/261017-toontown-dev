@@ -182,4 +182,23 @@ describe('ContextMenu placement', () => {
     });
     expect(menu.style.top).toBe(`${String(AREA.height - MENU_MARGIN - 760)}px`);
   });
+  it('is placed in client-area coordinates when an ancestor is the containing block of fixed elements', async () => {
+    await app();
+    sizes({ width: 200, height: 120 });
+    // The dock's tab: `left: 0; top: 0` puts the menu at (955, 540) of the client area.
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      x: 955,
+      y: 540,
+      left: 955,
+      top: 540,
+      right: 1155,
+      bottom: 660,
+      width: 200,
+      height: 120,
+      toJSON: () => ({}),
+    });
+    const menu = await openSceneMenu(100, 100);
+    // Drawn at (100, 100) of the client area: the style is relative to that origin.
+    expect([menu.style.left, menu.style.top]).toEqual(['-855px', '-440px']);
+  });
 });

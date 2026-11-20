@@ -66,6 +66,9 @@ export function ContextMenu({
   }, [onClose]);
   const list = useRef<HTMLDivElement | null>(null);
   const [place, setPlace] = useState<MenuPlacement | null>(null);
+  // Where `left: 0; top: 0` puts the menu in the client area: an ancestor (the dock's tab) can be the containing block
+  // of a fixed element, so the placement, in client-area coordinates, is applied relative to that origin.
+  const [origin, setOrigin] = useState({ x: 0, y: 0 });
   const [more, setMore] = useState({ above: false, below: false });
 
   // Placed from its natural size before it is painted (D-60 item 1), measured at the client area's corner so the
@@ -87,7 +90,9 @@ export function ContextMenu({
     el.style.maxHeight = '';
     el.style.maxWidth = '';
     const size = { width: el.offsetWidth, height: el.offsetHeight };
+    const at0 = el.getBoundingClientRect();
     Object.assign(el.style, prev);
+    setOrigin((o) => (o.x === at0.left && o.y === at0.top ? o : { x: at0.left, y: at0.top }));
     const area = clientArea();
     const next = placeMenu(at, size, area);
     const keeps = (old: MenuPlacement | null) =>
@@ -179,8 +184,8 @@ export function ContextMenu({
       style={
         place
           ? {
-              left: place.x,
-              top: place.y,
+              left: place.x - origin.x,
+              top: place.y - origin.y,
               ...(place.maxHeight !== null ? { maxHeight: place.maxHeight } : {}),
               ...(place.maxWidth !== null ? { maxWidth: place.maxWidth } : {}),
             }
