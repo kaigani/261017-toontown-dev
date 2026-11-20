@@ -1,0 +1,36 @@
+{
+  "field": "pen.rename",
+  "opened": "a real double click on the pen",
+  "initial": "Renamed D39",
+  "afterSelectAll": {
+    "value": "Renamed D39",
+    "start": 0,
+    "end": 11,
+    "focused": true
+  },
+  "afterTyping": {
+    "value": "x",
+    "start": 1,
+    "end": 1,
+    "focused": true
+  },
+  "afterToolLetter": {
+    "value": "xb",
+    "start": 2,
+    "end": 2,
+    "focused": true
+  },
+  "afterUndo": {
+    "value": "Renamed D39",
+    "start": 0,
+    "end": 11,
+    "focused": true
+  },
+  "selectAllSelects": true,
+  "typingReplaces": true,
+  "toolLetterTypes": true,
+  "undoLeavesDocument": true,
+  "historyBefore": 23,
+  "historyAfter": 23,
+  "ok": true
+}

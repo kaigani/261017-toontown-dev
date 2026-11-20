@@ -1,0 +1,367 @@
+{
+  "probe": "tests/adversarial/c44a-r2-live.py m2a 3 (unchanged), 30 attempts per run, each run on a fresh application",
+  "rule": "D-67: no revealed capture; a render.failed refusal with reason tokenShown is allowed",
+  "final": "token-300-r3 on 8c78722b: 300 attempts, every capture the masked field",
+  "batches": [
+    {
+      "batch": "token-300",
+      "build": "fab440a1",
+      "note": "first full schedule after the fix",
+      "totals": {
+        "attempts": 300,
+        "masked": 300,
+        "revealed": 0,
+        "refused": 0,
+        "neither": 0
+      },
+      "runs": [
+        {
+          "run": "m2a-3-01",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-02",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-03",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-04",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-05",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-06",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-07",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-08",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-09",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-10",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        }
+      ]
+    },
+    {
+      "batch": "token-300-final",
+      "build": "66abd1d3",
+      "note": "two runs failed with neither the masked nor the revealed field: the crop the probe measured at its start showed 'Copy | Copied to the clipboard' (images checked). A reveal refused during a capture showed its note, which widened the token group in the right-aligned button row and moved the field 212 px to the left (measured live). No capture matched the revealed reference. Fixed in 8c78722b",
+      "totals": {
+        "attempts": 300,
+        "masked": 284,
+        "revealed": 0,
+        "refused": 0,
+        "neither": 16
+      },
+      "runs": [
+        {
+          "run": "m2a-3-01",
+          "checks": 37,
+          "failed": [
+            "late reveal capture 28",
+            "late reveal capture 29"
+          ],
+          "attempts": 30,
+          "masked": 28,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 2
+        },
+        {
+          "run": "m2a-3-02",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-03",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-04",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-05",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-06",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-07",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-08",
+          "checks": 37,
+          "failed": [
+            "late reveal capture 16",
+            "late reveal capture 17",
+            "late reveal capture 18",
+            "late reveal capture 19",
+            "late reveal capture 20",
+            "late reveal capture 21",
+            "late reveal capture 22",
+            "late reveal capture 23",
+            "late reveal capture 24",
+            "late reveal capture 25",
+            "late reveal capture 26",
+            "late reveal capture 27",
+            "late reveal capture 28",
+            "late reveal capture 29"
+          ],
+          "attempts": 30,
+          "masked": 16,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 14
+        },
+        {
+          "run": "m2a-3-09",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-10",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        }
+      ]
+    },
+    {
+      "batch": "token-300-r3",
+      "build": "8c78722b",
+      "note": "after the field was given a place that does not depend on its notes",
+      "totals": {
+        "attempts": 300,
+        "masked": 300,
+        "revealed": 0,
+        "refused": 0,
+        "neither": 0
+      },
+      "runs": [
+        {
+          "run": "m2a-3-01",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-02",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-03",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-04",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-05",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-06",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-07",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-08",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-09",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        },
+        {
+          "run": "m2a-3-10",
+          "checks": 37,
+          "failed": [],
+          "attempts": 30,
+          "masked": 30,
+          "revealed": 0,
+          "refused": 0,
+          "neither": 0
+        }
+      ]
+    }
+  ]
+}
