@@ -1,0 +1,66 @@
+{
+  "checks": 2,
+  "results": [
+    {
+      "check": "D-59 first decision False",
+      "ok": true,
+      "detail": {
+        "second": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5,
+          "error": {
+            "code": "confirmation.expired",
+            "message": "no pending confirmation `cf_6d4671ebe523242257588308`",
+            "details": {
+              "confirmationId": "cf_6d4671ebe523242257588308"
+            }
+          }
+        },
+        "answer": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5,
+          "error": {
+            "code": "confirmation.declined",
+            "message": "the user declined the action",
+            "details": {
+              "confirmToken": "cf_6d4671ebe523242257588308"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "D-59 first decision True",
+      "ok": true,
+      "detail": {
+        "second": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5,
+          "error": {
+            "code": "confirmation.expired",
+            "message": "no pending confirmation `cf_efd0176225e5389ef9765feb`",
+            "details": {
+              "confirmationId": "cf_efd0176225e5389ef9765feb"
+            }
+          }
+        },
+        "answer": {
+          "status": "ok",
+          "result": {
+            "jobId": "job-2"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        }
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-kjzvq5t2"
+}
