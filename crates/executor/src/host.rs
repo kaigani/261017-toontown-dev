@@ -401,7 +401,9 @@ fn resolve_in(
     if s.ui.shell().sensors.modal.as_ref().is_some_and(|m| m.kind == "dialog") {
         return Ok(KeyResolution::Suspended { keys: canonical, reason: "modal".into() });
     }
-    if s.ui.shell().sensors.text_focus && !seq.primary && !seq.alt && !seq.ctrl {
+    // D-73 item 2: the one text-field rule the window's dispatcher reads too (function keys reach the keymap, Shift+F10
+    // excepted; the platform's text-editing chords are the field's).
+    if s.ui.shell().sensors.text_focus && crate::keymap::text_field_owns(seq, platform) {
         return Ok(KeyResolution::Suspended { keys: canonical, reason: "textField".into() });
     }
     let bindings = crate::keymap::effective(&s.env.settings.keymap, platform);

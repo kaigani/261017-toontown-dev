@@ -82,6 +82,10 @@ NOT_SUITES = {
     "c44a-r3-live.py": "Windows live runner of the running application (round 3 cases n1a, n1b, n2a, n2b): needs the "
     "release binary and a case and step argument (without one it fails at its argument read); its steps are run by "
     "hand for the round-4 handoff, results in reviews/M4-C4.4a-handoff-r4.md",
+    # M4 C4.4a closure (declared in reviews/M4-C4.4a-handoff-r5.md): the reviewer's closure live runner.
+    "c44a-r4-live.py": "Windows live runner of the running application (closure cases p1a, p1b): needs the release "
+    "binary and a case and step argument (without one it fails at its argument read); its steps are run by hand for the "
+    "round-5 handoff, results in reviews/M4-C4.4a-handoff-r5.md",
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
     "inventory.json and asserts the register ends at SI-110 (SI-111 is ruled in round 2); its live counterpart is "
     "scripts/check-merge-note-inventory.py",

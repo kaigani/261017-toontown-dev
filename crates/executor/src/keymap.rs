@@ -602,3 +602,78 @@ pub fn by_command(bindings: &[Binding]) -> BTreeMap<String, Vec<Binding>> {
     }
     m
 }
+
+/// The one rule of which keys a focused text-entry element owns (ruling D-73 item 2; D-66 item 2, D-69 item 2): its data
+/// is the page's own file (`desktop/src/keys/text-field-keys.json`), so the window's dispatcher and this resolution
+/// (which the window's `dispatch_key` and the agents' `key` tool share) cannot differ. A function key, plain or with
+/// Shift, is the keymap's unless the field keeps it (Shift+F10); any other key without Primary, Ctrl or Alt is the
+/// field's; a chord with them is the field's when it is one of the platform's text-editing chords.
+#[must_use]
+pub fn text_field_owns(seq: &Sequence, platform: Platform) -> bool {
+    let rule = text_field_rule();
+    let canonical = seq.canonical();
+    let plain = !seq.primary && !seq.ctrl && !seq.alt;
+    let function = seq.key.len() > 1 && seq.key.starts_with('F') && seq.key[1..].chars().all(|c| c.is_ascii_digit());
+    if function && plain {
+        return rule.function_keys_kept.contains(&canonical);
+    }
+    if plain {
+        return true;
+    }
+    let list = if platform == Platform::Macos { &rule.text_editing.mac } else { &rule.text_editing.other };
+    list.contains(&canonical)
+}
+
+/// The shared rule's data (D-73 item 2).
+#[derive(Debug, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct TextFieldRule {
+    function_keys_kept: Vec<String>,
+    text_editing: TextEditing,
+}
+
+#[derive(Debug, serde::Deserialize)]
+struct TextEditing {
+    other: Vec<String>,
+    mac: Vec<String>,
+}
+
+fn text_field_rule() -> &'static TextFieldRule {
+    static RULE: std::sync::OnceLock<TextFieldRule> = std::sync::OnceLock::new();
+    RULE.get_or_init(|| {
+        serde_json::from_str(include_str!("../../../desktop/src/keys/text-field-keys.json")).unwrap_or(TextFieldRule {
+            function_keys_kept: vec!["Shift+F10".into()],
+            text_editing: TextEditing { other: Vec::new(), mac: Vec::new() },
+        })
+    })
+}
+
+#[cfg(test)]
+mod text_field_tests {
+    /// D-73 item 2: the kernel's text-field rule answers the shared corpus as the page does.
+    #[test]
+    fn the_text_field_rule_answers_the_shared_corpus() {
+        #[derive(serde::Deserialize)]
+        struct Case {
+            seq: String,
+            mac: bool,
+            owned: bool,
+        }
+        #[derive(serde::Deserialize)]
+        struct File {
+            corpus: Vec<Case>,
+        }
+        let parsed: Result<File, _> =
+            serde_json::from_str(include_str!("../../../desktop/src/keys/text-field-keys.json"));
+        assert!(parsed.is_ok(), "the shared rule's file parses");
+        let Ok(file) = parsed else { return };
+        assert!(file.corpus.len() >= 20);
+        for c in file.corpus {
+            let platform = if c.mac { super::Platform::Macos } else { super::Platform::Windows };
+            let seq = super::parse(&c.seq, platform);
+            assert!(seq.is_ok(), "{} parses", c.seq);
+            let Ok(seq) = seq else { continue };
+            assert_eq!(super::text_field_owns(&seq, platform), c.owned, "{} mac {}", c.seq, c.mac);
+        }
+    }
+}

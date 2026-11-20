@@ -97,3 +97,28 @@ fn a_call_that_needs_no_roots_does_not_wait() {
     c.close().unwrap();
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+/// D-73 item 1 (C44A-R4-01): the wait for the roots never holds the session's request path: with a client that never
+/// answers the roots request, a read sent just after a call that waits for the roots is answered at once, and the
+/// waiting call is answered (refused) at its bound afterwards.
+#[test]
+fn a_call_waiting_for_the_roots_leaves_the_sessions_other_calls_answered() {
+    let dir = tmp();
+    let other = tmp();
+    let h = executor(&dir.join("user"));
+    let mut c = Client::start(&h, opts(&dir));
+    c.respond_with(|m, _| if m == "roots/list" { Value::Null } else { json!({}) });
+    let started = Instant::now();
+    let waiting = race(&mut c, &other.join("R.animpkg"));
+    std::thread::sleep(Duration::from_millis(50));
+    let read = c.send("tools/call", json!({ "name": "get_state", "arguments": {} }));
+    let m = c.wait(read, Duration::from_millis(1500)).expect("the read is answered while the other call waits");
+    assert!(m.get("error").is_none(), "{m}");
+    let read_at = started.elapsed();
+    let m = c.wait(waiting, Duration::from_secs(30)).expect("the waiting call is answered at its bound");
+    assert_eq!(m["result"]["structuredContent"]["error"]["code"], "fs.outsideRoots", "{m}");
+    assert!(started.elapsed() > read_at, "the read came first");
+    c.close().unwrap();
+    let _ = std::fs::remove_dir_all(&dir);
+    let _ = std::fs::remove_dir_all(&other);
+}

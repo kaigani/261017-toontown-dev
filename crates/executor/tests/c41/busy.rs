@@ -199,6 +199,23 @@ fn keys_resolve_through_the_keymap() {
         matches!(h.resolve_key("Delete").unwrap(), KeyResolution::Suspended { ref reason, .. } if reason == "textField")
     );
     assert!(matches!(h.resolve_key("Primary+S").unwrap(), KeyResolution::Command { .. }));
+    // D-73 item 2 (C44A-R4-02): the same rule as the window's dispatcher: function keys reach the keymap from a text
+    // field (F11 answers its binding; F5 and Shift+F5 are not suspended); Shift+F10 and text-editing chords stay the
+    // field's.
+    match h.resolve_key("F11").unwrap() {
+        KeyResolution::Command { command_id, .. } => assert_eq!(command_id, "window.fullScreen.set"),
+        other => panic!("F11 from a text field: {other:?}"),
+    }
+    for keys in ["F5", "Shift+F5"] {
+        let r = h.resolve_key(keys).unwrap();
+        assert!(!matches!(r, KeyResolution::Suspended { .. }), "{keys}: {r:?}");
+    }
+    assert!(
+        matches!(h.resolve_key("Shift+F10").unwrap(), KeyResolution::Suspended { ref reason, .. } if reason == "textField")
+    );
+    assert!(
+        matches!(h.resolve_key("Primary+A").unwrap(), KeyResolution::Suspended { ref reason, .. } if reason == "textField")
+    );
     h.report_shell(ShellReport { text_focus: Some(false), ..modal("dialog") });
     assert!(
         matches!(h.resolve_key("Primary+S").unwrap(), KeyResolution::Suspended { ref reason, .. } if reason == "modal")

@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 import { GENERATION_EVENT } from '../ipc';
 import { isUnmodified, sequenceOf } from '../keys/sequence';
+import TEXT_FIELD_KEYS from '../keys/text-field-keys.json';
 import type { ShellServices } from '../state/context';
 import type { Binding } from '../state/types';
 import type { ActionsApi } from './actionsApi';
@@ -42,30 +43,23 @@ export function isTextField(el: EventTarget | null): boolean {
   );
 }
 
-const ARROWS = ['Left', 'Right', 'Up', 'Down'];
-
-/** The platform's text-editing chords (01 §8.4: "platform text-editing shortcuts act on the focused text field"; ruling
- *  D-66 item 2): select all, cut, copy, paste, undo and redo of the field's own text, word and line navigation and
- *  selection, word deletion. Keys without Primary, Ctrl or Alt (characters, Shift with a character, Home, End, Delete,
- *  Backspace, the arrows, Enter, Escape) are the field's anyway. */
+/** The one rule of which keys a focused text-entry element owns (ruling D-73 item 2): its data,
+ *  `keys/text-field-keys.json`, is read here and by the kernel's key resolution (`keymap.rs` `text_field_owns`), which
+ *  the window's `dispatch_key` and the agents' `key` tool share. */
 const TEXT_EDITING: Readonly<Record<'mac' | 'other', ReadonlySet<string>>> = {
-  other: new Set([
-    ...['A', 'X', 'C', 'V', 'Z', 'Y', 'Insert', 'Backspace', 'Delete', 'Home', 'End', ...ARROWS].map(
-      (k) => `Primary+${k}`,
-    ),
-    ...['Z', 'Home', 'End', ...ARROWS].map((k) => `Primary+Shift+${k}`),
-    'Alt+Backspace',
-  ]),
-  mac: new Set([
-    ...['A', 'X', 'C', 'V', 'Z', 'Backspace', 'Delete', ...ARROWS].map((k) => `Primary+${k}`),
-    ...['Z', ...ARROWS].map((k) => `Primary+Shift+${k}`),
-    ...['Backspace', 'Delete', ...ARROWS].map((k) => `Alt+${k}`),
-    ...ARROWS.map((k) => `Alt+Shift+${k}`),
-    // The Cocoa text system's Control keys (line start and end, kill, character and line moves).
-    ...['A', 'E', 'K', 'B', 'F', 'N', 'P', 'D', 'H', 'T', 'Y', 'O'].map((k) => `Ctrl+${k}`),
-    ...['A', 'E', 'B', 'F', 'N', 'P'].map((k) => `Ctrl+Shift+${k}`),
-  ]),
+  other: new Set(TEXT_FIELD_KEYS.textEditing.other),
+  mac: new Set(TEXT_FIELD_KEYS.textEditing.mac),
 };
+const FUNCTION_KEYS_KEPT: ReadonlySet<string> = new Set(TEXT_FIELD_KEYS.functionKeysKept);
+
+/** The rule over a key sequence alone (D-73 item 2), as the kernel applies it: a function key, plain or with Shift, is
+ *  the keymap's unless the field keeps it (Shift+F10); any other key without Primary, Ctrl or Alt is the field's; a
+ *  chord with them is the field's when it is one of the platform's text-editing chords. */
+export function textFieldOwnsSequence(seq: string, mac: boolean): boolean {
+  if (/^(Shift\+)?F\d+$/.test(seq)) return FUNCTION_KEYS_KEPT.has(seq);
+  if (isUnmodified(seq)) return true;
+  return TEXT_EDITING[mac ? 'mac' : 'other'].has(seq);
+}
 
 /** Whether a key pressed in `target` belongs to the focused text-entry element and never reaches the keymap (ruling
  *  D-66 item 2, C44A-R2-01): in a text field (the numeric field, text inputs, text areas, an inline rename, anything
@@ -88,14 +82,12 @@ export function fieldOwnsKey(
 ): boolean {
   if (!isTextField(target)) return false;
   if (isComposition(e)) return true;
-  if (/^(Shift\+)?F\d+$/.test(seq)) return seq === 'Shift+F10';
-  if (isUnmodified(seq)) return true;
-  // A list box is not text entry: only its typing-ahead (the keys above) is its own.
-  if (target instanceof HTMLSelectElement) return false;
+  // A list box is not text entry: only its typing-ahead (keys without Primary, Ctrl or Alt) is its own.
+  if (target instanceof HTMLSelectElement) return isUnmodified(seq) && !/^(Shift\+)?F\d+$/.test(seq);
   const typed = e.key.length === 1 && e.key !== ' ';
   if (typed && e.getModifierState?.('AltGraph') === true) return true;
   if (typed && mac && e.altKey && !e.metaKey && !e.ctrlKey) return true;
-  return TEXT_EDITING[mac ? 'mac' : 'other'].has(seq);
+  return textFieldOwnsSequence(seq, mac);
 }
 
 /** A dead key, or a key of an input method's composition (D-69 item 2): the browser composes the character. */
@@ -277,10 +269,16 @@ export function usePageReady(services: ShellServices): void {
         .pageReady()
         .then((accepted) => {
           if (accepted) pageReadySent = true;
-          else if (left > 0) setTimeout(() => report(left - 1), PAGE_READY_RETRY_MS);
+          else if (left > 0)
+            setTimeout(() => {
+              report(left - 1);
+            }, PAGE_READY_RETRY_MS);
         })
         .catch(() => {
-          if (left > 0) setTimeout(() => report(left - 1), PAGE_READY_RETRY_MS);
+          if (left > 0)
+            setTimeout(() => {
+              report(left - 1);
+            }, PAGE_READY_RETRY_MS);
         });
     };
     requestAnimationFrame(() => {

@@ -565,6 +565,31 @@ where
                         }
                     }
                     waits.retain(|h| !h.is_finished());
+                } else if method == "tools/call"
+                    && shared.roots_busy.load(Ordering::Acquire)
+                    && params.get("arguments").is_some_and(mentions_absolute_path)
+                    && take_slot(&shared.waits, MAX_JOB_WAITS)
+                {
+                    // D-73 item 1 (C44A-R4-01): a call that needs the roots while the client's answer to the roots request
+                    // is outstanding waits for it on a waiting thread of its own (one of the session's MAX_JOB_WAITS,
+                    // shared with `job_wait` and held calls), never on the request path: the session's other calls go
+                    // on. With every waiting thread taken it goes to the request path and does not wait (the roots
+                    // granted so far apply, as before D-68).
+                    let s = shared.clone();
+                    let slots = shared.waits.clone();
+                    let spawned = std::thread::Builder::new().name("mcp-wait".into()).spawn(move || {
+                        ROOTS_WAIT_ALLOWED.with(|c| c.set(true));
+                        answer(&s, &id, &method, &params);
+                        slots.fetch_sub(1, Ordering::AcqRel);
+                    });
+                    match spawned {
+                        Ok(h) => waits.push(h),
+                        Err(e) => {
+                            shared.waits.fetch_sub(1, Ordering::AcqRel);
+                            return Err(e.to_string());
+                        }
+                    }
+                    waits.retain(|h| !h.is_finished());
                 } else if work_tx.send((id, method, params)).is_err() {
                     break;
                 }
@@ -684,6 +709,12 @@ fn roots_idle(shared: &Shared) {
 
 /// The longest a call waits for the client's roots (D-68 item 4): the call's budget, and at most this.
 const ROOTS_WAIT_MAX: Duration = Duration::from_secs(2);
+
+thread_local! {
+    /// D-73 item 1: set on a waiting thread the reader started for a call that needs the roots; a call waits for the
+    /// roots only there, so the session's request path never waits for them.
+    static ROOTS_WAIT_ALLOWED: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
 
 /// Ruling D-68 item 4: a call that needs the file roots and arrives while the server's roots request to the client is
 /// unanswered (just after `notifications/initialized`, or after `roots/list_changed`) waits for the answer, on the MCP
@@ -1047,8 +1078,9 @@ fn call_tool(
         shared.handle.audit_call(&origin, name, name, &Value::Object(args.clone()), &env, started.elapsed());
         return ToolOutcome::Result(tool_result(name, name, &env));
     }
-    // D-68 item 4: a call that needs the roots waits (bounded) for the client's answer to a roots request in progress.
-    if mentions_absolute_path(&Value::Object(args.clone())) {
+    // D-68 item 4, D-73 item 1: a call that needs the roots waits (bounded) for the client's answer to a roots request in
+    // progress, on the waiting thread the reader gave it (never on the request path).
+    if ROOTS_WAIT_ALLOWED.with(std::cell::Cell::get) && mentions_absolute_path(&Value::Object(args.clone())) {
         wait_for_roots(shared, shared.handle.budget().min(ROOTS_WAIT_MAX));
     }
     let plan = match typed_id {
@@ -1994,14 +2026,14 @@ mod tests {
     /// path, the root `/` included.
     #[test]
     fn a_call_needs_the_roots_when_the_file_layer_sees_an_absolute_path() {
-        let cases = ["/", "/a", "/a/b.animpkg", "C:\\", "C:\\x", "C:/x", "\\\\srv\\share\\x", "rel", "a/b", "", "/a/../b"];
+        let cases =
+            ["/", "/a", "/a/b.animpkg", "C:\\", "C:\\x", "C:/x", "\\\\srv\\share\\x", "rel", "a/b", "", "/a/../b"];
         for c in cases {
+            assert_eq!(mentions_absolute_path(&json!(c)), tt_persist::fsx::absolute(c, "").is_ok(), "{c}");
             assert_eq!(
-                mentions_absolute_path(&json!(c)),
-                tt_persist::fsx::absolute(c, "").is_ok(),
-                "{c}"
+                mentions_absolute_path(&json!({ "steps": [{ "params": { "path": c } }] })),
+                mentions_absolute_path(&json!(c))
             );
-            assert_eq!(mentions_absolute_path(&json!({ "steps": [{ "params": { "path": c } }] })), mentions_absolute_path(&json!(c)));
         }
         if cfg!(windows) {
             assert!(mentions_absolute_path(&json!("C:\\")));

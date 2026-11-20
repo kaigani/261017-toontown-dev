@@ -11,7 +11,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { App } from '../App';
 import { createHostApi, HostProvider } from '../ipc';
 import { createScriptedHost, NO_PROJECT_STATE, ok, type ScriptedHost } from '../test-support/scriptedHost';
-import { fieldOwnsKey } from './windowHooks';
+import TEXT_FIELD_KEYS from '../keys/text-field-keys.json';
+import { fieldOwnsKey, textFieldOwnsSequence } from './windowHooks';
 
 afterEach(() => {
   cleanup();
@@ -449,5 +450,13 @@ describe('dead keys, compositions and function keys in a text field (D-69 item 2
     ).toBe(true);
     await settle();
     expect(h.actions().slice(before)).toEqual([]);
+  });
+});
+
+// D-73 item 2: one rule, read by the page and by the kernel (`keymap.rs` `text_field_owns` checks the same corpus).
+describe('the shared text-field key rule (D-73 item 2)', () => {
+  it('answers every corpus case as the kernel does', () => {
+    for (const c of TEXT_FIELD_KEYS.corpus)
+      expect([c.seq, c.mac, textFieldOwnsSequence(c.seq, c.mac)]).toEqual([c.seq, c.mac, c.owned]);
   });
 });
