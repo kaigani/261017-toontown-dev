@@ -35,5 +35,5 @@ check('S4 dead-key model', lambda: 'FAIL: key=Dead, code=KeyE, Option -> Alt+E; 
 check('S5 scroll protection', lambda: all(x in read('desktop/src/shell/ContextMenu.tsx') for x in ['const scrollTop =', 'onPointerLeave: stopHold', 'useEffect(() => stopHold', 'boxSizing:']))
 check('S6 coverage guard', lambda: 'full-table gate present' if 'if not only and own:' in read('scripts/c43-d39-bindings.py') else 'inspect changed source')
 check('S7 evidence', evidence)
-check('S7 allows', lambda: sum(sum(int(v) for v in values.values()) for values in json.loads(read('scripts/product-allows.json')).values()))
+check('S7 allows', lambda: sum(sum(v for v in values.values() if isinstance(v, int)) for values in json.loads(read('scripts/product-allows.json')).values()))
 check('tracked scope', lambda: subprocess.check_output(['git', 'diff', '--name-only', 'ce7bc57a'], cwd=ROOT, text=True).strip().replace('\n', ', '))
