@@ -194,6 +194,10 @@ pub fn run() -> Result<(), DesktopError> {
             // Attached mode's routes into the windows (M4 C4.2b): agent gestures and screenshots of what the user sees.
             tauri::Manager::state::<host::Host>(&handle)
                 .install_attached(std::sync::Arc::new(attached::WindowIo::new(handle.clone())));
+            // D-70 item 2: no browser menu or keys in the product's webview.
+            if let Some(main) = tauri::Manager::get_webview_window(&handle, "main") {
+                capture::harden(&main);
+            }
             shell::start_event_pump(&handle);
             shell::restore_window(&handle);
             // The floats of the restored workspace (ruling O-2).

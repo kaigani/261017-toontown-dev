@@ -347,6 +347,8 @@ fn apply(app: &AppHandle, wanted: &[Wanted]) {
                         if !cfg!(target_os = "macos") {
                             let _ = win.remove_menu();
                         }
+                        // D-70 item 2: no browser menu or keys in a float's webview either.
+                        crate::capture::harden(&win);
                         if shown {
                             let _ = win.show();
                         }

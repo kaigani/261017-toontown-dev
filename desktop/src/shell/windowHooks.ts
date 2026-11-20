@@ -103,6 +103,21 @@ export function isComposition(e: { key: string; isComposing?: boolean; keyCode?:
   return e.key === 'Dead' || e.key === 'Process' || e.isComposing === true || e.keyCode === 229;
 }
 
+/** The input types whose element is text entry (the webview's text-editing menu belongs to them). */
+const TEXT_INPUTS = new Set(['', 'text', 'search', 'url', 'tel', 'email', 'password', 'number']);
+
+/** D-70 item 2a: whether the webview's own context menu belongs to `el`: a text-entry element (a text-like input,
+ *  read-only ones included, a text area, editable content), where it offers text editing. A list box, a slider or any
+ *  other control is not one: there the webview would show the page's menu (Back, Reload, Save as, Print). */
+export function isTextEntry(el: EventTarget | null): boolean {
+  if (!(el instanceof HTMLElement)) return false;
+  if (el.isContentEditable) return true;
+  const editable = el.getAttribute('contenteditable');
+  if (editable !== null && editable !== 'false') return true;
+  if (el instanceof HTMLTextAreaElement) return true;
+  return el instanceof HTMLInputElement && TEXT_INPUTS.has((el.getAttribute('type') ?? '').toLowerCase());
+}
+
 /** Engine events applied in order; a resync at start and after a gap (IPC freshness). */
 export function useEngineMirror(services: ShellServices, reportScreens: boolean): void {
   useEffect(() => {
@@ -225,7 +240,7 @@ export function useShortcuts(
 export function useNoBrowserMenus(): void {
   useEffect(() => {
     const onMenu = (e: MouseEvent) => {
-      if (!isTextField(e.target)) e.preventDefault();
+      if (!isTextEntry(e.target)) e.preventDefault();
     };
     const onButton = (e: MouseEvent) => {
       if (e.button === 3 || e.button === 4) e.preventDefault();

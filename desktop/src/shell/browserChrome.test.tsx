@@ -93,6 +93,24 @@ describe('the webview context menu (D-70 item 2a)', () => {
     const button = toolbar.querySelector('button');
     if (!button) throw new Error('no toolbar button');
     expect(defaultMenu(button)).toBe(false);
+    // A list box and a slider are not text entry: the webview would show the page's menu there (C44A-R3 live, the
+    // onion skin's list box on the main toolbar).
+    for (const el of [
+      document.createElement('select'),
+      Object.assign(document.createElement('input'), { type: 'range' }),
+    ]) {
+      el.setAttribute('data-test-field', '');
+      document.body.appendChild(el);
+      expect([el.tagName, defaultMenu(el)]).toEqual([el.tagName, false]);
+    }
+    const select = toolbar.querySelector('select');
+    if (select) expect(defaultMenu(select)).toBe(false);
+    // Read-only text (the token field) and a text area keep the text-editing menu.
+    expect(defaultMenu(textField({ readonly: '' }))).toBe(true);
+    const area = document.createElement('textarea');
+    area.setAttribute('data-test-field', '');
+    document.body.appendChild(area);
+    expect(defaultMenu(area)).toBe(true);
     expect(defaultMenu(toolbar)).toBe(false);
     const canvas = await waitFor(() => {
       const c = document.querySelector('[data-tt-id="cameraView.canvas"]');

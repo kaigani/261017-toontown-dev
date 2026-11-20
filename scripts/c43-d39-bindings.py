@@ -3087,6 +3087,10 @@ async def browser_chrome_row(t: Table) -> None:
         if not button:
             raise RuntimeError("no main toolbar button")
         checks["toolbarNoPopup"] = await right_click(button)
+        # A list box on the main toolbar (the onion skin's): not text entry, so no menu either (round 3 live).
+        select = t.cdp.js("document.querySelector('[data-tt-id=\"mainToolbar\"] select[data-tt-id]')?.dataset.ttId ?? null")
+        checks["toolbarSelect"] = select
+        checks["toolbarSelectNoPopup"] = await right_click(select) if select else []
         await t.cmd("window.panel.set", {"panelId": "pen", "visible": True, "focus": True})
         await asyncio.sleep(0.6)
         pens = await t.cmd("tool.pen.list", {})
@@ -3124,7 +3128,8 @@ async def browser_chrome_row(t: Table) -> None:
         checks.update(await reloads("tokenField"))
         key(0x1B)
         await asyncio.sleep(0.5)
-        ok = (checks["toolbarNoPopup"] == [] and checks["penRowNoPopup"] == [] and len(prevented) >= 2
+        ok = (checks["toolbarNoPopup"] == [] and checks["toolbarSelectNoPopup"] == [] and checks["penRowNoPopup"] == []
+              and bool(select) and len(prevented) >= 3
               and all(prevented) and checks["tokenFocused"] == "agentAccess.token"
               and all(v == "d70" for w in ("canvas", "tokenField") for v in checks[w].values()))
         rec.update({"checks": checks, "ok": ok})
