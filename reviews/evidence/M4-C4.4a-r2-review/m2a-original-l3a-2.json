@@ -1,0 +1,96 @@
+{
+  "checks": 6,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r2-regression-ohexzs6o\\l3a2",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "connected client refused after server off",
+      "ok": true,
+      "detail": {
+        "transportError": "<urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>"
+      }
+    },
+    {
+      "check": "new client refused while off",
+      "ok": true,
+      "detail": {
+        "transportError": "<urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>"
+      }
+    },
+    {
+      "check": "off discovery and indicator observation",
+      "ok": true,
+      "detail": {
+        "discovery": {
+          "format": "toontown-agent-discovery",
+          "formatVersion": "1.0",
+          "endpoint": null,
+          "processId": null
+        },
+        "indicator": "s panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\n\nNo project is open.\n\nNew\nDelete\nAdvanced options\nCells opened\nNew project\nName\nFormat\nDefault (1920 \u00d7 1080, 24 fps)\nWeb small 4:3 (480 \u00d7 360, 12 fps)\nWeb medium 4:3 (640 \u00d7 480, 12 fps)\nWeb 16:9 (960 \u00d7 540, 24 fps)\nSD NTSC 4:3 (square pixels) (720 \u00d7 540, 29.97 fps)\nSD NTSC 16:9 (square pixels) (854 \u00d7 480, 29.97 fps)\nSD PAL 4:3 (square pixels) (768 \u00d7 576, 25 fps)\nSD PAL 16:9 (square pixels) (1024 \u00d7 576, 25 fps)\nHD 720p 24 (1280 \u00d7 720, 24 fps)\nHD 720p 25 (1280 \u00d7 720, 25 fps)\nHD 720p 30 (1280 \u00d7 720, 30 fps)\nHD 1080p 24 (1920 \u00d7 1080, 24 fps)\nHD 1080p 25 (1920 \u00d7 1080, 25 fps)\nHD 1080p 30 (1920 \u00d7 1080, 30 fps)\nUHD 4K 24 (3840 \u00d7 2160, 24 fps)\nUHD 4K 25 (3840 \u00d7 2160, 25 fps)\nUHD 4K 30 (3840 \u00d7 2160, 30 fps)\nDCI 2K (2048 \u00d7 1080, 24 fps)\nDCI 4K (4096 \u00d7 2160, 24 fps)\nSocial square (1080 \u00d7 1080, 30 fps)\nSocial vertical (1080 \u00d7 1920, 30 fps)\nCustom\nFrame rate\nCamera width\nCamera height\nCreate\nRecent projects\n\nNo recent projects.\n\nOpen other\u2026\nLearn\nSample projectDocumentation\n\nTutorials are authored with the starter content (M9 C9.3).\n\n Show at start-up",
+        "sent": [
+          {
+            "command": "agent.server.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "server port group exactly changed values",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.set",
+          "params": {
+            "enabled": true,
+            "port": 47891
+          }
+        }
+      ]
+    },
+    {
+      "check": "new client accepted after on",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "enabled": true,
+          "endpoint": "http://127.0.0.1:50062/mcp",
+          "sessions": [
+            {
+              "sessionId": "s3-619a8b",
+              "client": "on-probe",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "connectedAt": "2026-11-20T06:58:07.218Z",
+              "lastActivity": null,
+              "paused": false,
+              "transport": "http"
+            }
+          ],
+          "pendingConfirmations": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": null
+      }
+    }
+  ]
+}

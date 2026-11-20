@@ -1,0 +1,86 @@
+[
+  {
+    "case": "l3a",
+    "step": 1,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l3a",
+    "step": 2,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l3a",
+    "step": 3,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l3a",
+    "step": 4,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l3b",
+    "step": 5,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l3b",
+    "step": 6,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l3b",
+    "step": 7,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l4a",
+    "step": 1,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l4a",
+    "step": 2,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l4a",
+    "step": 3,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l4a",
+    "step": 4,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l4a",
+    "step": 5,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l4b",
+    "step": 6,
+    "exit": 0,
+    "failLines": []
+  },
+  {
+    "case": "l4b",
+    "step": 7,
+    "exit": 0,
+    "failLines": []
+  }
+]

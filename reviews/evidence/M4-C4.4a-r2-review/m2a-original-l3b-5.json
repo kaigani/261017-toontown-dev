@@ -1,0 +1,237 @@
+{
+  "checks": 11,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r2-regression-ohexzs6o\\l3b5",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "regeneration question defaults Cancel",
+      "ok": true,
+      "detail": [
+        {
+          "text": "Create",
+          "id": "start.create",
+          "focused": false
+        },
+        {
+          "text": "Open other\u2026",
+          "id": "start.openOther",
+          "focused": false
+        },
+        {
+          "text": "Sample project",
+          "id": "start.sample",
+          "focused": false
+        },
+        {
+          "text": "Documentation",
+          "id": "start.docs",
+          "focused": false
+        },
+        {
+          "text": "General",
+          "id": "preferences.category.general",
+          "focused": false
+        },
+        {
+          "text": "Files and safety",
+          "id": "preferences.category.files",
+          "focused": false
+        },
+        {
+          "text": "New-project defaults",
+          "id": "preferences.category.newProject",
+          "focused": false
+        },
+        {
+          "text": "Interface",
+          "id": "preferences.category.interface",
+          "focused": false
+        },
+        {
+          "text": "Drawing aids",
+          "id": "preferences.category.drawingAids",
+          "focused": false
+        },
+        {
+          "text": "Display",
+          "id": "preferences.category.display",
+          "focused": false
+        },
+        {
+          "text": "Tablet",
+          "id": "preferences.category.tablet",
+          "focused": false
+        },
+        {
+          "text": "Staging",
+          "id": "preferences.category.staging",
+          "focused": false
+        },
+        {
+          "text": "Timing",
+          "id": "preferences.category.timing",
+          "focused": false
+        },
+        {
+          "text": "Edit",
+          "id": "preferences.category.edit",
+          "focused": false
+        },
+        {
+          "text": "Agent access",
+          "id": "preferences.category.agent",
+          "focused": false
+        },
+        {
+          "text": "Keyboard",
+          "id": "preferences.category.keyboard",
+          "focused": false
+        },
+        {
+          "text": "Tips",
+          "id": "preferences.category.tips",
+          "focused": false
+        },
+        {
+          "text": "Show",
+          "id": "agentAccess.token.show",
+          "focused": false
+        },
+        {
+          "text": "Copy",
+          "id": "agentAccess.token.copy",
+          "focused": false
+        },
+        {
+          "text": "Regenerate token\u2026",
+          "id": "agentAccess.regenerate",
+          "focused": false
+        },
+        {
+          "text": "Cancel",
+          "id": "preferences.cancel",
+          "focused": false
+        },
+        {
+          "text": "OK",
+          "id": "preferences.submit",
+          "focused": false
+        }
+      ]
+    },
+    {
+      "check": "Cancel keeps token and endpoint",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "regenerate changes token keeps endpoint",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.token.regenerate",
+            "params": {}
+          }
+        ],
+        "oldFingerprint": {
+          "length": 48,
+          "sha256": "4d6778132d0a62a217c3d35baa16407260db130f707b78aa8fdb10349ef0b212"
+        },
+        "newFingerprint": {
+          "length": 48,
+          "sha256": "5ffbdd65733ef4523eae2fc124dd9bacc62b5f642e5c612cca9114dcc791cbaf"
+        }
+      }
+    },
+    {
+      "check": "old token refused",
+      "ok": true,
+      "detail": {
+        "http": 401,
+        "body": ""
+      }
+    },
+    {
+      "check": "new token accepted",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "token absent UI tree and logs",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "regeneration disconnects existing HTTP sessions",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "enabled": true,
+          "endpoint": "http://127.0.0.1:57426/mcp",
+          "sessions": [
+            {
+              "sessionId": "s3-2d98d9",
+              "client": "new-token",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "connectedAt": "2026-11-20T06:58:55.996Z",
+              "lastActivity": "2026-11-20T06:58:56.055Z",
+              "paused": false,
+              "transport": "http"
+            }
+          ],
+          "pendingConfirmations": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": null
+      }
+    },
+    {
+      "check": "token absent actual activity export",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "token shown or copied in Preferences matches discovery",
+      "ok": true,
+      "detail": {
+        "clipboardLength": 48,
+        "clipboardSha256": "5ffbdd65733ef4523eae2fc124dd9bacc62b5f642e5c612cca9114dcc791cbaf"
+      }
+    },
+    {
+      "check": "D-57 session/token events exclude shell notices",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "contents": [
+            {
+              "uri": "app://events?after=0",
+              "mimeType": "application/json",
+              "text": "{\"eventCount\": 5, \"types\": {\"agent.session.connected\": 1, \"app.state.changed\": 3, \"workspace.changed\": 1}, \"firstSeq\": 1, \"lastSeq\": 5, \"rawTextBytes\": 3327, \"sha256\": \"06fc2b59786ca32d782c1aec63501b4c1cc8c06d1e20ab0336fa544c98d6b253\"}"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

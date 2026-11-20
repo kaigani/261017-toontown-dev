@@ -1,0 +1,345 @@
+{
+  "checks": 11,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r2-regression-ohexzs6o\\l4a4",
+  "results": [
+    {
+      "check": "initial policy",
+      "ok": true,
+      "detail": {
+        "enabled": true,
+        "endpoint": "http://127.0.0.1:51572/mcp",
+        "sessions": [
+          {
+            "sessionId": "s1-84df52",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T07:00:56.134Z",
+            "lastActivity": "2026-11-20T07:00:56.434Z",
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s2-2c2411",
+            "client": "review-live4-primary",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T07:01:03.045Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s3-9d0878",
+            "client": "review-live4-secondary",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T07:01:03.060Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          }
+        ],
+        "pendingConfirmations": []
+      }
+    },
+    {
+      "check": "call held and sheet open",
+      "ok": true,
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-887acir5\\overwrite-0.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-887acir5\\overwrite-0.animpkg, bytes: 17Expires in 4:59DeclineAccept"
+    },
+    {
+      "check": "countdown matches status",
+      "ok": true,
+      "detail": {
+        "shownSeconds": 299,
+        "statusSeconds": 299.198
+      }
+    },
+    {
+      "check": "countdown decreases",
+      "ok": true,
+      "detail": {
+        "before": "Expires in 4:59",
+        "after": "Expires in 4:56",
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:51572/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-84df52",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:00:56.134Z",
+                "lastActivity": "2026-11-20T07:01:03.063Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-2c2411",
+                "client": "review-live4-primary",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:01:03.045Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-9d0878",
+                "client": "review-live4-secondary",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:01:03.060Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": [
+              {
+                "confirmationId": "cf_e584573bf5223aa015c2b21e",
+                "sessionId": "s2-2c2411",
+                "commandId": "project.saveAs",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-887acir5\\overwrite-0.animpkg`",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-887acir5\\overwrite-0.animpkg",
+                    "bytes": 17
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": true,
+                "expiresInMs": 299198
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        }
+      }
+    },
+    {
+      "check": "revision expires window",
+      "ok": true,
+      "detail": {
+        "answer": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6,
+          "error": {
+            "code": "confirmation.expired",
+            "message": "the confirmation token cannot be used: the document changed since the confirmation was requested",
+            "details": {
+              "confirmToken": "cf_e584573bf5223aa015c2b21e",
+              "reason": "the document changed since the confirmation was requested"
+            },
+            "hint": "invoke the command again without confirmToken to get a new confirmation"
+          }
+        },
+        "sheet": "The request expired: the document changed. OK"
+      }
+    },
+    {
+      "check": "file retained",
+      "ok": true,
+      "detail": {
+        "unchanged": true
+      }
+    },
+    {
+      "check": "call held and sheet open",
+      "ok": true,
+      "detail": "review-live4-primary asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-887acir5\\overwrite-1.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-887acir5\\overwrite-1.animpkg, bytes: 17Expires in 4:59DeclineAccept"
+    },
+    {
+      "check": "countdown matches status",
+      "ok": true,
+      "detail": {
+        "shownSeconds": 299,
+        "statusSeconds": 299.19
+      }
+    },
+    {
+      "check": "countdown decreases",
+      "ok": true,
+      "detail": {
+        "before": "Expires in 4:59",
+        "after": "Expires in 4:56",
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:51572/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-84df52",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:00:56.134Z",
+                "lastActivity": "2026-11-20T07:01:06.104Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-2c2411",
+                "client": "review-live4-primary",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:01:03.045Z",
+                "lastActivity": "2026-11-20T07:01:07.094Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-9d0878",
+                "client": "review-live4-secondary",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:01:03.060Z",
+                "lastActivity": "2026-11-20T07:01:03.878Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": [
+              {
+                "confirmationId": "cf_d9583b9020473aaa54e1a745",
+                "sessionId": "s2-2c2411",
+                "commandId": "project.saveAs",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-887acir5\\overwrite-1.animpkg`",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-887acir5\\overwrite-1.animpkg",
+                    "bytes": 17
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": true,
+                "expiresInMs": 299190
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6
+        }
+      }
+    },
+    {
+      "check": "revision expires agent",
+      "ok": true,
+      "detail": {
+        "answer": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 7,
+          "error": {
+            "code": "confirmation.expired",
+            "message": "the confirmation token cannot be used: the document changed since the confirmation was requested",
+            "details": {
+              "confirmToken": "cf_d9583b9020473aaa54e1a745",
+              "reason": "the document changed since the confirmation was requested"
+            },
+            "hint": "invoke the command again without confirmToken to get a new confirmation"
+          }
+        },
+        "sheet": "The request expired: the document changed. OK"
+      }
+    },
+    {
+      "check": "file retained",
+      "ok": true,
+      "detail": {
+        "unchanged": true
+      }
+    }
+  ]
+}

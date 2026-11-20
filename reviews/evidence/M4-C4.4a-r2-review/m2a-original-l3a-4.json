@@ -1,0 +1,1216 @@
+{
+  "checks": 30,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r2-regression-ohexzs6o\\l3a4",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "running endpoint equals discovery",
+      "ok": true,
+      "detail": {
+        "endpoint": "http://127.0.0.1:58786/mcp",
+        "returned": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:58786/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-e31a71",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:38.412Z",
+                "lastActivity": "2026-11-20T06:58:38.459Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-e0687e",
+                "client": "review-live3-primary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:38.577Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": null
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.set agent.server.port",
+      "ok": true,
+      "detail": {
+        "params": {
+          "values": {
+            "agent.server.port": 47892
+          }
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.server.port`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.server.port"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.reset agent.server.port",
+      "ok": true,
+      "detail": {
+        "params": {
+          "keys": [
+            "agent.server.port"
+          ]
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.server.port`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.server.port"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.set agent.server.allowRemote",
+      "ok": true,
+      "detail": {
+        "params": {
+          "values": {
+            "agent.server.allowRemote": true
+          }
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.server.allowRemote`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.server.allowRemote"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.reset agent.server.allowRemote",
+      "ok": true,
+      "detail": {
+        "params": {
+          "keys": [
+            "agent.server.allowRemote"
+          ]
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.server.allowRemote`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.server.allowRemote"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.set agent.policy.defaults",
+      "ok": true,
+      "detail": {
+        "params": {
+          "values": {
+            "agent.policy.defaults": {
+              "policy": "autonomous"
+            }
+          }
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.policy.defaults`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.policy.defaults"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.reset agent.policy.defaults",
+      "ok": true,
+      "detail": {
+        "params": {
+          "keys": [
+            "agent.policy.defaults"
+          ]
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.policy.defaults`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.policy.defaults"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.set agent.typedTools",
+      "ok": true,
+      "detail": {
+        "params": {
+          "values": {
+            "agent.typedTools": {
+              "enabled": true,
+              "namespaces": []
+            }
+          }
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.typedTools`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.typedTools"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.reset agent.typedTools",
+      "ok": true,
+      "detail": {
+        "params": {
+          "keys": [
+            "agent.typedTools"
+          ]
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.typedTools`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.typedTools"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.set agent.activity.persist",
+      "ok": true,
+      "detail": {
+        "params": {
+          "values": {
+            "agent.activity.persist": true
+          }
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.activity.persist`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.activity.persist"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "all access preferences protected prefs.reset agent.activity.persist",
+      "ok": true,
+      "detail": {
+        "params": {
+          "keys": [
+            "agent.activity.persist"
+          ]
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.activity.persist`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.activity.persist"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "other app-scope agent command agent.typedTools.set",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "permission.denied",
+          "message": "`agent.typedTools.set` needs the scopes [\"app\"]",
+          "details": {
+            "commandId": "agent.typedTools.set",
+            "missingScopes": [
+              "app"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "check": "other app-scope agent command agent.activity.persist.set",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "permission.denied",
+          "message": "`agent.activity.persist.set` needs the scopes [\"app\"]",
+          "details": {
+            "commandId": "agent.activity.persist.set",
+            "missingScopes": [
+              "app"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "check": "privilege / secret prefs.set",
+      "ok": true,
+      "detail": {
+        "params": {
+          "values": {
+            "agent.server.enabled": false
+          }
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.server.enabled`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.server.enabled"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "privilege / secret prefs.reset",
+      "ok": true,
+      "detail": {
+        "params": {
+          "keys": [
+            "agent.server.enabled"
+          ]
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "an agent cannot change `agent.server.enabled`: agent access is the user's (01 \u00a77.3)",
+            "details": {
+              "missingScopes": [
+                "app"
+              ],
+              "key": "agent.server.enabled"
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "privilege / secret agent.policy.defaults.set",
+      "ok": true,
+      "detail": {
+        "params": {
+          "policy": "autonomous"
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "`agent.policy.defaults.set` needs the scopes [\"app\"]",
+            "details": {
+              "commandId": "agent.policy.defaults.set",
+              "missingScopes": [
+                "app"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "privilege / secret agent.session.grant",
+      "ok": true,
+      "detail": {
+        "params": {
+          "sessionId": "683d00d43fef59687969834b65038143",
+          "scopes": [
+            "app"
+          ]
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "`agent.session.grant` needs the scopes [\"app\"]",
+            "details": {
+              "commandId": "agent.session.grant",
+              "missingScopes": [
+                "app"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "privilege / secret agent.token.regenerate",
+      "ok": true,
+      "detail": {
+        "params": {},
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "`agent.token.regenerate` needs the scopes [\"app\"]",
+            "details": {
+              "commandId": "agent.token.regenerate",
+              "missingScopes": [
+                "app"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "privilege / secret agent.server.set",
+      "ok": true,
+      "detail": {
+        "params": {
+          "enabled": false
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "`agent.server.set` needs the scopes [\"app\"]",
+            "details": {
+              "commandId": "agent.server.set",
+              "missingScopes": [
+                "app"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "privilege / secret agent.confirmation.respond",
+      "ok": true,
+      "detail": {
+        "params": {
+          "confirmationId": "review-fake",
+          "accept": true
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "permission.denied",
+            "message": "`agent.confirmation.respond` needs the scopes [\"app\"]",
+            "details": {
+              "commandId": "agent.confirmation.respond",
+              "missingScopes": [
+                "app"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "check": "privilege / secret prefs.get",
+      "ok": true,
+      "detail": {
+        "params": {
+          "keys": [
+            "agent.token",
+            "agent.server.token"
+          ]
+        },
+        "returned": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "prefs.unknownKey",
+            "message": "unknown preference `agent.token`",
+            "details": {
+              "key": "agent.token"
+            },
+            "hint": "prefs.list returns every key"
+          }
+        }
+      }
+    },
+    {
+      "check": "privilege / secret agent.server.status",
+      "ok": true,
+      "detail": {
+        "params": {},
+        "returned": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:58786/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-e31a71",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:38.412Z",
+                "lastActivity": "2026-11-20T06:58:38.459Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-e0687e",
+                "client": "review-live3-primary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:38.577Z",
+                "lastActivity": "2026-11-20T06:58:42.861Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": null
+        }
+      }
+    },
+    {
+      "check": "privilege / secret agent.activity.list",
+      "ok": true,
+      "detail": {
+        "params": {},
+        "returned": {
+          "status": "ok",
+          "result": [
+            {
+              "seq": 1,
+              "time": "2026-11-20T06:58:38.459Z",
+              "sessionId": "s1-e31a71",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 42
+            },
+            {
+              "seq": 2,
+              "time": "2026-11-20T06:58:42.762Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.server.status",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 3
+            },
+            {
+              "seq": 3,
+              "time": "2026-11-20T06:58:42.768Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.set",
+              "params": {
+                "values": {
+                  "agent.server.port": 47892
+                }
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 1
+            },
+            {
+              "seq": 4,
+              "time": "2026-11-20T06:58:42.789Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.reset",
+              "params": {
+                "keys": [
+                  "agent.server.port"
+                ]
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 5,
+              "time": "2026-11-20T06:58:42.791Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.set",
+              "params": {
+                "values": {
+                  "agent.server.allowRemote": true
+                }
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 6,
+              "time": "2026-11-20T06:58:42.793Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.reset",
+              "params": {
+                "keys": [
+                  "agent.server.allowRemote"
+                ]
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 7,
+              "time": "2026-11-20T06:58:42.795Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.set",
+              "params": {
+                "values": {
+                  "agent.policy.defaults": {
+                    "policy": "autonomous"
+                  }
+                }
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 8,
+              "time": "2026-11-20T06:58:42.798Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.reset",
+              "params": {
+                "keys": [
+                  "agent.policy.defaults"
+                ]
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 9,
+              "time": "2026-11-20T06:58:42.800Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.set",
+              "params": {
+                "values": {
+                  "agent.typedTools": {
+                    "enabled": true,
+                    "namespaces": []
+                  }
+                }
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 10,
+              "time": "2026-11-20T06:58:42.801Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.reset",
+              "params": {
+                "keys": [
+                  "agent.typedTools"
+                ]
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 11,
+              "time": "2026-11-20T06:58:42.803Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.set",
+              "params": {
+                "values": {
+                  "agent.activity.persist": true
+                }
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 12,
+              "time": "2026-11-20T06:58:42.805Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.reset",
+              "params": {
+                "keys": [
+                  "agent.activity.persist"
+                ]
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 13,
+              "time": "2026-11-20T06:58:42.820Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.typedTools.set",
+              "params": {
+                "enabled": true
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 14,
+              "time": "2026-11-20T06:58:42.823Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.activity.persist.set",
+              "params": {
+                "enabled": true
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 15,
+              "time": "2026-11-20T06:58:42.835Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.set",
+              "params": {
+                "values": {
+                  "agent.server.enabled": false
+                }
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 16,
+              "time": "2026-11-20T06:58:42.851Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.reset",
+              "params": {
+                "keys": [
+                  "agent.server.enabled"
+                ]
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 17,
+              "time": "2026-11-20T06:58:42.853Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.policy.defaults.set",
+              "params": {
+                "policy": "autonomous"
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 18,
+              "time": "2026-11-20T06:58:42.854Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.session.grant",
+              "params": {
+                "sessionId": "683d00d43fef59687969834b65038143",
+                "scopes": [
+                  "app"
+                ]
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 19,
+              "time": "2026-11-20T06:58:42.856Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.token.regenerate",
+              "params": {},
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 1
+            },
+            {
+              "seq": 20,
+              "time": "2026-11-20T06:58:42.858Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.server.set",
+              "params": {
+                "enabled": false
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 21,
+              "time": "2026-11-20T06:58:42.859Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.confirmation.respond",
+              "params": {
+                "confirmationId": "review-fake",
+                "accept": true
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 22,
+              "time": "2026-11-20T06:58:42.861Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "prefs.get",
+              "params": {
+                "keys": [
+                  "agent.token",
+                  "agent.server.token"
+                ]
+              },
+              "status": "error",
+              "errorCode": "prefs.unknownKey",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 23,
+              "time": "2026-11-20T06:58:42.862Z",
+              "sessionId": "s2-e0687e",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.server.status",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            }
+          ],
+          "changes": [],
+          "warnings": [],
+          "documentRev": null
+        }
+      }
+    },
+    {
+      "check": "resource secret {}",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 26,
+        "result": {
+          "resources": [
+            {
+              "uri": "app://state",
+              "name": "State",
+              "title": "State",
+              "description": "Same as get_state",
+              "mimeType": "application/json"
+            },
+            {
+              "uri": "app://project",
+              "name": "Project",
+              "title": "Project",
+              "description": "Project object with its scene list",
+              "mimeType": "application/json"
+            },
+            {
+              "uri": "app://docs/agent-guide",
+              "name": "Agent guide",
+              "title": "Agent guide",
+              "description": "Orientation for agents (same as the initialize instructions)",
+              "mimeType": "text/markdown"
+            },
+            {
+              "uri": "app://docs/object-model",
+              "name": "Object model",
+              "title": "Object model",
+              "description": "Object types, identity, revisions, schemas",
+              "mimeType": "text/markdown"
+            },
+            {
+              "uri": "app://docs/coordinates",
+              "name": "Coordinate spaces",
+              "title": "Coordinate spaces",
+              "description": "drawing, scene, camera, view and image spaces",
+              "mimeType": "text/markdown"
+            },
+            {
+              "uri": "app://docs/errors",
+              "name": "Errors",
+              "title": "Errors",
+              "description": "Generic error codes",
+              "mimeType": "text/markdown"
+            },
+            {
+              "uri": "app://events",
+              "name": "Events",
+              "title": "Events",
+              "description": "Event stream: read with ?after=<seq>",
+              "mimeType": "application/json"
+            },
+            {
+              "uri": "app://activity",
+              "name": "Activity",
+              "title": "Activity",
+              "description": "This session's audit log",
+              "mimeType": "application/jsonl"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "resource secret {'uri': 'file:///C:/Users/kaiga/AppData/Local/Temp/c44fixture-rf8zyk6v/discovery.json'}",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 27,
+        "error": {
+          "code": -32002,
+          "message": "resource not found",
+          "data": {
+            "uri": "file:///C:/Users/kaiga/AppData/Local/Temp/c44fixture-rf8zyk6v/discovery.json"
+          }
+        }
+      }
+    },
+    {
+      "check": "resource secret {'uri': 'app://state'}",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 28,
+        "result": {
+          "contents": [
+            {
+              "uri": "app://state",
+              "mimeType": "application/json",
+              "text": "{\n  \"project\": null,\n  \"scene\": null,\n  \"frame\": null,\n  \"element\": null,\n  \"drawing\": null,\n  \"mode\": null,\n  \"activeView\": null,\n  \"focusedPanel\": \"cameraView\",\n  \"activeTool\": null,\n  \"selection\": {\n    \"context\": \"staging\",\n    \"ids\": [],\n    \"kinds\": []\n  },\n  \"workspace\": {\n    \"name\": \"Default\",\n    \"modified\": false\n  },\n  \"playback\": {\n    \"playing\": false\n  },\n  \"startScreenVisible\": true,\n  \"modal\": {\n    \"kind\": \"dialog\",\n    \"title\": \"Preferences\"\n  },\n  \"agentSessions\": [\n    {\n      \"sessionId\": \"s1-e31a71\",\n      \"name\": \"mcp\",\n      \"acting\": false\n    },\n    {\n      \"sessionId\": \"s2-e0687e\",\n      \"name\": \"review-live3-primary\",\n      \"acting\": false\n    }\n  ],\n  \"fullScreen\": false,\n  \"agent\": {\n    \"sessionId\": \"s2-e0687e\",\n    \"client\": \"review-live3-primary\",\n    \"policy\": \"autonomous\",\n    \"scopes\": [\n      \"read\",\n      \"edit\",\n      \"ui\",\n      \"input\",\n      \"files.read\",\n      \"files.write\",\n      \"prefs\",\n      \"library.global\"\n    ],\n    \"paused\": false,\n    \"limits\": {\n      \"policy\": \"autonomous\",\n      \"maxJobs\": 2,\n      \"maxBatchSteps\": 1000,\n      \"maxInlineImagePx\": 2048,\n      \"maxInlineBytes\": 52428800,\n      \"askInApp\": true,\n      \"letAgentMoveView\": true,\n      \"highlightAgentChanges\": true\n    }\n  }\n}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "resource secret {'uri': 'app://activity'}",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 29,
+        "result": {
+          "contents": [
+            {
+              "uri": "app://activity",
+              "mimeType": "application/jsonl",
+              "text": "{\"seq\":2,\"time\":\"2026-11-20T06:58:42.762Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.server.status\",\"params\":{},\"status\":\"ok\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":3}\n{\"seq\":3,\"time\":\"2026-11-20T06:58:42.768Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.set\",\"params\":{\"values\":{\"agent.server.port\":47892}},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":1}\n{\"seq\":4,\"time\":\"2026-11-20T06:58:42.789Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.reset\",\"params\":{\"keys\":[\"agent.server.port\"]},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":5,\"time\":\"2026-11-20T06:58:42.791Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.set\",\"params\":{\"values\":{\"agent.server.allowRemote\":true}},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":6,\"time\":\"2026-11-20T06:58:42.793Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.reset\",\"params\":{\"keys\":[\"agent.server.allowRemote\"]},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":7,\"time\":\"2026-11-20T06:58:42.795Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.set\",\"params\":{\"values\":{\"agent.policy.defaults\":{\"policy\":\"autonomous\"}}},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":8,\"time\":\"2026-11-20T06:58:42.798Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.reset\",\"params\":{\"keys\":[\"agent.policy.defaults\"]},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":9,\"time\":\"2026-11-20T06:58:42.800Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.set\",\"params\":{\"values\":{\"agent.typedTools\":{\"enabled\":true,\"namespaces\":[]}}},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":10,\"time\":\"2026-11-20T06:58:42.801Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.reset\",\"params\":{\"keys\":[\"agent.typedTools\"]},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":11,\"time\":\"2026-11-20T06:58:42.803Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.set\",\"params\":{\"values\":{\"agent.activity.persist\":true}},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":12,\"time\":\"2026-11-20T06:58:42.805Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.reset\",\"params\":{\"keys\":[\"agent.activity.persist\"]},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":13,\"time\":\"2026-11-20T06:58:42.820Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.typedTools.set\",\"params\":{\"enabled\":true},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":14,\"time\":\"2026-11-20T06:58:42.823Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.activity.persist.set\",\"params\":{\"enabled\":true},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":15,\"time\":\"2026-11-20T06:58:42.835Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.set\",\"params\":{\"values\":{\"agent.server.enabled\":false}},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":16,\"time\":\"2026-11-20T06:58:42.851Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.reset\",\"params\":{\"keys\":[\"agent.server.enabled\"]},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":17,\"time\":\"2026-11-20T06:58:42.853Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.policy.defaults.set\",\"params\":{\"policy\":\"autonomous\"},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":18,\"time\":\"2026-11-20T06:58:42.854Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.session.grant\",\"params\":{\"sessionId\":\"683d00d43fef59687969834b65038143\",\"scopes\":[\"app\"]},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":19,\"time\":\"2026-11-20T06:58:42.856Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.token.regenerate\",\"params\":{},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":1}\n{\"seq\":20,\"time\":\"2026-11-20T06:58:42.858Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.server.set\",\"params\":{\"enabled\":false},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":21,\"time\":\"2026-11-20T06:58:42.859Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.confirmation.respond\",\"params\":{\"confirmationId\":\"review-fake\",\"accept\":true},\"status\":\"error\",\"errorCode\":\"permission.denied\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":22,\"time\":\"2026-11-20T06:58:42.861Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"prefs.get\",\"params\":{\"keys\":[\"agent.token\",\"agent.server.token\"]},\"status\":\"error\",\"errorCode\":\"prefs.unknownKey\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":23,\"time\":\"2026-11-20T06:58:42.862Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.server.status\",\"params\":{},\"status\":\"ok\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n{\"seq\":24,\"time\":\"2026-11-20T06:58:42.865Z\",\"sessionId\":\"s2-e0687e\",\"client\":\"review-live3-primary\",\"tool\":\"run_command\",\"commandId\":\"agent.activity.list\",\"params\":{},\"status\":\"ok\",\"undoStepId\":null,\"changedCount\":0,\"documentRev\":null,\"durationMs\":0}\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "Preferences inspect_ui no textual token",
+      "ok": true,
+      "detail": {
+        "bytes": 63120,
+        "status": "ok"
+      }
+    },
+    {
+      "check": "Preferences screenshot no textual token",
+      "ok": true,
+      "detail": {
+        "bytes": 110740,
+        "status": "ok"
+      }
+    }
+  ]
+}

@@ -187,7 +187,146 @@ async def menus(t,step):
       ids=after[context].get('selectedIds',after[context].get('ids',[]))
       t.run.check(bool(ids)==(action=='selectAll'),'D-60 selection effect '+view+' '+family+' '+action,after)
      await t.settle_dialogs();d.key(0x1B)
+
+async def live2(t,step):
+ import hashlib,io,base64
+ from PIL import Image
+ d=r1.d;c=t.cmd;t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+ await r1.r3.modal_fixture(t,'Round 2 live 2')
+ await c('project.saveAs',{'path':str(t.work/'base.animpkg')})
+ clients=[];tasks=[]
+ async def fresh(name):
+  q=r1.Live4Http(json.loads((t.work/'discovery.json').read_text()),name);clients.append(q);await asyncio.to_thread(q.initialize);return q
+ async def call(q,n,p=None):return await asyncio.to_thread(q.command,n,p)
+ async def prefs():
+  d.choose_menu(['File','Preferences']);await pause();t.click('preferences.category.agent');await pause()
+ def text(i):return dom(t,i,'e.textContent')
+ async def drain():
+  for _ in range(12):
+   if dom(t,'confirmSheet','true'):t.click('confirmSheet.decline')
+   await asyncio.sleep(.2)
+ async def hold(q):
+  path=t.work/('sentinel-'+str(len(tasks))+'.animpkg');path.write_bytes(b'sentinel')
+  task=asyncio.create_task(call(q,'project.saveAs',{'path':str(path),'onExists':'overwrite'}));tasks.append(task);await asyncio.sleep(.4);return task,path
+ try:
+  if step>=5:
+   await prefs();await t.do(('select','agentAccess.policy','assist'));t.click('preferences.submit');await pause()
+  q=await fresh('round2-A');b=await fresh('round2-B')
+  if step==5:
+   for first in (False,True):
+    task,path=await hold(q);status=await call(b,'agent.server.status');cid=status['result']['pendingConfirmations'][0]['confirmationId']
+    t.click('confirmSheet.accept' if first else 'confirmSheet.decline')
+    reply=t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command',{json:JSON.stringify({command:'agent.confirmation.respond',params:"+json.dumps({'confirmationId':cid,'accept':not first})+"})}).then(x=>JSON.parse(typeof x==='string'?x:new TextDecoder().decode(new Uint8Array(x))))")
+    answer=await task
+    t.run.check('confirmation.expired' in json.dumps(reply) and (path.read_bytes()!=b'sentinel')==first,'D-59 first decision '+str(first),{'second':reply,'answer':answer})
+  elif step==6:
+   a,p=await hold(q)
+   read=await call(q,'app.state.get');mutation=await call(q,'tool.active.set',{'toolId':'brush'});a2,p2=await hold(q)
+   t.run.check(read.get('status')=='ok' and mutation.get('status')=='ok' and '1 of 2' in (text('confirmSheet.queue') or ''),'D-63 one held read mutation second call',{'read':read.get('status'),'mutation':mutation,'queue':text('confirmSheet.queue')})
+   await drain();await asyncio.gather(a,a2)
+   held=[]
+   for client in (q,b,q):held.append((await hold(client))[0])
+   t.run.check('1 of 3' in (text('confirmSheet.queue') or ''),'D-63 A B A queue',text('confirmSheet.queue'));await drain();await asyncio.gather(*held)
+   held=[]
+   for _ in range(5):held.append((await hold(q))[0])
+   read=asyncio.create_task(call(q,'app.state.get'));tasks.append(read);await asyncio.sleep(2)
+   t.run.check(read.done() and read.result().get('status')=='ok','D-63 fifth held call leaves read answered',{'read':read.result() if read.done() else 'blocked','fifth':held[-1].result() if held[-1].done() else 'held','queue':text('confirmSheet.queue'),'status':await call(b,'agent.server.status')})
+   await drain();await asyncio.gather(*held,read)
+  elif step==7:
+   task,path=await hold(q);shown=text('confirmSheet.countdown');status=await call(b,'agent.server.status');clock=shown.rsplit(' ',1)[-1].split(':');seconds=int(clock[0])*60+int(clock[1]);remaining=status['result']['pendingConfirmations'][0]['expiresInMs']/1000
+   t.run.check(abs(seconds-remaining)<=1,'D-63 countdown within one second',{'shown':seconds,'remaining':remaining})
+   await asyncio.to_thread(q.close);await pause();status=await call(b,'agent.server.status')
+   t.run.check(not status['result']['pendingConfirmations'] and path.read_bytes()==b'sentinel','closed session retires held request',status)
+   q=await fresh('round2-replacement');held=[]
+   for _ in range(4):held.append((await hold(q))[0])
+   read=await call(q,'app.state.get');t.run.check(read.get('status')=='ok' and '1 of 4' in (text('confirmSheet.queue') or ''),'four slots available after disconnect',text('confirmSheet.queue'));await drain();await asyncio.gather(*held)
+   task,path=await hold(q);request_id=q.seq
+   await asyncio.to_thread(q.rpc,'notifications/cancelled',{'requestId':request_id,'reason':'review cancellation'},True);await pause()
+   status=await call(b,'agent.server.status');t.run.check(not status['result']['pendingConfirmations'] and path.read_bytes()==b'sentinel','protocol cancellation retires request',status)
+   t.run.check(dom(t,'engine.restart','true') is None,'restart control absent while engine healthy',{'restartOffered':dom(t,'engine.restart','true')})
+  elif step==3:
+   await c('window.panel.set',{'panelId':'pen','visible':True});await pause()
+   await prefs();token=q.token;sha=lambda x:hashlib.sha256(x.encode()).hexdigest()
+   t.run.check(dom(t,'agentAccess.token')=='\u2022'*16,'token masked on opening')
+   t.click('agentAccess.token.copy');await pause();clip=subprocess.check_output(['powershell','-NoProfile','-Command','Get-Clipboard -Raw']).decode().strip();t.run.check(sha(clip)==sha(token),'Copy matches discovery',{'length':len(clip),'sha256':sha(clip)})
+   rect=dom(t,'agentAccess.token','e.getBoundingClientRect().toJSON()');scale=t.cdp.js('devicePixelRatio')
+   async def shot(target):
+    answer=await call(q,'inspect.screenshot',{'target':target})
+    def find(x):
+     if isinstance(x,dict):
+      for k,v in x.items():
+       if k=='png' and isinstance(v,str):return v
+       found=find(v)
+       if found:return found
+     if isinstance(x,list):
+      for v in x:
+       found=find(v)
+       if found:return found
+    png=find(answer)
+    if not png:return None,answer
+    im=Image.open(io.BytesIO(base64.b64decode(png))).convert('RGB')
+    if target=='window':im=im.crop((round(rect['x']*scale)+4,round(rect['y']*scale)+4,round(rect['right']*scale)-4,round(rect['bottom']*scale)-4))
+    return im,{'size':im.size}
+   baseline,info=await shot('window')
+   for target in ('window','pen','drawingView'):
+    t.click('agentAccess.token.show');await pause();tree=await asyncio.to_thread(q.tool,'inspect_ui',{'target':'window','depth':32});im,info=await shot(target)
+    t.run.check(token not in json.dumps(tree) and dom(t,'agentAccess.token')!=token and (target!='window' or (im is not None and im.tobytes()==baseline.tobytes())),'D-62 shown token protected '+target,info)
+   for i in range(30):
+    if dom(t,'agentAccess.token')==token:t.click('agentAccess.token.show')
+    t.click('agentAccess.token.show');await asyncio.sleep((i%5)*.005);t.click('agentAccess.token.show');await asyncio.sleep((i%7)*.004)
+    if text('agentAccess.token.show')=='Hide':t.click('agentAccess.token.show')
+    im,info=await shot('window');t.run.check(im is not None and im.tobytes()==baseline.tobytes(),'late reveal capture '+str(i),info)
+   await c('window.panel.set',{'panelId':'pen','visible':True,'floating':True});await pause();t.click('agentAccess.token.show');await pause();im,info=await shot('pen');t.run.check(im is not None and dom(t,'agentAccess.token')!=token,'float panel capture masks main token',info)
+   activity=await call(q,'agent.activity.list',{'limit':500});export=t.work/'token-export.jsonl';await c('agent.activity.export',{'path':str(export),'onExists':'overwrite'})
+   leaks=[str(f.relative_to(t.work)) for f in (t.work/'user').rglob('*') if f.is_file() and f.suffix in ('.log','.jsonl') and token.encode() in f.read_bytes()]
+   t.run.check(token not in json.dumps(activity) and export.exists() and token not in export.read_text() and not leaks,'token absent activity export logs',{'leaks':leaks})
+  elif step==2:
+   async def status(label):
+    nonlocal q
+    q=await fresh(label);answer=await call(q,'agent.server.status');discovery=json.loads((t.work/'discovery.json').read_text());await prefs();line=text('agentAccess.status');saved=dom(t,'agentAccess.server','e.checked')
+    t.run.check(answer.get('result',{}).get('endpoint')==discovery['endpoint'] and discovery['endpoint'] in line and ('saved setting' in line),'D-62 endpoint '+label,{'status':answer,'discoveryEndpoint':discovery['endpoint'],'line':line,'saved':saved})
+   await status('explicit flag preference off')
+   t.click('agentAccess.server');t.click('preferences.submit');await pause();await status('enabled during run')
+   t.click('agentAccess.server');t.click('preferences.submit');await pause();await prefs();off=await c('agent.server.status');t.run.check(not off.get('endpoint'),'off endpoint cleared',off)
+   t.click('agentAccess.server');t.click('preferences.submit');await pause();await status('off then on')
+   t.click('agentAccess.regenerate');await pause();buttons=t.cdp.js("[...document.querySelectorAll('button')].filter(e=>e.textContent==='Regenerate').map(e=>e.dataset.ttId)");t.click(buttons[0]);await pause();d.key(0x1B);await status('regenerated')
+   d.key(0x1B)
+   for client in clients:await asyncio.to_thread(client.close)
+   os.kill(d.e2e.APP_PID['pid'],15);await asyncio.sleep(1)
+   disc=t.work/'discovery.json';disc.unlink(missing_ok=True)
+   proc=subprocess.Popen([r1.APP,'--user-dir',str(t.work/'user'),'--mcp-discovery',str(disc)],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL);d.e2e.APP_PID['pid']=proc.pid
+   try:
+    await asyncio.to_thread(d.e2e.wait_discovery,disc,proc);await asyncio.sleep(2);t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record();await status('saved preference launch without HTTP flag')
+   finally:d.e2e.stop(proc)
+  elif step==4:
+   import re
+   source=(r1.ROOT/'desktop/src/ipc/generated/commands.ts').read_text()
+   labels=dict(re.findall(r'"([^"\n]+)": \{\s*kind: "[^"\n]+",\s*label: "([^"\n]+)"',source))
+   cases=[('query','app.state.get',{}),('mutation','tool.active.set',{'toolId':'brush'}),('batch','batch',{'steps':[{'id':'app.state.get','params':{}}]*50}),('job','project.save',{}),('refused','agent.server.set',{'enabled':False})]
+   for name,command,params in cases:
+    samples=[]
+    for _ in range(8):
+     task=asyncio.create_task(asyncio.to_thread(q.tool,'batch',params) if command=='batch' else call(q,command,params))
+     while not task.done():
+      samples.append(text('agent'));await asyncio.sleep(.01)
+     await task
+    expected='Batch (50 steps)' if command=='batch' else labels.get(command)
+    t.run.check(bool(expected) and any(expected in (x or '') for x in samples) and not any('('+command+')' in (x or '') for x in samples),'D-62 indicator '+name,{'expected':expected,'samples':list(dict.fromkeys(samples))})
+ finally:
+  await drain()
+  for client in clients:await asyncio.to_thread(client.close)
+  for task in tasks:
+   if not task.done():task.cancel()
+
 if __name__=='__main__':
- assert (sys.argv[1],int(sys.argv[2])) in [('m1a',2),('m1a',3),('m1a',4),('m1b',5),('m1b',6),('m1b',7)]
- r1.live_body=body
- raise SystemExit(r1.live(int(sys.argv[2])))
+ case,step=sys.argv[1],int(sys.argv[2])
+ if case in ('m2a','m2b'):r1.live_body=live2
+ else:
+  assert (case,step) in [('m1a',2),('m1a',3),('m1a',4),('m1b',5),('m1b',6),('m1b',7)]
+  r1.live_body=body
+ result=r1.live(step)
+ if case in ('m2a','m2b'):
+  transcript=json.loads((r1.OUT/'transcript.json').read_text())
+  receipt={'checks':len(transcript),'results':transcript,'raw':str(r1.OUT)}
+  (r1.EVID/(case+'-step'+str(step)+'.json')).write_text(json.dumps(receipt,indent=2,default=str)+'\n',encoding='utf-8',newline='\n')
+ raise SystemExit(result)
