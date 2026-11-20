@@ -142,7 +142,7 @@ async def body(t,step):
    totals={}
    def fastclick(ident):
     r=t.rect(ident);o=wintypes.POINT();d.u32.ClientToScreen(d.front(),ctypes.byref(o));scale=t.cdp.js('devicePixelRatio');d.u32.SetCursorPos(int(o.x+r['x']*scale),int(o.y+r['y']*scale));d._send_mouse(0x0002);d._send_mouse(0x0004)
-   for trigger in ('category','ok','cancel','escape'):
+   for trigger in (() if __import__('os').environ.get('C44_N2_RELOAD_ONLY') else ('category','ok','cancel','escape')):
     counts.update(masked=0,refused=0,revealed=0,other=0)
     await prefs();safeRect=r2.dom(t,'agentAccess.token','e.getBoundingClientRect().toJSON()')
     if r2.dom(t,'agentAccess.token')==q.token:t.click('agentAccess.token.show');await r2.pause()
@@ -177,14 +177,23 @@ async def body(t,step):
     before=t.cdp.js('performance.timeOrigin');d.key(vk,*mods);await r2.pause();after=t.cdp.js('performance.timeOrigin');reloads.append({'key':vk,'reloaded':before!=after})
    if any(x['reloaded'] for x in reloads):
     counts.update(masked=0,refused=0,revealed=0,other=0)
+    await show();safeRect=r2.dom(t,'agentAccess.token','e.getBoundingClientRect().toJSON()');t.click('agentAccess.token.show');await r2.pause();t.click('agentAccess.token');d.key(0x74);await r2.pause()
+    safeAnswer=await call(q,'inspect.screenshot',{'target':'window'});reloadSafe=crop(Image.open(io.BytesIO(base64.b64decode(png(safeAnswer)))),safeRect).tobytes()
     for i in range(40):
      await show();t.click('agentAccess.token');rect=r2.dom(t,'agentAccess.token','e.getBoundingClientRect().toJSON()')
+     o=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(o));beforePixels=crop(ImageGrab.grab(),rect,(o.x,o.y)).tobytes()
      d.u32.keybd_event(0x74,0,0,0);d.u32.keybd_event(0x74,0,2,0)
      a=await call(q,'inspect.screenshot',{'target':'window'});data=png(a)
      if data:
-      field=crop(Image.open(io.BytesIO(base64.b64decode(data))),rect).tobytes();kind='revealed' if field==revealed else 'masked' if field in (masked,safePixels) else 'other'
+      field=crop(Image.open(io.BytesIO(base64.b64decode(data))),rect).tobytes()
+      def difference(ref):return sum(a!=b for a,b in zip(field,ref))/len(field) if len(field)==len(ref) else 1
+      metrics={'revealDifference':difference(beforePixels),'maskedDifference':difference(masked),'safeDifference':difference(reloadSafe),'bytes':[len(field),len(beforePixels),len(masked),len(reloadSafe)],'extrema':[(min(field[j::3]),max(field[j::3])) for j in range(3)]}
+      blankReference=field[:3]*(len(field)//3)
+      kind='revealed' if metrics['revealDifference']<.01 else 'masked' if field in (masked,reloadSafe,blankReference) else 'other'
      else:kind='refused' if a.get('status')=='error' and a.get('error',{}).get('code') in ('render.failed','ui.viewNotFound','command.timeout','command.cancelled') else 'other'
-     counts[kind]+=1;t.run.check(kind in ('masked','refused'),'D-65 reload '+str(i),{'kind':kind});await r2.pause()
+     diagnostic={'kind':kind,'differences':metrics if data else None,'errorCode':a.get('error',{}).get('code'),'status':a.get('status')}
+     t.run.save('reload-progress.json',diagnostic);print(json.dumps(diagnostic),flush=True)
+     counts[kind]+=1;t.run.check(kind in ('masked','refused'),'D-65 reload '+str(i),diagnostic);await r2.pause()
     totals['reload']=dict(counts)
    if r2.dom(t,'agentAccess.token')==q.token:t.click('agentAccess.token.show');await r2.pause()
    t.run.save('leave-token-summary.json' ,{'schedules':totals,'reloadKeys':reloads})
@@ -282,6 +291,28 @@ async def menu_extra(t,step):
      t.run.save('float-'+str(size[0])+'.json',{'top':top,'bottom':bottom});d.key(0x1B)
   finally:
    t.cdp=maincdp;d.window_handle=original;d.front()
+  def visible_windows():
+   found={}
+   def one(h,_):
+    if d.u32.IsWindowVisible(h):
+     b=wintypes.RECT();d.u32.GetWindowRect(h,ctypes.byref(b));name=ctypes.create_unicode_buffer(256);d.u32.GetClassNameW(h,name,256)
+     if b.right>b.left and b.bottom>b.top and 'tooltip' not in name.value.lower():found[int(h)]={'x':b.left,'y':b.top,'right':b.right,'bottom':b.bottom,'nativeMenu':name.value=='#32768'}
+    return True
+   d.u32.EnumWindows(callback(one),0);return found
+  other=[]
+  await c('window.panel.set',{'panelId':'pen','visible':True});await r2.pause()
+  row=t.cdp.js('[...document.querySelectorAll("[data-tt-id]")].find(e=>e.dataset.ttId.startsWith("pen.row."))?.dataset.ttId')
+  for ident in ('mainToolbar',row,'text.font'):
+   if ident=='text.font':await c('window.panel.set',{'panelId':'text','visible':True});await r2.pause()
+   before=visible_windows();r=t.rect(ident);d.right_click_screen(*screen(r['x'],r['y']));await r2.pause();after=visible_windows();popups=[v for k,v in after.items() if k not in before];g=geo()
+   o=wintypes.POINT();d.u32.ClientToScreen(main,ctypes.byref(o));area=wintypes.RECT();d.u32.GetClientRect(main,ctypes.byref(area))
+   entry={'surface':ident,'customMenu':g,'popups':popups,'client':{'x':o.x,'y':o.y,'right':o.x+area.right,'bottom':o.y+area.bottom}}
+   other.append(entry)
+   from PIL import ImageGrab
+   ImageGrab.grab().save(t.out/('other-menu-'+str(len(other))+'.png'))
+   t.run.check((not g or inside(g)) and all(v['x']>=o.x and v['y']>=o.y and v['right']<=o.x+area.right and v['bottom']<=o.y+area.bottom for v in popups),'D-66 other menu bounds '+str(ident),entry);d.key(0x1B)
+  t.run.save('other-context-menus.json',other)
+
 
 
 async def fields(t,step):
@@ -379,11 +410,11 @@ if __name__=='__main__' and sys.argv[1] in ('n2a','n2b'):
    subprocess.run(['git','checkout','--','reviews/evidence/M4-C4.4a-r2-review'],check=True)
   (r1.EVID/'n2b-5-earlier.json').write_text(json.dumps(earlier,indent=2)+'\n',encoding='utf-8',newline='\n')
  r1.live_body=fields if case=='n2a' else menu_extra if step in (5,6) else body
- logical=step
+ logical=str(step)+('-reload' if __import__('os').environ.get('C44_N2_RELOAD_ONLY') else '')
  if case=='n2b' and step==7:step=8
  old_receipt=r1.EVID/('step'+str(step)+'.json');saved=old_receipt.read_bytes() if old_receipt.exists() else None
  result=r1.live(step)
- if case=='n2b' and logical==5 and not __import__('os').environ.get('C44_N2_EXTRA_ONLY'):result|=int(any(x['exit'] for x in earlier))
+ if case=='n2b' and logical=='5' and not __import__('os').environ.get('C44_N2_EXTRA_ONLY'):result|=int(any(x['exit'] for x in earlier))
  if saved is not None:old_receipt.write_bytes(saved)
  else:old_receipt.unlink(missing_ok=True)
  transcript=json.loads((r1.OUT/'transcript.json').read_text())
@@ -391,7 +422,7 @@ if __name__=='__main__' and sys.argv[1] in ('n2a','n2b'):
  text=json.dumps(receipt,indent=2,default=str)+'\n'
  assert len(text.encode())<=200000,'summary too large'
  (r1.EVID/(case+'-'+str(logical)+'.json')).write_text(text,encoding='utf-8',newline='\n')
- patterns=('inventory-*.json','focus-exit-*.json','escape-*.json','enter-*.json','activity-fields.json','leave-token-summary.json','drawingView-*.json','cameraView-*.json','float-*.json')
+ patterns=('inventory-*.json','focus-exit-*.json','escape-*.json','enter-*.json','activity-fields.json','leave-token-summary.json','drawingView-*.json','cameraView-*.json','float-*.json','other-context-menus.json')
  for pattern in patterns:
   for source in r1.OUT.glob(pattern):
    data=source.read_bytes();assert len(data)<=200000
