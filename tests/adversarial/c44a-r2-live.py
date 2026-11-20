@@ -281,6 +281,9 @@ async def live2(t,step):
    leaks=[str(f.relative_to(t.work)) for f in (t.work/'user').rglob('*') if f.is_file() and f.suffix in ('.log','.jsonl') and token.encode() in f.read_bytes()]
    t.run.check(token not in json.dumps(activity) and export.exists() and token not in export.read_text() and not leaks,'token absent activity export logs',{'leaks':leaks})
   elif step==2:
+   async def c(name,params=None):
+    reply=t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command',{json:JSON.stringify({command:"+json.dumps(name)+",params:"+json.dumps(params or {})+"})}).then(x=>typeof x==='string'?JSON.parse(x):JSON.parse(new TextDecoder().decode(new Uint8Array(x))))")
+    return reply.get('result',reply)
    async def status(label):
     nonlocal q
     q=await fresh(label);answer=await call(q,'agent.server.status');discovery=json.loads((t.work/'discovery.json').read_text());await prefs();line=text('agentAccess.status');saved=dom(t,'agentAccess.server','e.checked')
@@ -313,7 +316,8 @@ async def live2(t,step):
     expected='Batch (50 steps)' if command=='batch' else labels.get(command)
     t.run.check(bool(expected) and any(expected in (x or '') for x in samples) and not any('('+command+')' in (x or '') for x in samples),'D-62 indicator '+name,{'expected':expected,'samples':list(dict.fromkeys(samples))})
  finally:
-  await drain()
+  try:await drain()
+  except Exception:pass
   for client in clients:await asyncio.to_thread(client.close)
   for task in tasks:
    if not task.done():task.cancel()
@@ -324,7 +328,12 @@ if __name__=='__main__':
  else:
   assert (case,step) in [('m1a',2),('m1a',3),('m1a',4),('m1b',5),('m1b',6),('m1b',7)]
   r1.live_body=body
+ old_receipt=r1.EVID/('step'+str(step)+'.json')
+ saved_receipt=old_receipt.read_bytes() if old_receipt.exists() else None
  result=r1.live(step)
+ if case in ('m2a','m2b'):
+  if saved_receipt is not None:old_receipt.write_bytes(saved_receipt)
+  else:old_receipt.unlink(missing_ok=True)
  if case in ('m2a','m2b'):
   transcript=json.loads((r1.OUT/'transcript.json').read_text())
   receipt={'checks':len(transcript),'results':transcript,'raw':str(r1.OUT)}

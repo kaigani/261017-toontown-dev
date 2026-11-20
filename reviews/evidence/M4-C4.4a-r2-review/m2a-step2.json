@@ -1,0 +1,354 @@
+{
+  "checks": 6,
+  "results": [
+    {
+      "check": "D-62 endpoint explicit flag preference off",
+      "ok": true,
+      "detail": {
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:63753/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-e102e3",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:30.224Z",
+                "lastActivity": "2026-11-20T07:04:30.535Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-af9a09",
+                "client": "round2-A",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:30.541Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-fdb7e5",
+                "client": "round2-B",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:30.543Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s4-794150",
+                "client": "explicit flag preference off",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:30.544Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "discoveryEndpoint": "http://127.0.0.1:63753/mcp",
+        "line": "The agent server is running at http://127.0.0.1:63753/mcp \u00b7 4 sessions \u00b7 started for this run by the --mcp-http launch option; the saved setting below is off",
+        "saved": false
+      }
+    },
+    {
+      "check": "D-62 endpoint enabled during run",
+      "ok": true,
+      "detail": {
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:63753/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-e102e3",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:30.224Z",
+                "lastActivity": "2026-11-20T07:04:30.535Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-af9a09",
+                "client": "round2-A",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:30.541Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-fdb7e5",
+                "client": "round2-B",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:30.543Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s4-794150",
+                "client": "explicit flag preference off",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:30.544Z",
+                "lastActivity": "2026-11-20T07:04:30.546Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s5-1495cf",
+                "client": "enabled during run",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:36.305Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "discoveryEndpoint": "http://127.0.0.1:63753/mcp",
+        "line": "The agent server is running at http://127.0.0.1:63753/mcp \u00b7 5 sessions \u00b7 on in the saved setting below",
+        "saved": true
+      }
+    },
+    {
+      "check": "off endpoint cleared",
+      "ok": true,
+      "detail": {
+        "enabled": false,
+        "endpoint": null,
+        "sessions": [],
+        "pendingConfirmations": []
+      }
+    },
+    {
+      "check": "D-62 endpoint off then on",
+      "ok": true,
+      "detail": {
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:50886/mcp",
+            "sessions": [
+              {
+                "sessionId": "s6-35ec39",
+                "client": "off then on",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:47.803Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "discoveryEndpoint": "http://127.0.0.1:50886/mcp",
+        "line": "The agent server is running at http://127.0.0.1:50886/mcp \u00b7 1 session \u00b7 on in the saved setting below",
+        "saved": true
+      }
+    },
+    {
+      "check": "D-62 endpoint regenerated",
+      "ok": true,
+      "detail": {
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:50886/mcp",
+            "sessions": [
+              {
+                "sessionId": "s7-8e0797",
+                "client": "regenerated",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:04:54.392Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "discoveryEndpoint": "http://127.0.0.1:50886/mcp",
+        "line": "The agent server is running at http://127.0.0.1:50886/mcp \u00b7 1 session \u00b7 on in the saved setting below",
+        "saved": true
+      }
+    },
+    {
+      "check": "D-62 endpoint saved preference launch without HTTP flag",
+      "ok": true,
+      "detail": {
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:47215/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-4d4d41",
+                "client": "saved preference launch without HTTP flag",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T07:05:10.815Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": null
+        },
+        "discoveryEndpoint": "http://127.0.0.1:47215/mcp",
+        "line": "The agent server is running at http://127.0.0.1:47215/mcp \u00b7 1 session \u00b7 on in the saved setting below",
+        "saved": true
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-loddl9qo"
+}
