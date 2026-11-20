@@ -1,0 +1,726 @@
+{
+  "case": "l2a",
+  "step": 4,
+  "exit": 0,
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r2-regression-u2huk91l\\l2a4",
+  "results": [
+    {
+      "check": "tool option command brush toolOptions.pen",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.brush.options.set",
+            "params": {
+              "penId": "pen_01M7VSE2Z4MBNB9V4EA8H5NEEG"
+            }
+          }
+        ],
+        "state": {
+          "toolId": "brush",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "tool option command brush toolOptions.drawTopLayer",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.drawTopLayer.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "brush",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "tool option command brush toolOptions.placeBehind",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.placeBehind.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "brush",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "tool option command brush toolOptions.snapToContour",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.snapToContour.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "brush",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed brush",
+      "ok": true,
+      "detail": {
+        "changed": true,
+        "selection": {
+          "selectedIds": [],
+          "bounds": null,
+          "selectedPoints": []
+        }
+      }
+    },
+    {
+      "check": "tool option command pencil toolOptions.thicknessSource",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pencil.options.set",
+            "params": {
+              "thicknessSource": "fixed",
+              "thickness": 1
+            }
+          }
+        ],
+        "state": {
+          "toolId": "pencil",
+          "options": {
+            "thicknessSource": "fixed",
+            "thickness": 1.0
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command pencil toolOptions.placeBehind",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.placeBehind.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "state": {
+          "toolId": "pencil",
+          "options": {
+            "thicknessSource": "fixed",
+            "thickness": 1.0
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command pencil toolOptions.snapToContour",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.snapToContour.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "state": {
+          "toolId": "pencil",
+          "options": {
+            "thicknessSource": "fixed",
+            "thickness": 1.0
+          }
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed pencil",
+      "ok": true,
+      "detail": {
+        "changed": true,
+        "selection": {
+          "selectedIds": [],
+          "bounds": null,
+          "selectedPoints": []
+        }
+      }
+    },
+    {
+      "check": "tool option command eraser toolOptions.pen",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.eraser.options.set",
+            "params": {
+              "penId": "pen_01M7VSE2Z4MBNB9V4EA8H5NEEN"
+            }
+          }
+        ],
+        "state": {
+          "toolId": "eraser",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "tool option command eraser toolOptions.drawTopLayer",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.drawTopLayer.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "state": {
+          "toolId": "eraser",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "tool option command eraser toolOptions.placeBehind",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.placeBehind.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "eraser",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "tool option command eraser toolOptions.snapToContour",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.snapToContour.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "eraser",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed eraser",
+      "ok": true,
+      "detail": {
+        "changed": true,
+        "selection": {
+          "selectedIds": [],
+          "bounds": null,
+          "selectedPoints": []
+        }
+      }
+    },
+    {
+      "check": "tool option command select toolOptions.rectRule",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.select.options.set",
+            "params": {
+              "rectRule": "intersect"
+            }
+          }
+        ],
+        "state": {
+          "toolId": "select",
+          "options": {
+            "rectRule": "intersect"
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command select toolOptions.placeBehind",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.placeBehind.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "state": {
+          "toolId": "select",
+          "options": {
+            "rectRule": "intersect"
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command select toolOptions.snapToContour",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.snapToContour.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "state": {
+          "toolId": "select",
+          "options": {
+            "rectRule": "intersect"
+          }
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed select",
+      "ok": true,
+      "detail": {
+        "changed": false,
+        "selection": {
+          "selectedIds": [
+            "st_01K7JJN800HN5CXR1H29C19T5Y",
+            "st_01K7JJN800AV7W5A71JY3RB92E",
+            "zn_HY00K5781WBY2E3VJ9DNVFVW7C",
+            "zn_R70XMZMKYMP04FE88ZDWEZ23QS"
+          ],
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "selectedPoints": []
+        }
+      }
+    },
+    {
+      "check": "tool option command rectangle toolOptions.thicknessSource",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pencil.options.set",
+            "params": {
+              "thicknessSource": "penMax"
+            }
+          }
+        ],
+        "state": {
+          "toolId": "rectangle",
+          "options": {
+            "thicknessSource": "penMax",
+            "thickness": null
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command rectangle toolOptions.drawTopLayer",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.drawTopLayer.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "rectangle",
+          "options": {
+            "thicknessSource": "penMax",
+            "thickness": null
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command rectangle toolOptions.placeBehind",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.placeBehind.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "rectangle",
+          "options": {
+            "thicknessSource": "penMax",
+            "thickness": null
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command rectangle toolOptions.snapToContour",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.snapToContour.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "rectangle",
+          "options": {
+            "thicknessSource": "penMax",
+            "thickness": null
+          }
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed rectangle",
+      "ok": true,
+      "detail": {
+        "changed": false,
+        "selection": {
+          "selectedIds": [
+            "st_01K7JJN800HN5CXR1H29C19T5Y",
+            "st_01K7JJN800AV7W5A71JY3RB92E",
+            "zn_HY00K5781WBY2E3VJ9DNVFVW7C",
+            "zn_R70XMZMKYMP04FE88ZDWEZ23QS"
+          ],
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "selectedPoints": []
+        }
+      }
+    },
+    {
+      "check": "tool option command paint toolOptions.gapClosing",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "colour.gapClosing.set",
+            "params": {
+              "mode": "small"
+            }
+          }
+        ],
+        "state": {
+          "toolId": "paint",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "tool option command paint toolOptions.placeBehind",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.placeBehind.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "state": {
+          "toolId": "paint",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "tool option command paint toolOptions.snapToContour",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.snapToContour.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "state": {
+          "toolId": "paint",
+          "options": {}
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed paint",
+      "ok": true,
+      "detail": {
+        "changed": true,
+        "selection": {
+          "selectedIds": [
+            "st_01K7JJN800HN5CXR1H29C19T5Y",
+            "st_01K7JJN800AV7W5A71JY3RB92E",
+            "zn_HY00K5781WBY2E3VJ9DNVFVW7C",
+            "zn_R70XMZMKYMP04FE88ZDWEZ23QS"
+          ],
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "selectedPoints": []
+        }
+      }
+    },
+    {
+      "check": "tool option command polyline toolOptions.thicknessSource",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.pencil.options.set",
+            "params": {
+              "thicknessSource": "fixed",
+              "thickness": 1
+            }
+          }
+        ],
+        "state": {
+          "toolId": "polyline",
+          "options": {
+            "snap": true,
+            "snapRadius": 8,
+            "thicknessSource": "fixed",
+            "thickness": 1.0
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command polyline toolOptions.snap",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.polyline.options.set",
+            "params": {
+              "snap": false
+            }
+          }
+        ],
+        "state": {
+          "toolId": "polyline",
+          "options": {
+            "snap": false,
+            "snapRadius": 8.0,
+            "thicknessSource": "fixed",
+            "thickness": 1.0
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command polyline toolOptions.drawTopLayer",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.drawTopLayer.set",
+            "params": {
+              "enabled": false
+            }
+          }
+        ],
+        "state": {
+          "toolId": "polyline",
+          "options": {
+            "snap": false,
+            "snapRadius": 8.0,
+            "thicknessSource": "fixed",
+            "thickness": 1.0
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command polyline toolOptions.placeBehind",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.placeBehind.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "polyline",
+          "options": {
+            "snap": false,
+            "snapRadius": 8.0,
+            "thicknessSource": "fixed",
+            "thickness": 1.0
+          }
+        }
+      }
+    },
+    {
+      "check": "tool option command polyline toolOptions.snapToContour",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "tool.snapToContour.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "state": {
+          "toolId": "polyline",
+          "options": {
+            "snap": false,
+            "snapRadius": 8.0,
+            "thicknessSource": "fixed",
+            "thickness": 1.0
+          }
+        }
+      }
+    },
+    {
+      "check": "real OS gesture completed polyline",
+      "ok": true,
+      "detail": {
+        "changed": false,
+        "selection": {
+          "selectedIds": [
+            "st_01K7JJN800HN5CXR1H29C19T5Y",
+            "st_01K7JJN800AV7W5A71JY3RB92E",
+            "zn_HY00K5781WBY2E3VJ9DNVFVW7C",
+            "zn_R70XMZMKYMP04FE88ZDWEZ23QS"
+          ],
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "selectedPoints": []
+        }
+      }
+    },
+    {
+      "check": "menu gap small",
+      "ok": true,
+      "detail": [
+        {
+          "command": "colour.gapClosing.set",
+          "params": {
+            "mode": "small"
+          }
+        }
+      ]
+    },
+    {
+      "check": "menu gap medium",
+      "ok": true,
+      "detail": [
+        {
+          "command": "colour.gapClosing.set",
+          "params": {
+            "mode": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "check": "menu gap large",
+      "ok": true,
+      "detail": [
+        {
+          "command": "colour.gapClosing.set",
+          "params": {
+            "mode": "large"
+          }
+        }
+      ]
+    },
+    {
+      "check": "menu gap off",
+      "ok": true,
+      "detail": [
+        {
+          "command": "colour.gapClosing.set",
+          "params": {
+            "mode": "off"
+          }
+        }
+      ]
+    },
+    {
+      "check": "restart preserves tool options",
+      "ok": true,
+      "detail": {
+        "before": {
+          "toolId": "polyline",
+          "options": {
+            "snap": false,
+            "snapRadius": 8.0,
+            "thicknessSource": "fixed",
+            "thickness": 1.0
+          }
+        },
+        "after": {
+          "toolId": "polyline",
+          "options": {
+            "snap": false,
+            "snapRadius": 8,
+            "thicknessSource": "fixed",
+            "thickness": 1
+          }
+        }
+      }
+    }
+  ]
+}

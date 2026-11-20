@@ -1,0 +1,185 @@
+{
+  "case": "l2b",
+  "step": 7,
+  "exit": 0,
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r2-regression-u2huk91l\\l2b7",
+  "results": [
+    {
+      "check": "inspector rename",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "draw.drawing.rename",
+            "params": {
+              "drawingId": "dr_01K7JJN80075RPHRGQCQPRGSMZ",
+              "name": "Live2 drawing"
+            }
+          }
+        ],
+        "drawing": {
+          "drawingId": "dr_01K7JJN80075RPHRGQCQPRGSMZ",
+          "elementId": "el_01K7JJN800WM99R9KZ7XACX4P3",
+          "name": "Live2 drawing",
+          "rev": 5,
+          "locked": false,
+          "space": {
+            "units": "du",
+            "duPerField": 100,
+            "yAxis": "up",
+            "origin": "drawingCentre"
+          },
+          "pivot": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "bounds": {
+            "x": -44.0,
+            "y": -44.0,
+            "width": 88.0,
+            "height": 88.0
+          },
+          "nodes": [
+            {
+              "type": "layer",
+              "id": "nd_01K7JJN801HK9RESNM1V4X41CY",
+              "layerKind": "pencil",
+              "strokes": [
+                {
+                  "type": "stroke",
+                  "id": "st_01K7JJN8009BM58G5YA06RQYNR",
+                  "kind": "pencil",
+                  "closed": true,
+                  "bezier": [
+                    {
+                      "x": -40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": -40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": 40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": 40.0
+                    },
+                    {
+                      "x": -40.0,
+                      "y": -40.0
+                    }
+                  ],
+                  "colourId": "col_01M7VSK2ZVGKKKGBFR5BMKMG5B",
+                  "lineStyle": {
+                    "thickness": 8.0,
+                    "lineType": "solid"
+                  },
+                  "pressure": null,
+                  "bounds": {
+                    "x": -44.0,
+                    "y": -44.0,
+                    "width": 88.0,
+                    "height": 88.0
+                  },
+                  "leftZoneId": "zn_WYWF6NJ08A6560RF668BGG5S6H",
+                  "rightZoneId": null
+                }
+              ],
+              "zones": [
+                {
+                  "type": "zone",
+                  "id": "zn_WYWF6NJ08A6560RF668BGG5S6H",
+                  "colourId": null,
+                  "textureMatrix": null,
+                  "boundaryStrokeIds": [
+                    "st_01K7JJN8009BM58G5YA06RQYNR"
+                  ],
+                  "holes": [],
+                  "parentZoneId": null,
+                  "area": 6400,
+                  "bounds": {
+                    "x": -40,
+                    "y": -40,
+                    "width": 80,
+                    "height": 80
+                  },
+                  "interiorPoint": {
+                    "x": 0,
+                    "y": -34.2890625
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "inspector agent rename follows without reload",
+      "ok": true,
+      "detail": "Agent renamed live2"
+    },
+    {
+      "check": "inspector preview equals engine final render exactly",
+      "ok": true,
+      "detail": {
+        "drawingId": "dr_01K7JJN80075RPHRGQCQPRGSMZ",
+        "pngBytes": 620
+      }
+    },
+    {
+      "check": "inspector follows current drawing",
+      "ok": true,
+      "detail": "Second live2"
+    },
+    {
+      "check": "inspector returns to first drawing",
+      "ok": true,
+      "detail": "Agent renamed live2"
+    },
+    {
+      "check": "Browse renders other drawing without changing current",
+      "ok": true,
+      "detail": {
+        "shown": "Preview of Second live2",
+        "current": "dr_01K7JJN80075RPHRGQCQPRGSMZ"
+      }
+    },
+    {
+      "check": "empty drawing surface follows design note 1 section 1 exception",
+      "ok": true,
+      "detail": []
+    }
+  ]
+}
