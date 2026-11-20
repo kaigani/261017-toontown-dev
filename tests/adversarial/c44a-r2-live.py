@@ -231,7 +231,7 @@ async def live2(t,step):
    for _ in range(5):held.append((await hold(q))[0])
    read=asyncio.create_task(call(q,'app.state.get'));tasks.append(read);await asyncio.sleep(2)
    t.run.check(read.done() and read.result().get('status')=='ok','D-63 fifth held call leaves read answered',{'read':read.result() if read.done() else 'blocked','fifth':held[-1].result() if held[-1].done() else 'held','queue':text('confirmSheet.queue'),'status':await call(b,'agent.server.status')})
-   await drain();answers=await asyncio.gather(*held,read);t.run.check('confirmation.declined' in json.dumps(answers[4]) and answers[-1].get('status')=='ok','fifth declines and blocked read completes after decisions',{'fifth':answers[4],'readStatus':answers[-1].get('status')})
+   t.run.check(held[4].done() and 'limit.exceeded' in json.dumps(held[4].result()) and 'concurrentJobWaits' in json.dumps(held[4].result()) and read.done() and read.result().get('status')=='ok' and '1 of 4' in (text('confirmSheet.queue') or '') and len((await call(b,'agent.server.status'))['result']['pendingConfirmations'])==4,'D-65 fifth refused immediately, retired, four shown and read answered',{'fifth':held[4].result() if held[4].done() else 'held','readStatus':read.result().get('status') if read.done() else 'blocked','queue':text('confirmSheet.queue')});await drain();await asyncio.gather(*held,read)
   elif step==7:
    task,path=await hold(q);shown=text('confirmSheet.countdown');status=await call(b,'agent.server.status');clock=shown.rsplit(' ',1)[-1].split(':');seconds=int(clock[0])*60+int(clock[1]);remaining=status['result']['pendingConfirmations'][0]['expiresInMs']/1000
    t.run.check(abs(seconds-remaining)<=1,'D-63 countdown within one second',{'shown':seconds,'remaining':remaining})
