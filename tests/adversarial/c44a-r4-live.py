@@ -176,11 +176,10 @@ async def body(t,step):
      await show()
      d.front()
      cached_rect=bounds('agentAccess.token');cached_scale=t.cdp.js('devicePixelRatio')
-     if True:
-      from PIL import ImageGrab
-      import numpy as np
-      rect=bounds('agentAccess.token');scale=t.cdp.js('devicePixelRatio');o=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(o))
-      reveal_reference=np.array(ImageGrab.grab().convert('RGB').crop((o.x+round(rect['x']*scale)+5,o.y+round(rect['y']*scale)+5,o.x+round(rect['right']*scale)-5,o.y+round(rect['bottom']*scale)-5)))
+     from PIL import ImageGrab
+     import numpy as np
+     rect=bounds('agentAccess.token');scale=t.cdp.js('devicePixelRatio');o=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(o))
+     reveal_reference=np.array(ImageGrab.grab().convert('RGB').crop((o.x+round(rect['x']*scale)+5,o.y+round(rect['y']*scale)+5,o.x+round(rect['right']*scale)-5,o.y+round(rect['bottom']*scale)-5)))
      if action=='quickShow':quick_click('agentAccess.token.show');quick_click('agentAccess.token.show')
      elif action=='showHide':quick_click('agentAccess.token.show')
      elif action=='leavePage':quick_click('preferences.category.general')
@@ -312,11 +311,18 @@ async def body(t,step):
    for _ in range(20):d.u32.mouse_event(0x800,0,0,ctypes.c_ulong(-120).value,0);await asyncio.sleep(.02)
    last=t.cdp.js("[...document.querySelectorAll('.tool-rail button')].at(-1)?.dataset.ttId");rr=bounds(last);t.run.check(rr['bottom']<=rail['bottom'],'D-68 last tool wheel-visible',{'last':last,'rect':rr,'rail':rail});t.clear();t.click(last);await r2.pause();sent=r2.sent(t);active=await c('tool.active.get');t.run.check(bool(sent) and active.get('toolId')==last.split('.')[-1],'D-68 last tool chosen',{'commands':sent,'active':active})
    await c('window.panel.set',{'panelId':'pen','visible':True});await r2.pause()
-   d.choose_menu(['File','Preferences']);await r2.pause();t.click('preferences.category.keyboard');await r2.pause();t.click('keymap.filter');d.type_text('edit.selectAll');await r2.pause();t.click('keymap.command.edit.selectAll');await r2.pause();t.click('keymap.capture');d.key(0x75);await r2.pause()
-   if dom('keymap.conflict.override','e.textContent') is not None:t.click('keymap.conflict.override')
-   t.click('preferences.submit');await r2.pause()
-   t.click('pen.maxSize.field');t.clear();d.key(0x75);await r2.pause();t.run.check(any(x['command']=='edit.selectAll' for x in r2.sent(t)),'D-69 F6 reaches keymap',r2.sent(t))
+   await c('tool.active.set',{'toolId':'brush'});await r2.pause()
+   d.choose_menu(['File','Preferences']);await r2.pause();t.click('preferences.category.keyboard');await r2.pause();t.click('keymap.filter');d.type_text('window.fullScreen.set');await r2.pause();t.click('keymap.command.window.fullScreen.set');await r2.pause()
+   editor=dom('keymap.details','e.textContent');t.run.check('F11' in editor,'function binding found in shortcut editor',{'details':editor});t.click('preferences.cancel');await r2.pause()
+   t.click('pen.maxSize.field');focused=t.cdp.js('document.activeElement?.dataset.ttId');t.run.check(focused=='pen.maxSize.field','numeric field really focused',{'focus':focused})
+   t.cdp.js("window.__closureFunctionKeys=[];window.addEventListener('keydown',e=>{if(/^F[0-9]+$/.test(e.key))window.__closureFunctionKeys.push({key:e.key,code:e.code,target:e.target.dataset.ttId})},true)")
+   t.clear();d.key(0x7a);await r2.pause();sent=r2.sent(t)
+   resolution=t.cdp.js("window.__TAURI_INTERNALS__.invoke('dispatch_key',{json:JSON.stringify({keys:'F11'})}).then(x=>typeof x==='string'?JSON.parse(x):x instanceof ArrayBuffer?JSON.parse(new TextDecoder().decode(x)):x)")
+   t.run.check(any(x['command']=='window.fullScreen.set' for x in sent),'D-69 F11 reaches keymap',{'commands':sent,'keys':t.cdp.js('window.__closureFunctionKeys'),'hostResolution':resolution})
    t.click('pen.maxSize.field');t.clear();d.key(0x79,0x10);await r2.pause();items=menu_items();t.run.check(bool(items) and not r2.sent(t),'D-69 Shift+F10 kept',{'items':items,'commands':r2.sent(t)})
+   d.key(0x1b)
+   t.click('mainToolbar.drawAid.grid.set');await r2.pause();control_focus=t.cdp.js('document.activeElement?.tagName');t.clear();d.key(0x7a);await r2.pause();sent=r2.sent(t);t.run.check(any(x['command']=='window.fullScreen.set' for x in sent),'button F11 control',{'commands':sent,'focus':control_focus})
+   if any(x['command']=='window.fullScreen.set' for x in sent):d.key(0x7a);await r2.pause()
   else:raise ValueError('step not implemented')
  finally:
   for cl in clients:await asyncio.to_thread(cl.close)
