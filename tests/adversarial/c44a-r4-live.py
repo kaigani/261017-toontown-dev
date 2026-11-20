@@ -6,6 +6,35 @@ s=importlib.util.spec_from_file_location('prior',Path(__file__).with_name('c44a-
 prior=importlib.util.module_from_spec(s);s.loader.exec_module(prior)
 r1=prior.r1;r2=prior.r2
 
+class RootsClient(prior.Client):
+ def __init__(self,discovery,root,delay):
+  super().__init__(discovery,'closure-roots');self.root=root;self.delay=delay;self.got=__import__('threading').Event();self.replies=[]
+ def initialize(self):
+  answer=self.rpc('initialize',{'protocolVersion':'2025-06-18','capabilities':{'roots':{'listChanged':True}},'clientInfo':{'name':'closure-roots','version':'1'}})
+  self.start_events();self.rpc('notifications/initialized',notification=True);return answer
+ def start_events(self):
+  import threading,urllib.request
+  def respond(obj):
+   self.got.set()
+   if self.delay is None:return
+   time.sleep(self.delay)
+   body={'jsonrpc':'2.0','id':obj['id'],'result':{'roots':[{'uri':self.root.resolve().as_uri(),'name':'fixture'}]}}
+   req=urllib.request.Request(self.endpoint,json.dumps(body).encode(),headers={'Authorization':'Bearer '+self.token,'Mcp-Session-Id':self.sid,'Content-Type':'application/json','Accept':'application/json, text/event-stream'})
+   with urllib.request.urlopen(req,timeout=5) as response:response.read()
+  def read():
+   while not self.stopping.is_set():
+    try:
+     req=urllib.request.Request(self.endpoint,headers={'Authorization':'Bearer '+self.token,'Mcp-Session-Id':self.sid,'Accept':'text/event-stream'})
+     with urllib.request.urlopen(req,timeout=2) as response:
+      for line in response:
+       if self.stopping.is_set():break
+       if line.startswith(b'data:'):
+        obj=json.loads(line[5:]);self.received.append(obj)
+        if obj.get('method')=='roots/list':
+         th=threading.Thread(target=respond,args=(obj,),daemon=True);self.replies.append(th);th.start()
+    except Exception:self.stopping.wait(.01)
+  self.reader=threading.Thread(target=read,daemon=True);self.reader.start()
+
 def menu_items():
  from pywinauto import Desktop
  found=[]
@@ -256,28 +285,19 @@ async def body(t,step):
      os_after=native_windows()
      t.run.check(survived,'D-70 marker '+focus+' '+name,{'commands':r2.sent(t),'scale':t.cdp.js('devicePixelRatio'),'dialog':t.cdp.js("document.querySelector('[role=dialog]')?.getAttribute('data-tt-id')"),'newWindows':[v for k,v in os_after.items() if k not in os_before],'observation':(name,key,mods) in observations})
   elif step==8:
-   import contextlib,httpx
-   from mcp import ClientSession,types
-   from mcp.client.streamable_http import streamable_http_client
+   import tempfile,shutil
    discovery=json.loads((t.work/'discovery.json').read_text());figures=[]
    async def trial(delay):
-    got=asyncio.Event()
-    async def roots(_):
-     got.set()
-     if delay is None:await asyncio.Event().wait()
-     else:await asyncio.sleep(delay)
-     return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='fixture')])
-    async with contextlib.AsyncExitStack() as stack:
-     http=await stack.enter_async_context(httpx.AsyncClient(headers={'Authorization':'Bearer '+discovery['token']},timeout=20))
-     streams=await stack.enter_async_context(streamable_http_client(discovery['endpoint'],http_client=http))
-     session=await stack.enter_async_context(ClientSession(streams[0],streams[1],list_roots_callback=roots));await session.initialize()
-     start=time.perf_counter();pending=asyncio.create_task(session.call_tool('run_command',{'id':'project.open','params':{'path':str(t.work/'base.animpkg'),'onUnsaved':'discard'}}))
-     await asyncio.sleep(.05);readstart=time.perf_counter();read=await session.call_tool('run_command',{'id':'app.state.get','params':{}});readms=(time.perf_counter()-readstart)*1000;read_while_pending=not pending.done()
-     response=await pending;ms=(time.perf_counter()-start)*1000
-     content=response.structuredContent or json.loads(response.content[0].text)
-     row={'delayMs':None if delay is None else delay*1000,'elapsedMs':round(ms,2),'readMs':round(readms,2),'status':content.get('status'),'code':content.get('error',{}).get('code'),'rootsRequested':got.is_set()};figures.append(row)
-     t.run.check(row['code']=='fs.outsideRoots' if delay is None else row['status']=='ok','D-68 roots '+str(len(figures)),row)
-     if delay is None:t.run.check(read_while_pending and not read.isError,'D-68 other read answered while roots pending',{'readMs':readms})
+    outside=Path(tempfile.mkdtemp(prefix='closure-roots-'));shutil.copy2(t.work/'base.animpkg',outside/'base.animpkg')
+    client=RootsClient(discovery,outside,delay);await asyncio.to_thread(client.initialize)
+    try:
+     start=time.perf_counter();finished=[];pending=asyncio.create_task(asyncio.to_thread(client.command,'project.open',{'path':str(outside/'base.animpkg'),'onUnsaved':'discard'}));pending.add_done_callback(lambda _:finished.append(time.perf_counter()))
+     await asyncio.sleep(.05);readstart=time.perf_counter();read=await asyncio.to_thread(client.command,'app.state.get');readms=(time.perf_counter()-readstart)*1000;read_while_pending=not pending.done()
+     content=await pending;ms=(finished[0]-start)*1000
+     row={'delayMs':None if delay is None else delay*1000,'elapsedMs':round(ms,2),'readMs':round(readms,2),'status':content.get('status'),'code':content.get('error',{}).get('code'),'rootsRequested':client.got.is_set()};figures.append(row)
+     t.run.check(client.got.is_set() and (row['code']=='fs.outsideRoots' if delay is None else row['status']=='ok'),'D-68 roots '+str(len(figures)),row)
+     if delay is None:t.run.check(read_while_pending and read.get('status')=='ok','D-68 other read answered while roots pending',{'readMs':readms})
+    finally:await asyncio.to_thread(client.close)
    for i in range(30):await trial(.3)
    await trial(None)
    for i in range(5):await trial(0)
