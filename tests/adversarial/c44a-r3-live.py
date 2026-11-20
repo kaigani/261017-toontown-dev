@@ -12,13 +12,15 @@ class Client(r1.Live4Http):
   super().__init__(*a);self.received=[];self.stopping=threading.Event();self.reader=None
  def start_events(self):
   def read():
-   try:
-    req=urllib.request.Request(self.endpoint,headers={'Authorization':'Bearer '+self.token,'Mcp-Session-Id':self.sid,'Accept':'text/event-stream'})
-    with urllib.request.urlopen(req,timeout=2) as response:
-     for line in response:
-      if self.stopping.is_set():break
-      if line.startswith(b'data:'):self.received.append(json.loads(line[5:]))
-   except Exception as ex:self.stream_error=type(ex).__name__
+   while not self.stopping.is_set():
+    try:
+     req=urllib.request.Request(self.endpoint,headers={'Authorization':'Bearer '+self.token,'Mcp-Session-Id':self.sid,'Accept':'text/event-stream'})
+     with urllib.request.urlopen(req,timeout=2) as response:
+      for line in response:
+       if self.stopping.is_set():break
+       if line.startswith(b'data:'):self.received.append(json.loads(line[5:]))
+    except Exception as ex:
+     self.stream_error=type(ex).__name__;self.stopping.wait(.1)
   self.reader=threading.Thread(target=read,daemon=True);self.reader.start()
  def close(self):
   self.stopping.set();super().close()

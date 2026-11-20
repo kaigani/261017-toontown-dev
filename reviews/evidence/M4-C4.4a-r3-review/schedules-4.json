@@ -1,0 +1,610 @@
+{
+  "counts": {
+    "masked": 120,
+    "refused": 0,
+    "revealed": 0,
+    "other": 0
+  },
+  "personAfter": [
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "window",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "drawingView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "cameraView",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    },
+    {
+      "target": "pen",
+      "shownAfter": false,
+      "buttonAfter": "Show"
+    }
+  ]
+}
