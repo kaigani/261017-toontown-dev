@@ -168,13 +168,24 @@ async def menus(t,step):
      await r1.r3.modal_fixture(t,'Family '+view+' '+family+' '+action);await setup(view)
      if family=='scene':await c('anim.tool.set',{'tool':'transform'});await c('anim.tool.set',{'tool':'select'})
      else:await c('tool.active.set',{'toolId':'brush'});await c('tool.active.set',{'toolId':'select'})
-     await c('draw.selection.set',{'by':'all'});await c('window.panel.set',{'panelId':'pen','visible':True});await pause();t.click('pen.maxSize.field');await openat(view)
+     await c('draw.selection.set',{'by':'all'})
+     expectedContext='staging' if family=='scene' and view=='cameraView' else 'drawing'
+     drawingElement=(await c('app.state.get'))['element']['id']
+     eid=(await c('element.create',{'type':'drawing','name':'Staging sentinel'}))['elementIds'][0]
+     await c('edit.selection.set',{'context':'staging','ids':[eid]});await c('app.context.set',{'elementId':drawingElement,'frame':1})
+     if action=='paste':await c('edit.copy',{'context':expectedContext})
+     await c('window.panel.set',{'panelId':'pen','visible':True});await r1.r3.wait(t,'pen.maxSize.field');t.click('pen.maxSize.field');await openat(view)
      items=geometry()['items'];suffix=('.sceneMenu.' if family=='scene' and view=='cameraView' else '.drawingMenu.')+action
      item=next((x for x in items if x['id'].endswith(suffix)),None)
      before={'drawing':await c('draw.selection.get'),'staging':await c('edit.selection.get',{'context':'staging'})};t.clear()
      if item:t.click(item['id'])
      await pause();after={'drawing':await c('draw.selection.get'),'staging':await c('edit.selection.get',{'context':'staging'})};commands=sent(t);context='staging' if family=='scene' and view=='cameraView' else 'drawing'
-     t.run.check(bool(item) and all(x['params'].get('context')==context for x in commands if x['command']=='edit.'+action),'D-60 family '+view+' '+family+' '+action,{'before':before,'after':after,'sent':commands,'items':items})
+     t.run.check(bool(item) and len([x for x in commands if x['command']=='edit.'+action and x['params'].get('context')==context])==1,'D-60 family '+view+' '+family+' '+action,{'before':before,'after':after,'sent':commands,'items':items})
+     other='staging' if context=='drawing' else 'drawing'
+     t.run.check(before[other]==after[other],'D-60 other selection preserved '+view+' '+family+' '+action,{'before':before,'after':after})
+     if action in ('selectAll','deselectAll'):
+      ids=after[context].get('selectedIds',after[context].get('ids',[]))
+      t.run.check(bool(ids)==(action=='selectAll'),'D-60 selection effect '+view+' '+family+' '+action,after)
      await t.settle_dialogs();d.key(0x1B)
 if __name__=='__main__':
  assert (sys.argv[1],int(sys.argv[2])) in [('m1a',2),('m1a',3),('m1a',4),('m1b',5),('m1b',6),('m1b',7)]
