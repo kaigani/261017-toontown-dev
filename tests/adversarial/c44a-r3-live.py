@@ -172,8 +172,21 @@ async def body(t,step):
    await show()
    reloads=[]
    for vk,mods in ((0x74,()),(0x52,(0x11,))):
+    await show();t.click('agentAccess.token')
     before=t.cdp.js('performance.timeOrigin');d.key(vk,*mods);await r2.pause();after=t.cdp.js('performance.timeOrigin');reloads.append({'key':vk,'reloaded':before!=after})
-   t.run.save('leave-token-summary.json',{'schedules':totals,'reloadKeys':reloads})
+   if any(x['reloaded'] for x in reloads):
+    counts.update(masked=0,refused=0,revealed=0,other=0)
+    for i in range(40):
+     await show();t.click('agentAccess.token');rect=r2.dom(t,'agentAccess.token','e.getBoundingClientRect().toJSON()')
+     d.u32.keybd_event(0x74,0,0,0);d.u32.keybd_event(0x74,0,2,0)
+     a=await call(q,'inspect.screenshot',{'target':'window'});data=png(a)
+     if data:
+      field=crop(Image.open(io.BytesIO(base64.b64decode(data))),rect).tobytes();kind='revealed' if field==revealed else 'masked' if field in (masked,safePixels) else 'other'
+     else:kind='refused' if a.get('error',{}).get('code')=='render.failed' else 'other'
+     counts[kind]+=1;t.run.check(kind in ('masked','refused'),'D-65 reload '+str(i),{'kind':kind});await r2.pause()
+    totals['reload']=dict(counts)
+   if r2.dom(t,'agentAccess.token')==q.token:t.click('agentAccess.token.show');await r2.pause()
+   t.run.save('leave-token-summary.json' ,{'schedules':totals,'reloadKeys':reloads})
   if step==6:t.run.check(not any(leaks(client.received) for client in clients),'D-62 received events prefix-free',{'objects':sum(len(client.received) for client in clients)})
   t.run.save('schedule-summary.json',{'counts':counts,'personAfter':person})
  finally:
@@ -223,7 +236,11 @@ async def menu_extra(t,step):
    t.run.check(sum(x['command']==last['command'] and x.get('params',{})==last['params'] for x in commands)==1,'D-66 declared command once '+view+' '+method,{'declared':last,'commands':commands})
    await t.settle_dialogs()
   for vk,mods in ((0x79,(0x10,)),(0x5D,())):
-   t.click(view+'.canvas');d.key(vk,*mods);await r2.pause();t.run.check(bool(geo()),'D-66 keyboard menu '+view+' '+str(vk));d.key(0x1B)
+   t.click(view+'.canvas')
+   for _ in range(100):
+    if t.cdp.js('document.activeElement?.dataset.ttId')==view+'.canvas':break
+    d.key(0x09)
+   d.key(vk,*mods);await r2.pause();t.run.check(bool(geo()),'D-66 keyboard menu '+view+' '+str(vk));d.key(0x1B)
  if step==6:
   g=await openmenu('tab.drawingView');t.run.check(bool(inside(g)),'D-66 dock checklist',g);d.key(0x1B)
   resize(1280,800);await openmenu('drawingView.canvas');resize(800,500);await r2.pause();g=geo();t.run.check(bool(inside(g)),'D-66 resize open',g)
@@ -301,18 +318,26 @@ async def fields(t,step):
    t.run.check(any(x['command']=='project.save' for x in commands) or modal,'D-66 Save keymap/modal '+kind,commands)
    d.key(0x1B);await r2.pause()
    if t.cdp.js('!!document.querySelector("[role=dialog]")'):d.key(0x1B);await r2.pause()
-   t.click('drawingView.canvas');t.clear();d.key(0x41,0x11);d.key(0x5A,0x11);d.key(0x42);await r2.pause()
+   await c('tool.active.set',{'toolId':'pencil'});t.click('drawingView.canvas')
+   clickFocus=t.cdp.js('document.activeElement?.dataset.ttId')
+   for _ in range(100):
+    if t.cdp.js('document.activeElement?.dataset.ttId')=='drawingView.canvas':break
+    d.key(0x09)
+   t.run.save('focus-exit-'+kind+'.json',{'afterClick':clickFocus,'afterTab':t.cdp.js('document.activeElement?.dataset.ttId')})
+   canvaspos=await t.position();t.clear();d.key(0x41,0x11);d.key(0x5A,0x11);d.key(0x42);await r2.pause()
    cmds=[x['command'] for x in r2.sent(t)]
-   t.run.check(all(x in cmds for x in ('edit.selectAll','edit.undo','tool.active.set')),'D-66 document resumes '+kind,cmds)
+   t.run.check(all(x in cmds for x in ('edit.selectAll','edit.undo','tool.group.select')) and await t.position()==canvaspos-1 and (await c('tool.active.get')).get('toolId')!='pencil','D-66 document resumes '+kind,cmds)
   else:
    d.key(0x41,0x11);d.type_text('7' if kind in ('pen','pref','props') else 'Review name');d.key(0x1B);await r2.pause()
    t.run.save('escape-'+kind+'.json',{'old':old,'after':r2.dom(t,ident),'commands':t.recorded(),'dialog':t.cdp.js('document.querySelector("[role=dialog]")?.dataset.ttId')})
    # Numeric and rename fields have an explicit restoration contract; staged forms use their modal Cancel.
    if kind in ('pen','pref','props','rename'):t.run.check(not r2.sent(t) and (r2.dom(t,ident)==old or kind in ('rename','pref','props') and r2.dom(t,ident) is None),'D-61 Escape '+kind,{'after':r2.dom(t,ident),'commands':t.recorded()})
    ident=await openfield(kind);await r1.r3.wait(t,ident);t.click(ident);t.clear();d.key(0x41,0x11);d.type_text('8' if kind in ('pen','pref','props') else 'Review name');d.key(0x0D);await r2.pause()
+   if r2.dom(t,ident) is not None:d.key(0x09);await r2.pause()
    t.run.save('enter-'+kind+'.json',{'after':r2.dom(t,ident),'commands':t.recorded()})
    cmds=r2.sent(t);t.run.check(len(cmds)<=1,'D-61 Enter once '+kind,cmds)
   d.key(0x1B);await r2.pause()
+  if step==4 and kind=='new':await r1.r3.modal_fixture(t,'After staged form')
  await c('window.panel.set',{'panelId':'activity','visible':True});await r2.pause()
  t.run.save('activity-fields.json',t.cdp.js('[...document.querySelectorAll(".activity-panel input")].map(e=>({id:e.dataset.ttId,type:e.type}))'))
 
@@ -341,12 +366,20 @@ if __name__=='__main__' and sys.argv[1] in ('n2a','n2b'):
  r1.live_body=fields if case=='n2a' else menu_extra if step in (5,6) else body
  logical=step
  if case=='n2b' and step==7:step=8
+ old_receipt=r1.EVID/('step'+str(step)+'.json');saved=old_receipt.read_bytes() if old_receipt.exists() else None
  result=r1.live(step)
+ if saved is not None:old_receipt.write_bytes(saved)
+ else:old_receipt.unlink(missing_ok=True)
  transcript=json.loads((r1.OUT/'transcript.json').read_text())
  receipt={'checks':len(transcript),'results':transcript,'raw':str(r1.OUT)}
  text=json.dumps(receipt,indent=2,default=str)+'\n'
  assert len(text.encode())<=200000,'summary too large'
  (r1.EVID/(case+'-'+str(logical)+'.json')).write_text(text,encoding='utf-8',newline='\n')
+ patterns=('inventory-*.json','focus-exit-*.json','escape-*.json','enter-*.json','activity-fields.json','leave-token-summary.json','drawingView-*.json','cameraView-*.json','float-*.json')
+ for pattern in patterns:
+  for source in r1.OUT.glob(pattern):
+   data=source.read_bytes();assert len(data)<=200000
+   (r1.EVID/(case+'-'+str(logical)+'-'+source.name)).write_bytes(data)
  sys.exit(result)
 
 if __name__=='__main__':

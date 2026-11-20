@@ -1,0 +1,4 @@
+{
+  "afterClick": "drawingView.canvas",
+  "afterTab": "drawingView.canvas"
+}

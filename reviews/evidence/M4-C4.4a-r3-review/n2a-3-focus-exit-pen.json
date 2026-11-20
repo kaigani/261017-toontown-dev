@@ -1,0 +1,4 @@
+{
+  "afterClick": "pen.maxSize.field",
+  "afterTab": "drawingView.canvas"
+}

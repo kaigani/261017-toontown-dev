@@ -1,0 +1,4 @@
+{
+  "afterClick": "text.font",
+  "afterTab": "drawingView.canvas"
+}
