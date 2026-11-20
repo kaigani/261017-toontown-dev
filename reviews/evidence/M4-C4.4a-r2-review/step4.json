@@ -1,0 +1,109 @@
+{
+  "checks": 8,
+  "failures": [
+    "spec 01 section 8.4 Ctrl A edits numeric field: {\"sent\": [{\"command\": \"edit.selectAll\", \"params\": {}}], \"start\": 2, \"end\": 2}"
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-epqzrvtd",
+  "results": [
+    {
+      "check": "spec 01 section 8.4 Ctrl A edits numeric field",
+      "ok": false,
+      "detail": {
+        "sent": [
+          {
+            "command": "edit.selectAll",
+            "params": {}
+          }
+        ],
+        "start": 2,
+        "end": 2
+      }
+    },
+    {
+      "check": "D-61 Escape restores",
+      "ok": true,
+      "detail": {
+        "sent": [],
+        "shown": "40"
+      }
+    },
+    {
+      "check": "D-61 blur commits once",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7VTB24W47V2FVWBPD4RRZ6W",
+            "maxSize": 46
+          }
+        }
+      ]
+    },
+    {
+      "check": "D-61 Enter plus blur once",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.set",
+          "params": {
+            "penId": "pen_01M7VTB24W47V2FVWBPD4RRZ6W",
+            "maxSize": 47
+          }
+        }
+      ]
+    },
+    {
+      "check": "spec 02 tool.pen.set undo restores field",
+      "ok": true,
+      "detail": "46"
+    },
+    {
+      "check": "D-61 external kernel value retained",
+      "ok": true,
+      "detail": "49"
+    },
+    {
+      "check": "D-61 staged invalid cannot be applied pref.general.recentProjects.maxCount",
+      "ok": true,
+      "detail": {
+        "retained": "10",
+        "kernel": 10,
+        "sent": []
+      }
+    },
+    {
+      "check": "D-61 staged invalid cannot be applied projectProperties.frameRate",
+      "ok": true,
+      "detail": {
+        "retained": "24",
+        "kernel": 24.0,
+        "sent": [
+          {
+            "command": "project.properties.set",
+            "params": {
+              "frameRate": 24,
+              "cameraWidth": 1920,
+              "cameraHeight": 1080,
+              "setAsDefault": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "external": {
+    "typed": "48",
+    "agentValue": 49,
+    "shown": "49",
+    "sent": [
+      {
+        "command": "tool.pen.set",
+        "params": {
+          "penId": "pen_01M7VTB24W47V2FVWBPD4RRZ6W",
+          "maxSize": 47
+        }
+      }
+    ]
+  }
+}

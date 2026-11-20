@@ -1,0 +1,1738 @@
+{
+  "checks": 11,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r2-regression-ohexzs6o\\l3b7",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "activity newest first unique sequence",
+      "ok": true,
+      "detail": [
+        41,
+        40,
+        39,
+        38,
+        37,
+        36,
+        35,
+        34,
+        33,
+        32,
+        31,
+        30,
+        29,
+        28,
+        27,
+        26,
+        25,
+        24,
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "check": "row time client status agree with log",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "30 calls live without reload",
+      "ok": true,
+      "detail": {
+        "rows": [
+          {
+            "id": "activity.entry.41",
+            "text": "06:59:42 review-live3-primary Agent activity ok 0 changed 1 ms",
+            "commandId": "agent.activity.list"
+          },
+          {
+            "id": "activity.entry.40",
+            "text": "06:59:42 review-live3-primary Get tool options ok 0 changed 0 ms",
+            "commandId": "tool.options.get"
+          },
+          {
+            "id": "activity.entry.39",
+            "text": "06:59:42 review-live3-primary Get drawing content ok 0 changed 0 ms",
+            "commandId": "draw.drawing.get"
+          },
+          {
+            "id": "activity.entry.38",
+            "text": "06:59:42 review-live3-primary Get application state ok 0 changed 0 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.37",
+            "text": "06:59:42 review-live3-primary Get tool options ok 0 changed 0 ms",
+            "commandId": "tool.options.get"
+          },
+          {
+            "id": "activity.entry.36",
+            "text": "06:59:42 review-live3-primary Get drawing content ok 0 changed 0 ms",
+            "commandId": "draw.drawing.get"
+          },
+          {
+            "id": "activity.entry.35",
+            "text": "06:59:42 review-live3-primary Get application state ok 0 changed 0 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.34",
+            "text": "06:59:42 review-live3-primary Get tool options ok 0 changed 0 ms",
+            "commandId": "tool.options.get"
+          },
+          {
+            "id": "activity.entry.33",
+            "text": "06:59:42 review-live3-primary Get drawing content ok 0 changed 0 ms",
+            "commandId": "draw.drawing.get"
+          },
+          {
+            "id": "activity.entry.32",
+            "text": "06:59:42 review-live3-primary Get application state ok 0 changed 0 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.31",
+            "text": "06:59:42 review-live3-primary Get tool options ok 0 changed 0 ms",
+            "commandId": "tool.options.get"
+          },
+          {
+            "id": "activity.entry.30",
+            "text": "06:59:42 review-live3-primary Get drawing content ok 0 changed 0 ms",
+            "commandId": "draw.drawing.get"
+          },
+          {
+            "id": "activity.entry.29",
+            "text": "06:59:42 review-live3-primary Get application state ok 0 changed 1 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.28",
+            "text": "06:59:42 review-live3-primary Get tool options ok 0 changed 0 ms",
+            "commandId": "tool.options.get"
+          },
+          {
+            "id": "activity.entry.27",
+            "text": "06:59:42 review-live3-primary Get drawing content ok 0 changed 0 ms",
+            "commandId": "draw.drawing.get"
+          },
+          {
+            "id": "activity.entry.26",
+            "text": "06:59:42 review-live3-primary Get application state ok 0 changed 0 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.25",
+            "text": "06:59:42 review-live3-primary Get tool options ok 0 changed 0 ms",
+            "commandId": "tool.options.get"
+          },
+          {
+            "id": "activity.entry.24",
+            "text": "06:59:42 review-live3-primary Get drawing content ok 0 changed 0 ms",
+            "commandId": "draw.drawing.get"
+          },
+          {
+            "id": "activity.entry.23",
+            "text": "06:59:42 review-live3-primary Get application state ok 0 changed 0 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.22",
+            "text": "06:59:42 review-live3-primary Get tool options ok 0 changed 0 ms",
+            "commandId": "tool.options.get"
+          },
+          {
+            "id": "activity.entry.21",
+            "text": "06:59:42 review-live3-primary Get drawing content ok 0 changed 0 ms",
+            "commandId": "draw.drawing.get"
+          },
+          {
+            "id": "activity.entry.20",
+            "text": "06:59:42 review-live3-primary Get application state ok 0 changed 0 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.19",
+            "text": "06:59:42 review-live3-primary Get tool options ok 0 changed 0 ms",
+            "commandId": "tool.options.get"
+          },
+          {
+            "id": "activity.entry.18",
+            "text": "06:59:42 review-live3-primary Get drawing content ok 0 changed 0 ms",
+            "commandId": "draw.drawing.get"
+          },
+          {
+            "id": "activity.entry.17",
+            "text": "06:59:42 review-live3-primary Get application state ok 0 changed 0 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.16",
+            "text": "06:59:42 review-live3-primary Get tool options ok 0 changed 0 ms",
+            "commandId": "tool.options.get"
+          },
+          {
+            "id": "activity.entry.15",
+            "text": "06:59:42 review-live3-primary Get drawing content ok 0 changed 1 ms",
+            "commandId": "draw.drawing.get"
+          },
+          {
+            "id": "activity.entry.14",
+            "text": "06:59:42 review-live3-primary Get application state ok 0 changed 0 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.13",
+            "text": "06:59:41 review-live3-primary Rectangle error arg.unknown 0 changed 1 ms",
+            "commandId": "draw.rectangle.add"
+          },
+          {
+            "id": "activity.entry.12",
+            "text": "06:59:41 review-live3-primary Review activity ok 0 changed 0 ms",
+            "commandId": "batch"
+          },
+          {
+            "id": "activity.entry.11",
+            "text": "06:59:41 review-live3-primary Agent server error permission.denied 0 changed 0 ms",
+            "commandId": "agent.server.set"
+          },
+          {
+            "id": "activity.entry.10",
+            "text": "06:59:41 mcp Show/hide panel ok 0 changed 1 ms",
+            "commandId": "window.panel.set"
+          },
+          {
+            "id": "activity.entry.9",
+            "text": "06:59:41 mcp Rectangle ok 3 changed 1 ms",
+            "commandId": "draw.rectangle.add"
+          },
+          {
+            "id": "activity.entry.8",
+            "text": "06:59:41 mcp Activate view ok 0 changed 0 ms",
+            "commandId": "view.active.set"
+          },
+          {
+            "id": "activity.entry.7",
+            "text": "06:59:41 mcp Select workspace ok 0 changed 2 ms",
+            "commandId": "workspace.select"
+          },
+          {
+            "id": "activity.entry.6",
+            "text": "06:59:41 mcp Set current context ok 0 changed 0 ms",
+            "commandId": "app.context.set"
+          },
+          {
+            "id": "activity.entry.5",
+            "text": "06:59:41 mcp Create drawing ok 3 changed 1 ms",
+            "commandId": "element.drawing.create"
+          },
+          {
+            "id": "activity.entry.4",
+            "text": "06:59:41 mcp New elements ok 4 changed 2 ms",
+            "commandId": "element.create"
+          },
+          {
+            "id": "activity.entry.3",
+            "text": "06:59:41 mcp New Project ok 0 changed 40 ms",
+            "commandId": "project.create"
+          },
+          {
+            "id": "activity.entry.2",
+            "text": "06:59:41 mcp Get application state ok 0 changed 0 ms",
+            "commandId": "app.state.get"
+          },
+          {
+            "id": "activity.entry.1",
+            "text": "06:59:41 mcp UI tree ok 0 changed 42 ms",
+            "commandId": "inspect.ui.tree"
+          }
+        ],
+        "activity": {
+          "status": "ok",
+          "result": [
+            {
+              "seq": 1,
+              "time": "2026-11-20T06:59:41.089Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 42
+            },
+            {
+              "seq": 2,
+              "time": "2026-11-20T06:59:41.177Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 0
+            },
+            {
+              "seq": 3,
+              "time": "2026-11-20T06:59:41.223Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "project.create",
+              "params": {
+                "name": "Live3 activity",
+                "onUnsaved": "fail"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 1,
+              "durationMs": 40
+            },
+            {
+              "seq": 4,
+              "time": "2026-11-20T06:59:41.240Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "element.create",
+              "params": {
+                "type": "drawing",
+                "name": "ModalUndoSentinel"
+              },
+              "status": "ok",
+              "undoStepId": "u-1",
+              "changedCount": 4,
+              "documentRev": 2,
+              "durationMs": 2
+            },
+            {
+              "seq": 5,
+              "time": "2026-11-20T06:59:41.244Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "element.drawing.create",
+              "params": {
+                "elementId": "el_01K7JJN800H9FQCQ534VM7BSWE",
+                "name": "1",
+                "exposeFrom": 1,
+                "exposeTo": 24
+              },
+              "status": "ok",
+              "undoStepId": "u-2",
+              "changedCount": 3,
+              "documentRev": 3,
+              "durationMs": 1
+            },
+            {
+              "seq": 6,
+              "time": "2026-11-20T06:59:41.247Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "app.context.set",
+              "params": {
+                "elementId": "el_01K7JJN800H9FQCQ534VM7BSWE",
+                "frame": 1
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 3,
+              "durationMs": 0
+            },
+            {
+              "seq": 7,
+              "time": "2026-11-20T06:59:41.253Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "workspace.select",
+              "params": {
+                "name": "Drawing"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 3,
+              "durationMs": 2
+            },
+            {
+              "seq": 8,
+              "time": "2026-11-20T06:59:41.256Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "view.active.set",
+              "params": {
+                "viewId": "drawingView"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 3,
+              "durationMs": 0
+            },
+            {
+              "seq": 9,
+              "time": "2026-11-20T06:59:41.260Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.rectangle.add",
+              "params": {
+                "from": {
+                  "x": -40,
+                  "y": -40
+                },
+                "to": {
+                  "x": 40,
+                  "y": 40
+                }
+              },
+              "status": "ok",
+              "undoStepId": "u-3",
+              "changedCount": 3,
+              "documentRev": 4,
+              "durationMs": 1
+            },
+            {
+              "seq": 10,
+              "time": "2026-11-20T06:59:41.264Z",
+              "sessionId": "s1-4870e0",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "window.panel.set",
+              "params": {
+                "panelId": "activity",
+                "visible": true
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 1
+            },
+            {
+              "seq": 11,
+              "time": "2026-11-20T06:59:41.977Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "agent.server.set",
+              "params": {
+                "enabled": false
+              },
+              "status": "error",
+              "errorCode": "permission.denied",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 12,
+              "time": "2026-11-20T06:59:41.980Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "batch",
+              "commandId": "batch",
+              "params": {
+                "label": "Review activity",
+                "steps": [
+                  {
+                    "id": "app.state.get",
+                    "params": {},
+                    "as": null
+                  }
+                ],
+                "atomic": true,
+                "stopOnError": true,
+                "dryRun": false
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "committedSteps": [
+                0
+              ],
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 13,
+              "time": "2026-11-20T06:59:41.993Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.rectangle.add",
+              "params": {
+                "data": "sha256:ee8bc27f69ad72cc7164f590077d1b96138caf2a0a9488727e3765d565f31bb8",
+                "from": {
+                  "x": 0,
+                  "y": 0
+                },
+                "to": {
+                  "x": 2,
+                  "y": 2
+                }
+              },
+              "status": "error",
+              "errorCode": "arg.unknown",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 1
+            },
+            {
+              "seq": 14,
+              "time": "2026-11-20T06:59:42.009Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 15,
+              "time": "2026-11-20T06:59:42.012Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 1
+            },
+            {
+              "seq": 16,
+              "time": "2026-11-20T06:59:42.039Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "tool.options.get",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 17,
+              "time": "2026-11-20T06:59:42.041Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 18,
+              "time": "2026-11-20T06:59:42.043Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 19,
+              "time": "2026-11-20T06:59:42.045Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "tool.options.get",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 20,
+              "time": "2026-11-20T06:59:42.046Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 21,
+              "time": "2026-11-20T06:59:42.049Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 22,
+              "time": "2026-11-20T06:59:42.050Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "tool.options.get",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 23,
+              "time": "2026-11-20T06:59:42.052Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 24,
+              "time": "2026-11-20T06:59:42.054Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 25,
+              "time": "2026-11-20T06:59:42.056Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "tool.options.get",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 26,
+              "time": "2026-11-20T06:59:42.058Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 27,
+              "time": "2026-11-20T06:59:42.059Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 28,
+              "time": "2026-11-20T06:59:42.061Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "tool.options.get",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 29,
+              "time": "2026-11-20T06:59:42.085Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 1
+            },
+            {
+              "seq": 30,
+              "time": "2026-11-20T06:59:42.100Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 31,
+              "time": "2026-11-20T06:59:42.102Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "tool.options.get",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 32,
+              "time": "2026-11-20T06:59:42.116Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 33,
+              "time": "2026-11-20T06:59:42.132Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 34,
+              "time": "2026-11-20T06:59:42.148Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "tool.options.get",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 35,
+              "time": "2026-11-20T06:59:42.150Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 36,
+              "time": "2026-11-20T06:59:42.151Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 37,
+              "time": "2026-11-20T06:59:42.153Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "tool.options.get",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 38,
+              "time": "2026-11-20T06:59:42.155Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "app.state.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 39,
+              "time": "2026-11-20T06:59:42.157Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 40,
+              "time": "2026-11-20T06:59:42.159Z",
+              "sessionId": "s2-f1b98b",
+              "client": "review-live3-primary",
+              "tool": "run_command",
+              "commandId": "tool.options.get",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            }
+          ],
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        }
+      }
+    },
+    {
+      "check": "D-57 event stream excludes shell notices",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 34,
+        "result": {
+          "contents": [
+            {
+              "uri": "app://events?after=0",
+              "mimeType": "application/json",
+              "text": "{\"eventCount\": 26, \"types\": {\"agent.session.connected\": 1, \"project.opened\": 1, \"app.state.changed\": 5, \"cell.selection.changed\": 2, \"edit.history.changed\": 4, \"project.dirty.changed\": 2, \"doc.changed\": 3, \"element.state.changed\": 1, \"edit.selection.changed\": 1, \"draw.drawing.changed\": 2, \"cell.exposures.changed\": 1, \"element.drawing.changed\": 1, \"workspace.changed\": 2}, \"firstSeq\": 1, \"lastSeq\": 26, \"rawTextBytes\": 18945, \"sha256\": \"53c768f10e9c974c38085d98a4f5918f84e90dcf1552cda614f90776e9b6573a\"}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "activity export writes file",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.activity.export",
+          "params": {
+            "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-9q_fu01d\\activity.jsonl",
+            "format": "jsonl",
+            "onExists": "overwrite"
+          }
+        }
+      ]
+    },
+    {
+      "check": "export equals list for same seq range",
+      "ok": true,
+      "detail": {
+        "exported": 41,
+        "listed": 40,
+        "sent": [
+          {
+            "command": "agent.activity.export",
+            "params": {
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-9q_fu01d\\activity.jsonl",
+              "format": "jsonl",
+              "onExists": "overwrite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "inline media replaced by hash",
+      "ok": true,
+      "detail": [
+        {
+          "seq": 1,
+          "time": "2026-11-20T06:59:41.089Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "inspect_ui",
+          "commandId": "inspect.ui.tree",
+          "params": {
+            "target": "window"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": null,
+          "durationMs": 42
+        },
+        {
+          "seq": 2,
+          "time": "2026-11-20T06:59:41.177Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": null,
+          "durationMs": 0
+        },
+        {
+          "seq": 3,
+          "time": "2026-11-20T06:59:41.223Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "project.create",
+          "params": {
+            "name": "Live3 activity",
+            "onUnsaved": "fail"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 1,
+          "durationMs": 40
+        },
+        {
+          "seq": 4,
+          "time": "2026-11-20T06:59:41.240Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "element.create",
+          "params": {
+            "type": "drawing",
+            "name": "ModalUndoSentinel"
+          },
+          "status": "ok",
+          "undoStepId": "u-1",
+          "changedCount": 4,
+          "documentRev": 2,
+          "durationMs": 2
+        },
+        {
+          "seq": 5,
+          "time": "2026-11-20T06:59:41.244Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "element.drawing.create",
+          "params": {
+            "elementId": "el_01K7JJN800H9FQCQ534VM7BSWE",
+            "name": "1",
+            "exposeFrom": 1,
+            "exposeTo": 24
+          },
+          "status": "ok",
+          "undoStepId": "u-2",
+          "changedCount": 3,
+          "documentRev": 3,
+          "durationMs": 1
+        },
+        {
+          "seq": 6,
+          "time": "2026-11-20T06:59:41.247Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "app.context.set",
+          "params": {
+            "elementId": "el_01K7JJN800H9FQCQ534VM7BSWE",
+            "frame": 1
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 3,
+          "durationMs": 0
+        },
+        {
+          "seq": 7,
+          "time": "2026-11-20T06:59:41.253Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "workspace.select",
+          "params": {
+            "name": "Drawing"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 3,
+          "durationMs": 2
+        },
+        {
+          "seq": 8,
+          "time": "2026-11-20T06:59:41.256Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "view.active.set",
+          "params": {
+            "viewId": "drawingView"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 3,
+          "durationMs": 0
+        },
+        {
+          "seq": 9,
+          "time": "2026-11-20T06:59:41.260Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "draw.rectangle.add",
+          "params": {
+            "from": {
+              "x": -40,
+              "y": -40
+            },
+            "to": {
+              "x": 40,
+              "y": 40
+            }
+          },
+          "status": "ok",
+          "undoStepId": "u-3",
+          "changedCount": 3,
+          "documentRev": 4,
+          "durationMs": 1
+        },
+        {
+          "seq": 10,
+          "time": "2026-11-20T06:59:41.264Z",
+          "sessionId": "s1-4870e0",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "window.panel.set",
+          "params": {
+            "panelId": "activity",
+            "visible": true
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 1
+        },
+        {
+          "seq": 11,
+          "time": "2026-11-20T06:59:41.977Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "agent.server.set",
+          "params": {
+            "enabled": false
+          },
+          "status": "error",
+          "errorCode": "permission.denied",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 12,
+          "time": "2026-11-20T06:59:41.980Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "batch",
+          "commandId": "batch",
+          "params": {
+            "label": "Review activity",
+            "steps": [
+              {
+                "id": "app.state.get",
+                "params": {},
+                "as": null
+              }
+            ],
+            "atomic": true,
+            "stopOnError": true,
+            "dryRun": false
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "committedSteps": [
+            0
+          ],
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 13,
+          "time": "2026-11-20T06:59:41.993Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.rectangle.add",
+          "params": {
+            "data": "sha256:ee8bc27f69ad72cc7164f590077d1b96138caf2a0a9488727e3765d565f31bb8",
+            "from": {
+              "x": 0,
+              "y": 0
+            },
+            "to": {
+              "x": 2,
+              "y": 2
+            }
+          },
+          "status": "error",
+          "errorCode": "arg.unknown",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 1
+        },
+        {
+          "seq": 14,
+          "time": "2026-11-20T06:59:42.009Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 15,
+          "time": "2026-11-20T06:59:42.012Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.drawing.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 1
+        },
+        {
+          "seq": 16,
+          "time": "2026-11-20T06:59:42.039Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "tool.options.get",
+          "params": {
+            "toolId": "brush"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 17,
+          "time": "2026-11-20T06:59:42.041Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 18,
+          "time": "2026-11-20T06:59:42.043Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.drawing.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 19,
+          "time": "2026-11-20T06:59:42.045Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "tool.options.get",
+          "params": {
+            "toolId": "brush"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 20,
+          "time": "2026-11-20T06:59:42.046Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 21,
+          "time": "2026-11-20T06:59:42.049Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.drawing.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 22,
+          "time": "2026-11-20T06:59:42.050Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "tool.options.get",
+          "params": {
+            "toolId": "brush"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 23,
+          "time": "2026-11-20T06:59:42.052Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 24,
+          "time": "2026-11-20T06:59:42.054Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.drawing.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 25,
+          "time": "2026-11-20T06:59:42.056Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "tool.options.get",
+          "params": {
+            "toolId": "brush"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 26,
+          "time": "2026-11-20T06:59:42.058Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 27,
+          "time": "2026-11-20T06:59:42.059Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.drawing.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 28,
+          "time": "2026-11-20T06:59:42.061Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "tool.options.get",
+          "params": {
+            "toolId": "brush"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 29,
+          "time": "2026-11-20T06:59:42.085Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 1
+        },
+        {
+          "seq": 30,
+          "time": "2026-11-20T06:59:42.100Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.drawing.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 31,
+          "time": "2026-11-20T06:59:42.102Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "tool.options.get",
+          "params": {
+            "toolId": "brush"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 32,
+          "time": "2026-11-20T06:59:42.116Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 33,
+          "time": "2026-11-20T06:59:42.132Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.drawing.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 34,
+          "time": "2026-11-20T06:59:42.148Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "tool.options.get",
+          "params": {
+            "toolId": "brush"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 35,
+          "time": "2026-11-20T06:59:42.150Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 36,
+          "time": "2026-11-20T06:59:42.151Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.drawing.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 37,
+          "time": "2026-11-20T06:59:42.153Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "tool.options.get",
+          "params": {
+            "toolId": "brush"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 38,
+          "time": "2026-11-20T06:59:42.155Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "app.state.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 39,
+          "time": "2026-11-20T06:59:42.157Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "draw.drawing.get",
+          "params": {},
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 40,
+          "time": "2026-11-20T06:59:42.159Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "tool.options.get",
+          "params": {
+            "toolId": "brush"
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 0
+        },
+        {
+          "seq": 41,
+          "time": "2026-11-20T06:59:42.868Z",
+          "sessionId": "s2-f1b98b",
+          "client": "review-live3-primary",
+          "tool": "run_command",
+          "commandId": "agent.activity.list",
+          "params": {
+            "limit": 500
+          },
+          "status": "ok",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 4,
+          "durationMs": 1
+        }
+      ]
+    },
+    {
+      "check": "restart preserves preference groups",
+      "ok": true,
+      "detail": {
+        "before": {
+          "values": {
+            "agent.policy.defaults": {
+              "policy": "autonomous",
+              "maxJobs": 2,
+              "maxBatchSteps": 1000,
+              "maxInlineImagePx": 2048,
+              "maxInlineBytes": 52428800,
+              "askInApp": true,
+              "letAgentMoveView": true,
+              "highlightAgentChanges": true
+            },
+            "agent.typedTools": {
+              "enabled": false,
+              "namespaces": []
+            },
+            "agent.activity.persist": false
+          }
+        },
+        "after": {
+          "status": "ok",
+          "result": {
+            "values": {
+              "agent.policy.defaults": {
+                "policy": "autonomous",
+                "maxJobs": 2,
+                "maxBatchSteps": 1000,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": true,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              },
+              "agent.typedTools": {
+                "enabled": false,
+                "namespaces": []
+              },
+              "agent.activity.persist": false
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": null
+        }
+      }
+    },
+    {
+      "check": "restart panel does not restore unpersisted old session",
+      "ok": true,
+      "detail": "restart-review since 2026-11-20T06:59:50.037Z observeassistautonomousScopes\u2026PauseDisconnectUndo back to before this entryCopy as batch JSONExport\u202606:59:50 restart-review Open\u2026 error fs.outsideRoots 0 changed 0 ms06:59:50 restart-review Get preferences ok 0 changed 0 ms"
+    },
+    {
+      "check": "restart activity observation",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": [
+          {
+            "seq": 1,
+            "time": "2026-11-20T06:59:50.040Z",
+            "sessionId": "s1-a0d74a",
+            "client": "restart-review",
+            "tool": "run_command",
+            "commandId": "prefs.get",
+            "params": {
+              "keys": [
+                "agent.policy.defaults",
+                "agent.typedTools",
+                "agent.activity.persist"
+              ]
+            },
+            "status": "ok",
+            "undoStepId": null,
+            "changedCount": 0,
+            "documentRev": null,
+            "durationMs": 0
+          },
+          {
+            "seq": 2,
+            "time": "2026-11-20T06:59:50.042Z",
+            "sessionId": "s1-a0d74a",
+            "client": "restart-review",
+            "tool": "run_command",
+            "commandId": "project.open",
+            "params": {
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-9q_fu01d\\live3-restart.animpkg"
+            },
+            "status": "error",
+            "errorCode": "fs.outsideRoots",
+            "undoStepId": null,
+            "changedCount": 0,
+            "documentRev": null,
+            "durationMs": 0
+          }
+        ],
+        "changes": [],
+        "warnings": [],
+        "documentRev": null
+      }
+    }
+  ]
+}

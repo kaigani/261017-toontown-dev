@@ -1,0 +1,1590 @@
+[
+  {
+    "control": "pen.maxSize.field",
+    "input": "",
+    "before": 8.0,
+    "kernel": 8.0,
+    "oldField": "8",
+    "shown": "8",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "   ",
+    "before": 8.0,
+    "kernel": 8.0,
+    "oldField": "8",
+    "shown": "8",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "101",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "The value is from 0 to 100."
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "0",
+    "before": 0.5,
+    "kernel": 0.0,
+    "oldField": "0.5",
+    "shown": "0",
+    "commands": [
+      {
+        "command": "tool.pen.set",
+        "params": {
+          "penId": "pen_01M7VSWJBH32GX1VMAYESB9SN2",
+          "maxSize": 0
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "100",
+    "before": 0.0,
+    "kernel": 100.0,
+    "oldField": "0",
+    "shown": "100",
+    "commands": [
+      {
+        "command": "tool.pen.set",
+        "params": {
+          "penId": "pen_01M7VSWJBH32GX1VMAYESB9SN2",
+          "maxSize": 100
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "9999999999999999999999999999999999999999",
+    "before": 100.0,
+    "kernel": 100.0,
+    "oldField": "100",
+    "shown": "100",
+    "commands": [],
+    "problem": "The value is from 0 to 100."
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "12 px",
+    "before": 100.0,
+    "kernel": 100.0,
+    "oldField": "100",
+    "shown": "100",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "abc",
+    "before": 8.0,
+    "kernel": 8.0,
+    "oldField": "8",
+    "shown": "8",
+    "commands": [],
+    "problem": "\"abc\" is not a number."
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "+5",
+    "before": 8.0,
+    "kernel": 5.0,
+    "oldField": "8",
+    "shown": "5",
+    "commands": [
+      {
+        "command": "tool.pen.set",
+        "params": {
+          "penId": "pen_01M7VSWJBH32GX1VMAYESB9SN2",
+          "maxSize": 5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "1e3",
+    "before": 5.0,
+    "kernel": 5.0,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from 0 to 100."
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "5.",
+    "before": 5.0,
+    "kernel": 5.0,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": ".5",
+    "before": 5.0,
+    "kernel": 0.5,
+    "oldField": "5",
+    "shown": "0.5",
+    "commands": [
+      {
+        "command": "tool.pen.set",
+        "params": {
+          "penId": "pen_01M7VSWJBH32GX1VMAYESB9SN2",
+          "maxSize": 0.5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "1,5",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "\"1,5\" is not a number."
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "--1",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "\"--1\" is not a number."
+  },
+  {
+    "control": "pen.maxSize.field",
+    "input": "-1",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "The value is from 0 to 100."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "",
+    "before": 0.0,
+    "kernel": 0.0,
+    "oldField": "0",
+    "shown": "0",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "   ",
+    "before": 0.0,
+    "kernel": 0.0,
+    "oldField": "0",
+    "shown": "0",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "abc",
+    "before": 0.0,
+    "kernel": 0.0,
+    "oldField": "0",
+    "shown": "0",
+    "commands": [],
+    "problem": "\"abc\" is not a number."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "+5",
+    "before": 0.0,
+    "kernel": 5.0,
+    "oldField": "0",
+    "shown": "5",
+    "commands": [
+      {
+        "command": "tool.pen.set",
+        "params": {
+          "penId": "pen_01M7VSWJBH32GX1VMAYESB9SN2",
+          "tipAngle": 5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "1e3",
+    "before": 5.0,
+    "kernel": 5.0,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from 0 to 360."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "5.",
+    "before": 5.0,
+    "kernel": 5.0,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": ".5",
+    "before": 5.0,
+    "kernel": 0.5,
+    "oldField": "5",
+    "shown": "0.5",
+    "commands": [
+      {
+        "command": "tool.pen.set",
+        "params": {
+          "penId": "pen_01M7VSWJBH32GX1VMAYESB9SN2",
+          "tipAngle": 0.5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "1,5",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "\"1,5\" is not a number."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "--1",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "\"--1\" is not a number."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "-1",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "The value is from 0 to 360."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "361",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "The value is from 0 to 360."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "0",
+    "before": 0.5,
+    "kernel": 0.0,
+    "oldField": "0.5",
+    "shown": "0",
+    "commands": [
+      {
+        "command": "tool.pen.set",
+        "params": {
+          "penId": "pen_01M7VSWJBH32GX1VMAYESB9SN2",
+          "tipAngle": 0
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "360",
+    "before": 0.0,
+    "kernel": 360.0,
+    "oldField": "0",
+    "shown": "360",
+    "commands": [
+      {
+        "command": "tool.pen.set",
+        "params": {
+          "penId": "pen_01M7VSWJBH32GX1VMAYESB9SN2",
+          "tipAngle": 360
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "9999999999999999999999999999999999999999",
+    "before": 360.0,
+    "kernel": 360.0,
+    "oldField": "360",
+    "shown": "360",
+    "commands": [],
+    "problem": "The value is from 0 to 360."
+  },
+  {
+    "control": "pen.tipAngle.field",
+    "input": "12 px",
+    "before": 360.0,
+    "kernel": 360.0,
+    "oldField": "360",
+    "shown": "360",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "text.indent",
+    "input": "",
+    "before": 0,
+    "kernel": 0,
+    "oldField": "0",
+    "shown": "0",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "text.indent",
+    "input": "   ",
+    "before": 0,
+    "kernel": 0,
+    "oldField": "0",
+    "shown": "0",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "text.indent",
+    "input": "abc",
+    "before": 0,
+    "kernel": 0,
+    "oldField": "0",
+    "shown": "0",
+    "commands": [],
+    "problem": "\"abc\" is not a number."
+  },
+  {
+    "control": "text.indent",
+    "input": "+5",
+    "before": 0,
+    "kernel": 5.0,
+    "oldField": "0",
+    "shown": "5",
+    "commands": [
+      {
+        "command": "tool.text.options.set",
+        "params": {
+          "indent": 5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "text.indent",
+    "input": "1e3",
+    "before": 5.0,
+    "kernel": 1000.0,
+    "oldField": "5",
+    "shown": "1000",
+    "commands": [
+      {
+        "command": "tool.text.options.set",
+        "params": {
+          "indent": 1000
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "text.indent",
+    "input": "5.",
+    "before": 1000.0,
+    "kernel": 5.0,
+    "oldField": "1000",
+    "shown": "5",
+    "commands": [
+      {
+        "command": "tool.text.options.set",
+        "params": {
+          "indent": 5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "text.indent",
+    "input": ".5",
+    "before": 5.0,
+    "kernel": 0.5,
+    "oldField": "5",
+    "shown": "0.5",
+    "commands": [
+      {
+        "command": "tool.text.options.set",
+        "params": {
+          "indent": 0.5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "text.indent",
+    "input": "1,5",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "\"1,5\" is not a number."
+  },
+  {
+    "control": "text.indent",
+    "input": "--1",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "\"--1\" is not a number."
+  },
+  {
+    "control": "text.indent",
+    "input": "-100",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "The value is from -99 to 1000."
+  },
+  {
+    "control": "text.indent",
+    "input": "1001",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "The value is from -99 to 1000."
+  },
+  {
+    "control": "text.indent",
+    "input": "-99",
+    "before": 0.5,
+    "kernel": -99.0,
+    "oldField": "0.5",
+    "shown": "-99",
+    "commands": [
+      {
+        "command": "tool.text.options.set",
+        "params": {
+          "indent": -99
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "text.indent",
+    "input": "1000",
+    "before": -99.0,
+    "kernel": 1000.0,
+    "oldField": "-99",
+    "shown": "1000",
+    "commands": [
+      {
+        "command": "tool.text.options.set",
+        "params": {
+          "indent": 1000
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "text.indent",
+    "input": "9999999999999999999999999999999999999999",
+    "before": 1000.0,
+    "kernel": 1000.0,
+    "oldField": "1000",
+    "shown": "1000",
+    "commands": [],
+    "problem": "The value is from -99 to 1000."
+  },
+  {
+    "control": "text.indent",
+    "input": "12 px",
+    "before": 1000.0,
+    "kernel": 1000.0,
+    "oldField": "1000",
+    "shown": "1000",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "text.kerning",
+    "input": "",
+    "before": 0,
+    "kernel": 0,
+    "oldField": "0",
+    "shown": "0",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "text.kerning",
+    "input": "   ",
+    "before": 0,
+    "kernel": 0,
+    "oldField": "0",
+    "shown": "0",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "text.kerning",
+    "input": "abc",
+    "before": 0,
+    "kernel": 0,
+    "oldField": "0",
+    "shown": "0",
+    "commands": [],
+    "problem": "\"abc\" is not a number."
+  },
+  {
+    "control": "text.kerning",
+    "input": "+5",
+    "before": 0,
+    "kernel": 5,
+    "oldField": "0",
+    "shown": "5",
+    "commands": [
+      {
+        "command": "tool.text.options.set",
+        "params": {
+          "kerning": 5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "text.kerning",
+    "input": "1e3",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from -60 to 60."
+  },
+  {
+    "control": "text.kerning",
+    "input": "5.",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "text.kerning",
+    "input": ".5",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "Enter a whole number."
+  },
+  {
+    "control": "text.kerning",
+    "input": "1,5",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "\"1,5\" is not a number."
+  },
+  {
+    "control": "text.kerning",
+    "input": "--1",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "\"--1\" is not a number."
+  },
+  {
+    "control": "text.kerning",
+    "input": "-61",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from -60 to 60."
+  },
+  {
+    "control": "text.kerning",
+    "input": "61",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from -60 to 60."
+  },
+  {
+    "control": "text.kerning",
+    "input": "-60",
+    "before": 5,
+    "kernel": -60,
+    "oldField": "5",
+    "shown": "-60",
+    "commands": [
+      {
+        "command": "tool.text.options.set",
+        "params": {
+          "kerning": -60
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "text.kerning",
+    "input": "60",
+    "before": -60,
+    "kernel": 60,
+    "oldField": "-60",
+    "shown": "60",
+    "commands": [
+      {
+        "command": "tool.text.options.set",
+        "params": {
+          "kerning": 60
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "text.kerning",
+    "input": "9999999999999999999999999999999999999999",
+    "before": 60,
+    "kernel": 60,
+    "oldField": "60",
+    "shown": "60",
+    "commands": [],
+    "problem": "The value is from -60 to 60."
+  },
+  {
+    "control": "text.kerning",
+    "input": "12 px",
+    "before": 60,
+    "kernel": 60,
+    "oldField": "60",
+    "shown": "60",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "",
+    "typed": "",
+    "before": 3.0,
+    "kernel": 3.0,
+    "oldField": "3",
+    "shown": "3",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "   ",
+    "typed": "   ",
+    "before": 3.0,
+    "kernel": 3.0,
+    "oldField": "3",
+    "shown": "3",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "101",
+    "typed": "101",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "The value is from 0 to 100."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "0",
+    "typed": "0",
+    "before": 0.5,
+    "kernel": 0.0,
+    "oldField": "0.5",
+    "shown": "0",
+    "commands": [
+      {
+        "command": "tool.pencil.options.set",
+        "params": {
+          "thicknessSource": "fixed",
+          "thickness": 0
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "100",
+    "typed": "100",
+    "before": 0.0,
+    "kernel": 100.0,
+    "oldField": "0",
+    "shown": "100",
+    "commands": [
+      {
+        "command": "tool.pencil.options.set",
+        "params": {
+          "thicknessSource": "fixed",
+          "thickness": 100
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "9999999999999999999999999999999999999999",
+    "typed": "9999999999999999999999999999999999999999",
+    "before": 100.0,
+    "kernel": 100.0,
+    "oldField": "100",
+    "shown": "100",
+    "commands": [],
+    "problem": "The value is from 0 to 100."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "12 px",
+    "typed": "",
+    "before": 100.0,
+    "kernel": 100.0,
+    "oldField": "100",
+    "shown": "100",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "abc",
+    "typed": "abc",
+    "before": 3.0,
+    "kernel": 3.0,
+    "oldField": "3",
+    "shown": "3",
+    "commands": [],
+    "problem": "\"abc\" is not a number."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "+5",
+    "typed": "+5",
+    "before": 3.0,
+    "kernel": 5.0,
+    "oldField": "3",
+    "shown": "5",
+    "commands": [
+      {
+        "command": "tool.pencil.options.set",
+        "params": {
+          "thicknessSource": "fixed",
+          "thickness": 5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "1e3",
+    "typed": "1e3",
+    "before": 5.0,
+    "kernel": 5.0,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from 0 to 100."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "5.",
+    "typed": "5.",
+    "before": 5.0,
+    "kernel": 5.0,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": ".5",
+    "typed": ".5",
+    "before": 5.0,
+    "kernel": 0.5,
+    "oldField": "5",
+    "shown": "0.5",
+    "commands": [
+      {
+        "command": "tool.pencil.options.set",
+        "params": {
+          "thicknessSource": "fixed",
+          "thickness": 0.5
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "1,5",
+    "typed": "1,5",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "\"1,5\" is not a number."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "--1",
+    "typed": "--1",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "\"--1\" is not a number."
+  },
+  {
+    "control": "toolOptions.thickness",
+    "input": "-1",
+    "typed": "-1",
+    "before": 0.5,
+    "kernel": 0.5,
+    "oldField": "0.5",
+    "shown": "0.5",
+    "commands": [],
+    "problem": "The value is from 0 to 100."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "",
+    "typed": "",
+    "before": 10,
+    "kernel": 10,
+    "oldField": "10",
+    "shown": "10",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "   ",
+    "typed": "   ",
+    "before": 10,
+    "kernel": 10,
+    "oldField": "10",
+    "shown": "10",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "31",
+    "typed": "31",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from 0 to 30."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "0",
+    "typed": "0",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "0",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "30",
+    "typed": "30",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "0",
+    "shown": "30",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "9999999999999999999999999999999999999999",
+    "typed": "9999999999999999999999999999999999999999",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "30",
+    "shown": "30",
+    "commands": [],
+    "problem": "The value is from 0 to 30."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "12 px",
+    "typed": "",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "30",
+    "shown": "30",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "abc",
+    "typed": "abc",
+    "before": 10,
+    "kernel": 10,
+    "oldField": "10",
+    "shown": "10",
+    "commands": [],
+    "problem": "\"abc\" is not a number."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "+5",
+    "typed": "+5",
+    "before": 10,
+    "kernel": 10,
+    "oldField": "10",
+    "shown": "5",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "1e3",
+    "typed": "1e3",
+    "before": 10,
+    "kernel": 10,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from 0 to 30."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "5.",
+    "typed": "5.",
+    "before": 10,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [
+      {
+        "command": "prefs.set",
+        "params": {
+          "values": {
+            "general.recentProjects.maxCount": 5
+          }
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": ".5",
+    "typed": ".5",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "Enter a whole number."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "1,5",
+    "typed": "1,5",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "\"1,5\" is not a number."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "--1",
+    "typed": "--1",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "\"--1\" is not a number."
+  },
+  {
+    "control": "pref.general.recentProjects.maxCount",
+    "input": "-1",
+    "typed": "-1",
+    "before": 5,
+    "kernel": 5,
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from 0 to 30."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "",
+    "typed": "",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "   ",
+    "typed": "   ",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "65536",
+    "typed": "65536",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "The value is from 1024 to 65535."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "1024",
+    "typed": "1024",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "1024",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "65535",
+    "typed": "65535",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "1024",
+    "shown": "65535",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "9999999999999999999999999999999999999999",
+    "typed": "9999999999999999999999999999999999999999",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "65535",
+    "shown": "65535",
+    "commands": [],
+    "problem": "The value is from 1024 to 65535."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "12 px",
+    "typed": "",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "65535",
+    "shown": "65535",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "abc",
+    "typed": "abc",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "\"abc\" is not a number."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "+5",
+    "typed": "+5",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "The value is from 1024 to 65535."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "1e3",
+    "typed": "1e3",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "The value is from 1024 to 65535."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "5.",
+    "typed": "5.",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "The value is from 1024 to 65535."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": ".5",
+    "typed": ".5",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "Enter a whole number."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "1,5",
+    "typed": "1,5",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "\"1,5\" is not a number."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "--1",
+    "typed": "--1",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "\"--1\" is not a number."
+  },
+  {
+    "control": "agentAccess.port",
+    "input": "1023",
+    "typed": "1023",
+    "formClosed": false,
+    "before": 47215,
+    "kernel": 47215,
+    "oldField": "47215",
+    "shown": "47215",
+    "commands": [],
+    "problem": "The value is from 1024 to 65535."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "",
+    "typed": "",
+    "formClosed": false,
+    "before": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "24",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "   ",
+    "typed": "   ",
+    "formClosed": false,
+    "before": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "24",
+    "commands": [],
+    "problem": "Enter a number."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "abc",
+    "typed": "abc",
+    "formClosed": false,
+    "before": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "24",
+    "commands": [],
+    "problem": "\"abc\" is not a number."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "+5",
+    "typed": "+5",
+    "formClosed": false,
+    "before": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "5",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "1e3",
+    "typed": "1e3",
+    "formClosed": false,
+    "before": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "5",
+    "shown": "5",
+    "commands": [],
+    "problem": "The value is from 1 to 120."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "5.",
+    "typed": "5.",
+    "formClosed": true,
+    "before": {
+      "frameRate": 24.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "5",
+    "shown": "24",
+    "commands": [
+      {
+        "command": "project.create",
+        "params": {
+          "name": "Untitled",
+          "frameRate": 5,
+          "cameraWidth": 1920,
+          "cameraHeight": 1080
+        }
+      }
+    ],
+    "problem": ""
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": ".5",
+    "typed": ".5",
+    "formClosed": false,
+    "before": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "24",
+    "commands": [],
+    "problem": "The value is from 1 to 120."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "1,5",
+    "typed": "1,5",
+    "formClosed": false,
+    "before": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "24",
+    "commands": [],
+    "problem": "\"1,5\" is not a number."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "--1",
+    "typed": "--1",
+    "formClosed": false,
+    "before": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "24",
+    "commands": [],
+    "problem": "\"--1\" is not a number."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "0",
+    "typed": "0",
+    "formClosed": false,
+    "before": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "24",
+    "commands": [],
+    "problem": "The value is from 1 to 120."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "121",
+    "typed": "121",
+    "formClosed": false,
+    "before": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "24",
+    "commands": [],
+    "problem": "The value is from 1 to 120."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "1",
+    "typed": "1",
+    "formClosed": false,
+    "before": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "24",
+    "shown": "1",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "120",
+    "typed": "120",
+    "formClosed": false,
+    "before": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "1",
+    "shown": "120",
+    "commands": [],
+    "problem": ""
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "9999999999999999999999999999999999999999",
+    "typed": "9999999999999999999999999999999999999999",
+    "formClosed": false,
+    "before": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "120",
+    "shown": "120",
+    "commands": [],
+    "problem": "The value is from 1 to 120."
+  },
+  {
+    "control": "newProject.frameRate",
+    "input": "12 px",
+    "typed": "",
+    "formClosed": false,
+    "before": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "kernel": {
+      "frameRate": 5.0,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080
+    },
+    "oldField": "120",
+    "shown": "120",
+    "commands": [],
+    "problem": "Enter a number."
+  }
+]

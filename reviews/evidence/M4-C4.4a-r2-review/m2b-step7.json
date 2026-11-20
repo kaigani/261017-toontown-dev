@@ -1,0 +1,119 @@
+{
+  "checks": 7,
+  "results": [
+    {
+      "check": "D-63 countdown within one second",
+      "ok": true,
+      "detail": {
+        "shown": 299,
+        "remaining": 299.58
+      }
+    },
+    {
+      "check": "closed session retires held request",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "enabled": true,
+          "endpoint": "http://127.0.0.1:49743/mcp",
+          "sessions": [
+            {
+              "sessionId": "s1-badb53",
+              "client": "mcp",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "connectedAt": "2026-11-20T07:22:58.796Z",
+              "lastActivity": "2026-11-20T07:22:59.123Z",
+              "paused": false,
+              "transport": "http"
+            },
+            {
+              "sessionId": "s3-0508cf",
+              "client": "round2-B",
+              "policy": "assist",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "library.global"
+              ],
+              "connectedAt": "2026-11-20T07:23:05.438Z",
+              "lastActivity": "2026-11-20T07:23:05.861Z",
+              "paused": false,
+              "transport": "http"
+            }
+          ],
+          "pendingConfirmations": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      }
+    },
+    {
+      "check": "four slots available after disconnect",
+      "ok": true,
+      "detail": " 1 of 4"
+    },
+    {
+      "check": "observation cancellation pending sheet",
+      "ok": true,
+      "detail": {
+        "pending": [
+          {
+            "confirmationId": "cf_e02a2d8f3ba31f31872e2099",
+            "sessionId": "s4-1dfb0f",
+            "commandId": "project.saveAs",
+            "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-xgdd862z\\sentinel-5.animpkg`",
+            "consequences": [
+              {
+                "kind": "overwrite",
+                "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-xgdd862z\\sentinel-5.animpkg",
+                "bytes": 8
+              }
+            ],
+            "category": "overwrite",
+            "decision": null,
+            "inApp": true,
+            "expiresInMs": 298864
+          }
+        ],
+        "sheet": "round2-replacement asks to Save As\u2026Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-xgdd862z\\sentinel-5.animpkg`kind: overwrite, path: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-xgdd862z\\sentinel-5.animpkg, bytes: 8Expires in 4:58DeclineAccept"
+      }
+    },
+    {
+      "check": "cancelled request cannot act after accept",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cancellation released slot for four further held calls",
+      "ok": true,
+      "detail": {
+        "readStatus": "ok",
+        "queue": " 1 of 4"
+      }
+    },
+    {
+      "check": "restart control absent while engine healthy",
+      "ok": true,
+      "detail": {
+        "restartOffered": null
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-wv_45lqm"
+}

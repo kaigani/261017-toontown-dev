@@ -1,0 +1,116 @@
+{
+  "case": "l2b",
+  "step": 5,
+  "exit": 0,
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r2-regression-u2huk91l\\l2b5",
+  "results": [
+    {
+      "check": "tablet staged before OK",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "tablet Cancel",
+      "ok": true,
+      "detail": {
+        "values": {
+          "tablet.ignore": false,
+          "tablet.alternativeInput": false,
+          "tablet.portraitCorrection": false,
+          "tablet.compatibilityMode": false
+        },
+        "sent": []
+      }
+    },
+    {
+      "check": "tablet staged before OK",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "tablet OK",
+      "ok": true,
+      "detail": {
+        "values": {
+          "tablet.ignore": true,
+          "tablet.alternativeInput": true,
+          "tablet.portraitCorrection": true,
+          "tablet.compatibilityMode": true
+        },
+        "sent": [
+          {
+            "command": "prefs.set",
+            "params": {
+              "values": {
+                "tablet.ignore": true,
+                "tablet.compatibilityMode": true,
+                "tablet.alternativeInput": true,
+                "tablet.portraitCorrection": true
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "one prefs.set exactly changed keys",
+      "ok": true,
+      "detail": [
+        {
+          "command": "prefs.set",
+          "params": {
+            "values": {
+              "tablet.ignore": true,
+              "tablet.compatibilityMode": true,
+              "tablet.alternativeInput": true,
+              "tablet.portraitCorrection": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "agent tablet shares preference state",
+      "ok": true,
+      "detail": {
+        "result": {
+          "settings": {
+            "ignoreTablet": false,
+            "portraitCorrection": true,
+            "compatibilityMode": true,
+            "inputInterface": "alternative"
+          },
+          "restartRequired": false
+        },
+        "values": {
+          "tablet.ignore": false,
+          "tablet.alternativeInput": true,
+          "tablet.portraitCorrection": true,
+          "tablet.compatibilityMode": true
+        }
+      }
+    },
+    {
+      "check": "restart preserves tablet preferences",
+      "ok": true,
+      "detail": {
+        "before": {
+          "values": {
+            "tablet.ignore": false,
+            "tablet.alternativeInput": true,
+            "tablet.portraitCorrection": true,
+            "tablet.compatibilityMode": true
+          }
+        },
+        "after": {
+          "values": {
+            "tablet.ignore": false,
+            "tablet.alternativeInput": true,
+            "tablet.portraitCorrection": true,
+            "tablet.compatibilityMode": true
+          }
+        }
+      }
+    }
+  ]
+}

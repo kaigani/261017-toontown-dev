@@ -1,0 +1,245 @@
+{
+  "checks": 11,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r2-regression-ohexzs6o\\l4b6",
+  "results": [
+    {
+      "check": "initial policy",
+      "ok": true,
+      "detail": {
+        "enabled": true,
+        "endpoint": "http://127.0.0.1:61882/mcp",
+        "sessions": [
+          {
+            "sessionId": "s1-87d466",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T07:01:31.570Z",
+            "lastActivity": "2026-11-20T07:01:31.859Z",
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s2-4fe529",
+            "client": "review-live4-primary",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T07:01:38.453Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s3-0bfdb5",
+            "client": "review-live4-secondary",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T07:01:38.457Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          }
+        ],
+        "pendingConfirmations": []
+      }
+    },
+    {
+      "check": "fixture has drawing entry",
+      "ok": true,
+      "detail": [
+        "banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json"
+      ]
+    },
+    {
+      "check": "report opens on damaged project",
+      "ok": true,
+      "detail": {
+        "projectId": "pr_01M7VW59XW4QYH02T0A2GRDP4H",
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0_ve5o35\\damaged.animpkg",
+        "form": "package",
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "readOnly": false,
+        "durationMs": 6,
+        "issues": [
+          {
+            "issueId": "is_1",
+            "code": "integrity.hashMismatch",
+            "severity": "warning",
+            "objectId": null,
+            "path": null,
+            "entry": "banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json",
+            "message": "entry `banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json` is listed in the manifest but missing",
+            "details": {
+              "reason": "missing"
+            },
+            "fixes": []
+          },
+          {
+            "issueId": "is_2",
+            "code": "drawing.contentMissing",
+            "severity": "error",
+            "objectId": "dr_01K7JJN800VZ0HBMBDXVXQF0AV",
+            "path": "scene:\"Scene-1\"/element:\"ModalUndoSentinel\"/drawing:\"1\"",
+            "entry": "banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json",
+            "message": "drawing `1` has no entry; it is kept empty",
+            "details": {
+              "bankId": "db_01K7JJN801WMY40NVKWKEN00C9"
+            },
+            "fixes": []
+          }
+        ],
+        "repairedCount": 1
+      }
+    },
+    {
+      "check": "missing content reported",
+      "ok": true,
+      "detail": {
+        "projectId": "pr_01M7VW59XW4QYH02T0A2GRDP4H",
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0_ve5o35\\damaged.animpkg",
+        "form": "package",
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "readOnly": false,
+        "durationMs": 6,
+        "issues": [
+          {
+            "issueId": "is_1",
+            "code": "integrity.hashMismatch",
+            "severity": "warning",
+            "objectId": null,
+            "path": null,
+            "entry": "banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json",
+            "message": "entry `banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json` is listed in the manifest but missing",
+            "details": {
+              "reason": "missing"
+            },
+            "fixes": []
+          },
+          {
+            "issueId": "is_2",
+            "code": "drawing.contentMissing",
+            "severity": "error",
+            "objectId": "dr_01K7JJN800VZ0HBMBDXVXQF0AV",
+            "path": "scene:\"Scene-1\"/element:\"ModalUndoSentinel\"/drawing:\"1\"",
+            "entry": "banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json",
+            "message": "drawing `1` has no entry; it is kept empty",
+            "details": {
+              "bankId": "db_01K7JJN801WMY40NVKWKEN00C9"
+            },
+            "fixes": []
+          }
+        ],
+        "repairedCount": 1
+      }
+    },
+    {
+      "check": "Copy details reaches OS clipboard",
+      "ok": true,
+      "detail": "Opened with 1 repair, 1 error and 1 warning\r\nProject: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0_ve5o35\\damaged.animpkg\r\nFormat: 1.0\r\nwarning integrity.hashMismatch banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json: entry `banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json` is listed in the manifest but missing\r\nerror drawing.contentMissing scene:\"Scene-1\"/element:\"ModalUndoSentinel\"/drawing:\"1\": drawing `1` has no entry; it is kept empty\r\n"
+    },
+    {
+      "check": "report nonmodal query",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "closing report preserves document",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "report remains closed once per open",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "agent receives report warnings",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-5",
+          "commandId": "project.open",
+          "state": "succeeded",
+          "progress": 1.0,
+          "message": "Finalisation",
+          "startedAt": "2026-11-20T07:01:47.777Z",
+          "result": {
+            "projectId": "pr_01M7VW59XW4QYH02T0A2GRDP4H",
+            "readOnly": false,
+            "formatVersion": "1.0",
+            "warnings": [
+              {
+                "id": "integrity.hashMismatch",
+                "message": "entry `banks/db_01K7JJN801WMY40NVKWKEN00C9/dr_01K7JJN800VZ0HBMBDXVXQF0AV.json` is listed in the manifest but missing",
+                "details": {
+                  "reason": "missing"
+                }
+              },
+              {
+                "id": "drawing.contentMissing",
+                "message": "drawing `1` has no entry; it is kept empty",
+                "details": {
+                  "bankId": "db_01K7JJN801WMY40NVKWKEN00C9"
+                }
+              }
+            ]
+          },
+          "session": "agent:s2-4fe529",
+          "cancellable": false
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "check": "agent open shows report too",
+      "ok": true,
+      "detail": "Load reportOpened with 1 repair, 1 error and 1 warningerror \u00b7 drawing.contentMissing (1)warning \u00b7 integrity.hashMismatch (1)Copy detailsClose"
+    },
+    {
+      "check": "clean open has no report",
+      "ok": true,
+      "detail": {
+        "projectId": "pr_01M7VW59XW4QYH02T0A2GRDP4H",
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-0_ve5o35\\clean.animpkg",
+        "form": "package",
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "readOnly": false,
+        "durationMs": 8,
+        "issues": [],
+        "repairedCount": 0
+      }
+    }
+  ]
+}

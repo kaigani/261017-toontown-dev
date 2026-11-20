@@ -1,0 +1,83 @@
+{
+  "case": "l1b",
+  "step": 5,
+  "exit": 0,
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r2-regression-u2huk91l\\l1b5",
+  "results": [
+    {
+      "check": "L1b recent full path First",
+      "ok": true,
+      "detail": {
+        "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\one\\First.animpkg",
+        "observed": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\one\\First.animpkg"
+      }
+    },
+    {
+      "check": "L1b recent cleared First",
+      "ok": true,
+      "detail": {
+        "observed": ""
+      }
+    },
+    {
+      "check": "L1b recent full path Second",
+      "ok": true,
+      "detail": {
+        "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\two\\Second.animpkg",
+        "observed": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\two\\Second.animpkg"
+      }
+    },
+    {
+      "check": "L1b recent cleared Second",
+      "ok": true,
+      "detail": {
+        "observed": ""
+      }
+    },
+    {
+      "check": "L1b recent full path Third",
+      "ok": true,
+      "detail": {
+        "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\three\\Third.animpkg",
+        "observed": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\three\\Third.animpkg"
+      }
+    },
+    {
+      "check": "L1b recent cleared Third",
+      "ok": true,
+      "detail": {
+        "observed": ""
+      }
+    },
+    {
+      "check": "L1b recent full path Unicode",
+      "ok": true,
+      "detail": {
+        "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\unicode-\u65e5\\Unicode.animpkg",
+        "observed": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\unicode-\u65e5\\Unicode.animpkg"
+      }
+    },
+    {
+      "check": "L1b recent cleared Unicode",
+      "ok": true,
+      "detail": {
+        "observed": ""
+      }
+    },
+    {
+      "check": "L1b recent full path Long",
+      "ok": true,
+      "detail": {
+        "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\long-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\\nested-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy\\Long.animpkg",
+        "observed": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-gqbgqs3a\\long-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\\nested-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy\\Long.animpkg"
+      }
+    },
+    {
+      "check": "L1b recent cleared Long",
+      "ok": true,
+      "detail": {
+        "observed": ""
+      }
+    }
+  ]
+}

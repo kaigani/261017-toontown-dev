@@ -1,0 +1,110 @@
+{
+  "case": "l1b",
+  "step": 8,
+  "exit": 0,
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r2-regression-u2huk91l\\l1b8",
+  "results": [
+    {
+      "check": "L1b two cameras shown",
+      "ok": true,
+      "detail": [
+        {
+          "value": "el_01K7JJN800B58PSC53JNT992Z4",
+          "label": "Second camera",
+          "command": "anim.camera.current.set",
+          "params": {
+            "cameraId": "el_01K7JJN800B58PSC53JNT992Z4"
+          }
+        },
+        {
+          "value": "el_01M7VSBGM0TYNXSJ54CCTCSYKF",
+          "label": "Camera",
+          "command": "anim.camera.current.set",
+          "params": {
+            "cameraId": "el_01M7VSBGM0TYNXSJ54CCTCSYKF"
+          }
+        }
+      ]
+    },
+    {
+      "check": "L1b camera agent rename reflected",
+      "ok": true,
+      "detail": [
+        {
+          "value": "el_01K7JJN800B58PSC53JNT992Z4",
+          "label": "Renamed camera",
+          "command": "anim.camera.current.set",
+          "params": {
+            "cameraId": "el_01K7JJN800B58PSC53JNT992Z4"
+          }
+        },
+        {
+          "value": "el_01M7VSBGM0TYNXSJ54CCTCSYKF",
+          "label": "Camera",
+          "command": "anim.camera.current.set",
+          "params": {
+            "cameraId": "el_01M7VSBGM0TYNXSJ54CCTCSYKF"
+          }
+        }
+      ]
+    },
+    {
+      "check": "L1b keyboard declared choice exactly once",
+      "ok": true,
+      "detail": {
+        "target": {
+          "value": "el_01K7JJN800B58PSC53JNT992Z4",
+          "label": "Renamed camera",
+          "command": "anim.camera.current.set",
+          "params": {
+            "cameraId": "el_01K7JJN800B58PSC53JNT992Z4"
+          }
+        },
+        "sent": [
+          {
+            "command": "anim.camera.current.set",
+            "params": {
+              "cameraId": "el_01K7JJN800B58PSC53JNT992Z4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "L1b mouse declared choice exactly once",
+      "ok": true,
+      "detail": {
+        "target": {
+          "value": "el_01K7JJN800B58PSC53JNT992Z4",
+          "label": "Renamed camera",
+          "command": "anim.camera.current.set",
+          "params": {
+            "cameraId": "el_01K7JJN800B58PSC53JNT992Z4"
+          }
+        },
+        "sent": [
+          {
+            "command": "anim.camera.current.set",
+            "params": {
+              "cameraId": "el_01K7JJN800B58PSC53JNT992Z4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "L1b camera delete reflected",
+      "ok": true,
+      "detail": [
+        {
+          "value": "el_01M7VSBGM0TYNXSJ54CCTCSYKF",
+          "label": "Camera",
+          "command": "anim.camera.current.set",
+          "params": {
+            "cameraId": "el_01M7VSBGM0TYNXSJ54CCTCSYKF"
+          }
+        }
+      ]
+    }
+  ]
+}

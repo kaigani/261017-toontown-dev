@@ -578,7 +578,7 @@ async def live3_body(t,step):
    check(export.exists() and new['token'] not in export.read_text(),'token absent actual activity export')
    await prefs()
 
-   check(False,'token shown or copied in Preferences matches discovery',{'observed':'Agent access has no token display or Copy token control','controls':t.cdp.js("[...document.querySelectorAll('[data-tt-id^=agentAccess]')].map(e=>e.dataset.ttId)")})
+   t.click('agentAccess.token.copy');await pause();clip=subprocess.check_output(['powershell','-NoProfile','-Command','Get-Clipboard -Raw']).decode().strip();check(hashlib.sha256(clip.encode()).digest()==hashlib.sha256(new['token'].encode()).digest(),'token shown or copied in Preferences matches discovery',{'clipboardLength':len(clip),'clipboardSha256':hashlib.sha256(clip.encode()).hexdigest()})
   elif step==6:
    await r3.modal_fixture(t,'Live3 sessions');nq=fresh('review-live3-secondary');await init(nq)
    await c('window.panel.set',{'panelId':'activity','visible':True});await pause()
