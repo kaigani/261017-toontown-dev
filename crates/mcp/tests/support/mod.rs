@@ -115,8 +115,11 @@ impl Client {
             let params = v.get("params").cloned().unwrap_or(Value::Null);
             self.asked.push((method.to_owned(), params.clone()));
             let result = (self.responder)(method, &params);
-            let m = json!({ "jsonrpc": "2.0", "id": id, "result": result });
-            self.raw(&m.to_string());
+            // A responder's `null` sends no reply: a client that never answers that request (D-68 item 4).
+            if !result.is_null() {
+                let m = json!({ "jsonrpc": "2.0", "id": id, "result": result });
+                self.raw(&m.to_string());
+            }
             return self.pump(timeout);
         }
         if v.get("method").is_some() {

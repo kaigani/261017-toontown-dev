@@ -67,6 +67,12 @@ body,
   color: var(--tt-text);
 }
 
+/* Ruling D-68 item 5: the page itself never scrolls (panels do), down to the least window size (800 by 500). */
+html,
+body {
+  overflow: hidden;
+}
+
 button,
 input,
 select,
@@ -134,10 +140,27 @@ select:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  width: 40px;
+  /* D-68 item 5: as wide as its tools' names (within bounds), and it scrolls when taller than the window: at 800 by 500
+     the Drawing tools and the other palettes' titles are taller than the row and had made the page scroll. */
+  flex: none;
+  box-sizing: border-box;
+  min-width: 40px;
+  max-width: 120px;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 6px 4px;
   background: var(--tt-surface);
   border-right: 1px solid var(--tt-border);
+}
+
+.tool-rail .tool-button {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
 }
 
 .tool-palette-title {

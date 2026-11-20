@@ -36,3 +36,7 @@ orchestrator's trim (D-40), the open spec issues, and the final head with its ru
   M11 item.
 - **Retired (D-45, a builder test):** `crates/executor/tests/c34_round4.rs::a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start`
   raced the 100 ms margin of a 1,000 ms budget on the macOS runner (run 44668936063); it now runs with 5,000 ms.
+- **Retired (D-68 item 6, a reviewer test):** `crates/mcp/tests/c23_r2_timeout.rs::smooth_watchdog_reaches_mcp_and_next_read_answers`
+  built its 20,000-point stroke under its 600 ms budget and timed out in that setup on the macOS runner (run
+  44715875251, first attempt; once before in M3 C3.1 round 2). The setup now builds it with an executor of the product's
+  5,000 ms budget, and the 600 ms executor the test times opens that document; the timed part and assertions unchanged.

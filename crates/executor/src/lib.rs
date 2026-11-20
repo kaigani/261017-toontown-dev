@@ -375,6 +375,12 @@ impl ExecutorHandle {
         Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, recovery, _guard: guard })
     }
 
+    /// The never-block budget of every call (D-68 item 4: the MCP host bounds its own waits by it).
+    #[must_use]
+    pub fn budget(&self) -> Duration {
+        self.config.budget
+    }
+
     /// Grants an agent session file-system roots (11 §6.2): paths given by that session must lie inside one of them
     /// or inside the open project's folder (`fs.outsideRoots` otherwise). The MCP host (C1.4) grants the project
     /// folder, `--allow-path` folders and the client's roots.

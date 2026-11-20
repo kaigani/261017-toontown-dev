@@ -2942,6 +2942,12 @@ async def menu_bounds_row(t: Table, bob) -> None:
                 case["outerBoxAndArrowsInside"] = boxes_ok
                 last_index = len(geo["items"]) - 1
                 checks = {}
+                # D-68 item 5: the page itself never scrolls, at either size (its panels do).
+                page = t.cdp.js("(() => { const d = document.documentElement; return {sh: d.scrollHeight, ch: d.clientHeight,"
+                                " sw: d.scrollWidth, cw: d.clientWidth, iw: window.innerWidth}; })()")
+                case["page"] = page
+                checks["pageDoesNotScroll"] = (page["sh"] <= page["ch"] and page["sw"] <= page["cw"]
+                                               and page["cw"] == page["iw"])
                 if geo["scrolls"]:
                     # The real keyboard: End focuses the last item, fully inside the visible items; Home the first.
                     key(0x23)

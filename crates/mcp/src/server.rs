@@ -21,7 +21,7 @@ use std::io::{BufRead, Write};
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
 use std::sync::mpsc::{self, RecvTimeoutError, Sender, SyncSender, TrySendError};
-use std::sync::{Arc, Mutex, MutexGuard, PoisonError};
+use std::sync::{Arc, Condvar, Mutex, MutexGuard, PoisonError};
 use std::time::{Duration, Instant};
 
 use serde_json::{Map, Value, json};
@@ -157,6 +157,10 @@ struct Shared {
     /// A roots refresh is running; another was asked meanwhile ([`ROOTS_THREADS`]).
     roots_busy: AtomicBool,
     roots_again: AtomicBool,
+    /// Ruling D-68 item 4: `roots_busy` is cleared under this lock and `roots_done` is signalled, so a call that needs
+    /// the roots can wait for the refresh in progress ([`wait_for_roots`]).
+    roots_lock: Mutex<()>,
+    roots_done: Condvar,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -431,6 +435,8 @@ where
         server_work: Arc::new(AtomicUsize::new(0)),
         roots_busy: AtomicBool::new(false),
         roots_again: AtomicBool::new(false),
+        roots_lock: Mutex::new(()),
+        roots_done: Condvar::new(),
     });
     // Reader: frames no longer than the session's maxInlineBytes.
     let max = handle
@@ -637,7 +643,7 @@ fn notification(shared: &Arc<Shared>, method: &str, params: &Value) {
                         while s.roots_again.swap(false, Ordering::AcqRel) {
                             refresh_roots(&s);
                         }
-                        s.roots_busy.store(false, Ordering::Release);
+                        roots_idle(&s);
                         // A request that came after the last check and found the refresh busy is served here.
                         if !s.roots_again.load(Ordering::Acquire) || s.roots_busy.swap(true, Ordering::AcqRel) {
                             break;
@@ -645,7 +651,7 @@ fn notification(shared: &Arc<Shared>, method: &str, params: &Value) {
                     }
                 });
                 if spawned.is_err() {
-                    shared.roots_busy.store(false, Ordering::Release);
+                    roots_idle(shared);
                 }
             }
         }
@@ -664,6 +670,53 @@ fn notification(shared: &Arc<Shared>, method: &str, params: &Value) {
             }
         }
         _ => {}
+    }
+}
+
+/// No roots refresh runs now: the calls waiting for one go on (D-68 item 4).
+fn roots_idle(shared: &Shared) {
+    {
+        let _g = lock(&shared.roots_lock);
+        shared.roots_busy.store(false, Ordering::Release);
+    }
+    shared.roots_done.notify_all();
+}
+
+/// The longest a call waits for the client's roots (D-68 item 4): the call's budget, and at most this.
+const ROOTS_WAIT_MAX: Duration = Duration::from_secs(2);
+
+/// Ruling D-68 item 4: a call that needs the file roots and arrives while the server's roots request to the client is
+/// unanswered (just after `notifications/initialized`, or after `roots/list_changed`) waits for the answer, on the MCP
+/// call's thread (never the executor's), bounded by `bound`. At the bound it goes on with the roots granted so far,
+/// so a client that never answers gets today's `fs.outsideRoots`.
+fn wait_for_roots(shared: &Shared, bound: Duration) {
+    if !shared.roots_busy.load(Ordering::Acquire) {
+        return;
+    }
+    let deadline = Instant::now() + bound;
+    let mut g = lock(&shared.roots_lock);
+    while shared.roots_busy.load(Ordering::Acquire) {
+        let now = Instant::now();
+        if now >= deadline {
+            return;
+        }
+        g = shared.roots_done.wait_timeout(g, deadline - now).unwrap_or_else(PoisonError::into_inner).0;
+    }
+}
+
+/// Whether a call's arguments carry an absolute path anywhere (a batch's steps included): every path parameter is
+/// absolute (01 §12.1 rule 2) and is checked against the session's roots, so such a call needs them.
+fn mentions_absolute_path(v: &Value) -> bool {
+    match v {
+        Value::String(s) => {
+            let b = s.as_bytes();
+            (b.len() > 1 && b[0] == b'/')
+                || s.starts_with("\\\\")
+                || (b.len() > 2 && b[0].is_ascii_alphabetic() && b[1] == b':' && (b[2] == b'\\' || b[2] == b'/'))
+        }
+        Value::Array(a) => a.iter().any(mentions_absolute_path),
+        Value::Object(m) => m.values().any(mentions_absolute_path),
+        _ => false,
     }
 }
 
@@ -997,6 +1050,10 @@ fn call_tool(
         let env = Envelope::error(e, None);
         shared.handle.audit_call(&origin, name, name, &Value::Object(args.clone()), &env, started.elapsed());
         return ToolOutcome::Result(tool_result(name, name, &env));
+    }
+    // D-68 item 4: a call that needs the roots waits (bounded) for the client's answer to a roots request in progress.
+    if mentions_absolute_path(&Value::Object(args.clone())) {
+        wait_for_roots(shared, shared.handle.budget().min(ROOTS_WAIT_MAX));
     }
     let plan = match typed_id {
         Some(id) => Plan::Command {
