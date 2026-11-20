@@ -1,9 +1,10 @@
 """Round 2 live 1. Real OS input; read-only DOM inspection; fresh fixtures."""
-import asyncio, ctypes, json, sys, subprocess, os
+import asyncio, ctypes, json, sys, subprocess, os, time
 from pathlib import Path
 import importlib.util
 s=importlib.util.spec_from_file_location('r1',Path(__file__).with_name('c44a-r1-live.py'))
 r1=importlib.util.module_from_spec(s);s.loader.exec_module(r1)
+original_body=r1.live_body
 r1.EVID=r1.ROOT/'reviews/evidence/M4-C4.4a-r2-review'
 
 def dom(t,ident,expr='e.value'):
@@ -21,7 +22,19 @@ async def typein(t,ident,text,key=0x0D):
 async def current(t):
  st=await t.cmd('tool.pen.list');return next(p for p in st['pens'] if p['penId']==st['currentBrushPenId'])
 async def body(t,step):
- d=r1.d;c=t.cmd;t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+ d=r1.d;c=t.cmd
+ if step==2:
+  rect=t.rect
+  def mounted(ident):
+   until=time.monotonic()+15
+   while True:
+    r=rect(ident)
+    if r is not None or time.monotonic()>=until:return r
+    time.sleep(.1)
+  t.rect=mounted
+  await original_body(t,7)
+  return
+ t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
  await r1.r3.modal_fixture(t,'Round 2 live '+str(step))
  await r1.r3.wait(t,'drawingView.canvas')
  if step==3:
@@ -89,7 +102,7 @@ async def menus(t,step):
  def point(x,y,right=False):
   o=wintypes.POINT(0,0);d.u32.ClientToScreen(d.front(),ctypes.byref(o));scale=t.cdp.js('devicePixelRatio');(d.right_click_screen if right else d.click_screen)(o.x+x*scale,o.y+y*scale)
  async def openat(view,fx=.5,fy=.5):
-  d.key(0x1B);r=dom(t,view+'.canvas','(()=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})()');point(r['x']+r['w']*fx,r['y']+r['h']*fy,True);await pause()
+  d.key(0x1B);r=dom(t,view+'.canvas','(()=>{const r=e.getBoundingClientRect(),x=Math.max(0,r.x),y=Math.max(0,r.y);return {x,y,w:Math.min(innerWidth,r.right)-x,h:Math.min(innerHeight,r.bottom)-y}})()');point(r['x']+r['w']*fx,r['y']+r['h']*fy,True);await pause()
  def geometry():return t.cdp.js('(()=>{const m=document.querySelector(".context-menu");return {client:{w:innerWidth,h:innerHeight},menu:m?m.getBoundingClientRect().toJSON():null,arrows:[...document.querySelectorAll(".context-menu-arrow")].map(e=>({text:e.textContent,rect:e.getBoundingClientRect().toJSON(),class:e.className})),items:[...document.querySelectorAll(".context-menu [role^=menuitem]")].map(e=>({id:e.dataset.ttId,rect:e.getBoundingClientRect().toJSON(),label:e.textContent}))}})()')
  async def setup(view):
   await c('window.panel.set',{'panelId':view,'visible':True});await c('view.active.set',{'viewId':view});await c('tool.active.set',{'toolId':'brush'});await pause()
@@ -100,27 +113,34 @@ async def menus(t,step):
    t.run.check(dom(t,view+'.canvas','true') is True,'spec 01 panel/view focus mounts '+view,rec)
    t.click('tab.'+view)
   await r1.r3.wait(t,view+'.canvas')
+ def resize(w,h):
+  handle=d.front();outer=wintypes.RECT();client=wintypes.RECT();d.u32.GetWindowRect(handle,ctypes.byref(outer));d.u32.GetClientRect(handle,ctypes.byref(client));scale=t.cdp.js('devicePixelRatio')
+  d.u32.MoveWindow(handle,30,30,int(w*scale)+outer.right-outer.left-client.right,int(h*scale)+outer.bottom-outer.top-client.bottom,True)
  if step==5:
   for size in [(1280,800),(800,500)]:
-   h=d.front();d.u32.MoveWindow(h,30,30,*size,True);await pause()
+   h=d.front();resize(*size);await pause()
    for view in ['drawingView','cameraView']:
+    if os.environ.get('C44_MIN_CAMERA') and (size!=(800,500) or view!='cameraView'):continue
     await setup(view)
     for fx,fy in [(.01,.01),(.5,.01),(.99,.01),(.01,.5),(.99,.5),(.01,.99),(.5,.99),(.99,.99)]:
      await openat(view,fx,fy);g=geometry();m=g['menu'];area=g['client'];inside=m and m['x']>=0 and m['y']>=0 and m['right']<=area['w'] and m['bottom']<=area['h']
      t.run.check(bool(inside),'D-60 placement '+str((size,view,fx,fy)),g)
+     if not g['items']:
+      t.run.check(False,'D-60 menu opened at '+str((size,view,fx,fy)),{'geometry':g,'canvas':dom(t,view+'.canvas','e.getBoundingClientRect().toJSON()')});continue
      # Exercise visible scroll affordance to reach the final item.
      for _ in range(20):
       g=geometry();last=g['items'][-1]['rect'];m=g['menu']
       if last['bottom']<=m['bottom']-20:break
       arrow=next((a for a in g['arrows'] if 'spent' not in a['class'] and a['rect']['y']>m['y']+m['height']/2),None)
       if not arrow:break
-      a=arrow['rect'];point(a['x']+a['width']/2,a['y']+a['height']/2);await pause()
+      a=arrow['rect'];oldY=last['y'];point(a['x']+a['width']/2,a['y']+a['height']/2);await pause()
+      if geometry()['items'][-1]['rect']['y']==oldY:break
      last=g['items'][-1];r=last['rect'];hit=t.cdp.js('document.elementFromPoint(%s,%s)?.closest("[role^=menuitem]")?.dataset.ttId'%(r['x']+r['width']/2,r['y']+r['height']/2));t.clear();point(r['x']+r['width']/2,r['y']+r['height']/2);await pause()
      t.run.check(hit==last['id'],'D-60 last item reachable '+str((size,view,fx,fy)),{'geometry':g,'sent':sent(t)})
      await t.settle_dialogs()
-   await setup('drawingView');await openat('drawingView');d.u32.MoveWindow(h,30,30,900 if size[0]==1280 else 1280,600,True);await pause();t.run.save('resize-open-'+str(size[0])+'.json',geometry());d.key(0x1B)
+   await setup('drawingView');await openat('drawingView');resize(900 if size[0]==1280 else 1280,600);await pause();t.run.save('resize-open-'+str(size[0])+'.json',geometry());d.key(0x1B)
  elif step==6:
-  await setup('drawingView');t.click('drawingView.canvas');before=t.cdp.js('document.activeElement?.dataset.ttId');d.key(0x79,0x10);await pause();g=geometry();t.run.check(bool(g['menu']),'design note 1 section 1 keyboard open Shift F10',g)
+  await setup('drawingView');resize(800,500);await pause();t.click('drawingView.canvas');before=t.cdp.js('document.activeElement?.dataset.ttId');d.key(0x79,0x10);await pause();g=geometry();t.run.check(bool(g['menu']),'design note 1 section 1 keyboard open Shift F10',g)
   if not g['menu']:await openat('drawingView')
   path=[]
   for _ in range(30):
@@ -129,7 +149,7 @@ async def menus(t,step):
   t.run.check(all(x['rect']['y']>=0 and x['rect']['bottom']<=x['h'] for x in path),'design note 1 section 9 arrows cross scroll boundary visibly',path)
   d.key(0x24);d.key(0x28);d.key(0x28);d.key(0x28)
   await pause();t.run.save('keyboard-scroll.json',{'geometry':geometry(),'focus':t.cdp.js('document.activeElement?.dataset.ttId')});t.clear();d.key(0x0D);await pause();t.run.check(not t.cdp.js('!!document.querySelector(".context-menu")'),'keyboard Enter activates/closes',sent(t));await t.settle_dialogs()
-  await openat('drawingView');opener=t.cdp.js('document.activeElement?.dataset.ttId');d.key(0x1B);await pause();t.run.check(not t.cdp.js('!!document.querySelector(".context-menu")'),'keyboard Escape closes',{'before':before,'menuFocus':opener,'after':t.cdp.js('document.activeElement?.dataset.ttId')})
+  opener=t.cdp.js('document.activeElement?.dataset.ttId');await openat('drawingView');d.key(0x1B);await pause();t.run.check(not t.cdp.js('!!document.querySelector(".context-menu")') and t.cdp.js('document.activeElement?.dataset.ttId')==opener,'keyboard Escape closes and returns focus',{'before':before,'menuFocus':opener,'after':t.cdp.js('document.activeElement?.dataset.ttId')})
   await openat('drawingView');t.clear();t.click('mainToolbar.edit.undo');await pause();t.run.save('outside-click.json',{'sent':sent(t),'geometry':geometry()})
  elif step==7:
   for view in ['drawingView','cameraView']:
@@ -150,6 +170,6 @@ async def menus(t,step):
      t.run.check(bool(item) and all(x['params'].get('context')==context for x in commands if x['command']=='edit.'+action),'D-60 family '+view+' '+family+' '+action,{'before':before,'after':after,'sent':commands,'items':items})
      await t.settle_dialogs();d.key(0x1B)
 if __name__=='__main__':
- assert (sys.argv[1],int(sys.argv[2])) in [('m1a',3),('m1a',4),('m1b',5),('m1b',6),('m1b',7)]
+ assert (sys.argv[1],int(sys.argv[2])) in [('m1a',2),('m1a',3),('m1a',4),('m1b',5),('m1b',6),('m1b',7)]
  r1.live_body=body
  raise SystemExit(r1.live(int(sys.argv[2])))
