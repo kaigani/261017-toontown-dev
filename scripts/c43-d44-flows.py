@@ -903,8 +903,12 @@ def confirm_rows(t: Flows) -> list:
                  "choice": "elsewhere", "setup": nothing, "state": nothing, "flow": elsewhere_flow, "wait": 0.5,
                  "expect": lambda ctx: [("agent.confirmation.respond", {"confirmationId": ctx["ids"][0], "accept": True}, []),
                                         ("agent.confirmation.respond", {"confirmationId": ctx["ids"][0], "accept": False}, [])],
+                 # The second answer is refused with `confirmation.expired` and changes nothing: "already decided"
+                 # while the held call has not used the token yet, "no pending confirmation" once it has (the request
+                 # is gone); either way the held call keeps the first decision.
                  "effect": lambda b, a, ctx: ctx["answers"] == ["ok"] and ctx["gone"]
-                 and "confirmation.expired" in (ctx.get("second") or "") and "already decided" in (ctx.get("second") or "")})
+                 and "confirmation.expired" in (ctx.get("second") or "")
+                 and ("already decided" in (ctx.get("second") or "") or "no pending confirmation" in (ctx.get("second") or ""))})
 
     async def queued_flow(ctx):
         # D-63 item 1 (C44A-R1-60): sessions A, B, A. A's second request is shown at once (the sheet counts all three),
@@ -1036,7 +1040,12 @@ def undo_back_rows(t: Flows) -> list:
     for choice, button in (("undo", "Undo"), ("cancel", "Cancel"), ("enter", "Enter (default Cancel)")):
         async def flow(ctx, choice=choice, button=button):
             t.click(f"activity.entry.{ctx['seq']}")
-            await asyncio.sleep(0.4)
+            # The item is enabled once the panel has read the history after the entry was selected (a wait for a
+            # state, D-45: a click before that hits a disabled item and asks nothing).
+            for _ in range(100):
+                if t.cdp.js("document.querySelector('[data-tt-id=\"activity.undoBack\"]')?.disabled === false"):
+                    break
+                await asyncio.sleep(0.1)
             t.click("activity.undoBack")
             if not await t.wait_for("message.agent.undoBack"):
                 raise RuntimeError("the Undo back question did not appear")
