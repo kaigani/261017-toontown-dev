@@ -720,6 +720,11 @@ class Table:
         self.run.save("rows.json", self.rows)
 
 
+# The table's own row runners: a probe that replaces them runs a chosen subset of the rows, for which the coverage check
+# at the end (D-59 item 2) does not apply.
+_OWN_TABLE_ROW = Table.row
+
+
 class McpTable(Table):
     """The CI form (ruling D-40): the attached MCP interface the other e2e scripts use. `inspect_ui` finds each control
     and reads the reference it declares (the command and the parameters its click sends: every control of the table
@@ -2633,7 +2638,11 @@ async def build_and_run(t: Table, only: set) -> None:
     await t.disabled_checks()
     # D-59 item 2: every row the control coverage names ran, or was named with its reason in the MCP form (a commanded
     # control cannot be listed and not exercised).
-    if not only:
+    own = Table.row is _OWN_TABLE_ROW and custom_row is _OWN_CUSTOM_ROW
+    if not only and not own:
+        # A probe replaced the row runners (the reviewer's c43b-r2-live.py a3 runs its own subset of the rows).
+        print("note D-39 coverage: not checked, the row runners were replaced (a probe's subset of the rows)", flush=True)
+    if not only and own:
         cov39 = _load("c43d39coverage", "c43_d39_coverage.py")
         ran = {r.get("name") for r in t.rows}
         missing = sorted(cov39.named_rows() - ran)
@@ -2712,6 +2721,10 @@ async def custom_row(t: Table, r: dict, own_action: bool = False) -> None:
             await t.row(r)
     finally:
         t.do = original
+
+
+
+_OWN_CUSTOM_ROW = custom_row
 
 
 async def _row_late(t: Table, r: dict, expect) -> None:
