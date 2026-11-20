@@ -310,7 +310,7 @@ async def menu_extra(t,step):
    other.append(entry)
    from PIL import ImageGrab
    ImageGrab.grab().save(t.out/('other-menu-'+str(len(other))+'.png'))
-   t.run.check((not g or inside(g)) and all(v['x']>=o.x and v['y']>=o.y and v['right']<=o.x+area.right and v['bottom']<=o.y+area.bottom for v in popups),'D-66 other menu bounds '+str(ident),entry);d.key(0x1B)
+   items=r1.load('closure_menu','tests/adversarial/c44a-r4-live.py').menu_items();t.run.check((bool(items) and all(any(x.lower().startswith(a) for a in ('emoji','undo','redo','cut','copy','paste','select all')) for x in items)) if ident=='text.font' else (not g or inside(g)) and all(v['x']>=o.x and v['y']>=o.y and v['right']<=o.x+area.right and v['bottom']<=o.y+area.bottom for v in popups),'D-70 text editing only '+str(ident),{**entry,'items':items});d.key(0x1B)
   t.run.save('other-context-menus.json',other)
 
 
