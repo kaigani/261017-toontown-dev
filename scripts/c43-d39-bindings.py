@@ -1539,6 +1539,11 @@ async def build_and_run(t: Table, only: set) -> None:
             case = {"field": ident, "opened": how, "initial": got["value"]}
             # Opening it is not this row's (the Preferences menu item has its own row): the row records the keys only.
             t.clear()
+            if not got["value"]:
+                # An empty field (the search): a known text typed first, with real keys, so select all has text to select.
+                for vk in (0x51, 0x52, 0x53):
+                    key(vk)
+                await asyncio.sleep(0.2)
             # The real Ctrl+A selects the field's whole text.
             key(0x41, 0x11)
             await asyncio.sleep(0.2)
@@ -1570,6 +1575,7 @@ async def build_and_run(t: Table, only: set) -> None:
                          "historyAfter": (hist_after or {}).get("position")})
             case["ok"] = selected and replaced and letter and kept
             text_keys_case[name] = case
+            t.run.save("text-keys-" + ident + ".json", case)
             # Escape: the field's own rule (the numeric field and the rename restore; the dialog closes).
             key(0x1B)
             await asyncio.sleep(0.3)
@@ -2816,14 +2822,26 @@ def wheel_screen(x: int, y: int, notches: int) -> None:
     time.sleep(0.25)
 
 
-# The least window size requested of the operating system; the host's minimum (tauri.conf.json `minWidth` 800,
-# `minHeight` 500, the inner size) is what the window takes.
-MENU_SIZES = (("1280 by 800", 1280, 800), ("the minimum window size", 320, 240))
+# The client areas the row runs at: the product's window (1280 by 800) and the least the host lets the person resize it
+# to (tauri.conf.json `minWidth` 800, `minHeight` 500, the inner size; a program's own SetWindowPos is not held to it,
+# so the client area is set to exactly that size, as the reviewer's probe does).
+MENU_SIZES = (("1280 by 800", 1280, 800), ("the minimum window size, 800 by 500", 800, 500))
+
+
+def resize_client(w: int, h: int, dpr: float) -> None:
+    """Sets the main window's client area to `w` by `h` CSS pixels (the outer size from the frame's own size)."""
+    handle = front()
+    outer, client = wintypes.RECT(), wintypes.RECT()
+    u32.GetWindowRect(handle, ctypes.byref(outer))
+    u32.GetClientRect(handle, ctypes.byref(client))
+    frame_w = (outer.right - outer.left) - client.right
+    frame_h = (outer.bottom - outer.top) - client.bottom
+    u32.MoveWindow(handle, 30, 30, int(w * dpr) + frame_w, int(h * dpr) + frame_h, True)
 
 
 async def menu_bounds_row(t: Table, bob) -> None:
-    """D-60 item 1 and D-66 item 1 (C44A-R1-01): at the 1280 by 800 window and at the least size the host allows (the
-    window asked for 320 by 240 and kept at its minimum, 800 by 500 inner), each view's context menu opened where it
+    """D-60 item 1 and D-66 item 1 (C44A-R1-01): at a 1280 by 800 client area and at the least the host allows (800 by
+    500, set exactly), each view's context menu opened where it
     would cross an edge (the Drawing view's centre, as reported, and the Camera view's bottom-right corner, with a
     drawing tool) has its outer box and both arrows inside the client area. A menu that scrolls is then scrolled by
     real input only: End and Home by the real keyboard (the focused item fully inside the visible items each time), a
@@ -2872,9 +2890,8 @@ async def menu_bounds_row(t: Table, bob) -> None:
 
     try:
         for size_name, ww, wh in MENU_SIZES:
-            h = front()
-            # SWP_NOMOVE | SWP_NOZORDER; for the minimum the OS keeps the window at the host's least size.
-            u32.SetWindowPos(h, 0, 0, 0, ww, wh, 0x0002 | 0x0004)
+            front()
+            resize_client(ww, wh, t.cdp.js("window.devicePixelRatio || 1"))
             await asyncio.sleep(1.0)
             for view, corner in (("drawingView", "centre"), ("cameraView", "bottomRight")):
                 await e2e.run_cmd(t.s, "app.context.set", {"elementId": bob, "frame": 1})
@@ -2899,7 +2916,11 @@ async def menu_bounds_row(t: Table, bob) -> None:
                 menu_id = f"{view}.drawingMenu"
                 geo, opened = await until(menu_id, lambda g: g["items"] and not all(i["disabled"] for i in g["items"]), 5.0)
                 if not geo:
-                    raise RuntimeError(f"the menu did not open: {menu_id}")
+                    under = t.cdp.js("document.elementsFromPoint(%s,%s).slice(0,5).map(e=>e.tagName+'.'+e.className+'#'"
+                                     "+(e.dataset.ttId||''))" % (x, y))
+                    area = t.cdp.js("({w: document.documentElement.clientWidth, h: document.documentElement.clientHeight})")
+                    raise RuntimeError(f"the menu did not open: {menu_id} (size {size_name}, area {area}, canvas {canvas},"
+                                       f" opened at {x},{y}, under it {under})")
                 w, hh = geo["area"]["w"], geo["area"]["h"]
                 case = {"size": size_name, "view": view, "openedAt": {"x": x, "y": y}, "area": geo["area"],
                         "menu": geo["menu"], "arrows": geo["arrows"], "scrolls": geo["scrolls"],
@@ -2966,6 +2987,7 @@ async def menu_bounds_row(t: Table, bob) -> None:
                 await e2e.run_cmd(t.s, "draw.selection.set", {"by": "none"})
         # The window back at the product's size for the rows after this one.
         u32.SetWindowPos(front(), 0, 0, 0, 1280, 800, 0x0002 | 0x0004)
+        rec["areas"] = [c["area"] for c in cases]
         await asyncio.sleep(1.0)
         ok_all = len(cases) == 2 * len(MENU_SIZES) and all(c["ok"] for c in cases)
         rec.update({"cases": cases, "ok": ok_all})
