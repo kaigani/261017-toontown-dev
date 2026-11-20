@@ -322,16 +322,19 @@ async def live2(t,step):
    import re
    source=(r1.ROOT/'desktop/src/ipc/generated/commands.ts').read_text()
    labels=dict(re.findall(r'"([^"\n]+)": \{\s*kind: "[^"\n]+",\s*label: "([^"\n]+)"',source))
-   cases=[('query','app.state.get',{}),('mutation','tool.active.set',{'toolId':'brush'}),('batch','batch',{'steps':[{'id':'app.state.get','params':{}}]*50}),('job','project.save',{}),('refused','agent.server.set',{'enabled':False})]
+   cases=[('query','app.state.get',{}),('mutation','tool.active.set',{'toolId':'brush'}),('batch','batch',{'label':'Review fifty steps','steps':[{'id':'draw.rectangle.add','params':{'from':{'x':0,'y':0},'to':{'x':5,'y':5}}}]*50}),('job','project.save',{}),('refused','agent.server.set',{'enabled':False})]
    for name,command,params in cases:
-    samples=[]
+    t.cdp.js("window.reviewLabels=[];window.reviewObserver?.disconnect();window.reviewObserver=new MutationObserver(()=>{window.reviewLabels.push(document.querySelector('[data-tt-id=agent]')?.textContent)});window.reviewObserver.observe(document.querySelector('[data-tt-id=agent]'),{subtree:true,childList:true,characterData:true,attributes:true});true")
+    samples=[];answers=[]
     for _ in range(8):
      task=asyncio.create_task(asyncio.to_thread(q.tool,'batch',params) if command=='batch' else call(q,command,params))
      while not task.done():
       samples.append(text('agent'));await asyncio.sleep(.01)
-     await task
-    expected='Batch (50 steps)' if command=='batch' else labels.get(command)
-    t.run.check(bool(expected) and any(expected in (x or '') for x in samples) and not any('('+command+')' in (x or '') for x in samples),'D-62 indicator '+name,{'expected':expected,'samples':list(dict.fromkeys(samples))})
+     answer=await task;answers.append({k:answer[k] for k in ('status','error','jobId') if k in answer})
+     for _ in range(30):samples.append(text('agent'));await asyncio.sleep(.02)
+    samples.extend(t.cdp.js('window.reviewLabels'));t.cdp.js('window.reviewObserver.disconnect();true')
+    expected='Review fifty steps' if command=='batch' else labels.get(command)
+    t.run.check(bool(expected) and any(expected in (x or '') for x in samples) and not any('('+command+')' in (x or '') for x in samples),'D-62 indicator '+name,{'expected':expected,'samples':list(dict.fromkeys(samples)),'answers':answers})
  finally:
   try:await drain()
   except Exception:pass

@@ -1,0 +1,278 @@
+{
+  "checks": 5,
+  "results": [
+    {
+      "check": "D-62 indicator query",
+      "ok": true,
+      "detail": {
+        "expected": "Get application state",
+        "samples": [
+          "Agent acting: mcp (New elements)",
+          "Agent acting: mcp (Create drawing)",
+          "Agent acting: mcp (Select workspace)",
+          "Agent acting: mcp (Rectangle)",
+          "Agent acting: mcp (Save As\u2026)",
+          "Agent: mcp, round2-A, round2-B",
+          "Agent acting: mcp (Set current context)",
+          "Agent acting: mcp (Activate view)",
+          "Agent acting: round2-A (Get application state)"
+        ],
+        "answers": [
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "check": "D-62 indicator mutation",
+      "ok": true,
+      "detail": {
+        "expected": "Activate a tool",
+        "samples": [
+          "Agent: mcp, round2-A, round2-B",
+          "Agent acting: round2-A (Activate a tool)"
+        ],
+        "answers": [
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "check": "D-62 indicator batch",
+      "ok": true,
+      "detail": {
+        "expected": "Review fifty steps",
+        "samples": [
+          "Agent: mcp, round2-A, round2-B",
+          "Agent acting: round2-A (Review fifty steps)"
+        ],
+        "answers": [
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "check": "D-62 indicator job",
+      "ok": true,
+      "detail": {
+        "expected": "Save",
+        "samples": [
+          "Agent: mcp, round2-A, round2-B",
+          "Agent acting: round2-A (Save)"
+        ],
+        "answers": [
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          },
+          {
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "check": "D-62 indicator refused",
+      "ok": true,
+      "detail": {
+        "expected": "Agent server",
+        "samples": [
+          "Agent: mcp, round2-A, round2-B",
+          "Agent acting: round2-A (Agent server)"
+        ],
+        "answers": [
+          {
+            "status": "error",
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.server.set` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.server.set",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          },
+          {
+            "status": "error",
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.server.set` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.server.set",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          },
+          {
+            "status": "error",
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.server.set` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.server.set",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          },
+          {
+            "status": "error",
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.server.set` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.server.set",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          },
+          {
+            "status": "error",
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.server.set` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.server.set",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          },
+          {
+            "status": "error",
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.server.set` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.server.set",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          },
+          {
+            "status": "error",
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.server.set` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.server.set",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          },
+          {
+            "status": "error",
+            "error": {
+              "code": "permission.denied",
+              "message": "`agent.server.set` needs the scopes [\"app\"]",
+              "details": {
+                "commandId": "agent.server.set",
+                "missingScopes": [
+                  "app"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-81_f1w7n"
+}
