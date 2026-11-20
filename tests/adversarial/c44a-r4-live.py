@@ -82,7 +82,7 @@ async def body(t,step):
   q=await fresh();b=await fresh()
   if step==2:
    for w,h in ((1280,800),(800,500)):
-    resize(w,h);await r2.pause();await prefs();rows=[];images=[]
+    resize(w,h);await r2.pause();await prefs();t.click('agentAccess.token');await r2.pause();rows=[];images=[]
     for state in ('masked','revealed','copy'):
      if state!='masked':await show()
      if state=='copy':t.click('agentAccess.token.copy')
@@ -246,5 +246,7 @@ if __name__=='__main__':
  # Only compact summaries enter the repository.
  rows=json.loads((r1.OUT/'transcript.json').read_text())
  summary={'checks':len(rows),'failures':[x for x in rows if not x.get('ok',False)],'raw':str(r1.OUT)}
+ for pattern in ('pixels-*.json','schedules.json','roots-figures.json','preferences-movement.json'):
+  for f in r1.OUT.glob(pattern):summary[f.name]=json.loads(f.read_text())
  (r1.EVID/('step'+str(step)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8',newline='\n')
  sys.exit(result)

@@ -1,0 +1,150 @@
+{
+  "checks": 14,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-lnf9c7lj",
+  "pixels-1280.json": [
+    {
+      "target": "window",
+      "kind": "overpainted",
+      "nonGrey": 0,
+      "size": [
+        1280,
+        800
+      ],
+      "rect": [
+        403,
+        525,
+        568,
+        548
+      ],
+      "margin": 4,
+      "colours": [
+        [
+          128,
+          128,
+          128
+        ]
+      ]
+    },
+    {
+      "target": "window",
+      "kind": "overpainted",
+      "nonGrey": 0,
+      "size": [
+        1280,
+        800
+      ],
+      "rect": [
+        403,
+        525,
+        568,
+        548
+      ],
+      "margin": 4,
+      "colours": [
+        [
+          128,
+          128,
+          128
+        ]
+      ]
+    },
+    {
+      "target": "window",
+      "kind": "overpainted",
+      "nonGrey": 0,
+      "size": [
+        1280,
+        800
+      ],
+      "rect": [
+        403,
+        525,
+        568,
+        548
+      ],
+      "margin": 4,
+      "colours": [
+        [
+          128,
+          128,
+          128
+        ]
+      ]
+    }
+  ],
+  "pixels-800.json": [
+    {
+      "target": "window",
+      "kind": "overpainted",
+      "nonGrey": 0,
+      "size": [
+        800,
+        500
+      ],
+      "rect": [
+        274,
+        271,
+        439,
+        294
+      ],
+      "margin": 4,
+      "colours": [
+        [
+          128,
+          128,
+          128
+        ]
+      ]
+    },
+    {
+      "target": "window",
+      "kind": "overpainted",
+      "nonGrey": 0,
+      "size": [
+        800,
+        500
+      ],
+      "rect": [
+        274,
+        271,
+        439,
+        294
+      ],
+      "margin": 4,
+      "colours": [
+        [
+          128,
+          128,
+          128
+        ]
+      ]
+    },
+    {
+      "target": "window",
+      "kind": "overpainted",
+      "nonGrey": 0,
+      "size": [
+        800,
+        500
+      ],
+      "rect": [
+        274,
+        271,
+        439,
+        294
+      ],
+      "margin": 4,
+      "colours": [
+        [
+          128,
+          128,
+          128
+        ]
+      ]
+    }
+  ],
+  "preferences-movement.json": {
+    "draggable": false
+  }
+}
