@@ -19,20 +19,20 @@ fn sequential_wait_timeout_retains_job_identity() -> Result<(), Box<dyn std::err
             tt_vector::work::hooks::set_spin_micros(0);
         }
     }
-    let h = common::fixture_with(tt_executor::ExecutorConfig { budget: Duration::from_millis(500) });
+    let h = common::fixture_with(tt_executor::ExecutorConfig { budget: Duration::from_millis(5_000) });
     let dir = std::env::temp_dir().join(format!("c34-r1-wait-{}", std::process::id()));
     std::fs::create_dir_all(&dir)?;
     let _reset = Reset;
-    tt_vector::work::hooks::set_spin_micros(20_000);
+    tt_vector::work::hooks::set_spin_micros(100_000);
     let batch = serde_json::from_value(
-        json!({"label":"bounded wait","atomic":false,"steps":[{"id":"render.range.run","params":{"from":1,"to":48,"width":32,"directory":dir,"wait":true}}]}),
+        json!({"label":"bounded wait","atomic":false,"steps":[{"id":"render.range.run","params":{"from":1,"to":240,"width":32,"directory":dir,"wait":true}}]}),
     )?;
     let env = h.batch(batch, tt_executor::Origin::User);
     let steps = env.steps.ok_or("step envelopes required")?;
     let error = steps.first().and_then(|s| s.error.as_ref()).ok_or("typed step timeout required")?;
     assert_eq!(error.code, "job.waitTimeout");
     let job = error.details["jobId"].as_str().ok_or("job identity required")?;
-    assert!(error.details["timeoutMs"].as_u64().is_some_and(|n| n <= 450));
+    assert!(error.details["timeoutMs"].as_u64().is_some_and(|n| n <= 4500));
     h.jobs().cancel(job)?;
     tt_vector::work::hooks::set_spin_micros(0);
     let record = h.jobs().wait(job, Duration::from_secs(60))?.0;

@@ -27,3 +27,10 @@ orchestrator's trim (D-40), the open spec issues, and the final head with its ru
 - **The Camera view's scene-family context menu grows in M6 C6.1**: the items of 05 §3.2 lines 326-328 keep their
   `deferred` owners (D-30, D-40 answer 12); C4.4a ships the general edit items of 01 §6 only.
 - **Toolbar items with fixed parameters** (01 §5.7): left to the milestone that changes the workspace format (SI-170).
+
+## 4. Known CI margins (the M11 list)
+
+- **Retired (D-64):** `crates/executor/tests/c34_r1_contract.rs::sequential_wait_timeout_retains_job_identity` raced a
+  50 ms margin (500 ms budget) on the 3-core macOS runner (run 44592525640, `53a1014e`). The test now runs with a 5 s
+  budget (500 ms margin), `timeoutMs <= 4500` and a job that outlasts the wait on any runner; the margin is no longer an
+  M11 item.
