@@ -1044,7 +1044,20 @@ def undo_back_rows(t: Flows) -> list:
 
     for choice, button in (("undo", "Undo"), ("cancel", "Cancel"), ("enter", "Enter (default Cancel)")):
         async def flow(ctx, choice=choice, button=button):
-            t.click(f"activity.entry.{ctx['seq']}")
+            # The agent's entry selected (its aria-pressed reads true), clicked again if a click did not take (a wait
+            # for a state, D-45: the list can still be growing with this runner's own calls when the first click lands).
+            entry = json.dumps(f"activity.entry.{ctx['seq']}")
+            for _ in range(3):
+                t.click(f"activity.entry.{ctx['seq']}")
+                pressed = False
+                for _ in range(20):
+                    if t.cdp.js("document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')?.getAttribute('aria-pressed') === 'true'"
+                                % entry):
+                        pressed = True
+                        break
+                    await asyncio.sleep(0.1)
+                if pressed:
+                    break
             # The item is enabled once the panel has read the history after the entry was selected (a wait for a
             # state, D-45: a click before that hits a disabled item and asks nothing).
             for _ in range(100):

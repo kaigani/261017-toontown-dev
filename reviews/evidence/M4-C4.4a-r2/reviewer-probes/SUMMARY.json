@@ -1,0 +1,208 @@
+{
+ "command": "python tests/adversarial/c44a-r1-live.py <session> <step> (unchanged), one step at a time, REVIEW_RAW outside the repository; the reviewer evidence folder restored after each step",
+ "app": "target/release/toontown.exe built on fdd12421",
+ "steps": {
+  "l1b-5": {
+   "exit": 0,
+   "seconds": 18.1,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/step5.json"
+   ],
+   "failLines": []
+  },
+  "l1b-6": {
+   "exit": 0,
+   "seconds": 17.6,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/step6.json"
+   ],
+   "failLines": []
+  },
+  "l1b-7": {
+   "exit": 0,
+   "seconds": 437.2,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/step7.json"
+   ],
+   "failLines": []
+  },
+  "l1b-8": {
+   "exit": 0,
+   "seconds": 9.5,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/step8.json"
+   ],
+   "failLines": []
+  },
+  "l2a-1": {
+   "exit": 0,
+   "seconds": 18.3,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l2a-step1.json"
+   ],
+   "failLines": []
+  },
+  "l2a-2": {
+   "exit": 0,
+   "seconds": 54.8,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l2a-step2.json"
+   ],
+   "failLines": []
+  },
+  "l2a-3": {
+   "exit": 0,
+   "seconds": 8.0,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l2a-step3.json"
+   ],
+   "failLines": []
+  },
+  "l2a-4": {
+   "exit": 0,
+   "seconds": 91.2,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l2a-step4.json"
+   ],
+   "failLines": []
+  },
+  "l2b-5": {
+   "exit": 0,
+   "seconds": 24.6,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l2b-step5.json"
+   ],
+   "failLines": []
+  },
+  "l2b-6": {
+   "exit": 0,
+   "seconds": 48.4,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l2b-step6.json"
+   ],
+   "failLines": []
+  },
+  "l2b-7": {
+   "exit": 0,
+   "seconds": 8.8,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l2b-step7.json"
+   ],
+   "failLines": []
+  },
+  "l3a-1": {
+   "exit": 0,
+   "seconds": 74.7,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l3a-step1.json"
+   ],
+   "failLines": []
+  },
+  "l3a-2": {
+   "exit": 0,
+   "seconds": 31.2,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l3a-step2.json"
+   ],
+   "failLines": []
+  },
+  "l3a-3": {
+   "exit": 0,
+   "seconds": 27.5,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l3a-step3.json"
+   ],
+   "failLines": []
+  },
+  "l3a-4": {
+   "exit": 0,
+   "seconds": 8.5,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l3a-step4.json"
+   ],
+   "failLines": []
+  },
+  "l3b-5": {
+   "exit": 1,
+   "seconds": 23.6,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l3b-step5.json"
+   ],
+   "failLines": [
+    "FAIL token shown or copied in Preferences matches discovery"
+   ]
+  },
+  "l3b-6": {
+   "exit": 0,
+   "seconds": 34.3,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l3b-step6.json"
+   ],
+   "failLines": []
+  },
+  "l3b-7": {
+   "exit": 0,
+   "seconds": 21.2,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l3b-step7.json"
+   ],
+   "failLines": []
+  },
+  "l4a-1": {
+   "exit": 0,
+   "seconds": 16.7,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l4a-step1.json"
+   ],
+   "failLines": []
+  },
+  "l4a-2": {
+   "exit": 0,
+   "seconds": 21.3,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l4a-step2.json"
+   ],
+   "failLines": []
+  },
+  "l4a-3": {
+   "exit": 0,
+   "seconds": 16.1,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l4a-step3.json"
+   ],
+   "failLines": []
+  },
+  "l4a-4": {
+   "exit": 0,
+   "seconds": 17.2,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l4a-step4.json"
+   ],
+   "failLines": []
+  },
+  "l4a-5": {
+   "exit": 0,
+   "seconds": 18.4,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l4a-step5.json"
+   ],
+   "failLines": []
+  },
+  "l4b-6": {
+   "exit": 0,
+   "seconds": 23.2,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l4b-step6.json"
+   ],
+   "failLines": []
+  },
+  "l4b-7": {
+   "exit": 0,
+   "seconds": 45.8,
+   "evidence": [
+    "reviews/evidence/M4-C4.4a-r1-review/l4b-step7.json"
+   ],
+   "failLines": []
+  }
+ }
+}
