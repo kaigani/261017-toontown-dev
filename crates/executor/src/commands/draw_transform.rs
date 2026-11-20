@@ -1033,6 +1033,8 @@ pub(crate) fn draw_point_add(cx: &mut Cx, p: PointAddParams) -> Result<PointAddR
     anchors.insert(seg + 1, new);
     set_path(&mut v, &Path { anchors, closed: path.closed });
     let (changed, rev) = commit_stroke(cx, &did, &l, v)?;
+    // The point selection keeps naming the same anchors (design note 3 §3).
+    cx.app_mut().points_inserted(&format!("{}/{}", did.as_str(), l.id), (seg + 1) as u32);
     Ok(PointAddResult { stroke_id: l.id, anchor: (seg + 1) as u32, changed, rev })
 }
 
@@ -1429,6 +1431,10 @@ pub(crate) fn draw_point_delete(cx: &mut Cx, p: PointDeleteParams) -> Result<Con
     let removed: Vec<String> = removals.iter().map(|l| l.id.clone()).collect();
     ops.extend(removals.iter().map(|l| op("remove", &l.pointer, None)));
     cx.patch_entries(vec![(EntryKey::Drawing(t.id.clone()), ops)])?;
+    // The deleted anchors leave the point selection and the later ones move down (design note 3 §3).
+    for (sid, gone) in &by {
+        cx.app_mut().points_removed(&format!("{}/{sid}", t.id.as_str()), gone);
+    }
     let mut changed = Changed { modified_ids: modified, removed_ids: removed, ..Changed::default() };
     crate::planar::settled(cx, &doc, &t.id, &[])?.report(&mut changed);
     Ok(ContourResult { drawing_id: t.id.as_str().to_owned(), changed, rev: committed_rev(cx)? })

@@ -373,6 +373,31 @@ impl AppContext {
         self.point_drawings = prefixes(self.points.iter().map(|(k, _)| k.as_str()));
     }
 
+    /// An anchor was inserted at index `anchor` of the stroke `key` (`<drawingId>/<strokeId>`): the selected anchors of
+    /// that stroke at or after it move up by one, so the selection keeps naming the same anchors (C4.4b design note 3
+    /// §3).
+    pub(crate) fn points_inserted(&mut self, key: &str, anchor: u32) {
+        for (k, a) in &mut self.points {
+            if k == key && *a >= anchor {
+                *a += 1;
+            }
+        }
+    }
+
+    /// The anchors `removed` of the stroke `key` were deleted: they leave the selection and the stroke's later selected
+    /// anchors move down, so the selection never names the anchors that took the deleted ones' places (C4.4b design
+    /// note 3 §3).
+    pub(crate) fn points_removed(&mut self, key: &str, removed: &std::collections::BTreeSet<usize>) {
+        self.points.retain(|(k, a)| !(k == key && removed.contains(&(*a as usize))));
+        for (k, a) in &mut self.points {
+            if k == key {
+                let below = removed.iter().filter(|r| **r < *a as usize).count();
+                *a -= u32::try_from(below).unwrap_or(*a);
+            }
+        }
+        self.point_drawings = prefixes(self.points.iter().map(|(k, _)| k.as_str()));
+    }
+
     /// Whether the anchor selection holds anchors of `drawing` (one lookup).
     pub(crate) fn has_points_in(&self, drawing: &str) -> bool {
         self.point_drawings.contains(drawing)
