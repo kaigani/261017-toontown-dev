@@ -65,7 +65,7 @@ command_registry![
     ipc::gesture_abort,
     ipc::canvas_presence,
     ipc::agent_token,
-    ipc::token_shown,
+    ipc::token_hidden,
 ];
 
 #[cfg(feature = "m0-diagnostics")]
@@ -86,7 +86,7 @@ command_registry![
     ipc::gesture_abort,
     ipc::canvas_presence,
     ipc::agent_token,
-    ipc::token_shown,
+    ipc::token_hidden,
     diagnostics::bench_plan,
     diagnostics::bench_report,
     spikes::tablet::spike_mode,
@@ -280,7 +280,7 @@ mod tests {
                 "canvas_presence",
                 // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
                 "agent_token",
-                "token_shown"
+                "token_hidden"
             ]
         );
         for path in COMMANDS {
@@ -313,7 +313,7 @@ mod tests {
                 "canvas_presence",
                 // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
                 "agent_token",
-                "token_shown"
+                "token_hidden"
             ]
         );
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));

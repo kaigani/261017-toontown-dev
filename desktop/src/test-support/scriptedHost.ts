@@ -98,10 +98,20 @@ export interface ScriptedHost extends HostTransport {
   };
   /** Answers to `pick_path` (null: cancelled). */
   picked: string | null;
-  /** D-62 item 2: the agent token `agent_token` answers, whether `token_shown` allows a reveal, and its reports. */
+  /** D-62 item 2, D-65 item 2: the agent token `agent_token` delivers, each delivery numbered when the host handles the
+   *  call, as the desktop host does. While `capturing` nothing is delivered. With `holdToken` each answer is held in
+   *  transit until `releaseToken()` (the oldest first), so a test can order a late answer after other events. */
   token: string;
-  tokenAllowed: boolean;
-  readonly tokenReports: boolean[];
+  capturing: boolean;
+  holdToken: boolean;
+  /** Every delivery made, in order. */
+  readonly tokenDeliveries: number[];
+  /** The deliveries the window has not yet acknowledged hidden (`token_hidden`). */
+  readonly tokenOutstanding: Set<number>;
+  /** The `token_hidden` acknowledgements, in order. */
+  readonly tokenHiddenAcks: number[];
+  /** Answers the oldest held `agent_token` call; false when none is held. */
+  releaseToken(): boolean;
   readonly reports: Record<string, unknown>[];
   /** The exact JSON text of each `report_shell` call, as the host receives it. */
   readonly rawReports: string[];
@@ -115,6 +125,8 @@ const QUERY = /\.(get|list|status)$/;
 export function createScriptedHost(overrides: Record<string, Handler> = {}): ScriptedHost {
   const listeners = new Map<string, Set<(p: unknown) => void>>();
   let seq = 0;
+  let deliveries = 0;
+  const heldTokens: (() => void)[] = [];
   const host: ScriptedHost = {
     kind: 'mock',
     sent: [],
@@ -128,8 +140,17 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
         : { enabled: true },
     picked: null,
     token: '0123456789abcdef0123456789abcdef0123456789abcdef',
-    tokenAllowed: true,
-    tokenReports: [],
+    capturing: false,
+    holdToken: false,
+    tokenDeliveries: [],
+    tokenOutstanding: new Set<number>(),
+    tokenHiddenAcks: [],
+    releaseToken() {
+      const next = heldTokens.shift();
+      if (!next) return false;
+      next();
+      return true;
+    },
     handlers: {
       'app.state.get': () => ok(NO_PROJECT_STATE),
       'workspace.get': () => ok({ ...DEFAULT_LAYOUT, fullScreen: DEFAULT_LAYOUT }),
@@ -234,12 +255,24 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
         }
         case 'pick_path':
           return Promise.resolve({ path: host.picked });
-        // D-62 item 2: the agent token (a fixed test value) and the windows' reports of showing it.
-        case 'agent_token':
-          return Promise.resolve({ token: host.token });
-        case 'token_shown':
-          host.tokenReports.push(json['shown'] === true);
-          return Promise.resolve({ allowed: host.tokenAllowed });
+        // D-62 item 2, D-65 item 2: the agent token (a fixed test value), delivered numbered, and the window's
+        // acknowledgements of each delivery hidden.
+        case 'agent_token': {
+          if (host.capturing) return Promise.resolve({ token: null, delivery: null });
+          deliveries += 1;
+          const delivery = deliveries;
+          host.tokenDeliveries.push(delivery);
+          host.tokenOutstanding.add(delivery);
+          const answer = { token: host.token, delivery };
+          if (!host.holdToken) return Promise.resolve(answer);
+          return new Promise((resolve) => heldTokens.push(() => resolve(answer)));
+        }
+        case 'token_hidden': {
+          const delivery = Number(json['delivery']);
+          host.tokenHiddenAcks.push(delivery);
+          host.tokenOutstanding.delete(delivery);
+          return Promise.resolve({});
+        }
         case 'restart_engine':
           host.restarts += 1;
           host.generation += 1;

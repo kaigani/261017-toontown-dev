@@ -331,8 +331,9 @@ impl AttachedIo for WindowIo {
                 json!({ "width": pw, "height": ph, "maxInlinePixels": max_side }),
             ));
         }
-        // D-62 item 2: a capture never contains the agent token. A window showing it is asked to hide it, and the
-        // capture waits (bounded) for the mask to be painted; no window may start showing it until the capture ends.
+        // D-62 item 2, D-65 item 2: a capture never contains the agent token. The guard is granted only when every
+        // delivery of the token has been acknowledged hidden: the windows are asked to hide it, and the capture waits
+        // (bounded) for the acknowledgements; nothing is delivered until the capture ends.
         let host = self.host();
         let app = self.app.clone();
         let _hidden = host

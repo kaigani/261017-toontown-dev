@@ -221,11 +221,19 @@ def a3():
  m.Table.cmd=cmd
 
  chosen=[]
+ # D-65 item 3: the builder table's rows whose action is resolved only by their own setup (a pen, an option, a camera
+ # or a test session the setup creates); each is skipped by name, printed with its reason. Any other callable action
+ # is resolved before it is indexed (D-60 item 3b), and its failure is not hidden.
+ SETUP_DEPENDENT={"Pen panel \u203a select a pen","Pen panel \u203a tip shape","Tool options \u203a Select: rectangle rule",
+  "Tool options \u203a Brush: pen","Tool options \u203a Eraser: pen","Tool options \u203a Pencil: line thickness source",
+  "Tool options \u203a Paint: automatic gap closing","main toolbar \u203a camera list","Activity \u203a session policy",
+  "Activity \u203a session pause","Activity \u203a session resume"}
  async def row(t,r):
   action=r["action"]
   if callable(action):
-   try:action=action()
-   except (LookupError,TypeError):return
+   if r["name"] in SETUP_DEPENDENT:
+    print("skipped "+r["name"]+": its action is resolved by its own setup (D-65 item 3)",flush=True);return
+   action=action()
   wanted=action[0] in ("dom","select") and (action[1].startswith(("mainToolbar.","drawingTools.")) or action[1] in [v+x for v in ("drawingView","cameraView") for x in (".aid.grid",".aid.onionSkin",".symmetry",".type.camera",".type.drawing")])
   if not wanted:return
   prefix=action[1].split(".")[0]

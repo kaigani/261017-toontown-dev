@@ -492,25 +492,33 @@ pub fn canvas_presence(host: State<'_, Host>, window: tauri::Window, json: Strin
 /// presses Copy, held by the page only while it is shown. Not a registry command (no agent reaches the page's IPC);
 /// nothing here logs it.
 ///
+/// D-65 item 2: each answer is a numbered delivery, `{token, delivery}`, counted as possibly on screen until the window
+/// acknowledges it hidden (`token_hidden`); while a capture runs nothing is delivered and the answer is
+/// `{token: null, delivery: null}`.
+///
 /// # Errors
 /// The JSON text of `internal` when no token can be read or made.
 #[tauri::command]
-pub fn agent_token(host: State<'_, Host>) -> Result<Response, String> {
+pub fn agent_token(host: State<'_, Host>, window: tauri::Window) -> Result<Response, String> {
     let token = host.agent_token().map_err(internal)?;
-    respond(&json!({ "token": token }))
+    match host.reveals.deliver(window.label()) {
+        Some(delivery) => respond(&json!({ "token": token, "delivery": delivery })),
+        None => respond(&json!({ "token": null, "delivery": null })),
+    }
 }
 
-/// The window shows the agent token (`{shown: true}`, sent before it draws it) or has painted the mask
-/// (`{shown: false}`). Answers `{allowed}`: a window may not start showing it while a capture runs (D-62 item 2).
+/// The window acknowledges delivery `{delivery}` hidden (D-65 item 2): the mask painted over it, or the token never
+/// painted (a Copy, or an answer that came after the reveal was ended).
 ///
 /// # Errors
 /// The JSON text of `arg.invalid` for a malformed request.
 #[tauri::command]
-pub fn token_shown(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
+pub fn token_hidden(host: State<'_, Host>, window: tauri::Window, json: String) -> Result<Response, String> {
     let v: Value = parse(&json)?;
-    let shown = v.get("shown").and_then(Value::as_bool).ok_or_else(|| arg_invalid("/shown", "true or false"))?;
-    let allowed = host.reveals.report(window.label(), shown);
-    respond(&json!({ "allowed": allowed }))
+    let delivery =
+        v.get("delivery").and_then(Value::as_u64).ok_or_else(|| arg_invalid("/delivery", "a delivery number"))?;
+    host.reveals.hidden(window.label(), delivery);
+    respond(&json!({}))
 }
 
 /// The SI-120 refusal of a user gesture made on a replaced engine (ruling O-14, D-7b): nothing runs.

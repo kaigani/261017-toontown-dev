@@ -50,25 +50,39 @@ const MASK = '\u2022'.repeat(16);
  * - the field is masked by default; Show reveals it only while the person asks for it (until Hide, leaving the page,
  *   the window losing focus, a regenerated token, or a window capture);
  * - the window's UI tree always reports the field as `redacted` (`data-tt-value`), revealed or not;
- * - a window capture first asks the page to hide it (`token-hide`) and waits for the mask to be painted, and no reveal
- *   starts while a capture runs (`token_shown` answers whether it may);
- * - the token is fetched from the host (`agent_token`) only for a reveal or a Copy and held only while shown; it is
- *   never a registry command's answer, so neither the activity log, its export nor the event stream can carry it, and
- *   the page logs nothing.
+ * - the host is the authority, not the page (D-65 item 2): every answer of `agent_token` is a numbered delivery the
+ *   host counts as possibly on screen until the page acknowledges it hidden (`token_hidden`); a window capture is
+ *   granted only when no delivery is outstanding (it asks the page to hide the token, `token-hide`, and waits for the
+ *   acknowledgement), and while it runs `agent_token` delivers nothing;
+ * - in the page, one reveal is in flight at a time, and each reveal carries a generation: Hide, leaving the page, the
+ *   window losing focus or closing, a regenerated token and `token-hide` end the current generation, and an answer of
+ *   an ended generation is acknowledged hidden without being painted;
+ * - the token is fetched from the host only for a reveal or a Copy and held only while shown; it is never a registry
+ *   command's answer, so neither the activity log, its export nor the event stream can carry it, and the page logs
+ *   nothing.
  */
 function AgentToken({ services }: { services: ShellServices }) {
   const [shown, setShown] = useState<string | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const showing = useRef(false);
+  /** The reveal generation: an answer is painted only if no hide happened since it was asked for. */
+  const generation = useRef(0);
+  /** A reveal is waiting for the host's answer. */
+  const inFlight = useRef(false);
+  /** The delivery on screen now, if any. */
+  const painted = useRef<number | null>(null);
   const engine = services.engine;
-  /** Masks the field; the host hears of it once the mask is painted (two frames), so a capture waiting shows it. */
+  /** Ends the current reveal generation and masks the field; the host hears the painted delivery hidden once the mask
+   *  is painted (two frames), so a capture waiting for it never sees the token. */
   const hide = useCallback(() => {
-    showing.current = false;
+    generation.current += 1;
+    const delivery = painted.current;
+    if (delivery === null) return;
+    painted.current = null;
     setShown(null);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        void engine.tokenShown(false).catch(() => undefined);
+        void engine.tokenHidden(delivery).catch(() => undefined);
       });
     });
   }, [engine]);
@@ -76,63 +90,69 @@ function AgentToken({ services }: { services: ShellServices }) {
     let off: (() => void) | null = null;
     let offEvents: (() => void) | null = null;
     let stopped = false;
-    void engine
-      .onTokenHide(() => {
-        if (showing.current) hide();
-      })
-      .then((u) => {
-        if (stopped) u();
-        else off = u;
-      });
+    // A window capture is about to run.
+    void engine.onTokenHide(hide).then((u) => {
+      if (stopped) u();
+      else off = u;
+    });
     // A regenerated token: the shown one is stale.
     void engine
       .onEvent((e) => {
-        if (e.name === 'shell.agentToken' && showing.current) hide();
+        if (e.name === 'shell.agentToken') hide();
       })
       .then((u) => {
         if (stopped) u();
         else offEvents = u;
       });
-    const blur = () => {
-      if (showing.current) hide();
-    };
-    window.addEventListener('blur', blur);
+    window.addEventListener('blur', hide);
+    window.addEventListener('pagehide', hide);
     return () => {
       stopped = true;
       off?.();
       offEvents?.();
-      window.removeEventListener('blur', blur);
-      // Leaving the page (another category, the dialog closed): the field is gone with it.
-      if (showing.current) {
-        showing.current = false;
-        void engine.tokenShown(false).catch(() => undefined);
-      }
+      window.removeEventListener('blur', hide);
+      window.removeEventListener('pagehide', hide);
+      // Leaving the page (another category, the dialog closed): the field is gone with it, and an answer still in
+      // flight belongs to an ended generation.
+      generation.current += 1;
+      const delivery = painted.current;
+      painted.current = null;
+      if (delivery !== null) void engine.tokenHidden(delivery).catch(() => undefined);
     };
   }, [engine, hide]);
   const reveal = async () => {
+    if (inFlight.current || painted.current !== null) return;
     setProblem(null);
-    // The host hears of the reveal before the token is drawn; it refuses one while a window capture runs.
-    if (!(await engine.tokenShown(true))) {
-      setProblem('The token cannot be shown while the window is being captured. Try again.');
+    inFlight.current = true;
+    const asked = generation.current;
+    const answer = await engine.agentToken().finally(() => {
+      inFlight.current = false;
+    });
+    if (answer === null) {
+      setProblem('The token cannot be shown now (the window is being captured). Try again.');
       return;
     }
-    const token = await engine.agentToken();
-    if (token === null) {
-      setProblem('There is no agent token yet.');
-      void engine.tokenShown(false);
+    if (asked !== generation.current) {
+      // A late answer of an ended reveal: dropped without painting (C44A-R1-41).
+      void engine.tokenHidden(answer.delivery).catch(() => undefined);
       return;
     }
-    showing.current = true;
-    setShown(token);
+    painted.current = answer.delivery;
+    setShown(answer.token);
   };
   const copy = async () => {
     setProblem(null);
-    const token = await engine.agentToken();
-    if (token === null) {
-      setProblem('There is no agent token yet.');
+    const answer = await engine.agentToken();
+    if (answer === null) {
+      setProblem('The token cannot be copied now (the window is being captured). Try again.');
       return;
     }
-    await copyText(token);
+    // Copied to the OS clipboard, never painted: the delivery is acknowledged hidden at once.
+    try {
+      await copyText(answer.token);
+    } finally {
+      void engine.tokenHidden(answer.delivery).catch(() => undefined);
+    }
     setCopied(true);
   };
   return (
@@ -158,7 +178,7 @@ function AgentToken({ services }: { services: ShellServices }) {
         data-tt-id="agentAccess.token.show"
         data-tt-gui-only="disclose"
         onClick={() => {
-          if (shown !== null) hide();
+          if (painted.current !== null) hide();
           else void reveal();
         }}
       >

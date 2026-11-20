@@ -1,13 +1,15 @@
-//! Which windows show the agent token in Preferences › Agent access, and the window capture's guard (ruling D-62
-//! item 2, C44A-R1-41; design note 2 §2): no surface an agent can read ever contains the token.
+//! The agent token's deliveries to the windows, and the window capture's guard (ruling D-62 item 2, C44A-R1-41; D-65
+//! item 2; design note 2 §2): no surface an agent can read ever contains the token.
 //!
-//! The page reports `shown: true` before it draws the token and `shown: false` once the mask is painted. A capture
-//! (`inspect.screenshot`, whoever asked for it) first takes a [`CaptureGuard`]: while one is held no window may start
-//! showing the token (its report is refused and it keeps the mask), and the guard is granted only when no window shows
-//! it, after asking the windows that do to hide it (`token-hide`) and waiting, bounded, for their reports. So the
-//! capture never contains the revealed token: if a window does not hide it in time, the capture is refused.
+//! The host is the authority, not the page. Every answer of `agent_token` is a numbered delivery, counted as possibly
+//! on screen until the window acknowledges that delivery hidden (`token_hidden`: the mask painted, or the token never
+//! painted, as for Copy or an answer that came too late). A capture (`inspect.screenshot`, whoever asked for it) first
+//! takes a [`CaptureGuard`]: it is granted only when no delivery is outstanding, after asking the windows to hide what
+//! they show (`token-hide`) and waiting, bounded, for their acknowledgements; while a guard is held `agent_token`
+//! delivers nothing. So the capture never contains the token: if a delivery is still outstanding at the bound, the
+//! capture is refused.
 
-use std::collections::HashSet;
+use std::collections::HashMap;
 use std::sync::{Condvar, Mutex, MutexGuard, PoisonError};
 use std::time::{Duration, Instant};
 
@@ -16,20 +18,22 @@ pub const TOKEN_HIDE_EVENT: &str = "token-hide";
 
 #[derive(Debug, Default)]
 struct State {
-    /// Labels of the windows that show the token.
-    shown: HashSet<String>,
+    /// Deliveries not yet acknowledged hidden, with the window each went to.
+    outstanding: HashMap<u64, String>,
+    /// The last delivery's number.
+    next: u64,
     /// Captures in progress.
     capturing: usize,
 }
 
-/// The windows showing the token, and the captures in progress.
+/// The token's deliveries, and the captures in progress.
 #[derive(Debug, Default)]
 pub struct TokenReveals {
     state: Mutex<State>,
     changed: Condvar,
 }
 
-/// Held while a capture runs: no window starts showing the token until it is dropped.
+/// Held while a capture runs: no delivery is made until it is dropped.
 #[derive(Debug)]
 pub struct CaptureGuard<'a> {
     reveals: &'a TokenReveals,
@@ -47,53 +51,61 @@ impl TokenReveals {
         self.state.lock().unwrap_or_else(PoisonError::into_inner)
     }
 
-    /// Window `window` shows the token (`true`, reported before it draws it) or has painted the mask (`false`).
-    /// Answers whether the window may show it: never while a capture runs.
-    pub fn report(&self, window: &str, shown: bool) -> bool {
+    /// A delivery of the token to window `window`: its number, or `None` while a capture runs (nothing is delivered).
+    pub fn deliver(&self, window: &str) -> Option<u64> {
         let mut s = self.lock();
-        if shown {
-            if s.capturing > 0 {
-                return false;
-            }
-            s.shown.insert(window.to_owned());
-        } else {
-            s.shown.remove(window);
+        if s.capturing > 0 {
+            return None;
+        }
+        s.next += 1;
+        let id = s.next;
+        s.outstanding.insert(id, window.to_owned());
+        Some(id)
+    }
+
+    /// Window `window` acknowledges delivery `id` hidden (the mask painted, or the token never painted). A delivery of
+    /// another window, or an unknown one, is left as it is.
+    pub fn hidden(&self, window: &str, id: u64) {
+        let mut s = self.lock();
+        if s.outstanding.get(&id).is_some_and(|w| w == window) {
+            s.outstanding.remove(&id);
         }
         drop(s);
         self.changed.notify_all();
-        true
     }
 
-    /// A window that closed or reloaded shows nothing.
+    /// A window that closed or reloaded shows nothing: its deliveries are no longer outstanding.
     pub fn forget(&self, window: &str) {
-        self.report(window, false);
+        let mut s = self.lock();
+        s.outstanding.retain(|_, w| w != window);
+        drop(s);
+        self.changed.notify_all();
     }
 
-    /// Whether any window shows the token now.
+    /// Whether any delivery is outstanding now.
     #[must_use]
     pub fn any(&self) -> bool {
-        !self.lock().shown.is_empty()
+        !self.lock().outstanding.is_empty()
     }
 
-    /// Starts a capture. When a window shows the token, `ask_hide` asks the windows to hide it, and the call waits up to
-    /// `bound` for every one of them to report the mask painted. `None` (the capture is refused) when one still shows
-    /// it after `bound`.
+    /// Starts a capture: from now no delivery is made. When a delivery is outstanding, `ask_hide` asks the windows to
+    /// hide the token, and the call waits up to `bound` for every outstanding delivery to be acknowledged. `None` (the
+    /// capture is refused, and ended) when one is still outstanding after `bound`.
     pub fn begin_capture(&self, bound: Duration, ask_hide: impl FnOnce()) -> Option<CaptureGuard<'_>> {
         let mut s = self.lock();
         s.capturing += 1;
         let guard = CaptureGuard { reveals: self };
-        if s.shown.is_empty() {
+        if s.outstanding.is_empty() {
             return Some(guard);
         }
         drop(s);
         ask_hide();
         let deadline = Instant::now() + bound;
         let mut s = self.lock();
-        while !s.shown.is_empty() {
+        while !s.outstanding.is_empty() {
             let now = Instant::now();
             if now >= deadline {
                 drop(s);
-                // Dropping the guard ends the capture.
                 drop(guard);
                 return None;
             }
@@ -110,50 +122,58 @@ mod tests {
     use std::sync::Arc;
 
     #[test]
-    fn a_capture_with_nothing_shown_starts_at_once_and_blocks_a_reveal_while_it_runs() {
+    fn a_capture_with_nothing_delivered_starts_at_once_and_nothing_is_delivered_while_it_runs() {
         let r = TokenReveals::default();
         let mut asked = false;
         let guard = r.begin_capture(Duration::from_secs(1), || asked = true);
         assert!(guard.is_some());
         assert!(!asked, "no window to ask");
-        assert!(!r.report("prefs", true), "no reveal while a capture runs");
-        assert!(!r.any());
+        assert_eq!(r.deliver("prefs"), None, "no delivery while a capture runs");
         drop(guard);
-        assert!(r.report("prefs", true), "a reveal once the capture ended");
-        assert!(r.any());
+        assert!(r.deliver("prefs").is_some(), "a delivery once the capture ended");
     }
 
+    /// D-65 item 2, the reviewer's order (C44A-R1-41): Show twice before the first answer (two deliveries), the first
+    /// painted, Hide acknowledges it; a capture then begins. The second delivery is still outstanding, so the capture
+    /// is not granted until the window acknowledges it (a late answer of an old reveal, dropped without painting), and
+    /// while the capture runs nothing more is delivered.
     #[test]
-    fn a_shown_token_is_hidden_before_the_capture_starts() {
+    fn a_late_delivery_holds_the_capture_until_acknowledged() {
         let r = Arc::new(TokenReveals::default());
-        assert!(r.report("main", true));
+        let first = r.deliver("main").unwrap();
+        let second = r.deliver("main").unwrap();
+        r.hidden("main", first);
+        assert!(r.any(), "the second delivery is still possibly on screen");
+        // No acknowledgement within the bound: refused.
+        assert!(r.begin_capture(Duration::from_millis(20), || {}).is_none());
+        // The window drops the late answer and acknowledges it when asked.
         let page = r.clone();
-        // The window hides the token when asked, and reports the mask painted from its own thread.
         let guard = r.begin_capture(Duration::from_secs(5), move || {
             let page = page.clone();
-            std::thread::spawn(move || {
-                page.report("main", false);
-            });
+            std::thread::spawn(move || page.hidden("main", second));
         });
         assert!(guard.is_some());
+        assert_eq!(r.deliver("main"), None, "nothing delivered during the capture");
+    }
+
+    #[test]
+    fn an_acknowledgement_counts_only_for_its_own_window_and_delivery() {
+        let r = TokenReveals::default();
+        let d = r.deliver("main").unwrap();
+        r.hidden("float:x", d);
+        r.hidden("main", d + 1);
+        assert!(r.any());
+        r.hidden("main", d);
         assert!(!r.any());
     }
 
     #[test]
-    fn a_window_that_does_not_hide_the_token_refuses_the_capture() {
+    fn a_closed_window_has_nothing_outstanding() {
         let r = TokenReveals::default();
-        assert!(r.report("main", true));
-        assert!(r.begin_capture(Duration::from_millis(20), || {}).is_none());
-        // The refused capture ended: the window may report again, and a later capture may start once it hides.
-        assert!(r.report("main", false));
-        assert!(r.begin_capture(Duration::from_millis(20), || {}).is_some());
-    }
-
-    #[test]
-    fn a_closed_window_shows_nothing() {
-        let r = TokenReveals::default();
-        assert!(r.report("float:x", true));
+        r.deliver("float:x").unwrap();
+        r.deliver("float:x").unwrap();
         r.forget("float:x");
         assert!(!r.any());
+        assert!(r.begin_capture(Duration::from_millis(20), || {}).is_some());
     }
 }

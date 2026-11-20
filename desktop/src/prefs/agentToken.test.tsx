@@ -1,7 +1,10 @@
 // Preferences › Agent access shows the agent token (11 §4 lines 107-108; ruling D-62 item 2, C44A-R1-41). The
 // invariant: no surface an agent can read ever contains the token. Each surface is checked with the field revealed:
 // the window tree the host reports to `inspect_ui`, the capture handshake (`token-hide`), the console, and the
-// commands the page sends (none carries it, so the activity log and its export cannot).
+// commands the page sends (none carries it, so the activity log and its export cannot). D-65 item 2: every answer of
+// `agent_token` is a numbered delivery the host counts as possibly on screen until the page acknowledges it hidden
+// (`token_hidden`); the scripted host numbers them as the desktop host does and can hold an answer in transit, so the
+// reviewer's order (C44A-R1-41) is replayed with a late answer.
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -50,10 +53,10 @@ describe('the agent token in Preferences › Agent access', () => {
     const { h, dialog } = await agentPage();
     expect(field(dialog).value).not.toContain(h.token);
     expect(field(dialog).value).toMatch(/^•+$/);
-    expect(h.tokenReports).toEqual([]);
+    expect(h.tokenDeliveries).toEqual([]);
   });
 
-  it('Show reveals it after telling the host, and Hide masks it and reports the mask', async () => {
+  it('Show reveals one delivery, and Hide masks it and acknowledges that delivery hidden', async () => {
     const { h, dialog } = await agentPage();
     act(() => {
       fireEvent.click(button(dialog, 'Show'));
@@ -61,15 +64,17 @@ describe('the agent token in Preferences › Agent access', () => {
     await waitFor(() => {
       expect(field(dialog).value).toBe(h.token);
     });
-    expect(h.tokenReports).toEqual([true]);
+    expect(h.tokenDeliveries).toEqual([1]);
+    expect([...h.tokenOutstanding]).toEqual([1]);
     expect(button(dialog, 'Hide').getAttribute('aria-pressed')).toBe('true');
     act(() => {
       fireEvent.click(button(dialog, 'Hide'));
     });
     expect(field(dialog).value).not.toContain(h.token);
     await waitFor(() => {
-      expect(h.tokenReports).toEqual([true, false]);
+      expect(h.tokenHiddenAcks).toEqual([1]);
     });
+    expect(h.tokenOutstanding.size).toBe(0);
   });
 
   it('the window tree reports the field redacted while it is revealed', async () => {
@@ -88,7 +93,7 @@ describe('the agent token in Preferences › Agent access', () => {
     expect(h.rawReports.at(-1)).toContain('redacted');
   });
 
-  it('a window capture first has the mask painted (token-hide), and no reveal starts while one runs', async () => {
+  it('a window capture first has the mask painted (token-hide), and nothing is delivered while one runs', async () => {
     const { h, dialog } = await agentPage();
     act(() => {
       fireEvent.click(button(dialog, 'Show'));
@@ -101,15 +106,121 @@ describe('the agent token in Preferences › Agent access', () => {
     });
     expect(field(dialog).value).not.toContain(h.token);
     await waitFor(() => {
-      expect(h.tokenReports.at(-1)).toBe(false);
+      expect(h.tokenHiddenAcks).toEqual([1]);
     });
-    // While the host captures, a reveal is refused: the field stays masked and says why.
-    h.tokenAllowed = false;
+    expect(h.tokenOutstanding.size).toBe(0);
+    // While the host captures, `agent_token` delivers nothing: the field stays masked and says why.
+    h.capturing = true;
     act(() => {
       fireEvent.click(button(dialog, 'Show'));
     });
-    await within(dialog).findByText(/cannot be shown while the window is being captured/);
+    await within(dialog).findByText(/cannot be shown now \(the window is being captured\)/);
     expect(field(dialog).value).not.toContain(h.token);
+    expect(h.tokenDeliveries).toEqual([1]);
+  });
+
+  // D-65 item 2, the reviewer's order (reviews/M4-C4.4a-r2-static.md, C44A-R1-41): Show twice before the answer,
+  // the answer painted, Hide, then a capture. The second Show is not a second reveal (one reveal in flight), so after
+  // Hide nothing is outstanding and the capture finds no delivery that could paint during it.
+  it('the reviewer order: a second Show while one is in flight is no second delivery', async () => {
+    const { h, dialog } = await agentPage((s) => {
+      s.holdToken = true;
+    });
+    act(() => {
+      fireEvent.click(button(dialog, 'Show'));
+    });
+    act(() => {
+      fireEvent.click(button(dialog, 'Show'));
+    });
+    await waitFor(() => {
+      expect(h.tokenDeliveries).toEqual([1]);
+    });
+    await act(async () => {
+      expect(h.releaseToken()).toBe(true);
+      await Promise.resolve();
+    });
+    await waitFor(() => {
+      expect(field(dialog).value).toBe(h.token);
+    });
+    expect(h.releaseToken()).toBe(false);
+    act(() => {
+      fireEvent.click(button(dialog, 'Hide'));
+    });
+    await waitFor(() => {
+      expect(h.tokenHiddenAcks).toEqual([1]);
+    });
+    // The capture would be granted now: nothing is outstanding, and nothing is in flight to paint during it.
+    expect(h.tokenOutstanding.size).toBe(0);
+    expect(field(dialog).value).not.toContain(h.token);
+    expect(h.tokenDeliveries).toEqual([1]);
+  });
+
+  // The same order with the answer arriving late: each event that ends a reveal (the capture's token-hide, the window
+  // losing focus or closing, a regenerated token) ends its generation, and the answer then arriving is acknowledged
+  // hidden without ever being painted, so the host's capture guard is granted only after it.
+  const enders: [string, (h: ScriptedHost) => void][] = [
+    ['a capture (token-hide)', (h) => h.emit('token-hide', null)],
+    ['the window losing focus', () => window.dispatchEvent(new Event('blur'))],
+    ['the window closing', () => window.dispatchEvent(new Event('pagehide'))],
+    ['a regenerated token', (h) => h.event('shell.agentToken', {})],
+  ];
+  for (const [what, end] of enders) {
+    it(`a late answer after ${what} is acknowledged hidden and never painted`, async () => {
+      const { h, dialog } = await agentPage((s) => {
+        s.holdToken = true;
+      });
+      act(() => {
+        fireEvent.click(button(dialog, 'Show'));
+      });
+      await waitFor(() => {
+        expect(h.tokenDeliveries).toEqual([1]);
+      });
+      // The delivery is outstanding while its answer is in transit: a capture now would wait for it.
+      expect([...h.tokenOutstanding]).toEqual([1]);
+      act(() => {
+        end(h);
+      });
+      const seen: string[] = [];
+      const watch = new MutationObserver(() => {
+        seen.push(field(dialog).value);
+      });
+      watch.observe(dialog, { subtree: true, attributes: true, childList: true, characterData: true });
+      await act(async () => {
+        expect(h.releaseToken()).toBe(true);
+        await Promise.resolve();
+      });
+      await waitFor(() => {
+        expect(h.tokenHiddenAcks).toEqual([1]);
+      });
+      watch.disconnect();
+      expect(h.tokenOutstanding.size).toBe(0);
+      expect(field(dialog).value).not.toContain(h.token);
+      expect(seen.some((v) => v.includes(h.token))).toBe(false);
+      expect(button(dialog, 'Show').getAttribute('aria-pressed')).toBe('false');
+    });
+  }
+
+  it('a late answer after leaving the page is acknowledged hidden', async () => {
+    const { h, dialog } = await agentPage((s) => {
+      s.holdToken = true;
+    });
+    act(() => {
+      fireEvent.click(button(dialog, 'Show'));
+    });
+    await waitFor(() => {
+      expect(h.tokenDeliveries).toEqual([1]);
+    });
+    act(() => {
+      fireEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
+    });
+    await act(async () => {
+      expect(h.releaseToken()).toBe(true);
+      await Promise.resolve();
+    });
+    await waitFor(() => {
+      expect(h.tokenHiddenAcks).toEqual([1]);
+    });
+    expect(h.tokenOutstanding.size).toBe(0);
   });
 
   it('Copy puts the token on the clipboard and nowhere else', async () => {
@@ -121,7 +232,11 @@ describe('the agent token in Preferences › Agent access', () => {
       expect(writeText).toHaveBeenCalledWith(h.token);
     });
     expect(field(dialog).value).not.toContain(h.token);
-    expect(h.tokenReports).toEqual([]);
+    // Never painted: the delivery is acknowledged hidden once copied.
+    await waitFor(() => {
+      expect(h.tokenHiddenAcks).toEqual([1]);
+    });
+    expect(h.tokenOutstanding.size).toBe(0);
   });
 
   it('nothing the page sends or logs carries the token, revealed or copied', async () => {
@@ -148,7 +263,7 @@ describe('the agent token in Preferences › Agent access', () => {
     expect(JSON.stringify(logged).includes(h.token)).toBe(false);
   });
 
-  it('leaving the page masks it and tells the host', async () => {
+  it('leaving the page masks it and acknowledges the delivery hidden', async () => {
     const { h, dialog } = await agentPage();
     act(() => {
       fireEvent.click(button(dialog, 'Show'));
@@ -160,7 +275,8 @@ describe('the agent token in Preferences › Agent access', () => {
       fireEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
     });
     await waitFor(() => {
-      expect(h.tokenReports.at(-1)).toBe(false);
+      expect(h.tokenHiddenAcks).toEqual([1]);
     });
+    expect(h.tokenOutstanding.size).toBe(0);
   });
 });

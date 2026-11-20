@@ -95,6 +95,12 @@ export interface Running {
   readonly done: Promise<Envelope>;
 }
 
+/** One delivery of the agent token to this window (D-65 item 2). */
+export interface TokenDelivery {
+  token: string;
+  delivery: number;
+}
+
 export interface EngineApi {
   run(command: string, params?: Record<string, unknown>, options?: RunOptions): Running;
   cancel(token: string): Promise<void>;
@@ -139,12 +145,13 @@ export interface EngineApi {
   ): Promise<void>;
   /** Agent gestures the host routes to this window (`agent-input`; design note 2 §6). */
   onAgentInput(handler: (input: AgentInput) => void): Promise<Unlisten>;
-  /** `agent_token` (D-62 item 2): the agent token, for Preferences › Agent access to show to the person or copy; never
-   *  a registry command, so no agent reaches it. `null` when the host has none. */
-  agentToken(): Promise<string | null>;
-  /** `token_shown` (D-62 item 2): this window shows the token (`true`, before drawing it) or painted the mask
-   *  (`false`). Answers whether it may show it now (never while a window capture runs). */
-  tokenShown(shown: boolean): Promise<boolean>;
+  /** `agent_token` (D-62 item 2, D-65 item 2): a numbered delivery of the agent token, for Preferences › Agent access
+   *  to show to the person or copy; never a registry command, so no agent reaches it. The host counts the delivery as
+   *  possibly on screen until `tokenHidden(delivery)`. `null` when nothing was delivered (a window capture runs). */
+  agentToken(): Promise<TokenDelivery | null>;
+  /** `token_hidden` (D-65 item 2): this window acknowledges `delivery` hidden: the mask painted over it, or the token
+   *  never painted (a Copy, or an answer that came after its reveal ended). */
+  tokenHidden(delivery: number): Promise<void>;
   /** `token-hide`: a window capture is about to run; a shown token must be masked now. */
   onTokenHide(handler: () => void): Promise<Unlisten>;
 }
@@ -319,12 +326,13 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     },
     async agentToken() {
       const v = decode(await invoke('agent_token', {}));
-      const token = typeof v === 'object' && v !== null ? (v as Record<string, unknown>)['token'] : null;
-      return typeof token === 'string' ? token : null;
+      const o = typeof v === 'object' && v !== null ? (v as Record<string, unknown>) : {};
+      const token = o['token'];
+      const delivery = o['delivery'];
+      return typeof token === 'string' && typeof delivery === 'number' ? { token, delivery } : null;
     },
-    async tokenShown(shown) {
-      const v = decode(await invoke('token_shown', { shown }));
-      return typeof v === 'object' && v !== null && (v as Record<string, unknown>)['allowed'] === true;
+    async tokenHidden(delivery) {
+      decode(await invoke('token_hidden', { delivery }));
     },
     onTokenHide(handler) {
       return transport.listen('token-hide', () => {

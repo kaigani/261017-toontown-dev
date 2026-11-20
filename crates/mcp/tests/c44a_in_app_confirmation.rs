@@ -188,3 +188,42 @@ fn two_held_calls_of_one_session_are_both_shown_at_once() {
     drop(h);
     std::fs::remove_dir_all(dir).unwrap();
 }
+
+/// Ruling D-65 item 1 (C44A-R1-60): a held call never waits on the session's request path. With four calls held (every
+/// waiting thread taken) a fifth confirmable call is refused at once with the job waits' limit error, its confirmation
+/// retired (the app shows four requests, not five), and a read that follows is answered at once.
+#[test]
+fn a_fifth_held_call_is_refused_and_the_request_path_stays_free() {
+    let (dir, h, mut c) = held_fixture("Held five");
+    let mut held = Vec::new();
+    for i in 0..4 {
+        held.push(c.send("tools/call", export_call(&dir.join(format!("held-{i}.jsonl")))));
+        assert_eq!(until_shown(&h, i + 1).len(), i + 1, "request {i} shown");
+    }
+    let fifth = c.send("tools/call", export_call(&dir.join("fifth.jsonl")));
+    let m = c.wait(fifth, Duration::from_secs(5)).expect("the fifth call is answered at once");
+    let env = &m["result"]["structuredContent"];
+    assert_eq!(env["error"]["code"], "limit.exceeded", "{m}");
+    assert_eq!(env["error"]["details"]["limit"], "concurrentJobWaits", "{m}");
+    let read = c.send("tools/call", json!({ "name": "get_state", "arguments": {} }));
+    let answered = c.wait(read, Duration::from_secs(5));
+    assert!(answered.is_some_and(|m| m.get("error").is_none()), "the read is answered while four calls are held");
+    assert_eq!(shown(&h).len(), 4, "the refused call's confirmation is not shown");
+    for id in shown(&h) {
+        respond(&h, &id, false);
+    }
+    let deadline = Instant::now() + Duration::from_secs(20);
+    let mut answered = 0;
+    while answered < 4 && Instant::now() < deadline {
+        if let Some(m) = c.next(Duration::from_millis(500))
+            && m.get("method").is_none()
+            && m.get("id").and_then(Value::as_u64).is_some_and(|id| held.contains(&id))
+        {
+            answered += 1;
+        }
+    }
+    assert_eq!(answered, 4, "each held call receives its decision");
+    c.close().unwrap();
+    drop(h);
+    std::fs::remove_dir_all(dir).unwrap();
+}

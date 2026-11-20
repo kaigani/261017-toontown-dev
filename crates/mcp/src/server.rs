@@ -1068,45 +1068,52 @@ fn call_tool(
                 })
                 .flatten();
             if let Some(token) = token {
-                if asked_in_app(shared, &origin, &token) {
-                    // Ruling D-58 (R-a): the person at the window answers; the call is held until the answer, the
-                    // token's expiry or a document change (11 §6.3 step 2, "instead"), then settled with the token, so
-                    // the agent receives the outcome: the command's result, `confirmation.declined` or
-                    // `confirmation.expired`. A request cancelled meanwhile does nothing.
-                    // D-63 item 1 (C44A-R1-60): the held call waits on its own thread, so the session's other calls go
-                    // on (reads are answered, a second confirmable call joins the sheet's queue at once). When every
-                    // waiting thread is taken, it waits here, as before.
-                    if take_slot(&shared.waits, MAX_JOB_WAITS) {
-                        let held = Held {
-                            rid: rid.clone(),
-                            inv: inv.clone(),
-                            token: token.clone(),
-                            origin: origin.clone(),
-                            tool: name.to_owned(),
-                            command: id.clone(),
-                            params: params.clone(),
-                            first: env.clone(),
-                            cached,
-                            started,
-                        };
-                        lock(&shared.deferred).insert(rid.to_string());
-                        let s = shared.clone();
-                        let slots = shared.waits.clone();
-                        let spawned = std::thread::Builder::new().name("mcp-wait".into()).spawn(move || {
-                            finish_held(&s, held);
-                            slots.fetch_sub(1, Ordering::AcqRel);
-                        });
-                        if spawned.is_ok() {
-                            return ToolOutcome::Deferred;
-                        }
-                        lock(&shared.deferred).remove(&rid.to_string());
-                        shared.waits.fetch_sub(1, Ordering::AcqRel);
+                // Ruling D-58 (R-a): the person at the window answers; the call is held until the answer, the token's
+                // expiry or a document change (11 §6.3 step 2, "instead"), then settled with the token, so the agent
+                // receives the outcome: the command's result, `confirmation.declined` or `confirmation.expired`. A
+                // request cancelled meanwhile does nothing.
+                // D-63 item 1 (C44A-R1-60): the held call waits on its own thread, so the session's other calls go on
+                // (reads are answered, a second confirmable call joins the sheet's queue at once).
+                // D-65 item 1: a held call never waits on the session's request path. With every waiting thread taken
+                // it is refused at once with the job waits' limit error (11 §6.5), and its confirmation is retired
+                // without being shown to the app, so the sheet never shows a request nobody waits on.
+                let in_app = in_app_applies(shared, &origin);
+                let slot = in_app && take_slot(&shared.waits, MAX_JOB_WAITS);
+                let marked = slot && shared.handle.hold_in_app(&token).unwrap_or(false);
+                if slot && !marked {
+                    shared.waits.fetch_sub(1, Ordering::AcqRel);
+                }
+                if marked {
+                    let held = Held {
+                        rid: rid.clone(),
+                        inv: inv.clone(),
+                        token: token.clone(),
+                        origin: origin.clone(),
+                        tool: name.to_owned(),
+                        command: id.clone(),
+                        params: params.clone(),
+                        first: env.clone(),
+                        cached,
+                        started,
+                    };
+                    lock(&shared.deferred).insert(rid.to_string());
+                    let s = shared.clone();
+                    let slots = shared.waits.clone();
+                    let spawned = std::thread::Builder::new().name("mcp-wait".into()).spawn(move || {
+                        finish_held(&s, held);
+                        slots.fetch_sub(1, Ordering::AcqRel);
+                    });
+                    if spawned.is_ok() {
+                        return ToolOutcome::Deferred;
                     }
-                    if held_until_answered(shared, &token, rid) && shared.begin_effect(rid) {
-                        let mut again = inv;
-                        again.options.confirm_token = Some(token);
-                        (env, cached) = shared.handle.invoke_served_until(again, &|| shared.is_cancelled(rid));
-                    }
+                    // No thread could start: the request was marked, so retiring it also takes it off the sheet.
+                    lock(&shared.deferred).remove(&rid.to_string());
+                    shared.waits.fetch_sub(1, Ordering::AcqRel);
+                    env = refuse_unheld(shared, &token);
+                    cached = false;
+                } else if in_app && !slot {
+                    env = refuse_unheld(shared, &token);
+                    cached = false;
                 } else if let Some(accepted) = elicit(shared, &env, rid)
                     // A request cancelled before acting on the answer does nothing: the token stays pending, unused.
                     && shared.begin_effect(rid)
@@ -1403,12 +1410,28 @@ fn project_state(mut env: Envelope, args: &Map<String, Value>) -> Envelope {
 }
 
 /// Ruling D-58 (R-a): attached, a window present and the session's `askInApp` on, a confirmation goes to the app only
-/// (no elicitation): the request is marked in-app, which makes its token unusable before the person accepts.
-fn asked_in_app(shared: &Shared, origin: &Origin, token: &str) -> bool {
+/// (no elicitation). The caller then marks the request in-app (`hold_in_app`), which makes its token unusable before
+/// the person accepts, once a waiting thread is free for the held call (D-65 item 1).
+fn in_app_applies(shared: &Shared, origin: &Origin) -> bool {
     let Origin::Agent { session, .. } = origin else { return false };
-    shared.handle.attached()
-        && shared.handle.agent_status(session).is_ok_and(|s| s.limits.ask_in_app)
-        && shared.handle.hold_in_app(token).unwrap_or(false)
+    shared.handle.attached() && shared.handle.agent_status(session).is_ok_and(|s| s.limits.ask_in_app)
+}
+
+/// D-65 item 1: an in-app confirmation with no waiting thread for its held call. The confirmation is retired (declined,
+/// so its token can never be used and the sheet never shows it) and the call is refused at once with the job waits'
+/// limit error (11 §6.5): nothing was run.
+fn refuse_unheld(shared: &Shared, token: &str) -> Envelope {
+    let _ = shared
+        .handle
+        .invoke(Invocation::user("agent.confirmation.respond", json!({ "confirmationId": token, "accept": false })));
+    envelope_error(
+        "limit.exceeded",
+        format!(
+            "this session already waits on {MAX_JOB_WAITS} held confirmations or jobs at once; this call was not run"
+        ),
+        json!({ "limit": "concurrentJobWaits", "value": MAX_JOB_WAITS }),
+        Some("wait for an earlier held call or job to end, then call again"),
+    )
 }
 
 /// A call held for an in-app confirmation, finished on its own `mcp-wait` thread (D-63 item 1).

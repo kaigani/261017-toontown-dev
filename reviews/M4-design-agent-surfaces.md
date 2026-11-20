@@ -96,19 +96,34 @@ Facts from the code at `93cf2ea9`:
     `disclose`.
   - **Copy** writes it to the system clipboard (`copyText`, reason `clipboard`) without showing it.
   - **The window tree** (`inspect_ui`) always reports the field's value as `redacted` (`data-tt-value`), revealed or not.
-  - **Window captures: the reveal is cleared before the capture.** The page reports `token_shown {shown: true}` before
-    it draws the token and `{shown: false}` once the mask is painted (two frames later). Every capture
-    (`inspect.screenshot`, whoever asked) first takes the host's capture guard (`desktop/src-tauri/src/token_reveal.rs`):
-    while a capture runs no window may start a reveal (the page is told so and keeps the mask), and the guard is
-    granted only when no window shows the token. A window that shows it is asked to hide it (`token-hide`), and the
-    capture waits, bounded by the capture's budget and 2 s, for its report; if the report does not come, nothing is
-    captured and the call is refused (`render.failed`, `reason: "tokenShown"`).
+  - **Window captures: the host is the authority, not the page (ruling D-65 item 2, C44A-R1-41).** Every answer of
+    `agent_token` is a numbered delivery, `{token, delivery}`, which the host (`desktop/src-tauri/src/token_reveal.rs`)
+    counts as possibly on screen until the window acknowledges that delivery hidden (`token_hidden {delivery}`: once
+    the mask is painted, two frames after Hide; at once after a Copy, which never paints it; at once for an answer that
+    came too late to be painted). A window that closes or reloads has nothing outstanding. Every capture
+    (`inspect.screenshot`, whoever asked) first takes the host's capture guard, granted only when no delivery is
+    outstanding: the windows are asked to hide the token (`token-hide`), and the capture waits, bounded by the
+    capture's budget and 2 s, for the acknowledgements; if one does not come, nothing is captured and the call is
+    refused (`render.failed`, `reason: "tokenShown"`). While a guard is held `agent_token` delivers nothing
+    (`{token: null, delivery: null}`; the page keeps the mask and says why).
+  - **In the page,** one reveal is in flight at a time (a second Show before the answer does nothing), and each reveal
+    carries a generation. Hide, leaving the page, the window losing focus (`blur`) or closing (`pagehide`), a
+    regenerated token and `token-hide` end the current generation; an answer of an ended generation is acknowledged
+    hidden without being painted. The round 2 static review's order (two Shows before the answer, the first painted,
+    Hide, a capture, the second answer painting during it) therefore has no second delivery, and a late answer of any
+    reveal holds the capture until it is acknowledged, never painted.
   - **Logs and the activity export.** The token never passes through the kernel's command layer, so the activity log,
     its export and the event stream cannot contain it; the page logs nothing, and the host's `agent_token` writes no log
     line.
-  - **Tests.** `agentToken.test.tsx` (masked by default, Show and Hide with their reports, the reported window tree
-    redacted while revealed, `token-hide` masking it, no reveal during a capture, Copy to the clipboard only, nothing
-    sent or logged carrying it, leaving the page); `token_reveal.rs` (the capture guard); the D-39 rows "token Copy"
+  - **Tests.** `agentToken.test.tsx` (masked by default, Show and Hide with their deliveries and acknowledgements, the
+    reported window tree redacted while revealed, `token-hide` masking it, nothing delivered during a capture, Copy to
+    the clipboard only and acknowledged, nothing sent or logged carrying it, leaving the page; D-65: the reviewer's order
+    with the answer held in transit, a second Show no second delivery, and a late answer after a capture's
+    `token-hide`, blur, `pagehide`, a regenerated token or leaving the page acknowledged and never painted, watched with
+    a mutation observer); `token_reveal.rs` (the reviewer's order at the host: two deliveries, the first acknowledged,
+    the capture refused at its bound and granted only once the second is acknowledged, nothing delivered during it; an
+    acknowledgement counts only for its own window and delivery; a closed window has nothing outstanding); the D-39 rows
+    "token Copy"
     (the clipboard read back and compared with the discovery file by hash) and "token Show" (an agent's `inspect_ui`,
     screenshot and activity export while it is shown, and the application's log: none carries it, and the field's
     pixels in the capture equal the masked field's).
@@ -181,10 +196,17 @@ receives the user's decision". Proposal:
    "1 of 2" for A, B, A). Now a held call finishes on its own `mcp-wait` thread (`finish_held`: the wait, the re-invoke
    with the token, the activity entry, the answer, the release), and the call thread goes on at once. The held calls
    share the four `mcp-wait` slots with `job_wait` (both wait on the caller's side), so a session keeps O-20's bound of
-   20 threads; a fifth held call at once waits on the call thread, as before. Tests:
-   `c44a_in_app_confirmation.rs` (a read answered while a call is held; two held calls of one session both shown before
-   either is answered, each with its own outcome); the D-44 row "Confirmation sheet › three queued" with sessions A, B, A
-   showing "1 of 3" and a read of B answered while the requests are open.
+   20 threads.
+
+   **As built after ruling D-65 item 1.** A held call never runs on the request path. When no waiting slot is free,
+   the call is refused at once with the limit error the job waits already use (11 §6.5: `limit.exceeded`, details
+   `{limit: "concurrentJobWaits", value: 4}`, nothing run), and its pending confirmation is retired before the app is
+   asked (declined through `agent.confirmation.respond`, so its token can never be used and the sheet never shows a
+   request nobody waits on); the request path stays free. Tests: `c44a_in_app_confirmation.rs` (a read answered while
+   a call is held; two held calls of one session both shown before either is answered, each with its own outcome; four
+   held calls, a fifth refused with `limit.exceeded` within 5 s, then a read answered within 5 s, the sheet showing
+   four); the D-44 row "Confirmation sheet › three queued" with sessions A, B, A showing "1 of 3" and a read of B
+   answered while the requests are open.
 3. **A token of an in-app request is usable only after an accept** (kernel gap 3). `take` refuses it while the decision
    is open (`confirmation.expired` with reason "waiting for the user's answer in the app"). Today an agent that reads the
    token from the `needs_confirmation` result can retry and bypass the person. The fix and a kernel test that fails
