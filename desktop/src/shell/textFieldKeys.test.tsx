@@ -38,9 +38,24 @@ const EDITING: readonly (Press & { command: string })[] = [
   { name: 'copy', seq: 'Primary+C', key: 'c', code: 'KeyC', ctrlKey: true, command: 'edit.copy' },
   { name: 'paste', seq: 'Primary+V', key: 'v', code: 'KeyV', ctrlKey: true, command: 'edit.paste' },
   { name: 'undo', seq: 'Primary+Z', key: 'z', code: 'KeyZ', ctrlKey: true, command: 'edit.undo' },
-  { name: 'redo', seq: 'Primary+Shift+Z', key: 'Z', code: 'KeyZ', ctrlKey: true, shiftKey: true, command: 'edit.redo' },
+  {
+    name: 'redo',
+    seq: 'Primary+Shift+Z',
+    key: 'Z',
+    code: 'KeyZ',
+    ctrlKey: true,
+    shiftKey: true,
+    command: 'edit.redo',
+  },
   { name: 'redo (Y)', seq: 'Primary+Y', key: 'y', code: 'KeyY', ctrlKey: true, command: 'edit.redo' },
-  { name: 'word left', seq: 'Primary+Left', key: 'ArrowLeft', code: 'ArrowLeft', ctrlKey: true, command: 'playback.previousKey' },
+  {
+    name: 'word left',
+    seq: 'Primary+Left',
+    key: 'ArrowLeft',
+    code: 'ArrowLeft',
+    ctrlKey: true,
+    command: 'playback.previousKey',
+  },
   {
     name: 'select word right',
     seq: 'Primary+Shift+Right',
@@ -50,15 +65,43 @@ const EDITING: readonly (Press & { command: string })[] = [
     shiftKey: true,
     command: 'playback.nextKey',
   },
-  { name: 'text start', seq: 'Primary+Home', key: 'Home', code: 'Home', ctrlKey: true, command: 'playback.first' },
-  { name: 'delete word', seq: 'Primary+Backspace', key: 'Backspace', code: 'Backspace', ctrlKey: true, command: 'edit.deleteBack' },
+  {
+    name: 'text start',
+    seq: 'Primary+Home',
+    key: 'Home',
+    code: 'Home',
+    ctrlKey: true,
+    command: 'playback.first',
+  },
+  {
+    name: 'delete word',
+    seq: 'Primary+Backspace',
+    key: 'Backspace',
+    code: 'Backspace',
+    ctrlKey: true,
+    command: 'edit.deleteBack',
+  },
   { name: 'Home', seq: 'Home', key: 'Home', code: 'Home', command: 'playback.start' },
   { name: 'End', seq: 'End', key: 'End', code: 'End', command: 'playback.end' },
-  { name: 'select to line end', seq: 'Shift+End', key: 'End', code: 'End', shiftKey: true, command: 'view.fit' },
+  {
+    name: 'select to line end',
+    seq: 'Shift+End',
+    key: 'End',
+    code: 'End',
+    shiftKey: true,
+    command: 'view.fit',
+  },
   { name: 'Delete', seq: 'Delete', key: 'Delete', code: 'Delete', command: 'edit.delete' },
   { name: 'Backspace', seq: 'Backspace', key: 'Backspace', code: 'Backspace', command: 'edit.delete' },
   { name: 'a tool letter', seq: 'B', key: 'b', code: 'KeyB', command: 'tool.active.set' },
-  { name: 'a capital tool letter', seq: 'Shift+B', key: 'B', code: 'KeyB', shiftKey: true, command: 'tool.active.set' },
+  {
+    name: 'a capital tool letter',
+    seq: 'Shift+B',
+    key: 'B',
+    code: 'KeyB',
+    shiftKey: true,
+    command: 'tool.active.set',
+  },
   { name: 'a digit', seq: '1', key: '1', code: 'Digit1', command: 'view.zoom.set' },
   { name: 'Space', seq: 'Space', key: ' ', code: 'Space', command: 'playback.toggle' },
 ];
@@ -74,7 +117,14 @@ const SAVE: Press & { command: string } = {
 
 const OPEN = {
   ...NO_PROJECT_STATE,
-  project: { id: 'pr_1', name: 'Walk', path: '/p/Walk.animpkg', dirty: true, globalLibraryDirty: false, readOnly: false },
+  project: {
+    id: 'pr_1',
+    name: 'Walk',
+    path: '/p/Walk.animpkg',
+    dirty: true,
+    globalLibraryDirty: false,
+    readOnly: false,
+  },
   scene: { id: 'sc_1', name: 'Scene 1', frameCount: 24 },
   frame: 1,
   mode: 'staging',
@@ -89,7 +139,14 @@ async function app(): Promise<ScriptedHost> {
       ok(all.map((k) => ({ commandId: k.command, keys: k.seq, context: 'global', isDefault: true }))),
   });
   for (const k of all)
-    h.keys[k.seq] = { outcome: 'command', keys: k.seq, commandId: k.command, params: {}, enabled: true, dialog: false };
+    h.keys[k.seq] = {
+      outcome: 'command',
+      keys: k.seq,
+      commandId: k.command,
+      params: {},
+      enabled: true,
+      dialog: false,
+    };
   render(
     <HostProvider api={createHostApi(h)}>
       <App />
@@ -150,7 +207,10 @@ describe('fieldOwnsKey', () => {
     e.type = 'text';
     return e;
   };
-  const ev = (key: string, mods: { altKey?: boolean; ctrlKey?: boolean; metaKey?: boolean; altGraph?: boolean } = {}) => ({
+  const ev = (
+    key: string,
+    mods: { altKey?: boolean; ctrlKey?: boolean; metaKey?: boolean; altGraph?: boolean } = {},
+  ) => ({
     key,
     altKey: mods.altKey ?? false,
     ctrlKey: mods.ctrlKey ?? false,
@@ -159,7 +219,8 @@ describe('fieldOwnsKey', () => {
   });
 
   it('gives a text field every text-editing key on Windows and Linux, and keeps Save for the keymap', () => {
-    for (const k of EDITING) expect([k.seq, fieldOwnsKey(input(), k.seq, ev(k.key), false)]).toEqual([k.seq, true]);
+    for (const k of EDITING)
+      expect([k.seq, fieldOwnsKey(input(), k.seq, ev(k.key), false)]).toEqual([k.seq, true]);
     expect(fieldOwnsKey(input(), 'Primary+S', ev('s'), false)).toBe(false);
     expect(fieldOwnsKey(input(), 'Primary+Shift+S', ev('S'), false)).toBe(false);
     expect(fieldOwnsKey(input(), 'Primary+O', ev('o'), false)).toBe(false);
@@ -187,7 +248,9 @@ describe('fieldOwnsKey', () => {
   });
 
   it('gives a text field a character typed with AltGr, or with Option on macOS', () => {
-    expect(fieldOwnsKey(input(), 'Primary+Alt+A', ev('ą', { ctrlKey: true, altKey: true, altGraph: true }), false)).toBe(true);
+    expect(
+      fieldOwnsKey(input(), 'Primary+Alt+A', ev('ą', { ctrlKey: true, altKey: true, altGraph: true }), false),
+    ).toBe(true);
     expect(fieldOwnsKey(input(), 'Alt+E', ev('´', { altKey: true }), true)).toBe(true);
     // Alt with a letter on Windows is not a typed character: the menu's access keys and the keymap keep it.
     expect(fieldOwnsKey(input(), 'Alt+F', ev('f', { altKey: true }), false)).toBe(false);
@@ -216,7 +279,11 @@ describe('the key dispatcher leaves the text-editing keys to the focused field (
         const before = h.actions().length;
         const kept = press(field, k);
         await settle();
-        expect([field.getAttribute('aria-label'), k.name, kept]).toEqual([field.getAttribute('aria-label'), k.name, true]);
+        expect([field.getAttribute('aria-label'), k.name, kept]).toEqual([
+          field.getAttribute('aria-label'),
+          k.name,
+          true,
+        ]);
         expect([field.getAttribute('aria-label'), k.name, h.actions().slice(before)]).toEqual([
           field.getAttribute('aria-label'),
           k.name,
@@ -241,8 +308,8 @@ describe('the key dispatcher leaves the text-editing keys to the focused field (
     for (const field of rendered) {
       for (const k of EDITING) {
         const before = h.actions().length;
-        expect([field.dataset.ttId ?? field.outerHTML.slice(0, 60), k.name, press(field, k)]).toEqual([
-          field.dataset.ttId ?? field.outerHTML.slice(0, 60),
+        expect([field.dataset['ttId'] ?? field.outerHTML.slice(0, 60), k.name, press(field, k)]).toEqual([
+          field.dataset['ttId'] ?? field.outerHTML.slice(0, 60),
           k.name,
           true,
         ]);

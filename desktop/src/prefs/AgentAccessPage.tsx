@@ -54,7 +54,7 @@ const MASK = '\u2022'.repeat(16);
  *   host counts as possibly on screen until the page acknowledges it hidden (`token_hidden`); a window capture is
  *   granted only when no delivery is outstanding (it asks the page to hide the token, `token-hide`, and waits for the
  *   acknowledgement), and while it runs `agent_token` delivers nothing;
- * - in the page, one reveal is in flight at a time, and each reveal carries a generation: Hide, leaving the page, the
+ * - in the page, one reveal in flight at a time (Show disabled), each with a generation: Hide, leaving the page, the
  *   window losing focus or closing, a regenerated token and `token-hide` end the current generation, and an answer of
  *   an ended generation is acknowledged hidden without being painted;
  * - the token is fetched from the host only for a reveal or a Copy and held only while shown; it is never a registry
@@ -69,6 +69,8 @@ function AgentToken({ services }: { services: ShellServices }) {
   const generation = useRef(0);
   /** A reveal is waiting for the host's answer. */
   const inFlight = useRef(false);
+  /** The same, for the Show button: disabled while a reveal is in flight (D-67, C44A-R1-41). */
+  const [pending, setPending] = useState(false);
   /** The delivery on screen now, if any. */
   const painted = useRef<number | null>(null);
   const engine = services.engine;
@@ -124,9 +126,11 @@ function AgentToken({ services }: { services: ShellServices }) {
     if (inFlight.current || painted.current !== null) return;
     setProblem(null);
     inFlight.current = true;
+    setPending(true);
     const asked = generation.current;
     const answer = await engine.agentToken().finally(() => {
       inFlight.current = false;
+      setPending(false);
     });
     if (answer === null) {
       setProblem('The token cannot be shown now (the window is being captured). Try again.');
@@ -174,6 +178,8 @@ function AgentToken({ services }: { services: ShellServices }) {
       <button
         type="button"
         aria-pressed={shown !== null}
+        // One reveal in flight at a time: a second press cannot start another (D-67).
+        disabled={pending}
         data-tt-role="button"
         data-tt-id="agentAccess.token.show"
         data-tt-gui-only="disclose"

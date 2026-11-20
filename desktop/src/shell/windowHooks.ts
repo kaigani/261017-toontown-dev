@@ -160,7 +160,9 @@ export function useShortcuts(
       if (seq === 'Shift+F10') {
         e.preventDefault();
         const at = e.target instanceof Element ? e.target : document.activeElement;
-        at?.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 0, clientY: 0 }));
+        at?.dispatchEvent(
+          new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 0, clientY: 0 }),
+        );
         return;
       }
       const bound = keymap.some((b) => b.keys === seq);

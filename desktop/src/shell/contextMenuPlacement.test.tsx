@@ -179,7 +179,17 @@ function layOut(menu: HTMLElement, visible: number, natural = 1034) {
     return natural;
   });
   const rect = (t: number, h: number) =>
-    ({ x: 0, y: t, left: 0, top: t, right: 200, bottom: t + h, width: 200, height: h, toJSON: () => ({}) }) as DOMRect;
+    ({
+      x: 0,
+      y: t,
+      left: 0,
+      top: t,
+      right: 200,
+      bottom: t + h,
+      width: 200,
+      height: h,
+      toJSON: () => ({}),
+    }) as DOMRect;
   vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(function (this: Element) {
     if (this === list) return rect(LIST_TOP, clientHeight());
     const i = items.indexOf(this as HTMLElement);

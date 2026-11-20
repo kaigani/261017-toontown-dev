@@ -135,6 +135,8 @@ describe('the agent token in Preferences › Agent access', () => {
     await waitFor(() => {
       expect(h.tokenDeliveries).toEqual([1]);
     });
+    // D-67: Show is disabled while the reveal is in flight.
+    expect(button(dialog, 'Show').hasAttribute('disabled')).toBe(true);
     await act(async () => {
       expect(h.releaseToken()).toBe(true);
       await Promise.resolve();
@@ -142,6 +144,7 @@ describe('the agent token in Preferences › Agent access', () => {
     await waitFor(() => {
       expect(field(dialog).value).toBe(h.token);
     });
+    expect(button(dialog, 'Hide').hasAttribute('disabled')).toBe(false);
     expect(h.releaseToken()).toBe(false);
     act(() => {
       fireEvent.click(button(dialog, 'Hide'));
@@ -159,10 +162,20 @@ describe('the agent token in Preferences › Agent access', () => {
   // losing focus or closing, a regenerated token) ends its generation, and the answer then arriving is acknowledged
   // hidden without ever being painted, so the host's capture guard is granted only after it.
   const enders: [string, (h: ScriptedHost) => void][] = [
-    ['a capture (token-hide)', (h) => h.emit('token-hide', null)],
+    [
+      'a capture (token-hide)',
+      (h) => {
+        h.emit('token-hide', null);
+      },
+    ],
     ['the window losing focus', () => window.dispatchEvent(new Event('blur'))],
     ['the window closing', () => window.dispatchEvent(new Event('pagehide'))],
-    ['a regenerated token', (h) => h.event('shell.agentToken', {})],
+    [
+      'a regenerated token',
+      (h) => {
+        h.event('shell.agentToken', {});
+      },
+    ],
   ];
   for (const [what, end] of enders) {
     it(`a late answer after ${what} is acknowledged hidden and never painted`, async () => {

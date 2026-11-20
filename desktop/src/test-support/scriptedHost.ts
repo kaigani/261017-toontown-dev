@@ -265,7 +265,11 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
           host.tokenOutstanding.add(delivery);
           const answer = { token: host.token, delivery };
           if (!host.holdToken) return Promise.resolve(answer);
-          return new Promise((resolve) => heldTokens.push(() => resolve(answer)));
+          return new Promise((resolve) =>
+            heldTokens.push(() => {
+              resolve(answer);
+            }),
+          );
         }
         case 'token_hidden': {
           const delivery = Number(json['delivery']);
