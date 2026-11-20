@@ -22,6 +22,13 @@ context menus. The Preferences dialog's Agent access category is with the other 
 - **Keyboard reach.** Every control is reachable with Tab and Shift+Tab in reading order, operable with Space or Enter,
   arrows in lists and sliders (Page Up and Down for coarse steps), Escape leaves an edit unchanged. Each panel's manual
   script (`reviews/manual/M4/C4.4a-keyboard.md`) walks it with the keyboard only.
+- **One text-field key rule (ruling D-73 item 2, C44A-R4-02).** Which keys a focused text-entry element owns is one
+  rule, its data in one file, `desktop/src/keys/text-field-keys.json`, read by the page's dispatcher (`fieldOwnsKey`,
+  `textFieldOwnsSequence`) and by the kernel's key resolution (`keymap.rs` `text_field_owns`, behind `resolve_key`, which
+  the window's `dispatch_key` and the agents' `key` tool share; it had suspended F11 in a text field on its own). The
+  modal guard comes first in both and is unchanged. A shared corpus in the same file is checked by a Rust test and a
+  Vitest; the resolution query test asks F11 (its binding), F5 and Shift+F5 (not suspended), Shift+F10 and Primary+A
+  (the field's) with a text field focused.
 - **A text field keeps its editing keys (ruling D-66 item 2, C44A-R2-01; 01 §8.4).** With the focus in any text-entry
   element (the numeric field, a text input, a text area, an inline rename, anything editable), the platform's
   text-editing keys belong to the field and never reach the keymap: select all, cut, copy, paste, undo and redo of the

@@ -226,6 +226,18 @@ receives the user's decision". Proposal:
    held calls, a fifth refused with `limit.exceeded` within 5 s, then a read answered within 5 s, the sheet showing
    four, the pending list holding only the four, the refused export having written nothing); the D-44 row "Confirmation sheet › three queued" with sessions A, B, A showing "1 of 3" and a read of B
    answered while the requests are open.
+
+   **The roots wait (rulings D-68 item 4, D-72 item 2, D-73 item 1).** The server asks the client for its roots after
+   `notifications/initialized` (and after `roots/list_changed`). A call whose arguments carry a string the file layer
+   takes as an absolute path (`fsx::absolute`, the root `/` included) and that arrives while that request is unanswered
+   waits for the answer, bounded by the executor's budget and at most 2 s, then goes on with the roots granted by then
+   (a client that never answers gets `fs.outsideRoots`, as before). The wait is never on the session's request path: the
+   reader gives such a call one of the session's four waiting threads, the same `MAX_JOB_WAITS` slots as `job_wait` and
+   held calls, so at most four calls of a session wait at once (for roots, a job or a person's answer together) and
+   O-20's bound of 20 threads per session holds; a call that finds every waiting thread taken does not wait. The
+   session's other calls are answered meanwhile. Tests: `crates/mcp/tests/c44a_roots_wait.rs` (an answer 600 ms late:
+   the call succeeds; never answered: refused at the bound; a read: no wait; a read sent 50 ms after a waiting call is
+   answered at once, the waiting call after it).
 3. **A token of an in-app request is usable only after an accept** (kernel gap 3). `take` refuses it while the decision
    is open (`confirmation.expired` with reason "waiting for the user's answer in the app"). Today an agent that reads the
    token from the `needs_confirmation` result can retry and bypass the person. The fix and a kernel test that fails
