@@ -1,0 +1,33 @@
+{
+  "after": null,
+  "commands": [
+    {
+      "command": "anim.camera.list",
+      "params": {}
+    },
+    {
+      "command": "anim.camera.current.get",
+      "params": {}
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    },
+    {
+      "command": "ui.statusBar.get",
+      "params": {}
+    },
+    {
+      "command": "window.panel.list",
+      "params": {}
+    },
+    {
+      "command": "workspace.get",
+      "params": {}
+    },
+    {
+      "command": "workspace.list",
+      "params": {}
+    }
+  ]
+}

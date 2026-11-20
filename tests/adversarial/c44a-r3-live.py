@@ -158,7 +158,8 @@ async def body(t,step):
      elif trigger=='ok':fastclick('preferences.submit')
      elif trigger=='cancel':fastclick('preferences.cancel')
      else:d.u32.keybd_event(0x1B,0,0,0);d.u32.keybd_event(0x1B,0,2,0)
-     actionAt=time.perf_counter();await asyncio.sleep((i%17)/1000)
+     actionAt=time.perf_counter()
+     while time.perf_counter()-actionAt<(i%16)/1000:pass
      # Even when the DOM no longer contains the field, audit its just-measured old pixels.
      requestedDelayMs=(time.perf_counter()-actionAt)*1000
      a=await call(q,'inspect.screenshot',{'target':'window'});data=png(a)
@@ -379,7 +380,7 @@ if __name__=='__main__' and sys.argv[1] in ('n2a','n2b'):
  for pattern in patterns:
   for source in r1.OUT.glob(pattern):
    data=source.read_bytes();assert len(data)<=200000
-   (r1.EVID/(case+'-'+str(logical)+'-'+source.name)).write_bytes(data)
+   (r1.EVID/(case+'-'+str(logical)+'-'+source.name)).write_text(data.decode('utf-8').replace('\r\n','\n'),encoding='utf-8',newline='\n')
  sys.exit(result)
 
 if __name__=='__main__':
