@@ -92,6 +92,9 @@ async def matrix(t,step):
     check(bool(status) and (code in str(status) or any(w in str(status).lower() for w in ('locked','hidden'))),name+' person told '+code,status)
    else:check(before!=after and bool(history),name+' D-80 Drawing view edits',{'history':history,'status':status})
    t.run.save(name.replace(' ','-')+'.json',{'before':before,'after':after,'history':history,'canvas':canvas,'status':status,'commands':commands})
+   if step==2 and view=='cameraView' and tool=='select':
+    await c('draw.selection.set',{'by':'ids','ids':[]});await gesture(view,[(-80,-60),(-80,-60)]);picked=await c('draw.selection.get');check(not picked.get('selectedIds'),'D-80 Camera pick locked content refused',picked)
+
 
 
  if step==3:
