@@ -1,0 +1,3669 @@
+{
+  "checks": 230,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView-delete-one command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-one undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-one D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-one direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-one undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-several command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-several undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-several D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-several direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-several undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-all command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-all undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-all D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-all direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-all undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-closed command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-closed undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-closed D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-closed direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-closed undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-two command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-two undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-two D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-two direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-delete-two undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-0.5-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-0.5-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-0.5-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-1-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-1-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-1-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-anchor-2-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-handle-2-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-radius-segment-2-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-one command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-one undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-one D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-one direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-one undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-several command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-several undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-several D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-several direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-several undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-all command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-all undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-all D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-all direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-all undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-closed command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-closed undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-closed D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-closed direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-closed undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-two command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-two undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-two D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-two direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-delete-two undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-0.5-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-0.5-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-0.5-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-1-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-1-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-1-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-anchor-2-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-handle-2-False direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-True direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-False selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-radius-segment-2-False direct undo labels",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-delete-all",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8008Q8HVWT0PM78463F",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [],
+      "beforeSha256": "00e01e6c19ddf11a1be329d86350340b3a43b2234251a78bf4e55250307240e1",
+      "afterSha256": "e5fd398bd76183c99add9d8eedfe167dac01aac94a7f7c62c4346118022a19ac"
+    },
+    {
+      "name": "cameraView-delete-closed",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN803BS0JCBJ25AA6FHN0"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -4.0,
+          "width": 133.1875,
+          "height": 25.32050807568877
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN802TTCZ9GY45YNKC6YB",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN803BS0JCBJ25AA6FHN0",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8002S72PFY5QG9HVNXV",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801EEZVC344NVGVNY0J",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN802Y3GDSZDTV0TD592W",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN803CNC7855K0H11J2JG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN804MCNCF7D4FMDP1V91",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN805T35NJ2JEM43XHSBJ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN806PYHG35YAEJ8PJD43",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN807D2NZBNRJJVVJ5HBM",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN808ECZKGKDTEPTZNSEZ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN809B5Z9TEQCFY4MD5JX",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80AR6KEVS0NXSVM7C1R",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80BKE9SK9DDFKAXYE4M",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80CW74RCZZ6WY6AHG2D",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80DQWMT5FCSMEPZTR1W",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80E8D7B77J4SK917XHG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80FNRV2C7GRTT9CJ08S",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80GYX2GGSSZC1TP3P35",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80HYVSGZSAB2WXY9WWQ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80J43QYJM19ZN0G37R8",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80KMRCSA9QBZQV86JD4",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80M0G9DMDHNCW8PFYGB",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80NXGN803AP98NDTV11",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80P2ZXHQE71NS7FTK5R",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80QZV6PMQ4KTDTE2RCA",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80RE2CH2W4AW1WEPG21",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80SD7C2FCWPRSJY3PW3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80TYFK573X91AYDWP4V",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80V7PAT03RJ7B67GPAQ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80W0Q8PE87RC5DZ82Y0",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80X6DCG810B3BTEYXZ7",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80YE1DYB4AJX5ZWV3VG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80ZPX18DZYAMY9QNKM8",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8105VWDA6726W47WFZ5",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8113YBX1ZV68EKCKHSS",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN812B37BADS031V3WCDR",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8138X7JMH9KNP4D34S2",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN803BS0JCBJ25AA6FHN0",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "6f102e854714d53a0a7d93be0ac227d847008eb26df1247fbf108cff04da8489",
+      "afterSha256": "73f4cdfc01a02cb9f9710c81f50021a594cdf2a7dbf649360e766f84d4065691"
+    },
+    {
+      "name": "cameraView-delete-one",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800QNASA0113WF8TTH3"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.660254037844386,
+          "width": 168.0,
+          "height": 25.32050807568877
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800QNASA0113WF8TTH3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800QNASA0113WF8TTH3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
+      "beforeSha256": "6ba970103b2fbbb52c0b29ea8370e6109114c7c67e75144bcf9c59b629630a47",
+      "afterSha256": "dd982aad2c37d830628abd2491916df683895e83504b51ae4f5a60614a2342a2"
+    },
+    {
+      "name": "cameraView-delete-several",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8005DNH86VY0Y604QBT",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [],
+      "beforeSha256": "797027a86dbb3178071384383ae813f5c58ba0e4e178302e4ab43fca9e061004",
+      "afterSha256": "692a8f67ee05c6b0a0e092558afd5ab63ea422e02c55f2c29505c2b5cf2777f0"
+    },
+    {
+      "name": "cameraView-delete-two",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800H2C8EP127NTCZNY4",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
+      "geometryAfter": [],
+      "beforeSha256": "16388c5c9e7cf0ab5ca000cfaf31dba5769d567b265647a1f9a297c216858417",
+      "afterSha256": "22aac2939168c7c108736050edb7c5bdfec8609a8a8880d12815e2a1554b0c0a"
+    },
+    {
+      "name": "cameraView-radius-anchor-0.5-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800A4QHPP6DZJGYW5ET",
+            "rect": {
+              "x": -88.84765625,
+              "y": 0.625,
+              "width": 15,
+              "height": 15
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800VFCRB43J95AP8K53"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800VFCRB43J95AP8K53",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800VFCRB43J95AP8K53",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "83935926f459eb22e4ea8b73f8490add488e11ed3bbe745d4a0c8f56a8d8109a",
+      "afterSha256": "83935926f459eb22e4ea8b73f8490add488e11ed3bbe745d4a0c8f56a8d8109a"
+    },
+    {
+      "name": "cameraView-radius-anchor-0.5-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800SZZS15M373ER6432",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800672QFCX93ZC1GZ6H",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 15,
+              "y": 15
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800672QFCX93ZC1GZ6H"
+        ],
+        "bounds": {
+          "x": -69.0,
+          "y": -12.160534609054897,
+          "width": 153.0,
+          "height": 43.99686075709378
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800672QFCX93ZC1GZ6H",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800672QFCX93ZC1GZ6H",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "fb581d3150a332e4736b4219ef809b6852db72dfa8f99b76eebbd4a316293b7a",
+      "afterSha256": "9c32bd83da8f08f27a297ddcdeec22aef8de49a7ce8eb931e62c4650ff1b29e3"
+    },
+    {
+      "name": "cameraView-radius-anchor-1-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800ET2KCKR90ET5Z0A3",
+            "rect": {
+              "x": -84.423828125,
+              "y": 0.3125,
+              "width": 7.5,
+              "height": 7.5
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800YD3E9N5GCZVMS02N"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800YD3E9N5GCZVMS02N",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800YD3E9N5GCZVMS02N",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "4cf81d046c0b37f4f3fb8598b261977bf61a0576c167b583981acb0f0872008a",
+      "afterSha256": "4cf81d046c0b37f4f3fb8598b261977bf61a0576c167b583981acb0f0872008a"
+    },
+    {
+      "name": "cameraView-radius-anchor-1-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN8004H5SB8719V3FG0EQ",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800Z209J8KMTXVSTH5V",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 7.5,
+              "y": 7.5
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800Z209J8KMTXVSTH5V"
+        ],
+        "bounds": {
+          "x": -76.5,
+          "y": -12.160534609054897,
+          "width": 160.5,
+          "height": 38.44790858612526
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800Z209J8KMTXVSTH5V",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800Z209J8KMTXVSTH5V",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "24533148210bbb6091ad5b95c5bc0d04b051b0ae89804599d7518ac31cca2d8f",
+      "afterSha256": "3361bd2b2162d2cb0a1b95b78f82ea964ae5e3a91ed8bb7467d3dcb9a69bbc7e"
+    },
+    {
+      "name": "cameraView-radius-anchor-2-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8004SQG488ESTYQTX5G",
+            "rect": {
+              "x": -82.2119140625,
+              "y": 0.15625,
+              "width": 3.75,
+              "height": 3.75
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800DGJP3Q84G25TM82V"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800DGJP3Q84G25TM82V",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800DGJP3Q84G25TM82V",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "89800b2bd2533efdf58e6c503d28eb615a92f1a68b71209acbb6cf57cf556c94",
+      "afterSha256": "89800b2bd2533efdf58e6c503d28eb615a92f1a68b71209acbb6cf57cf556c94"
+    },
+    {
+      "name": "cameraView-radius-anchor-2-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800H1QEMVCSDA0NVJ7J",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN8004GC10PSQ35W7KVS5",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 3.75,
+              "y": 3.75
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8004GC10PSQ35W7KVS5"
+        ],
+        "bounds": {
+          "x": -80.25,
+          "y": -12.160534609054897,
+          "width": 164.25,
+          "height": 35.88019900231125
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8004GC10PSQ35W7KVS5",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8004GC10PSQ35W7KVS5",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "1a842974c7a5076663f3f82c112616eab02b1991cf2854f817213d897a4f024a",
+      "afterSha256": "ce543621221cdf65f8d05f1423e2aaba5a042de231beafeb15a2530c858d17b9"
+    },
+    {
+      "name": "cameraView-radius-handle-0.5-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800QZZXV0DSW0E76YN8",
+            "rect": {
+              "x": 24.90234375,
+              "y": 41.875,
+              "width": 15,
+              "height": 15
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800H02Y9ENGCN7WSM7D"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800H02Y9ENGCN7WSM7D",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800H02Y9ENGCN7WSM7D",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "8e4c591c1a40a50b90522208ed4e1107f301c25a995d70f2f8e378558839f19b",
+      "afterSha256": "8e4c591c1a40a50b90522208ed4e1107f301c25a995d70f2f8e378558839f19b"
+    },
+    {
+      "name": "cameraView-radius-handle-0.5-True",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN80086KPS1YRPDN1RKNF",
+            "strokeId": "st_01K7JJN80033T0YPNDHS6EC5J1",
+            "anchor": 1,
+            "handleMode": "symmetric",
+            "outHandle": {
+              "x": 40,
+              "y": 50
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN80033T0YPNDHS6EC5J1"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -20.875,
+          "width": 168.0,
+          "height": 41.75
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN80033T0YPNDHS6EC5J1",
+            "anchor": 1
+          }
+        ]
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80033T0YPNDHS6EC5J1",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80033T0YPNDHS6EC5J1",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "4dd86db3ad3ea900a9720df10af3c0be3e7ba05c62de41ea48f0a8ae26a5857b",
+      "afterSha256": "6c6f41c229d62560a839ced5679768319974dccd4b7a5fa1a932876624343b0e"
+    },
+    {
+      "name": "cameraView-radius-handle-1-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8006T0T0BMC4V4KAMHF",
+            "rect": {
+              "x": 24.951171875,
+              "y": 38.4375,
+              "width": 7.5,
+              "height": 7.5
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800RN6JXFS88P3E0XKX"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800RN6JXFS88P3E0XKX",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800RN6JXFS88P3E0XKX",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "f6fb2735728a7f1917c81236d862184f2f34c47b1b09fd79ad5f111096df0acd",
+      "afterSha256": "f6fb2735728a7f1917c81236d862184f2f34c47b1b09fd79ad5f111096df0acd"
+    },
+    {
+      "name": "cameraView-radius-handle-1-True",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN80086EN7RF43WJ35FNY",
+            "strokeId": "st_01K7JJN800G847G1H226XY6XVG",
+            "anchor": 1,
+            "handleMode": "symmetric",
+            "outHandle": {
+              "x": 32.5,
+              "y": 42.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800G847G1H226XY6XVG"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -17.735072755511908,
+          "width": 168.0,
+          "height": 35.470145511023816
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800G847G1H226XY6XVG",
+            "anchor": 1
+          }
+        ]
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800G847G1H226XY6XVG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800G847G1H226XY6XVG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "d073cb2f66a7995c544702d3e63e46363bd9a9d2a13fa993f403cf2fc6d63a2c",
+      "afterSha256": "3afa42deab9a86208ef736c860faf5c9c6c82e9c938b8aa3897690fe817902f9"
+    },
+    {
+      "name": "cameraView-radius-handle-2-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8004SV4AK7DYS05WJWE",
+            "rect": {
+              "x": 24.9755859375,
+              "y": 36.71875,
+              "width": 3.75,
+              "height": 3.75
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN80080DQTH755A9QJ8N5"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80080DQTH755A9QJ8N5",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80080DQTH755A9QJ8N5",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "af958c6ad62e8418285f97a49f1ba5f86fb7df2d45f3832242166bf8b598243a",
+      "afterSha256": "af958c6ad62e8418285f97a49f1ba5f86fb7df2d45f3832242166bf8b598243a"
+    },
+    {
+      "name": "cameraView-radius-handle-2-True",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800GRV36ZEH8J588MD5",
+            "strokeId": "st_01K7JJN800ZM8Q689QGD38QNY3",
+            "anchor": 1,
+            "handleMode": "symmetric",
+            "outHandle": {
+              "x": 28.75,
+              "y": 38.75
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800ZM8Q689QGD38QNY3"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -16.187248825935,
+          "width": 168.0,
+          "height": 32.37449765187
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800ZM8Q689QGD38QNY3",
+            "anchor": 1
+          }
+        ]
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800ZM8Q689QGD38QNY3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800ZM8Q689QGD38QNY3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "10dc9f12b8afe76013506c7b1c5570c37832b1b83f304a475f1aae0546899793",
+      "afterSha256": "3151497894fb80dfdc6fa91c38d250550bcd13a4bc28f504750757fc5106c0cd"
+    },
+    {
+      "name": "cameraView-radius-segment-0.5-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800EESP3XD2J8TP2CC1",
+            "rect": {
+              "x": -41.34765625,
+              "y": 23.125,
+              "width": 15,
+              "height": 15
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800V6CE3XRHZX1T22AV"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800V6CE3XRHZX1T22AV",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800V6CE3XRHZX1T22AV",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "4803f3c03b79faf8ff9f70da83a48cc206995e272b472d811eaab08ba5ee3d1e",
+      "afterSha256": "4803f3c03b79faf8ff9f70da83a48cc206995e272b472d811eaab08ba5ee3d1e"
+    },
+    {
+      "name": "cameraView-radius-segment-0.5-True",
+      "commands": [
+        {
+          "commandId": "draw.segment.move",
+          "params": {
+            "drawingId": "dr_01K7JJN8003EXG5WR062D1145G",
+            "strokeId": "st_01K7JJN80066T7D4J3X2JNK74C",
+            "segment": 0,
+            "t": 0.5004086415283382,
+            "delta": {
+              "x": 15,
+              "y": 15
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN80066T7D4J3X2JNK74C"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 48.279971586852774
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80066T7D4J3X2JNK74C",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80066T7D4J3X2JNK74C",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "74dd8a0d2f2752573766e942e23eb3392a9fd4c2c646c077e8e4a7e752cc0a04",
+      "afterSha256": "5458e3b4ef467593f68f542c9ea3e6d45a288b7d0d9c6f79ec09c20a424f3bb4"
+    },
+    {
+      "name": "cameraView-radius-segment-1-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800YMGKNDS957D4YVW2",
+            "rect": {
+              "x": -41.923828125,
+              "y": 19.6875,
+              "width": 7.5,
+              "height": 7.5
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800798CSGTE6D4D28ED"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800798CSGTE6D4D28ED",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800798CSGTE6D4D28ED",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "2b16176a44b8c48f401cb28da3d4da646581c9023e7e0d585097e4a02ab18019",
+      "afterSha256": "2b16176a44b8c48f401cb28da3d4da646581c9023e7e0d585097e4a02ab18019"
+    },
+    {
+      "name": "cameraView-radius-segment-1-True",
+      "commands": [
+        {
+          "commandId": "draw.segment.move",
+          "params": {
+            "drawingId": "dr_01K7JJN8003DDWM8FKNVPKGFMB",
+            "strokeId": "st_01K7JJN800M9CTNWFR8Q4Y092P",
+            "segment": 0,
+            "t": 0.4963272749446048,
+            "delta": {
+              "x": 7.5,
+              "y": 7.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800M9CTNWFR8Q4Y092P"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 40.8522923267766
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800M9CTNWFR8Q4Y092P",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800M9CTNWFR8Q4Y092P",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "f0f3fdafbb40266a737aa7948be9484dd113067c482143fa4db398f8add3a27b",
+      "afterSha256": "97f70d859e83c4147748abe933481635b1c22851f90e4d24de4650fb021bc142"
+    },
+    {
+      "name": "cameraView-radius-segment-2-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800VN8A6FXQ3VBGDNRX",
+            "rect": {
+              "x": -41.8994140625,
+              "y": 18.28125,
+              "width": 3.75,
+              "height": 3.75
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800J4MTEFFQF6NMFBZG"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800J4MTEFFQF6NMFBZG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800J4MTEFFQF6NMFBZG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "c4621aee38282aef5dc2ff07d5695aea214e89e0299f2e93e3cfae72674b0536",
+      "afterSha256": "c4621aee38282aef5dc2ff07d5695aea214e89e0299f2e93e3cfae72674b0536"
+    },
+    {
+      "name": "cameraView-radius-segment-2-True",
+      "commands": [
+        {
+          "commandId": "draw.segment.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800GD8KDS1F7RFHCMDX",
+            "strokeId": "st_01K7JJN800E8GRPH095HHRG7Z4",
+            "segment": 0,
+            "t": 0.4981299862256492,
+            "delta": {
+              "x": 3.75,
+              "y": 3.75
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800E8GRPH095HHRG7Z4"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 37.15592119928448
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800E8GRPH095HHRG7Z4",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800E8GRPH095HHRG7Z4",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "31a00049c31e72f1c8f9aa8cbf2ff016d048f9c7827eb3451c19b89e14bf3415",
+      "afterSha256": "b4b4743b183e8d8aae008059882f555e91e8df0828ccdae88f553189ce7869f8"
+    },
+    {
+      "name": "drawingView-delete-all",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8001T9J7GMRSBT3QP4H",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [],
+      "beforeSha256": "1cd140f34aaef5ac19e789f2d186e15eab645a6e190c6b4d992457ea6241c003",
+      "afterSha256": "25a55de9b2775b824367803e04673c3cb306fd67aacc58d300021cb8dc20c71b"
+    },
+    {
+      "name": "drawingView-delete-closed",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN803ZYSXXDBE5DX01SBP"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -4.0,
+          "width": 133.1875,
+          "height": 25.32050807568877
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN802PGJX3YSRTMXPNZNV",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN803ZYSXXDBE5DX01SBP",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800QWM9G5J71FTNS4NG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801AZJ3K5DNXZCTEADX",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN802Y5S3KXQX38YAT7KK",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8031X76NJTWV4YH3YFA",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN804R9RTX9Y2N8MAWKGT",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN805GSFDMYHDARP907C0",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8068B0W8M3N3JFBX4ZW",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN807PB3MM6QCGFAQFK7F",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8085HM20J9W305S9SE7",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN809G7ES9TPBJ0P3VTG8",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80AJ63DRWPFV9XMXGVK",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80BFSAXGG9NAEEA97FY",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80C1GMW99GXW84K3S8J",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80DV45ET8B0ZMM5NA8W",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80EHRG0CKHW1GJX6PGP",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80FQ8AK6RM8KMFGPKWQ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80GJKM9PR7GCH8SEQRK",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80HCT0KH6842PNAKX0Q",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80JGZ931FS11CC7HXA8",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80KP9KK73CEYS3QXKFH",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80MRHFMC4EPMDZVA4A1",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80NQQYY9E40NARAZENC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80PGX9MX9PZG77X8SYS",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80Q497FZW5K75HZG7MZ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80R3KQK8P86ZNP9Q52K",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80SDNZ6N5Y55JNEERZQ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80TP3131FTGAXBRZ363",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80VZ15VQY72SB4FTE9Z",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80WCFG1PKCQNBZW0PV0",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80X86S6QR4T7Q8QQGSX",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80Y1EXQ2BTAG41688AV",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN80Z261ZR92RPCDAKAV7",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN810ZVCBWMNZMY7755VC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN811V7F36JGPMQFGRRNA",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8120RNJ9T6BBG8BQ8GA",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN813VK0ZYNKR460X7YPK",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN803ZYSXXDBE5DX01SBP",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "0484c917e7c4a7fc942eff4e08637f89da10a0cc01075555bfbf96d8df1fdc37",
+      "afterSha256": "2cd71591a36114a6f25eb2a3609cc97ddaa70953bf63706128d822e1a4d89327"
+    },
+    {
+      "name": "drawingView-delete-one",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN80050D2WYR37NKGNBXC"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.660254037844386,
+          "width": 168.0,
+          "height": 25.32050807568877
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80050D2WYR37NKGNBXC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80050D2WYR37NKGNBXC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
+      "beforeSha256": "94c66e7cabd2008ba5c36194205399a48d75a071464552b8336966d1a70940e4",
+      "afterSha256": "96af7ab4ed1dda40af2ec055983016e0cf355b8bb5ce5390553bc6d013e71849"
+    },
+    {
+      "name": "drawingView-delete-several",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800PDX8GWBZ8FS8W939",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [],
+      "beforeSha256": "2ca5a846252e7af54a64ce18510cdf4124e21772e8fa57f8327f9bf69946fee9",
+      "afterSha256": "59a73c7b181dbb75351bbe5e9cad4477533c03b63231584a6a4b52daeb09bd5b"
+    },
+    {
+      "name": "drawingView-delete-two",
+      "commands": [
+        {
+          "commandId": "draw.point.delete",
+          "params": {}
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800D1SGH826FEYT0Y4A",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
+      "geometryAfter": [],
+      "beforeSha256": "70bd53b2554b8801ed6b22ef9cd337eb5ce1d6fd1b14b98f36f413848894b284",
+      "afterSha256": "96343f679cf6dcd6b8a55fe7d1e31b12d069ff6f3fc243f71e83e2c0f8bd4381"
+    },
+    {
+      "name": "drawingView-radius-anchor-0.5-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800NHQ0B8B8ZP0RKXS2",
+            "rect": {
+              "x": -94.15625,
+              "y": -1,
+              "width": 24,
+              "height": 24
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800A6ZD2CYHSHQD1NM1"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800A6ZD2CYHSHQD1NM1",
+            "anchor": 0
+          }
+        ]
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800A6ZD2CYHSHQD1NM1",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800A6ZD2CYHSHQD1NM1",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "09d63d1ea69d9a3dde6454109e977d59ffc270bcb1ff59312780af0411cce39a",
+      "afterSha256": "09d63d1ea69d9a3dde6454109e977d59ffc270bcb1ff59312780af0411cce39a"
+    },
+    {
+      "name": "drawingView-radius-anchor-0.5-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN80047E1ANVR9JACHYPK",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800ZPMPM4NWPW33BGHR",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 24,
+              "y": 24
+            },
+            "snap": false,
+            "view": "drawingView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800ZPMPM4NWPW33BGHR"
+        ],
+        "bounds": {
+          "x": -60.0,
+          "y": -12.160534609054897,
+          "width": 144.0,
+          "height": 51.20468054375902
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800ZPMPM4NWPW33BGHR",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800ZPMPM4NWPW33BGHR",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "aa9e7f9a01d9ed8631e60a2f2f2065505b73a8c92c3d02f1e231cdd2aad0ece9",
+      "afterSha256": "effe80abb36b3565ec89b385495ccef628963b95714d619b9bad9a3a26782562"
+    },
+    {
+      "name": "drawingView-radius-anchor-1-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8008NG01B10STPN4398",
+            "rect": {
+              "x": -87.078125,
+              "y": -0.5,
+              "width": 12,
+              "height": 12
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8001ENPHXGNZCNWF2W1"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN8001ENPHXGNZCNWF2W1",
+            "anchor": 0
+          }
+        ]
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8001ENPHXGNZCNWF2W1",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8001ENPHXGNZCNWF2W1",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "632b538b2d334d539cd0429e8922d3435f61e2a6281fd779f3704e610d4807fc",
+      "afterSha256": "632b538b2d334d539cd0429e8922d3435f61e2a6281fd779f3704e610d4807fc"
+    },
+    {
+      "name": "drawingView-radius-anchor-1-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN8006X3Y8XPEV3EK1SH2",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800Z3KNQ4VWJDXR3WGQ",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 12,
+              "y": 12
+            },
+            "snap": false
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800Z3KNQ4VWJDXR3WGQ"
+        ],
+        "bounds": {
+          "x": -72.0,
+          "y": -12.160534609054897,
+          "width": 156.0,
+          "height": 41.71853307751623
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800Z3KNQ4VWJDXR3WGQ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800Z3KNQ4VWJDXR3WGQ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "10eff1e398d5e22e71a6cd37157e179e0e6a431d4f658811b1bbeee23a4825f1",
+      "afterSha256": "e3454391f4bd6eebe629869954bd9daeff17161dd9984ad81d021af3cafa3419"
+    },
+    {
+      "name": "drawingView-radius-anchor-2-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800Q4MP1JB3BV8Z7ZNV",
+            "rect": {
+              "x": -83.5390625,
+              "y": -0.25,
+              "width": 6,
+              "height": 6
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800SX0P6Y04PT2PQC3F"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800SX0P6Y04PT2PQC3F",
+            "anchor": 0
+          }
+        ]
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800SX0P6Y04PT2PQC3F",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800SX0P6Y04PT2PQC3F",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "4913d748f4d7e49664134fdef37b011553b73293768c437ee380189f19c86453",
+      "afterSha256": "4913d748f4d7e49664134fdef37b011553b73293768c437ee380189f19c86453"
+    },
+    {
+      "name": "drawingView-radius-anchor-2-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN8004KSZ0AD26Q30ZEYF",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800MVFFSPGED9FAR30B",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 6,
+              "y": 6
+            },
+            "snap": false,
+            "view": "drawingView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800MVFFSPGED9FAR30B"
+        ],
+        "bounds": {
+          "x": -78.0,
+          "y": -12.160534609054897,
+          "width": 162.0,
+          "height": 37.40215615036604
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800MVFFSPGED9FAR30B",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800MVFFSPGED9FAR30B",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "e45dac7d90f430b79b0bb62b8fd0602cde8778f0da2727c3f79c06cc841b3f79",
+      "afterSha256": "fa086fc321fb932ed2fdd37935c5b95bfbfbd8127ae90d9df988e30b08c17dae"
+    },
+    {
+      "name": "drawingView-radius-handle-0.5-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8003FJY699ABMP8ZWK6",
+            "rect": {
+              "x": 25.84375,
+              "y": 47,
+              "width": 24,
+              "height": 24
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800W5TWGF2G0TNDG0DJ"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800W5TWGF2G0TNDG0DJ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800W5TWGF2G0TNDG0DJ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "8d39d15a9d523230b23dcc9015b9275a7fba68e1890f49e25b07c654b88fd7fe",
+      "afterSha256": "8d39d15a9d523230b23dcc9015b9275a7fba68e1890f49e25b07c654b88fd7fe"
+    },
+    {
+      "name": "drawingView-radius-handle-0.5-True",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800C1V3QH86H79XC7GP",
+            "strokeId": "st_01K7JJN8007K8ZNKBEWNQ62XM0",
+            "anchor": 1,
+            "handleMode": "symmetric",
+            "outHandle": {
+              "x": 49,
+              "y": 59
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8007K8ZNKBEWNQ62XM0"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -24.698467990349652,
+          "width": 168.0,
+          "height": 49.3969359806993
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN8007K8ZNKBEWNQ62XM0",
+            "anchor": 1
+          }
+        ]
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8007K8ZNKBEWNQ62XM0",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8007K8ZNKBEWNQ62XM0",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "e821c9e69ad6ca62bca16c5a367574c08196299b655654c3f3d8b7c56ceb86eb",
+      "afterSha256": "8c3ec472ec2b5a1f562f7a8a4b31b9ea714857a867d8216a80bbd9e726b94768"
+    },
+    {
+      "name": "drawingView-radius-handle-1-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800Z5WT32H73PK0RRSP",
+            "rect": {
+              "x": 24.921875,
+              "y": 40.5,
+              "width": 12,
+              "height": 12
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8003RH2ZPPQCE901BZM"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8003RH2ZPPQCE901BZM",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8003RH2ZPPQCE901BZM",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "93bc04fb8def41bf9ed3d4918f3d3f84c5dcd8c08bf629497ff0ac4bcd9cb121",
+      "afterSha256": "93bc04fb8def41bf9ed3d4918f3d3f84c5dcd8c08bf629497ff0ac4bcd9cb121"
+    },
+    {
+      "name": "drawingView-radius-handle-1-True",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800EQ048D50N5N5D4NX",
+            "strokeId": "st_01K7JJN80011SNXWVQ783TBJTN",
+            "anchor": 1,
+            "handleMode": "symmetric",
+            "outHandle": {
+              "x": 37,
+              "y": 47
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN80011SNXWVQ783TBJTN"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -19.612939477023186,
+          "width": 168.0,
+          "height": 39.22587895404637
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN80011SNXWVQ783TBJTN",
+            "anchor": 1
+          }
+        ]
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80011SNXWVQ783TBJTN",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80011SNXWVQ783TBJTN",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "055f9880db85f58669057a86eaa66eac1c39e2236455774e9ff73e6e3618f7ec",
+      "afterSha256": "4ed17a88c2de51ffe4b8a7cef7fb22cd7c212c3632148a91bfea93c9f622652b"
+    },
+    {
+      "name": "drawingView-radius-handle-2-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800WS70P40PVWJ89T1E",
+            "rect": {
+              "x": 24.9609375,
+              "y": 37.75,
+              "width": 6,
+              "height": 6
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800MG5FQ57WW9H6Q6A9"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800MG5FQ57WW9H6Q6A9",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800MG5FQ57WW9H6Q6A9",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "bc22d5c5c04b08607ad9640c04b972c6666df06d4792cc1764cfb15c6465e1cd",
+      "afterSha256": "bc22d5c5c04b08607ad9640c04b972c6666df06d4792cc1764cfb15c6465e1cd"
+    },
+    {
+      "name": "drawingView-radius-handle-2-True",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8002GVH5JWWGFNM9D20",
+            "strokeId": "st_01K7JJN800FQ38YEBFCT11FB1G",
+            "anchor": 1,
+            "handleMode": "symmetric",
+            "outHandle": {
+              "x": 31,
+              "y": 41
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800FQ38YEBFCT11FB1G"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -17.113870534870426,
+          "width": 168.0,
+          "height": 34.22774106974085
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800FQ38YEBFCT11FB1G",
+            "anchor": 1
+          }
+        ]
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800FQ38YEBFCT11FB1G",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800FQ38YEBFCT11FB1G",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "ed5bd116853b1fe93f9d539e7582e5ac6c05ca0b105b5401e0f1a150c83c1f09",
+      "afterSha256": "24d52d4071927c7f850b2f9134298da93a8afb669f742d78c72800b3ce25d4ef"
+    },
+    {
+      "name": "drawingView-radius-segment-0.5-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800AG6CKMT3X29RWV11",
+            "rect": {
+              "x": -42.15625,
+              "y": 27,
+              "width": 24,
+              "height": 24
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800GCNTGS43Y8N7M14A"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800GCNTGS43Y8N7M14A",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800GCNTGS43Y8N7M14A",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "3c8f0a8cc0798974df8d784008462f298a8d1a22f92ebe3b7b47538d235919b1",
+      "afterSha256": "3c8f0a8cc0798974df8d784008462f298a8d1a22f92ebe3b7b47538d235919b1"
+    },
+    {
+      "name": "drawingView-radius-segment-0.5-True",
+      "commands": [
+        {
+          "commandId": "draw.segment.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800QH28EXJ678R679KA",
+            "strokeId": "st_01K7JJN800QDAWN74X1G1HTKRE",
+            "segment": 0,
+            "t": 0.48885463387705386,
+            "delta": {
+              "x": 24,
+              "y": 24
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800QDAWN74X1G1HTKRE"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 57.23913683893049
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800QDAWN74X1G1HTKRE",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800QDAWN74X1G1HTKRE",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "95d79af39edc526fccb0e547074789b76049b550723cfdcd5e0723e6d1aa8928",
+      "afterSha256": "bf5980d8a494f11c8c0bd631b496794bf9cad55ef0db1030f762203df440202e"
+    },
+    {
+      "name": "drawingView-radius-segment-1-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800TH937GZ5ZDC2S4KP",
+            "rect": {
+              "x": -42.078125,
+              "y": 21.5,
+              "width": 12,
+              "height": 12
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800P6VBZXGH4DEF282J"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800P6VBZXGH4DEF282J",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800P6VBZXGH4DEF282J",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "5d84d7dbba2ab96267087a13d227529e432756ac9233a1f2db2ec9b845fb45f2",
+      "afterSha256": "5d84d7dbba2ab96267087a13d227529e432756ac9233a1f2db2ec9b845fb45f2"
+    },
+    {
+      "name": "drawingView-radius-segment-1-True",
+      "commands": [
+        {
+          "commandId": "draw.segment.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800XRXRJ5CANYP5YBWR",
+            "strokeId": "st_01K7JJN8000B67AYXAB0V764PP",
+            "segment": 0,
+            "t": 0.49274054542206613,
+            "delta": {
+              "x": 12,
+              "y": 12
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8000B67AYXAB0V764PP"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 45.30699889737695
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8000B67AYXAB0V764PP",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8000B67AYXAB0V764PP",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "03970d1af62ab9f403fad1006c1d9c16888e2e3fb36631541a2161fa4d79f8a3",
+      "afterSha256": "058fc78d55644ab89b21309d2cdad5308eea88a02af67ed944ffc44b3cefb46f"
+    },
+    {
+      "name": "drawingView-radius-segment-2-False",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800VB6BDAV9PTG374FF",
+            "rect": {
+              "x": -42.0390625,
+              "y": 19.25,
+              "width": 6,
+              "height": 6
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8006PR05YBJKM8ACG3W"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8006PR05YBJKM8ACG3W",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8006PR05YBJKM8ACG3W",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "4f1766e427db087cfccce75e9cc432ab8a6e03f73fbecb6d50de194f21a23f6a",
+      "afterSha256": "4f1766e427db087cfccce75e9cc432ab8a6e03f73fbecb6d50de194f21a23f6a"
+    },
+    {
+      "name": "drawingView-radius-segment-2-True",
+      "commands": [
+        {
+          "commandId": "draw.segment.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800GASR8YGMK8EZ7YE0",
+            "strokeId": "st_01K7JJN800JX5KPB1DXET14M6P",
+            "segment": 0,
+            "t": 0.4961723976302892,
+            "delta": {
+              "x": 6,
+              "y": 6
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800JX5KPB1DXET14M6P"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 39.37187852653194
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800JX5KPB1DXET14M6P",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800JX5KPB1DXET14M6P",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "75618807c7dafc0762d2f789a6319f9bba0b09d68eba55644c1295d5df3e3fee",
+      "afterSha256": "9c9edcac4936872201c73102571a9e850a9cb0268886dd2b415b416c550d76eb"
+    }
+  ],
+  "measurements": [],
+  "transcriptSha256": "de40ff362d157b299c026c0cae5d85b62ebc2a64dd881cd9990a6f43114dcb73",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-5euaxmro"
+}

@@ -567,6 +567,28 @@
         },
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800WAR1AC5E3MRY1AGM",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800WAR1AC5E3MRY1AGM",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN8004GNQG7RN9GJ99090",
+          "kind": "brush",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "2b7f98491875eff70bdcc05de033418288e0a12c74356774644aea229cc9fc0b",
       "afterSha256": "2bbebe16d72cb173a99a9d6636c5359c93ef87a0e4c47a78779b625b23e346c5"
     },
@@ -612,6 +634,28 @@
         },
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8008694B42XP0EHT1H9",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8008694B42XP0EHT1H9",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN8000QPJWRPSCNMK5VH1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
       "beforeSha256": "cfcd9d7fa3a583b328679b681d2f74ed6a66ffe60d63f53edc31818f98973311",
       "afterSha256": "1af7c04be3797637764a34bebe47ee030c8466c08fa429a96a0081fae10720a5"
     },
@@ -647,10 +691,27 @@
         },
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8006XFVE31NEBK17C88",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8006XFVE31NEBK17C88",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "cc7d2aef528f756b2480b0dedcd5f4cd292cd002b87f20a91a0fffdfacdc5cbd",
       "afterSha256": "f68f5d8be9a4d061dc2a5462998470c5fa96e049cae2c1b81660f53b4926fa44"
     }
   ],
+  "measurements": [],
   "transcriptSha256": "ec41e2bd6508e65cf54fb613149e08f829712a7f3b347c7119e048042cb7d3fd",
   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-outk9lka"
 }

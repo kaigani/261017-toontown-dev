@@ -203,6 +203,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8009Z283JC26M7BP8B7",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8009Z283JC26M7BP8B7",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "d1a68622d46e7e7b49dd5b05ca4559eda8cb61e127a4907b7aa0bdbc727f1865",
       "afterSha256": "d1a68622d46e7e7b49dd5b05ca4559eda8cb61e127a4907b7aa0bdbc727f1865"
     },
@@ -241,6 +257,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800P1N93V394XHXCT2P",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800P1N93V394XHXCT2P",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "717c333a57032b20b29743c41a6872382c65acf13e9a378ac618101b7c633e89",
       "afterSha256": "717c333a57032b20b29743c41a6872382c65acf13e9a378ac618101b7c633e89"
     },
@@ -274,6 +306,22 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8008S212WPW6WSH3Y67",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8008S212WPW6WSH3Y67",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "3b7870c191d02d57fd201994cb0a5bca215d77d4d30d9062950d61a5fd878590",
       "afterSha256": "3b7870c191d02d57fd201994cb0a5bca215d77d4d30d9062950d61a5fd878590"
     },
@@ -316,6 +364,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800HSZJQYZ3RYPSW24C",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800HSZJQYZ3RYPSW24C",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "9f35b148d2f4ca33474cf309848d43e61f64a72af3f38255ac09cbfa345835b4",
       "afterSha256": "9f35b148d2f4ca33474cf309848d43e61f64a72af3f38255ac09cbfa345835b4"
     },
@@ -358,6 +422,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "9a3f42b0a77cf0a145ede574c82e7b879726a2d299b21444bc1be6a8ab29a81a",
       "afterSha256": "9a3f42b0a77cf0a145ede574c82e7b879726a2d299b21444bc1be6a8ab29a81a"
     },
@@ -396,6 +476,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800VNC9AXVHYYAW9Z15",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800VNC9AXVHYYAW9Z15",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "10bb4cee288b1b9e246efeef059ca7224083ab52963361c354e006cb7cc46599",
       "afterSha256": "10bb4cee288b1b9e246efeef059ca7224083ab52963361c354e006cb7cc46599"
     },
@@ -428,6 +524,22 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8003DG4DBZS8WG20N21",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8003DG4DBZS8WG20N21",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "8ce7492a4307119a905233ad55eb889752e135d6c748c9802ba088d4fd4f60f8",
       "afterSha256": "8ce7492a4307119a905233ad55eb889752e135d6c748c9802ba088d4fd4f60f8"
     },
@@ -470,10 +582,27 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800J27W3WEBC9MWTNPV",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800J27W3WEBC9MWTNPV",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "da04c17621e095512d5da44d545df8d16fb49a91b7d009af041f703787acc19e",
       "afterSha256": "da04c17621e095512d5da44d545df8d16fb49a91b7d009af041f703787acc19e"
     }
   ],
+  "measurements": [],
   "transcriptSha256": "ebcb698f76355efb5bff2aba5ec4e73d7a66124e0130ac7fb93ec03494a9ce60",
   "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-npnxeiwp"
 }

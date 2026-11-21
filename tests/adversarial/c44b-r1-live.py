@@ -36,7 +36,19 @@ def regressions():
             if p.startswith('reviews/evidence/') and not p.startswith('reviews/evidence/M4-C4.4b-r1-review/'):
                 subprocess.run(['git','checkout','--',p],cwd=ROOT,check=True)
         save('step2.json',rows)
-    return int(any(r['exit'] for r in rows))
+    for row in rows:
+        row['acceptedStop']=row['script']=='c44a-r4-live.py' and row['args']==['p1b','9'] and 'line 322' in (Path(row['raw'])/'console.txt').read_text(encoding='utf-8') and len(row['failures'])==1
+        row['transcriptSha256']={str(p.relative_to(row['raw'])):__import__('hashlib').sha256(p.read_bytes()).hexdigest() for p in Path(row['raw']).rglob('transcript.json')}
+    save('step2.json',rows)
+    return int(any(r['exit'] and not r.get('acceptedStop') for r in rows))
+def build():
+    raw=Path(tempfile.mkdtemp(prefix='c44b-build-'));rows=[]
+    for args,cwd in [(['pnpm.cmd','install','--frozen-lockfile'],ROOT/'desktop'),(['pnpm.cmd','build'],ROOT/'desktop'),(['cargo','build','--release','--locked','-p','tt-desktop','-p','tt-headless'],ROOT)]:
+        with (raw/(str(len(rows))+'.txt')).open('w',encoding='utf-8') as f:
+            r=subprocess.run(args,cwd=cwd,stdout=f,stderr=subprocess.STDOUT,timeout=530)
+        rows.append({'command':args,'exit':r.returncode});save('step1.json',{'results':rows,'raw':str(raw)})
+        if r.returncode:return r.returncode
+    return 0
 async def contour_body(t,step):
     import asyncio, ctypes, math, shutil
     from ctypes import wintypes
@@ -212,11 +224,13 @@ async def contour_body(t,step):
             for zoom in (.5,1,2):
                 for kind,radius,center,direction,expected in [('anchor',6,(-80,0),(-1,0),'draw.point.move'),('handle',5,(25,35),(0,1),'draw.point.set'),('segment',4,(-41.875,16.875),(0,1),'draw.segment.move')]:
                     for inside in (True,False):
-                        offset=(radius+(-.8 if inside else .8))/zoom
-                        start=tuple(center[k]+direction[k]*offset for k in (0,1))
-                        pts=[start,(start[0]+12/zoom,start[1]+12/zoom)]
                         async def setzoom(sid):await c('view.zoom.set',{'viewId':view,'zoom':zoom})
-                        await compare(view,view+'-radius-'+kind+'-'+str(zoom)+'-'+str(inside),act(pts),expected if inside else 'draw.pointSelection.set',(1,) if kind=='handle' else (),extra=setzoom)
+                        async def radius_action(sid):
+                            matrix=(await c('draw.viewMapping.get',{'view':view}))['drawingToView'];scale=math.hypot(matrix[0],matrix[1])
+                            offset=(radius+(-.8 if inside else .8))/scale
+                            start=tuple(center[k]+direction[k]*offset for k in (0,1))
+                            return await gesture(view,[start,(start[0]+12/scale,start[1]+12/scale)])
+                        await compare(view,view+'-radius-'+kind+'-'+str(zoom)+'-'+str(inside),radius_action,expected if inside else 'draw.pointSelection.set',(1,) if kind=='handle' else (),extra=setzoom)
         elif step==8:
             sid=await fixture(view);await c('window.panel.set',{'panelId':'properties','visible':True});await asyncio.sleep(.6)
             async def options(sid):
@@ -226,12 +240,18 @@ async def contour_body(t,step):
                 t.click('toolOptions.selectedLine.thickness');d.key(0x41,0x11);t.clear();d.type_text('7');d.key(0x0d);await asyncio.sleep(.6)
                 return {'commands':[{'commandId':x['command'],'params':x['params']} for x in t.recorded() if x['command']=='draw.stroke.set']}
             await compare(view,view+'-thickness-direct',thickness,'draw.stroke.set',extra=options,label='Edit Stroke')
+            async def invisible_action(sid):
+                t.clear();t.click('toolOptions.selectedLine.invisible');await asyncio.sleep(.5)
+                return {'commands':[{'commandId':x['command'],'params':x.get('params',{})} for x in t.recorded() if x['command']=='draw.stroke.set']}
+            b,a,r=await compare(view,view+'-invisible-direct',invisible_action,'draw.stroke.set',extra=options,label='Edit Stroke')
+            check(stroke(a)['kind']=='invisible',view+' Invisible effect',stroke(a)['kind'])
             sid=await fixture(view);await options(sid)
             for val in ('7','abc','-1','101'):
                 ident='toolOptions.selectedLine.thickness';t.click(ident)
                 d.key(0x41,0x11);t.clear();d.type_text(val);d.key(0x0d);await asyncio.sleep(.6)
                 t.run.save(view+'-thickness-'+val+'.json',{'sent':t.recorded(),'drawing':await c('draw.drawing.get'),'field':t.cdp.js('document.activeElement.value')})
                 check(any(x['command']=='draw.stroke.set' for x in t.recorded()) if val=='7' else not t.recorded(),view+' thickness '+val,t.recorded())
+                check(t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions.selectedLine.thickness\"]').value")=='7',view+' numeric retained/restored '+val,None)
             t.clear();t.click('toolOptions.selectedLine.invisible');await asyncio.sleep(.6)
             check(any(x['command']=='draw.stroke.set' and x['params'].get('kind')=='invisible' for x in t.recorded()),view+' invisible',t.recorded())
             await c('draw.selection.set',{'by':'none'});await asyncio.sleep(.5)
@@ -244,11 +264,13 @@ async def contour_body(t,step):
             items=[x for x in flatten(tree) if '.drawingMenu.' in x.get('id','')]
             check({'edit.cut','edit.copy','edit.paste','edit.selectAll','edit.deselectAll'}.issubset({x.get('command',{}).get('commandId') for x in items}),view+' contour context drawing actions',items)
             t.run.save(view+'-context.json',items);d.key(0x1b)
+            t.clear();pos=await t.position();await t.do(('context',view+'.canvas',view+'.drawingMenu.selectAll'));await asyncio.sleep(.4)
+            check(bool((await c('draw.selection.get')).get('selectedIds')) and await t.position()==pos,view+' context Select All selects without undo',t.recorded())
             for mode in ('locked','hidden'):
                 sid=await fixture(view)
                 if mode=='locked':await c('draw.lock.set',{'locked':True})
                 else:
-                    cur=await c('draw.current.get');await c('element.visibility.set',{'elementIds':[cur['elementId']],'scope':'xsheet','visible':False})
+                    cur=await c('draw.current.get');await c('element.visibility.set',{'elementIds':[cur['elementId']],'scope':'xsheet' if view=='drawingView' else 'scene','visible':False})
                 before=await c('draw.drawing.get');pos=await t.position();rec=await gesture(view,[(-80,0),(-60,20)])
                 after=await c('draw.drawing.get')
                 check(before==after and await t.position()==pos,view+' '+mode+' no edit',rec)
@@ -259,7 +281,7 @@ def live(step):
     PRIOR.EVID=EVID; PRIOR.live_body=contour_body
     result=PRIOR.live(step)
     compact(step,PRIOR.OUT)
-    return result
+    return result or int(bool(json.loads((EVID/('step'+str(step)+'.json')).read_text(encoding='utf-8'))['failures']))
 def compact(step,out):
     rows=json.loads((out/'transcript.json').read_text(encoding='utf-8'))
     import hashlib
@@ -275,10 +297,18 @@ def compact(step,out):
             for v in x:
                 found=bezier(v)
                 if found:return found
+    def geometry(x):
+        result=[]
+        if isinstance(x,dict):
+            if isinstance(x.get('bezier'),list):return [{'id':x.get('id'),'kind':x.get('kind'),'closed':x.get('closed'),'anchors':(len(x['bezier'])+2)//3}]
+            for v in x.values():result.extend(geometry(v))
+        elif isinstance(x,list):
+            for v in x:result.extend(geometry(v))
+        return result
     for path in out.glob('*.json'):
         data=json.loads(path.read_text(encoding='utf-8'))
         if isinstance(data,dict) and 'commands' in data and 'before' in data:
-            actions.append({'name':path.stem,'commands':data['commands'],'labels':data.get('labels'),'selection':data.get('selection'),'beforeSha256':digest(data['before']),'afterSha256':digest(data['after'])})
+            actions.append({'name':path.stem,'commands':data['commands'],'labels':data.get('labels'),'selection':data.get('selection'),'geometryBefore':geometry(data['before']),'geometryAfter':geometry(data['after']),'beforeSha256':digest(data['before']),'afterSha256':digest(data['after'])})
             if path.stem.endswith(('-symmetric','-broken')):
                 b,a=bezier(data['before']),bezier(data['after'])
                 ok=all(abs(a[2][k]+a[4][k]-2*a[3][k])<1e-6 for k in ('x','y')) if path.stem.endswith('-symmetric') else a[2]==b[2]
@@ -286,9 +316,11 @@ def compact(step,out):
             if path.stem.endswith('-insert'):
                 selected=data.get('selection',{}).get('selectedPoints',[])
                 rows.append({'check':path.stem+' requested new-anchor selection (observation; spec and design note silent)','ok':len(selected)==1 and selected[0]['anchor']==1,'detail':selected})
-    save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'results':[{'check':r['check'],'ok':r['ok']} for r in rows],'actions':actions,'transcriptSha256':hashlib.sha256((out/'transcript.json').read_bytes()).hexdigest(),'raw':str(out)})
+    measurements=[{'check':r['check'],'detail':r.get('detail')} for r in rows if any(s in r['check'] for s in ('101 samples','collinear lengths','geometric invariant','other stroke snapping','own stroke excluded'))]
+    save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'results':[{'check':r['check'],'ok':r['ok']} for r in rows],'actions':actions,'measurements':measurements,'transcriptSha256':hashlib.sha256((out/'transcript.json').read_bytes()).hexdigest(),'raw':str(out)})
 if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b')
+    if case=='l1a' and step==1:sys.exit(build())
     if case=='l1a' and step==2: sys.exit(regressions())
     if step in (3,4,5,6,7,8): sys.exit(live(step))
     raise ValueError('Step not implemented yet')

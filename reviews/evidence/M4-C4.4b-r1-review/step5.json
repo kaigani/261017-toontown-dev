@@ -428,6 +428,22 @@
         },
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800SH62HZE4P7F8M0T7",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800SH62HZE4P7F8M0T7",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "a31574a024d0763ffedb99f6dc33eaa4664934af7fdc6047658530809fcb1142",
       "afterSha256": "8cdee559e5a2a4d1dbd7a012a22c403fee598fe899a29371d313629bbd05f641"
     },
@@ -471,6 +487,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800P62Z8DTJT4E38TDS",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800P62Z8DTJT4E38TDS",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "cfd59d95f242884b69a7cb46fb8b7262679009f909aaf638488ae8cc26949a0b",
       "afterSha256": "a60ede90e164580816a11eabb944402c718793d479144b66f568aa3a3f9d60c9"
     },
@@ -490,6 +522,22 @@
         },
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8003HNVKMFFMEAKW9W3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8003HNVKMFFMEAKW9W3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "8918c812a0190f863b6a661a131ce7618f48c4f6e78ff06be35dbecb24ab419f",
       "afterSha256": "8918c812a0190f863b6a661a131ce7618f48c4f6e78ff06be35dbecb24ab419f"
     },
@@ -528,6 +576,22 @@
         },
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8005EE9NF7CC0QFAN5A",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8005EE9NF7CC0QFAN5A",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "0b02ec33bd92e3c74f5731bb98b4f924a89c622c0183cdb976cac8aaf2645f26",
       "afterSha256": "b49e7a33037f2dd9f9194c1c8d0381f502b8df88dc4527a271dd7671d0b8fd31"
     },
@@ -564,6 +628,58 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8009EJWCFHCG4GZQ76Q",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN800RJNXDAMEQ9C0ATAG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800NSFDKFPRW53Q7VC9",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801ME8XY4RQK9YEGM8P",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN802AEZ3JAFV0TPB2QPJ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN803AEERPD7ST7NWAQ6R",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN804QWEE9HH3WYJWG74X",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN805NBF33BKKQPFJ4A5H",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
       "beforeSha256": "5e770fe8c5f5beb987f113d55f3290ccffe0d7b79fa9d582246c87f08e8f16da",
       "afterSha256": "821dfbbd7a51c86c9621ce31f8b44fbff3cfe94c334deafe7ae1a740a62ed665"
     },
@@ -600,6 +716,52 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8009YQ8BXBC5RDDTPCA",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN800354HXMR8Z8HZV9X7",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800KGGJR69TTENSPQX0",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801N18X2BKZ47YAMA3N",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN802C5ZVPGGT5BYPX5F5",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN803JFQ4GNHAXHRH9ZVS",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8045JQSVX9J8KSC090X",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
       "beforeSha256": "2cf7e4ef438d4f71f4e0abf0c7e6a17fd713d7c1ff73dca18bef00b8a064bcca",
       "afterSha256": "cb132bbfcc919c57ce5d453d631a632ac38aa52f2c8e6a523a0bb1ea3bd97c6d"
     },
@@ -636,6 +798,34 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8005J6BSYK05MGGYHMC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800E1VDQ6DNHB8J7QTQ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801G4K5W7XSJ3P7KR0K",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8024E42H8P8DPYK4VNG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "66889ee49c432beb444c15f611f2a3b57a390e77f17999de03c6aad5c551173b",
       "afterSha256": "9332c748c1b0d4e63e7949b1430ac88e259f283c62cbfcf70db8eeed33af8c87"
     },
@@ -672,6 +862,34 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800FGXFZVAYGD9YW16D",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800Y5HN8P22607736YY",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801VSHEX2J3R3V024VB",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN8022QEC5JH72ZBDBYTF",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "c239a70b1587a762d443f5cad10c62ac811dbfc5ab7f2a127c27ae181fa890fd",
       "afterSha256": "9521adb4e58e98cda4239476dee57ce2258842faa4e6e895ae22afb72d3a3669"
     },
@@ -715,6 +933,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8004H4YKW1H9S2MD16Q",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8004H4YKW1H9S2MD16Q",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "7ab0fb87fc767e89c93566477b2bdf24ee68b5325032f85c5f0cdafc87f5c09b",
       "afterSha256": "8ff2f31a238ae349acbc778d97c19dac39b1d40328c1b38a6b72fc1e0291fd2a"
     },
@@ -771,6 +1005,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8001T4319WJJC6396EP",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8001T4319WJJC6396EP",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "b49f7f9bcff58eb23a045993a58f6be632b670f094bf3c5185969b051e2db6a7",
       "afterSha256": "8b28e54bad69674973c60a4eff58593a38e11bfc4f52bdd628daf36b6934c946"
     },
@@ -813,6 +1063,22 @@
         },
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80028QGWT22KA63K1FN",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80028QGWT22KA63K1FN",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "cddf1261d98ec9d6bde1488bd512dab317e29b8bbc82f093435001882ce05eef",
       "afterSha256": "8e2194a0e6b8e561ff7d7cfb1a762a236d161c40c4c5f4d767255cda9f7fbff5"
     },
@@ -856,6 +1122,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80020AGVDNETQB6WFEB",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80020AGVDNETQB6WFEB",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "fd063653264a342b11f528fe3da39405d6d8cb04d55f78a9de362d74c62b5c71",
       "afterSha256": "f120722fd38194353af0c4371ab2dc350bbc1a9e117a1b9defbf3c576a5f461a"
     },
@@ -875,6 +1157,22 @@
         },
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800NCD2GY2A3CWGV975",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800NCD2GY2A3CWGV975",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "fde87bbfabfbc51437b1c6c9541f5b5055dd03c33cbcb63975f4104172e6d2ed",
       "afterSha256": "fde87bbfabfbc51437b1c6c9541f5b5055dd03c33cbcb63975f4104172e6d2ed"
     },
@@ -913,6 +1211,22 @@
         },
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800ZADV8VDWRNQC7GX6",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800ZADV8VDWRNQC7GX6",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "0fee036f9c698f720b231978366f235ade1d867efd38a88bc4fdbbecea4f4efd",
       "afterSha256": "f2ae96d4a26baf8f7d5224c8d0a33c79e36e0261a23e4d9f0607522512342225"
     },
@@ -948,6 +1262,58 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8005YG9RME3XVAXA7H7",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN800BZKJWQ32ZSEG2ZXX",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800KAR54XGJ2BTV7D2K",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801PAHTQ5BSVE2G5AFM",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN802FJFB22ZKNW3BKGWW",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN8030BTQ61X28B1AZVVF",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN804AKEHNTKV5SJ1F7A8",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN805FPZG0AX9TP6J6C6Y",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
       "beforeSha256": "82f9cc20a5e06cb6c8b743b0412be5286ee7fdfac0eb69fdbbd27b9e892691d6",
       "afterSha256": "ed1576e9d57e5ffb21cb804c587eaa6ee787a35ef23ddcf4da75521147ce9721"
     },
@@ -983,6 +1349,52 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800YVRZWBAZHMWE2677",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN800BX9FNPGBFT9BRVQH",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800WTTEXY1NDM0VW0T4",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801D7Y5NVYWSKCWY19J",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN8021SS1KKNQEZ1HVC44",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN803MYE0MYCR6WB9HCPY",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN804ZFFYGTSRTP1B2RKW",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        }
+      ],
       "beforeSha256": "55f36d25946f5a846338faa8621e260a826e827d3cd7af0b3e7dbc6d47e4d663",
       "afterSha256": "3555b28a7ac676298f6c4e71f80021c2743eba95405974fdc95469d3dd9954b3"
     },
@@ -1018,6 +1430,34 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80088018JFZWPEE8WCZ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8001DC8EN7ZNZAM656R",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801CBMHPVAPYW0XNBZS",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN802CYEX5P419136CPEY",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "c817e07829ca07ac7e82c7446a9cf7631a12a83b7cd6bfd784f505b3f88607b3",
       "afterSha256": "1965cb5fab64df7eb5b5461a7ab0e0875e80d143a887850d5a0a3cf14561860b"
     },
@@ -1053,6 +1493,34 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800JJZSGSMB4A1CAP57",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8000Y1N1TQRJYMEJJXZ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN801FN7F15YDMTXTFCXG",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 2
+        },
+        {
+          "id": "st_01K7JJN802KNAQGKFPWG08NYYS",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "b6f1f31f4b2ea8f7aee7f4d12ba523577f72ef0e3d5104960cd6aba7a9876508",
       "afterSha256": "472877a1326ec950c0ed81a826e6243f778c29d159223a58915f95c774e17c55"
     },
@@ -1096,6 +1564,22 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800CP3AQ8Q1ZTK7EYSA",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800CP3AQ8Q1ZTK7EYSA",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "fb9f9263398c2eea32b6706f133622e53ed04ee52590fe68e2f258e9bfff7798",
       "afterSha256": "047128334444b4b9fe8719a18d17486a77cd3dec74f6729f40457895e4b552b5"
     },
@@ -1151,8 +1635,214 @@
           }
         ]
       },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8005FJHX95F94R2QJGC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8005FJHX95F94R2QJGC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
       "beforeSha256": "79adef677db7b2ea69d40b3b2488da4f120c3c1c5727130a425de29b478cacaf",
       "afterSha256": "cb9bc6e0b94fe09adec9862120756ae80eef411376496a12c0a8d564506d7f71"
+    }
+  ],
+  "measurements": [
+    {
+      "check": "drawingView other stroke snapping False",
+      "detail": [
+        -20.0,
+        46.0
+      ]
+    },
+    {
+      "check": "drawingView D-76 own stroke excluded False",
+      "detail": [
+        -5.0,
+        0.0
+      ]
+    },
+    {
+      "check": "drawingView other stroke snapping True",
+      "detail": [
+        -20.0,
+        50.0
+      ]
+    },
+    {
+      "check": "drawingView D-76 own stroke excluded True",
+      "detail": [
+        -5.0,
+        0.0
+      ]
+    },
+    {
+      "check": "cameraView other stroke snapping False",
+      "detail": [
+        -20.0,
+        45.0
+      ]
+    },
+    {
+      "check": "cameraView D-76 own stroke excluded False",
+      "detail": [
+        -5.0,
+        0.0
+      ]
+    },
+    {
+      "check": "cameraView other stroke snapping True",
+      "detail": [
+        -20.0,
+        50.0
+      ]
+    },
+    {
+      "check": "cameraView D-76 own stroke excluded True",
+      "detail": [
+        -5.0,
+        0.0
+      ]
+    },
+    {
+      "check": "cameraView-broken opposite handle geometric invariant (D-75 item 4)",
+      "detail": {
+        "before": [
+          {
+            "x": -25.0,
+            "y": 15.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 25.0,
+            "y": 35.0
+          }
+        ],
+        "after": [
+          {
+            "x": -25.0,
+            "y": 15.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 35.0,
+            "y": 45.0
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView-symmetric opposite handle geometric invariant (D-75 item 4)",
+      "detail": {
+        "before": [
+          {
+            "x": -25.0,
+            "y": 15.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 25.0,
+            "y": 35.0
+          }
+        ],
+        "after": [
+          {
+            "x": -35.0,
+            "y": -45.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 35.0,
+            "y": 45.0
+          }
+        ]
+      }
+    },
+    {
+      "check": "drawingView-broken opposite handle geometric invariant (D-75 item 4)",
+      "detail": {
+        "before": [
+          {
+            "x": -25.0,
+            "y": 15.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 25.0,
+            "y": 35.0
+          }
+        ],
+        "after": [
+          {
+            "x": -25.0,
+            "y": 15.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 35.0,
+            "y": 45.0
+          }
+        ]
+      }
+    },
+    {
+      "check": "drawingView-symmetric opposite handle geometric invariant (D-75 item 4)",
+      "detail": {
+        "before": [
+          {
+            "x": -25.0,
+            "y": 15.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 25.0,
+            "y": 35.0
+          }
+        ],
+        "after": [
+          {
+            "x": -35.0,
+            "y": -45.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 35.0,
+            "y": 45.0
+          }
+        ]
+      }
     }
   ],
   "transcriptSha256": "8da95ca708ca89c3878b8298951b9d9726542bf1a7889e237b1a63e8ac80aa12",
