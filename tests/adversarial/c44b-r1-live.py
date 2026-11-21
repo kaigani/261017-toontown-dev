@@ -339,7 +339,7 @@ def compact(step,out):
                 rows.append({'check':path.stem+' opposite handle geometric invariant (D-75 item 4)','ok':ok,'detail':{'before':b[2:5],'after':a[2:5]}})
             if path.stem.endswith('-insert'):
                 selected=data.get('selection',{}).get('selectedPoints',[])
-                rows.append({'check':path.stem+' requested new-anchor selection (observation; spec and design note silent)','ok':len(selected)==1 and selected[0]['anchor']==1,'detail':selected})
+                rows.append({'check':path.stem+' retained point selection; new anchor not selected (D-82 item 1)','ok':selected==[],'detail':selected})
     measurements=[{'check':r['check'],'detail':r.get('detail')} for r in rows if any(s in r['check'] for s in ('101 samples','collinear lengths','geometric invariant','other stroke snapping','own stroke excluded'))]
     canvases=[]
     for path in out.glob('*-canvas.json'):
