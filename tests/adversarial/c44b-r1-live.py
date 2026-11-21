@@ -132,9 +132,11 @@ async def contour_body(t,step):
                 await hs.initialize(); ht=d.Table(hs,t.run,p.OUT,t.work)
                 await ht.cmd('draw.selection.set',{'by':'ids','ids':selection_before.get('selectedIds',[])})
                 await ht.cmd('draw.pointSelection.set',{'points':selection_before.get('selectedPoints',[])})
+                directpos=await ht.position()
                 for cmd in commands:await ht.cmd(cmd['commandId'],cmd.get('params') or {})
                 direct=await ht.cmd('draw.drawing.get')
                 check(unstamped(after)==unstamped(direct),name+' D-32 exact direct content',{'equal':unstamped(after)==unstamped(direct)})
+                directlabels=await ht.steps_since(directpos);check([x[0] for x in directlabels]==want,name+' direct undo labels',directlabels)
         selection=await c('draw.selection.get')
         if step==4:
             desired=([0,1] if name.endswith('add-click') or name.endswith('marquee') else [] if name.endswith('empty') else [0])
@@ -281,6 +283,9 @@ def compact(step,out):
                 b,a=bezier(data['before']),bezier(data['after'])
                 ok=all(abs(a[2][k]+a[4][k]-2*a[3][k])<1e-6 for k in ('x','y')) if path.stem.endswith('-symmetric') else a[2]==b[2]
                 rows.append({'check':path.stem+' opposite handle geometric invariant (D-75 item 4)','ok':ok,'detail':{'before':b[2:5],'after':a[2:5]}})
+            if path.stem.endswith('-insert'):
+                selected=data.get('selection',{}).get('selectedPoints',[])
+                rows.append({'check':path.stem+' requested new-anchor selection (observation; spec and design note silent)','ok':len(selected)==1 and selected[0]['anchor']==1,'detail':selected})
     save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'results':[{'check':r['check'],'ok':r['ok']} for r in rows],'actions':actions,'transcriptSha256':hashlib.sha256((out/'transcript.json').read_bytes()).hexdigest(),'raw':str(out)})
 if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b')
