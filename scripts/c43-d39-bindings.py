@@ -2288,6 +2288,11 @@ async def build_and_run(t: Table, only: set) -> None:
     async def typing_setup():
         """A real click on empty canvas with the Text tool: a new text object and its session (design note 5 §2)."""
         await cmd("tool.active.set", {"toolId": "select"})
+        # The Text panel's rows leave a text object at the click's place: the canvas is emptied of text first.
+        nodes = (await cmd("draw.drawing.get", {"flatten": True})).get("nodes") or []
+        old = [n.get("id") for n in nodes if "text" in n and "runs" in n]
+        if old:
+            await cmd("draw.object.delete", {"ids": old})
         await tool_fixture("text")
         m = await view_map()
         x, y = to_view(m, -50, 75)

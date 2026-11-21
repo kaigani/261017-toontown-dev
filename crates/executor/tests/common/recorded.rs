@@ -63,8 +63,10 @@ pub fn differences(a: &Value, b: &Value, at: &str, out: &mut Vec<String>) {
 
 /// Keys whose values are times or durations (and, below, machine facts): always recorded as varying, even when two recording runs happened to
 /// agree (a duration of 0 ms twice).
-const TIME_KEYS: [&str; 13] = [
+const TIME_KEYS: [&str; 14] = [
     "durationMs",
+    // A pending confirmation's remaining time (C4.4a, D-58): a countdown the run's clock decides.
+    "expiresInMs",
     "renderMs",
     "time",
     "startedAt",

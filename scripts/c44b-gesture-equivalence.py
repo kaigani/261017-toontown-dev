@@ -240,8 +240,16 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
         for engine in engines:
             await engine.run("view.active.set", {"viewId": view})
         if os_input:
+            # The view drawn before it is looked for (a wait for the state, D-45; a slow runner shows it late), then
+            # looked for again until found or the bound passes.
+            t0 = time.monotonic()
+            while time.monotonic() - t0 < 30.0 and not (await canvas_state(app, view)).get("drawings"):
+                await asyncio.sleep(0.25)
             await asyncio.sleep(1.0)
             place = await e6.locate_view(app.s, e2e.run_cmd, view)
+            while place is None and time.monotonic() - t0 < 45.0:
+                await asyncio.sleep(1.0)
+                place = await e6.locate_view(app.s, e2e.run_cmd, view)
             if place and sizes[view].get("width"):
                 ratio = place[2] / sizes[view]["width"]
             run.check(place is not None, f"the {view} canvas is located in the window (OS input)", place)
@@ -360,7 +368,9 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
                 # Two keystrokes on every engine (one revision each, as the window's), so the engines stay in step.
                 for ch in "Hi":
                     await h2.tool("type_text", {"text": ch})
-                d3 = direct[0].get("result") or {}
+                # Engine 3's own text object: the answer of its `draw.text.add` (the click may send other commands).
+                d3 = next(((d.get("result") or {}) for c, d in zip(rec.get("commands") or [], direct)
+                           if c.get("commandId") == "draw.text.add"), {})
                 for at, ch in enumerate("Hi"):
                     await h3.run("draw.text.set", {"drawingId": d3.get("drawingId"), "textId": d3.get("textId"),
                                                    "insert": {"at": at, "text": ch}})
