@@ -1,12 +1,12 @@
 {
  "kind": "toontown.c44b.d39.summary",
- "note": "the whole D-39 table in the MCP form on the C4.4b build (D-42 summary: each row's name and verdict; raw rows hashed)",
+ "note": "the whole D-39 table in the MCP form on the final C4.4b build (D-42 summary: each row's name and verdict; raw rows hashed)",
  "regenerate": "python scripts/c43-d39-bindings.py target/release/toontown.exe <out> --mode mcp",
  "manifest": {
   "kind": "toontown.c43b.d39-bindings",
   "mode": "mcp",
-  "seconds": 353.8,
-  "rows": 302,
+  "seconds": 359.6,
+  "rows": 303,
   "failed": []
  },
  "failures": [],
@@ -808,6 +808,10 @@
    "ok": true
   },
   {
+   "name": "Perspective › a missed press, then a marquee and a corner drag",
+   "ok": true
+  },
+  {
    "name": "Perspective › locked drawing",
    "ok": true
   },
@@ -1222,8 +1226,8 @@
  ],
  "raw": {
   "rows.json": {
-   "size": 1456737,
-   "sha256": "8b3b3789ff4ed83e394b55ef8b896bd7c6a131730fc7907c3717ff26c50977c7"
+   "size": 1550863,
+   "sha256": "22112bf8b2442ef492149fea43c39938e6059b078423776aed3ad373aed194be"
   }
  }
 }

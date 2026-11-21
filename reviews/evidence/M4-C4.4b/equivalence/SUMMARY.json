@@ -5,7 +5,7 @@
  "manifest": {
   "kind": "toontown.c44b.gesture-equivalence",
   "platform": "win32",
-  "seconds": 37.4,
+  "seconds": 37.5,
   "rows": 20,
   "input": [
    "os"
@@ -1108,7 +1108,7 @@
       "Typing"
      ]
     ],
-    "textId": "nd_01K7JJN800D0K3N311RK3WJRAK"
+    "textId": "nd_01K7JJN800N9GQKMV2WRQNVHRN"
    }
   }
  ],
@@ -1117,17 +1117,17 @@
   {
    "file": "manifest.json",
    "bytes": 184,
-   "sha256": "2c5958f06a82b39ba8bdbb3f7f1055721d6565715408a5ef7423dfbacf5a1bee"
+   "sha256": "0157dd046ec5f040501c5807db5d1d77bb6f75988678f196d8b4b997618f2074"
   },
   {
    "file": "rows.json",
    "bytes": 64837,
-   "sha256": "05c22c0a1d7fae27a4140fe9c04883f2cc3e0756adf1b99518fdcf9c1d673c73"
+   "sha256": "351caa96932259e2962592501c528459b599e820106e87b354ac2782107d82d6"
   },
   {
    "file": "transcript.json",
    "bytes": 16919,
-   "sha256": "39802ea7874200d106f300ac63e0c34531b6d57d1011e10702f500c63a438d92"
+   "sha256": "e9eed0be21dfed6e01279418fef69b194223511d57b0bcbe91eacc7f948f455b"
   }
  ]
 }

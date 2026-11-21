@@ -1,23 +1,35 @@
 {
  "receipt": "reviews/evidence/M4-C4.4b/measure-webgl2",
- "verdict": "fail",
+ "verdict": "pass",
  "regenerate": "python scripts/c44b-measure.py target/release/toontown.exe <out> --backend webgl2",
  "manifest": {
   "kind": "toontown.c44b.measure",
   "platform": "win32",
   "backend": "webgl2",
-  "seconds": 1305.3,
+  "seconds": 630.2,
   "bounds": {
    "inkMs": 16.7,
    "commitSmallMs": 50.0,
    "gestureWorkMs": 8.0,
-   "keyToGlyphMs": 33.0
+   "keyToGlyphFrames": 2
   },
-  "failures": [
-   "keystroke to glyph 34.8 ms p95 <= 33.0 ms (30 keys): {\"n\": 30, \"p50\": 30, \"p95\": 34.8, \"max\": 36.6}"
-  ]
+  "failures": []
  },
  "checks": [
+  {
+   "ok": true,
+   "check": "the control: 300 frames of the start screen's cadence (D-33)",
+   "detail": {
+    "frameMs": {
+     "n": 300,
+     "p50": 17.6,
+     "p95": 18.1,
+     "max": 18.5
+    },
+    "canvases": 1,
+    "startScreen": true
+   }
+  },
   {
    "ok": true,
    "check": "the Drawing view's canvas is located (OS input)",
@@ -34,11 +46,11 @@
   },
   {
    "ok": true,
-   "check": "Contour Editor anchor drag: drag feedback 0.7 ms p95 <= 16.7 ms"
+   "check": "Contour Editor anchor drag: drag feedback 0.6 ms p95 <= 16.7 ms"
   },
   {
    "ok": true,
-   "check": "Contour Editor anchor drag: release to committed 33.1 ms p95 <= 50.0 ms"
+   "check": "Contour Editor anchor drag: release to committed 34.7 ms p95 <= 50.0 ms"
   },
   {
    "ok": true,
@@ -50,11 +62,11 @@
   },
   {
    "ok": true,
-   "check": "Perspective corner drag: drag feedback 0.3 ms p95 <= 16.7 ms"
+   "check": "Perspective corner drag: drag feedback 0.4 ms p95 <= 16.7 ms"
   },
   {
    "ok": true,
-   "check": "Perspective corner drag: release to committed 32.5 ms p95 <= 50.0 ms"
+   "check": "Perspective corner drag: release to committed 32 ms p95 <= 50.0 ms"
   },
   {
    "ok": true,
@@ -70,20 +82,24 @@
   },
   {
    "ok": true,
-   "check": "Reposition All offset: release to committed 34.4 ms p95 <= 50.0 ms"
+   "check": "Reposition All offset: release to committed 33.6 ms p95 <= 50.0 ms"
   },
   {
    "ok": true,
    "check": "Reposition All offset: work per frame during the drags 0.2 ms p95 <= 8.0 ms"
   },
   {
-   "ok": false,
-   "check": "keystroke to glyph 34.8 ms p95 <= 33.0 ms (30 keys)",
+   "ok": true,
+   "check": "keystroke to glyph 35.1 ms p95 <= two control frames (35.2 ms; 30 keys)",
    "detail": {
     "n": 30,
-    "p50": 30,
-    "p95": 34.8,
-    "max": 36.6
+    "p50": 27.9,
+    "p95": 35.1,
+    "max": 35.1,
+    "frames": 2,
+    "controlMedianMs": 17.6,
+    "boundMs": 35.2,
+    "marginMs": 0.1
    }
   },
   {
@@ -102,22 +118,22 @@
   {
    "file": "discovery.json",
    "bytes": 4096,
-   "sha256": "2a086460ac685c3bc6bf94783c858cfefbe1e63f043586108e189bb8adb19d77"
+   "sha256": "26f14e2f152ec76ce60770e4eab9ef081c5eae1568578a458d463ba42fd24109"
   },
   {
    "file": "discovery.log",
    "bytes": 53,
-   "sha256": "8a42d3af7ad61de38c3aa117e51b74fb781b06dbff1cc16541b12440c0a7d73f"
+   "sha256": "e5aefbe51e37e31bb87f55976bb097c2ed2fd428f17c8c208f760278927fccb3"
   },
   {
    "file": "manifest.json",
-   "bytes": 369,
-   "sha256": "7a90a8ee20fa2f8208106914e3ce4e2a8069572ebfda56f7e5d171291e1fdae7"
+   "bytes": 250,
+   "sha256": "48ca61a17412af6e87625bf08e53960b3cf71448fef125c5c977a106fd810c7f"
   },
   {
    "file": "transcript.json",
-   "bytes": 12209,
-   "sha256": "bed73bf896b92c50513c0a7f24e179ef4210d1d2fd7ffa87f5f643539018d3b9"
+   "bytes": 17171,
+   "sha256": "619841709e477065c52f0a324ccf979540856db6c7760d6caf2dcf226e684229"
   }
  ]
 }

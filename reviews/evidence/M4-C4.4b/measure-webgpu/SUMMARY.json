@@ -1,30 +1,42 @@
 {
  "receipt": "reviews/evidence/M4-C4.4b/measure-webgpu",
- "verdict": "fail",
+ "verdict": "pass",
  "regenerate": "python scripts/c44b-measure.py target/release/toontown.exe <out> --backend webgpu",
  "manifest": {
   "kind": "toontown.c44b.measure",
   "platform": "win32",
   "backend": "webgpu",
-  "seconds": 1304.4,
+  "seconds": 634.2,
   "bounds": {
    "inkMs": 16.7,
    "commitSmallMs": 50.0,
    "gestureWorkMs": 8.0,
-   "keyToGlyphMs": 33.0
+   "keyToGlyphFrames": 2
   },
-  "failures": [
-   "keystroke to glyph 34.7 ms p95 <= 33.0 ms (30 keys): {\"n\": 30, \"p50\": 26.5, \"p95\": 34.7, \"max\": 35.2}"
-  ]
+  "failures": []
  },
  "checks": [
+  {
+   "ok": true,
+   "check": "the control: 300 frames of the start screen's cadence (D-33)",
+   "detail": {
+    "frameMs": {
+     "n": 300,
+     "p50": 17.7,
+     "p95": 18.1,
+     "max": 18.6
+    },
+    "canvases": 1,
+    "startScreen": true
+   }
+  },
   {
    "ok": true,
    "check": "the Drawing view's canvas is located (OS input)",
    "detail": [
     116,
     138,
-    834,
+    854,
     633
    ]
   },
@@ -50,11 +62,11 @@
   },
   {
    "ok": true,
-   "check": "Perspective corner drag: drag feedback 0.5 ms p95 <= 16.7 ms"
+   "check": "Perspective corner drag: drag feedback 0.4 ms p95 <= 16.7 ms"
   },
   {
    "ok": true,
-   "check": "Perspective corner drag: release to committed 34.9 ms p95 <= 50.0 ms"
+   "check": "Perspective corner drag: release to committed 33.8 ms p95 <= 50.0 ms"
   },
   {
    "ok": true,
@@ -66,24 +78,28 @@
   },
   {
    "ok": true,
-   "check": "Reposition All offset: drag feedback 0.5 ms p95 <= 16.7 ms"
+   "check": "Reposition All offset: drag feedback 0.4 ms p95 <= 16.7 ms"
   },
   {
    "ok": true,
-   "check": "Reposition All offset: release to committed 32.9 ms p95 <= 50.0 ms"
+   "check": "Reposition All offset: release to committed 35.3 ms p95 <= 50.0 ms"
   },
   {
    "ok": true,
    "check": "Reposition All offset: work per frame during the drags 0.3 ms p95 <= 8.0 ms"
   },
   {
-   "ok": false,
-   "check": "keystroke to glyph 34.7 ms p95 <= 33.0 ms (30 keys)",
+   "ok": true,
+   "check": "keystroke to glyph 34.5 ms p95 <= two control frames (35.4 ms; 30 keys)",
    "detail": {
     "n": 30,
-    "p50": 26.5,
-    "p95": 34.7,
-    "max": 35.2
+    "p50": 25.8,
+    "p95": 34.5,
+    "max": 34.9,
+    "frames": 2,
+    "controlMedianMs": 17.7,
+    "boundMs": 35.4,
+    "marginMs": 0.9
    }
   },
   {
@@ -102,22 +118,22 @@
   {
    "file": "discovery.json",
    "bytes": 4096,
-   "sha256": "555734f8c84492f8d515b31108914c0359e11e2ea0023f28e29219a114dba2d6"
+   "sha256": "3713c88db9c3972e1d0b6d359ae89705613c063e2b93db3437dd147111fd4263"
   },
   {
    "file": "discovery.log",
    "bytes": 53,
-   "sha256": "908d3047fa14549e69bb5e85cdea588aa3b7f0e30f7a62e44c09b311ad7ad297"
+   "sha256": "408d62591a327a7a4bb14ee9087731a37e3083855db75ab764e5e6e1b15c02c5"
   },
   {
    "file": "manifest.json",
-   "bytes": 371,
-   "sha256": "db0f4bd44427a056d92f504f9f500b45d058c925b0e97b7d88af8568fb76c172"
+   "bytes": 250,
+   "sha256": "594018f680047b00e2790ce28867177a0961c3ea5f19725e9d8f713f7a095200"
   },
   {
    "file": "transcript.json",
-   "bytes": 12227,
-   "sha256": "b022daf3f2bc8b1e82797c3c6eb9e41edecd329d411e8a50f41b0d70a15af345"
+   "bytes": 17217,
+   "sha256": "306069db84b7d867ab545ab841c0f26200475125b62adbac6c7f028f7e296d3e"
   }
  ]
 }

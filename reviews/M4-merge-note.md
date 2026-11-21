@@ -12,17 +12,17 @@
 | C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
 | C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | **passed** on product head `f5eb9e84`, run 44286651371 (36 of 36 green), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
 | C4.4a | panels and settings (`reviews/M4-C4.4-plan.md`, D-40) | **passed** on product head `87f63b5f`, run 44861150241 (36 of 36 green on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74. Findings: round 1 twelve, round 2 two new, round 3 two new, closures five; all closed, including the P1 on the agent token in agent captures (closed by the host's overpaint, 486 live captures with none revealed, and the `page_ready` guard); final static check `reviews/M4-C4.4a-r5-closure-static.md` |
-| C4.4b | the four drawing tools; the zero-M4 deferred check | **handed off** (`reviews/M4-C4.4b-handoff.md`; the product head and its green run are named there), rulings D-75 and D-76 |
+| C4.4b | the four drawing tools; the zero-M4 deferred check | **handed off** on product head `e6f71489`, run 44916529274 (36 of 36 green on the first attempt), `reviews/M4-C4.4b-handoff.md`; rulings D-75 and D-76; round 1 to come |
 
 ## 2. Inventory, counts and what M4 leaves
 
-- **Final head:** `54767666` (product; receipts in `d4ffed00`); its CI run is named in the C4.4b handoff's §1.1.
+- **Final head:** `e6f71489` (product), run 44916529274, 36 of 36 green.
 - **Commands in the parity gate:** 347 = 161 action + 41 read + 59 agent-only + 86 deferred (the reviewer's probe
   `tests/adversarial/c43b-r2s-static.py`).
 - **Availability inventory:** 288 commands in scope, 1,229 (command, code) pairs: 13 asks-user, 1 deferred, 256
   execution, 716 parameter, 219 precheck, 24 unreachable (`scripts/check-availability-inventory.py`).
-- **Tables:** D-39 302 rows (the whole table green in the MCP form on the final build; the OS form on the rows of
-  each checkpoint, C4.4b's 105); D-44 66 rows and the confirmation sheet's 7 (C4.4a; C4.4b adds no dialog); three-way
+- **Tables:** D-39 303 rows (the whole table green in the MCP form on the final build; the OS form on the rows of
+  each checkpoint); D-44 73 rows (66 flows and the confirmation sheet's 7), green on the final build; three-way
   equivalence: C4.2's drawing tools, C4.3's scene tools, C4.4b's 20 rows.
 - **Deferred list by owner (D-31): none owned by M4.** 86 entries: M5 51, M6 18, M7 6, M8 5, M10 4, M9 2
   (`desktop/src/ui-bindings/deferred.json`, each with its spec section), plus §3 below.

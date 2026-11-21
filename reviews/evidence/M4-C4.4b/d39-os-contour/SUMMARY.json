@@ -1,0 +1,300 @@
+{
+ "receipt": "reviews/evidence/M4-C4.4b/d39-os-contour",
+ "verdict": "pass",
+ "regenerate": "python scripts/c43-d39-bindings.py target/release/toontown.exe <out> --mode os --only \"Contour Editor\"",
+ "manifest": {
+  "kind": "toontown.c43b.d39-bindings",
+  "mode": "os",
+  "seconds": 53.7,
+  "rows": 7,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the IPC recorder sees the page's commands"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Contour Editor › Snap to Contour on, then a drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1338; 02 §7.1.2 lines 450, 461; §8.9 (SI-187: the setting made explicit))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Contour Editor › Delete: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1340; 02 §7.1.2 line 457 (SI-184))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Contour Editor › Delete with no anchor selected: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1340; 02 §7.1.2 line 457; C41-R2-09 (a refused key is consumed silently))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Contour Editor: line invisible: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1326 (label \"Edit Stroke\"); 02 §8 line properties (SI-196))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Contour Editor: line thickness: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1326 (label \"Edit Stroke\"); 02 §8 line properties (SI-196); D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 status bar › jobs: a running job shows and goes when it ends (01 §9.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 File › Open Recent › an entry's full path: the status bar shows the highlighted entry's full path, then its line again; no command (01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\"))"
+  }
+ ],
+ "rows": [
+  {
+   "name": "Contour Editor › Snap to Contour on, then a drag",
+   "spec": "spec/02_drawing.md:1338; 02 §7.1.2 lines 450, 461; §8.9 (SI-187: the setting made explicit)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "contourEditor",
+    "<function build_and_run.<locals>.anchor_pts.<locals>.pts at 0x000001035D9A44A0>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": {
+      "command": "draw.point.move",
+      "params": "points [square, 0], delta (14, 5) du, snap true"
+     },
+     "sent": [
+      {
+       "command": "draw.point.move",
+       "params": {
+        "drawingId": "dr_01K7JJN800TJ4EGWMR4HN7JBM6",
+        "points": [
+         {
+          "strokeId": "st_01K7JJN800RCP91W2F1M63M6R9",
+          "anchor": 0
+         }
+        ],
+        "delta": {
+         "x": 14,
+         "y": 5
+        },
+        "snap": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Contour Editing",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Contour Editor › Delete",
+   "spec": "spec/02_drawing.md:1340; 02 §7.1.2 line 457 (SI-184)",
+   "action": [
+    "key",
+    46,
+    "Delete"
+   ],
+   "clicks": [
+    {
+     "input": "the real key Delete",
+     "expected": {
+      "command": "draw.point.delete",
+      "params": {}
+     },
+     "sent": [
+      {
+       "command": "draw.point.delete",
+       "params": {}
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Contour Editing",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Contour Editor › Delete with no anchor selected",
+   "spec": "spec/02_drawing.md:1340; 02 §7.1.2 line 457; C41-R2-09 (a refused key is consumed silently)",
+   "action": [
+    "key",
+    46,
+    "Delete"
+   ],
+   "clicks": [
+    {
+     "input": "the real key Delete",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Contour Editor: line invisible",
+   "spec": "spec/02_drawing.md:1326 (label \"Edit Stroke\"); 02 §8 line properties (SI-196)",
+   "action": [
+    "dom",
+    "toolOptions.selectedLine.invisible"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.stroke.set",
+      "params": {
+       "strokeId": "dr_01K7JJN800TJ4EGWMR4HN7JBM6/st_01K7JJN800P2C1NGC5RFC6GT2F",
+       "kind": "invisible"
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.stroke.set",
+       "params": {
+        "strokeId": "dr_01K7JJN800TJ4EGWMR4HN7JBM6/st_01K7JJN800P2C1NGC5RFC6GT2F",
+        "kind": "invisible"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Edit Stroke",
+       "user"
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.stroke.set",
+      "params": {
+       "strokeId": "dr_01K7JJN800TJ4EGWMR4HN7JBM6/st_01K7JJN800P2C1NGC5RFC6GT2F",
+       "kind": "pencil"
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.stroke.set",
+       "params": {
+        "strokeId": "dr_01K7JJN800TJ4EGWMR4HN7JBM6/st_01K7JJN800P2C1NGC5RFC6GT2F",
+        "kind": "pencil"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Edit Stroke",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Contour Editor: line thickness",
+   "spec": "spec/02_drawing.md:1326 (label \"Edit Stroke\"); 02 §8 line properties (SI-196); D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'4.5' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "draw.stroke.set",
+      "params": {
+       "strokeId": "dr_01K7JJN800TJ4EGWMR4HN7JBM6/st_01K7JJN8002QXZGJ1KEACZRRX0",
+       "thickness": 4.5
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.stroke.set",
+       "params": {
+        "strokeId": "dr_01K7JJN800TJ4EGWMR4HN7JBM6/st_01K7JJN8002QXZGJ1KEACZRRX0",
+        "thickness": 4.5
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Edit Stroke",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "status bar › jobs",
+   "spec": "spec/11_agent_interface_mcp.md:636; 01 §9.1 (status bar: running jobs)",
+   "runningPerKernel": [
+    1,
+    1
+   ],
+   "jobId": "job-2",
+   "shownWhileRunning": [
+    "1 job running"
+   ],
+   "afterEnd": "",
+   "ok": true
+  },
+  {
+   "name": "File › Open Recent › an entry's full path",
+   "spec": "01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\")",
+   "form": "os",
+   "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-xgplfgao\\D39-recent.animpkg",
+   "shownWhileHighlighted": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-xgplfgao\\D39-recent.animpkg",
+   "before": "",
+   "afterClose": "",
+   "sent": [],
+   "ok": true
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 131,
+   "sha256": "f5f4441851fb0bb1fac0d7bc5a010099a0213ba07038012d09056aa1e2982806"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 54618,
+   "sha256": "4ac47da97e44d435d1816c2e6242ba20b52e2f5c9519aa188f6f7e8e239dd5f6"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 6776,
+   "sha256": "ec37451b24aba4e93c9d067834359a53485cfc7c84d86f1f8b941f1b1ee7b031"
+  }
+ ]
+}
