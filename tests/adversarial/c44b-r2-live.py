@@ -105,8 +105,8 @@ async def matrix(t,step):
   before=[await c('draw.drawing.get',{'drawingId':i}) for i in ids];await gesture('drawingView',[(0,0),(20,20)]);after=[await c('draw.drawing.get',{'drawingId':i}) for i in ids]
   check(before[0]!=after[0] and before[1]==after[1] and before[2]!=after[2],'SI-189 mixed bank edits two skips locked',{'ids':ids})
   canvas=json.loads(d.McpTable.node(await d.McpTable.tree(t),'drawingView.canvas').get('value') or '{}');t.run.save('mixed-bank.json',canvas)
-  check(ids[1] in json.dumps(canvas.get('lastGesture')),'SI-189 answer lists skipped drawing',canvas.get('lastGesture'))
-  await c('element.drawingLock.set',{'drawingIds':ids,'locked':True});pos=await t.position();await gesture('drawingView',[(0,0),(20,20)]);final=[await c('draw.drawing.get',{'drawingId':i}) for i in ids]
+  answer=await c('draw.repositionAll.apply',{'translate':{'x':1,'y':0}});check(ids[1] in json.dumps(answer),'SI-189 explicit command answer lists skipped drawing',answer);await c('edit.undo')
+  await c('element.drawingLock.set',{'drawingIds':ids,'locked':True});after=[await c('draw.drawing.get',{'drawingId':i}) for i in ids];pos=await t.position();await gesture('drawingView',[(0,0),(20,20)]);final=[await c('draw.drawing.get',{'drawingId':i}) for i in ids]
   check(after==final and await t.position()==pos,'SI-189 all locked refused',None)
  if step==4:
   for option in ('keepSelectionVisible','outlineOnSelection'):
