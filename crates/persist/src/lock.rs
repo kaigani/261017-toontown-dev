@@ -823,6 +823,9 @@ pub fn acquire(project: &Path) -> Locked {
         Err(e) => return Locked::NotWritable(e.to_string()),
     };
     let pause = || std::thread::sleep(Duration::from_millis(5));
+    // Another's stale lock this call removed in an earlier round: still the lock it took over when a later round
+    // confirms the publication.
+    let mut removed: Option<LockInfo> = None;
     loop {
         let deadline = std::time::Instant::now() + DECIDE_BOUND;
         while std::time::Instant::now() < deadline {
@@ -882,7 +885,11 @@ pub fn acquire(project: &Path) -> Locked {
                         }
                     }
                     // This call's own unconfirmed publication (below) is not another's stale lock.
-                    c.filter(|c| c.lock_id != info.lock_id)
+                    let other = c.filter(|c| c.lock_id != info.lock_id);
+                    if other.is_some() {
+                        removed.clone_from(&other);
+                    }
+                    other
                 }
             };
             let mut file = match create_protected(&path) {
@@ -909,7 +916,7 @@ pub fn acquire(project: &Path) -> Locked {
             if still && back.is_some_and(|b| b.lock_id == info.lock_id) {
                 return Locked::Acquired {
                     handle: LockHandle { path, info: Mutex::new(info), file: Mutex::new(Some(file)) },
-                    took_over,
+                    took_over: took_over.or(removed),
                 };
             }
             // Not confirmed (ruling D-84: never "held by another" for a lock nobody holds): the publication confers

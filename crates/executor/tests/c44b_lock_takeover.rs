@@ -249,9 +249,9 @@ fn an_abandoned_arbitration_file_is_removed_once_under_its_own_protection_and_on
     let _ = std::fs::remove_dir_all(&dir);
 }
 
-/// The zero-owner schedule (Unix: on Windows a removed file stays under its name while a handle that shares deletion
-/// is open, so the successor cannot even be created: `windows_a_delete_pending_arbiter_blocks_every_successor`).
-#[cfg(unix)]
+/// The zero-owner schedule. The other reaper's removal is `std::fs::remove_file`, which frees the name at once (Unix;
+/// Windows with POSIX delete semantics, as std uses on NTFS); a legacy delete-pending removal is tested on its own
+/// (`windows_a_delete_pending_arbiter_blocks_every_successor`).
 #[test]
 fn the_zero_owner_schedule_a_delayed_reaper_never_removes_a_successors_arbiter() {
     let _s = serial();
@@ -292,8 +292,7 @@ fn the_zero_owner_schedule_a_delayed_reaper_never_removes_a_successors_arbiter()
     let _ = std::fs::remove_dir_all(&dir);
 }
 
-/// The two-owner schedule (Unix; see the zero-owner test for Windows). W's `Acquired` is required before D resumes.
-#[cfg(unix)]
+/// The two-owner schedule (both systems, as the zero-owner test). W's `Acquired` is required before D resumes.
 #[test]
 fn the_two_owner_schedule_a_resumed_stale_decision_never_removes_a_live_owners_lock() {
     let _s = serial();
@@ -322,9 +321,11 @@ fn the_two_owner_schedule_a_resumed_stale_decision_never_removes_a_live_owners_l
     let _ = std::fs::remove_dir_all(&dir);
 }
 
-/// Windows (ruling D-83 item 2): a removed arbitration file whose holder's handle (which shares deletion) is open stays
-/// under its name, delete pending; no contender creates a successor until the handle closes, and the paused holder,
-/// whose arbiter is no longer its own, does not announce ownership.
+/// Windows (ruling D-83 item 2): an arbitration file deleted by a legacy delete-on-close handle (as a proof deletes)
+/// while its holder's handle, which shares deletion, is open stays under its name, delete pending; no contender creates
+/// a successor until the holder's handle closes. The paused holder, whose arbiter is no longer its own, does not
+/// announce its first publication: it closes it and decides again (ruling D-84), and once its old arbitration file is
+/// gone it owns the lock, reporting the stale lock it took over. Exactly one owner.
 #[cfg(windows)]
 #[test]
 fn windows_a_delete_pending_arbiter_blocks_every_successor() {
@@ -337,8 +338,20 @@ fn windows_a_delete_pending_arbiter_blocks_every_successor() {
     sched.arm("D", Boundary::TakeoverDecided);
     let d = participant("D", &project);
     sched.wait_held("D", Boundary::TakeoverDecided);
-    // Removed behind D's back: delete pending while D's handle is open.
-    std::fs::remove_file(&takeover).unwrap();
+    // Deleted behind D's back by a legacy delete-on-close handle (sharing reading, writing and deletion, as D's handle
+    // needs): delete pending while D's handle is open.
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        const DELETE: u32 = 0x0001_0000;
+        const FILE_FLAG_DELETE_ON_CLOSE: u32 = 0x0400_0000;
+        let deleter = std::fs::OpenOptions::new()
+            .access_mode(DELETE)
+            .share_mode(0x1 | 0x2 | 0x4)
+            .custom_flags(FILE_FLAG_DELETE_ON_CLOSE)
+            .open(&takeover)
+            .unwrap();
+        drop(deleter);
+    }
     sched.arm("W", Boundary::ArbiterNotTaken);
     let w = participant("W", &project);
     sched.wait_held("W", Boundary::ArbiterNotTaken);
@@ -346,11 +359,14 @@ fn windows_a_delete_pending_arbiter_blocks_every_successor() {
     assert_eq!(lock::read(&lock_file).map(|i| i.lock_id).as_deref(), Some("stale"), "nothing published meanwhile");
     sched.resume("D", Boundary::TakeoverDecided);
     let d_outcome = d.join().unwrap();
-    assert!(!matches!(d_outcome, Locked::Acquired { .. }), "D's arbiter is not its own: {d_outcome:?}");
+    let Locked::Acquired { handle, took_over } = &d_outcome else {
+        panic!("D owns the lock in the end: {d_outcome:?}")
+    };
+    assert!(handle.held());
+    assert_eq!(took_over.as_ref().map(|i| i.lock_id.as_str()), Some("stale"), "the stale lock is reported");
     sched.resume("W", Boundary::ArbiterNotTaken);
     let w_outcome = w.join().unwrap();
-    let Locked::Acquired { handle, .. } = &w_outcome else { panic!("W owns the lock after D: {w_outcome:?}") };
-    assert!(handle.held());
+    assert!(matches!(w_outcome, Locked::HeldByOther(_)), "W is told D holds it: {w_outcome:?}");
     drop((d_outcome, w_outcome));
     drop(sched);
     let _ = std::fs::remove_dir_all(&dir);
