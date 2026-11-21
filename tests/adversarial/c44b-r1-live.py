@@ -679,8 +679,162 @@ async def envelope_body(t,step):
                 check(before==await drawings(ids) and pos==await t.position(),view+' '+tool+' empty drawings unchanged',rec)
                 t.run.save(view+'-'+tool+'-empty-drawings.json',rec)
 
+
+async def text_body(t,step):
+    import asyncio, ctypes, time
+    from ctypes import wintypes
+    p=PRIOR; d=p.d; c=t.cmd; check=t.run.check
+    t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+    rows=[]
+    async def pause():await asyncio.sleep(.6)
+    async def state(name):
+        tree=await d.McpTable.tree(t)
+        canvas=d.McpTable.node(tree,view+'.canvas') or {}
+        v=json.loads(canvas.get('value') or '{}')
+        row={'name':name,'commands':t.recorded(),'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True}),'editor':d.McpTable.node(tree,'canvas.textEditor'),'canvas':v,'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
+        rows.append(row);t.clear();return row
+    async def gesture(pts):
+        m=(await c('draw.viewMapping.get',{'view':view}))['drawingToView']
+        eq=load('text_eq','scripts/c44b-gesture-equivalence.py')
+        rr=t.cdp.js("document.querySelector('[data-tt-id=\""+view+".canvas\"]').getBoundingClientRect().toJSON()")
+        o=wintypes.POINT();d.front();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(o));scale=t.cdp.js('devicePixelRatio')
+        xy=[eq.c42.apply(m,*q) for q in pts]
+        for i,(x,y) in enumerate(xy):
+            d.u32.SetCursorPos(round(o.x+(rr['x']+x)*scale),round(o.y+(rr['y']+y)*scale))
+            if i==0:d.e6._send_button(True)
+            await asyncio.sleep(.1)
+        d.e6._send_button(False);await pause()
+    async def fixture(text='',width=None,v='drawingView'):
+        nonlocal view,eid
+        view=v
+        await p.r3.preserve_fixture(t)
+        await c('project.create',{'name':'Text live review','onUnsaved':'discard'})
+        eid=(await c('element.create',{'type':'drawing','name':'Text'}))['elementIds'][0]
+        await c('element.drawing.create',{'elementId':eid,'name':'1','exposeFrom':1,'exposeTo':24})
+        await c('app.context.set',{'elementId':eid,'frame':1})
+        await c('workspace.select',{'name':'Drawing' if view=='drawingView' else 'Default'})
+        await c('window.panel.set',{'panelId':view,'visible':True,'focus':True});await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
+        await c('tool.active.set',{'toolId':'text'});await pause();t.clear()
+        await gesture([(-100,80)] if width is None else [(-100,80),(-100+width,20)])
+        if text:d.type_text(text);await pause()
+        return await state('fixture '+text[:20])
+    def texts(row):return [n for n in row['drawing'].get('nodes',[]) if 'text' in n and 'runs' in n]
+    def content(row):return ''.join(n['text'] for n in texts(row))
+    async def key(vk,*mods):d.front();d.key(vk,*mods);await pause();return await state('key '+hex(vk)+' '+str(mods))
+    async def typed(txt):d.front();d.type_text(txt);await pause();return await state('typed '+txt[:24])
+    def clip_set(txt):
+        import tkinter
+        r=tkinter.Tk();r.withdraw();r.clipboard_clear();r.clipboard_append(txt);r.update();return r
+    def clip_get():
+        import tkinter
+        r=tkinter.Tk();r.withdraw()
+        try:return r.clipboard_get()
+        finally:r.destroy()
+    view='drawingView';eid=None
+    try:
+        if step==1:
+            for width in (None,240):
+                r=await fixture('Hello',width);ns=texts(r)
+                check(len(ns)==1 and ns[0]['text']=='Hello','02 7.6 real creation',ns)
+                check(width is None or abs(ns[0].get('width',0)-width)<=1,'02 7.6 drag width',ns)
+                # Independent direct command on a clean drawing; compare text content excluding generated ids.
+                gui=ns[0]
+                await c('tool.active.set',{'toolId':'select'});await c('draw.object.delete',{'ids':[gui['id']]})
+                params={'position':{'x':gui['transform'][4],'y':gui['transform'][5]},'text':'Hello'}
+                if width is not None:params['width']=width
+                await c('draw.text.add',params);direct=await state('direct draw.text.add')
+                normalize=lambda n:{k:v for k,v in n.items() if k not in ('id','bounds')}
+                check(normalize(gui)==normalize(texts(direct)[0]),'D-32 direct exact text node',{'gui':gui,'direct':texts(direct)})
+        elif step==2:
+            for mode in ('continuous','left','click','timer','save'):
+                await fixture();pos=await t.position();await typed('ab')
+                if mode=='left':await key(0x25)
+                if mode=='click':await gesture([(-90,65)]);await state('click caret')
+                if mode=='timer':await asyncio.sleep(10)
+                if mode=='save':await c('project.saveAs',{'path':str(t.work/(mode+'.animpkg'))});await state('save')
+                await typed('c');labels=await t.steps_since(pos)
+                check([x[0] for x in labels]==(['Typing'] if mode in ('continuous','timer') else ['Typing','Typing']),'SI-191 '+mode,labels)
+                await c('edit.undo');r=await state('undo '+mode)
+                if mode in ('continuous','timer'):check(content(r)=='','SI-191 undo whole run',texts(r))
+        elif step==3:
+            await fixture('one two\nthree four')
+            for vk,mods in [(0x24,()),(0x27,()),(0x25,()),(0x26,()),(0x28,()),(0x23,()),(0x25,(0x10,)),(0x27,(0x10,)),(0x26,(0x10,)),(0x28,(0x10,)),(0x24,(0x10,)),(0x23,(0x10,)),(0x25,(0x11,)),(0x27,(0x11,)),(0x08,()),(0x2e,()),(0x08,(0x11,)),(0x0d,()),(0x09,()),(0x41,(0x11,))]:
+                await key(vk,*mods)
+            await gesture([(-70,65)]);await gesture([(-70,65)]);await state('double click word')
+        elif step==4:
+            await fixture('hello world')
+            await typed('b');await key(0x20);r=await state('tool letter and space')
+            check(r['tool'].get('toolId')=='text' and content(r)=='hello worldb ','SI-193 letter space',r['tool'])
+            await key(0x25);r=await key(0x2e);check(content(r)=='hello worldb','SI-193 Delete character',texts(r))
+            await key(0x41,0x11);before=await c('draw.selection.get');await key(0x43,0x11);check(clip_get()=='hello worldb','SI-193 OS Copy',clip_get())
+            await key(0x58,0x11);r=await key(0x56,0x11);check(content(r)=='hello worldb','SI-193 Cut Paste',texts(r));check(before==await c('draw.selection.get'),'SI-193 selection untouched',None)
+            await key(0x1b);await gesture([(180,-80)]);await state('outside new object');await key(0x1b)
+            r=await state('empty deletion');check(any(x.get('label')=='Delete Text Object' for x in r['history'].get('entries',[])),'SI-194 empty deletion label',r['history'])
+            await fixture('keep');await c('tool.active.set',{'toolId':'brush'});await typed('z');r=await state('tool switch');check(content(r)=='keep','02 7.6 switch keeps text',texts(r))
+            await fixture('abc');r=await key(0x5a,0x11);check(content(r)=='','STATIC-04 document undo',texts(r))
+        elif step==5:
+            value='e\u0301 \U0001f469\u200d\U0001f4bb \U00010400 \u65e5\u672c\u8a9e'
+            for mode in ('paste','unicode'):
+                await fixture()
+                if mode=='paste':root=clip_set(value);r=await key(0x56,0x11);root.destroy()
+                else:
+                    units=value.encode('utf-16-le');d.type_text(''.join(chr(int.from_bytes(units[i:i+2],'little')) for i in range(0,len(units),2)));await pause();r=await state('synthetic unicode')
+                check(content(r)==value,'02 7.6 Unicode exact '+mode,{'expected':value,'observed':content(r)})
+                for _ in range(len(value)):await key(0x25)
+                for _ in range(7):await key(0x27)
+                await key(0x08);await key(0x2e)
+        elif step==6:
+            await fixture('one two');await c('window.panel.set',{'panelId':'text','visible':True});await pause()
+            await key(0x24);await key(0x27,0x11,0x10)
+            for ident in ('text.bold','text.italic'):
+                t.click(ident);await pause();await state(ident)
+            for ident,value in [('text.size','48'),('text.kerning','7')]:
+                t.click(ident);d.key(0x41,0x11);d.type_text(value);d.key(0x0d);await pause();await state(ident)
+            await t.do(('select','text.align','centre'));await pause();await state('alignment')
+            await key(0x41,0x11);await state('mixed')
+            await key(0x23);t.click('text.bold');await pause();await state('pending bold');await typed('B')
+            await fixture('A');await c('window.panel.set',{'panelId':'text','visible':True});await pause();pos=await t.position();t.click('text.bold');await pause();await typed('B');check(len(await t.steps_since(pos))==1,'STATIC-01 format ends typing run',await t.steps_since(pos))
+        elif step==7:
+            for mode in ('normal','element-locked','drawing-locked','hidden','frame','tool'):
+                r=await fixture('abcd',v='cameraView');node=texts(r)[0]
+                if mode=='element-locked':await c('element.lock.set',{'elementIds':[eid],'locked':True})
+                if mode=='drawing-locked':await c('draw.lock.set',{'locked':True})
+                if mode=='hidden':
+                    await c('drawAid.selectionDisplay.set',{'keepSelectionVisible':False,'outlineOnSelection':False});await c('drawAid.currentOnTop.set',{'enabled':False});await c('element.visibility.set',{'elementIds':[eid],'scope':'scene','visible':False})
+                if mode=='frame':await c('app.context.set',{'elementId':eid,'frame':25})
+                if mode=='tool':await c('tool.active.set',{'toolId':'brush'})
+                await pause();r=await typed('X')
+                if mode in ('element-locked','drawing-locked','hidden'):check(content(r)=='abcd','02 7.6 / design 7 no edit '+mode,texts(r))
+                await state('camera '+mode)
+        elif step==8:
+            for mode in ('change','delete','undo'):
+                r=await fixture('abcdef');node=texts(r)[0]
+                if mode=='change':await c('draw.text.set',{'textId':node['id'],'text':'a'})
+                if mode=='delete':await c('draw.object.delete',{'ids':[node['id']]})
+                if mode=='undo':await c('edit.undo')
+                await typed('Z');await state('agent '+mode)
+                result=await c('doc.validate');check(not result.get('errors'),'agent '+mode+' validates',result)
+        elif step==9:
+            await fixture(width=240);root=clip_set('x'*100000);start=time.monotonic();await key(0x56,0x11);elapsed=time.monotonic()-start;root.destroy();r=await state('100k paste');check(elapsed<8,'100k responsive',{'elapsed':elapsed,'length':len(content(r))})
+            await fixture('long single line '*40,width=160);await state('wrap')
+            await c('window.panel.set',{'panelId':'text','visible':True});await pause();await key(0x41,0x11);t.click('text.font');d.key(0x41,0x11);d.type_text('ReviewMissingFont987');d.key(0x0d);await pause();await state('missing font')
+            await key(0x23);await typed('A');t.click('text.bold');await pause();await state('format');root=clip_set('paste');await key(0x56,0x11);root.destroy();before=await state('before history')
+            await c('edit.undo');u=await state('undo');await c('edit.redo');r=await state('redo');check(r['drawing']==before['drawing'],'undo redo exact content',None);await c('edit.undo');r=await state('undo again');check(r['drawing']==u['drawing'],'second undo exact content',None)
+    finally:
+        # Cap repository receipts; full text and captures remain in TEMP.
+        t.run.save('text-actions.json',rows)
+        def small(x):
+            if isinstance(x,str) and len(x)>1000:return {'length':len(x),'prefix':x[:80],'sha256':__import__('hashlib').sha256(x.encode()).hexdigest()}
+            if isinstance(x,list):return [small(y) for y in x]
+            if isinstance(x,dict):return {k:small(v) for k,v in x.items()}
+            return x
+        save('l3-step'+str(step)+'-actions.json',small(rows))
+
 if __name__=='__main__':
-    case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b','l2a','l2b')
+    case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b','l2a','l2b','l3a','l3b')
+    if case in ('l3a','l3b'):
+        PRIOR=load('c44b_prior','tests/adversarial/c44a-r1-live.py');PRIOR.EVID=EVID;PRIOR.live_body=text_body
+        sys.exit(PRIOR.live(step))
     if case in ('l2a','l2b'):
         PRIOR=load('c44b_prior','tests/adversarial/c44a-r1-live.py');PRIOR.EVID=EVID;PRIOR.live_body=envelope_body
         phase='-user-frame' if os.environ.get('C44B_FRAME_ONLY') else ''
