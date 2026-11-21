@@ -1,0 +1,2292 @@
+{
+  "checks": 111,
+  "failures": [
+    {
+      "check": "cameraView-perspective-element-locked command",
+      "ok": false,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-perspective-element-locked undo labels",
+      "ok": false,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView perspective element-locked forbidden edit unchanged",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 6,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 117,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 298,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.envelope.apply",
+            "params": {
+              "corners": [
+                {
+                  "x": -50.5,
+                  "y": -35.5
+                },
+                {
+                  "x": 80.5,
+                  "y": -60.5
+                },
+                {
+                  "x": 80.5,
+                  "y": 60.5
+                },
+                {
+                  "x": -80.5,
+                  "y": 60.5
+                }
+              ],
+              "mapping": "auto"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView perspective hidden has no overlay box",
+      "ok": false,
+      "detail": {
+        "role": "canvas",
+        "id": "cameraView.canvas",
+        "label": "Canvas",
+        "value": "{\"backend\":\"webgl2\",\"generation\":0,\"drawings\":[],\"failures\":[],\"gesture\":{\"status\":\"ok\"},\"selection\":{\"objects\":0,\"handles\":0,\"points\":0,\"pivot\":false},\"viewType\":\"camera\",\"overlay\":false,\"camera\":{\"frame\":true,\"pivots\":0,\"boxes\":0,\"otherCameras\":0,\"handles\":0},\"toolBox\":{\"tool\":\"perspective\",\"locked\":false,\"handles\":8},\"drawn\":0,\"residentDrawings\":0,\"residentBytes\":22167720,\"lastError\":null,\"lastGesture\":{\"origin\":\"user\",\"tool\":\"perspective\",\"view\":\"cameraView\",\"pointerType\":\"mouse\",\"drawingToView\":[1.5999999999999999,0,0,-1.5999999999999999,417,221.5],\"events\":[{\"type\":\"down\",\"x\":288.921875,\"y\":317,\"modifiers\":[],\"dt\":0,\"pressure\":1,\"button\":\"left\"},{\"type\":\"move\",\"x\":288.921875,\"y\":317,\"modifiers\":[],\"dt\":6,\"pressure\":1},{\"type\":\"move\",\"x\":336.921875,\"y\":277,\"modifiers\":[],\"dt\":117,\"pressure\":1},{\"type\":\"up\",\"x\":336.921875,\"y\":277,\"modifiers\":[],\"dt\":298,\"pressure\":1}],\"eventCount\":4,\"status\":\"ok\",\"code\":null,\"commands\":[{\"commandId\":\"draw.envelope.apply\",\"params\":{\"corners\":[{\"x\":-50.5,\"y\":-35.5},{\"x\":80.5,\"y\":-60.5},{\"x\":80.5,\"y\":60.5},{\"x\":-80.5,\"y\":60.5}],\"mapping\":\"auto\"}}]}}"
+      }
+    },
+    {
+      "check": "cameraView-perspective-hidden command",
+      "ok": false,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-perspective-hidden undo labels",
+      "ok": false,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView perspective hidden forbidden edit unchanged",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 15,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 304,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.envelope.apply",
+            "params": {
+              "corners": [
+                {
+                  "x": -50.5,
+                  "y": -35.5
+                },
+                {
+                  "x": 80.5,
+                  "y": -60.5
+                },
+                {
+                  "x": 80.5,
+                  "y": 60.5
+                },
+                {
+                  "x": -80.5,
+                  "y": 60.5
+                }
+              ],
+              "mapping": "auto"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked command",
+      "ok": false,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked undo labels",
+      "ok": false,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView repositionAll element-locked forbidden edit unchanged",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 11,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 309,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.repositionAll.apply",
+            "params": {
+              "scale": {
+                "x": 0.8131409593557256,
+                "y": 0.7919916796671866
+              },
+              "pivot": {
+                "x": 80.5,
+                "y": 60.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView repositionAll hidden has no overlay box",
+      "ok": false,
+      "detail": {
+        "role": "canvas",
+        "id": "cameraView.canvas",
+        "label": "Canvas",
+        "value": "{\"backend\":\"webgl2\",\"generation\":0,\"drawings\":[],\"failures\":[],\"gesture\":{\"status\":\"ok\"},\"selection\":{\"objects\":0,\"handles\":0,\"points\":0,\"pivot\":false},\"viewType\":\"camera\",\"overlay\":false,\"camera\":{\"frame\":true,\"pivots\":0,\"boxes\":0,\"otherCameras\":0,\"handles\":0},\"toolBox\":{\"tool\":\"repositionAll\",\"locked\":false,\"handles\":8},\"drawn\":0,\"residentDrawings\":0,\"residentBytes\":22167720,\"lastError\":null,\"lastGesture\":{\"origin\":\"user\",\"tool\":\"repositionAll\",\"view\":\"cameraView\",\"pointerType\":\"mouse\",\"drawingToView\":[1.5999999999999999,0,0,-1.5999999999999999,417,221.5],\"events\":[{\"type\":\"down\",\"x\":288.921875,\"y\":317,\"modifiers\":[],\"dt\":0,\"pressure\":1,\"button\":\"left\"},{\"type\":\"move\",\"x\":288.921875,\"y\":317,\"modifiers\":[],\"dt\":11,\"pressure\":1},{\"type\":\"move\",\"x\":336.921875,\"y\":277,\"modifiers\":[],\"dt\":100,\"pressure\":1},{\"type\":\"up\",\"x\":336.921875,\"y\":277,\"modifiers\":[],\"dt\":309,\"pressure\":1}],\"eventCount\":4,\"status\":\"ok\",\"code\":null,\"commands\":[{\"commandId\":\"draw.repositionAll.apply\",\"params\":{\"scale\":{\"x\":0.8131409593557256,\"y\":0.7919916796671866},\"pivot\":{\"x\":80.5,\"y\":60.5}}}]}}"
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-hidden command",
+      "ok": false,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-hidden undo labels",
+      "ok": false,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView repositionAll hidden forbidden edit unchanged",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 16,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 305,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.repositionAll.apply",
+            "params": {
+              "scale": {
+                "x": 0.8131409593557256,
+                "y": 0.7919916796671866
+              },
+              "pivot": {
+                "x": 80.5,
+                "y": 60.5
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "results": [
+    {
+      "check": "drawingView-perspective-one-locked command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-one-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-one-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-one-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-one-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-current-locked command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-current-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-current-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-current-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-current-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective current-locked forbidden edit unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-all-locked command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-all-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-all-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-all-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-all-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective all-locked forbidden edit unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-element-locked command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-element-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-element-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-element-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-element-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView partial lock skips only locked",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView partial lock skips only locked",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll all-locked forbidden edit unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-one-locked command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-one-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-one-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-one-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-one-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-current-locked command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-current-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-current-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-current-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-current-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective current-locked forbidden edit unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-all-locked command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-all-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-all-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-all-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-all-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective all-locked forbidden edit unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-element-locked command",
+      "ok": false
+    },
+    {
+      "check": "cameraView-perspective-element-locked undo labels",
+      "ok": false
+    },
+    {
+      "check": "cameraView-perspective-element-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-element-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-element-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective element-locked forbidden edit unchanged",
+      "ok": false
+    },
+    {
+      "check": "cameraView perspective hidden has no overlay box",
+      "ok": false
+    },
+    {
+      "check": "cameraView-perspective-hidden command",
+      "ok": false
+    },
+    {
+      "check": "cameraView-perspective-hidden undo labels",
+      "ok": false
+    },
+    {
+      "check": "cameraView-perspective-hidden D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-hidden finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-hidden undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective hidden forbidden edit unchanged",
+      "ok": false
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView partial lock skips only locked",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView partial lock skips only locked",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll all-locked forbidden edit unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked command",
+      "ok": false
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked undo labels",
+      "ok": false
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll element-locked forbidden edit unchanged",
+      "ok": false
+    },
+    {
+      "check": "cameraView repositionAll hidden has no overlay box",
+      "ok": false
+    },
+    {
+      "check": "cameraView-repositionAll-hidden command",
+      "ok": false
+    },
+    {
+      "check": "cameraView-repositionAll-hidden undo labels",
+      "ok": false
+    },
+    {
+      "check": "cameraView-repositionAll-hidden D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-hidden finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-hidden undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll hidden forbidden edit unchanged",
+      "ok": false
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-perspective-all-locked",
+      "commands": [],
+      "labels": [],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800QRVHFSE6WFGXN0DR",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ASPPENX17K9WVXZY",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800QH07M9DNFP3Q5PGF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800QRVHFSE6WFGXN0DR",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ASPPENX17K9WVXZY",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800QH07M9DNFP3Q5PGF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "ac208d716218a3343994a411313b5268f5b0dd95871f614e1a16eaef1fc49efd",
+      "afterSha256": "ac208d716218a3343994a411313b5268f5b0dd95871f614e1a16eaef1fc49efd"
+    },
+    {
+      "name": "cameraView-perspective-current-locked",
+      "commands": [],
+      "labels": [],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800YWHFZ45HGZ37V2MF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80067GT4WN5PZBY7R5V",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800CM8BQM6WM8YY8WJ0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800YWHFZ45HGZ37V2MF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80067GT4WN5PZBY7R5V",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800CM8BQM6WM8YY8WJ0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "0f8ebf801bada8b1e6e22866356a5d8a47bb76ff593b2fdca42984ad6209abbf",
+      "afterSha256": "0f8ebf801bada8b1e6e22866356a5d8a47bb76ff593b2fdca42984ad6209abbf"
+    },
+    {
+      "name": "cameraView-perspective-element-locked",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800RWWPQMF6HGBJ21PF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8005BVCDBW4KKBQARM8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80033TAEFT46F2QR7ZC",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800RWWPQMF6HGBJ21PF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8005BVCDBW4KKBQARM8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80033TAEFT46F2QR7ZC",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "6d7ac6efdda7a89e74210c4a962efa53a4800104bf1710ff786f7007dc4b369c",
+      "afterSha256": "1d280d8d57ef66aae2501c59e772430aa98029c75c92bd95104a0c0f536359ff"
+    },
+    {
+      "name": "cameraView-perspective-hidden",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8008KECZD9WQ4BAQF45",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800MVQ8981E7TTWA2R7",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800117NA3W9MRAHMGGP",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8008KECZD9WQ4BAQF45",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800MVQ8981E7TTWA2R7",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800117NA3W9MRAHMGGP",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "d5cc64195cd109d12ef09f26e29c6884821ca9c7ea197e965c659ab6082a8c3e",
+      "afterSha256": "b16862dc596b2f2631d879e4724fe12f09a6796aece099e82ba4020d48d9b3ae"
+    },
+    {
+      "name": "cameraView-perspective-one-locked",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800CCWXKQJYDMDH4BZ0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZXGYTF0QNFW30MPK",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YXQVNM8ZQPBNYEN4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800CCWXKQJYDMDH4BZ0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZXGYTF0QNFW30MPK",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YXQVNM8ZQPBNYEN4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "d6ba5afed4d708a1566a1347b28722551e70294af9186eb3c62ecd4228d684b7",
+      "afterSha256": "c5747735750b4249e3d18db390c98f88a1a99311973357dffab74e151d7082b3"
+    },
+    {
+      "name": "cameraView-repositionAll-all-locked",
+      "commands": [],
+      "labels": [],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800WA9KYXDN97V3B4YV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80079185CAVPVMJCE54",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800B821QSYN8Y102SR1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800WA9KYXDN97V3B4YV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80079185CAVPVMJCE54",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800B821QSYN8Y102SR1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "0e97a1c462c933a760d7197ff1e2f6b313dab373db9f52226d61619a977a5d50",
+      "afterSha256": "0e97a1c462c933a760d7197ff1e2f6b313dab373db9f52226d61619a977a5d50"
+    },
+    {
+      "name": "cameraView-repositionAll-current-locked",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800Q42V8ADKJB6NVDVJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800P8BT05V5C91VGYWK",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZHWBY6W2ZH51XKBJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800Q42V8ADKJB6NVDVJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800P8BT05V5C91VGYWK",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZHWBY6W2ZH51XKBJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "fa6f5b644ca83b3d34adc2639245a6d782ebf432504377d1d1758722818f51e3",
+      "afterSha256": "3508cbccdc1f220a8b0752e9dfce3c68249d70628fa1192015f62332e7a778ed"
+    },
+    {
+      "name": "cameraView-repositionAll-element-locked",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800V65B5GSQN3D59A6W",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8007QFSGN8Q7SPDCW9A",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800GR8VMX2K84DB2FF4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800V65B5GSQN3D59A6W",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8007QFSGN8Q7SPDCW9A",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800GR8VMX2K84DB2FF4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "cd1d351bdd98b6343bcd32e5542071f0571a5cb9ee6a98712e7fb41492ec745e",
+      "afterSha256": "b075cc2066ffbb1ab4a7cfccfe94cb591f565f0b5b8715e8b3ff4a2e7d906ee1"
+    },
+    {
+      "name": "cameraView-repositionAll-hidden",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800Z35Z2W4GG8GK49HN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800Y8BWWNQZYNESEHFV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8009YE3637R7TJ6KVBG",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800Z35Z2W4GG8GK49HN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800Y8BWWNQZYNESEHFV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8009YE3637R7TJ6KVBG",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "0b1fb1b565bd47320f5a9a93ed7f54f5beaf7806df7ee367599923371064e350",
+      "afterSha256": "fdd18ca410f151f2ce7d9bc8be009c8476223b718e2616f6250ea2132afddb65"
+    },
+    {
+      "name": "cameraView-repositionAll-one-locked",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800WFBF1QHP7V86DCFX",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8001MWD8ZRXNE4TT2PD",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800X7472NS8TT6Z6YQ4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800WFBF1QHP7V86DCFX",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8001MWD8ZRXNE4TT2PD",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800X7472NS8TT6Z6YQ4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "4fc79950cd4225f775cd953667c9e8aba4004f524a0b1d4262ff3fcc2b0d6ec7",
+      "afterSha256": "522327b13c73b1a897a172d9892f144015303c3cb4707271496beee1831fb97b"
+    },
+    {
+      "name": "drawingView-perspective-all-locked",
+      "commands": [],
+      "labels": [],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800C7QX9KJRH1519NAA",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800AJQ3DKBR8KWTT007",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800J9S1KXG3NWX1JR23",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800C7QX9KJRH1519NAA",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800AJQ3DKBR8KWTT007",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800J9S1KXG3NWX1JR23",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "b411f15bc0f347a721d411c737b0d8e9bfb957b2304d10d29c14186e631ba188",
+      "afterSha256": "b411f15bc0f347a721d411c737b0d8e9bfb957b2304d10d29c14186e631ba188"
+    },
+    {
+      "name": "drawingView-perspective-current-locked",
+      "commands": [],
+      "labels": [],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800CT6PM2RDMYGQ07K3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8004W53D26J92ZHJ9W1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80036MRBX5H19Y1PVTK",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800CT6PM2RDMYGQ07K3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8004W53D26J92ZHJ9W1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80036MRBX5H19Y1PVTK",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "46b596129e266d015a931b8fba2efea26dc8c6d56f2d7201bf2a4150142666dd",
+      "afterSha256": "46b596129e266d015a931b8fba2efea26dc8c6d56f2d7201bf2a4150142666dd"
+    },
+    {
+      "name": "drawingView-perspective-element-locked",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8008CE4C6Z8Y75D1MX8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800J6S3TGAR3CP9RMMZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8003P3FGCPMBTFQNDXG",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8008CE4C6Z8Y75D1MX8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800J6S3TGAR3CP9RMMZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8003P3FGCPMBTFQNDXG",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "3ff5d7f9c0805a3822659f215a2a78c9c841a6d893a4db7a178489650508bf34",
+      "afterSha256": "efd241a290c39fe480511565794000bfc275c389b9f109dcd738a2e439034c13"
+    },
+    {
+      "name": "drawingView-perspective-one-locked",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8005C2QY7TQ5TQM5FT3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8001ABS234NYHPFNX9M",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800496YKXS0DGMTM1QP",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8005C2QY7TQ5TQM5FT3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8001ABS234NYHPFNX9M",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800496YKXS0DGMTM1QP",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "359270a9a1d0f349686a4b862e519fa193f438dfdd2515da2415d7b52d0e387f",
+      "afterSha256": "325bcaa02910312d8e11ba36c4a5e126a082c1cb4da72d16881b58617d02dc9d"
+    },
+    {
+      "name": "drawingView-repositionAll-all-locked",
+      "commands": [],
+      "labels": [],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800AZVTKKRPJ944X8GX",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8009X0TA8R8VBRY83XN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800BWH11NH3XHT38PGE",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800AZVTKKRPJ944X8GX",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8009X0TA8R8VBRY83XN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800BWH11NH3XHT38PGE",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "d77cad473ebce305c7b8c36e9d2aa287a9f2585357b5039b2eb03b684906ab0b",
+      "afterSha256": "d77cad473ebce305c7b8c36e9d2aa287a9f2585357b5039b2eb03b684906ab0b"
+    },
+    {
+      "name": "drawingView-repositionAll-current-locked",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8006PPXNW31T3840YET",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800MD3FJ8VGBVZQZZEZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8007YY86HRVF8KFBSQY",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8006PPXNW31T3840YET",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800MD3FJ8VGBVZQZZEZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8007YY86HRVF8KFBSQY",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "057bfdfa7b973c3891e0f41442f00797bf96d0762aeb9af55da935f95a95eabc",
+      "afterSha256": "ca13b79d8e0c1b06cad250abcdfef2da10ba40eda96a4dbf6df3b8cd5a592c74"
+    },
+    {
+      "name": "drawingView-repositionAll-element-locked",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800FRCXC7HE18E19HPJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800AVWEE4SBTMR701QS",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800MX21V2BX6P439226",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800FRCXC7HE18E19HPJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800AVWEE4SBTMR701QS",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800MX21V2BX6P439226",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "2821a916d77191633eaa36b6ec554a2ea9bf84314e7bc006eda65cb211baecff",
+      "afterSha256": "5f3de0ef4125609bb39f08c16bfa3548a24cc15477a738e4194b370e15754356"
+    },
+    {
+      "name": "drawingView-repositionAll-one-locked",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800JEZ7NC230SV8TG56",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800W5EDNMJC660Q5S73",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80043C83BPT1VDBNQGT",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800JEZ7NC230SV8TG56",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800W5EDNMJC660Q5S73",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80043C83BPT1VDBNQGT",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "108a1e6dd7b56d8b510ba9f5b822c4b799d3a77f018bffcbdf7080a0196b8dc7",
+      "afterSha256": "c0fcadbca79ca6adb69cd90ce82c30538246eed1d149f86990900613664ad852"
+    }
+  ],
+  "measurements": [],
+  "canvases": [
+    {
+      "name": "cameraView-perspective-all-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8009MG28YZPA889FDWG",
+          "rev": 9,
+          "bucket": 1
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "cameraView-perspective-current-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8009JNEG9JDVGWQK4SR",
+          "rev": 9,
+          "bucket": 1
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "cameraView-perspective-element-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN80044A1NH5AK51PKJQQ",
+          "rev": 4,
+          "bucket": 1
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "cameraView-perspective-hidden-canvas",
+      "drawings": [],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "cameraView-perspective-one-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8007596Y9AD4AR01CN4",
+          "rev": 4,
+          "bucket": 1
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "cameraView-repositionAll-all-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800PKNE6VTFP19P8QP6",
+          "rev": 9,
+          "bucket": 1
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "cameraView-repositionAll-current-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800J9HPT1JD805MC22M",
+          "rev": 9,
+          "bucket": 1
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "cameraView-repositionAll-element-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800CN6ZZADEDZ74NBSP",
+          "rev": 4,
+          "bucket": 1
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "cameraView-repositionAll-hidden-canvas",
+      "drawings": [],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "cameraView-repositionAll-one-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800RD1KPVB6Z2GGT0EH",
+          "rev": 4,
+          "bucket": 1
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "drawingView-perspective-all-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800BVBMBV4J0R0WDX9T",
+          "rev": 9,
+          "bucket": 0
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "drawingView-perspective-current-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800WF7TT00QT4D0P0MJ",
+          "rev": 9,
+          "bucket": 0
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "drawingView-perspective-element-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800YB4NN1XP8WE438E0",
+          "rev": 4,
+          "bucket": 0
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "drawingView-perspective-one-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8000NM5KKR55TGZ13XD",
+          "rev": 4,
+          "bucket": 0
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "drawingView-repositionAll-all-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8007AZC65JNC8YJ08FE",
+          "rev": 9,
+          "bucket": 0
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "drawingView-repositionAll-current-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800AY16881H74EN3V77",
+          "rev": 9,
+          "bucket": 0
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "drawingView-repositionAll-element-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800H4BVA56PZAK97MJA",
+          "rev": 4,
+          "bucket": 0
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "drawingView-repositionAll-one-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800EZ08J5AXJQVVHTCY",
+          "rev": 4,
+          "bucket": 0
+        }
+      ],
+      "contours": null,
+      "overlay": false
+    }
+  ],
+  "captures": [],
+  "transcriptSha256": "f9666c78c9610438c1b996e4995e6fa3f6d0aedc6297fe638cd94605d5ebc93a",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ntykfyvc"
+}

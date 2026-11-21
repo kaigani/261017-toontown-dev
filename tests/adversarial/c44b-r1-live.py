@@ -346,6 +346,15 @@ def compact(step,out):
         node=json.loads(path.read_text(encoding='utf-8'));v=json.loads((node or {}).get('value') or '{}')
         canvases.append({'name':path.stem,'drawings':v.get('drawings'),'contours':v.get('contours'),'overlay':v.get('overlay')})
     captures=[{'name':path.name,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()} for path in out.glob('*.png')]
+    supplemental=[]
+    if str(step).startswith('l2-'):
+        for path in out.glob('*.json'):
+            if any(token in path.stem for token in ('direct-answer','held-','options','empty-','drawTopLayer','placeBehind','snapToContour')):
+                value=json.loads(path.read_text(encoding='utf-8'))
+                if path.stem.endswith('direct-answer'):
+                    value={k:value.get(k) for k in ('status','result','undo','error','errors')}
+                supplemental.append({'name':path.stem,'value':value})
+        save('l2-'+str(step)+'-supplemental.json',supplemental)
     save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'results':[{'check':r['check'],'ok':r['ok']} for r in rows],'actions':actions,'measurements':measurements,'canvases':canvases,'captures':captures,'transcriptSha256':hashlib.sha256((out/'transcript.json').read_bytes()).hexdigest(),'raw':str(out)})
 async def envelope_body(t,step):
     import asyncio, ctypes, math, shutil
@@ -354,6 +363,7 @@ async def envelope_body(t,step):
     from mcp.client.stdio import stdio_client
     p=PRIOR; d=p.d; c=t.cmd; check=t.run.check
     t.cdp=d.Cdp(d.CDP_PORT); t.cdp.record()
+    hold_action=None
     eq=load('review_equivalence','scripts/c44b-gesture-equivalence.py')
     async def roots(_): return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='work')])
     async def gesture(view,pts,mods=(),escape=False,matrix_override=None):
@@ -371,6 +381,7 @@ async def envelope_body(t,step):
             d.u32.SetCursorPos(round(screen[0][0]),round(screen[0][1]));d.e6._send_button(True)
             for x,y in screen[1:]:
                 await asyncio.sleep(.1);d.u32.SetCursorPos(round(x),round(y))
+            if hold_action:await hold_action()
             if escape:d.key(0x1b)
             await asyncio.sleep(.3)
             if step==4:
@@ -540,9 +551,9 @@ async def envelope_body(t,step):
                         node=d.McpTable.node(await d.McpTable.tree(t),view+'.canvas')
                         t.run.save(view+'-'+tool+'-'+mode+'-canvas.json',node)
                         if mode=='hidden':check(not json.loads((node or {}).get('value') or '{}').get('toolBox'),view+' '+tool+' hidden has no overlay box',node)
-                    b,a,r=await compare(view,view+'-'+tool+'-'+mode,[(-80,-60),(-50,-35)],tool=tool,setup=setup,expect=mode=='one-locked' or (mode=='current-locked' and tool=='repositionAll'))
-                    if mode not in ('one-locked','current-locked') or (mode=='current-locked' and tool=='perspective'):check(b==a,view+' '+tool+' '+mode+' forbidden edit unchanged',r)
-                    elif tool=='repositionAll':
+                    b,a,r=await compare(view,view+'-'+tool+'-'+mode,[(-80,-60),(-50,-35)],tool=tool,setup=setup,expect=mode=='one-locked' or (mode=='current-locked' and tool=='repositionAll') or (mode=='element-locked' and view=='drawingView'))
+                    if (mode not in ('one-locked','current-locked') and not (mode=='element-locked' and view=='drawingView')) or (mode=='current-locked' and tool=='perspective'):check(b==a,view+' '+tool+' '+mode+' forbidden edit unchanged',r)
+                    elif tool=='repositionAll' and mode in ('one-locked','current-locked'):
                         locked_index=1 if mode=='one-locked' else 0
                         check(b[locked_index]==a[locked_index] and all(b[i]!=a[i] for i in range(3) if i!=locked_index),view+' partial lock skips only locked',r)
         elif step==7:
@@ -550,6 +561,11 @@ async def envelope_body(t,step):
                 await fixture(view,tool)
                 await c('window.panel.set',{'panelId':'properties','visible':True});await asyncio.sleep(.5)
                 t.click('properties.page.toolOptions');await asyncio.sleep(.3)
+                for ident,cmd in [('drawTopLayer','tool.drawTopLayer.set'),('placeBehind','tool.placeBehind.set'),('snapToContour','tool.snapToContour.set')]:
+                    t.clear();pos=await t.position();t.click('toolOptions.'+ident);await asyncio.sleep(.3)
+                    sent=[x for x in t.recorded() if x['command']==cmd]
+                    check(len(sent)==1 and await t.position()==pos,view+' '+tool+' options '+ident+' command no undo',sent)
+                    t.run.save(view+'-'+tool+'-'+ident+'.json',{'sent':sent,'options':await c('tool.options.get',{'toolId':tool})})
                 page=t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions\"]')?.outerHTML")
                 t.run.save(view+'-'+tool+'-options.json',page)
                 d.front();rr=t.rect(view+'.canvas');origin=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(origin))
@@ -558,6 +574,24 @@ async def envelope_body(t,step):
                 await c('draw.selection.set',{'by':'ids','ids':[]})
                 rec=await gesture(view,[(-80,-60),(-50,-35)])
                 t.run.save(view+'-'+tool+'-empty-selection.json',rec)
+                for mode in ('tool','frame','agent'):
+                    eid,ids=await fixture(view,tool)
+                    before=await drawings(ids)
+                    async def held():
+                        command,params=('tool.active.set',{'toolId':'select'}) if mode=='tool' else ('app.context.set',{'elementId':eid,'frame':9}) if mode=='frame' else ('draw.stroke.add',{'points':[{'x':0,'y':0},{'x':10,'y':10}]})
+                        answer=await d.e2e.run_cmd(t.s,command,params)
+                        t.run.save(view+'-'+tool+'-held-'+mode+'.json',answer)
+                        check(answer.get('status')!='ok' and 'ui.busy' in json.dumps(answer),view+' '+tool+' held '+mode+' is refused busy',answer)
+                    hold_action=held
+                    rec=await gesture(view,[(-80,-60),(-50,-35)])
+                    hold_action=None
+                    check((await c('draw.current.get')).get('frame')==1,view+' '+tool+' held '+mode+' stays on original frame',rec)
+                eid,ids=await fixture(view,tool)
+                await c('element.drawingContent.delete',{'drawingIds':ids})
+                before=await drawings(ids);pos=await t.position()
+                rec=await gesture(view,[(-80,-60),(-50,-35)])
+                check(before==await drawings(ids) and pos==await t.position(),view+' '+tool+' empty drawings unchanged',rec)
+                t.run.save(view+'-'+tool+'-empty-drawings.json',rec)
 
 if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b','l2a','l2b')
