@@ -1,5 +1,5 @@
 {
-  "checks": 40,
+  "checks": 44,
   "failures": [],
   "results": [
     {
@@ -51,6 +51,10 @@
       "ok": true
     },
     {
+      "check": "drawingView-coincident target truly coincident",
+      "ok": true
+    },
+    {
       "check": "drawingView-coincident D-32 exact all drawing content",
       "ok": true
     },
@@ -68,6 +72,10 @@
     },
     {
       "check": "drawingView-all-collinear undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-all-collinear target truly collinear",
       "ok": true
     },
     {
@@ -131,6 +139,10 @@
       "ok": true
     },
     {
+      "check": "cameraView-coincident target truly coincident",
+      "ok": true
+    },
+    {
       "check": "cameraView-coincident D-32 exact all drawing content",
       "ok": true
     },
@@ -148,6 +160,10 @@
     },
     {
       "check": "cameraView-all-collinear undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-all-collinear target truly collinear",
       "ok": true
     },
     {
@@ -181,11 +197,11 @@
               },
               {
                 "x": 80.5,
-                "y": -60.125
+                "y": -60.5
               },
               {
                 "x": -80.5,
-                "y": -60.125
+                "y": -60.5
               }
             ],
             "mapping": "auto"
@@ -202,19 +218,19 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800XT1G970AA6VG3133",
+          "id": "st_01K7JJN800ZXXJQSCVV8T6JM9Y",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800AR6631YR0JQRDSA9",
+          "id": "st_01K7JJN800DH9A70D45NP7RB9T",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8004DCFFMK29DTJ9HYA",
+          "id": "st_01K7JJN800F7FNWZG67E9J2WVE",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -222,26 +238,26 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800XT1G970AA6VG3133",
+          "id": "st_01K7JJN800ZXXJQSCVV8T6JM9Y",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800AR6631YR0JQRDSA9",
+          "id": "st_01K7JJN800DH9A70D45NP7RB9T",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8004DCFFMK29DTJ9HYA",
+          "id": "st_01K7JJN800F7FNWZG67E9J2WVE",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "918fd74907ceb19ae8031f34ac2b19f947307632ddf5b15c4f398cd2bef4ea37",
-      "afterSha256": "73941b9f5c8fa88108d5e4a65698d2c417c9fb09e0f02c132b49e9306a3b1941"
+      "beforeSha256": "f3b6c8ad7844f7150f1b445d2e513544f258e6d65a8b123589dfaaeb257cb203",
+      "afterSha256": "d6ce0380ac220e2b8157d1fe590f88063d9b80a32662e3fab97ba18eb2c1961d"
     },
     {
       "name": "cameraView-coincident",
@@ -251,7 +267,7 @@
           "params": {
             "corners": [
               {
-                "x": 80.75,
+                "x": 80.5,
                 "y": -60.5
               },
               {
@@ -281,19 +297,19 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800Y2JYZ8HG9X1S04YB",
+          "id": "st_01K7JJN800Y85SA0NB746GNP4S",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800TATRKQM0G01H9S4A",
+          "id": "st_01K7JJN80019H7AZ8YSAA8CXVB",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8003E2VR0HZC7BR5B2W",
+          "id": "st_01K7JJN800X7MBQT7E203S827A",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -301,26 +317,26 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800Y2JYZ8HG9X1S04YB",
+          "id": "st_01K7JJN800Y85SA0NB746GNP4S",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800TATRKQM0G01H9S4A",
+          "id": "st_01K7JJN80019H7AZ8YSAA8CXVB",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8003E2VR0HZC7BR5B2W",
+          "id": "st_01K7JJN800X7MBQT7E203S827A",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "93eece3f4e4947e67778b84f1fb964ad5ca7c0700fbcbe41e33598f9ea554cdc",
-      "afterSha256": "0374db0cdc960e503361d56591042751897a8ce9db9959d166660a42428f0708"
+      "beforeSha256": "13c283a623282dfacd3eb9336341e1297cb09c39dba4a7188de6feeba311cf39",
+      "afterSha256": "81b630fc5894edb2d353dae9a0a318a3b86c13b32d38c89c81bc9c43b70084f8"
     },
     {
       "name": "cameraView-concave",
@@ -330,8 +346,8 @@
           "params": {
             "corners": [
               {
-                "x": 20.125,
-                "y": 20.125
+                "x": 19.5,
+                "y": 19.5
               },
               {
                 "x": 80.5,
@@ -360,19 +376,19 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800KYFX17N4QCFPVB4Q",
+          "id": "st_01K7JJN800SQQR0J40QV4NEE49",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800F8VY9YSEKQYAXJYZ",
+          "id": "st_01K7JJN8003EREKV05B9SP9D1D",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800JAVFVP9VZC8WWQPZ",
+          "id": "st_01K7JJN800HMTPCJBBTTJ9PBEB",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -380,26 +396,26 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800KYFX17N4QCFPVB4Q",
+          "id": "st_01K7JJN800SQQR0J40QV4NEE49",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800F8VY9YSEKQYAXJYZ",
+          "id": "st_01K7JJN8003EREKV05B9SP9D1D",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800JAVFVP9VZC8WWQPZ",
+          "id": "st_01K7JJN800HMTPCJBBTTJ9PBEB",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "75eb255b96df95893092fbc75c87093cd8fba1234f242bcb434046ca4f329026",
-      "afterSha256": "a4761f6c9a6aeceb4d9e4d21dbde52bc75cf913a4f64fc1c7a14ab3b8f70e063"
+      "beforeSha256": "ec1968e0c83acf40f0036ee025663a44a93fd0f6b34cc6582e65699067d51332",
+      "afterSha256": "856ca31f8b2dd749d1e64fe169c0ef154dfa8bb415dd5df7c6455be38d67e2d0"
     },
     {
       "name": "cameraView-crossed",
@@ -409,8 +425,8 @@
           "params": {
             "corners": [
               {
-                "x": 100.125,
-                "y": -59.875
+                "x": 99.5,
+                "y": -59.5
               },
               {
                 "x": 80.5,
@@ -439,19 +455,19 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800195M44AFJX3VJMJ2",
+          "id": "st_01K7JJN800HHTH0E9X841CQCER",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800TS1X5PJ2CDFHJD4E",
+          "id": "st_01K7JJN800E0X9D68RKVED4H33",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800E59ASVRM5BPMHG9E",
+          "id": "st_01K7JJN800YZQBR8ESMJ4J9Q8Q",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -459,32 +475,32 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800YM5PSPCRQJSF2YGF",
+          "id": "st_01K7JJN800SG47JYJX2F8A4NGM",
           "kind": "pencil",
           "closed": false,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8011E5WSQD139K463CY",
+          "id": "st_01K7JJN801PD4699RQ14HDQVHQ",
           "kind": "pencil",
           "closed": false,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800TS1X5PJ2CDFHJD4E",
+          "id": "st_01K7JJN800E0X9D68RKVED4H33",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800E59ASVRM5BPMHG9E",
+          "id": "st_01K7JJN800YZQBR8ESMJ4J9Q8Q",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "684c8acafdaebff6dbf633bae2aa4e6d3f6a68974dd54f8fe2d4df7d5d6d932a",
-      "afterSha256": "42916e7bb6228ff0f2b888940e0217d91bab25243182bf855e5a40642281731b"
+      "beforeSha256": "1e74f66e876d348070e241bd95649942097952518f30cfa68c67ea0bf0f0ba91",
+      "afterSha256": "d6ac8abbbc5b14182b379794ffb12c00abeb6ed64739c489c91e9f78df80ab91"
     },
     {
       "name": "drawingView-all-collinear",
@@ -524,19 +540,19 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN8009MQ99F38TWE1R5Q5",
+          "id": "st_01K7JJN800B234NC250NG1QAR1",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800WD3RPM5B1PHRCNK7",
+          "id": "st_01K7JJN800ENGNANBQJ20TFWDT",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800ADDBK6J5FAKGQAMT",
+          "id": "st_01K7JJN800G8MY69Q0Y3AZ5H5T",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -544,26 +560,26 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN8009MQ99F38TWE1R5Q5",
+          "id": "st_01K7JJN800B234NC250NG1QAR1",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800WD3RPM5B1PHRCNK7",
+          "id": "st_01K7JJN800ENGNANBQJ20TFWDT",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800ADDBK6J5FAKGQAMT",
+          "id": "st_01K7JJN800G8MY69Q0Y3AZ5H5T",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "d7574299ff288da226d845dcc7639b379a77fbbecd7a0ec0763f012379ca6ad5",
-      "afterSha256": "77ac742e7ba3a4ada277fc1c90d3662da1d139b30683208ff8e70a68ae78c7ab"
+      "beforeSha256": "6c521cc2f1a6ccbd56eb5e18aad22e705de7af76031da6319a52895f8a6380ce",
+      "afterSha256": "9478a565b96b737cee3aa240639f8dc87a516c738c62540d4cefe6c681eb0bf6"
     },
     {
       "name": "drawingView-coincident",
@@ -603,19 +619,19 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800VXX6J47VH2A17ZKE",
+          "id": "st_01K7JJN8000C8GWP750PQE1WWA",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800C7KG8PJDPFNZH3FS",
+          "id": "st_01K7JJN800NPRBGRZ7TMJNYRDX",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800CF9AEDDQ9M6GK0NF",
+          "id": "st_01K7JJN8004M95QCP2PBVEG26A",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -623,26 +639,26 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800VXX6J47VH2A17ZKE",
+          "id": "st_01K7JJN8000C8GWP750PQE1WWA",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800C7KG8PJDPFNZH3FS",
+          "id": "st_01K7JJN800NPRBGRZ7TMJNYRDX",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800CF9AEDDQ9M6GK0NF",
+          "id": "st_01K7JJN8004M95QCP2PBVEG26A",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "99f79747fafcb7abd91def2ca3d2f16a0293516d85726f57aef7d20273bb50d4",
-      "afterSha256": "600f68c6454d06cec4032e2a7be43073ff8e4ded3e5ff3314a9d866ffe599f41"
+      "beforeSha256": "31403d3baa77077f3172e8c432ea0c3e04fb845fb6ccde08d3ed43b3b12516ad",
+      "afterSha256": "a034dd367d76258bd4560498e840e440942c0274de627413d628e6766a7be88f"
     },
     {
       "name": "drawingView-concave",
@@ -682,19 +698,19 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN8006WMENV8VCXBE9XXJ",
+          "id": "st_01K7JJN8002CVKKQ0FV5AME7YY",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800HFWBTGGM21FRW6MX",
+          "id": "st_01K7JJN800N8P33FDV7JWJFKAB",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8005Q302AEDR5N3KXA9",
+          "id": "st_01K7JJN8009MMC28YHNR5ZF5FD",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -702,26 +718,26 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN8006WMENV8VCXBE9XXJ",
+          "id": "st_01K7JJN8002CVKKQ0FV5AME7YY",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800HFWBTGGM21FRW6MX",
+          "id": "st_01K7JJN800N8P33FDV7JWJFKAB",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8005Q302AEDR5N3KXA9",
+          "id": "st_01K7JJN8009MMC28YHNR5ZF5FD",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "5fca921a88c604c845b80d2cf1264e5de1768d73ada5fc65f4799a633103eb1b",
-      "afterSha256": "c73410d89444bc559e0ec7eb746aec74b1b93487ad72281bbb6c7140ff956927"
+      "beforeSha256": "b38e56f51ac6629396fb94d05ef283926eff3bde81eeaaa772f13301e33772a2",
+      "afterSha256": "8a94b27ce530efda47e1142c34a51dd7bd15c84390731cf167844ed258849257"
     },
     {
       "name": "drawingView-crossed",
@@ -761,19 +777,19 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800PRAMABXK5J23KGW6",
+          "id": "st_01K7JJN800JDC4CHVPQVDTH960",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800WAA33RMXD9JXJRRK",
+          "id": "st_01K7JJN800DPTHHE4S8S1YKSVQ",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800M7AJRX1HH5E9RPJQ",
+          "id": "st_01K7JJN800QCYNNWB1KEJT3V1G",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -781,37 +797,37 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN8009N4YJYEMSGJW2X43",
+          "id": "st_01K7JJN800BAVQYMCS3W58R9YE",
           "kind": "pencil",
           "closed": false,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN801VWN9KX81K387VPVA",
+          "id": "st_01K7JJN801CW2PYYCR1FJMTDF6",
           "kind": "pencil",
           "closed": false,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800WAA33RMXD9JXJRRK",
+          "id": "st_01K7JJN800DPTHHE4S8S1YKSVQ",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800M7AJRX1HH5E9RPJQ",
+          "id": "st_01K7JJN800QCYNNWB1KEJT3V1G",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "3e9d497cc0de85032ec3195079aef03fdc6da683e223b513bfb31817970ac9c6",
-      "afterSha256": "22c4c545e3285d588d58595adf4c81db95f72a836b698427d1553553a33a9675"
+      "beforeSha256": "3e1c3755de58289154f7a1a0acff9734b6d6de43e5bc9b5a2e321899f8b01aac",
+      "afterSha256": "2c728726b907951f92b07d2c1d5367029c347cbd3863c8c09fd39410637c1f58"
     }
   ],
   "measurements": [],
   "canvases": [],
   "captures": [],
-  "transcriptSha256": "072c060c25d9125499a6d6c66d12b9bc9f28f8d5f8e069e96e5554d20c47d318",
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-0i7p8in0"
+  "transcriptSha256": "1b496fe10eece7b01b086d9c5c019c7912c520629f363b0fde3282fffaeb96b7",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-e4s_08nz"
 }

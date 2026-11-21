@@ -1,7 +1,7 @@
 {
-  "checks": 40,
+  "checks": 44,
   "failures": [],
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-0i7p8in0",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-e4s_08nz",
   "results": [
     {
       "check": "drawingView-crossed command",
@@ -154,6 +154,28 @@
       ]
     },
     {
+      "check": "drawingView-coincident target truly coincident",
+      "ok": true,
+      "detail": [
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": 60.5
+        },
+        {
+          "x": -80.5,
+          "y": 60.5
+        }
+      ]
+    },
+    {
       "check": "drawingView-coincident D-32 exact all drawing content",
       "ok": true,
       "detail": null
@@ -209,6 +231,28 @@
       ]
     },
     {
+      "check": "drawingView-all-collinear target truly collinear",
+      "ok": true,
+      "detail": [
+        {
+          "x": -80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": -80.5,
+          "y": -60.5
+        }
+      ]
+    },
+    {
       "check": "drawingView-all-collinear D-32 exact all drawing content",
       "ok": true,
       "detail": null
@@ -232,8 +276,8 @@
           "params": {
             "corners": [
               {
-                "x": 100.125,
-                "y": -59.875
+                "x": 99.5,
+                "y": -59.5
               },
               {
                 "x": 80.5,
@@ -287,8 +331,8 @@
           "params": {
             "corners": [
               {
-                "x": 20.125,
-                "y": 20.125
+                "x": 19.5,
+                "y": 19.5
               },
               {
                 "x": 80.5,
@@ -342,7 +386,7 @@
           "params": {
             "corners": [
               {
-                "x": 80.75,
+                "x": 80.5,
                 "y": -60.5
               },
               {
@@ -371,6 +415,28 @@
           "Perspective Tool",
           "user"
         ]
+      ]
+    },
+    {
+      "check": "cameraView-coincident target truly coincident",
+      "ok": true,
+      "detail": [
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": 60.5
+        },
+        {
+          "x": -80.5,
+          "y": 60.5
+        }
       ]
     },
     {
@@ -406,11 +472,11 @@
               },
               {
                 "x": 80.5,
-                "y": -60.125
+                "y": -60.5
               },
               {
                 "x": -80.5,
-                "y": -60.125
+                "y": -60.5
               }
             ],
             "mapping": "auto"
@@ -426,6 +492,28 @@
           "Perspective Tool",
           "user"
         ]
+      ]
+    },
+    {
+      "check": "cameraView-all-collinear target truly collinear",
+      "ok": true,
+      "detail": [
+        {
+          "x": -80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": -80.5,
+          "y": -60.5
+        }
       ]
     },
     {
