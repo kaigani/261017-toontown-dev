@@ -1,5 +1,5 @@
 {
-  "checks": 10,
+  "checks": 12,
   "failures": [],
   "results": [
     {
@@ -12,6 +12,10 @@
     },
     {
       "check": "drawingView-mixed-content D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-mixed-content text three-corner affine fit",
       "ok": true
     },
     {
@@ -32,6 +36,10 @@
     },
     {
       "check": "cameraView-mixed-content D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-mixed-content text three-corner affine fit",
       "ok": true
     },
     {
@@ -82,31 +90,31 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800ZA1N4D7NMT8214QF",
+          "id": "st_01K7JJN800KTEMEGFT72BS59DN",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8004HZ886CNY9NP4A13",
+          "id": "st_01K7JJN800D7SPWW4PYFVYR309",
           "kind": "brush",
           "closed": false,
           "anchors": 3
         },
         {
-          "id": "st_01K7JJN800K8F50501SGBSMZF7",
+          "id": "st_01K7JJN800B66DN8HB7VGCHCNH",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         },
         {
-          "id": "st_01K7JJN800W8CX73JY1YA7CWR8",
+          "id": "st_01K7JJN80020YHZGGHV94T2S8C",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800TDPR6PMWQ1Q2YQ5W",
+          "id": "st_01K7JJN800657JQ581BBWS5SED",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -114,32 +122,32 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800ZA1N4D7NMT8214QF",
+          "id": "st_01K7JJN800KTEMEGFT72BS59DN",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800K8F50501SGBSMZF7",
+          "id": "st_01K7JJN800B66DN8HB7VGCHCNH",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         },
         {
-          "id": "st_01K7JJN800W8CX73JY1YA7CWR8",
+          "id": "st_01K7JJN80020YHZGGHV94T2S8C",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800TDPR6PMWQ1Q2YQ5W",
+          "id": "st_01K7JJN800657JQ581BBWS5SED",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "79b5407449ec51563d7def310b49c3e64c5dce6d26cbc7dda8f5f6ec6e273512",
-      "afterSha256": "d73a73d3b2b5b13f9af064baf3ea806871a4bf18cd4b7ad80d8ffc17d6ecf7ae"
+      "beforeSha256": "ecf01cd68e5be0da29ede06ff9ef71a11b99e167d2e6569c803425d03bcbda59",
+      "afterSha256": "cda8f857629a8c38ba725f64ff11050355876ae054a617be44b7fd2995888d1a"
     },
     {
       "name": "drawingView-mixed-content",
@@ -179,31 +187,31 @@
       "display": null,
       "geometryBefore": [
         {
-          "id": "st_01K7JJN8002A573TV1B7Q0J0AV",
+          "id": "st_01K7JJN800VYBT0GYQYC6C7TXH",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800YHRA7PKW11R1VGEH",
+          "id": "st_01K7JJN800S07WAMMC22Y8GF2Z",
           "kind": "brush",
           "closed": false,
           "anchors": 3
         },
         {
-          "id": "st_01K7JJN800HDGRW1VV3QZDGMHA",
+          "id": "st_01K7JJN800JSS67QTFEPH846QC",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         },
         {
-          "id": "st_01K7JJN800FDK5V5RD39159YAW",
+          "id": "st_01K7JJN80055GT8XCN0NY4T4RW",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8003XEHERN2ZC9F4SNV",
+          "id": "st_01K7JJN800KXNBES1RJCHR8C54",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
@@ -211,37 +219,37 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN8002A573TV1B7Q0J0AV",
+          "id": "st_01K7JJN800VYBT0GYQYC6C7TXH",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN800HDGRW1VV3QZDGMHA",
+          "id": "st_01K7JJN800JSS67QTFEPH846QC",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         },
         {
-          "id": "st_01K7JJN800FDK5V5RD39159YAW",
+          "id": "st_01K7JJN80055GT8XCN0NY4T4RW",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         },
         {
-          "id": "st_01K7JJN8003XEHERN2ZC9F4SNV",
+          "id": "st_01K7JJN800KXNBES1RJCHR8C54",
           "kind": "pencil",
           "closed": true,
           "anchors": 4
         }
       ],
-      "beforeSha256": "e4e6ea0dbea1f4a0016340e53012254f3c70465b701841e34f11068b6c43ccb1",
-      "afterSha256": "db915d2b5eeb5d5f10f75bd8d8fb03c1be25915fa536cf6b1b3d61ed2993fc47"
+      "beforeSha256": "50436fc479f884e8462deeb53c741759b2daba64bf4b280a24b65f1d2655d735",
+      "afterSha256": "56e8385f986ab701f1fd617c7f42c00ef973be159fbcc883d7d19da2953e07fd"
     }
   ],
   "measurements": [],
   "canvases": [],
   "captures": [],
-  "transcriptSha256": "bf24b0398f661345ca58090fd42195699d59c1350a3e605f6fadcb21573f448b",
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-pltywvz8"
+  "transcriptSha256": "99e9b2b8f5e305d23b04064879c0fe1820853a55564ef6183389d6037df3928c",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ed6tcpaj"
 }

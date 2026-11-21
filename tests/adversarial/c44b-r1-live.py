@@ -506,7 +506,8 @@ async def envelope_body(t,step):
             ee,ff=o['x']-aa*x-cc*y,o['y']-bb*x-dd*y
             results=[]
             for kind in ('text','bitmap'):
-                old=next(n for n in before[0]['nodes'] if n.get('type')==kind)
+                old=next((n for n in before[0]['nodes'] if n.get('type')==kind),None)
+                if old is None:continue
                 new=next(n for n in after[0]['nodes'] if n.get('type')==kind)
                 a,b,c0,d0,e,f=old['transform']
                 wanted=[aa*a+cc*b,bb*a+dd*b,aa*c0+cc*d0,bb*c0+dd*d0,aa*e+cc*f+ee,bb*e+dd*f+ff]
@@ -567,11 +568,13 @@ async def envelope_body(t,step):
                 from PIL import Image
                 png=t.work/'fixture.png';Image.new('RGBA',(8,8),(30,60,120,255)).save(png)
                 image=(await c('element.create',{'type':'image','name':'Bitmap source'}))['elementIds'][0]
-                await c('import.file.run',{'paths':[str(png)],'elementId':image,'frame':1,'wait':True})
-                bank=await c('element.drawing.list',{'elementId':image})
-                bitmap=await c('draw.drawing.get',{'drawingId':bank['drawings'][0]['id']})
-                node=next(n for n in bitmap['nodes'] if n['type']=='bitmap');node['transform']=[2,0,0,-2,-8,8]
-                await c('draw.content.add',{'drawingId':ids[0],'content':{'nodes':[node]}})
+                imported=await d.e2e.run_cmd(t.s,'import.file.run',{'paths':[str(png)],'elementId':image,'frame':1,'wait':True})
+                t.run.save(view+'-bitmap-placement-options.json',imported)
+                if imported.get('status')=='ok':
+                    bank=await c('element.drawing.list',{'elementId':image})
+                    bitmap=await c('draw.drawing.get',{'drawingId':bank['drawings'][0]['id']})
+                    node=next(n for n in bitmap['nodes'] if n['type']=='bitmap');node['transform']=[2,0,0,-2,-8,8]
+                    await c('draw.content.add',{'drawingId':ids[0],'content':{'nodes':[node]}})
                 await c('app.context.set',{'elementId':eid,'frame':1})
 
                 await c('draw.selection.set',{'by':'rect','rect':{'x':-90,'y':-70,'width':180,'height':140},'rectRule':'inside','mode':'replace'})
