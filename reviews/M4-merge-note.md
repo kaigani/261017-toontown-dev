@@ -11,8 +11,8 @@ Branch `m4-desktop-shell`. Builder: Claude Opus 5.5. The orchestrator merges and
 | C4.2 | the Drawing view canvas, the gesture driver, gesture equivalence (C4.2b passed 2026-11-15) | passed (`reviews/M4-C4.2-plan.md`) |
 | C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
 | C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | **passed** on product head `f5eb9e84`, run 44286651371 (36 of 36 green), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
-| C4.4a | panels and settings (`reviews/M4-C4.4-plan.md`, D-40) | in progress |
-| C4.4b | the four drawing tools; the zero-M4 deferred check | not started |
+| C4.4a | panels and settings (`reviews/M4-C4.4-plan.md`, D-40) | **passed** on product head `87f63b5f`, run 44861150241 (36 of 36 green on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74. Findings: round 1 twelve, round 2 two new, round 3 two new, closures five; all closed, including the P1 on the agent token in agent captures (closed by the host's overpaint, 486 live captures with none revealed, and the `page_ready` guard); final static check `reviews/M4-C4.4a-r5-closure-static.md` |
+| C4.4b | the four drawing tools; the zero-M4 deferred check | in progress (from `87f63b5f`) |
 
 ## 2. Still to write at the end of C4.4b
 
