@@ -106,7 +106,6 @@ async def contour_body(t,step):
         eid=(await c('element.create',{'type':'drawing','name':'Curve'}))['elementIds'][0]
         await c('element.drawing.create',{'elementId':eid,'name':'1','exposeFrom':1,'exposeTo':24})
         await c('app.context.set',{'elementId':eid,'frame':1})
-        target_drawing=(await c('draw.drawing.get'))['drawingId']
         await c('workspace.select',{'name':'Drawing' if view=='drawingView' else 'Default'})
         await c('window.panel.set',{'panelId':view,'visible':True,'focus':True})
         await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
@@ -423,7 +422,6 @@ async def envelope_body(t,step):
             if i==0:first=added['strokeIds']
             ids.append((await c('draw.drawing.get'))['drawingId'])
         await c('app.context.set',{'elementId':eid,'frame':1})
-        target_drawing=(await c('draw.drawing.get'))['drawingId']
         await c('workspace.select',{'name':'Drawing' if view=='drawingView' else 'Default'})
         await c('window.panel.set',{'panelId':view,'visible':True,'focus':True})
         await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})

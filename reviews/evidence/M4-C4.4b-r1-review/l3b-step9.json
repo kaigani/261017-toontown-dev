@@ -1,65 +1,50 @@
 {
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ko_nx3rw",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-sudvgbxh",
   "results": [
     {
       "check": "100k responsive",
-      "ok": true,
-      "detail": {
-        "elapsed": 1.3100303999963216,
-        "length": 100000
-      }
+      "ok": true
     },
     {
       "check": "02 7.6.1 font name retained",
-      "ok": true,
-      "detail": [
-        {
-          "start": 0,
-          "length": 680,
-          "font": "ReviewMissingFont987",
-          "size": 36.0,
-          "bold": false,
-          "italic": false,
-          "baseline": "normal",
-          "kerning": 0.0,
-          "autoKern": true,
-          "colourId": "col_01M7ZJX0JQ05GENP5ARPVKDH83",
-          "outlineColourId": null
-        }
-      ]
+      "ok": true
     },
     {
-      "check": "D-75 item 9 missing font info",
-      "ok": false,
-      "detail": [
-        {
-          "code": "text.fontMissing",
-          "message": "font `ReviewMissingFont987` is not installed; the text keeps the name and is displayed with a fallback font",
-          "objectIds": [
-            "dr_01K7JJN8009ZKJFCDBQ7DQ719Z/nd_01K7JJN80042TNY4B3TEEHX1XZ"
-          ]
-        },
-        {
-          "code": "text.fontMissing",
-          "message": "font `ReviewMissingFont988` is not installed; the text keeps the name and is displayed with a fallback font",
-          "objectIds": [
-            "dr_01K7JJN8009ZKJFCDBQ7DQ719Z/nd_01K7JJN80042TNY4B3TEEHX1XZ"
-          ]
-        }
-      ]
+      "check": "D-75 item 9 missing font code (severity absent from MCP warning schema)",
+      "ok": true
     },
     {
       "check": "undo redo exact content",
-      "ok": true,
-      "detail": null
+      "ok": true
     },
     {
       "check": "second undo exact content",
-      "ok": true,
-      "detail": null
+      "ok": true
+    },
+    {
+      "check": "02 12.1 redo 0 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 redo 1 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 redo 2 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 undo again 0 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 undo again 1 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 undo again 2 exact",
+      "ok": true
     }
   ],
-  "failures": [
-    "D-75 item 9 missing font info"
-  ]
+  "failures": []
 }
