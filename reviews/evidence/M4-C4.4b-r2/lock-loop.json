@@ -1,0 +1,6 @@
+{
+ "kind": "toontown.c44b.r2.lock-loop",
+ "note": "the reviewer's c13_r1_persistence::concurrent_stale_lock_takeover_has_only_one_owner, unchanged, run 200 times in a loop on Windows (each run its 64 trials) on the D-78 protocol (69ef91bc, built and run after the hold in 2e5d9a9e)",
+ "regenerate": "for i in $(seq 200); do cargo test -p tt-executor --test c13_r1_persistence concurrent_stale_lock_takeover_has_only_one_owner; done",
+ "result": "pass 200 fail 0"
+}

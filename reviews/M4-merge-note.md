@@ -17,28 +17,28 @@ panels and agent surfaces of C4.4a and the four drawing tools of C4.4b.
 | C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
 | C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | passed on product head `f5eb9e84`, run 44286651371 (36 of 36), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
 | C4.4a | panels and settings, agent surfaces (`reviews/M4-C4.4-plan.md`, D-40) | passed on product head `87f63b5f`, run 44861150241 (36 of 36 on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74; findings 12 + 2 + 2 + 5, all closed (including the P1 on the agent token in agent captures) |
-| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); rulings D-75 to D-77; **round 1 in progress**, with D-77's lock takeover fix (§6) |
+| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; **round 2 handed off** on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md` |
 
-Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-77), recorded in
+Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-81), recorded in
 `reviews/M4-C4.1-plan.md`, `reviews/M4-C4.2-plan.md` and `reviews/M4-C4.3-plan.md` §15.
 
 ## 2. Inventory and counts (final build)
 
-- **Final product head:** `e6f71489`, run 44916529274, 36 of 36 green. D-77's fix (§6) adds a product change in
-  `crates/persist`; this note is updated with its head and run when it lands.
+- **Final product head:** `bf2b2195`, run 44951926851, 36 of 36 green (C4.4b round 2; round 1's head was `e6f71489`,
+  run 44916529274).
 - **Commands in the parity gate:** 347 = 161 action + 41 read + 59 agent-only + 86 deferred
   (`tests/adversarial/c43b-r2s-static.py`; C4.3b ended at 154 bound, 61 agent-only, 132 deferred).
 - **Availability inventory:** 288 commands in scope, 1,229 (command, code) pairs: 13 asks-user, 1 deferred, 256
   execution, 716 parameter, 219 precheck, 24 unreachable (`scripts/check-availability-inventory.py`,
   `docs/availability-inventory.md`).
-- **D-39 table** (one row per control: its command and parameters, its effect, its undo steps): 303 rows, the whole
+- **D-39 table** (one row per control: its command and parameters, its effect, its undo steps): 304 rows, the whole
   table green in the MCP form on the final build (and in every CI run's `desktop gui`); the OS form (real input) run on
   each checkpoint's rows, C4.4b's on the final build.
 - **D-44 table** (one row per choice of every dialog or message box): 73 rows (66 flows and the confirmation sheet's
   7), green on the final build, 5 named (recovery open's three choices, the engine restart's two: covered by Vitest).
 - **Gesture equivalence three ways** (the window, the headless replay of its samples, the commands sent directly):
   C4.2's drawing tools, C4.3's scene tools in the Camera view, C4.4b's 20 rows (the four tools in both views).
-- **Vitest** 96 files, 800 tests. **Reviewer Python suites** 83 of 83. **Allowed lints** 96 in 40 product files (the
+- **Vitest** 96 files, 809 tests. **Reviewer Python suites** 84 of 84. **Allowed lints** 96 in 40 product files (the
   count `scripts/check-product-allows.py` gates); no new `unsafe` in C4.4b.
 
 ## 3. The deferred list by owner (D-31): none owned by M4
@@ -103,8 +103,8 @@ The retired margins:
   about 20 s, Reposition All about 21 s, on this workstation, both back ends). Ordinary drawings commit in about 35 ms.
   Accepted as reported for M11 C11.1 (D-75 items 2 and 6, D-76 item 6).
 - **Typing lands on the screen exactly at its budget on a 60 Hz display.** A typed character is drawn within two
-  display frames of the key, with less than one millisecond to spare (35.1 ms against 35.2 ms on WebGL2, 34.5 ms against
-  35.4 ms on WebGPU). The engine's own work per keystroke is about 2 ms; the rest is the webview delivering each answer
+  display frames of the key, with one or two milliseconds to spare at most (95th percentile 34.1 ms against 35.6 ms on
+  WebGL2 in round 2; in round 1 35.1 against 35.2 on WebGL2, 34.5 against 35.4 on WebGPU). The engine's own work per keystroke is about 2 ms; the rest is the webview delivering each answer
   just after a frame. A person repeats the measurement on a display without a frame cap (§8); if it fails there, M11
   C11.1 owns the option of pushing the glyph's geometry through the event channel (not built).
 - **There is no font list.** The Text panel takes a typed font family name; no command lists the installed fonts
@@ -117,6 +117,9 @@ The retired margins:
   the edit session; it places the caret with `pointer` and `key`, types with `type_text`, and reads the text with
   `draw.drawing.get`. An attached agent reads the session in `inspect_ui`. No agent can read an input method's
   pre-edit (composition) text: the webview holds it until it is committed. `draw.text.layout.get` is proposed.
+- **The text caret moves by characters, not by what a reader sees as one character.** An accented letter typed as
+  two code points that do not compose, an emoji built of several, or a flag can take more than one Right-arrow press,
+  and Backspace removes one part at a time (C4.4b round 2 handoff §7; a question for the user, §7).
 - **Snap to Contour cannot close one stroke on itself** (SI-070 as decided; D-76 item 1): an end dragged to its own
   start does not snap there. A question for the user (§7).
 - **The live previews are close, not exact** (SI-154, SI-190): a transform or envelope preview lands within one view
@@ -124,7 +127,7 @@ The retired margins:
   approximate until the commit.
 - **Some tools have no gestures yet** (SI-129): their commands work, their canvas gestures come with their owners.
 
-## 6. Ruling D-77: the lock takeover fix
+## 6. Rulings D-77 and D-78: the lock takeover fix
 
 `crates/persist/src/lock.rs`: the lock's arbitration file (`<lock>.takeover`) is now removed while its protection is
 still held (unlinked before the `flock` is released; on Windows deleted while the handle, which shares deletion, is
@@ -133,8 +136,18 @@ an open with delete access that refuses write sharing, deleted on close; elsewhe
 file and the same device and inode as the path). Safety first: never two owners. Deterministic tests under the
 `test-hooks` feature: `crates/executor/tests/c44b_lock_takeover.rs` (a releasing arbiter suspended with its file
 protected, a contender removing nothing; an abandoned file proven and suspended, exactly one owner after). Written
-under the GUI hold; the runs come after it: the reviewer's `c13_r1_persistence` test unchanged, at least 200 runs of its
-64 trials on Windows, and CI's macOS `check` job, which runs it once per run.
+under the GUI hold.
+
+D-78 item 1 (the static review's P1, C44B-R1S-07: a contender's stale decision, resumed late, could remove a live
+owner's lock by name) completed it, design note first (`reviews/M4-design-lock-takeover.md`): no file is removed by
+name on the strength of an earlier decision. A non-owner removes a lock or an arbitration file only under that file's
+own protection, re-validated by identity and content after the last pause point (`remove_proven`); an owner removes
+its own file while still protecting it (`remove_own`). Tests: five in `c44b_lock_takeover.rs` (the releasing arbiter,
+the abandoned arbiter, the zero-owner and two-owner schedules, 40 randomised trials). **Results:** the reviewer's
+`c13_r1_persistence::concurrent_stale_lock_takeover_has_only_one_owner`, unchanged, **200 of 200 runs** on Windows
+(each run its 64 trials; `reviews/evidence/M4-C4.4b-r2/lock-loop.json`); green on macOS in every CI run since
+(`check`), run 44951926851 included. The limit: on a file system that cannot lock (some network file systems) protection
+cannot be proven, and M1's age rule stays.
 
 ## 7. Questions for the user, in one place
 
@@ -183,6 +196,8 @@ Interim defaults are built and stated in `plan/spec-issues.md`; each line is the
 | SI-188 | Perspective's side drags (another reading mirrors the opposite side); the `mapping` option's command. |
 | SI-189 | Reposition All's reference box: the current frame's drawing (as built) or the union of all drawings? |
 | SI-196 | `draw.stroke.set` on the Contour Editor's Tool options (as built), or a Line section for every selection tool? |
+| SI-198 | Confirm `element.hidden` as the code of a gesture on an element the Camera view does not draw, and that an outline drawn by "Show outline on selection" is not editable. |
+| Text (C4.4b r2) | Should the caret move and delete by grapheme clusters (adding `unicode-segmentation` as a kernel dependency)? Should a Contour Editor insert select the new anchor? (Both asked in `reviews/M4-C4.4b-handoff-r2.md` §11.) |
 | Spec A | The additions M4 proposes (`plan/spec-issues.md`, "Spec A additions proposed by M4, for the user"): `draw.text.layout.get`, `tool.perspective.options.set`, `draw.font.list`, `job.outputs.list`, `agent.activity.recorded`, `agent.activity.list {afterSeq}`, the `ActivityEntry` members, `agent.session.changed`, `agent.confirmation.resolved`. |
 
 SI-184, SI-185, SI-191 and SI-193 to SI-195 are interim decisions without a question of their own (confirm or
@@ -213,7 +228,7 @@ M4's receipts total 78 MB. Its folders over 5 MB:
 | `reviews/evidence/M4-C4.2b-r1` | 22.4 MB | 155 | `d1-long-webgpu.json` 7.0 MB, `d1-long-webgl2.json` 7.0 MB, `d2-cases.json` 1.8 MB |
 | `reviews/evidence/M4-C4.2b-r3` | 5.7 MB | 230 | `c2/c2-gestures.json` 1.2 MB |
 
-Receipts from C4.3b round 2 on are D-42 summaries (C4.4b's: 396 KB). Folders over 5 MB from earlier milestones, for the
+Receipts from C4.3b round 2 on are D-42 summaries (C4.4b's: 396 KB in round 1, 292 KB in round 2). Folders over 5 MB from earlier milestones, for the
 same decision: `M1-C1.4-r2` 100.2 MB, `M2-C2.4-r3` 87.7 MB, `M1-C1.1-r2` 86.8 MB, `M3-C3.1-r3` 22.4 MB, `M1-C1.2-r5`
 20.2 MB, `M1-C1.2-r4` 19.0 MB, `M1-C1.2-r3` 18.2 MB, `M0-C0.3-r1` 17.2 MB, `M1-C1.2-r2` 17.1 MB, `M3-C3.2-r3` 16.8 MB,
 `M1-C1.3-r1` 14.3 MB, `M2-C2.3-r3` 11.1 MB, `M2-C2.1-r2` 10.7 MB, `M3-C3.1-r2` 10.3 MB, `M0-C0.3` 9.4 MB, `M1-C1.4-r1`

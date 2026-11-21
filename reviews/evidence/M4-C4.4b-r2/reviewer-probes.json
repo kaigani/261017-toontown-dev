@@ -1,0 +1,211 @@
+{
+ "kind": "toontown.c44b.r2.reviewer-probes",
+ "note": "tests/adversarial/c44b-r1-live.py run unchanged, one process per step, on the release builds named; the probes' files were copied out of the reviewer's evidence folder and the folder restored. l1b 8 and l3b 7 failed on c55a1dc9 on one product defect (the Camera view's visibility read from ink) and pass on bf2b2195. l1b 6's two failures are the reviewer's observation rows (a question in the handoff, section 6).",
+ "regenerate": "python tests/adversarial/c44b-r1-live.py <case> <step>",
+ "static": {
+  "command": "python tests/adversarial/c44b-r1s-static.py",
+  "exit": 0,
+  "output": [
+   "01 pending format: changed; inspect",
+   "02 stale caret: changed; inspect",
+   "03 current colour: changed; inspect",
+   "05 schema: changed; inspect",
+   "S5 reviewer tests changed: []",
+   "S7 large additions: []"
+  ]
+ },
+ "steps": [
+  {
+   "case": "l1b",
+   "step": 4,
+   "checks": 56,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l1b",
+   "step": 5,
+   "checks": 116,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l1b",
+   "step": 6,
+   "checks": 46,
+   "failures": [
+    "cameraView-insert requested new-anchor selection (observation; spec and design note silent)",
+    "drawingView-insert requested new-anchor selection (observation; spec and design note silent)"
+   ],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l1b",
+   "step": 7,
+   "checks": 230,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l1b",
+   "step": 8,
+   "checks": 58,
+   "failures": [
+    "drawingView no-single-line controls disabled rather than hidden (M4 plan UI conventions)",
+    "cameraView no-single-line controls disabled rather than hidden (M4 plan UI conventions)"
+   ],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l2a",
+   "step": 1,
+   "checks": 40,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l2a",
+   "step": 2,
+   "checks": 44,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l2a",
+   "step": 3,
+   "checks": 12,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l2a",
+   "step": 4,
+   "checks": 18,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l2b",
+   "step": 5,
+   "checks": 48,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l2b",
+   "step": 6,
+   "checks": 111,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l2b",
+   "step": 7,
+   "checks": 134,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l3a",
+   "step": 1,
+   "checks": 8,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l3a",
+   "step": 2,
+   "checks": 7,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l3a",
+   "step": 3,
+   "checks": 1,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l3a",
+   "step": 4,
+   "checks": 8,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l3a",
+   "step": 5,
+   "checks": 2,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l3b",
+   "step": 6,
+   "checks": 2,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l3b",
+   "step": 7,
+   "checks": 1,
+   "failures": [
+    "probe completed"
+   ],
+   "completed": false,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l3b",
+   "step": 8,
+   "checks": 4,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l3b",
+   "step": 9,
+   "checks": 11,
+   "failures": [],
+   "completed": true,
+   "build": "c55a1dc9"
+  },
+  {
+   "case": "l1b",
+   "step": 8,
+   "checks": 58,
+   "failures": [],
+   "completed": true,
+   "build": "bf2b2195"
+  },
+  {
+   "case": "l3b",
+   "step": 7,
+   "checks": 6,
+   "failures": [],
+   "completed": true,
+   "build": "bf2b2195"
+  }
+ ]
+}

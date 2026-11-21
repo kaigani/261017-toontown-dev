@@ -1,0 +1,83 @@
+{
+ "receipt": "reviews/evidence/M4-C4.4b-r2/measure-text-webgl2",
+ "verdict": "pass",
+ "regenerate": "python scripts/c44b-measure.py target/release/toontown.exe <out> --backend webgl2 --text-only",
+ "manifest": {
+  "kind": "toontown.c44b.measure",
+  "platform": "win32",
+  "backend": "webgl2",
+  "seconds": 24.0,
+  "bounds": {
+   "inkMs": 16.7,
+   "commitSmallMs": 50.0,
+   "gestureWorkMs": 8.0,
+   "keyToGlyphFrames": 2
+  },
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the control: 300 frames of the start screen's cadence (D-33)",
+   "detail": {
+    "frameMs": {
+     "n": 300,
+     "p50": 17.8,
+     "p95": 18.2,
+     "max": 19
+    },
+    "canvases": 1,
+    "startScreen": true
+   }
+  },
+  {
+   "ok": true,
+   "check": "the Drawing view's canvas is located (OS input)",
+   "detail": [
+    116,
+    138,
+    834,
+    633
+   ]
+  },
+  {
+   "ok": true,
+   "check": "keystroke to glyph 34.1 ms p95 <= two control frames (35.6 ms; 30 keys)",
+   "detail": {
+    "n": 30,
+    "p50": 24.3,
+    "p95": 34.1,
+    "max": 34.4,
+    "frames": 2,
+    "controlMedianMs": 17.8,
+    "boundMs": 35.6,
+    "marginMs": 1.5
+   }
+  }
+ ],
+ "kept": [
+  "measure.json"
+ ],
+ "raw": [
+  {
+   "file": "discovery.json",
+   "bytes": 4096,
+   "sha256": "96d78bcd059b33ba8dc755efd1e94a8808e55f907cff1d8d6353debbaf0df864"
+  },
+  {
+   "file": "discovery.log",
+   "bytes": 53,
+   "sha256": "3d2f342b56fffbce9dc77a8abad222847a9e04a345bd78c8918c7ba03999be50"
+  },
+  {
+   "file": "manifest.json",
+   "bytes": 249,
+   "sha256": "a921b8302a152d40959e7681d8bd0418a7779fe008a99fb67546c93fc6de7074"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 774,
+   "sha256": "9311c06bf392198803c161ee84fda0cd6173020cf736d3242cea1054962cc695"
+  }
+ ]
+}

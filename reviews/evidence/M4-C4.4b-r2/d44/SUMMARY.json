@@ -1,0 +1,3107 @@
+{
+ "receipt": "reviews/evidence/M4-C4.4b-r2/d44",
+ "verdict": "pass",
+ "regenerate": "python scripts/c43-d44-flows.py target/release/toontown.exe <out>",
+ "manifest": {
+  "kind": "toontown.c43b.d44-flows",
+  "seconds": 899.3,
+  "rows": 73,
+  "named": [
+   "recovery open › Save",
+   "recovery open › Don't Save",
+   "recovery open › Cancel",
+   "engine restart › Restart",
+   "engine restart › Cancel"
+  ],
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "D-44 New › Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1069)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 New › Don't Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1069)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 New › Cancel: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1069)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Open › Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Open › Don't Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Open › Cancel: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Open Recent › Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Open Recent › Don't Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Open Recent › Cancel: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Open Backup › Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1084)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Open Backup › Don't Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1084)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Open Backup › Cancel: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1084)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Close › Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1071)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Close › Don't Save: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1071)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Close › Cancel: the choice sends exactly its commands and has its effect (01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1071)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Quit › Cancel: the choice sends exactly its commands and has its effect (01 §3.5; spec/01_application_shell.md:1061)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Save As (existing file) › native Yes: the choice sends exactly its commands and has its effect (01 §3.6, §9.5; spec/01_application_shell.md:1073)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Save As (existing file) › native No: the choice sends exactly its commands and has its effect (01 §3.6, §9.5; spec/01_application_shell.md:1073)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 shortcut editor › Import › Merge: the choice sends exactly its commands and has its effect (01 §8.3 items 8-9; spec/01_application_shell.md:1156)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 shortcut editor › Import › Replace: the choice sends exactly its commands and has its effect (01 §8.3 items 8-9; spec/01_application_shell.md:1156)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 shortcut editor › Import › Cancel: the choice sends exactly its commands and has its effect (01 §8.3 items 8-9; spec/01_application_shell.md:1156)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 shortcut editor › Reset all › Reset All: the choice sends exactly its commands and has its effect (01 §8.3; spec/01_application_shell.md:1154)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 shortcut editor › Reset all › Cancel: the choice sends exactly its commands and has its effect (01 §8.3; spec/01_application_shell.md:1154)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 shortcut editor › conflict › Override: the choice sends exactly its commands and has its effect (01 §8.3 item 6; spec/01_application_shell.md:1152)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 shortcut editor › conflict › Cancel: the choice sends exactly its commands and has its effect (01 §8.3 item 6; spec/01_application_shell.md:1152)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 New Workspace › Create: the choice sends exactly its commands and has its effect (01 §5.5; spec/01_application_shell.md:1136)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 New Workspace › Cancel: the choice sends exactly its commands and has its effect (01 §5.5; spec/01_application_shell.md:1136)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Rename Workspace › Rename: the choice sends exactly its commands and has its effect (01 §5.5; spec/01_application_shell.md:1138)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Rename Workspace › Cancel: the choice sends exactly its commands and has its effect (01 §5.5; spec/01_application_shell.md:1138)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Customize Toolbar › Apply: the choice sends exactly its commands and has its effect (01 §5.7 lines 445-464; spec/01_application_shell.md:1131)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Customize Toolbar › Cancel: the choice sends exactly its commands and has its effect (01 §5.7 lines 445-464; spec/01_application_shell.md:1131)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Customize Toolbar › Restore Default: the choice sends exactly its commands and has its effect (01 §5.7; spec/01_application_shell.md:1132)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Activity › Undo back › Undo: the choice sends exactly its commands and has its effect (11 §11; spec/01_application_shell.md:1093)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Activity › Undo back › Cancel: the choice sends exactly its commands and has its effect (11 §11; spec/01_application_shell.md:1093)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Activity › Undo back › Enter (default Cancel): the choice sends exactly its commands and has its effect (11 §11; spec/01_application_shell.md:1093)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Preferences › OK: the choice sends exactly its commands and has its effect (01 §7.1; spec/01_application_shell.md:1147)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Preferences › Cancel: the choice sends exactly its commands and has its effect (01 §7.1; spec/01_application_shell.md:1147)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Project Properties › OK (set as default): the choice sends exactly its commands and has its effect (01 §3.8; spec/01_application_shell.md:1076)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Project Properties › Cancel: the choice sends exactly its commands and has its effect (01 §3.8; spec/01_application_shell.md:1076)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 New Project › Create: the choice sends exactly its commands and has its effect (01 §3.1; spec/01_application_shell.md:1069)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 New Project › Cancel: the choice sends exactly its commands and has its effect (01 §3.1; spec/01_application_shell.md:1069)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 backup chooser › Open: the choice sends exactly its commands and has its effect (01 §3.7; spec/01_application_shell.md:1084)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 backup chooser › Cancel: the choice sends exactly its commands and has its effect (01 §3.7; spec/01_application_shell.md:1084)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Check Project › Repair: the choice sends exactly its commands and has its effect (01 §6.7; spec/10_data_model_project_format.md:1136)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Check Project › Close: the choice sends exactly its commands and has its effect (01 §6.7; spec/10_data_model_project_format.md:1136)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 About › Close: the choice sends exactly its commands and has its effect (01 §12.2 (About))"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Project Info › Close: the choice sends exactly its commands and has its effect (01 §3.8 (Project Info))"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Help › Close: the choice sends exactly its commands and has its effect (01 §9.3 (Help))"
+  },
+  {
+   "ok": true,
+   "check": "D-44 error box › OK: the choice sends exactly its commands and has its effect (01 §9.5 (messages))"
+  },
+  {
+   "ok": true,
+   "check": "D-44 native picker › Cancel: the choice sends exactly its commands and has its effect (01 §3.2 (Open))"
+  },
+  {
+   "ok": true,
+   "check": "D-44 unsaved changes › Enter (default Save): the choice sends exactly its commands and has its effect (01 §3.5, §9.5; D-49 item 2)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 shortcut editor › Reset all › Enter (default Cancel): the choice sends exactly its commands and has its effect (01 §8.3; D-49 item 2)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 shortcut editor › Import › Enter (default Merge): the choice sends exactly its commands and has its effect (01 §8.3 item 8; D-46; D-49 item 2)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 modal (message box) › Tab past the last control, Escape: the choice sends exactly its commands and has its effect (01 §9.5; D-49 item 3)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 modal (form) › Tab past the last control, Escape: the choice sends exactly its commands and has its effect (01 §9.5; D-49 item 3)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 progress window › Cancel: the choice sends exactly its commands and has its effect (01 §9.5 lines 925-927; spec/11_agent_interface_mcp.md:638)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 recovery open › Save: named, not run in the window (its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 recovery open › Don't Save: named, not run in the window (its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 recovery open › Cancel: named, not run in the window (its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 engine restart › Restart: named, not run in the window (it needs an engine that stops answering; App.test.tsx covers the question and its choices)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 engine restart › Cancel: named, not run in the window (it needs an engine that stops answering; App.test.tsx covers the question and its choices)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Quit › Don't Save: the choice sends exactly its commands and has its effect (01 §3.5; spec/01_application_shell.md:1061)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Quit › Save: the choice sends exactly its commands and has its effect (01 §3.5; spec/01_application_shell.md:1061)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Confirmation sheet › Accept: the choice sends exactly its commands and has its effect (11 §6.3 step 2; D-58)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Confirmation sheet › Decline: the choice sends exactly its commands and has its effect (11 §6.3 step 2; D-58)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Confirmation sheet › Return (default Decline): the choice sends exactly its commands and has its effect (D-58; D-49 item 2)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Confirmation sheet › document changed: the choice sends exactly its commands and has its effect (11 §6.3 (bound to the revision); D-58)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Confirmation sheet › decided in another window: the choice sends exactly its commands and has its effect (D-58)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Confirmation sheet › three queued: the choice sends exactly its commands and has its effect (D-58 (queued requests))"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Confirmation sheet › expiry: the choice sends exactly its commands and has its effect (11 §6.3 (five minutes); D-58)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Agent access › Regenerate token › Cancel: the choice sends exactly its commands and has its effect (11 §15.1; spec/11_agent_interface_mcp.md:604)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Agent access › Regenerate token › Enter (default Cancel): the choice sends exactly its commands and has its effect (11 §15.1; spec/11_agent_interface_mcp.md:604)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Agent access › Regenerate token › Regenerate: the choice sends exactly its commands and has its effect (11 §15.1; spec/11_agent_interface_mcp.md:604)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 coverage: every dialog has its rows or a reason, and every row ran"
+  }
+ ],
+ "rows": [
+  {
+   "name": "New › Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1069",
+   "path": [
+    "File",
+    "New Project"
+   ],
+   "choice": "Save",
+   "input": "real native menu File › New Project, then a real click on Save",
+   "expected": [
+    {
+     "command": "project.save",
+     "must": {},
+     "absent": []
+    },
+    {
+     "command": "project.create",
+     "must": {
+      "name": "FlowNew"
+     },
+     "absent": [
+      "onUnsaved"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    },
+    {
+     "command": "project.create",
+     "params": {
+      "name": "FlowNew",
+      "frameRate": 24,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080,
+      "preset": "default"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "5b4a8dae1bb9d2a81afe766953a61a7d3b0f88442e7808d72988f765c426d6f1",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": null,
+    "name": "FlowNew",
+    "dirty": false,
+    "flow": "1d8149784a6b177b41fe2e5a574537868b1a0c0fa76522155f469095a478ad45",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "New › Don't Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1069",
+   "path": [
+    "File",
+    "New Project"
+   ],
+   "choice": "Don't Save",
+   "input": "real native menu File › New Project, then a real click on Don't Save",
+   "expected": [
+    {
+     "command": "project.create",
+     "must": {
+      "name": "FlowNew",
+      "onUnsaved": "discard"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.create",
+     "params": {
+      "onUnsaved": "discard",
+      "name": "FlowNew",
+      "frameRate": 24,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080,
+      "preset": "default"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "1d8149784a6b177b41fe2e5a574537868b1a0c0fa76522155f469095a478ad45",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": null,
+    "name": "FlowNew",
+    "dirty": false,
+    "flow": "1d8149784a6b177b41fe2e5a574537868b1a0c0fa76522155f469095a478ad45",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "New › Cancel",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1069",
+   "path": [
+    "File",
+    "New Project"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu File › New Project, then a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "1d8149784a6b177b41fe2e5a574537868b1a0c0fa76522155f469095a478ad45",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "1d8149784a6b177b41fe2e5a574537868b1a0c0fa76522155f469095a478ad45",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Open › Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070",
+   "path": [
+    "File",
+    "Open"
+   ],
+   "choice": "Save",
+   "input": "real native menu File › Open, then a real click on Save",
+   "expected": [
+    {
+     "command": "project.save",
+     "must": {},
+     "absent": []
+    },
+    {
+     "command": "project.open",
+     "must": {
+      "path": "<predicate>"
+     },
+     "absent": [
+      "onUnsaved"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    },
+    {
+     "command": "project.open",
+     "params": {
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "1d8149784a6b177b41fe2e5a574537868b1a0c0fa76522155f469095a478ad45",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg",
+    "name": "Other",
+    "dirty": false,
+    "flow": "b0b340a52ed64eef435840970e39294fe99304c289b0c13c0c378cc0bd9ed9c6",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Open › Don't Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070",
+   "path": [
+    "File",
+    "Open"
+   ],
+   "choice": "Don't Save",
+   "input": "real native menu File › Open, then a real click on Don't Save",
+   "expected": [
+    {
+     "command": "project.open",
+     "must": {
+      "path": "<predicate>",
+      "onUnsaved": "discard"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.open",
+     "params": {
+      "onUnsaved": "discard",
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "b0b340a52ed64eef435840970e39294fe99304c289b0c13c0c378cc0bd9ed9c6",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg",
+    "name": "Other",
+    "dirty": false,
+    "flow": "b0b340a52ed64eef435840970e39294fe99304c289b0c13c0c378cc0bd9ed9c6",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Open › Cancel",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070",
+   "path": [
+    "File",
+    "Open"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu File › Open, then a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "b0b340a52ed64eef435840970e39294fe99304c289b0c13c0c378cc0bd9ed9c6",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "b0b340a52ed64eef435840970e39294fe99304c289b0c13c0c378cc0bd9ed9c6",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Open Recent › Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070",
+   "path": [
+    "File",
+    "Open Recent",
+    "Other"
+   ],
+   "choice": "Save",
+   "input": "real native menu File › Open Recent › Other, then a real click on Save",
+   "expected": [
+    {
+     "command": "project.save",
+     "must": {},
+     "absent": []
+    },
+    {
+     "command": "project.open",
+     "must": {
+      "path": "<predicate>"
+     },
+     "absent": [
+      "onUnsaved"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    },
+    {
+     "command": "project.open",
+     "params": {
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "b0b340a52ed64eef435840970e39294fe99304c289b0c13c0c378cc0bd9ed9c6",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg",
+    "name": "Other",
+    "dirty": false,
+    "flow": "7a4307d0a05e33c897183396e88bd9ec45a44c4f9d7f64c61b7b2e0516043acb",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Open Recent › Don't Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070",
+   "path": [
+    "File",
+    "Open Recent",
+    "Other"
+   ],
+   "choice": "Don't Save",
+   "input": "real native menu File › Open Recent › Other, then a real click on Don't Save",
+   "expected": [
+    {
+     "command": "project.open",
+     "must": {
+      "path": "<predicate>",
+      "onUnsaved": "discard"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.open",
+     "params": {
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg",
+      "onUnsaved": "discard"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "7a4307d0a05e33c897183396e88bd9ec45a44c4f9d7f64c61b7b2e0516043acb",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg",
+    "name": "Other",
+    "dirty": false,
+    "flow": "7a4307d0a05e33c897183396e88bd9ec45a44c4f9d7f64c61b7b2e0516043acb",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Open Recent › Cancel",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1070",
+   "path": [
+    "File",
+    "Open Recent",
+    "Other"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu File › Open Recent › Other, then a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "7a4307d0a05e33c897183396e88bd9ec45a44c4f9d7f64c61b7b2e0516043acb",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "7a4307d0a05e33c897183396e88bd9ec45a44c4f9d7f64c61b7b2e0516043acb",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Open Backup › Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1084",
+   "path": [
+    "File",
+    "Open Backup"
+   ],
+   "choice": "Save",
+   "input": "real native menu File › Open Backup, then a real click on Save",
+   "expected": [
+    {
+     "command": "project.save",
+     "must": {},
+     "absent": []
+    },
+    {
+     "command": "project.backup.open",
+     "must": {
+      "backupId": "bk_d37e5041db29c797"
+     },
+     "absent": [
+      "onUnsaved"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    },
+    {
+     "command": "project.backup.open",
+     "params": {
+      "backupId": "bk_d37e5041db29c797"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "7a4307d0a05e33c897183396e88bd9ec45a44c4f9d7f64c61b7b2e0516043acb",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": null,
+    "name": "Flow",
+    "dirty": false,
+    "flow": "65e69f4a7b5518924681a3845c008f9f30d12e0c9b8c786200231e160c069dce",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Open Backup › Don't Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1084",
+   "path": [
+    "File",
+    "Open Backup"
+   ],
+   "choice": "Don't Save",
+   "input": "real native menu File › Open Backup, then a real click on Don't Save",
+   "expected": [
+    {
+     "command": "project.backup.open",
+     "must": {
+      "backupId": "bk_d37e5041db29c797",
+      "onUnsaved": "discard"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.backup.open",
+     "params": {
+      "backupId": "bk_d37e5041db29c797",
+      "onUnsaved": "discard"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "65e69f4a7b5518924681a3845c008f9f30d12e0c9b8c786200231e160c069dce",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": null,
+    "name": "Flow",
+    "dirty": false,
+    "flow": "65e69f4a7b5518924681a3845c008f9f30d12e0c9b8c786200231e160c069dce",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Open Backup › Cancel",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1084",
+   "path": [
+    "File",
+    "Open Backup"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu File › Open Backup, then a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "65e69f4a7b5518924681a3845c008f9f30d12e0c9b8c786200231e160c069dce",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "65e69f4a7b5518924681a3845c008f9f30d12e0c9b8c786200231e160c069dce",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Close › Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1071",
+   "path": [
+    "File",
+    "Close Project"
+   ],
+   "choice": "Save",
+   "input": "real native menu File › Close Project, then a real click on Save",
+   "expected": [
+    {
+     "command": "project.save",
+     "must": {},
+     "absent": []
+    },
+    {
+     "command": "project.close",
+     "must": {},
+     "absent": [
+      "onUnsaved"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    },
+    {
+     "command": "project.close",
+     "params": {}
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "65e69f4a7b5518924681a3845c008f9f30d12e0c9b8c786200231e160c069dce",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": false,
+    "path": null,
+    "name": null,
+    "dirty": null,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Close › Don't Save",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1071",
+   "path": [
+    "File",
+    "Close Project"
+   ],
+   "choice": "Don't Save",
+   "input": "real native menu File › Close Project, then a real click on Don't Save",
+   "expected": [
+    {
+     "command": "project.close",
+     "must": {
+      "onUnsaved": "discard"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.close",
+     "params": {
+      "onUnsaved": "discard"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": false,
+    "path": null,
+    "name": null,
+    "dirty": null,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Close › Cancel",
+   "spec": "01 §3.5 (unsaved changes: Save / Don't Save / Cancel); spec/01_application_shell.md:1071",
+   "path": [
+    "File",
+    "Close Project"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu File › Close Project, then a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Quit › Cancel",
+   "spec": "01 §3.5; spec/01_application_shell.md:1061",
+   "path": [
+    "File",
+    "Quit"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu File › Quit, then a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "alive": true,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "dirty": true
+   },
+   "after": {
+    "alive": true,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "dirty": true
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Save As (existing file) › native Yes",
+   "spec": "01 §3.6, §9.5; spec/01_application_shell.md:1073",
+   "path": [
+    "File",
+    "Save As"
+   ],
+   "choice": "native Yes",
+   "input": "real native menu File › Save As, a typed existing path, the native question's native Yes",
+   "expected": [
+    {
+     "command": "project.saveAs",
+     "must": {
+      "path": "<predicate>",
+      "onExists": "overwrite"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.saveAs",
+     "params": {
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg",
+      "onExists": "overwrite"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Other.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "other": "64867567302bc0ee86e7ad125dc4d8bfb3eafbfab61f7b60b96e60698d778385"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Save As (existing file) › native No",
+   "spec": "01 §3.6, §9.5; spec/01_application_shell.md:1073",
+   "path": [
+    "File",
+    "Save As"
+   ],
+   "choice": "native No",
+   "input": "real native menu File › Save As, a typed existing path, the native question's native No",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "99171e0015da48c72957dd9de921c0d99d42e6b6425a71ccb4879e1a414c0e64",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "shortcut editor › Import › Merge",
+   "spec": "01 §8.3 items 8-9; spec/01_application_shell.md:1156",
+   "path": [
+    "File",
+    "Preferences",
+    "Keyboard",
+    "Import"
+   ],
+   "choice": "Merge",
+   "input": "Preferences › Keyboard › Import, a typed path, a real click on Merge, then OK",
+   "expected": [
+    {
+     "command": "keymap.import",
+     "must": {
+      "path": "<predicate>",
+      "mode": "merge"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "keymap.import",
+     "params": {
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\flow-keys.json",
+      "mode": "merge"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Primary+S"
+   ],
+   "after": [
+    "Primary+S",
+    "Primary+Shift+F11"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "shortcut editor › Import › Replace",
+   "spec": "01 §8.3 items 8-9; spec/01_application_shell.md:1156",
+   "path": [
+    "File",
+    "Preferences",
+    "Keyboard",
+    "Import"
+   ],
+   "choice": "Replace",
+   "input": "Preferences › Keyboard › Import, a typed path, a real click on Replace, then OK",
+   "expected": [
+    {
+     "command": "keymap.import",
+     "must": {
+      "path": "<predicate>",
+      "mode": "replace"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "keymap.import",
+     "params": {
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\flow-keys.json",
+      "mode": "replace"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Primary+S"
+   ],
+   "after": [
+    "Primary+Shift+F11"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "shortcut editor › Import › Cancel",
+   "spec": "01 §8.3 items 8-9; spec/01_application_shell.md:1156",
+   "path": [
+    "File",
+    "Preferences",
+    "Keyboard",
+    "Import"
+   ],
+   "choice": "Cancel",
+   "input": "Preferences › Keyboard › Import, a typed path, a real click on Cancel, then OK",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Primary+S"
+   ],
+   "after": [
+    "Primary+S"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "shortcut editor › Reset all › Reset All",
+   "spec": "01 §8.3; spec/01_application_shell.md:1154",
+   "path": [
+    "File",
+    "Preferences",
+    "Keyboard",
+    "Reset all"
+   ],
+   "choice": "Reset All",
+   "input": "Preferences › Keyboard › Reset all, a real click on Reset All, then OK",
+   "expected": [
+    {
+     "command": "keymap.reset",
+     "must": {
+      "all": true
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "keymap.reset",
+     "params": {
+      "all": true
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Primary+Shift+F11"
+   ],
+   "after": [
+    "Primary+S"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "shortcut editor › Reset all › Cancel",
+   "spec": "01 §8.3; spec/01_application_shell.md:1154",
+   "path": [
+    "File",
+    "Preferences",
+    "Keyboard",
+    "Reset all"
+   ],
+   "choice": "Cancel",
+   "input": "Preferences › Keyboard › Reset all, a real click on Cancel, then OK",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Primary+Shift+F11"
+   ],
+   "after": [
+    "Primary+Shift+F11"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "shortcut editor › conflict › Override",
+   "spec": "01 §8.3 item 6; spec/01_application_shell.md:1152",
+   "path": [
+    "File",
+    "Preferences",
+    "Keyboard",
+    "Add shortcut"
+   ],
+   "choice": "Override",
+   "input": "Preferences › Keyboard › Add shortcut, the real keys Shift+Enter, a real click on Override, then OK",
+   "expected": [
+    {
+     "command": "keymap.set",
+     "must": {
+      "commandId": "app.info.get",
+      "keys": "Shift+Enter",
+      "onConflict": "override"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "keymap.set",
+     "params": {
+      "commandId": "app.info.get",
+      "keys": "Shift+Enter",
+      "context": "global",
+      "onConflict": "override"
+     }
+    }
+   ],
+   "dryRuns": [
+    {
+     "command": "keymap.set",
+     "params": {
+      "commandId": "app.info.get",
+      "keys": "Shift+Enter",
+      "context": "global"
+     },
+     "dryRun": true
+    }
+   ],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "holder": [
+     "Shift+Enter"
+    ],
+    "target": []
+   },
+   "after": {
+    "holder": [],
+    "target": [
+     "Shift+Enter"
+    ]
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "shortcut editor › conflict › Cancel",
+   "spec": "01 §8.3 item 6; spec/01_application_shell.md:1152",
+   "path": [
+    "File",
+    "Preferences",
+    "Keyboard",
+    "Add shortcut"
+   ],
+   "choice": "Cancel",
+   "input": "Preferences › Keyboard › Add shortcut, the real keys Shift+Enter, a real click on Cancel, then OK",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [
+    {
+     "command": "keymap.set",
+     "params": {
+      "commandId": "app.info.get",
+      "keys": "Shift+Enter",
+      "context": "global"
+     },
+     "dryRun": true
+    }
+   ],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "holder": [
+     "Shift+Enter"
+    ],
+    "target": []
+   },
+   "after": {
+    "holder": [
+     "Shift+Enter"
+    ],
+    "target": []
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "New Workspace › Create",
+   "spec": "01 §5.5; spec/01_application_shell.md:1136",
+   "path": [
+    "Window",
+    "Workspace",
+    "New Workspace"
+   ],
+   "choice": "Create",
+   "input": "real native menu Window › Workspace › New Workspace, a typed name, a real click on Create",
+   "expected": [
+    {
+     "command": "workspace.create",
+     "must": {
+      "name": "FlowSpace"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "workspace.create",
+     "params": {
+      "name": "FlowSpace"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Default",
+    "Drawing",
+    "Focused drawing",
+    "Staging"
+   ],
+   "after": [
+    "Default",
+    "Drawing",
+    "FlowSpace",
+    "Focused drawing",
+    "Staging"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "New Workspace › Cancel",
+   "spec": "01 §5.5; spec/01_application_shell.md:1136",
+   "path": [
+    "Window",
+    "Workspace",
+    "New Workspace"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Window › Workspace › New Workspace, a typed name, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Default",
+    "Drawing",
+    "Focused drawing",
+    "Staging"
+   ],
+   "after": [
+    "Default",
+    "Drawing",
+    "Focused drawing",
+    "Staging"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Rename Workspace › Rename",
+   "spec": "01 §5.5; spec/01_application_shell.md:1138",
+   "path": [
+    "Window",
+    "Workspace",
+    "Rename Workspace"
+   ],
+   "choice": "Rename",
+   "input": "real native menu Window › Workspace › Rename Workspace, a typed name, a real click on Rename",
+   "expected": [
+    {
+     "command": "workspace.rename",
+     "must": {
+      "name": "FlowSpace",
+      "newName": "FlowSpace2"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "workspace.rename",
+     "params": {
+      "name": "FlowSpace",
+      "newName": "FlowSpace2"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Default",
+    "Drawing",
+    "FlowSpace",
+    "Focused drawing",
+    "Staging"
+   ],
+   "after": [
+    "Default",
+    "Drawing",
+    "FlowSpace2",
+    "Focused drawing",
+    "Staging"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Rename Workspace › Cancel",
+   "spec": "01 §5.5; spec/01_application_shell.md:1138",
+   "path": [
+    "Window",
+    "Workspace",
+    "Rename Workspace"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Window › Workspace › Rename Workspace, a typed name, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Default",
+    "Drawing",
+    "FlowSpace",
+    "Focused drawing",
+    "Staging"
+   ],
+   "after": [
+    "Default",
+    "Drawing",
+    "FlowSpace",
+    "Focused drawing",
+    "Staging"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Customize Toolbar › Apply",
+   "spec": "01 §5.7 lines 445-464; spec/01_application_shell.md:1131",
+   "path": [
+    "Window",
+    "Customize Toolbar"
+   ],
+   "choice": "Apply",
+   "input": "real native menu Window › Customize Toolbar, the first item removed in the sheet, a real click on Apply",
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "after": [
+    "gridType",
+    "gridOverlay",
+    "separator",
+    "drawAid.onionSkin.set",
+    "onionSkinPrevious",
+    "onionSkinNext",
+    "drawAid.autoLightTable.set",
+    "separator",
+    "firstFrame",
+    "playStop",
+    "lastFrame",
+    "playback.loop.set",
+    "space",
+    "lipsync.panel.open",
+    "flexibleSpace",
+    "cameraList",
+    "sceneList",
+    "workspaceList"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Customize Toolbar › Cancel",
+   "spec": "01 §5.7 lines 445-464; spec/01_application_shell.md:1131",
+   "path": [
+    "Window",
+    "Customize Toolbar"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Window › Customize Toolbar, the first item removed in the sheet, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Customize Toolbar › Restore Default",
+   "spec": "01 §5.7; spec/01_application_shell.md:1132",
+   "path": [
+    "Window",
+    "Customize Toolbar"
+   ],
+   "choice": "Restore Default",
+   "input": "real native menu Window › Customize Toolbar, a real click on Restore Default",
+   "expected": [
+    {
+     "command": "window.toolbar.items.reset",
+     "must": {},
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "window.toolbar.items.reset",
+     "params": {}
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "project.save",
+    "separator",
+    "edit.undo"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Activity › Undo back › Undo",
+   "spec": "11 §11; spec/01_application_shell.md:1093",
+   "path": [
+    "Window",
+    "Activity",
+    "Undo back to before this entry"
+   ],
+   "choice": "Undo",
+   "input": "Activity panel: the agent's entry, Undo back to before this entry, then a real click on Undo",
+   "expected": [
+    {
+     "command": "edit.history.move",
+     "must": {
+      "position": 1
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "edit.history.move",
+     "params": {
+      "position": 1
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": 3,
+   "after": 1,
+   "ok": true,
+   "observed": {
+    "default": "message.cancel"
+   }
+  },
+  {
+   "name": "Activity › Undo back › Cancel",
+   "spec": "11 §11; spec/01_application_shell.md:1093",
+   "path": [
+    "Window",
+    "Activity",
+    "Undo back to before this entry"
+   ],
+   "choice": "Cancel",
+   "input": "Activity panel: the agent's entry, Undo back to before this entry, then a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": 3,
+   "after": 3,
+   "ok": true,
+   "observed": {
+    "default": "message.cancel"
+   }
+  },
+  {
+   "name": "Activity › Undo back › Enter (default Cancel)",
+   "spec": "11 §11; spec/01_application_shell.md:1093",
+   "path": [
+    "Window",
+    "Activity",
+    "Undo back to before this entry"
+   ],
+   "choice": "Enter (default Cancel)",
+   "input": "Activity panel: the agent's entry, Undo back to before this entry, then a real Enter",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": 5,
+   "after": 5,
+   "ok": true,
+   "observed": {
+    "default": "message.cancel"
+   }
+  },
+  {
+   "name": "Preferences › OK",
+   "spec": "01 §7.1; spec/01_application_shell.md:1147",
+   "path": [
+    "File",
+    "Preferences",
+    "General"
+   ],
+   "choice": "OK",
+   "input": "File › Preferences › General, a real click on the general.workspace.autoSave check box, then OK",
+   "expected": [
+    {
+     "command": "prefs.set",
+     "must": {
+      "values": {
+       "general.workspace.autoSave": false
+      }
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "prefs.set",
+     "params": {
+      "values": {
+       "general.workspace.autoSave": false
+      }
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": true,
+   "after": false,
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Preferences › Cancel",
+   "spec": "01 §7.1; spec/01_application_shell.md:1147",
+   "path": [
+    "File",
+    "Preferences",
+    "General"
+   ],
+   "choice": "Cancel",
+   "input": "File › Preferences › General, a real click on the general.workspace.autoSave check box, then Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": false,
+   "after": false,
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Project Properties › OK (set as default)",
+   "spec": "01 §3.8; spec/01_application_shell.md:1076",
+   "path": [
+    "File",
+    "Project Properties"
+   ],
+   "choice": "OK (set as default)",
+   "input": "real native menu File › Project Properties, width typed, Set as default checked, a real click on OK (set as default)",
+   "expected": [
+    {
+     "command": "project.properties.set",
+     "must": {
+      "cameraWidth": 1280,
+      "setAsDefault": true
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.properties.set",
+     "params": {
+      "frameRate": 24,
+      "cameraWidth": 1280,
+      "cameraHeight": 1080,
+      "setAsDefault": true
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "width": 1920,
+    "defaultWidth": 1920
+   },
+   "after": {
+    "width": 1280,
+    "defaultWidth": 1280
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Project Properties › Cancel",
+   "spec": "01 §3.8; spec/01_application_shell.md:1076",
+   "path": [
+    "File",
+    "Project Properties"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu File › Project Properties, width typed, Set as default checked, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "width": 1920,
+    "defaultWidth": 1920
+   },
+   "after": {
+    "width": 1920,
+    "defaultWidth": 1920
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "New Project › Create",
+   "spec": "01 §3.1; spec/01_application_shell.md:1069",
+   "path": [
+    "File",
+    "New Project"
+   ],
+   "choice": "Create",
+   "input": "real native menu File › New Project (no unsaved changes), a typed name, a real click on Create",
+   "expected": [
+    {
+     "command": "project.create",
+     "must": {
+      "name": "FlowFresh"
+     },
+     "absent": [
+      "onUnsaved"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.create",
+     "params": {
+      "name": "FlowFresh",
+      "frameRate": 24,
+      "cameraWidth": 1920,
+      "cameraHeight": 1080,
+      "preset": "default"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "1aa0f7ba8b44e646245179550ebf6e68afe29a889347fa9563c9f14b264c464b",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": null,
+    "name": "FlowFresh",
+    "dirty": false,
+    "flow": "1aa0f7ba8b44e646245179550ebf6e68afe29a889347fa9563c9f14b264c464b",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "New Project › Cancel",
+   "spec": "01 §3.1; spec/01_application_shell.md:1069",
+   "path": [
+    "File",
+    "New Project"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu File › New Project (no unsaved changes), a typed name, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "12179b17c83ec2fb7e7709ed9e26fe0be905c5ec1d986e0d3fdfc8f4648253ef",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "12179b17c83ec2fb7e7709ed9e26fe0be905c5ec1d986e0d3fdfc8f4648253ef",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "backup chooser › Open",
+   "spec": "01 §3.7; spec/01_application_shell.md:1084",
+   "path": [
+    "File",
+    "Open Backup"
+   ],
+   "choice": "Open",
+   "input": "real native menu File › Open Backup (no unsaved changes), a real click on Open",
+   "expected": [
+    {
+     "command": "project.backup.open",
+     "must": {
+      "backupId": "bk_038f8b4642431a84"
+     },
+     "absent": [
+      "onUnsaved"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.backup.open",
+     "params": {
+      "backupId": "bk_038f8b4642431a84"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "36ac9a33e96e546b3379b2557f7cfb25825916535591518112d06b19f8080bbd",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": null,
+    "name": "Flow",
+    "dirty": false,
+    "flow": "36ac9a33e96e546b3379b2557f7cfb25825916535591518112d06b19f8080bbd",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "backup chooser › Cancel",
+   "spec": "01 §3.7; spec/01_application_shell.md:1084",
+   "path": [
+    "File",
+    "Open Backup"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu File › Open Backup (no unsaved changes), a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "6b50239c789be9f12f07ab279b5cd0cda3a93a6a06d5d4fb4115a0bc24f51282",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "6b50239c789be9f12f07ab279b5cd0cda3a93a6a06d5d4fb4115a0bc24f51282",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Check Project › Repair",
+   "spec": "01 §6.7; spec/10_data_model_project_format.md:1136",
+   "path": [
+    "File",
+    "Check Project"
+   ],
+   "choice": "Repair",
+   "input": "real native menu File › Check Project (an unused asset reported), a real click on Repair",
+   "expected": [
+    {
+     "command": "doc.repair",
+     "must": {
+      "all": true
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "doc.repair",
+     "params": {
+      "all": true
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "emptyExposure",
+    "missingMedia",
+    "unpaintedZones",
+    "unusedAssets",
+    "unusedSwatches"
+   ],
+   "after": [
+    "emptyExposure",
+    "unpaintedZones",
+    "unusedSwatches"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Check Project › Close",
+   "spec": "01 §6.7; spec/10_data_model_project_format.md:1136",
+   "path": [
+    "File",
+    "Check Project"
+   ],
+   "choice": "Close",
+   "input": "real native menu File › Check Project (an unused asset reported), a real click on Close",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "emptyExposure",
+    "missingMedia",
+    "unpaintedZones",
+    "unusedAssets",
+    "unusedSwatches"
+   ],
+   "after": [
+    "emptyExposure",
+    "missingMedia",
+    "unpaintedZones",
+    "unusedAssets",
+    "unusedSwatches"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "About › Close",
+   "spec": "01 §12.2 (About)",
+   "path": [
+    "Help",
+    "About Toontown"
+   ],
+   "choice": "Close",
+   "input": "real native menu Help › About Toontown, a real click on its close button",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "41fd0987febe2a111a0f955188477b522291b0f5948bf61174ba1340f071f6ff",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "41fd0987febe2a111a0f955188477b522291b0f5948bf61174ba1340f071f6ff",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Project Info › Close",
+   "spec": "01 §3.8 (Project Info)",
+   "path": [
+    "File",
+    "Project Info"
+   ],
+   "choice": "Close",
+   "input": "real native menu File › Project Info, a real click on its close button",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "842c6c3c5b161abf528a8338a93723d21d71c2e2c4d379135b13dc4bf4b129df",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "842c6c3c5b161abf528a8338a93723d21d71c2e2c4d379135b13dc4bf4b129df",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Help › Close",
+   "spec": "01 §9.3 (Help)",
+   "path": [
+    "Help",
+    "Documentation"
+   ],
+   "choice": "Close",
+   "input": "real native menu Help › Documentation, a real click on its close button",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "1c6d80150900aaa71a0faa4ed3a629b3de036d480e61b91a2c8fa12bfafc3cd6",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "1c6d80150900aaa71a0faa4ed3a629b3de036d480e61b91a2c8fa12bfafc3cd6",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "error box › OK",
+   "spec": "01 §9.5 (messages)",
+   "path": [
+    "File",
+    "Open"
+   ],
+   "choice": "OK",
+   "input": "File › Open on a file that is not a project, the error box message.project.invalidFormat, a real click on OK",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "8cb21cd3c66fbc4832f9fafdd099f66ea88c589ec45ba14c890ff6895c42fb99",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": false,
+    "path": null,
+    "name": null,
+    "dirty": null,
+    "flow": "8cb21cd3c66fbc4832f9fafdd099f66ea88c589ec45ba14c890ff6895c42fb99",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "native picker › Cancel",
+   "spec": "01 §3.2 (Open)",
+   "path": [
+    "File",
+    "Open"
+   ],
+   "choice": "Cancel",
+   "input": "File › Open, the native picker cancelled with a real Escape",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "aea1094d2d8a8f1403218b2fa88b0b8f4252683c6a1d17ad0981fb1cfe0c3ed5",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "aea1094d2d8a8f1403218b2fa88b0b8f4252683c6a1d17ad0981fb1cfe0c3ed5",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "unsaved changes › Enter (default Save)",
+   "spec": "01 §3.5, §9.5; D-49 item 2",
+   "path": [
+    "File",
+    "Close Project"
+   ],
+   "choice": "Enter",
+   "input": "real native menu File › Close Project, then a real Enter on the focused default",
+   "expected": [
+    {
+     "command": "project.save",
+     "must": {},
+     "absent": []
+    },
+    {
+     "command": "project.close",
+     "must": {},
+     "absent": [
+      "onUnsaved"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    },
+    {
+     "command": "project.close",
+     "params": {}
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "aea1094d2d8a8f1403218b2fa88b0b8f4252683c6a1d17ad0981fb1cfe0c3ed5",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": false,
+    "path": null,
+    "name": null,
+    "dirty": null,
+    "flow": "79063b17993bc6c0134e01271d71ac0ebfa9f314dde101e14df0731817aed72b",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {
+    "default": "message.save"
+   }
+  },
+  {
+   "name": "shortcut editor › Reset all › Enter (default Cancel)",
+   "spec": "01 §8.3; D-49 item 2",
+   "path": [
+    "File",
+    "Preferences",
+    "Keyboard",
+    "Reset all"
+   ],
+   "choice": "Enter",
+   "input": "Preferences › Keyboard › Reset all, then a real Enter on the focused default, then OK",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Primary+Shift+F11"
+   ],
+   "after": [
+    "Primary+Shift+F11"
+   ],
+   "ok": true,
+   "observed": {
+    "default": "message.cancel"
+   }
+  },
+  {
+   "name": "shortcut editor › Import › Enter (default Merge)",
+   "spec": "01 §8.3 item 8; D-46; D-49 item 2",
+   "path": [
+    "File",
+    "Preferences",
+    "Keyboard",
+    "Import"
+   ],
+   "choice": "Enter",
+   "input": "Preferences › Keyboard › Import, a typed path, then a real Enter on the focused default, then OK",
+   "expected": [
+    {
+     "command": "keymap.import",
+     "must": {
+      "path": "<predicate>",
+      "mode": "merge"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "keymap.import",
+     "params": {
+      "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\flow-keys-default.json",
+      "mode": "merge"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Primary+S"
+   ],
+   "after": [
+    "Primary+S",
+    "Primary+Shift+F11"
+   ],
+   "ok": true,
+   "observed": {
+    "default": "message.merge"
+   }
+  },
+  {
+   "name": "modal (message box) › Tab past the last control, Escape",
+   "spec": "01 §9.5; D-49 item 3",
+   "path": [
+    "File",
+    "Close Project"
+   ],
+   "choice": "Tab, Escape",
+   "input": "real native menu File › Close Project, 6 real Tabs, then a real Escape",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "79063b17993bc6c0134e01271d71ac0ebfa9f314dde101e14df0731817aed72b",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": true,
+    "flow": "79063b17993bc6c0134e01271d71ac0ebfa9f314dde101e14df0731817aed72b",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "modal (form) › Tab past the last control, Escape",
+   "spec": "01 §9.5; D-49 item 3",
+   "path": [
+    "File",
+    "Project Properties"
+   ],
+   "choice": "Tab, Escape",
+   "input": "real native menu File › Project Properties, 8 real Tabs, then a real Escape",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "931b9a0722b3afbe78bbbe244918f16ab87abbdc27a6d6265121a86e9d2ed712",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "after": {
+    "open": true,
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\main\\Flow.animpkg",
+    "name": "Flow",
+    "dirty": false,
+    "flow": "931b9a0722b3afbe78bbbe244918f16ab87abbdc27a6d6265121a86e9d2ed712",
+    "other": "f356eddfe284db65367f989c3908cf2cd72d4c57354466a9404fe23c9fb93e89"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "progress window › Cancel",
+   "spec": "01 §9.5 lines 925-927; spec/11_agent_interface_mcp.md:638",
+   "path": [
+    "status bar",
+    "progress window"
+   ],
+   "choice": "Cancel",
+   "input": "an agent session's render job; the progress window opened by itself; a real click on its Cancel",
+   "expected": [
+    {
+     "command": "job.cancel",
+     "must": {
+      "jobId": "job-46"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "job.cancel",
+     "params": {
+      "jobId": "job-46"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": null,
+   "after": "cancelled",
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "recovery open › Save",
+   "spec": "01 §3.5, §3.7; spec/01_application_shell.md:1081",
+   "ok": true,
+   "notRun": "its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices"
+  },
+  {
+   "name": "recovery open › Don't Save",
+   "spec": "01 §3.5, §3.7; spec/01_application_shell.md:1081",
+   "ok": true,
+   "notRun": "its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices"
+  },
+  {
+   "name": "recovery open › Cancel",
+   "spec": "01 §3.5, §3.7; spec/01_application_shell.md:1081",
+   "ok": true,
+   "notRun": "its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices"
+  },
+  {
+   "name": "engine restart › Restart",
+   "spec": "01 §12.1 (engine not responding)",
+   "ok": true,
+   "notRun": "it needs an engine that stops answering; App.test.tsx covers the question and its choices"
+  },
+  {
+   "name": "engine restart › Cancel",
+   "spec": "01 §12.1 (engine not responding)",
+   "ok": true,
+   "notRun": "it needs an engine that stops answering; App.test.tsx covers the question and its choices"
+  },
+  {
+   "name": "Quit › Don't Save",
+   "spec": "01 §3.5; spec/01_application_shell.md:1061",
+   "path": [
+    "File",
+    "Quit"
+   ],
+   "choice": "Don't Save",
+   "input": "real native menu File › Quit, then a real click on Don't Save",
+   "expected": [
+    {
+     "command": "app.quit",
+     "must": {
+      "onUnsaved": "discard"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "app.quit",
+     "params": {
+      "onUnsaved": "discard"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "alive": true,
+    "flow": "a843593033bce79908d7f13afcc1969f88122b25be8778315c2c8bfa307dadab",
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\quit-discard\\Flow.animpkg",
+    "dirty": true
+   },
+   "after": {
+    "alive": false,
+    "flow": "a843593033bce79908d7f13afcc1969f88122b25be8778315c2c8bfa307dadab"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Quit › Save",
+   "spec": "01 §3.5; spec/01_application_shell.md:1061",
+   "path": [
+    "File",
+    "Quit"
+   ],
+   "choice": "Save",
+   "input": "real native menu File › Quit, then a real click on Save",
+   "expected": [
+    {
+     "command": "project.save",
+     "must": {},
+     "absent": []
+    },
+    {
+     "command": "app.quit",
+     "must": {},
+     "absent": [
+      "onUnsaved"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    },
+    {
+     "command": "app.quit",
+     "params": {}
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "alive": true,
+    "flow": "68b89ee94b6ae3fc17640e4d320287b3fffab2696e168f8f8477b04ceb12a18c",
+    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d44-tg6lhrtr\\quit-save\\Flow.animpkg",
+    "dirty": true
+   },
+   "after": {
+    "alive": false,
+    "flow": "8c383e85c8a2a09367e5d4b9399d693f8d1b1f85db8235a8e8c63e2f7d76654e"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Confirmation sheet › Accept",
+   "spec": "11 §6.3 step 2; D-58",
+   "path": [
+    "agent request",
+    "sheet"
+   ],
+   "choice": "Accept",
+   "input": "a test-only agent's overwrite asked in the sheet (focus not taken: None), a real click on Accept",
+   "expected": [
+    {
+     "command": "agent.confirmation.respond",
+     "must": {
+      "confirmationId": "cf_34888e53cc4e46ebdb37ac4d",
+      "accept": true
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_34888e53cc4e46ebdb37ac4d",
+      "accept": true
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "agent.session.grant",
+     "params": {
+      "sessionId": "s2-edf7bb",
+      "policy": "assist"
+     }
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": null,
+   "after": null,
+   "ok": true,
+   "observed": {
+    "answers": [
+     "ok"
+    ]
+   }
+  },
+  {
+   "name": "Confirmation sheet › Decline",
+   "spec": "11 §6.3 step 2; D-58",
+   "path": [
+    "agent request",
+    "sheet"
+   ],
+   "choice": "Decline",
+   "input": "a test-only agent's overwrite asked in the sheet (focus not taken: None), a real click on Decline",
+   "expected": [
+    {
+     "command": "agent.confirmation.respond",
+     "must": {
+      "confirmationId": "cf_d0a812796089fb670f970d93",
+      "accept": false
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_d0a812796089fb670f970d93",
+      "accept": false
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": null,
+   "after": null,
+   "ok": true,
+   "observed": {
+    "answers": [
+     "confirmation.declined"
+    ]
+   }
+  },
+  {
+   "name": "Confirmation sheet › Return (default Decline)",
+   "spec": "D-58; D-49 item 2",
+   "path": [
+    "agent request",
+    "sheet"
+   ],
+   "choice": "Return",
+   "input": "the focus moved into the sheet, then a real Return (Decline is the default)",
+   "expected": [
+    {
+     "command": "agent.confirmation.respond",
+     "must": {
+      "confirmationId": "cf_dd1c7a115b6eea06fe04dd55",
+      "accept": false
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_dd1c7a115b6eea06fe04dd55",
+      "accept": false
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": null,
+   "after": null,
+   "ok": true,
+   "observed": {
+    "answers": [
+     "confirmation.declined"
+    ]
+   }
+  },
+  {
+   "name": "Confirmation sheet › document changed",
+   "spec": "11 §6.3 (bound to the revision); D-58",
+   "path": [
+    "agent request",
+    "sheet"
+   ],
+   "choice": "revision change",
+   "input": "a request open in the sheet, then the person's own edit of the document",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "doc.object.patch",
+     "params": {
+      "targets": [
+       "sc_01M7ZV770P26TC5D8VHXEPNG1D"
+      ],
+      "props": {
+       "meta": {
+        "d44": 1
+       }
+      }
+     }
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": null,
+   "after": null,
+   "ok": true,
+   "observed": {
+    "answers": [
+     "confirmation.expired"
+    ],
+    "ended": "The request expired: the document changed. OK"
+   }
+  },
+  {
+   "name": "Confirmation sheet › decided in another window",
+   "spec": "D-58",
+   "path": [
+    "agent request",
+    "sheet"
+   ],
+   "choice": "elsewhere",
+   "input": "a request open in the sheet, answered by another window (no click in the sheet), then a conflicting second answer",
+   "expected": [
+    {
+     "command": "agent.confirmation.respond",
+     "must": {
+      "confirmationId": "cf_005a627082c039f557bb2f71",
+      "accept": true
+     },
+     "absent": []
+    },
+    {
+     "command": "agent.confirmation.respond",
+     "must": {
+      "confirmationId": "cf_005a627082c039f557bb2f71",
+      "accept": false
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_005a627082c039f557bb2f71",
+      "accept": true
+     }
+    },
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_005a627082c039f557bb2f71",
+      "accept": false
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": null,
+   "after": null,
+   "ok": true,
+   "observed": {
+    "answers": [
+     "ok"
+    ],
+    "gone": true,
+    "second": "{\"status\":\"error\",\"changes\":[],\"warnings\":[],\"documentRev\":10,\"error\":{\"code\":\"confirmation.expired\",\"message\":\"no pending confirmation `cf_005a627082c039f557bb2f71`\",\"details\":{\"confirmationId\":\"cf_005a627082c039f557bb2f71\"}}}"
+   }
+  },
+  {
+   "name": "Confirmation sheet › three queued",
+   "spec": "D-58 (queued requests)",
+   "path": [
+    "agent request",
+    "sheet"
+   ],
+   "choice": "queue",
+   "input": "two test-only agents' requests A, B, A queued in the sheet, a read of B answered meanwhile: Decline, Accept, Decline in turn",
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "agent.session.grant",
+     "params": {
+      "sessionId": "s3-455a5d",
+      "policy": "assist"
+     }
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": null,
+   "after": null,
+   "ok": true,
+   "observed": {
+    "answers": [
+     "confirmation.declined",
+     "confirmation.declined",
+     "ok"
+    ],
+    "readWhileHeld": {
+     "status": "ok",
+     "seconds": 0.02,
+     "stillOpen": 3
+    },
+    "queue": " 1 of 3",
+    "order": [
+     "cf_34f5ff3a4a7f4e0448aac58e",
+     "cf_4017b4c30318297b9b9e735b",
+     "cf_ba731bc1581ccb9b32699a7e"
+    ]
+   }
+  },
+  {
+   "name": "Confirmation sheet › expiry",
+   "spec": "11 §6.3 (five minutes); D-58",
+   "path": [
+    "agent request",
+    "sheet"
+   ],
+   "choice": "expiry",
+   "input": "a request left unanswered for the token's five minutes",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": null,
+   "after": null,
+   "ok": true,
+   "observed": {
+    "answers": [
+     "confirmation.expired"
+    ],
+    "ended": "The request expired: it was not answered in time. OK"
+   }
+  },
+  {
+   "name": "Agent access › Regenerate token › Cancel",
+   "spec": "11 §15.1; spec/11_agent_interface_mcp.md:604",
+   "path": [
+    "File",
+    "Preferences",
+    "Agent access",
+    "Regenerate token"
+   ],
+   "choice": "Cancel",
+   "input": "Preferences › Agent access › Regenerate token…, then a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "endpoint": "http://127.0.0.1:52162/mcp",
+    "token": "<the run's session token, removed>"
+   },
+   "after": {
+    "endpoint": "http://127.0.0.1:52162/mcp",
+    "token": "<the run's session token, removed>"
+   },
+   "ok": true,
+   "observed": {
+    "default": "message.cancel"
+   }
+  },
+  {
+   "name": "Agent access › Regenerate token › Enter (default Cancel)",
+   "spec": "11 §15.1; spec/11_agent_interface_mcp.md:604",
+   "path": [
+    "File",
+    "Preferences",
+    "Agent access",
+    "Regenerate token"
+   ],
+   "choice": "Enter (default Cancel)",
+   "input": "Preferences › Agent access › Regenerate token…, then a real Enter",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "endpoint": "http://127.0.0.1:52162/mcp",
+    "token": "<the run's session token, removed>"
+   },
+   "after": {
+    "endpoint": "http://127.0.0.1:52162/mcp",
+    "token": "<the run's session token, removed>"
+   },
+   "ok": true,
+   "observed": {
+    "default": "message.cancel"
+   }
+  },
+  {
+   "name": "Agent access › Regenerate token › Regenerate",
+   "spec": "11 §15.1; spec/11_agent_interface_mcp.md:604",
+   "path": [
+    "File",
+    "Preferences",
+    "Agent access",
+    "Regenerate token"
+   ],
+   "choice": "Regenerate",
+   "input": "Preferences › Agent access › Regenerate token…, then a real click on Regenerate",
+   "expected": [
+    {
+     "command": "agent.token.regenerate",
+     "must": {},
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "agent.token.regenerate",
+     "params": {}
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "endpoint": "http://127.0.0.1:52162/mcp",
+    "token": "<the run's session token, removed>"
+   },
+   "after": {
+    "endpoint": "http://127.0.0.1:52162/mcp",
+    "token": "<the run's session token, removed>"
+   },
+   "ok": true,
+   "observed": {
+    "default": "message.cancel"
+   }
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 317,
+   "sha256": "18f905a810bcd0ec72d162477f91007b518befa089715c0e1455f2c8fcc8e315"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 80997,
+   "sha256": "13cde275588683384db85ddd30ed9c24fd490978ca46b5bd89a01934b2f5e09a"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 39931,
+   "sha256": "06430b860008c26848986496ef60f874fe8b040442b2d12c94533a05a641e826"
+  }
+ ]
+}
