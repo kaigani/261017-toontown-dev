@@ -1,0 +1,154 @@
+[
+  {
+    "name": "cameraView-bitmap-placement-options",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": 12,
+      "error": {
+        "code": "command.notImplemented",
+        "message": "`import.file.run` is registered but implemented in M10 C10.2",
+        "details": {
+          "commandId": "import.file.run",
+          "milestone": "M10 C10.2"
+        }
+      }
+    }
+  },
+  {
+    "name": "cameraView-mixed-content-affine-fit-options",
+    "value": [
+      {
+        "kind": "text",
+        "maxError": 1.0658141036401503e-14,
+        "before": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          -20.0,
+          -10.0
+        ],
+        "after": [
+          0.7826086956521738,
+          -0.18633540372670807,
+          -0.2892561983471075,
+          0.7520661157024794,
+          -12.759611929572415,
+          -3.7939530824906322
+        ]
+      }
+    ]
+  },
+  {
+    "name": "cameraView-mixed-content-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN8000GJX6DZQG4W52FTR",
+        "ids": [
+          "nd_01K7JJN800YS5FMNSZ44G12BZV",
+          "st_01K7JJN800KTEMEGFT72BS59DN",
+          "st_01K7JJN800D7SPWW4PYFVYR309",
+          "st_01K7JJN800B66DN8HB7VGCHCNH"
+        ],
+        "createdIds": [
+          "zn_MZDF8VG2ZNE7KBMGQX0F6C1C9K"
+        ],
+        "modifiedIds": [
+          "nd_01K7JJN800YS5FMNSZ44G12BZV",
+          "st_01K7JJN800KTEMEGFT72BS59DN",
+          "st_01K7JJN800D7SPWW4PYFVYR309",
+          "st_01K7JJN800B66DN8HB7VGCHCNH"
+        ],
+        "removedIds": [
+          "zn_714V45J2CH8EBCQ21N7YJJ29JG"
+        ],
+        "rev": 14
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-bitmap-placement-options",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": 12,
+      "error": {
+        "code": "command.notImplemented",
+        "message": "`import.file.run` is registered but implemented in M10 C10.2",
+        "details": {
+          "commandId": "import.file.run",
+          "milestone": "M10 C10.2"
+        }
+      }
+    }
+  },
+  {
+    "name": "drawingView-mixed-content-affine-fit-options",
+    "value": [
+      {
+        "kind": "text",
+        "maxError": 1.0658141036401503e-14,
+        "before": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          -20.0,
+          -10.0
+        ],
+        "after": [
+          0.7826086956521738,
+          -0.18633540372670807,
+          -0.2892561983471075,
+          0.7520661157024794,
+          -12.759611929572415,
+          -3.7939530824906322
+        ]
+      }
+    ]
+  },
+  {
+    "name": "drawingView-mixed-content-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800Y836JB3GYBQ7C2R9",
+        "ids": [
+          "nd_01K7JJN800CFF9EDRQKSN2HB26",
+          "st_01K7JJN800VYBT0GYQYC6C7TXH",
+          "st_01K7JJN800S07WAMMC22Y8GF2Z",
+          "st_01K7JJN800JSS67QTFEPH846QC"
+        ],
+        "createdIds": [
+          "zn_KRDNQM9AERMJWCRNXHD0DBYJAT"
+        ],
+        "modifiedIds": [
+          "nd_01K7JJN800CFF9EDRQKSN2HB26",
+          "st_01K7JJN800VYBT0GYQYC6C7TXH",
+          "st_01K7JJN800S07WAMMC22Y8GF2Z",
+          "st_01K7JJN800JSS67QTFEPH846QC"
+        ],
+        "removedIds": [
+          "zn_5ZKQQ7XFS3333KVW3KKD0VG534"
+        ],
+        "rev": 14
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  }
+]

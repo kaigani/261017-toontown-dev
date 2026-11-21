@@ -1,0 +1,50 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-sudvgbxh",
+  "results": [
+    {
+      "check": "100k responsive",
+      "ok": true
+    },
+    {
+      "check": "02 7.6.1 font name retained",
+      "ok": true
+    },
+    {
+      "check": "D-75 item 9 missing font code (severity absent from MCP warning schema)",
+      "ok": true
+    },
+    {
+      "check": "undo redo exact content",
+      "ok": true
+    },
+    {
+      "check": "second undo exact content",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 redo 0 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 redo 1 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 redo 2 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 undo again 0 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 undo again 1 exact",
+      "ok": true
+    },
+    {
+      "check": "02 12.1 undo again 2 exact",
+      "ok": true
+    }
+  ],
+  "failures": []
+}

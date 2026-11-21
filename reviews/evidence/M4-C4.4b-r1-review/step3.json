@@ -1,0 +1,717 @@
+{
+  "checks": 127,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView-old-brush command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-brush undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-brush D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-brush undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-select command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-select undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-select D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-select undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-rectangle command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-rectangle undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-rectangle D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-old-rectangle undo exact content",
+      "ok": true
+    },
+    {
+      "check": "toolbar select",
+      "ok": true
+    },
+    {
+      "check": "options page available select",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches select",
+      "ok": true
+    },
+    {
+      "check": "shortcut select",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match select",
+      "ok": true
+    },
+    {
+      "check": "toolbar contourEditor",
+      "ok": true
+    },
+    {
+      "check": "options page available contourEditor",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches contourEditor",
+      "ok": true
+    },
+    {
+      "check": "shortcut contourEditor",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match contourEditor",
+      "ok": true
+    },
+    {
+      "check": "toolbar perspective",
+      "ok": true
+    },
+    {
+      "check": "options page available perspective",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches perspective",
+      "ok": true
+    },
+    {
+      "check": "shortcut perspective",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match perspective",
+      "ok": true
+    },
+    {
+      "check": "toolbar repositionAll",
+      "ok": true
+    },
+    {
+      "check": "options page available repositionAll",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches repositionAll",
+      "ok": true
+    },
+    {
+      "check": "shortcut repositionAll",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match repositionAll",
+      "ok": true
+    },
+    {
+      "check": "toolbar brush",
+      "ok": true
+    },
+    {
+      "check": "options page available brush",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches brush",
+      "ok": true
+    },
+    {
+      "check": "shortcut brush",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match brush",
+      "ok": true
+    },
+    {
+      "check": "toolbar pencil",
+      "ok": true
+    },
+    {
+      "check": "options page available pencil",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches pencil",
+      "ok": true
+    },
+    {
+      "check": "shortcut pencil",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match pencil",
+      "ok": true
+    },
+    {
+      "check": "toolbar rectangle",
+      "ok": true
+    },
+    {
+      "check": "options page available rectangle",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches rectangle",
+      "ok": true
+    },
+    {
+      "check": "shortcut rectangle",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match rectangle",
+      "ok": true
+    },
+    {
+      "check": "toolbar ellipse",
+      "ok": true
+    },
+    {
+      "check": "options page available ellipse",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches ellipse",
+      "ok": true
+    },
+    {
+      "check": "shortcut ellipse",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match ellipse",
+      "ok": true
+    },
+    {
+      "check": "toolbar polyline",
+      "ok": true
+    },
+    {
+      "check": "options page available polyline",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches polyline",
+      "ok": true
+    },
+    {
+      "check": "shortcut polyline",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match polyline",
+      "ok": true
+    },
+    {
+      "check": "toolbar line",
+      "ok": true
+    },
+    {
+      "check": "options page available line",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches line",
+      "ok": true
+    },
+    {
+      "check": "shortcut line",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match line",
+      "ok": true
+    },
+    {
+      "check": "toolbar paint",
+      "ok": true
+    },
+    {
+      "check": "options page available paint",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches paint",
+      "ok": true
+    },
+    {
+      "check": "shortcut paint",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match paint",
+      "ok": true
+    },
+    {
+      "check": "toolbar unpaint",
+      "ok": true
+    },
+    {
+      "check": "options page available unpaint",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches unpaint",
+      "ok": true
+    },
+    {
+      "check": "shortcut unpaint",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match unpaint",
+      "ok": true
+    },
+    {
+      "check": "toolbar paintUnpainted",
+      "ok": true
+    },
+    {
+      "check": "options page available paintUnpainted",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches paintUnpainted",
+      "ok": true
+    },
+    {
+      "check": "shortcut paintUnpainted",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match paintUnpainted",
+      "ok": true
+    },
+    {
+      "check": "toolbar dropper",
+      "ok": true
+    },
+    {
+      "check": "options page available dropper",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches dropper",
+      "ok": true
+    },
+    {
+      "check": "shortcut dropper",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match dropper",
+      "ok": true
+    },
+    {
+      "check": "toolbar closeGap",
+      "ok": true
+    },
+    {
+      "check": "options page available closeGap",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches closeGap",
+      "ok": true
+    },
+    {
+      "check": "shortcut closeGap",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match closeGap",
+      "ok": true
+    },
+    {
+      "check": "toolbar stroke",
+      "ok": true
+    },
+    {
+      "check": "options page available stroke",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches stroke",
+      "ok": true
+    },
+    {
+      "check": "shortcut stroke",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match stroke",
+      "ok": true
+    },
+    {
+      "check": "toolbar editTexture",
+      "ok": true
+    },
+    {
+      "check": "options page available editTexture",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches editTexture",
+      "ok": true
+    },
+    {
+      "check": "shortcut editTexture",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match editTexture",
+      "ok": true
+    },
+    {
+      "check": "toolbar eraser",
+      "ok": true
+    },
+    {
+      "check": "options page available eraser",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches eraser",
+      "ok": true
+    },
+    {
+      "check": "shortcut eraser",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match eraser",
+      "ok": true
+    },
+    {
+      "check": "toolbar cutter",
+      "ok": true
+    },
+    {
+      "check": "options page available cutter",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches cutter",
+      "ok": true
+    },
+    {
+      "check": "shortcut cutter",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match cutter",
+      "ok": true
+    },
+    {
+      "check": "toolbar scissor",
+      "ok": true
+    },
+    {
+      "check": "options page available scissor",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches scissor",
+      "ok": true
+    },
+    {
+      "check": "shortcut scissor",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match scissor",
+      "ok": true
+    },
+    {
+      "check": "toolbar zoom",
+      "ok": true
+    },
+    {
+      "check": "options page available zoom",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches zoom",
+      "ok": true
+    },
+    {
+      "check": "shortcut zoom",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match zoom",
+      "ok": true
+    },
+    {
+      "check": "toolbar grabber",
+      "ok": true
+    },
+    {
+      "check": "options page available grabber",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches grabber",
+      "ok": true
+    },
+    {
+      "check": "shortcut grabber",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match grabber",
+      "ok": true
+    },
+    {
+      "check": "toolbar text",
+      "ok": true
+    },
+    {
+      "check": "options page available text",
+      "ok": true
+    },
+    {
+      "check": "02 tool options page matches text",
+      "ok": true
+    },
+    {
+      "check": "shortcut text",
+      "ok": true
+    },
+    {
+      "check": "02 shortcut options match text",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "drawingView-old-brush",
+      "commands": [
+        {
+          "commandId": "draw.stroke.add",
+          "params": {
+            "kind": "brush",
+            "points": [
+              {
+                "x": -80.078125,
+                "y": 59.5,
+                "pressure": 1
+              },
+              {
+                "x": -40.078125,
+                "y": 79.5,
+                "pressure": 1
+              },
+              {
+                "x": -0.078125,
+                "y": 59.5,
+                "pressure": 1
+              },
+              {
+                "x": -0.078125,
+                "y": 59.5,
+                "pressure": 1
+              }
+            ],
+            "fit": true,
+            "penId": "pen_01M7ZEW3X5GJ78DBEKJ04QGFJK",
+            "colourId": "col_01M7ZEW3X5GJ78DBEKJ04QGFES",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Brush Tool",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800WAR1AC5E3MRY1AGM"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800WAR1AC5E3MRY1AGM",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800WAR1AC5E3MRY1AGM",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN8004GNQG7RN9GJ99090",
+          "kind": "brush",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "2b7f98491875eff70bdcc05de033418288e0a12c74356774644aea229cc9fc0b",
+      "afterSha256": "2bbebe16d72cb173a99a9d6636c5359c93ef87a0e4c47a78779b625b23e346c5"
+    },
+    {
+      "name": "drawingView-old-rectangle",
+      "commands": [
+        {
+          "commandId": "draw.rectangle.add",
+          "params": {
+            "from": {
+              "x": -100.078125,
+              "y": -60.5
+            },
+            "to": {
+              "x": 99.921875,
+              "y": 59.5
+            },
+            "square": false,
+            "fromCentre": false,
+            "colourId": "col_01M7ZEW92QV9V5P7P54753PXTB",
+            "thickness": 8,
+            "penId": "pen_01M7ZEW92R6K0DFQW9EH5AQ2QS",
+            "layer": "auto",
+            "symmetry": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Rectangle Tool",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8008694B42XP0EHT1H9"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8008694B42XP0EHT1H9",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8008694B42XP0EHT1H9",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN8000QPJWRPSCNMK5VH1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "cfcd9d7fa3a583b328679b681d2f74ed6a66ffe60d63f53edc31818f98973311",
+      "afterSha256": "1af7c04be3797637764a34bebe47ee030c8466c08fa429a96a0081fae10720a5"
+    },
+    {
+      "name": "drawingView-old-select",
+      "commands": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "translate": {
+              "x": 20,
+              "y": 20
+            },
+            "copy": false
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Move Object",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8006XFVE31NEBK17C88"
+        ],
+        "bounds": {
+          "x": -64.0,
+          "y": 7.839465390945104,
+          "width": 168.0,
+          "height": 33.481042684743656
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8006XFVE31NEBK17C88",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8006XFVE31NEBK17C88",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "cc7d2aef528f756b2480b0dedcd5f4cd292cd002b87f20a91a0fffdfacdc5cbd",
+      "afterSha256": "f68f5d8be9a4d061dc2a5462998470c5fa96e049cae2c1b81660f53b4926fa44"
+    }
+  ],
+  "measurements": [],
+  "transcriptSha256": "ec41e2bd6508e65cf54fb613149e08f829712a7f3b347c7119e048042cb7d3fd",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-outk9lka"
+}

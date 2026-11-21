@@ -1,0 +1,93 @@
+[
+  {
+    "script": "c44a-r4-live.py",
+    "args": [
+      "p1a",
+      "2"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-mmve92i6",
+    "acceptedStop": false,
+    "transcriptSha256": {
+      "transcript.json": "f54e65dbb70e0a4c901c287456c3a8664063b3776626bf0afa93edec15c335db"
+    }
+  },
+  {
+    "script": "c44a-r4-live.py",
+    "args": [
+      "p1b",
+      "7"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-4q99f7wi",
+    "acceptedStop": false,
+    "transcriptSha256": {
+      "transcript.json": "fb9d27894ff0ad3ff491e1182907548afd808ffb3173d4da1075f9c53ded9879"
+    }
+  },
+  {
+    "script": "c44a-r4-live.py",
+    "args": [
+      "p1b",
+      "9"
+    ],
+    "exit": 1,
+    "failures": [
+      {
+        "check": "probe completed",
+        "ok": false,
+        "detail": "ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [RuntimeError('control absent or hidden: pen.maxSize.field')])])"
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-y7q907ll",
+    "acceptedStop": true,
+    "transcriptSha256": {
+      "transcript.json": "8dbb419fc477f99da638c7b1f0d6615149a6661bb031ee672941e866fe5d2f83"
+    }
+  },
+  {
+    "script": "c44a-r3-live.py",
+    "args": [
+      "n2a",
+      "2"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-ubvhyafs",
+    "acceptedStop": false,
+    "transcriptSha256": {
+      "transcript.json": "2db2e83aac46b5d7a997a430f37ae0abfe93cbba7be0cbfb33ea5a1be42b99cf"
+    }
+  },
+  {
+    "script": "c44a-r2-live.py",
+    "args": [
+      "m1a",
+      "3"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-b6iesuqc",
+    "acceptedStop": false,
+    "transcriptSha256": {
+      "transcript.json": "dfab3df6366ac221cc383768541dade09e47b10359845b1e082aa24d1ca4b01d"
+    }
+  },
+  {
+    "script": "c43b-r1-live.py",
+    "args": [
+      "C:\\Users\\kaiga\\work\\review\\m4-c44b-r1\\target\\release\\toontown.exe",
+      "case4",
+      "C:\\Users\\kaiga\\work\\review\\m4-c44b-r1\\target\\release\\toontown-headless.exe"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-uvsqfz03",
+    "acceptedStop": false,
+    "transcriptSha256": {
+      "case4\\transcript.json": "931cd7809a82bffe0aeab34dc300274dd7af78261c2b40be781a30e65e3beeb0"
+    }
+  }
+]

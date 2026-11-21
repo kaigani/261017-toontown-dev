@@ -1,0 +1,255 @@
+{
+  "checks": 12,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView-mixed-content command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-mixed-content undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-mixed-content D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-mixed-content text three-corner affine fit",
+      "ok": true
+    },
+    {
+      "check": "drawingView-mixed-content finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-mixed-content undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-mixed-content command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-mixed-content undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-mixed-content D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-mixed-content text three-corner affine fit",
+      "ok": true
+    },
+    {
+      "check": "cameraView-mixed-content finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-mixed-content undo exact all drawings",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-mixed-content",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -45.5,
+                "y": -30.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800KTEMEGFT72BS59DN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800D7SPWW4PYFVYR309",
+          "kind": "brush",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN800B66DN8HB7VGCHCNH",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN80020YHZGGHV94T2S8C",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800657JQ581BBWS5SED",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800KTEMEGFT72BS59DN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800B66DN8HB7VGCHCNH",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN80020YHZGGHV94T2S8C",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800657JQ581BBWS5SED",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "ecf01cd68e5be0da29ede06ff9ef71a11b99e167d2e6569c803425d03bcbda59",
+      "afterSha256": "cda8f857629a8c38ba725f64ff11050355876ae054a617be44b7fd2995888d1a"
+    },
+    {
+      "name": "drawingView-mixed-content",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -45.5,
+                "y": -30.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800VYBT0GYQYC6C7TXH",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800S07WAMMC22Y8GF2Z",
+          "kind": "brush",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN800JSS67QTFEPH846QC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN80055GT8XCN0NY4T4RW",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800KXNBES1RJCHR8C54",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800VYBT0GYQYC6C7TXH",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800JSS67QTFEPH846QC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        },
+        {
+          "id": "st_01K7JJN80055GT8XCN0NY4T4RW",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800KXNBES1RJCHR8C54",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "50436fc479f884e8462deeb53c741759b2daba64bf4b280a24b65f1d2655d735",
+      "afterSha256": "56e8385f986ab701f1fd617c7f42c00ef973be159fbcc883d7d19da2953e07fd"
+    }
+  ],
+  "measurements": [],
+  "canvases": [],
+  "captures": [],
+  "transcriptSha256": "99e9b2b8f5e305d23b04064879c0fe1820853a55564ef6183389d6037df3928c",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ed6tcpaj"
+}

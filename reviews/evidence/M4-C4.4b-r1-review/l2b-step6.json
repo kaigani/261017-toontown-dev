@@ -1,0 +1,1692 @@
+{
+  "checks": 111,
+  "failures": [
+    "cameraView-perspective-element-locked command: [{\"commandId\": \"draw.envelope.apply\", \"params\": {\"corners\": [{\"x\": -50.5, \"y\": -35.5}, {\"x\": 80.5, \"y\": -60.5}, {\"x\": 80.5, \"y\": 60.5}, {\"x\": -80.5, \"y\": 60.5}], \"mapping\": \"auto\"}}]",
+    "cameraView-perspective-element-locked undo labels: [[\"Perspective Tool\", \"user\"]]",
+    "cameraView perspective element-locked forbidden edit unchanged: {\"origin\": \"user\", \"tool\": \"perspective\", \"view\": \"cameraView\", \"pointerType\": \"mouse\", \"drawingToView\": [1.5999999999999999, 0, 0, -1.5999999999999999, 417, 221.5], \"events\": [{\"type\": \"down\", \"x\": 288.921875, \"y\": 317, \"modifiers\": [], \"dt\": 0, \"pressure\": 1, \"button\": \"left\"}, {\"type\": \"move\", \"x\": 288.921875, \"y\": 317, \"modifiers\": [], \"dt\": 6, \"pressure\": 1}, {\"type\": \"move\", \"x\": 336.921875, \"y\": 277, \"modifiers\": [], \"dt\": 117, \"pressure\": 1}, {\"type\": \"up\", \"x\": 336.921875, \"y\": 277, \"modifiers\": [], \"dt\": 298, \"pressure\": 1}], \"eventCount\": 4, \"status\": \"ok\", \"code\": null, \"commands\":",
+    "cameraView perspective hidden has no overlay box: {\"role\": \"canvas\", \"id\": \"cameraView.canvas\", \"label\": \"Canvas\", \"value\": \"{\\\"backend\\\":\\\"webgl2\\\",\\\"generation\\\":0,\\\"drawings\\\":[],\\\"failures\\\":[],\\\"gesture\\\":{\\\"status\\\":\\\"ok\\\"},\\\"selection\\\":{\\\"objects\\\":0,\\\"handles\\\":0,\\\"points\\\":0,\\\"pivot\\\":false},\\\"viewType\\\":\\\"camera\\\",\\\"overlay\\\":false,\\\"camera\\\":{\\\"frame\\\":true,\\\"pivots\\\":0,\\\"boxes\\\":0,\\\"otherCameras\\\":0,\\\"handles\\\":0},\\\"toolBox\\\":{\\\"tool\\\":\\\"perspective\\\",\\\"locked\\\":false,\\\"handles\\\":8},\\\"drawn\\\":0,\\\"residentDrawings\\\":0,\\\"residentBytes\\\":22167720,\\\"lastError\\\":null,\\\"lastGesture\\\":{\\\"origin\\\":\\\"user\\\",\\\"tool\\\":\\\"perspective\\\",\\\"view",
+    "cameraView-perspective-hidden command: [{\"commandId\": \"draw.envelope.apply\", \"params\": {\"corners\": [{\"x\": -50.5, \"y\": -35.5}, {\"x\": 80.5, \"y\": -60.5}, {\"x\": 80.5, \"y\": 60.5}, {\"x\": -80.5, \"y\": 60.5}], \"mapping\": \"auto\"}}]",
+    "cameraView-perspective-hidden undo labels: [[\"Perspective Tool\", \"user\"]]",
+    "cameraView perspective hidden forbidden edit unchanged: {\"origin\": \"user\", \"tool\": \"perspective\", \"view\": \"cameraView\", \"pointerType\": \"mouse\", \"drawingToView\": [1.5999999999999999, 0, 0, -1.5999999999999999, 417, 221.5], \"events\": [{\"type\": \"down\", \"x\": 288.921875, \"y\": 317, \"modifiers\": [], \"dt\": 0, \"pressure\": 1, \"button\": \"left\"}, {\"type\": \"move\", \"x\": 288.921875, \"y\": 317, \"modifiers\": [], \"dt\": 15, \"pressure\": 1}, {\"type\": \"move\", \"x\": 336.921875, \"y\": 277, \"modifiers\": [], \"dt\": 100, \"pressure\": 1}, {\"type\": \"up\", \"x\": 336.921875, \"y\": 277, \"modifiers\": [], \"dt\": 304, \"pressure\": 1}], \"eventCount\": 4, \"status\": \"ok\", \"code\": null, \"commands\"",
+    "cameraView-repositionAll-element-locked command: [{\"commandId\": \"draw.repositionAll.apply\", \"params\": {\"scale\": {\"x\": 0.8131409593557256, \"y\": 0.7919916796671866}, \"pivot\": {\"x\": 80.5, \"y\": 60.5}}}]",
+    "cameraView-repositionAll-element-locked undo labels: [[\"Reposition All Drawings\", \"user\"]]",
+    "cameraView repositionAll element-locked forbidden edit unchanged: {\"origin\": \"user\", \"tool\": \"repositionAll\", \"view\": \"cameraView\", \"pointerType\": \"mouse\", \"drawingToView\": [1.5999999999999999, 0, 0, -1.5999999999999999, 417, 221.5], \"events\": [{\"type\": \"down\", \"x\": 288.921875, \"y\": 317, \"modifiers\": [], \"dt\": 0, \"pressure\": 1, \"button\": \"left\"}, {\"type\": \"move\", \"x\": 288.921875, \"y\": 317, \"modifiers\": [], \"dt\": 11, \"pressure\": 1}, {\"type\": \"move\", \"x\": 336.921875, \"y\": 277, \"modifiers\": [], \"dt\": 100, \"pressure\": 1}, {\"type\": \"up\", \"x\": 336.921875, \"y\": 277, \"modifiers\": [], \"dt\": 309, \"pressure\": 1}], \"eventCount\": 4, \"status\": \"ok\", \"code\": null, \"command",
+    "cameraView repositionAll hidden has no overlay box: {\"role\": \"canvas\", \"id\": \"cameraView.canvas\", \"label\": \"Canvas\", \"value\": \"{\\\"backend\\\":\\\"webgl2\\\",\\\"generation\\\":0,\\\"drawings\\\":[],\\\"failures\\\":[],\\\"gesture\\\":{\\\"status\\\":\\\"ok\\\"},\\\"selection\\\":{\\\"objects\\\":0,\\\"handles\\\":0,\\\"points\\\":0,\\\"pivot\\\":false},\\\"viewType\\\":\\\"camera\\\",\\\"overlay\\\":false,\\\"camera\\\":{\\\"frame\\\":true,\\\"pivots\\\":0,\\\"boxes\\\":0,\\\"otherCameras\\\":0,\\\"handles\\\":0},\\\"toolBox\\\":{\\\"tool\\\":\\\"repositionAll\\\",\\\"locked\\\":false,\\\"handles\\\":8},\\\"drawn\\\":0,\\\"residentDrawings\\\":0,\\\"residentBytes\\\":22167720,\\\"lastError\\\":null,\\\"lastGesture\\\":{\\\"origin\\\":\\\"user\\\",\\\"tool\\\":\\\"repositionAll\\\",\\\"",
+    "cameraView-repositionAll-hidden command: [{\"commandId\": \"draw.repositionAll.apply\", \"params\": {\"scale\": {\"x\": 0.8131409593557256, \"y\": 0.7919916796671866}, \"pivot\": {\"x\": 80.5, \"y\": 60.5}}}]",
+    "cameraView-repositionAll-hidden undo labels: [[\"Reposition All Drawings\", \"user\"]]",
+    "cameraView repositionAll hidden forbidden edit unchanged: {\"origin\": \"user\", \"tool\": \"repositionAll\", \"view\": \"cameraView\", \"pointerType\": \"mouse\", \"drawingToView\": [1.5999999999999999, 0, 0, -1.5999999999999999, 417, 221.5], \"events\": [{\"type\": \"down\", \"x\": 288.921875, \"y\": 317, \"modifiers\": [], \"dt\": 0, \"pressure\": 1, \"button\": \"left\"}, {\"type\": \"move\", \"x\": 288.921875, \"y\": 317, \"modifiers\": [], \"dt\": 16, \"pressure\": 1}, {\"type\": \"move\", \"x\": 336.921875, \"y\": 277, \"modifiers\": [], \"dt\": 100, \"pressure\": 1}, {\"type\": \"up\", \"x\": 336.921875, \"y\": 277, \"modifiers\": [], \"dt\": 305, \"pressure\": 1}], \"eventCount\": 4, \"status\": \"ok\", \"code\": null, \"command"
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ntykfyvc",
+  "results": [
+    {
+      "check": "drawingView-perspective-one-locked command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-perspective-one-locked undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-perspective-one-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-one-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-one-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-current-locked command",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawingView-perspective-current-locked undo labels",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawingView-perspective-current-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-current-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-current-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView perspective current-locked forbidden edit unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 11,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 311,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "error",
+        "code": "drawing.locked",
+        "commands": []
+      }
+    },
+    {
+      "check": "drawingView-perspective-all-locked command",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawingView-perspective-all-locked undo labels",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawingView-perspective-all-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-all-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-all-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView perspective all-locked forbidden edit unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 305,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "error",
+        "code": "drawing.locked",
+        "commands": []
+      }
+    },
+    {
+      "check": "drawingView-perspective-element-locked command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-perspective-element-locked undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-perspective-element-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-element-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-element-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-one-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView partial lock skips only locked",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 301,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.repositionAll.apply",
+            "params": {
+              "scale": {
+                "x": 0.8131750510849469,
+                "y": 0.7851239669421488
+              },
+              "pivot": {
+                "x": 80.5,
+                "y": 60.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 7.105427357601002e-15
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-current-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView partial lock skips only locked",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 1,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 307,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.repositionAll.apply",
+            "params": {
+              "scale": {
+                "x": 0.8131750510849469,
+                "y": 0.7851239669421488
+              },
+              "pivot": {
+                "x": 80.5,
+                "y": 60.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked command",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked undo labels",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-all-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView repositionAll all-locked forbidden edit unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 16,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 311,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "error",
+        "code": "drawing.nothingToDo",
+        "commands": []
+      }
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-element-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-one-locked command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-perspective-one-locked undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-perspective-one-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-one-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-one-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-current-locked command",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "cameraView-perspective-current-locked undo labels",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "cameraView-perspective-current-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-current-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-current-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective current-locked forbidden edit unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 300,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "error",
+        "code": "drawing.locked",
+        "commands": []
+      }
+    },
+    {
+      "check": "cameraView-perspective-all-locked command",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "cameraView-perspective-all-locked undo labels",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "cameraView-perspective-all-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-all-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-all-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective all-locked forbidden edit unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 117,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 299,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "error",
+        "code": "drawing.locked",
+        "commands": []
+      }
+    },
+    {
+      "check": "cameraView-perspective-element-locked command",
+      "ok": false,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-perspective-element-locked undo labels",
+      "ok": false,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-perspective-element-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-element-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-element-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective element-locked forbidden edit unchanged",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 6,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 117,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 298,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.envelope.apply",
+            "params": {
+              "corners": [
+                {
+                  "x": -50.5,
+                  "y": -35.5
+                },
+                {
+                  "x": 80.5,
+                  "y": -60.5
+                },
+                {
+                  "x": 80.5,
+                  "y": 60.5
+                },
+                {
+                  "x": -80.5,
+                  "y": 60.5
+                }
+              ],
+              "mapping": "auto"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView perspective hidden has no overlay box",
+      "ok": false,
+      "detail": {
+        "role": "canvas",
+        "id": "cameraView.canvas",
+        "label": "Canvas",
+        "value": "{\"backend\":\"webgl2\",\"generation\":0,\"drawings\":[],\"failures\":[],\"gesture\":{\"status\":\"ok\"},\"selection\":{\"objects\":0,\"handles\":0,\"points\":0,\"pivot\":false},\"viewType\":\"camera\",\"overlay\":false,\"camera\":{\"frame\":true,\"pivots\":0,\"boxes\":0,\"otherCameras\":0,\"handles\":0},\"toolBox\":{\"tool\":\"perspective\",\"locked\":false,\"handles\":8},\"drawn\":0,\"residentDrawings\":0,\"residentBytes\":22167720,\"lastError\":null,\"lastGesture\":{\"origin\":\"user\",\"tool\":\"perspective\",\"view\":\"cameraView\",\"pointerType\":\"mouse\",\"drawingToView\":[1.5999999999999999,0,0,-1.5999999999999999,417,221.5],\"events\":[{\"type\":\"down\",\"x\":288.921875,\"y\":317,\"modifiers\":[],\"dt\":0,\"pressure\":1,\"button\":\"left\"},{\"type\":\"move\",\"x\":288.921875,\"y\":317,\"modifiers\":[],\"dt\":6,\"pressure\":1},{\"type\":\"move\",\"x\":336.921875,\"y\":277,\"modifiers\":[],\"dt\":117,\"pressure\":1},{\"type\":\"up\",\"x\":336.921875,\"y\":277,\"modifiers\":[],\"dt\":298,\"pressure\":1}],\"eventCount\":4,\"status\":\"ok\",\"code\":null,\"commands\":[{\"commandId\":\"draw.envelope.apply\",\"params\":{\"corners\":[{\"x\":-50.5,\"y\":-35.5},{\"x\":80.5,\"y\":-60.5},{\"x\":80.5,\"y\":60.5},{\"x\":-80.5,\"y\":60.5}],\"mapping\":\"auto\"}}]}}"
+      }
+    },
+    {
+      "check": "cameraView-perspective-hidden command",
+      "ok": false,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-perspective-hidden undo labels",
+      "ok": false,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-perspective-hidden D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-hidden finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-hidden undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective hidden forbidden edit unchanged",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 15,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 304,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.envelope.apply",
+            "params": {
+              "corners": [
+                {
+                  "x": -50.5,
+                  "y": -35.5
+                },
+                {
+                  "x": 80.5,
+                  "y": -60.5
+                },
+                {
+                  "x": 80.5,
+                  "y": 60.5
+                },
+                {
+                  "x": -80.5,
+                  "y": 60.5
+                }
+              ],
+              "mapping": "auto"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-one-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView partial lock skips only locked",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 301,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.repositionAll.apply",
+            "params": {
+              "scale": {
+                "x": 0.8131409593557256,
+                "y": 0.7919916796671866
+              },
+              "pivot": {
+                "x": 80.5,
+                "y": 60.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-current-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView partial lock skips only locked",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 307,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.repositionAll.apply",
+            "params": {
+              "scale": {
+                "x": 0.8131409593557256,
+                "y": 0.7919916796671866
+              },
+              "pivot": {
+                "x": 80.5,
+                "y": 60.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked command",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked undo labels",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-all-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll all-locked forbidden edit unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 15,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 303,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "error",
+        "code": "drawing.nothingToDo",
+        "commands": []
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked command",
+      "ok": false,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked undo labels",
+      "ok": false,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-element-locked undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll element-locked forbidden edit unchanged",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 11,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 309,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.repositionAll.apply",
+            "params": {
+              "scale": {
+                "x": 0.8131409593557256,
+                "y": 0.7919916796671866
+              },
+              "pivot": {
+                "x": 80.5,
+                "y": 60.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView repositionAll hidden has no overlay box",
+      "ok": false,
+      "detail": {
+        "role": "canvas",
+        "id": "cameraView.canvas",
+        "label": "Canvas",
+        "value": "{\"backend\":\"webgl2\",\"generation\":0,\"drawings\":[],\"failures\":[],\"gesture\":{\"status\":\"ok\"},\"selection\":{\"objects\":0,\"handles\":0,\"points\":0,\"pivot\":false},\"viewType\":\"camera\",\"overlay\":false,\"camera\":{\"frame\":true,\"pivots\":0,\"boxes\":0,\"otherCameras\":0,\"handles\":0},\"toolBox\":{\"tool\":\"repositionAll\",\"locked\":false,\"handles\":8},\"drawn\":0,\"residentDrawings\":0,\"residentBytes\":22167720,\"lastError\":null,\"lastGesture\":{\"origin\":\"user\",\"tool\":\"repositionAll\",\"view\":\"cameraView\",\"pointerType\":\"mouse\",\"drawingToView\":[1.5999999999999999,0,0,-1.5999999999999999,417,221.5],\"events\":[{\"type\":\"down\",\"x\":288.921875,\"y\":317,\"modifiers\":[],\"dt\":0,\"pressure\":1,\"button\":\"left\"},{\"type\":\"move\",\"x\":288.921875,\"y\":317,\"modifiers\":[],\"dt\":11,\"pressure\":1},{\"type\":\"move\",\"x\":336.921875,\"y\":277,\"modifiers\":[],\"dt\":100,\"pressure\":1},{\"type\":\"up\",\"x\":336.921875,\"y\":277,\"modifiers\":[],\"dt\":309,\"pressure\":1}],\"eventCount\":4,\"status\":\"ok\",\"code\":null,\"commands\":[{\"commandId\":\"draw.repositionAll.apply\",\"params\":{\"scale\":{\"x\":0.8131409593557256,\"y\":0.7919916796671866},\"pivot\":{\"x\":80.5,\"y\":60.5}}}]}}"
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-hidden command",
+      "ok": false,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-hidden undo labels",
+      "ok": false,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-hidden D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-hidden finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-hidden undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll hidden forbidden edit unchanged",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 16,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 305,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.repositionAll.apply",
+            "params": {
+              "scale": {
+                "x": 0.8131409593557256,
+                "y": 0.7919916796671866
+              },
+              "pivot": {
+                "x": 80.5,
+                "y": 60.5
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+[
+  {
+    "name": "cameraView-all-collinear-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN80039PSFYM93T91MNK4",
+        "ids": [
+          "st_01K7JJN800ZXXJQSCVV8T6JM9Y"
+        ],
+        "createdIds": [],
+        "modifiedIds": [
+          "st_01K7JJN800ZXXJQSCVV8T6JM9Y"
+        ],
+        "removedIds": [
+          "zn_14CETPKJP97HE7841FBG7YC1H4"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-coincident-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800XD6NG10FR38CBYPZ",
+        "ids": [
+          "st_01K7JJN800Y85SA0NB746GNP4S"
+        ],
+        "createdIds": [
+          "zn_0JPJCM4S34PXKZA4XSHYDSV2WK"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN800Y85SA0NB746GNP4S"
+        ],
+        "removedIds": [
+          "zn_DQYGKDMAQM64BFAHBSDQPKZK0A"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-concave-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800TNZ1HDZ4K1G7G7C1",
+        "ids": [
+          "st_01K7JJN800SQQR0J40QV4NEE49"
+        ],
+        "createdIds": [
+          "zn_CH2F70TWWB7CGZEMBQJAR3F2Y4"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN800SQQR0J40QV4NEE49"
+        ],
+        "removedIds": [
+          "zn_XH2BSEDKYMFXS2VJ9CNJB60Z7N"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-crossed-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800RG3ZZY3YDN0FN6FE",
+        "ids": [
+          "st_01K7JJN800SG47JYJX2F8A4NGM",
+          "st_01K7JJN801PD4699RQ14HDQVHQ"
+        ],
+        "createdIds": [
+          "st_01K7JJN800SG47JYJX2F8A4NGM",
+          "st_01K7JJN801PD4699RQ14HDQVHQ",
+          "zn_GN3GG149M60VJTA6YK4SM445RC",
+          "zn_RH6DBMC8M5DSWQRRQ5A6QXJCBW"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K7JJN800HHTH0E9X841CQCER",
+          "zn_A5RKS9VCQ73P21WHAK1VG9RPRK"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-all-collinear-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800NV09VDS9GWFMTDHA",
+        "ids": [
+          "st_01K7JJN800B234NC250NG1QAR1"
+        ],
+        "createdIds": [],
+        "modifiedIds": [
+          "st_01K7JJN800B234NC250NG1QAR1"
+        ],
+        "removedIds": [
+          "zn_M8QHC32MPQCZJH9NEVD0SED5HH"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-coincident-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN8008T7SXF6NR3Q1SP33",
+        "ids": [
+          "st_01K7JJN8000C8GWP750PQE1WWA"
+        ],
+        "createdIds": [
+          "zn_37HBTCVK0BN7E3QD8WD5FF2R5S"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN8000C8GWP750PQE1WWA"
+        ],
+        "removedIds": [
+          "zn_F410NY4M1956QJK9KRQCVQK2FR"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-concave-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN8004NY9VJ4Q31VKY246",
+        "ids": [
+          "st_01K7JJN8002CVKKQ0FV5AME7YY"
+        ],
+        "createdIds": [
+          "zn_47FT9RQ342VXWG4FEJ6TWJ1PJQ"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN8002CVKKQ0FV5AME7YY"
+        ],
+        "removedIds": [
+          "zn_GF98295WAMM7N8AYT4NX7NBCNH"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-crossed-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800P5V3JAFW8XBQ6F1T",
+        "ids": [
+          "st_01K7JJN800BAVQYMCS3W58R9YE",
+          "st_01K7JJN801CW2PYYCR1FJMTDF6"
+        ],
+        "createdIds": [
+          "st_01K7JJN800BAVQYMCS3W58R9YE",
+          "st_01K7JJN801CW2PYYCR1FJMTDF6",
+          "zn_1XQ95VH0P0YTZDNQD9M62F5D1Q",
+          "zn_ZKZJB9MT44247TF3MTHEVEJ38T"
+        ],
+        "modifiedIds": [],
+        "removedIds": [
+          "st_01K7JJN800JDC4CHVPQVDTH960",
+          "zn_N2K7CRSFY46X5S1A7S0H4JEC10"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  }
+]

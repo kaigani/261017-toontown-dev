@@ -1,0 +1,309 @@
+{
+  "checks": 10,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView perspective user frame switch leaves drawings unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective user frame switch exact direct content at new frame",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective user frame switch exact undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll user frame switch exact direct content at new frame",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll user frame switch exact undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective user frame switch leaves drawings unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective user frame switch exact direct content at new frame",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective user frame switch exact undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll user frame switch exact direct content at new frame",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll user frame switch exact undo",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-perspective-user-frame",
+      "commands": [
+        {
+          "commandId": "draw.selection.set",
+          "params": {
+            "by": "rect",
+            "rect": {
+              "x": -80.048828125,
+              "y": -59.6875,
+              "width": 30,
+              "height": 25
+            },
+            "rectRule": "inside",
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8005WNXTY93WJGVPHK5",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8007A8X3DKS03SG01QP",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800BX9DJ4GQHYYBW8G0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8005WNXTY93WJGVPHK5",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8007A8X3DKS03SG01QP",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800BX9DJ4GQHYYBW8G0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "e5332a588c33a06c943a1d14a6f3c9756b816882a7d6e95199679bde2a1908a6",
+      "afterSha256": "e5332a588c33a06c943a1d14a6f3c9756b816882a7d6e95199679bde2a1908a6"
+    },
+    {
+      "name": "cameraView-repositionAll-user-frame",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "translate": {
+              "x": 30,
+              "y": 25
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800JPHSQCDH0GHDXTNF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8000TAXCZ4BSBFQX2S8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800N7VXP37FF8YBA8GE",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800JPHSQCDH0GHDXTNF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8000TAXCZ4BSBFQX2S8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800N7VXP37FF8YBA8GE",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "acfe46f7acfe2f91cd95753f52b5c44e936aa93569e5c912549e1b504c34b881",
+      "afterSha256": "03b35259ec658f07e0f0c3f37d81e66ba662ebd15da0b90e1f87e8e4a5836c8c"
+    },
+    {
+      "name": "drawingView-perspective-user-frame",
+      "commands": [
+        {
+          "commandId": "draw.selection.set",
+          "params": {
+            "by": "rect",
+            "rect": {
+              "x": -80.078125,
+              "y": -60.5,
+              "width": 30,
+              "height": 26
+            },
+            "rectRule": "inside",
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800T2WXMNN7E6NJNY3E",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800FVA6NQQN2GTK3PRV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800SX23GRXMCFSJ72NX",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800T2WXMNN7E6NJNY3E",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800FVA6NQQN2GTK3PRV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800SX23GRXMCFSJ72NX",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "64504ff82be2132a3bf48cfb6a5c167b48e4cc645ca74944419c399b4b82b11d",
+      "afterSha256": "64504ff82be2132a3bf48cfb6a5c167b48e4cc645ca74944419c399b4b82b11d"
+    },
+    {
+      "name": "drawingView-repositionAll-user-frame",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "translate": {
+              "x": 30,
+              "y": 26
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8004KYT7ZQ4Y7ZCGK5J",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8000QME3E755ZX7B0DF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800QF52RE9JZF3CM4DH",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8004KYT7ZQ4Y7ZCGK5J",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8000QME3E755ZX7B0DF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800QF52RE9JZF3CM4DH",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "5bed3313c7b1a232281d77e1780bf97c25ce6a21f3531aa4d517ad7b524b9e61",
+      "afterSha256": "ddcea466f23466d5f8f1ee90a9e70d303eac68718502d384ce356f143e9492ff"
+    }
+  ],
+  "measurements": [],
+  "canvases": [],
+  "captures": [],
+  "transcriptSha256": "be647b92bd77cfa66ae39c460ff93ddec864050833a3c6117e75935fc42a0168",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-5zizr_d8"
+}
