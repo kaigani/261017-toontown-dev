@@ -645,9 +645,11 @@ class Table:
         return f"a real drag through {len(pts)} points" + (f" with {'+'.join(mods)} held" if mods else "")
 
     async def press_key(self, action) -> str:
-        _, vk, keys = action
+        # ("key", vk, keys) or ("key", vk, keys, view): the canvas focused before the key (D-83 item 3: the Camera view).
+        vk, keys = action[1], action[2]
+        view = action[3] if len(action) > 3 else "drawingView"
         front()
-        self.cdp.js("document.querySelector('[data-tt-id=\"drawingView.canvas\"]')?.focus()")
+        self.cdp.js("document.querySelector('[data-tt-id=\"%s.canvas\"]')?.focus()" % view)
         key(vk)
         return f"the real key {keys}"
 
@@ -2065,6 +2067,25 @@ async def build_and_run(t: Table, only: set) -> None:
                  "action": ("key", 0x2E, "Delete"), "expect": ("draw.point.delete", {}), "label": "Contour Editing",
                  "setup": lambda: tool_fixture("contourEditor", points=True), "state": square_state,
                  "effect": lambda b, a, k: len(a["anchors"]) == len(b["anchors"]) - 1, "disabled": None})
+    # Ruling D-83 item 3 (C44B-R2S-03): the person's key and Tool options edits follow the gesture path's rule. The
+    # element is locked in the Camera view, the active view: refused, nothing changes.
+    async def camera_locked(setup):
+        await setup()
+        await cmd("window.panel.set", {"panelId": "cameraView", "visible": True})
+        await cmd("view.active.set", {"viewId": "cameraView"})
+        await cmd("element.lock.set", {"elementIds": [bob], "locked": True})
+        await asyncio.sleep(0.5)
+
+    async def camera_unlocked():
+        await close_dialogs()
+        await cmd("element.lock.set", {"elementIds": [bob], "locked": False})
+        await cmd("view.active.set", {"viewId": "drawingView"})
+
+    rows.append({"name": "Contour Editor › Delete in the Camera view, element locked",
+                 "spec": f"{spec_line('draw.point.delete')}; 05 §6.6, 04 §10.4; D-80; D-83 item 3 (refused, nothing sent, nothing changes)",
+                 "action": ("key", 0x2E, "Delete", "cameraView"), "expect": None, "label": None,
+                 "setup": lambda: camera_locked(lambda: tool_fixture("contourEditor", points=True)), "state": square_state,
+                 "effect": lambda b, a, k: a == b, "disabled": None, "after": camera_unlocked})
     rows.append({"name": "Contour Editor › Delete with no anchor selected",
                  "spec": f"{spec_line('draw.point.delete')}; 02 §7.1.2 line 457; C41-R2-09 (a refused key is consumed silently)",
                  "action": ("key", 0x2E, "Delete"), "expect": None, "label": None,
@@ -2197,6 +2218,13 @@ async def build_and_run(t: Table, only: set) -> None:
                  "label": "Edit Stroke", "setup": line_shown, "state": line_state,
                  "effect": lambda b, a, k: a.get("thickness") == 4.5, "disabled": None,
                  "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+    rows.append({"name": "Tool options › Contour Editor: line invisible in the Camera view, element locked",
+                 "spec": f"{spec_line('draw.stroke.set')}; 05 §6.6, 04 §10.4; D-80; D-83 item 3 (refused, no undo step, nothing changes)",
+                 "action": ("dom", "toolOptions.selectedLine.invisible"),
+                 "expect": lambda b: ("draw.stroke.set", {"strokeId": f"{c44b['drawing']}/{c44b['line']}", "kind": "invisible"}),
+                 "label": None, "setup": lambda: camera_locked(line_shown), "state": line_state,
+                 "effect": lambda b, a, k: a == b, "disabled": None, "osOnly": True, "after": camera_unlocked,
+                 "mcpReason": "an agent's direct call addresses the element by id and still acts (05 §6.6): the rule is the person's"})
 
     # The Text panel formatting the text the Text tool highlights (design note 5 §6): a session opened by the table's
     # agent connection (a Text tool click, `type_text`, then Shift+Home), so in the OS form the person's clicks format

@@ -297,7 +297,8 @@ impl Host {
         let inv = Invocation {
             command: command.to_owned(),
             params,
-            options: InvokeOptions { dry_run, ..InvokeOptions::default() },
+            // The person, from the window (ruling D-83 item 3): contextual edits follow the interactive-target rule.
+            options: InvokeOptions { dry_run, person: true, ..InvokeOptions::default() },
             origin: tt_executor::Origin::User,
         };
         // A request answers from the generation it started on (ruling O-14): the probe also sees a restart, so a

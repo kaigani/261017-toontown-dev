@@ -19,7 +19,7 @@ panels and agent surfaces of C4.4a and the four drawing tools of C4.4b.
 | C4.4a | panels and settings, agent surfaces (`reviews/M4-C4.4-plan.md`, D-40) | passed on product head `87f63b5f`, run 44861150241 (36 of 36 on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74; findings 12 + 2 + 2 + 5, all closed (including the P1 on the agent token in agent captures) |
 | C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; **round 2 handed off** on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`; D-82: the caret works by grapheme clusters (a P3 written during round 2, reviewed in round 3) |
 
-Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-82), recorded in
+Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-84), recorded in
 `reviews/M4-C4.1-plan.md`, `reviews/M4-C4.2-plan.md` and `reviews/M4-C4.3-plan.md` §15.
 
 ## 2. Inventory and counts (final build)
@@ -146,6 +146,15 @@ the abandoned arbiter, the zero-owner and two-owner schedules, 40 randomised tri
 (`check`), run 44951926851 included. The limit: on a file system that cannot lock (some network file systems) protection
 cannot be proven, and M1's age rule stays.
 
+Round 2 (rulings D-83 item 1 and D-84; findings C44B-R2S-01 and C44B-R2L-01) completed it again: a handle confers a
+role only while the path still names it (a creator confirms its file's identity under the protection it just took; a
+lost file is contention, and a creator that cannot take the protection removes nothing); on Windows the proven lock
+file is renamed aside under its protection, so its name is free at once even while another program holds it open; a
+pending deletion or sharing error is contention, never "not writable" (reported only when the folder cannot be
+written); "held by another" is answered only when true at that moment. The 200-run receipt above is of round 1's
+code; round 2's receipts (the reviewer's test in a loop, the randomised test in a loop of at least 2,000 runs on
+Windows) are taken when the hold lifts.
+
 ## 7. Questions for the user, in one place
 
 Interim defaults are built and stated in `plan/spec-issues.md`; each line is the question to answer.
@@ -194,6 +203,7 @@ Interim defaults are built and stated in `plan/spec-issues.md`; each line is the
 | SI-189 | Reposition All's reference box: the current frame's drawing (as built) or the union of all drawings? |
 | SI-196 | `draw.stroke.set` on the Contour Editor's Tool options (as built), or a Line section for every selection tool? |
 | SI-198 | Confirm `element.hidden` as the code of a gesture on an element the Camera view does not draw, and that an outline drawn by "Show outline on selection" is not editable. |
+| SI-199 | Should the kernel refuse an envelope apply that carries geometry onto or beyond a perspective map's vanishing line, instead of clamping it to a very large coordinate? |
 | Spec A | The additions M4 proposes (`plan/spec-issues.md`, "Spec A additions proposed by M4, for the user"): `draw.text.layout.get`, `tool.perspective.options.set`, `draw.font.list`, `job.outputs.list`, `agent.activity.recorded`, `agent.activity.list {afterSeq}`, the `ActivityEntry` members, `agent.session.changed`, `agent.confirmation.resolved`. |
 
 SI-184, SI-185, SI-191 and SI-193 to SI-195 are interim decisions without a question of their own (confirm or

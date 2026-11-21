@@ -267,3 +267,77 @@ fn the_camera_view_edits_a_visible_element_with_no_ink() {
     let scene = serde_json::to_value(h.canvas_scene("cameraView").unwrap()).unwrap();
     assert!(scene["contours"].is_object(), "the overlay is drawn for an element of invisible strokes");
 }
+
+/// The person's call from the window (ruling D-83 item 3): what the desktop host sends for a Tool options control, a
+/// menu or a context-menu item.
+fn person(h: &ExecutorHandle, command: &str, params: Value) -> tt_executor::Envelope {
+    h.invoke(tt_executor::Invocation {
+        command: command.into(),
+        params,
+        options: tt_executor::InvokeOptions { person: true, ..Default::default() },
+        origin: Origin::User,
+    })
+}
+
+#[test]
+fn a_persons_key_panel_or_menu_edit_follows_the_rule_and_an_agents_direct_call_does_not() {
+    // Finding C44B-R2S-03: the rule is the person's, whatever the input. Each case: the element locked or hidden by an
+    // agent while an anchor and a line are selected in the Camera view; the person's Delete key (the Contour Editor's
+    // `draw.point.delete`), the Tool options line thickness (`draw.stroke.set`) and the context menu's Delete
+    // (`edit.delete` in the drawing context) are refused with the condition's code and change nothing; in the Drawing
+    // view the element condition does not hold (D-80); an agent's direct call still edits.
+    for (condition, code) in [("locked", "element.locked"), ("hidden", "element.hidden")] {
+        let (h, _) = ready();
+        let line = json!([{ "x": -80, "y": 0 }, { "x": 0, "y": 40 }, { "x": 80, "y": 0 }]);
+        let params = json!({ "drawingId": D1, "points": line, "layer": "new", "snap": false });
+        let added = ok(&h, "draw.polyline.add", params);
+        let sid = added["strokeIds"][0].as_str().unwrap().to_owned();
+        ok(&h, "draw.selection.set", json!({ "drawingId": D1, "by": "ids", "ids": [sid], "mode": "replace" }));
+        ok(&h, "tool.active.set", json!({ "toolId": "contourEditor" }));
+        ok(&h, "draw.pointSelection.set", json!({ "drawingId": D1, "points": [{ "strokeId": sid, "anchor": 1 }] }));
+        ok(&h, "view.active.set", json!({ "viewId": "cameraView" }));
+        if condition == "locked" {
+            ok(&h, "element.lock.set", json!({ "elementIds": [BOB], "locked": true }));
+        } else {
+            ok(&h, "element.visibility.set", json!({ "elementIds": [BOB], "scope": "scene", "visible": false }));
+        }
+        let before = position(&h);
+        let content = ok(&h, "draw.drawing.get", json!({ "drawingId": D1 }));
+        let key = h.resolve_key("Delete");
+        let refused = key.as_ref().err().map(|e| (e.code.clone(), e.details["refusedCommandId"].clone()));
+        assert_eq!(refused, Some((code.to_owned(), json!("draw.point.delete"))), "{condition}: Delete: {key:?}");
+        let stroke = format!("{D1}/{sid}");
+        for (command, params) in [
+            ("draw.stroke.set", json!({ "strokeId": stroke, "thickness": 5 })),
+            ("draw.point.delete", json!({})),
+            ("edit.delete", json!({ "context": "drawing" })),
+        ] {
+            let env = person(&h, command, params);
+            assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some(code), "{condition} {command}: {env:?}");
+            assert_eq!(env.error.as_ref().map(|e| e.details["refusedCommandId"].clone()), Some(json!(command)));
+        }
+        assert_eq!(position(&h), before, "{condition}: nothing committed");
+        assert_eq!(ok(&h, "draw.drawing.get", json!({ "drawingId": D1 })), content, "{condition}: nothing changed");
+        // The Drawing view: the element condition does not hold there.
+        ok(&h, "view.active.set", json!({ "viewId": "drawingView" }));
+        let env = person(&h, "draw.stroke.set", json!({ "strokeId": stroke, "thickness": 5 }));
+        assert_eq!(env.status, Status::Ok, "{condition}: the person edits in the Drawing view: {env:?}");
+        // An agent's direct call in the Camera view still edits (05 §6.6: commands addressing it by id act on it).
+        ok(&h, "view.active.set", json!({ "viewId": "cameraView" }));
+        let env = run(&h, "draw.stroke.set", json!({ "strokeId": stroke, "thickness": 6 }));
+        assert_eq!(env.status, Status::Ok, "{condition}: a direct call: {env:?}");
+    }
+    // A drawing lock refuses the person's edit in either view, and the person can still unlock it.
+    let (h, sid) = ready();
+    ok(&h, "draw.lock.set", json!({ "drawingId": D1, "locked": true }));
+    for view in ["drawingView", "cameraView"] {
+        ok(&h, "view.active.set", json!({ "viewId": view }));
+        let env = person(&h, "edit.delete", json!({ "context": "drawing" }));
+        assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("drawing.locked"), "{view}: {env:?}");
+    }
+    let env = person(&h, "draw.lock.set", json!({ "drawingId": D1, "locked": false }));
+    assert_eq!(env.status, Status::Ok, "the lock itself is not refused: {env:?}");
+    let pick = json!({ "drawingId": D1, "by": "ids", "ids": [sid], "mode": "replace" });
+    let env = person(&h, "draw.selection.set", pick);
+    assert_eq!(env.status, Status::Ok, "{env:?}");
+}

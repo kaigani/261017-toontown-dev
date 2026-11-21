@@ -120,6 +120,12 @@ or none, invoked once; agents' `pointer` takes the same driver headless, or is p
   commit; also true of SI-154's Select scale preview, which PV2 checked only at box corners), text glyphs, gradient
   colours (affine fit at the commit) and the flattening tolerance under enlargement. The plan's "exact at vertices"
   holds at anchor vertices, not at a pencil line's offset vertices.
+- **Near the pole line (accepted limit, ruling D-83 item 4; finding C44B-R2S-04).** Both the kernel and the vertex
+  stage clamp a projective map's denominator away from zero with its sign (C44B-R1S-06). For a vertex within
+  single-precision rounding of the map's pole line, the GPU's float32 denominator can round to the other sign than the
+  kernel's f64 one, so that vertex's clamped image lands on the opposite side: an off-screen streak of the preview
+  points the other way. Both images are far outside the view, and the commit is the kernel's; no change. Whether the
+  kernel should clamp geometry beyond the vanishing line at all is a question for the user (SI-199).
 - **Lifecycle** as PV5 and D-53. No preview when availability refuses at the press or the port answers null.
 
 ## 7. Prechecks and refusals

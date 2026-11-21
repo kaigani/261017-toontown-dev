@@ -1433,6 +1433,11 @@ impl Core {
         let (params, opts) = (inv.params.clone(), inv.options.clone());
         self.run_staged(&inv.origin, &inv.command, entry.id(), &label, dry, |cx| {
             cx.set_confirmation(token, confirm, fingerprint);
+            // Ruling D-83 item 3: the person's contextual edit of the current target, whatever the input (a key, a Tool
+            // options or Properties control, a menu or context-menu item), follows the gesture path's rule.
+            if opts.person {
+                crate::gesture::person_rule(cx, entry.id(), &params)?;
+            }
             run_step(cx, &entry, params, &opts)
         })
     }

@@ -1132,7 +1132,9 @@ fn call_tool(
                     }
                 }
             }
-            let options = InvokeOptions { dry_run, expect_rev: expect, request_id, confirm_token, confirm };
+            // An agent's call is never the person's (ruling D-83 item 3).
+            let options =
+                InvokeOptions { dry_run, expect_rev: expect, request_id, confirm_token, confirm, person: false };
             let inv = Invocation { command: id.clone(), params: params.clone(), options, origin: origin.clone() };
             // `inspect_ui` describes the GUI after the commands before it (M4 C4.1): wait, bounded, until the front
             // end has rendered every event broadcast so far; a tree that did not catch up is marked stale.

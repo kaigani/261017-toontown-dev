@@ -2402,7 +2402,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 ## SI-190 — the envelope preview (interim; D-40 answer 8, SI-154 extended) (found in M4 C4.4b; interim)
 
 - **From:** `reviews/M4-design-envelope-tools.md`.
-- **Entry:** *Spec:* 05 line 399 asks for live views, not their accuracy; the commit's map (02 lines 471-472, SI-070) is not affine. *Decision:* §6: the window maps the kernel's tessellated vertices through its port of the kernel's map in the vertex stage; exact for affine maps, anchor vertices and bitmap corners; approximate between anchors, for pencil widths, text and gradient colours; at most 1 view px on the sample drawing (§9). *Why:* ADR-0007 decision 1; constant per-frame cost. *Question:* as SI-154's.
+- **Entry:** *Spec:* 05 line 399 asks for live views, not their accuracy; the commit's map (02 lines 471-472, SI-070) is not affine. *Decision:* §6: the window maps the kernel's tessellated vertices through its port of the kernel's map in the vertex stage; exact for affine maps, anchor vertices and bitmap corners; approximate between anchors, for pencil widths, text and gradient colours; at most 1 view px on the sample drawing (§9). *Why:* ADR-0007 decision 1; constant per-frame cost. *Question:* as SI-154's. *Accepted limit (ruling D-83 item 4; C44B-R2S-04):* for a vertex within single-precision rounding of a projective map's pole line, the preview's float32 denominator can take the other sign than the kernel's, so that vertex's clamped image points the other way, far outside the view; the commit is the kernel's (`reviews/M4-design-envelope-tools.md` §6).
 
 ## SI-191 — the typing run (found in M4 C4.4b; interim)
 
@@ -2461,9 +2461,22 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   edited in the Drawing View"; 04 §10.4); an element the Camera view does not draw is refused there (`element.hidden`,
   a new code; the element's visibility decides, not whether its drawing has ink: an empty drawing is shown). The
   drawing tools' overlays follow the same visibility (`docs/canvas-format.md` §11.8). The Text tool's session ends when
-  its target becomes one of these. Agents addressing an element by id are unaffected.
+  its target becomes one of these. Agents addressing an element by id are unaffected. **Ruling D-83 item 3:** the same
+  rule holds for every person's contextual edit of the current target whatever the input (a key, a Tool options or
+  Properties control, a menu or context-menu item), in the active view (`gesture::person_rule`, applied in the host's
+  key resolution and to the window's actions); an agent's direct call is unaffected.
 - **Interim readings (confirm or specify):** `element.hidden` is the code of the hidden case; with only "Show outline
   on selection" a hidden element's outline is displayed but not editable.
+
+## SI-199 — geometry beyond a perspective map's vanishing line (found in M4 C4.4b round 2; ruling D-83 item 4; a question for the user)
+
+- **From:** `reviews/M4-design-envelope-tools.md` §6; finding C44B-R2S-04.
+- **Entry:** *Spec:* 02 lines 468-473 (the Perspective tool) and SI-070 do not say what happens to a point the
+  projective map sends to infinity (on or beyond the map's vanishing line, where its denominator is zero or changes
+  sign). *Today:* the kernel clamps the denominator away from zero with its sign (`Envelope::apply`, 1e-12), so such a
+  point lands at a very large coordinate and the stroke through it is committed with it. *Question:* should the kernel
+  refuse an envelope apply that would carry any of the selection's geometry onto or beyond the vanishing line (a
+  precheck naming it), instead of clamping? No change until answered.
 
 ## Spec A additions proposed by M4, for the user
 
