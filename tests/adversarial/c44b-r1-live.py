@@ -432,6 +432,36 @@ async def envelope_body(t,step):
                 for cmd in commands:await ht.cmd(cmd['commandId'],cmd.get('params') or {})
                 direct=await drawings(ids,ht.cmd)
                 check(after==direct,name+' D-32 exact all drawing content',None)
+        if tool=='repositionAll' and commands and commands[0]['commandId']==expected and expect:
+            import numpy as np
+            q=commands[0]['params'];box=before[0]['bounds']
+            x,y,w,h=[box[k] for k in ('x','y','width','height')]
+            def mapped(pt):
+                px,py=pt['x'],pt['y']
+                if 'translate' in q:return px+q['translate']['x'],py+q['translate']['y']
+                if 'corners' in q:
+                    src=[(x,y),(x+w,y),(x+w,y+h),(x,y+h)];dst=[(v['x'],v['y']) for v in q['corners']]
+                    aa=[];bb=[]
+                    for (u,v),(xx,yy) in zip(src,dst):
+                        aa.extend([[u,v,1,0,0,0,-xx*u,-xx*v],[0,0,0,u,v,1,-yy*u,-yy*v]]);bb.extend([xx,yy])
+                    hh=np.linalg.solve(aa,bb);den=hh[6]*px+hh[7]*py+1
+                    return (hh[0]*px+hh[1]*py+hh[2])/den,(hh[3]*px+hh[4]*py+hh[5])/den
+                pivot=q.get('pivot',{'x':0,'y':0});u,v=px-pivot['x'],py-pivot['y']
+                if 'scale' in q:u*=q['scale']['x'];v*=q['scale']['y']
+                if 'rotate' in q:
+                    a=math.radians(q['rotate']);u,v=u*math.cos(a)-v*math.sin(a),u*math.sin(a)+v*math.cos(a)
+                return u+pivot['x'],v+pivot['y']
+            def points(z):
+                if isinstance(z,dict):
+                    if 'bezier' in z:return z['bezier']
+                    return [p for v in z.values() for p in points(v)]
+                if isinstance(z,list):return [p for v in z for p in points(v)]
+                return []
+            errors=[]
+            for b,a in zip(before,after):
+                if b.get('locked'):continue
+                errors.extend(math.dist(mapped(p),(r['x'],r['y'])) for p,r in zip(points(b),points(a)))
+            check(bool(errors) and max(errors)<1e-8,name+' D-75 one independent current-bounds map all drawings',max(errors) if errors else None)
         check(all(__import__('math').isfinite(x) for x in numbers(after)),name+' finite saved content',None)
         t.run.save(name+'.json',{'commands':commands,'record':rec,'before':before,'after':after,'labels':labels})
         for _ in labels:await c('edit.undo')
@@ -447,8 +477,9 @@ async def envelope_body(t,step):
                 await compare(view,view+'-'+name,pts,mods)
             await compare(view,view+'-escape',[(-80,-60),(-50,-35)],escape=True,expect=False)
         elif step==2:
-            for name,target in [('crossed',(100,-60)),('concave',(20,20)),('coincident',(80,-60)),('line',(-80,60))]:
-                await compare(view,view+'-'+name,[(-80,-60),target])
+            for name,target in [('crossed',(100,-60)),('concave',(20,20)),('coincident',(80.5,-60.5))]:
+                await compare(view,view+'-'+name,[(-80.5,-60.5),target])
+            await compare(view,view+'-all-collinear',[(0,60.5),(0,-60.5)])
         elif step==3:
             async def content(eid,ids):
                 await c('draw.stroke.add',{'points':[{'x':-60,'y':-30},{'x':0,'y':35},{'x':60,'y':-10}]})

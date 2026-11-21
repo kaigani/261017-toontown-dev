@@ -1,0 +1,817 @@
+{
+  "checks": 40,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView-crossed command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-crossed undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-crossed D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-crossed finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-crossed undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-concave command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-concave undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-concave D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-concave finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-concave undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-coincident command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-coincident undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-coincident D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-coincident finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-coincident undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-all-collinear command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-all-collinear undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-all-collinear D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-all-collinear finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-all-collinear undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-crossed command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-crossed undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-crossed D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-crossed finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-crossed undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-concave command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-concave undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-concave D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-concave finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-concave undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-coincident command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-coincident undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-coincident D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-coincident finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-coincident undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-all-collinear command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-all-collinear undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-all-collinear D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-all-collinear finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-all-collinear undo exact all drawings",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-all-collinear",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.125
+              },
+              {
+                "x": -80.5,
+                "y": -60.125
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800XT1G970AA6VG3133",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800AR6631YR0JQRDSA9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8004DCFFMK29DTJ9HYA",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800XT1G970AA6VG3133",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800AR6631YR0JQRDSA9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8004DCFFMK29DTJ9HYA",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "918fd74907ceb19ae8031f34ac2b19f947307632ddf5b15c4f398cd2bef4ea37",
+      "afterSha256": "73941b9f5c8fa88108d5e4a65698d2c417c9fb09e0f02c132b49e9306a3b1941"
+    },
+    {
+      "name": "cameraView-coincident",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 80.75,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800Y2JYZ8HG9X1S04YB",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800TATRKQM0G01H9S4A",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8003E2VR0HZC7BR5B2W",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800Y2JYZ8HG9X1S04YB",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800TATRKQM0G01H9S4A",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8003E2VR0HZC7BR5B2W",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "93eece3f4e4947e67778b84f1fb964ad5ca7c0700fbcbe41e33598f9ea554cdc",
+      "afterSha256": "0374db0cdc960e503361d56591042751897a8ce9db9959d166660a42428f0708"
+    },
+    {
+      "name": "cameraView-concave",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 20.125,
+                "y": 20.125
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800KYFX17N4QCFPVB4Q",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800F8VY9YSEKQYAXJYZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800JAVFVP9VZC8WWQPZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800KYFX17N4QCFPVB4Q",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800F8VY9YSEKQYAXJYZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800JAVFVP9VZC8WWQPZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "75eb255b96df95893092fbc75c87093cd8fba1234f242bcb434046ca4f329026",
+      "afterSha256": "a4761f6c9a6aeceb4d9e4d21dbde52bc75cf913a4f64fc1c7a14ab3b8f70e063"
+    },
+    {
+      "name": "cameraView-crossed",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 100.125,
+                "y": -59.875
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800195M44AFJX3VJMJ2",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800TS1X5PJ2CDFHJD4E",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800E59ASVRM5BPMHG9E",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800YM5PSPCRQJSF2YGF",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8011E5WSQD139K463CY",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800TS1X5PJ2CDFHJD4E",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800E59ASVRM5BPMHG9E",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "684c8acafdaebff6dbf633bae2aa4e6d3f6a68974dd54f8fe2d4df7d5d6d932a",
+      "afterSha256": "42916e7bb6228ff0f2b888940e0217d91bab25243182bf855e5a40642281731b"
+    },
+    {
+      "name": "drawingView-all-collinear",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": -80.5,
+                "y": -60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8009MQ99F38TWE1R5Q5",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800WD3RPM5B1PHRCNK7",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ADDBK6J5FAKGQAMT",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8009MQ99F38TWE1R5Q5",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800WD3RPM5B1PHRCNK7",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ADDBK6J5FAKGQAMT",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "d7574299ff288da226d845dcc7639b379a77fbbecd7a0ec0763f012379ca6ad5",
+      "afterSha256": "77ac742e7ba3a4ada277fc1c90d3662da1d139b30683208ff8e70a68ae78c7ab"
+    },
+    {
+      "name": "drawingView-coincident",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800VXX6J47VH2A17ZKE",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800C7KG8PJDPFNZH3FS",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800CF9AEDDQ9M6GK0NF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800VXX6J47VH2A17ZKE",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800C7KG8PJDPFNZH3FS",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800CF9AEDDQ9M6GK0NF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "99f79747fafcb7abd91def2ca3d2f16a0293516d85726f57aef7d20273bb50d4",
+      "afterSha256": "600f68c6454d06cec4032e2a7be43073ff8e4ded3e5ff3314a9d866ffe599f41"
+    },
+    {
+      "name": "drawingView-concave",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 19.5,
+                "y": 19.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8006WMENV8VCXBE9XXJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800HFWBTGGM21FRW6MX",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8005Q302AEDR5N3KXA9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8006WMENV8VCXBE9XXJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800HFWBTGGM21FRW6MX",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8005Q302AEDR5N3KXA9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "5fca921a88c604c845b80d2cf1264e5de1768d73ada5fc65f4799a633103eb1b",
+      "afterSha256": "c73410d89444bc559e0ec7eb746aec74b1b93487ad72281bbb6c7140ff956927"
+    },
+    {
+      "name": "drawingView-crossed",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 99.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800PRAMABXK5J23KGW6",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800WAA33RMXD9JXJRRK",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800M7AJRX1HH5E9RPJQ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8009N4YJYEMSGJW2X43",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN801VWN9KX81K387VPVA",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800WAA33RMXD9JXJRRK",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800M7AJRX1HH5E9RPJQ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "3e9d497cc0de85032ec3195079aef03fdc6da683e223b513bfb31817970ac9c6",
+      "afterSha256": "22c4c545e3285d588d58595adf4c81db95f72a836b698427d1553553a33a9675"
+    }
+  ],
+  "measurements": [],
+  "canvases": [],
+  "captures": [],
+  "transcriptSha256": "072c060c25d9125499a6d6c66d12b9bc9f28f8d5f8e069e96e5554d20c47d318",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-0i7p8in0"
+}
