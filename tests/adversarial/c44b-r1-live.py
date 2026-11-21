@@ -540,10 +540,11 @@ async def envelope_body(t,step):
                         node=d.McpTable.node(await d.McpTable.tree(t),view+'.canvas')
                         t.run.save(view+'-'+tool+'-'+mode+'-canvas.json',node)
                         if mode=='hidden':check(not json.loads((node or {}).get('value') or '{}').get('toolBox'),view+' '+tool+' hidden has no overlay box',node)
-                    b,a,r=await compare(view,view+'-'+tool+'-'+mode,[(-80,-60),(-50,-35)],tool=tool,setup=setup,expect=mode=='one-locked')
-                    if mode!='one-locked':check(b==a,view+' '+tool+' '+mode+' forbidden edit unchanged',r)
+                    b,a,r=await compare(view,view+'-'+tool+'-'+mode,[(-80,-60),(-50,-35)],tool=tool,setup=setup,expect=mode=='one-locked' or (mode=='current-locked' and tool=='repositionAll'))
+                    if mode not in ('one-locked','current-locked') or (mode=='current-locked' and tool=='perspective'):check(b==a,view+' '+tool+' '+mode+' forbidden edit unchanged',r)
                     elif tool=='repositionAll':
-                        check(b[1]==a[1] and b[0]!=a[0] and b[2]!=a[2],view+' partial lock skips only locked',r)
+                        locked_index=1 if mode=='one-locked' else 0
+                        check(b[locked_index]==a[locked_index] and all(b[i]!=a[i] for i in range(3) if i!=locked_index),view+' partial lock skips only locked',r)
         elif step==7:
             for tool in ('perspective','repositionAll'):
                 await fixture(view,tool)
