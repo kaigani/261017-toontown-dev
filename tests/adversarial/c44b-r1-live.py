@@ -691,7 +691,7 @@ async def text_body(t,step):
         tree=await d.McpTable.tree(t)
         canvas=d.McpTable.node(tree,view+'.canvas') or {}
         v=json.loads(canvas.get('value') or '{}')
-        row={'name':name,'commands':t.recorded(),'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True}),'editor':d.McpTable.node(tree,'canvas.textEditor'),'canvas':v,'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
+        row={'name':name,'commands':t.recorded(),'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True}),'editor':t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id=\"canvas.textEditor\"]');return e?{anchor:Number(e.dataset.ttAnchor),caret:Number(e.dataset.ttCaret),textId:e.dataset.ttTextId}:null})()"),'canvas':v,'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
         rows.append(row);t.clear();return row
     async def gesture(pts):
         m=(await c('draw.viewMapping.get',{'view':view}))['drawingToView']
@@ -807,8 +807,15 @@ async def text_body(t,step):
                 if mode in ('element-locked','drawing-locked','hidden'):check(content(r)=='abcd','02 7.6 / design 7 no edit '+mode,texts(r))
                 await state('camera '+mode)
         elif step==8:
-            for mode in ('change','delete','undo'):
+            for mode in ('own','change','delete','undo'):
                 r=await fixture('abcdef');node=texts(r)[0]
+                if mode=='own':
+                    q=p.IndependentHttp(json.loads((t.work/'discovery.json').read_text()),'independent-text-review')
+                    try:
+                        q.initialize();m=(await c('draw.viewMapping.get',{'view':view}))['drawingToView'];eq=load('agent_eq','scripts/c44b-gesture-equivalence.py');x,y=eq.c42.apply(m,150,-80)
+                        answer=q.tool('pointer',{'view':view,'tool':'text','space':'view','events':[{'type':'down','x':x,'y':y},{'type':'up','x':x,'y':y}]});rows.append({'name':'independent pointer','answer':answer})
+                        rows.append({'name':'independent type_text','answer':q.tool('type_text',{'text':'AGENT'})})
+                    finally:q.close()
                 if mode=='change':await c('draw.text.set',{'textId':node['id'],'text':'a'})
                 if mode=='delete':await c('draw.object.delete',{'ids':[node['id']]})
                 if mode=='undo':await c('edit.undo')
