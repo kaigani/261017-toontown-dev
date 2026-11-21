@@ -1,0 +1,356 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-gvuojw6h",
+  "checks": [
+    {
+      "check": "D-78 pending format two Typing steps",
+      "ok": false,
+      "detail": [
+        [
+          "Typing",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "D-78 B alone bold",
+      "ok": false,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800N7T5E82DYE03GAER",
+          "text": "AB",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 2,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M807DM1DW8EBGK03F7M820PN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 2,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 48.0234375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    {
+      "check": "D-78 undo removes only B",
+      "ok": false,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800N7T5E82DYE03GAER",
+          "text": "",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 0,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M807DM1DW8EBGK03F7M820PN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 0,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 0.0,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    {
+      "check": "D-78 canvas Ctrl Z document undo",
+      "ok": true,
+      "detail": {
+        "entries": [
+          {
+            "index": 1,
+            "stepId": "u-1",
+            "label": "New Elements",
+            "source": "agent",
+            "agentSessionId": "s1-8dbf47",
+            "agentName": "mcp",
+            "time": "2026-11-21T23:35:24.211Z",
+            "objectCount": 4
+          },
+          {
+            "index": 2,
+            "stepId": "u-2",
+            "label": "Create Drawing",
+            "source": "agent",
+            "agentSessionId": "s1-8dbf47",
+            "agentName": "mcp",
+            "time": "2026-11-21T23:35:24.215Z",
+            "objectCount": 3
+          },
+          {
+            "index": 3,
+            "stepId": "u-3",
+            "label": "New Text Object",
+            "source": "user",
+            "time": "2026-11-21T23:35:25.284Z",
+            "objectCount": 2
+          },
+          {
+            "index": 4,
+            "stepId": "u-4",
+            "label": "Typing",
+            "source": "user",
+            "time": "2026-11-21T23:35:25.902Z",
+            "objectCount": 2
+          }
+        ],
+        "position": 3,
+        "cleanPosition": 0,
+        "total": 4
+      }
+    },
+    {
+      "check": "D-78 canvas redo",
+      "ok": true,
+      "detail": {
+        "entries": [
+          {
+            "index": 1,
+            "stepId": "u-1",
+            "label": "New Elements",
+            "source": "agent",
+            "agentSessionId": "s1-8dbf47",
+            "agentName": "mcp",
+            "time": "2026-11-21T23:35:24.211Z",
+            "objectCount": 4
+          },
+          {
+            "index": 2,
+            "stepId": "u-2",
+            "label": "Create Drawing",
+            "source": "agent",
+            "agentSessionId": "s1-8dbf47",
+            "agentName": "mcp",
+            "time": "2026-11-21T23:35:24.215Z",
+            "objectCount": 3
+          },
+          {
+            "index": 3,
+            "stepId": "u-3",
+            "label": "New Text Object",
+            "source": "user",
+            "time": "2026-11-21T23:35:25.284Z",
+            "objectCount": 2
+          },
+          {
+            "index": 4,
+            "stepId": "u-4",
+            "label": "Typing",
+            "source": "user",
+            "time": "2026-11-21T23:35:25.902Z",
+            "objectCount": 2
+          }
+        ],
+        "position": 4,
+        "cleanPosition": 0,
+        "total": 4
+      }
+    },
+    {
+      "check": "D-78 valid caret after redo",
+      "ok": true,
+      "detail": {
+        "anchor": 1,
+        "caret": 1,
+        "textId": "dr_01K7JJN800JBWAHYJK72RPK67N/nd_01K7JJN800S9Z32SFK5KGYTBTV"
+      }
+    },
+    {
+      "check": "D-78 ordinary numeric field keeps undo",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-78 ordinary rename field keeps undo",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": [
+    {
+      "check": "D-78 pending format two Typing steps",
+      "ok": false,
+      "detail": [
+        [
+          "Typing",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "D-78 B alone bold",
+      "ok": false,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800N7T5E82DYE03GAER",
+          "text": "AB",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 2,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M807DM1DW8EBGK03F7M820PN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 2,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 48.0234375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    {
+      "check": "D-78 undo removes only B",
+      "ok": false,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800N7T5E82DYE03GAER",
+          "text": "",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 0,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M807DM1DW8EBGK03F7M820PN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 0,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 0.0,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    }
+  ]
+}
