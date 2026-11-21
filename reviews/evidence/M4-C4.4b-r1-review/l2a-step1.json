@@ -1,0 +1,387 @@
+{
+  "checks": 40,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-1dhiq7l9",
+  "results": [
+    {
+      "check": "drawingView-corner command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-corner undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-corner D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-corner finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-corner undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-side command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -80.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-side undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-side D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-side finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-side undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-alternate-side command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -100.5,
+                "y": -40.5
+              },
+              {
+                "x": 100.5,
+                "y": -40.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-alternate-side undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-alternate-side D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-alternate-side finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-alternate-side undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-escape command",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawingView-escape undo labels",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawingView-escape D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-escape finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-escape undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-corner command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-corner undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-corner D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-corner finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-corner undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-side command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -80.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-side undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-side D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-side finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-side undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-alternate-side command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -100.5,
+                "y": -40.5
+              },
+              {
+                "x": 100.5,
+                "y": -40.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-alternate-side undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-alternate-side D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-alternate-side finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-alternate-side undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-escape command",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "cameraView-escape undo labels",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "cameraView-escape D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-escape finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-escape undo exact all drawings",
+      "ok": true,
+      "detail": null
+    }
+  ]
+}
