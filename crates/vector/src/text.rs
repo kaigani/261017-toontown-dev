@@ -510,7 +510,8 @@ pub fn layout_placed(c: &Content, fixed_width: Option<f64>) -> (Layout, Vec<Plac
 }
 
 /// A laid-out line (M4 C4.4b, design note 5 §5): its top and height in the box's local frame (distances below the
-/// top-left corner) and its caret stops, `(code point position, x)`, in order. A position at a soft wrap belongs to
+/// top-left corner) and its caret stops, `(code point position, x)`, in order, one per extended grapheme cluster
+/// boundary ([`cluster_boundaries`]; ruling D-82 item 2). A position at a soft wrap belongs to
 /// the next line; the position after a paragraph's last character (its newline, or the end) to the paragraph's last
 /// line; an empty paragraph's line has one stop.
 #[derive(Debug, Clone, PartialEq)]
@@ -539,7 +540,7 @@ pub struct Caret {
     pub bottom: f64,
 }
 
-/// Every caret stop of the content, one per position `0 ..= n`, in order.
+/// Every caret stop of the content, one per cluster boundary in `0 ..= n` ([`cluster_boundaries`]), in order.
 #[must_use]
 pub fn carets(c: &Content, fixed_width: Option<f64>) -> Vec<Caret> {
     let (_, _, lines) = layout_lines(c, fixed_width);
@@ -597,8 +598,64 @@ pub fn caret_x(c: &Content, fixed_width: Option<f64>, caret: usize) -> f64 {
     carets(c, fixed_width).iter().find(|k| k.index == caret).map_or(0.0, |k| k.x)
 }
 
+/// The extended grapheme cluster boundaries of the content (UAX #29; ruling D-82 item 2), as code point positions in
+/// increasing order: `0`, then each cluster's end, the last being the length (`[0]` for empty content). The caret keys,
+/// Shift selection, Backspace, Delete, the word bounds and the hit test move and cut by these; the commands stay code
+/// point indexed.
+#[must_use]
+pub fn cluster_boundaries(c: &Content) -> Vec<usize> {
+    use unicode_segmentation::UnicodeSegmentation;
+    let text = c.text();
+    let mut out = Vec::with_capacity(c.chars.len() + 1);
+    out.push(0);
+    let mut at = 0;
+    for g in text.graphemes(true) {
+        at += g.chars().count();
+        out.push(at);
+    }
+    out
+}
+
+/// Per position `0 ..= n`, whether it is a cluster boundary ([`cluster_boundaries`]).
+fn cluster_flags(c: &Content) -> Vec<bool> {
+    let mut flags = vec![false; c.chars.len() + 1];
+    for k in cluster_boundaries(c) {
+        if let Some(f) = flags.get_mut(k) {
+            *f = true;
+        }
+    }
+    flags
+}
+
+/// The clusters of the content, `(start, end)` in code points.
+fn clusters(c: &Content) -> Vec<(usize, usize)> {
+    cluster_boundaries(c).windows(2).filter_map(|w| Some((*w.first()?, *w.get(1)?))).collect()
+}
+
+/// The cluster boundary before `i` (Left, Backspace): the largest boundary below it, `0` at the start.
+#[must_use]
+pub fn prev_boundary(c: &Content, i: usize) -> usize {
+    cluster_boundaries(c).into_iter().take_while(|k| *k < i).last().unwrap_or(0)
+}
+
+/// The cluster boundary after `i` (Right, Delete): the smallest boundary above it, the length at the end.
+#[must_use]
+pub fn next_boundary(c: &Content, i: usize) -> usize {
+    let n = c.chars.len();
+    cluster_boundaries(c).into_iter().find(|k| *k > i).unwrap_or(n)
+}
+
+/// `i` if it is a cluster boundary, else the end of the cluster holding it (the session's caret and anchor after an
+/// edit that left them inside one: typing a base letter before a combining mark, or another origin's edit).
+#[must_use]
+pub fn snap_boundary(c: &Content, i: usize) -> usize {
+    let n = c.chars.len();
+    cluster_boundaries(c).into_iter().find(|k| *k >= i).unwrap_or(n)
+}
+
 /// The class of a character for word boundaries (design note 5 §4): a word character (a letter, a digit or `_`),
-/// white space, or anything else (punctuation and symbols, whose runs count as words of their own).
+/// white space, or anything else (punctuation and symbols, whose runs count as words of their own). A cluster's class
+/// is its first character's.
 fn word_class(ch: char) -> u8 {
     if ch.is_alphanumeric() || ch == '_' {
         0
@@ -609,69 +666,72 @@ fn word_class(ch: char) -> u8 {
     }
 }
 
+/// The word class of each cluster ([`word_class`] of its first character).
+fn cluster_classes(c: &Content, cl: &[(usize, usize)]) -> Vec<u8> {
+    cl.iter().map(|(s, _)| c.chars.get(*s).map_or(1, |ch| word_class(*ch))).collect()
+}
+
 /// Word left (Ctrl+Left, Option+Left; D-81 item 4b): from `i`, back over white space, then back over the run of one
-/// class before it; the start of the word before the caret.
+/// class before it, cluster by cluster (D-82 item 2); the start of the word before the caret.
 #[must_use]
 pub fn word_left(c: &Content, i: usize) -> usize {
-    let mut k = i.min(c.chars.len());
-    while k > 0 && word_class(c.chars[k - 1]) == 1 {
-        k -= 1;
+    let cl = clusters(c);
+    let class = cluster_classes(c, &cl);
+    // The clusters begun before `i` (a position inside a cluster belongs to that cluster's run).
+    let mut j = cl.iter().take_while(|(s, _)| *s < i).count();
+    while j > 0 && class.get(j - 1) == Some(&1) {
+        j -= 1;
     }
-    if k > 0 {
-        let want = word_class(c.chars[k - 1]);
-        while k > 0 && word_class(c.chars[k - 1]) == want {
-            k -= 1;
+    if let Some(want) = j.checked_sub(1).and_then(|p| class.get(p)).copied() {
+        while j > 0 && class.get(j - 1) == Some(&want) {
+            j -= 1;
         }
     }
-    k
+    cl.get(j).map_or(c.chars.len(), |(s, _)| *s)
 }
 
 /// Word right (Ctrl+Right, Option+Right; D-81 item 4b): from `i`, over white space, then over the run of one class
-/// after it; the end of the word after the caret.
+/// after it, cluster by cluster (D-82 item 2); the end of the word after the caret.
 #[must_use]
 pub fn word_right(c: &Content, i: usize) -> usize {
-    let n = c.chars.len();
-    let mut k = i.min(n);
-    while k < n && word_class(c.chars[k]) == 1 {
-        k += 1;
+    let cl = clusters(c);
+    let class = cluster_classes(c, &cl);
+    // The first cluster not wholly before `i` (a position inside a cluster belongs to that cluster's run).
+    let mut j = cl.iter().take_while(|(_, e)| *e <= i).count();
+    while class.get(j) == Some(&1) {
+        j += 1;
     }
-    if k < n {
-        let want = word_class(c.chars[k]);
-        while k < n && word_class(c.chars[k]) == want {
-            k += 1;
+    if let Some(want) = class.get(j).copied() {
+        while class.get(j) == Some(&want) {
+            j += 1;
         }
     }
-    k
+    cl.get(j).map_or(c.chars.len(), |(s, _)| *s)
 }
 
-/// The word at position `i` (design note 5 §5): the maximal run of one class around the character at `i` (or the one
-/// before it at the end): letters, digits and underscore; white space; anything else. `(start, end)`.
+/// The word at position `i` (design note 5 §5): the maximal run of clusters of one class around the cluster holding
+/// `i` (or the last one at the end): letters, digits and underscore; white space; anything else. `(start, end)`, at
+/// cluster boundaries (D-82 item 2).
 #[must_use]
 pub fn word_at(c: &Content, i: usize) -> (usize, usize) {
-    let n = c.chars.len();
-    if n == 0 {
+    let cl = clusters(c);
+    if cl.is_empty() {
         return (0, 0);
     }
-    let class = |ch: char| {
-        if ch.is_alphanumeric() || ch == '_' {
-            0
-        } else if ch.is_whitespace() {
-            1
-        } else {
-            2
-        }
-    };
-    let k = if i >= n { n - 1 } else { i };
-    let want = class(c.chars[k]);
+    let class = cluster_classes(c, &cl);
+    let k = cl.iter().position(|(s, e)| *s <= i && i < *e).unwrap_or(cl.len() - 1);
+    let want = class.get(k).copied();
     let mut start = k;
-    while start > 0 && class(c.chars[start - 1]) == want {
+    while start > 0 && class.get(start - 1).copied() == want {
         start -= 1;
     }
     let mut end = k + 1;
-    while end < n && class(c.chars[end]) == want {
+    while end < cl.len() && class.get(end).copied() == want {
         end += 1;
     }
-    (start, end)
+    let lo = cl.get(start).map_or(0, |(s, _)| *s);
+    let hi = cl.get(end - 1).map_or(c.chars.len(), |(_, e)| *e);
+    (lo, hi)
 }
 
 /// [`layout_placed`] with the line boxes ([`LineBox`]).
@@ -809,8 +869,10 @@ pub fn layout_lines(c: &Content, fixed_width: Option<f64>) -> (Layout, Vec<Place
             x += adv[*k];
         }
     }
-    // The caret stops of every line, from the placements (design note 5 §5).
+    // The caret stops of every line, from the placements (design note 5 §5), at extended grapheme cluster boundaries
+    // only (ruling D-82 item 2): no caret inside a cluster.
     let x_of: std::collections::HashMap<usize, f64> = placed.iter().map(|q| (q.index, q.x)).collect();
+    let boundary = cluster_flags(c);
     let mut boxes = Vec::with_capacity(all.len());
     for (pi, idx, top, height, left, last) in all {
         let p = &c.paras[pi];
@@ -831,6 +893,11 @@ pub fn layout_lines(c: &Content, fixed_width: Option<f64>) -> (Layout, Vec<Place
                     };
                 stops.push((p.start as usize, x0));
             }
+        }
+        // A line made only of a cluster's tail (a wrap inside a cluster, which wrapping does not seek) keeps its stops
+        // rather than none.
+        if stops.iter().any(|(k, _)| boundary.get(*k).copied().unwrap_or(true)) {
+            stops.retain(|(k, _)| boundary.get(*k).copied().unwrap_or(true));
         }
         boxes.push(LineBox { top, height, stops });
     }
@@ -1007,6 +1074,109 @@ pub fn nfc_with_origins(chars: &[char]) -> Vec<(char, usize)> {
         out.push((c, origin));
     }
     out
+}
+
+#[cfg(test)]
+mod cluster_tests {
+    use super::*;
+
+    /// Ruling D-82 item 2: the caret moves and cuts by extended grapheme clusters. Each case is NFC-stable text (the
+    /// model stores NFC, 10 §1) and its expected boundaries in code points.
+    fn corpus() -> Vec<(&'static str, &'static str, Vec<usize>)> {
+        vec![
+            // A base letter and a combining mark that NFC does not compose (there is no precomposed q with acute).
+            ("combining mark", "aq\u{301}b", vec![0, 1, 3, 4]),
+            // An emoji joined sequence: woman, ZWJ, laptop (woman technologist).
+            ("emoji ZWJ", "a\u{1F469}\u{200D}\u{1F4BB}b", vec![0, 1, 4, 5]),
+            // A flag: two regional indicators (JP).
+            ("flag", "a\u{1F1EF}\u{1F1F5}b", vec![0, 1, 3, 4]),
+            // A variation selector: heavy black heart, emoji presentation.
+            ("variation selector", "a\u{2764}\u{FE0F}b", vec![0, 1, 3, 4]),
+            // Hangul: a leading jamo before an LV syllable (GB6), which NFC leaves as it is.
+            ("Hangul", "a\u{1100}\u{AC00}b", vec![0, 1, 3, 4]),
+            // CR LF is one cluster (GB3).
+            ("CR LF", "a\r\nb", vec![0, 1, 3, 4]),
+        ]
+    }
+
+    fn content(t: &str) -> Content {
+        Content::new(t, default_run(None), default_para())
+    }
+
+    #[test]
+    fn the_corpus_is_nfc_stable_and_its_boundaries_are_the_clusters() {
+        for (name, t, want) in corpus() {
+            let c = content(t);
+            assert_eq!(c.text(), t, "{name}: NFC leaves the case as it is");
+            assert_eq!(cluster_boundaries(&c), want, "{name}");
+        }
+        assert_eq!(cluster_boundaries(&content("")), vec![0]);
+    }
+
+    #[test]
+    fn previous_next_and_snap_step_over_whole_clusters() {
+        for (name, t, want) in corpus() {
+            let c = content(t);
+            let n = c.chars.len();
+            // From each boundary, next and previous reach the neighbouring boundaries.
+            for w in want.windows(2) {
+                assert_eq!(next_boundary(&c, w[0]), w[1], "{name}: right from {}", w[0]);
+                assert_eq!(prev_boundary(&c, w[1]), w[0], "{name}: left from {}", w[1]);
+            }
+            assert_eq!(next_boundary(&c, n), n, "{name}");
+            assert_eq!(prev_boundary(&c, 0), 0, "{name}");
+            // Inside the cluster at 1..want[2]: snap goes to its end, previous to its start, next to its end.
+            for inside in 2..want[2] {
+                assert_eq!(snap_boundary(&c, inside), want[2], "{name}: snap {inside}");
+                assert_eq!(prev_boundary(&c, inside), 1, "{name}: left from {inside}");
+                assert_eq!(next_boundary(&c, inside), want[2], "{name}: right from {inside}");
+            }
+        }
+    }
+
+    #[test]
+    fn caret_stops_and_the_hit_test_never_fall_inside_a_cluster() {
+        for (name, t, want) in corpus() {
+            let c = content(t);
+            let stops: Vec<usize> = carets(&c, None).iter().map(|k| k.index).collect();
+            if name == "CR LF" {
+                // The line break splits the text into two paragraphs; both sides' stops are boundaries.
+                assert!(stops.iter().all(|k| want.contains(k)), "{name}: {stops:?}");
+                assert!(!stops.contains(&2), "{name}: no stop between CR and LF");
+                continue;
+            }
+            assert_eq!(stops, want, "{name}");
+            // A click anywhere on the line lands on a boundary.
+            let (_, placed, lines) = layout_lines(&c, None);
+            let depth = lines.first().map_or(0.0, |b| b.top + b.height / 2.0);
+            let right = placed.iter().map(|p| p.x).fold(0.0, f64::max) + 50.0;
+            let mut x = -5.0;
+            while x < right {
+                let k = caret_at(&c, None, P::new(x, -depth));
+                assert!(want.contains(&k), "{name}: x {x} gave {k}");
+                x += 0.5;
+            }
+        }
+    }
+
+    #[test]
+    fn words_are_runs_of_whole_clusters() {
+        // A combining mark is a letter's: "aq\u301b" is one word; the emoji and the flag are symbols whose
+        // runs are words of their own; Hangul is letters.
+        let c = content("aq\u{301}b \u{1F469}\u{200D}\u{1F4BB}\u{1F1EF}\u{1F1F5} \u{1100}\u{AC00}");
+        // a q+301 b | space | woman-ZWJ-laptop flag | space | jamo+syllable
+        assert_eq!(cluster_boundaries(&c), vec![0, 1, 3, 4, 5, 8, 10, 11, 13]);
+        assert_eq!(word_at(&c, 2), (0, 4), "the double click inside the combined letter selects the word");
+        assert_eq!(word_at(&c, 6), (5, 10), "inside the joined emoji: the run of symbols");
+        assert_eq!(word_at(&c, 12), (11, 13), "Hangul");
+        assert_eq!(word_right(&c, 0), 4);
+        assert_eq!(word_right(&c, 4), 10);
+        assert_eq!(word_right(&c, 6), 10, "from inside a cluster, to the end of the run");
+        assert_eq!(word_left(&c, 13), 11);
+        assert_eq!(word_left(&c, 11), 5);
+        assert_eq!(word_left(&c, 7), 5, "from inside a cluster, to the start of the run");
+        assert_eq!(word_left(&c, 4), 0);
+    }
 }
 
 #[cfg(test)]

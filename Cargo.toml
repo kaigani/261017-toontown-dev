@@ -40,6 +40,9 @@ indexmap = { version = "2.14", features = ["serde"] }
 # Current release (MIT-0 accepted for its borrow-or-share dependency, ADR-0003); no network schema resolution.
 jsonschema = { version = "0.59", default-features = false }
 unicode-normalization = "0.1"
+# Extended grapheme clusters (UAX #29) for the text caret (ruling D-82 item 2; MIT OR Apache-2.0; already in the lock
+# through tao).
+unicode-segmentation = "1.13"
 getrandom = "0.4"
 ryu = "1.0"
 proptest = "1.12"

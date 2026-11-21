@@ -17,9 +17,9 @@ panels and agent surfaces of C4.4a and the four drawing tools of C4.4b.
 | C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
 | C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | passed on product head `f5eb9e84`, run 44286651371 (36 of 36), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
 | C4.4a | panels and settings, agent surfaces (`reviews/M4-C4.4-plan.md`, D-40) | passed on product head `87f63b5f`, run 44861150241 (36 of 36 on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74; findings 12 + 2 + 2 + 5, all closed (including the P1 on the agent token in agent captures) |
-| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; **round 2 handed off** on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md` |
+| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; **round 2 handed off** on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`; D-82: the caret works by grapheme clusters (a P3 written during round 2, reviewed in round 3) |
 
-Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-81), recorded in
+Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-82), recorded in
 `reviews/M4-C4.1-plan.md`, `reviews/M4-C4.2-plan.md` and `reviews/M4-C4.3-plan.md` §15.
 
 ## 2. Inventory and counts (final build)
@@ -117,9 +117,6 @@ The retired margins:
   the edit session; it places the caret with `pointer` and `key`, types with `type_text`, and reads the text with
   `draw.drawing.get`. An attached agent reads the session in `inspect_ui`. No agent can read an input method's
   pre-edit (composition) text: the webview holds it until it is committed. `draw.text.layout.get` is proposed.
-- **The text caret moves by characters, not by what a reader sees as one character.** An accented letter typed as
-  two code points that do not compose, an emoji built of several, or a flag can take more than one Right-arrow press,
-  and Backspace removes one part at a time (C4.4b round 2 handoff §7; a question for the user, §7).
 - **Snap to Contour cannot close one stroke on itself** (SI-070 as decided; D-76 item 1): an end dragged to its own
   start does not snap there. A question for the user (§7).
 - **The live previews are close, not exact** (SI-154, SI-190): a transform or envelope preview lands within one view
@@ -197,7 +194,6 @@ Interim defaults are built and stated in `plan/spec-issues.md`; each line is the
 | SI-189 | Reposition All's reference box: the current frame's drawing (as built) or the union of all drawings? |
 | SI-196 | `draw.stroke.set` on the Contour Editor's Tool options (as built), or a Line section for every selection tool? |
 | SI-198 | Confirm `element.hidden` as the code of a gesture on an element the Camera view does not draw, and that an outline drawn by "Show outline on selection" is not editable. |
-| Text (C4.4b r2) | Should the caret move and delete by grapheme clusters (adding `unicode-segmentation` as a kernel dependency)? Should a Contour Editor insert select the new anchor? (Both asked in `reviews/M4-C4.4b-handoff-r2.md` §11.) |
 | Spec A | The additions M4 proposes (`plan/spec-issues.md`, "Spec A additions proposed by M4, for the user"): `draw.text.layout.get`, `tool.perspective.options.set`, `draw.font.list`, `job.outputs.list`, `agent.activity.recorded`, `agent.activity.list {afterSeq}`, the `ActivityEntry` members, `agent.session.changed`, `agent.confirmation.resolved`. |
 
 SI-184, SI-185, SI-191 and SI-193 to SI-195 are interim decisions without a question of their own (confirm or

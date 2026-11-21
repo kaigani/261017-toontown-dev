@@ -520,3 +520,72 @@ fn word_keys_move_extend_and_delete_by_words() {
     input(&h, Input::Key("Alt+Backspace".into()));
     assert_eq!(text_of(&h, &id), "one two ", "the last word deleted");
 }
+
+#[test]
+fn the_caret_moves_and_cuts_by_grapheme_clusters() {
+    // Ruling D-82 item 2: the caret keys, Shift selection, Backspace and Delete work by extended grapheme clusters; the
+    // commands stay code point indexed. "aq\u{301}b " then woman-ZWJ-laptop: code points a(0) q(1) U+0301(2) b(3)
+    // space(4) U+1F469(5) ZWJ(6) U+1F4BB(7); clusters end at 1, 3, 4, 5 and 8.
+    let h = ready();
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("aq\u{301}b \u{1F469}\u{200D}\u{1F4BB}".into()));
+    let caret = |h: &ExecutorHandle| session(h)["caret"].as_u64().unwrap();
+    assert_eq!(caret(&h), 8);
+    for want in [5, 4, 3, 1, 0] {
+        input(&h, Input::Key("Left".into()));
+        assert_eq!(caret(&h), want, "Left steps over one cluster");
+    }
+    for want in [1, 3] {
+        input(&h, Input::Key("Right".into()));
+        assert_eq!(caret(&h), want, "Right steps over one cluster");
+    }
+    input(&h, Input::Key("Shift+Left".into()));
+    let s = session(&h);
+    assert_eq!((s["anchor"].as_u64(), s["caret"].as_u64()), (Some(3), Some(1)), "Shift selects the whole cluster");
+    input(&h, Input::Key("Right".into()));
+    assert_eq!(caret(&h), 3, "Right collapses the highlight at its end");
+    input(&h, Input::Key("Backspace".into()));
+    assert_eq!(text_of(&h, &id), "ab \u{1F469}\u{200D}\u{1F4BB}", "Backspace removes q and its mark together");
+    assert_eq!(caret(&h), 1);
+    input(&h, Input::Key("End".into()));
+    input(&h, Input::Key("Backspace".into()));
+    assert_eq!(text_of(&h, &id), "ab ", "Backspace removes the joined emoji whole");
+    input(&h, Input::Text("\u{1F1EF}\u{1F1F5}".into()));
+    input(&h, Input::Key("Left".into()));
+    assert_eq!(caret(&h), 3, "a flag is one step");
+    input(&h, Input::Key("Delete".into()));
+    assert_eq!(text_of(&h, &id), "ab ", "Delete removes the flag whole");
+
+    // A base letter typed before a lone combining mark joins it: the caret goes after the cluster.
+    let h = ready();
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("\u{301}b".into()));
+    input(&h, Input::Key("Home".into()));
+    input(&h, Input::Text("q".into()));
+    assert_eq!(text_of(&h, &id), "q\u{301}b");
+    assert_eq!(session(&h)["caret"].as_u64(), Some(2), "not between q and its mark");
+
+    // Another origin's edit that puts the caret inside a cluster: it moves to the cluster's end. An agent still
+    // addresses any code point.
+    let h = ready();
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("qb".into()));
+    input(&h, Input::Key("Left".into()));
+    assert_eq!(session(&h)["caret"].as_u64(), Some(1));
+    let agent = Origin::Agent {
+        session: "s1".into(),
+        name: "Test".into(),
+        scopes: [tt_registry::Scope::Read, tt_registry::Scope::Edit].into_iter().collect(),
+    };
+    let env = h.invoke(tt_executor::Invocation {
+        command: "draw.text.set".into(),
+        params: json!({ "drawingId": D1, "textId": id, "insert": { "at": 1, "text": "\u{301}" } }),
+        options: Default::default(),
+        origin: agent,
+    });
+    assert_eq!(env.status, Status::Ok, "{env:?}");
+    assert_eq!(text_of(&h, &id), "q\u{301}b");
+    let e = input(&h, Input::Text("x".into()));
+    assert_eq!(e.status, Status::Ok, "{e:?}");
+    assert_eq!(text_of(&h, &id), "q\u{301}xb", "the next keystroke lands after the cluster, not inside it");
+}

@@ -4992,6 +4992,7 @@ dependencies = [
  "spade",
  "tt-model",
  "unicode-normalization",
+ "unicode-segmentation",
 ]
 
 [[package]]

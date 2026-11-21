@@ -447,19 +447,25 @@ pub(crate) fn settle(core: &mut Core, origin: &Origin) {
 }
 
 /// Reconciles the session's caret and highlight with its object's text (finding C44B-R1S-02): after an undo, a redo
-/// or another origin's edit the text can be shorter than the indices; both are clamped to its length (and the goal
-/// column dropped), so the next input inserts at a valid place and the scene answer finds the caret's stop.
+/// or another origin's edit the text can be shorter than the indices; both are clamped to its length and moved onto a
+/// cluster boundary (ruling D-82 item 2), and the goal column dropped, so the next input inserts at a valid place and
+/// the scene answer finds the caret's stop.
 fn reconcile(core: &mut Core) {
-    let Some(Some(n)) = core.with_lent_session(|cx| {
+    let Some(Some(content)) = core.with_lent_session(|cx| {
         let s = cx.app().text_edit.clone()?;
-        content_of(cx, &s).map(|(b, _)| b.content.chars.len())
+        content_of(cx, &s).map(|(b, _)| b.content)
     }) else {
         return;
     };
+    let n = content.chars.len();
+    // Clamped to the text, then onto a cluster boundary (ruling D-82 item 2): a position inside a cluster (typing a
+    // base letter before a combining mark, another origin's edit) moves to the end of that cluster.
     set_session(core, |e| {
-        if e.caret > n || e.anchor > n {
-            e.caret = e.caret.min(n);
-            e.anchor = e.anchor.min(n);
+        let caret = text::snap_boundary(&content, e.caret.min(n));
+        let anchor = text::snap_boundary(&content, e.anchor.min(n));
+        if caret != e.caret || anchor != e.anchor {
+            e.caret = caret;
+            e.anchor = anchor;
             e.goal_x = None;
         }
     });
@@ -561,6 +567,11 @@ fn end_run(core: &mut Core) {
     }
 }
 
+/// The session's text (its content).
+fn core_content(core: &mut Core, s: &TextEdit) -> Option<Content> {
+    core.with_lent_session(|cx| content_of(cx, s).map(|(b, _)| b.content)).flatten()
+}
+
 /// The length of the session's text, code points.
 fn length(core: &mut Core, s: &TextEdit) -> Option<usize> {
     core.with_lent_session(|cx| content_of(cx, s).map(|(b, _)| b.content.chars.len())).flatten()
@@ -581,6 +592,8 @@ pub(crate) fn input(
     let s = session_of(core, origin)?;
     let mut out = Vec::new();
     run_input(core, origin, &s, i, &mut out);
+    // The input's own edit can leave the caret inside a cluster (a base letter typed before a combining mark).
+    reconcile(core);
     notify(core);
     Ok(out)
 }
@@ -785,11 +798,20 @@ fn key(core: &mut Core, origin: &Origin, s: &TextEdit, k: &str, out: &mut Vec<(S
     };
     match base {
         "Left" => {
-            let c = if !shift && b > a { a } else { s.caret.saturating_sub(1) };
+            let c = if !shift && b > a {
+                a
+            } else {
+                // By extended grapheme clusters (ruling D-82 item 2).
+                core_content(core, s).map_or(s.caret.saturating_sub(1), |c| text::prev_boundary(&c, s.caret))
+            };
             moved(core, c, None);
         }
         "Right" => {
-            let c = if !shift && b > a { b } else { (s.caret + 1).min(n) };
+            let c = if !shift && b > a {
+                b
+            } else {
+                core_content(core, s).map_or((s.caret + 1).min(n), |c| text::next_boundary(&c, s.caret))
+            };
             moved(core, c, None);
         }
         "WordLeft" | "WordRight" => {
@@ -838,9 +860,13 @@ fn key(core: &mut Core, origin: &Origin, s: &TextEdit, k: &str, out: &mut Vec<(S
                 let (lo, hi) = (w.min(s.caret), w.max(s.caret));
                 (hi > lo).then_some((lo, hi - lo))
             } else if base == "Backspace" && s.caret > 0 {
-                Some((s.caret - 1, 1))
+                // The cluster before the caret (D-82 item 2).
+                let lo = core_content(core, s).map_or(s.caret - 1, |c| text::prev_boundary(&c, s.caret));
+                Some((lo, s.caret - lo))
             } else if base == "Delete" && s.caret < n {
-                Some((s.caret, 1))
+                // The cluster after the caret.
+                let hi = core_content(core, s).map_or(s.caret + 1, |c| text::next_boundary(&c, s.caret));
+                Some((s.caret, hi - s.caret))
             } else {
                 None
             };

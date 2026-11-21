@@ -133,8 +133,23 @@ line's start or end (Home, End). **What a word is:** the characters fall in thre
 a digit, or `_`, by Unicode's alphabetic and numeric properties), white space, and everything else (punctuation and
 symbols). Word left skips white space backwards, then the run of one class before it; word right skips white space,
 then the run of one class after it. So a run of punctuation is a word of its own ("two, three": the comma is one word),
-and a double click selects the run of one class under the point (`word_at`). Positions are code points, as everywhere
-in the session (the grapheme question is answered in the C4.4b round 2 handoff).
+and a double click selects the run of one class under the point (`word_at`). Words are runs of whole clusters, and a
+cluster's class is its first character's (below).
+
+**Grapheme clusters (ruling D-82 item 2).** What a reader takes for one character can be several code points: a base
+letter and a combining mark that NFC does not compose (q with an acute), an emoji joined sequence (woman, ZWJ,
+laptop), a flag (two regional indicators), a symbol with a variation selector, a Hangul leading consonant before a
+syllable, CR LF. The session works by **extended grapheme clusters** (UAX #29, `unicode-segmentation`;
+`tt_vector::text::cluster_boundaries`): Left and Right move over one cluster, Shift extends by clusters, Backspace and
+Delete remove the cluster before or after the caret, the word keys and the double click's word bounds count whole
+clusters, and the caret stops of every line (so the hit test, Up, Down, Home and End) are the cluster boundaries only.
+**The session never holds a position inside a cluster:** after any input, undo or other origin's edit, the caret and
+the anchor move to the end of the cluster holding them (`snap_boundary`; typing q before a lone combining mark leaves
+the caret after the pair). **The commands stay code point indexed** (`draw.text.set`, `draw.textFormat.set`): a
+cluster boundary is always a code point boundary, so no command changes, and an agent may still address any code
+point. Kernel tests: `text.rs` `cluster_tests` (the corpus above: boundaries, steps, the hit test and caret stops,
+words) and `c44b_text.rs` `the_caret_moves_and_cuts_by_grapheme_clusters` (keys, Shift, Backspace, Delete, the snap
+after the person's typing and after an agent's edit).
 
 **Double click (02 §7.6; finding C44B-R1-41).** The window sends its double click as a request of its own after the
 second click's gesture (`GestureCollector.lone`), and an agent's `pointer` sends its two clicks then `doubleClick`; the
