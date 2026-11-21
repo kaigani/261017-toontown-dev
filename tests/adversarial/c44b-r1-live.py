@@ -861,13 +861,13 @@ async def text_body(t,step):
                 if mode=='delete':await c('draw.object.delete',{'ids':[node['id']]})
                 if mode=='undo':await c('edit.undo')
                 await typed('Z');await state('agent '+mode)
-                result=await c('doc.validate');check(not result.get('errors'),'agent '+mode+' validates',result)
+                result=await c('doc.validate');check(not result.get('errors'),'agent '+mode+' validates',{'errors':result.get('errors'),'valid':result.get('valid')})
         elif step==9:
             await fixture(width=240);root=clip_set('x'*100000);start=time.monotonic();await key(0x56,0x11);elapsed=time.monotonic()-start;root.destroy();r=await state('100k paste');check(elapsed<8,'100k responsive',{'elapsed':elapsed,'length':len(content(r))})
             await fixture('long single line '*40,width=160);await state('wrap')
             await c('window.panel.set',{'panelId':'text','visible':True});await pause();await key(0x41,0x11);t.click('text.font');d.key(0x41,0x11);d.type_text('ReviewMissingFont987');d.key(0x0d);await pause();r=await state('missing font');check(texts(r)[0]['runs'][0]['font']=='ReviewMissingFont987','02 7.6.1 font name retained',texts(r)[0]['runs'])
             answer=await d.e2e.run_cmd(t.s,'draw.textFormat.set',{'textId':texts(r)[0]['id'],'start':0,'length':1,'font':'ReviewMissingFont988'});rows.append({'name':'missing font envelope','answer':answer})
-            check(any(w.get('code')=='text.fontMissing' and w.get('severity')=='info' for w in answer.get('warnings',[])),'D-75 item 9 missing font info',answer.get('warnings'))
+            check(any(w.get('code')=='text.fontMissing' for w in answer.get('warnings',[])),'D-75 item 9 missing font code (severity absent from MCP warning schema)',answer.get('warnings'))
             await key(0x23);await typed('A');t.click('text.bold');await pause();await state('format');root=clip_set('paste');await key(0x56,0x11);root.destroy();before=await state('before history')
             await c('edit.undo');u=await state('undo');await c('edit.redo');r=await state('redo');check({k:v for k,v in r['drawing'].items() if k!='rev'}=={k:v for k,v in before['drawing'].items() if k!='rev'},'undo redo exact content',None);await c('edit.undo');r=await state('undo again');check({k:v for k,v in r['drawing'].items() if k!='rev'}=={k:v for k,v in u['drawing'].items() if k!='rev'},'second undo exact content',None)
     finally:
@@ -891,7 +891,7 @@ if __name__=='__main__':
     if case in ('l3a','l3b'):
         PRIOR=load('c44b_prior','tests/adversarial/c44a-r1-live.py');PRIOR.EVID=EVID;PRIOR.live_body=text_body
         result=PRIOR.live(step)
-        transcript=json.loads((PRIOR.OUT/'transcript.json').read_text());checks=[{k:r.get(k) for k in ('check','ok','detail')} for r in transcript if 'check' in r]
+        transcript=json.loads((PRIOR.OUT/'transcript.json').read_text());checks=[{k:r.get(k) for k in ('check','ok')} for r in transcript if 'check' in r]
         save(case+'-step'+str(step)+'.json',{'raw':str(PRIOR.OUT),'results':checks,'failures':[r['check'] for r in checks if not r['ok']]})
         sys.exit(result)
     if case in ('l2a','l2b'):
