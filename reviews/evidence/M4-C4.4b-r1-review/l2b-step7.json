@@ -1,0 +1,2061 @@
+{
+  "checks": 134,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-851ymfe4",
+  "results": [
+    {
+      "check": "drawingView perspective options drawTopLayer command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.drawTopLayer.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView perspective options placeBehind command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.placeBehind.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView perspective options snapToContour command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.snapToContour.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView perspective no undeclared mapping control D-75 item 5",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView perspective context Select All selects with no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "edit.selectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "drawingView perspective held tool is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "perspective"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView perspective held tool stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView perspective held frame is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "perspective"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView perspective held frame stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView perspective held agent is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "perspective"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView perspective held agent stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Scale Object",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView perspective empty drawings unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 15,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 297,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.selection.set",
+            "params": {
+              "by": "rect",
+              "rect": {
+                "x": -80.078125,
+                "y": -60.5,
+                "width": 30,
+                "height": 26
+              },
+              "rectRule": "inside",
+              "mode": "replace"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "drawingView repositionAll options drawTopLayer command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.drawTopLayer.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView repositionAll options placeBehind command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.placeBehind.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView repositionAll options snapToContour command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.snapToContour.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView repositionAll no undeclared mapping control D-75 item 5",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView repositionAll context Select All selects with no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "edit.selectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "drawingView repositionAll held tool is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "repositionAll"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView repositionAll held tool stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView repositionAll held frame is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "repositionAll"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView repositionAll held frame stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView repositionAll held agent is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "repositionAll"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView repositionAll held agent stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Scale Object",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView repositionAll empty drawings unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 13,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 366.921875,
+            "y": 351,
+            "modifiers": [],
+            "dt": 309,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "error",
+        "code": "drawing.nothingToDo",
+        "commands": []
+      }
+    },
+    {
+      "check": "cameraView perspective options drawTopLayer command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.drawTopLayer.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView perspective options placeBehind command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.placeBehind.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView perspective options snapToContour command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.snapToContour.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView perspective no undeclared mapping control D-75 item 5",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective context Select All selects with no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "draw.viewMapping.get",
+          "params": {
+            "view": "cameraView"
+          }
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "edit.selectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "draw.viewMapping.get",
+          "params": {
+            "view": "cameraView"
+          }
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "cameraView perspective held tool is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "perspective"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective held tool stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective held frame is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "perspective"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective held frame stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective held agent is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "perspective"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective held agent stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Scale Object",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView perspective empty drawings unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 303,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.selection.set",
+            "params": {
+              "by": "rect",
+              "rect": {
+                "x": -80.048828125,
+                "y": -59.6875,
+                "width": 30,
+                "height": 25
+              },
+              "rectRule": "inside",
+              "mode": "replace"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView repositionAll options drawTopLayer command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.drawTopLayer.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView repositionAll options placeBehind command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.placeBehind.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView repositionAll options snapToContour command no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.snapToContour.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView repositionAll no undeclared mapping control D-75 item 5",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll context Select All selects with no undo",
+      "ok": true,
+      "detail": [
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "edit.selectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "cameraView repositionAll held tool is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "repositionAll"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll held tool stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll held frame is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "repositionAll"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll held frame stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll held agent is refused busy",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "ui.busy",
+          "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+          "details": {
+            "blockedBy": {
+              "kind": "gesture",
+              "title": "repositionAll"
+            },
+            "waitedMs": 10000
+          },
+          "hint": "retry when the user is done; app.state.get reports `modal`"
+        }
+      }
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.5888218580782548e-14
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll held agent stays on original frame",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Scale Object",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView repositionAll empty drawings unchanged",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "repositionAll",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 7,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 117,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 336.921875,
+            "y": 277,
+            "modifiers": [],
+            "dt": 300,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "error",
+        "code": "drawing.nothingToDo",
+        "commands": []
+      }
+    }
+  ]
+}

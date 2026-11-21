@@ -1,0 +1,250 @@
+[
+  {
+    "name": "cameraView-perspective-element-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingId": "dr_01K7JJN80044A1NH5AK51PKJQQ",
+      "ids": [
+        "st_01K7JJN800RWWPQMF6HGBJ21PF"
+      ],
+      "createdIds": [
+        "zn_ZPGW8FMP37TBXG23B43WWGKHYA"
+      ],
+      "modifiedIds": [
+        "st_01K7JJN800RWWPQMF6HGBJ21PF"
+      ],
+      "removedIds": [
+        "zn_4HKBY2BB5DK0PM84B3H4SPP6DV"
+      ],
+      "rev": 11
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Perspective Tool"
+    }
+  },
+  {
+    "name": "cameraView-perspective-hidden-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingId": "dr_01K7JJN80072S3SB8FCBSD1CPA",
+      "ids": [
+        "st_01K7JJN8008KECZD9WQ4BAQF45"
+      ],
+      "createdIds": [
+        "zn_B4FXZ42J63JEWB517R4GY5AY0K"
+      ],
+      "modifiedIds": [
+        "st_01K7JJN8008KECZD9WQ4BAQF45"
+      ],
+      "removedIds": [
+        "zn_QW7PAH3WAPDAWTDWHQZ0KFDZJ8"
+      ],
+      "rev": 11
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Perspective Tool"
+    }
+  },
+  {
+    "name": "cameraView-perspective-one-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingId": "dr_01K7JJN8007596Y9AD4AR01CN4",
+      "ids": [
+        "st_01K7JJN800CCWXKQJYDMDH4BZ0"
+      ],
+      "createdIds": [
+        "zn_00AZHY7C1SZ84VQEMJAJ6ZDVA7"
+      ],
+      "modifiedIds": [
+        "st_01K7JJN800CCWXKQJYDMDH4BZ0"
+      ],
+      "removedIds": [
+        "zn_75H2MWAQ4MBXMKC001ACNF3EAS"
+      ],
+      "rev": 11
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Perspective Tool"
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-current-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingIds": [
+        "dr_01K7JJN8009B5B3PDY3B7S3Y1T",
+        "dr_01K7JJN8007FY7B40Y1YX6ZH31"
+      ],
+      "skippedIds": [
+        "dr_01K7JJN800J9HPT1JD805MC22M"
+      ]
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Reposition All Drawings"
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-element-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingIds": [
+        "dr_01K7JJN800CN6ZZADEDZ74NBSP",
+        "dr_01K7JJN800TDMR37CSRRPXK3CZ",
+        "dr_01K7JJN8008T2PK4860A56FAKD"
+      ],
+      "skippedIds": []
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Reposition All Drawings"
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-hidden-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingIds": [
+        "dr_01K7JJN8007ZFSASB60P335ES1",
+        "dr_01K7JJN800Z626J9WGVK9QNJ5Y",
+        "dr_01K7JJN800Q97GQ7GQTE1YTPRF"
+      ],
+      "skippedIds": []
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Reposition All Drawings"
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-one-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingIds": [
+        "dr_01K7JJN800RD1KPVB6Z2GGT0EH",
+        "dr_01K7JJN800GNDYV6DET09T5TQE"
+      ],
+      "skippedIds": [
+        "dr_01K7JJN800KDBCZVHSFQ5KBB8N"
+      ]
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Reposition All Drawings"
+    }
+  },
+  {
+    "name": "drawingView-perspective-element-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingId": "dr_01K7JJN800YB4NN1XP8WE438E0",
+      "ids": [
+        "st_01K7JJN8008CE4C6Z8Y75D1MX8"
+      ],
+      "createdIds": [
+        "zn_SYEYN3XG9T6VHNMMH30RY3DPHT"
+      ],
+      "modifiedIds": [
+        "st_01K7JJN8008CE4C6Z8Y75D1MX8"
+      ],
+      "removedIds": [
+        "zn_S3SA68M0X8KXXFV0QZVN2KVQ4T"
+      ],
+      "rev": 11
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Perspective Tool"
+    }
+  },
+  {
+    "name": "drawingView-perspective-one-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingId": "dr_01K7JJN8000NM5KKR55TGZ13XD",
+      "ids": [
+        "st_01K7JJN8005C2QY7TQ5TQM5FT3"
+      ],
+      "createdIds": [
+        "zn_QHQR4SAEGS3QSDP9HF64PD6JWN"
+      ],
+      "modifiedIds": [
+        "st_01K7JJN8005C2QY7TQ5TQM5FT3"
+      ],
+      "removedIds": [
+        "zn_QPMJTEZJ20JWGAMTR0KQFCW53D"
+      ],
+      "rev": 11
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Perspective Tool"
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-current-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingIds": [
+        "dr_01K7JJN8001DHDHWAKQEJ91QJG",
+        "dr_01K7JJN800ZASSWG38BWRBDB5G"
+      ],
+      "skippedIds": [
+        "dr_01K7JJN800AY16881H74EN3V77"
+      ]
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Reposition All Drawings"
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-element-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingIds": [
+        "dr_01K7JJN800H4BVA56PZAK97MJA",
+        "dr_01K7JJN8007RS3XB3W6ZW5DKFE",
+        "dr_01K7JJN800ZG19GY7KWY1DYP0M"
+      ],
+      "skippedIds": []
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Reposition All Drawings"
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-one-locked-direct-answer",
+    "status": "ok",
+    "result": {
+      "drawingIds": [
+        "dr_01K7JJN800EZ08J5AXJQVVHTCY",
+        "dr_01K7JJN800Y327DXE08R69AAKP"
+      ],
+      "skippedIds": [
+        "dr_01K7JJN800R7F7N1B3VDG7H3P8"
+      ]
+    },
+    "error": null,
+    "undo": {
+      "stepId": "u-1",
+      "label": "Reposition All Drawings"
+    }
+  }
+]

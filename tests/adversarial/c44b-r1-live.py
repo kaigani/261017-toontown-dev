@@ -349,11 +349,17 @@ def compact(step,out):
     supplemental=[]
     if str(step).startswith('l2-'):
         for path in out.glob('*.json'):
-            if any(token in path.stem for token in ('direct-answer','held-','options','empty-','drawTopLayer','placeBehind','snapToContour')):
+            if any(token in path.stem for token in ('direct-answer','held-','options','empty-','drawTopLayer','placeBehind','snapToContour','context-action','active-after-switch')):
                 value=json.loads(path.read_text(encoding='utf-8'))
                 if path.stem.endswith('direct-answer'):
                     value={k:value.get(k) for k in ('status','result','undo','error','errors')}
                 supplemental.append({'name':path.stem,'value':value})
+        for path in out.glob('*-context.json'):
+            tree=json.loads(path.read_text(encoding='utf-8'))
+            def menus(n):
+                if not isinstance(n,dict):return []
+                return ([{k:n.get(k) for k in ('id','label','command','disabled','reason')}] if '.drawingMenu.' in n.get('id','') else [])+[v for ch in n.get('children',[]) for v in menus(ch)]
+            supplemental.append({'name':path.stem,'value':menus(tree)})
         save('l2-'+str(step)+'-supplemental.json',supplemental)
     save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'results':[{'check':r['check'],'ok':r['ok']} for r in rows],'actions':actions,'measurements':measurements,'canvases':canvases,'captures':captures,'transcriptSha256':hashlib.sha256((out/'transcript.json').read_bytes()).hexdigest(),'raw':str(out)})
 async def envelope_body(t,step):
@@ -403,6 +409,7 @@ async def envelope_body(t,step):
     async def fixture(view,tool='perspective'):
         await p.r3.preserve_fixture(t)
         await c('project.create',{'name':'Envelope review','onUnsaved':'fail'})
+        await c('tool.placeBehind.set',{'enabled':False});await c('tool.drawTopLayer.set',{'enabled':False});await c('tool.snapToContour.set',{'enabled':False})
         eid=(await c('element.create',{'type':'drawing','name':'Shapes'}))['elementIds'][0]
         found=await c('doc.object.find',{'type':'swatch','name':'Colour 2'})
         items=found.get('items') or found.get('matches') or []
@@ -418,6 +425,7 @@ async def envelope_body(t,step):
         await c('workspace.select',{'name':'Drawing' if view=='drawingView' else 'Default'})
         await c('window.panel.set',{'panelId':view,'visible':True,'focus':True})
         await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
+        if step==2 and view=='cameraView':await c('view.zoom.set',{'viewId':view,'zoom':0.625})
         if step==4:
             inset=await c('draw.polyline.add',{'points':[{'x':-50,'y':-30},{'x':50,'y':-30},{'x':50,'y':30},{'x':-50,'y':30}],'closed':True,'thickness':2,'snap':False})
             first+=inset['strokeIds']
@@ -425,7 +433,7 @@ async def envelope_body(t,step):
         await asyncio.sleep(.7)
         return eid,ids
     async def drawings(ids,cmd=c):return [eq.unstamped(await cmd('draw.drawing.get',{'drawingId':i})) for i in ids]
-    async def compare(view,name,pts,mods=(),escape=False,tool='perspective',setup=None,expect=True):
+    async def compare(view,name,pts,mods=(),escape=False,tool='perspective',setup=None,expect=True,command_override=None,label_override=None):
         eid,ids=await fixture(view,tool)
         if setup:await setup(eid,ids)
         selection=await c('draw.selection.get')
@@ -435,8 +443,16 @@ async def envelope_body(t,step):
         after=await drawings(ids);labels=await t.steps_since(pos);commands=(rec or {}).get('commands') or []
         expected='draw.envelope.apply' if tool=='perspective' else 'draw.repositionAll.apply'
         label='Perspective Tool' if tool=='perspective' else 'Reposition All Drawings'
+        expected=command_override or expected;label=label_override or label
         check(len(commands)==1 and commands[0]['commandId']==expected if expect else ((rec or {}).get('status')!='ok' or not commands),name+' command',commands)
         check([x[0] for x in labels]==([label] if expect else []),name+' undo labels',labels)
+        if step==2 and commands and commands[0]['commandId']=='draw.envelope.apply':
+            corners=commands[0]['params']['corners']
+            if name.endswith('-coincident'):
+                check(any(math.dist((u['x'],u['y']),(v['x'],v['y']))<1e-8 for i,u in enumerate(corners) for v in corners[i+1:]),name+' target truly coincident',corners)
+            if name.endswith('-all-collinear'):
+                check(max(v['y'] for v in corners)-min(v['y'] for v in corners)<1e-8,name+' target truly collinear',corners)
+
         vs=await c('view.list');vs=vs.get('views',[]) if isinstance(vs,dict) else vs
         copy=t.work/'direct.animpkg';shutil.copyfile(base,copy)
         args=['--mcp-stdio','--project',str(copy),'--policy','autonomous','--allow-path',str(t.work),'--user-dir',str(t.work/('head-'+name))]
@@ -451,7 +467,7 @@ async def envelope_body(t,step):
                     t.run.save(name+'-direct-answer.json',result)
                 direct=await drawings(ids,ht.cmd)
                 check(after==direct,name+' D-32 exact all drawing content',None)
-        if tool=='repositionAll' and commands and commands[0]['commandId']==expected and expect:
+        if tool=='repositionAll' and commands and commands[0]['commandId']=='draw.repositionAll.apply' and expect:
             import numpy as np
             q=commands[0]['params'];box=before[0]['bounds']
             x,y,w,h=[box[k] for k in ('x','y','width','height')]
@@ -481,6 +497,23 @@ async def envelope_body(t,step):
                 if b.get('locked'):continue
                 errors.extend(math.dist(mapped(p),(r['x'],r['y'])) for p,r in zip(points(b),points(a)))
             check(bool(errors) and max(errors)<1e-8,name+' D-75 one independent current-bounds map all drawings',max(errors) if errors else None)
+
+        if step==3 and commands and commands[0]['commandId']=='draw.envelope.apply':
+            box=before[0]['bounds'];x,y,w,h=[box[k] for k in ('x','y','width','height')]
+            cs=commands[0]['params']['corners'];o,r,u=cs[0],cs[1],cs[3]
+            aa,bb=(r['x']-o['x'])/w,(r['y']-o['y'])/w
+            cc,dd=(u['x']-o['x'])/h,(u['y']-o['y'])/h
+            ee,ff=o['x']-aa*x-cc*y,o['y']-bb*x-dd*y
+            results=[]
+            for kind in ('text','bitmap'):
+                old=next(n for n in before[0]['nodes'] if n.get('type')==kind)
+                new=next(n for n in after[0]['nodes'] if n.get('type')==kind)
+                a,b,c0,d0,e,f=old['transform']
+                wanted=[aa*a+cc*b,bb*a+dd*b,aa*c0+cc*d0,bb*c0+dd*d0,aa*e+cc*f+ee,bb*e+dd*f+ff]
+                err=max(abs(u-v) for u,v in zip(wanted,new['transform']))
+                check(err<1e-8,name+' '+kind+' three-corner affine fit',{'maxError':err,'before':old['transform'],'after':new['transform']})
+                results.append({'kind':kind,'maxError':err,'before':old['transform'],'after':new['transform']})
+            t.run.save(name+'-affine-fit-options.json',results)
         check(all(__import__('math').isfinite(x) for x in numbers(after)),name+' finite saved content',None)
         t.run.save(name+'.json',{'commands':commands,'record':rec,'before':before,'after':after,'labels':labels})
         for _ in labels:await c('edit.undo')
@@ -491,6 +524,33 @@ async def envelope_body(t,step):
         if isinstance(v,list):return [n for x in v for n in numbers(x)]
         return [v] if isinstance(v,(float,int)) else []
     for view in ('drawingView','cameraView'):
+        if step==7 and os.environ.get('C44B_FRAME_ONLY'):
+            for tool in ('perspective','repositionAll'):
+                eid,ids=await fixture(view,tool)
+                await c('keymap.set',{'commandId':'app.frame.set','params':{'frame':9},'keys':'F7','context':'global','onConflict':'override'})
+                base=t.work/'frame-base.animpkg';await c('project.saveAs',{'path':str(base),'onExists':'overwrite'})
+                before=await drawings(ids);pos=await t.position()
+                async def switch_frame():d.key(0x76);await asyncio.sleep(.4)
+                hold_action=switch_frame
+                rec=await gesture(view,[(-80,-60),(-50,-35)])
+                hold_action=None
+                after=await drawings(ids);labels=await t.steps_since(pos)
+                if tool=='perspective':check(after==before,view+' '+tool+' user frame switch leaves drawings unchanged',rec)
+                args=['--mcp-stdio','--project',str(base),'--policy','autonomous','--allow-path',str(t.work),'--user-dir',str(t.work/(view+'-'+tool+'-frame-head'))]
+                vs=await c('view.list');vs=vs.get('views',[]) if isinstance(vs,dict) else vs
+                for v in vs:
+                    if v.get('size',{}).get('width'):args+=['--view-size',v['viewId']+'='+str(v['size']['width'])+'x'+str(v['size']['height'])]
+                async with stdio_client(StdioServerParameters(command=str(HEAD),args=args)) as streams:
+                    async with ClientSession(*streams,list_roots_callback=roots) as hs:
+                        await hs.initialize();ht=d.Table(hs,t.run,p.OUT,t.work)
+                        await ht.cmd('app.context.set',{'elementId':eid,'frame':9})
+                        for command in (rec or {}).get('commands',[]):await d.e2e.run_cmd(hs,command['commandId'],command.get('params',{}))
+                        check(await drawings(ids,ht.cmd)==after,view+' '+tool+' user frame switch exact direct content at new frame',None)
+
+                t.run.save(view+'-'+tool+'-user-frame.json',{'commands':(rec or {}).get('commands',[]),'record':rec,'before':before,'after':after,'labels':labels,'current':await c('draw.current.get')})
+                for _ in labels:await c('edit.undo')
+                check(await drawings(ids)==before,view+' '+tool+' user frame switch exact undo',None)
+            continue
         if step==1:
             for name,pts,mods in [('corner',[(-80,-60),(-50,-35)],()),('side',[(0,-60),(0,-35)],()),('alternate-side',[(0,-60),(20,-40)],(0x12,))]:
                 await compare(view,view+'-'+name,pts,mods)
@@ -504,6 +564,16 @@ async def envelope_body(t,step):
                 await c('draw.stroke.add',{'points':[{'x':-60,'y':-30},{'x':0,'y':35},{'x':60,'y':-10}]})
                 await c('draw.polyline.add',{'points':[{'x':-50,'y':-20},{'x':0,'y':20},{'x':50,'y':-15}],'thickness':7,'snap':False})
                 await c('draw.text.add',{'position':{'x':-20,'y':-10},'text':'Test'})
+                from PIL import Image
+                png=t.work/'fixture.png';Image.new('RGBA',(8,8),(30,60,120,255)).save(png)
+                image=(await c('element.create',{'type':'image','name':'Bitmap source'}))['elementIds'][0]
+                await c('import.file.run',{'paths':[str(png)],'elementId':image,'frame':1,'wait':True})
+                bank=await c('element.drawing.list',{'elementId':image})
+                bitmap=await c('draw.drawing.get',{'drawingId':bank['drawings'][0]['id']})
+                node=next(n for n in bitmap['nodes'] if n['type']=='bitmap');node['transform']=[2,0,0,-2,-8,8]
+                await c('draw.content.add',{'drawingId':ids[0],'content':{'nodes':[node]}})
+                await c('app.context.set',{'elementId':eid,'frame':1})
+
                 await c('draw.selection.set',{'by':'rect','rect':{'x':-90,'y':-70,'width':180,'height':140},'rectRule':'inside','mode':'replace'})
             await compare(view,view+'-mixed-content',[(-80,-60),(-45,-30)],setup=content)
         elif step==4:
@@ -568,24 +638,37 @@ async def envelope_body(t,step):
                     t.run.save(view+'-'+tool+'-'+ident+'.json',{'sent':sent,'options':await c('tool.options.get',{'toolId':tool})})
                 page=t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions\"]')?.outerHTML")
                 t.run.save(view+'-'+tool+'-options.json',page)
+                check('mapping' not in (page or ''),view+' '+tool+' no undeclared mapping control D-75 item 5',None)
                 d.front();rr=t.rect(view+'.canvas');origin=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(origin))
                 d.right_click_screen(origin.x+rr['x']*rr['dpr'],origin.y+rr['y']*rr['dpr']);await asyncio.sleep(.3)
                 t.run.save(view+'-'+tool+'-context.json',await d.McpTable.tree(t));d.key(0x1b)
+                await c('draw.selection.set',{'by':'ids','ids':[]});t.clear();pos=await t.position()
+                await t.do(('context',view+'.canvas',view+'.drawingMenu.selectAll'));await asyncio.sleep(.3)
+                check(bool((await c('draw.selection.get')).get('selectedIds')) and pos==await t.position(),view+' '+tool+' context Select All selects with no undo',t.recorded())
+                t.run.save(view+'-'+tool+'-context-action.json',t.recorded())
                 await c('draw.selection.set',{'by':'ids','ids':[]})
                 rec=await gesture(view,[(-80,-60),(-50,-35)])
                 t.run.save(view+'-'+tool+'-empty-selection.json',rec)
                 for mode in ('tool','frame','agent'):
-                    eid,ids=await fixture(view,tool)
-                    before=await drawings(ids)
-                    async def held():
-                        command,params=('tool.active.set',{'toolId':'select'}) if mode=='tool' else ('app.context.set',{'elementId':eid,'frame':9}) if mode=='frame' else ('draw.stroke.add',{'points':[{'x':0,'y':0},{'x':10,'y':10}]})
-                        answer=await d.e2e.run_cmd(t.s,command,params)
-                        t.run.save(view+'-'+tool+'-held-'+mode+'.json',answer)
-                        check(answer.get('status')!='ok' and 'ui.busy' in json.dumps(answer),view+' '+tool+' held '+mode+' is refused busy',answer)
-                    hold_action=held
-                    rec=await gesture(view,[(-80,-60),(-50,-35)])
+                    async def install(eid,ids):
+                        nonlocal hold_action
+                        async def held():
+                            command,params=('tool.active.set',{'toolId':'select'}) if mode=='tool' else ('app.context.set',{'elementId':eid,'frame':9}) if mode=='frame' else ('draw.stroke.add',{'points':[{'x':0,'y':0},{'x':10,'y':10}]})
+                            answer=await d.e2e.run_cmd(t.s,command,params)
+                            t.run.save(view+'-'+tool+'-held-'+mode+'.json',answer)
+                            check(answer.get('status')!='ok' and 'ui.busy' in json.dumps(answer),view+' '+tool+' held '+mode+' is refused busy',answer)
+                        hold_action=held
+                    await compare(view,view+'-'+tool+'-lifecycle-'+mode,[(-80,-60),(-50,-35)],tool=tool,setup=install)
                     hold_action=None
-                    check((await c('draw.current.get')).get('frame')==1,view+' '+tool+' held '+mode+' stays on original frame',rec)
+                    check((await c('draw.current.get')).get('frame')==1,view+' '+tool+' held '+mode+' stays on original frame',None)
+                async def switch_setup(eid,ids):
+                    nonlocal hold_action
+                    await c('keymap.set',{'commandId':'tool.active.set','params':{'toolId':'select'},'keys':'F6','context':'global','onConflict':'override'})
+                    async def switch():d.key(0x75);await asyncio.sleep(.3)
+                    hold_action=switch
+                await compare(view,view+'-'+tool+'-keyboard-switch',[(-80,-60),(-50,-35)],tool=tool,setup=switch_setup,command_override='draw.transform.apply',label_override='Scale Object')
+                hold_action=None
+                t.run.save(view+'-'+tool+'-active-after-switch.json',await c('tool.active.get'))
                 eid,ids=await fixture(view,tool)
                 await c('element.drawingContent.delete',{'drawingIds':ids})
                 before=await drawings(ids);pos=await t.position()
@@ -597,7 +680,9 @@ if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b','l2a','l2b')
     if case in ('l2a','l2b'):
         PRIOR=load('c44b_prior','tests/adversarial/c44a-r1-live.py');PRIOR.EVID=EVID;PRIOR.live_body=envelope_body
-        result=PRIOR.live(step);compact('l2-'+str(step),PRIOR.OUT);sys.exit(result)
+        phase='-user-frame' if os.environ.get('C44B_FRAME_ONLY') else ''
+        if phase:PRIOR.EVID=Path(tempfile.mkdtemp(prefix='c44b-summary-'))
+        result=PRIOR.live(step);compact('l2-'+str(step)+phase,PRIOR.OUT);sys.exit(result)
     if case=='l1a' and step==1:sys.exit(build())
     if case=='l1a' and step==2: sys.exit(regressions())
     if step in (3,4,5,6,7,8): sys.exit(live(step))
