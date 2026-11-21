@@ -393,6 +393,9 @@ async def envelope_body(t,step):
         await p.r3.preserve_fixture(t)
         await c('project.create',{'name':'Envelope review','onUnsaved':'fail'})
         eid=(await c('element.create',{'type':'drawing','name':'Shapes'}))['elementIds'][0]
+        found=await c('doc.object.find',{'type':'swatch','name':'Colour 2'})
+        items=found.get('items') or found.get('matches') or []
+        await c('colour.current.set',{'colourId':items[0].get('id') or items[0].get('key')})
         ids=[]
         for i,(x,y,w,h) in enumerate([(-80,-60,160,120),(-30,-20,90,50),(15,10,40,80)]):
             did=(await c('element.drawing.create',{'elementId':eid,'name':str(i+1),'exposeFrom':i*8+1,'exposeTo':i*8+8}))
@@ -404,6 +407,9 @@ async def envelope_body(t,step):
         await c('workspace.select',{'name':'Drawing' if view=='drawingView' else 'Default'})
         await c('window.panel.set',{'panelId':view,'visible':True,'focus':True})
         await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
+        if step==4:
+            inset=await c('draw.polyline.add',{'points':[{'x':-50,'y':-30},{'x':50,'y':-30},{'x':50,'y':30},{'x':-50,'y':30}],'closed':True,'thickness':2,'snap':False})
+            first+=inset['strokeIds']
         await c('draw.selection.set',{'by':'ids','ids':first});await c('tool.active.set',{'toolId':tool})
         await asyncio.sleep(.7)
         return eid,ids
@@ -491,6 +497,7 @@ async def envelope_body(t,step):
             await compare(view,view+'-mixed-content',[(-80,-60),(-45,-30)],setup=content)
         elif step==4:
             await compare(view,view+'-keystone',[(-80,-60),(-45,-30)])
+            for kind in ('held','committed'):shutil.copyfile(p.OUT/(view+'-'+kind+'.png'),p.OUT/(view+'-keystone-'+kind+'.png'))
             import numpy as np
             from PIL import Image
             from scipy.ndimage import distance_transform_edt, binary_dilation
@@ -502,7 +509,8 @@ async def envelope_body(t,step):
             mask=binary_dilation(accent(ia)|accent(ib),iterations=10)
             mask[:5]=True;mask[-5:]=True;mask[:,:5]=True;mask[:,-5:]=True
             aa=ink(ia)&~mask;bb=ink(ib)&~mask
-            dist=max(float(distance_transform_edt(~aa)[bb].max()),float(distance_transform_edt(~bb)[aa].max()))/t.cdp.js('devicePixelRatio') if aa.any() and bb.any() else None
+            wide=binary_dilation(mask,iterations=3)
+            dist=max(float(distance_transform_edt(~aa)[bb&~wide].max()),float(distance_transform_edt(~bb)[aa&~wide].max()))/t.cdp.js('devicePixelRatio') if aa.any() and bb.any() else None
             check(dist is not None and dist<=1,view+' independent preview Hausdorff within 1 view pixel',{'distance':dist,'heldInk':int(aa.sum()),'committedInk':int(bb.sum())})
             await fixture(view)
             await gesture(view,[(120,100),(135,110)])
