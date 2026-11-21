@@ -205,11 +205,36 @@ class Flows(d39.Table):
         await self.cmd("draw.rectangle.add", {"from": {"x": k, "y": 0}, "to": {"x": k + 10, "y": 10}})
 
     async def open_preferences(self, category: str) -> None:
+        """File › Preferences, then the category by a real click. D-45 (run of 2026-11-21: a click landed on the row
+        above, Agent access instead of Keyboard, while the opening dialog still laid out): the click waits for the
+        category's box to read the same twice, and the category is confirmed selected (`aria-pressed`, its page shown);
+        a second click is made once if it is not."""
         choose_menu(["File", "Preferences"])
-        if not await self.wait_for(f"preferences.category.{category}"):
+        ident = f"preferences.category.{category}"
+        if not await self.wait_for(ident):
             raise RuntimeError("Preferences did not open")
-        self.click(f"preferences.category.{category}")
-        await asyncio.sleep(0.6)
+        box_js = ("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                  " if (!e) return null; const b = e.getBoundingClientRect(); return [b.x, b.y, b.width, b.height]; })()"
+                  % json.dumps(ident))
+        chosen_js = ("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                     " return !!e && e.getAttribute('aria-pressed') === 'true'"
+                     " && !!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']'); })()"
+                     % (json.dumps(ident), json.dumps(f"preferences.{category}")))
+        for _attempt in range(2):
+            box = None
+            for _ in range(30):
+                now = self.cdp.js(box_js)
+                if now is not None and now == box:
+                    break
+                box = now
+                await asyncio.sleep(0.1)
+            self.click(ident)
+            for _ in range(20):
+                if self.cdp.js(chosen_js):
+                    await asyncio.sleep(0.3)
+                    return
+                await asyncio.sleep(0.1)
+        raise RuntimeError(f"the Preferences category {category} could not be chosen")
 
     async def keys_of(self, command: str) -> list:
         return sorted(b.get("keys") for b in await self.cmd("keymap.list", {"commandId": command}))

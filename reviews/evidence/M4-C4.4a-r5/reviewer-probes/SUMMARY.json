@@ -1,0 +1,41 @@
+{
+  "probe": "tests/adversarial/c44a-r4-live.py (unchanged), build 805a2e65",
+  "note": "p1b 9 fails at line 322 (pen.maxSize.field absent after F11 switched to the full-screen arrangement; superseded by D-73 item 2)",
+  "runs": [
+    {
+      "run": "p1a-2-01",
+      "checks": 14,
+      "passed": 14,
+      "failed": []
+    },
+    {
+      "run": "p1a-3-01",
+      "checks": 140,
+      "passed": 140,
+      "failed": []
+    },
+    {
+      "run": "p1a-4-01",
+      "checks": 400,
+      "passed": 400,
+      "failed": []
+    },
+    {
+      "run": "p1b-8-01",
+      "checks": 37,
+      "passed": 37,
+      "failed": []
+    },
+    {
+      "run": "p1b-9-01",
+      "checks": 7,
+      "passed": 6,
+      "failed": [
+        {
+          "check": "probe completed",
+          "detail": "\"ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [RuntimeError('control absent or hidden: pen.maxSize.field')])])\""
+        }
+      ]
+    }
+  ]
+}
