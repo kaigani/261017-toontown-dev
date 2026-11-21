@@ -11,7 +11,7 @@ then 30 keystrokes typed into a Text tool session. From the canvas's metrics (`d
 | drag feedback (input to ink) | <= 16.7 ms p95 | `ink` of the drags (design notes 3 §9, 4 §10) |
 | release to committed, small drawing | <= 50 ms p95 | `commits` of the drags |
 | work per frame during drags | <= 8 ms p95 | `gestureWork` (C43B-R1S-08; an incomplete measurement fails) |
-| keystroke to glyph | <= 33 ms p95 | `keyToGlyphMs` (design note 5 §8) |
+| keystroke to glyph | <= 2 control frames p95 (D-76 item 2; the control median of the run, D-33) | `keyToGlyphMs` (design note 5 §8) |
 | release to committed, 50,000 points | reported, not asserted (D-75 items 2, 6; M11 C11.1) | a stroke of 50,000 points on its own layer |
 
 Receipts: `measure.json` and `manifest.json` (kind `toontown.c44b.measure`); the committed receipt is their summary
@@ -47,9 +47,12 @@ rc = e2e.run_cmd
 
 #: `--text-only`: the keystroke row alone (a diagnosis run; not a receipt).
 ONLY = {"text": False, "large": False}
+#: Commands a gesture can send that make no undo step (selection, point selection, tool).
+UI_ONLY = {"draw.selection.set", "draw.pointSelection.set", "tool.active.set"}
 #: Drags per row of the 50,000-point case (each commit and undo reloads a 17 MB payload).
 LARGE_DRAGS = 3
-BOUNDS = {"inkMs": 16.7, "commitSmallMs": 50.0, "gestureWorkMs": 8.0, "keyToGlyphMs": 33.0}
+BOUNDS = {"inkMs": 16.7, "commitSmallMs": 50.0, "gestureWorkMs": 8.0, "keyToGlyphFrames": 2}
+cam = _load("c43cammeasure", "c43-camera-measure.py")
 
 
 def added(before: list, after: list) -> list:
@@ -74,6 +77,24 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
             async with e2e.ClientSession(streams[0], streams[1]) as s:
                 await s.initialize()
                 await e2e.gui_tree(s, run, lambda r: e2e.by_id(r, "startScreen") is not None, "the GUI is up")
+                # The control (D-33, D-76 item 2): the webview's cadence on the start screen, 300 frames of a loop doing
+                # no work (`metrics.cadence`); its median is the display frame the keystroke bound counts in.
+                await asyncio.sleep(7.0)
+                control: dict = {}
+                for _ in range(40):
+                    tree = (await e2e.tree(s)).get("result") or {}
+                    node = c42.find(tree.get("root") or {}, lambda n: n.get("id") == "metrics.cadence") or {}
+                    try:
+                        control = json.loads(node.get("value") or "{}")
+                    except json.JSONDecodeError:
+                        control = {}
+                    if (control.get("frameMs") or {}).get("n", 0) >= 300:
+                        break
+                    await asyncio.sleep(0.5)
+                record["control"] = control
+                record["displayRefreshHz"] = cam.refresh_rate()
+                run.check((control.get("frameMs") or {}).get("n", 0) >= 300 and control.get("startScreen") is True,
+                          "the control: 300 frames of the start screen's cadence (D-33)", control)
 
                 async def res(cid, params=None):
                     return (await rc(s, cid, params or {})).get("result") or {}
@@ -157,10 +178,18 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                                       "code": (st.get("lastGesture") or {}).get("code"),
                                       "commands": [c.get("commandId") for c in (st.get("lastGesture") or {}).get("commands") or []],
                                       "toolBox": st.get("toolBox"), "failures": st.get("failures"), "times": t})
-                        commits += got
+                        cmds = [c.get("commandId") for c in (st.get("lastGesture") or {}).get("commands") or []]
+                        committed = (st.get("lastGesture") or {}).get("status") == "ok" and any(c not in UI_ONLY for c in cmds)
+                        # Release to committed counts the drags that committed an edit (a selection click draws no commit).
+                        if committed:
+                            commits += got
                         ink += added(m0.get("ink") or [], m1.get("ink") or [])
                         work += added(m0.get("gestureWork") or [], m1.get("gestureWork") or [])
-                        # The undo drawn before the next drag (a wait for the state, bounded).
+                        # The drag's own step undone, and only when it made one (D-76 item 3: an undo after a drag that
+                        # committed nothing undid the stroke, then the drawing, then the element of the earlier steps).
+                        if not committed:
+                            await asyncio.sleep(0.3)
+                            continue
                         drawn = await resident()
                         await rc(s, "edit.undo", {})
                         t2 = time.monotonic()
@@ -201,8 +230,14 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                 k = mk.get("keyToGlyphMs") or {}
                 record["keyToGlyph"] = k
                 record["keyParts"] = {"stages": mk.get("keyStagesMs"), "sceneMs": mk.get("sceneMs"), "loads": mk.get("loads")}
-                run.check(ONLY["large"] or k.get("n", 0) >= 25 and k.get("p95") is not None and k["p95"] <= BOUNDS["keyToGlyphMs"],
-                          f"keystroke to glyph {k.get('p95')} ms p95 <= {BOUNDS['keyToGlyphMs']} ms ({k.get('n')} keys)", k)
+                # D-76 item 2: the glyph within two display frames of the key, p95, a frame being this run's control median.
+                frame = (record.get("control", {}).get("frameMs") or {}).get("p50")
+                bound = BOUNDS["keyToGlyphFrames"] * frame if frame else None
+                record["keyToGlyphBound"] = {"frames": BOUNDS["keyToGlyphFrames"], "controlMedianMs": frame, "boundMs": bound,
+                                             "marginMs": round(bound - k["p95"], 2) if bound and k.get("p95") is not None else None}
+                run.check(ONLY["large"] or (k.get("n", 0) >= 25 and k.get("p95") is not None and bound is not None and k["p95"] <= bound),
+                          f"keystroke to glyph {k.get('p95')} ms p95 <= two control frames ({bound} ms; {k.get('n')} keys)",
+                          {**k, **record["keyToGlyphBound"]})
                 await rc(s, "tool.active.set", {"toolId": "select"})
                 if ONLY["text"]:
                     return

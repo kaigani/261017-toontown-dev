@@ -806,13 +806,17 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   other strokes of the moved stroke's own layer (layers are independent planar maps, 02 §3.1), by their whole contour
   — anchors and segment interiors, curved segments included — within 8 du; ties go to the lower stroke ID, then the
   lower segment and parameter.
-- **M4 C4.4b amendment (ruling D-75 item 1; declared behaviour change of `draw.point.move`):** a stroke with moved
-  anchors also offers its unmoved anchors as candidates, so an open stroke's end snaps to its own start and the shape
-  closes (02 line 799); the anchors being moved are never candidates. The radius is 8 view pixels through the call's
-  view (`view`; 100 % without one), and an omitted `snap` follows the Snap to Contour setting (SI-187). Kernel tests:
-  `crates/executor/tests/c44b_contour.rs` (an end closing onto its start makes a zone; a moved anchor never snaps to
-  another moved anchor). The reviewer oracles of `c24_r2_routes.rs` and `c24_r3_routes.rs` state the M2 candidate set;
-  brought to the orchestrator (D-75).
+- **M4 C4.4b (ruling D-76 item 1):** D-75 item 1's amendment (a moved stroke's unmoved anchors as candidates) was
+  withdrawn before review and reverted; the rule above stands as decided, pinned by the M2 reviewer oracles of
+  `c24_r2_routes.rs` and `c24_r3_routes.rs`. The radius is 8 view pixels through the call's view (`view`; 100 % without
+  one), and an omitted `snap` follows the Snap to Contour setting (SI-187). Kernel tests:
+  `crates/executor/tests/c44b_contour.rs` (an open stroke's end does not snap to its own start; no anchor of a moved
+  stroke is a candidate). **Question for the user:** 02 line 799 says snapping makes "shapes close"; under this rule an
+  open stroke's end cannot snap to its own start, so one stroke cannot close itself by Snap to Contour (it closes onto
+  another stroke, or with `draw.stroke.set {closed}`). *The alternative:* a stroke with moved anchors offers its unmoved
+  anchors (not its segments) as candidates, so an end dragged within the radius of its own start lands on it and the
+  shape closes; the anchors being moved are never candidates. It changes `draw.point.move`'s result for agents and the
+  M2 oracles' candidate set.
 
 ## SI-071 — the Cutter's segment primitive and brush strokes (found in M2 C2.3; decided)
 

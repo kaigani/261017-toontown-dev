@@ -724,7 +724,7 @@ fn the_hit_corpus_is_the_kernels_driver() {
     }
 }
 
-// ----- Snap to Contour closes shapes (SI-070 amended, ruling D-75 item 1) ------------------------------------------------
+// ----- Snap to Contour's candidates (SI-070 as decided; ruling D-76 item 1 withdrew D-75 item 1) ----------------------
 
 fn polyline(h: &ExecutorHandle, pts: &[(f64, f64)]) -> String {
     let p: Vec<Value> = pts.iter().map(|q| json!({ "x": q.0, "y": q.1 })).collect();
@@ -733,36 +733,30 @@ fn polyline(h: &ExecutorHandle, pts: &[(f64, f64)]) -> String {
 }
 
 #[test]
-fn an_open_strokes_end_snaps_to_its_own_start_and_closes_the_shape() {
+fn an_open_strokes_end_does_not_snap_to_its_own_start() {
     let h = ready();
     let sid = polyline(&h, &[(300.0, 300.0), (400.0, 300.0), (400.0, 400.0), (300.0, 400.0), (305.0, 330.0)]);
+    // The end moves to 5 du from its own start: the stroke has a moved anchor, so none of its points is a candidate
+    // (SI-070); the end lands where the delta puts it and no zone is made.
     let r = ok(
         &h,
         "draw.point.move",
         json!({ "drawingId": D1, "points": [{"strokeId": sid, "anchor": 4}], "delta": {"x": -2.0, "y": -26.0}, "snap": true }),
     );
-    let id = r["modifiedIds"].as_array().and_then(|a| a.first()).and_then(Value::as_str).unwrap_or(&sid).to_owned();
-    let d = ok(&h, "draw.drawing.get", json!({ "drawingId": D1, "flatten": true }));
-    let n = d["nodes"].as_array().unwrap().iter().find(|n| n["id"] == id.as_str()).cloned().unwrap();
-    let pts = anchors(&h, &id);
-    // The end landed exactly on the start: the stroke is closed through its four corners, or ends where it starts.
-    assert!(n["closed"] == true || pts.first() == pts.last(), "{n}");
+    let pts = anchors(&h, &sid);
+    assert_eq!(pts.last().copied(), Some((303.0, 304.0)), "{pts:?}");
     assert_eq!(pts.first().copied(), Some((300.0, 300.0)));
-    let zones: Vec<&Value> = r["createdIds"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .filter(|z| z.as_str().is_some_and(|z| z.starts_with("zn_")))
-        .collect();
-    assert!(!zones.is_empty(), "the closed shape makes a zone: {r}");
+    let zones =
+        r["createdIds"].as_array().unwrap().iter().filter(|z| z.as_str().is_some_and(|z| z.starts_with("zn_"))).count();
+    assert_eq!(zones, 0, "no closed shape: {r}");
 }
 
 #[test]
-fn a_moved_anchor_never_snaps_to_another_moved_anchor() {
+fn no_anchor_of_a_moved_stroke_is_a_snap_candidate() {
     let h = ready();
     let sid = polyline(&h, &[(300.0, 300.0), (350.0, 300.0), (400.0, 300.0)]);
-    // Anchors 0 and 1 move by (45, 3): anchor 0 lands 5.8 du from anchor 1's old place (moved: no candidate), anchor 1
-    // lands 5.8 du from anchor 2 (unmoved: it snaps).
+    // Anchors 0 and 1 move by (45, 3): anchor 0 lands 5.8 du from anchor 1's old place, anchor 1 lands 5.8 du from
+    // anchor 2, which does not move; the stroke has moved anchors, so neither snaps (SI-070).
     ok(
         &h,
         "draw.point.move",
@@ -770,6 +764,6 @@ fn a_moved_anchor_never_snaps_to_another_moved_anchor() {
                 "delta": {"x": 45.0, "y": 3.0}, "snap": true }),
     );
     let pts = anchors(&h, &sid);
-    assert_eq!(pts[0], (345.0, 303.0), "no snap to a moved anchor: {pts:?}");
-    assert_eq!(pts[1], (400.0, 300.0), "the unmoved anchor of the same stroke is a candidate: {pts:?}");
+    assert_eq!(pts[0], (345.0, 303.0), "{pts:?}");
+    assert_eq!(pts[1], (395.0, 303.0), "{pts:?}");
 }

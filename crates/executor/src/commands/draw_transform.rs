@@ -1218,8 +1218,7 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
     let dj = drawing_json(&doc, &t.id)?;
     // Snap to Contour (02 §8.9; C23-R1-03): the other strokes of the moved stroke's own layer, by their whole
     // contour (anchors and segment interiors, curves included); cross-layer contours are not candidates (SI-070).
-    // A stroke with moved anchors offers its unmoved anchors (SI-070 amended, ruling D-75 item 1: 02 line 799 "shapes
-    // close", so an open stroke's end snaps to its own start); a moved anchor is never a candidate.
+    // Every stroke with a moved anchor is excluded (SI-070 as decided; ruling D-76 item 1 withdrew D-75 item 1).
     let contours: Vec<(String, String, tt_vector::path::Path)> = if snap {
         vd::objects(&d)
             .iter()
@@ -1228,23 +1227,6 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
                 let s = vd::stroke_at(&d, &o.pointer)?;
                 let closed = *s.closed() || *s.kind() == tt_model::entities::drawing::StrokeKind::Brush;
                 Some((o.list.clone(), o.id.clone(), tt_vector::path::Path::from_points(s.points(), closed)))
-            })
-            .collect()
-    } else {
-        Vec::new()
-    };
-    let fixed_anchors: Vec<(String, String, usize, P)> = if snap {
-        vd::objects(&d)
-            .iter()
-            .filter(|o| o.kind == ObjectKind::Stroke && moved.iter().any(|(s, _)| *s == o.id))
-            .filter_map(|o| vd::stroke_at(&d, &o.pointer).map(|s| (o, s)))
-            .flat_map(|(o, s)| {
-                s.points()
-                    .iter()
-                    .enumerate()
-                    .filter(|(k, _)| !moved.contains(&(o.id.clone(), *k)))
-                    .map(|(k, pt)| (o.list.clone(), o.id.clone(), k, P::new(pt[0], pt[1])))
-                    .collect::<Vec<_>>()
             })
             .collect()
     } else {
@@ -1268,12 +1250,6 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
                     .iter()
                     .filter(|(list, _, _)| *list == l.list)
                     .filter_map(|(_, id, path)| nearest_on(path, q).map(|(dist, seg, t, at)| (dist, id, seg, t, at)))
-                    .chain(
-                        fixed_anchors
-                            .iter()
-                            .filter(|(list, _, _, _)| *list == l.list)
-                            .map(|(_, id, k, at)| (at.dist(q), id, *k, 0.0, *at)),
-                    )
                     .filter(|c| c.0 <= snap_radius)
                     .min_by(|a, b| {
                         a.0.total_cmp(&b.0).then_with(|| a.1.cmp(b.1)).then(a.2.cmp(&b.2)).then(a.3.total_cmp(&b.3))

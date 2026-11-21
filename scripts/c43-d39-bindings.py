@@ -2099,6 +2099,34 @@ async def build_and_run(t: Table, only: set) -> None:
                                           and near(prm["corners"][2]["y"], prm["corners"][3]["y"])),
                  "setup": lambda: tool_fixture("perspective"), "state": square_state,
                  "effect": lambda b, a, k: a["drawing"] != b["drawing"], "disabled": None})
+    async def missed_then_marquee():
+        """D-76 item 3: a press off the box (a marquee with nothing inside: the selection empties, the box goes), then a
+        marquee around the square with Perspective still active (the square selected again, the box back)."""
+        await tool_fixture("perspective")
+        m = await view_map()
+        b = c44b["box"]
+        x0, y0 = to_view(m, b["x"] + b["width"] + 40, b["y"] + b["height"] + 30)
+        await t.input_gesture("drawingView", "perspective", [(x0, y0), (x0 - 5, y0), (x0 - 10, y0)], [])
+        await asyncio.sleep(0.8)
+        c44b["afterMiss"] = (await cmd("draw.selection.get", {})).get("selectedIds") or []
+        (ax, ay), (bx, by) = to_view(m, b["x"] - 20, b["y"] - 20), to_view(m, b["x"] + b["width"] + 20, b["y"] + b["height"] + 20)
+        await t.input_gesture("drawingView", "perspective", [(ax, ay), ((ax + bx) / 2, (ay + by) / 2), (bx, by)], [])
+        await asyncio.sleep(0.8)
+        sel = await cmd("draw.selection.get", {})
+        c44b["afterMarquee"] = sel.get("selectedIds") or []
+        # The marquee also takes the earlier rows' strokes inside it: the handles are on the new selection's box.
+        c44b["box"] = sel.get("bounds") or c44b["box"]
+
+    rows.append({"name": "Perspective › a missed press, then a marquee and a corner drag",
+                 "spec": f"{spec_line('draw.envelope.apply')}; 02 §7.1.3 lines 468-473; SI-188 (a drag off the handles selects); D-76 item 3",
+                 "action": ("gesture", "drawingView", "perspective", corner_pts(-20.0, 0.0), []),
+                 "expect": ("draw.envelope.apply", "after the miss emptied the selection and the marquee selected the square again: the corner drag"),
+                 "label": "Perspective Tool",
+                 "match": lambda prm, b: prm.get("mapping") == "auto" and len(prm.get("corners") or []) == 4,
+                 "setup": missed_then_marquee, "state": square_state,
+                 "effect": lambda b, a, k: (a["drawing"] != b["drawing"] and c44b.get("afterMiss") == []
+                                            and c44b["sid"] in (c44b.get("afterMarquee") or [])),
+                 "disabled": None})
     rows.append({"name": "Perspective › locked drawing",
                  "spec": f"{spec_line('draw.envelope.apply')}; 02 line 414; design note 4 §7 (grey handles, the kernel's refusal)",
                  "action": ("gesture", "drawingView", "perspective", corner_pts(-20.0, 0.0), []),

@@ -243,7 +243,8 @@ sample drawing as a ratio, with a ceiling that only catches a gross regression.
 
 1. **Closing a shape with one stroke.** 02 line 799 says snapping makes "shapes close", but SI-070 (decided) excludes
    every stroke with a moved anchor, so an open stroke's end cannot snap to its own start. Should the moved strokes'
-   unmoved anchors become candidates? This note keeps SI-070.
+   unmoved anchors become candidates? This note keeps SI-070. *(D-75 item 1 said yes; D-76 item 1 withdrew it: SI-070
+   stands, and the question is the user's, in SI-070.)*
 2. **The 150 ms bound in a large layer.** The C4.2b handoff §10 records 603 ms p50 for an edit that re-nodes the
    50,000-point drawing's single layer (owner M11 C11.1). This note measures the bound on a stroke in its own layer and
    reports the large-layer case without asserting it. Confirm.
