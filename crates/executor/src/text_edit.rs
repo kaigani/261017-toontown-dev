@@ -424,7 +424,7 @@ pub(crate) fn settle(core: &mut Core, origin: &Origin) {
         let found = content_of(cx, &s);
         // Ruling D-79: the drawing locked, or (in the Camera view) the element locked or hidden, ends the session.
         let locked = found.as_ref().is_some_and(|(_, d)| *d.locked())
-            || crate::gesture::interactive_target(cx, &s.view_id, TOOL).is_err();
+            || crate::gesture::interactive_target(cx, &s.view_id, TOOL, true).is_err();
         let gone = found.is_none();
         let empty = found.as_ref().is_some_and(|(b, _)| b.content.chars.is_empty());
         Some((s, tool_left || moved, locked, gone, empty))

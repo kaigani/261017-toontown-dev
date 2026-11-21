@@ -430,10 +430,17 @@ pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, Command
     let scene_tool =
         [crate::scene_gesture::SCENE_SELECT, crate::scene_gesture::SCENE_TRANSFORM, crate::scene_gesture::SCENE_SKEW]
             .contains(&g.tool.as_str());
-    if !scene_tool && commands.iter().any(|(c, _)| edits(c)) {
-        interactive_target(cx, &g.view_id, &g.tool)?;
+    let edit = commands.iter().any(|(c, _)| edits(c));
+    if !scene_tool && (edit || commands.iter().any(|(c, _)| picks(c))) {
+        interactive_target(cx, &g.view_id, &g.tool, edit)?;
     }
     Ok(commands)
+}
+
+/// Whether `command` picks the element's content (a selection of its objects or anchors): a locked element "cannot be
+/// picked" in a scene view (05 §6.6, ruling D-80), and a hidden one offers no hit target there (D-79).
+fn picks(command: &str) -> bool {
+    matches!(command, "draw.selection.set" | "draw.pointSelection.set")
 }
 
 /// Whether `command` changes the document (an `action`: an undoable edit), as opposed to a selection, view or tool
@@ -442,15 +449,15 @@ fn edits(command: &str) -> bool {
     crate::registry().ok().and_then(|r| r.get(command)).is_some_and(|e| e.spec.kind == tt_registry::Kind::Action)
 }
 
-/// Whether the current element and drawing may be edited interactively in view `view_id` (ruling D-79): the ONE rule
-/// of the gesture path for every drawing tool, read by the Text tool's session too.
+/// Whether the current element and drawing may be edited (`edit`) or picked interactively in view `view_id` (rulings
+/// D-79, D-80): the ONE rule of the gesture path for every drawing tool, read by the Text tool's session too.
 ///
 /// - **A locked drawing** (02 line 414): refused in every view (`drawing.locked`). Reposition All is the exception
 ///   SI-189 states: it moves every unlocked drawing of the element and reports the locked ones, so its own precheck
 ///   decides.
-/// - **A locked element** (05 §6.6: it "cannot be picked or edited interactively in the Camera view"; the model
-///   documents the element's `locked` as "Locked in scene views"): refused in the Camera view (`element.locked`). An
-///   agent addressing it by id still edits it (05 §6.6).
+/// - **A locked element** (05 §6.6, 04 §10.4: it "cannot be picked or edited interactively" in the Camera, Top and
+///   Side views; 04 line 572: "Locked elements can still be edited in the Drawing View"; ruling D-80): refused in the
+///   scene views (`element.locked`), edited in the Drawing view. An agent addressing it by id still edits it.
 /// - **An element the Camera view does not show** (02 §1.2, 04 §10.1: scene visibility governs the Camera view):
 ///   refused there (`element.hidden`), with 02 §10.7's exceptions as the view applies them: "Selection always visible"
 ///   shows a selected hidden element (editable); "Show outline on selection" draws only its outline (not editable).
@@ -458,10 +465,13 @@ fn edits(command: &str) -> bool {
 ///
 /// # Errors
 /// `drawing.locked`, `element.locked`, `element.hidden`.
-pub(crate) fn interactive_target(cx: &Cx, view_id: &str, tool: &str) -> Result<(), CommandError> {
+pub(crate) fn interactive_target(cx: &Cx, view_id: &str, tool: &str, edit: bool) -> Result<(), CommandError> {
+    use crate::shell::ViewType;
     let doc = cx.document()?;
     let element = cx.app().element.clone();
-    if tool != crate::envelope_gesture::REPOSITION
+    // The drawing lock refuses edits (selecting a locked drawing's objects is not an edit).
+    if edit
+        && tool != crate::envelope_gesture::REPOSITION
         && let Some(id) = cx.app().current_drawing(doc)
         && doc.drawing(&id).is_some_and(|d| *d.locked())
     {
@@ -471,19 +481,22 @@ pub(crate) fn interactive_target(cx: &Cx, view_id: &str, tool: &str) -> Result<(
             json!({ "drawingId": id.as_str() }),
         ));
     }
-    let camera = cx.ui().shell().view(view_id).is_ok_and(|w| w.ty == crate::shell::ViewType::Camera);
-    if !camera {
+    // The element lock is a scene-planning aid (ruling D-80): it holds in the scene views (Camera, Top, Side), and
+    // "Locked elements can still be edited in the Drawing View" (04 line 572).
+    let ty = cx.ui().shell().view(view_id).ok().map(|w| w.ty);
+    let scene_view = matches!(ty, Some(ViewType::Camera | ViewType::Top | ViewType::Side));
+    if !scene_view {
         return Ok(());
     }
     let Some(el) = element else { return Ok(()) };
     if doc.element(&el).is_some_and(|e| *e.locked()) {
         return Err(CommandError::with_details(
             "element.locked",
-            "the element is locked: the Camera view does not edit it (05 §6.6); unlock it, or address it by id",
+            "the element is locked: a scene view does not edit it (05 §6.6); unlock it, or address it by id",
             json!({ "elementId": el.as_str() }),
         ));
     }
-    if !crate::canvas::camera_shows_current(cx, view_id)? {
+    if ty == Some(ViewType::Camera) && !crate::canvas::camera_shows_current(cx, view_id)? {
         return Err(CommandError::with_details(
             "element.hidden",
             "the element is hidden in the scene, so the Camera view does not edit it (02 §1.2, §10.7)",

@@ -3,8 +3,8 @@
 //!
 //! - a locked drawing (02 line 414): refused in both views, `drawing.locked` (Reposition All excepted: SI-189, its
 //!   precheck refuses only when every drawing is locked);
-//! - a locked element (05 §6.6, "in the Camera view"; the model documents `locked` as "Locked in scene views"):
-//!   refused in the Camera view, `element.locked`; the Drawing view edits it;
+//! - a locked element (05 §6.6, 04 §10.4; ruling D-80): refused in the scene views (the Camera view here),
+//!   `element.locked`; "Locked elements can still be edited in the Drawing View" (04 line 572);
 //! - an element hidden in the scene (02 §1.2, 04 §10.1): refused in the Camera view, `element.hidden`, and the
 //!   drawing tools' overlays are not in its scene answer; the Drawing view edits it.
 //!
@@ -180,6 +180,29 @@ fn a_hidden_element_shows_no_drawing_tool_overlay_in_the_camera_view() {
     ok(&h, "tool.active.set", json!({ "toolId": "contourEditor" }));
     let drawing = serde_json::to_value(h.canvas_scene("drawingView").unwrap()).unwrap();
     assert!(drawing["contours"].is_object());
+}
+
+#[test]
+fn a_locked_or_hidden_element_cannot_be_picked_in_the_camera_view_and_can_in_the_drawing_view() {
+    // 05 §6.6 ("cannot be picked"), ruling D-80: a selection click is refused in the Camera view and nothing is sent;
+    // the Drawing view picks a locked element's content (04 line 572). A hidden element offers no hit target (D-79).
+    for (condition, code) in [("locked", "element.locked"), ("hidden", "element.hidden")] {
+        for (tool, events) in [("select", click((300.0, 330.0))), ("contourEditor", click((300.0, 300.0)))] {
+            let (h, _) = ready();
+            ok(&h, "draw.selection.set", json!({ "drawingId": D1, "by": "ids", "ids": [], "mode": "replace" }));
+            if condition == "locked" {
+                ok(&h, "element.lock.set", json!({ "elementIds": [BOB], "locked": true }));
+            } else {
+                ok(&h, "element.visibility.set", json!({ "elementIds": [BOB], "scope": "scene", "visible": false }));
+            }
+            let env = gesture(&h, "cameraView", tool, &events);
+            assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some(code), "{condition} {tool}: {env:?}");
+            let sel = ok(&h, "draw.selection.get", json!({ "drawingId": D1 }));
+            assert_eq!(sel["selectedIds"], json!([]), "{condition} {tool}: nothing picked");
+            let env = gesture(&h, "drawingView", tool, &events);
+            assert_eq!(env.status, Status::Ok, "{condition} {tool} in the Drawing view: {env:?}");
+        }
+    }
 }
 
 #[test]
