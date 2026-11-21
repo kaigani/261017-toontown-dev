@@ -234,3 +234,36 @@ fn an_agent_addressing_a_locked_element_by_id_still_edits_it() {
     );
     assert!(position(&h) > before);
 }
+
+#[test]
+fn the_camera_view_edits_a_visible_element_with_no_ink() {
+    // Round 1 live probes l3b 7 and l1b 8: visibility is the element's, not its ink's. A new element's empty drawing
+    // takes a text box in the Camera view, and a drawing of invisible strokes only takes the Contour Editor's click.
+    let h = fixture();
+    let eid = ok(&h, "element.create", json!({ "type": "drawing", "name": "Text" }))["elementIds"][0]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    ok(&h, "element.drawing.create", json!({ "elementId": eid, "name": "1", "exposeFrom": 1, "exposeTo": 24 }));
+    ok(&h, "app.context.set", json!({ "elementId": eid, "frame": 1 }));
+    ok(&h, "tool.active.set", json!({ "toolId": "text" }));
+    let env = gesture(&h, "cameraView", "text", &click((-100.0, 80.0)));
+    assert_eq!(env.status, Status::Ok, "a text box in an empty drawing: {env:?}");
+    let scene = serde_json::to_value(h.canvas_scene("cameraView").unwrap()).unwrap();
+    assert!(scene["textEdit"].is_object(), "the session opened: {}", scene["textEdit"]);
+
+    // The same element with one stroke made invisible.
+    ok(&h, "tool.active.set", json!({ "toolId": "contourEditor" }));
+    let points = json!([{ "x": -80, "y": 0 }, { "x": 0, "y": 40 }, { "x": 80, "y": 0 }]);
+    let added = ok(&h, "draw.polyline.add", json!({ "points": points, "closed": false, "snap": false }));
+    let sid = added["strokeIds"][0].as_str().unwrap().to_owned();
+    let did = ok(&h, "draw.drawing.get", json!({}))["drawingId"].as_str().unwrap().to_owned();
+    ok(&h, "draw.stroke.set", json!({ "strokeId": format!("{did}/{sid}"), "kind": "invisible" }));
+    ok(&h, "draw.selection.set", json!({ "by": "ids", "ids": [sid], "mode": "replace" }));
+    let env = gesture(&h, "cameraView", "contourEditor", &click((120.0, 100.0)));
+    assert_eq!(env.status, Status::Ok, "a click on nothing deselects: {env:?}");
+    let sel = ok(&h, "draw.selection.get", json!({}));
+    assert_eq!(sel["selectedIds"], json!([]));
+    let scene = serde_json::to_value(h.canvas_scene("cameraView").unwrap()).unwrap();
+    assert!(scene["contours"].is_object(), "the overlay is drawn for an element of invisible strokes");
+}

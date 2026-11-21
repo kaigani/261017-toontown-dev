@@ -318,6 +318,12 @@ pub struct Scene {
     /// Form 1.2: every text box of the current drawing while the Text tool is active (§11.10); absent otherwise.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub text_boxes: Option<Vec<SceneTextBox>>,
+    /// Whether the view shows the current element (rulings D-79, D-80): always in the Drawing view; in the Camera view
+    /// when the composition would draw it, ink or not (an empty drawing, or one of invisible strokes only, is still
+    /// shown). The window's alone: not part of the scene answer.
+    #[serde(skip)]
+    #[schemars(skip)]
+    pub current_shown: bool,
 }
 
 /// The Text tool's edit session for the window (§11.10), drawing units.
@@ -571,6 +577,7 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
         drawing_pivot: current.as_ref().and_then(|id| doc.drawing(id)).map(|d| [d.pivot().x, d.pivot().y]),
         // Filled by [`selection`] with a read-only context (the selection walk needs one).
         selection: None,
+        current_shown: true,
         contours: None,
         tool_box: None,
         text_edit: None,
@@ -631,9 +638,9 @@ pub(crate) fn camera_shows_current(cx: &crate::cx::Cx, view_id: &str) -> Result<
     Ok(shows_current(&camera_scene(cx, view_id)?))
 }
 
-/// Whether a Camera view's composition draws the current element's ink (not only its highlight outline).
+/// Whether a view's composition shows the current element ([`Scene::current_shown`]).
 pub(crate) fn shows_current(scene: &Scene) -> bool {
-    scene.entries.iter().any(|e| e.role == "current" && e.tint.is_none())
+    scene.current_shown
 }
 
 pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, CommandError> {
@@ -672,6 +679,7 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
         frame: Some(cx.app().frame.max(1)),
         camera: Some(None),
         overlays: None,
+        current_shown: false,
     };
     let chain = match crate::camera_view::chain(cx, &w) {
         Ok(c) => c,
@@ -712,6 +720,15 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
     let fade = !display.box_highlighting;
     let outlines = display.box_highlighting && display.outline_on_selection;
     let mut outlined = Vec::new();
+    // The current element is shown when the composition places it and would draw its ink (rulings D-79, D-80): the
+    // verdicts drawn and out of frame, a hidden element kept visible by its selection, and also an exposed drawing with
+    // nothing visible yet or no drawing at the frame (round 1 live probe l3b 7: a new text box in an empty drawing).
+    out.current_shown = list.entries.iter().any(|en| {
+        current.as_ref() == Some(&en.id)
+            && en.to_pixel.is_some()
+            && (matches!(en.verdict, Verdict::Drawn | Verdict::OutOfFrame | Verdict::Empty | Verdict::NoDrawing)
+                || (en.verdict == Verdict::Hidden && selected.contains(&en.id) && display.keep_selection_visible))
+    });
     for en in &list.entries {
         let (Some(m), Some(d)) = (en.to_pixel, en.drawing.as_ref().and_then(|d| doc.drawing(d))) else { continue };
         let is_selected = selected.contains(&en.id);

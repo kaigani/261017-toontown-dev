@@ -37,8 +37,12 @@ interface State {
   gap: string;
 }
 
-async function page(state: State): Promise<ScriptedHost> {
+async function page(
+  state: State,
+  extra: Parameters<typeof createScriptedHost>[0] = {},
+): Promise<ScriptedHost> {
   const h = createScriptedHost({
+    ...extra,
     'app.state.get': () => ok({ ...PROJECT }),
     'tool.active.get': () => ok({ toolId: state.tool }),
     'tool.options.get': (p) => ok({ toolId: p['toolId'], options: OPTIONS[String(p['toolId'])] ?? {} }),
@@ -179,5 +183,27 @@ describe('the Tool options page (02 §7.7)', () => {
       /Select one/,
     );
     expect(el('toolOptions.selectedLine.reason').textContent).toMatch(/Select one pencil line/);
+    // Each disabled control carries its reason itself (round 1 live probe l1b 8).
+    expect(el('toolOptions.selectedLine.thickness').getAttribute('title')).toMatch(/Select one/);
+    expect(el('toolOptions.selectedLine.invisible').getAttribute('title')).toMatch(/Select one/);
+  });
+
+  it('gives the thickness field its reason when the selected line is invisible', async () => {
+    await page(
+      { tool: 'contourEditor', settings, gap: 'off' },
+      {
+        'draw.selection.get': () => ok({ selectedIds: ['st_1'] }),
+        'draw.drawing.get': () =>
+          ok({ drawingId: 'dr_1', nodes: [{ id: 'st_1', kind: 'invisible', lineStyle: { thickness: 3 } }] }),
+      },
+    );
+    await waitFor(() => {
+      expect(el('toolOptions.selectedLine.invisible')).toHaveProperty('checked', true);
+    });
+    expect(el('toolOptions.selectedLine.invisible')).toHaveProperty('disabled', false);
+    expect(el('toolOptions.selectedLine.thickness')).toHaveProperty('disabled', true);
+    expect(el('toolOptions.selectedLine.thickness').getAttribute('title')).toMatch(
+      /invisible stroke has no thickness/,
+    );
   });
 });

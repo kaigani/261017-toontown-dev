@@ -340,9 +340,11 @@ flags); the test names the field each is refused for. The Rust side writes the v
 ### 11.8 The Contour Editor's overlay (form 1.2; M4 C4.4b, design note 3 §4)
 
 **Visibility (ruling D-79; 02 §1.2, §10.7, 04 §10.1).** In the Camera view `contours`, `toolBox`, `textEdit` and
-`textBoxes` are absent when the view does not draw the current element's ink (an occurrence in the `current` role
-without a highlight tint): an element hidden in the scene shows no drawing-tool overlay and offers no hit target, unless
-"Selection always visible" shows it; "Show outline on selection" draws only its outline, which is not editable. The
+`textBoxes` are absent when the view would not draw the current element (its render verdict is hidden, behind the
+camera, or it is not in the camera's scene): an element hidden in the scene shows no drawing-tool overlay and offers no
+hit target, unless "Selection always visible" shows it; "Show outline on selection" draws only its outline, which is not
+editable. Visibility is the element's, not its ink's: an empty drawing or one of invisible strokes only is shown (round
+1 live probes l3b 7 and l1b 8). The
 Drawing view shows the current drawing whatever the scene's visibility.
 
 `contours` is `{drawingId, locked, strokes}` in drawing units, in both view types (the Camera view maps it with

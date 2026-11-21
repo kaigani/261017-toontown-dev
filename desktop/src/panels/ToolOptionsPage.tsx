@@ -410,6 +410,7 @@ function SelectedLine() {
             type="checkbox"
             checked={false}
             disabled
+            title={reason}
             data-tt-role="checkbox"
             data-tt-id="toolOptions.selectedLine.invisible"
             data-tt-command="draw.stroke.set"
@@ -433,6 +434,9 @@ function SelectedLine() {
           range={declaredRange('draw.stroke.set', 'thickness')}
           step={0.5}
           disabled={invisible}
+          {...(invisible
+            ? { disabledReason: 'An invisible stroke has no thickness: clear Invisible to set one.' }
+            : {})}
           command="draw.stroke.set"
           params={{ strokeId: line.strokeId, thickness: line.thickness }}
           onCommit={(v) =>

@@ -20775,6 +20775,12 @@
       ]
     },
     {
+      "command": "drawing.locked",
+      "files": [
+        "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
       "command": "drawing.nameExists",
       "files": [
         "desktop/src/panels/DrawingInspectorPage.tsx"
@@ -20860,6 +20866,18 @@
       "command": "element.drawing.list",
       "files": [
         "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "element.hidden",
+      "files": [
+        "desktop/src/canvas/CanvasView.tsx"
+      ]
+    },
+    {
+      "command": "element.locked",
+      "files": [
+        "desktop/src/canvas/CanvasView.tsx"
       ]
     },
     {

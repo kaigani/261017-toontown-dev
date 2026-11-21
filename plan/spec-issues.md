@@ -2459,7 +2459,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   both views (`drawing.locked`; Reposition All keeps SI-189's precheck); a locked element is refused in the scene views
   (Camera, Top, Side: `element.locked`) and edited in the Drawing view (D-80: 04 line 572, "Locked elements can still be
   edited in the Drawing View"; 04 §10.4); an element the Camera view does not draw is refused there (`element.hidden`,
-  a new code). The
+  a new code; the element's visibility decides, not whether its drawing has ink: an empty drawing is shown). The
   drawing tools' overlays follow the same visibility (`docs/canvas-format.md` §11.8). The Text tool's session ends when
   its target becomes one of these. Agents addressing an element by id are unaffected.
 - **Interim readings (confirm or specify):** `element.hidden` is the code of the hidden case; with only "Show outline
