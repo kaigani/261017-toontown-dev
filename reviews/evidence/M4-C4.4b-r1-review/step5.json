@@ -1,0 +1,1160 @@
+{
+  "checks": 96,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView-anchor command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-anchor undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-anchor D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-anchor undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-two command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-two undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-two D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-two undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-segment command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-segment undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-segment D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-segment undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-symmetric command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-symmetric undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-symmetric handle mode",
+      "ok": true
+    },
+    {
+      "check": "drawingView-symmetric D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-symmetric undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-broken command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-broken undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-broken handle mode",
+      "ok": true
+    },
+    {
+      "check": "drawingView-broken D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-broken undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-escape command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-escape undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-escape selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-escape D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-other-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-other-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-other-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-other-False undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView other stroke snapping False",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-own-False command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-own-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-own-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-own-False undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView D-76 own stroke excluded False",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-other-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-other-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-other-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-other-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView other stroke snapping True",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-own-True command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-own-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-own-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-snap-own-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView D-76 own stroke excluded True",
+      "ok": true
+    },
+    {
+      "check": "cameraView-anchor command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-anchor undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-anchor D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-anchor undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-two command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-two undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-two D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-two undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-segment command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-segment undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-segment D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-segment undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-symmetric command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-symmetric undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-symmetric handle mode",
+      "ok": true
+    },
+    {
+      "check": "cameraView-symmetric D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-symmetric undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-broken command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-broken undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-broken handle mode",
+      "ok": true
+    },
+    {
+      "check": "cameraView-broken D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-broken undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-escape command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-escape undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-escape selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-escape D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-other-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-other-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-other-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-other-False undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView other stroke snapping False",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-own-False command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-own-False undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-own-False D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-own-False undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView D-76 own stroke excluded False",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-other-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-other-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-other-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-other-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView other stroke snapping True",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-own-True command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-own-True undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-own-True D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-snap-own-True undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView D-76 own stroke excluded True",
+      "ok": true
+    },
+    {
+      "check": "cameraView-broken opposite handle geometric invariant (D-75 item 4)",
+      "ok": true
+    },
+    {
+      "check": "cameraView-symmetric opposite handle geometric invariant (D-75 item 4)",
+      "ok": true
+    },
+    {
+      "check": "drawingView-broken opposite handle geometric invariant (D-75 item 4)",
+      "ok": true
+    },
+    {
+      "check": "drawingView-symmetric opposite handle geometric invariant (D-75 item 4)",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-anchor",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800YA2M42QRND6ZQJC4",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800SH62HZE4P7F8M0T7",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 15,
+              "y": 15
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800SH62HZE4P7F8M0T7"
+        ],
+        "bounds": {
+          "x": -69.0,
+          "y": -12.160534609054897,
+          "width": 153.0,
+          "height": 43.99686075709378
+        },
+        "selectedPoints": []
+      },
+      "beforeSha256": "a31574a024d0763ffedb99f6dc33eaa4664934af7fdc6047658530809fcb1142",
+      "afterSha256": "8cdee559e5a2a4d1dbd7a012a22c403fee598fe899a29371d313629bbd05f641"
+    },
+    {
+      "name": "cameraView-broken",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800PZJCC6Y4NY6Z896Y",
+            "strokeId": "st_01K7JJN800P62Z8DTJT4E38TDS",
+            "anchor": 1,
+            "handleMode": "broken",
+            "outHandle": {
+              "x": 35,
+              "y": 45
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800P62Z8DTJT4E38TDS"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -11.309210656969704,
+          "width": 168.0,
+          "height": 32.629718732658475
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800P62Z8DTJT4E38TDS",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "cfd59d95f242884b69a7cb46fb8b7262679009f909aaf638488ae8cc26949a0b",
+      "afterSha256": "a60ede90e164580816a11eabb944402c718793d479144b66f568aa3a3f9d60c9"
+    },
+    {
+      "name": "cameraView-escape",
+      "commands": [],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8003HNVKMFFMEAKW9W3"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "beforeSha256": "8918c812a0190f863b6a661a131ce7618f48c4f6e78ff06be35dbecb24ab419f",
+      "afterSha256": "8918c812a0190f863b6a661a131ce7618f48c4f6e78ff06be35dbecb24ab419f"
+    },
+    {
+      "name": "cameraView-segment",
+      "commands": [
+        {
+          "commandId": "draw.segment.move",
+          "params": {
+            "drawingId": "dr_01K7JJN8004G8CW2JBJ6P9VDW7",
+            "strokeId": "st_01K7JJN8005EE9NF7CC0QFAN5A",
+            "segment": 0,
+            "t": 0.5212191412138054,
+            "delta": {
+              "x": 0,
+              "y": 20
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8005EE9NF7CC0QFAN5A"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 53.28349713810243
+        },
+        "selectedPoints": []
+      },
+      "beforeSha256": "0b02ec33bd92e3c74f5731bb98b4f924a89c622c0183cdb976cac8aaf2645f26",
+      "afterSha256": "b49e7a33037f2dd9f9194c1c8d0381f502b8df88dc4527a271dd7671d0b8fd31"
+    },
+    {
+      "name": "cameraView-snap-other-False",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800GE3DR19Y3R4MHT2Y",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN8009EJWCFHCG4GZQ76Q",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 60,
+              "y": 45
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "5e770fe8c5f5beb987f113d55f3290ccffe0d7b79fa9d582246c87f08e8f16da",
+      "afterSha256": "821dfbbd7a51c86c9621ce31f8b44fbff3cfe94c334deafe7ae1a740a62ed665"
+    },
+    {
+      "name": "cameraView-snap-other-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN80027X0Z1V4FCCEWA9C",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN8009YQ8BXBC5RDDTPCA",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 60,
+              "y": 45
+            },
+            "snap": true,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "2cf7e4ef438d4f71f4e0abf0c7e6a17fd713d7c1ff73dca18bef00b8a064bcca",
+      "afterSha256": "cb132bbfcc919c57ce5d453d631a632ac38aa52f2c8e6a523a0bb1ea3bd97c6d"
+    },
+    {
+      "name": "cameraView-snap-own-False",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN80039EGXRR5207VA4EX",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN8005J6BSYK05MGGYHMC",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 75,
+              "y": 0
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "66889ee49c432beb444c15f611f2a3b57a390e77f17999de03c6aad5c551173b",
+      "afterSha256": "9332c748c1b0d4e63e7949b1430ac88e259f283c62cbfcf70db8eeed33af8c87"
+    },
+    {
+      "name": "cameraView-snap-own-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800CC7KA611D89B5K67",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800FGXFZVAYGD9YW16D",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 75,
+              "y": 0
+            },
+            "snap": true,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "c239a70b1587a762d443f5cad10c62ac811dbfc5ab7f2a127c27ae181fa890fd",
+      "afterSha256": "9521adb4e58e98cda4239476dee57ce2258842faa4e6e895ae22afb72d3a3669"
+    },
+    {
+      "name": "cameraView-symmetric",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800PQ9XVCD3WCPG8EG3",
+            "strokeId": "st_01K7JJN8004H4YKW1H9S2MD16Q",
+            "anchor": 1,
+            "handleMode": "symmetric",
+            "outHandle": {
+              "x": 35,
+              "y": 45
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8004H4YKW1H9S2MD16Q"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -18.775877323636376,
+          "width": 168.0,
+          "height": 37.551754647272745
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN8004H4YKW1H9S2MD16Q",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "7ab0fb87fc767e89c93566477b2bdf24ee68b5325032f85c5f0cdafc87f5c09b",
+      "afterSha256": "8ff2f31a238ae349acbc778d97c19dac39b1d40328c1b38a6b72fc1e0291fd2a"
+    },
+    {
+      "name": "cameraView-two",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800ZWMXSEQH6XCNYMEG",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN8001T4319WJJC6396EP",
+                "anchor": 0
+              },
+              {
+                "strokeId": "st_01K7JJN8001T4319WJJC6396EP",
+                "anchor": 1
+              }
+            ],
+            "delta": {
+              "x": 15,
+              "y": 15
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8001T4319WJJC6396EP"
+        ],
+        "bounds": {
+          "x": -69.0,
+          "y": -10.87679067359085,
+          "width": 153.0,
+          "height": 47.19729874927961
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN8001T4319WJJC6396EP",
+            "anchor": 0
+          },
+          {
+            "strokeId": "st_01K7JJN8001T4319WJJC6396EP",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "b49f7f9bcff58eb23a045993a58f6be632b670f094bf3c5185969b051e2db6a7",
+      "afterSha256": "8b28e54bad69674973c60a4eff58593a38e11bfc4f52bdd628daf36b6934c946"
+    },
+    {
+      "name": "drawingView-anchor",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN8002SVR09PBHCCCD43Y",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN80028QGWT22KA63K1FN",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 15,
+              "y": 16
+            },
+            "snap": false
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN80028QGWT22KA63K1FN"
+        ],
+        "bounds": {
+          "x": -69.0,
+          "y": -12.160534609054897,
+          "width": 153.0,
+          "height": 44.77169601844673
+        },
+        "selectedPoints": []
+      },
+      "beforeSha256": "cddf1261d98ec9d6bde1488bd512dab317e29b8bbc82f093435001882ce05eef",
+      "afterSha256": "8e2194a0e6b8e561ff7d7cfb1a762a236d161c40c4c5f4d767255cda9f7fbff5"
+    },
+    {
+      "name": "drawingView-broken",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8005ZQ40KHG3JHSH4BJ",
+            "strokeId": "st_01K7JJN80020AGVDNETQB6WFEB",
+            "anchor": 1,
+            "handleMode": "broken",
+            "outHandle": {
+              "x": 35,
+              "y": 45
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN80020AGVDNETQB6WFEB"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -11.309210656969704,
+          "width": 168.0,
+          "height": 32.629718732658475
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN80020AGVDNETQB6WFEB",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "fd063653264a342b11f528fe3da39405d6d8cb04d55f78a9de362d74c62b5c71",
+      "afterSha256": "f120722fd38194353af0c4371ab2dc350bbc1a9e117a1b9defbf3c576a5f461a"
+    },
+    {
+      "name": "drawingView-escape",
+      "commands": [],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800NCD2GY2A3CWGV975"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "beforeSha256": "fde87bbfabfbc51437b1c6c9541f5b5055dd03c33cbcb63975f4104172e6d2ed",
+      "afterSha256": "fde87bbfabfbc51437b1c6c9541f5b5055dd03c33cbcb63975f4104172e6d2ed"
+    },
+    {
+      "name": "drawingView-segment",
+      "commands": [
+        {
+          "commandId": "draw.segment.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800PMY1TAPH39S9ARKE",
+            "strokeId": "st_01K7JJN800ZADV8VDWRNQC7GX6",
+            "segment": 0,
+            "t": 0.5210031691527206,
+            "delta": {
+              "x": 0,
+              "y": 20
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800ZADV8VDWRNQC7GX6"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 53.282769131652884
+        },
+        "selectedPoints": []
+      },
+      "beforeSha256": "0fee036f9c698f720b231978366f235ade1d867efd38a88bc4fdbbecea4f4efd",
+      "afterSha256": "f2ae96d4a26baf8f7d5224c8d0a33c79e36e0261a23e4d9f0607522512342225"
+    },
+    {
+      "name": "drawingView-snap-other-False",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800CG5RJZF87NZT0T73",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN8005YG9RME3XVAXA7H7",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 60,
+              "y": 46
+            },
+            "snap": false
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "82f9cc20a5e06cb6c8b743b0412be5286ee7fdfac0eb69fdbbd27b9e892691d6",
+      "afterSha256": "ed1576e9d57e5ffb21cb804c587eaa6ee787a35ef23ddcf4da75521147ce9721"
+    },
+    {
+      "name": "drawingView-snap-other-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800XTVJVSBZPMSKHM99",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800YVRZWBAZHMWE2677",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 60,
+              "y": 46
+            },
+            "snap": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "55f36d25946f5a846338faa8621e260a826e827d3cd7af0b3e7dbc6d47e4d663",
+      "afterSha256": "3555b28a7ac676298f6c4e71f80021c2743eba95405974fdc95469d3dd9954b3"
+    },
+    {
+      "name": "drawingView-snap-own-False",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN8000CFY363PMWV217VP",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN80088018JFZWPEE8WCZ",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 75,
+              "y": 0
+            },
+            "snap": false
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "c817e07829ca07ac7e82c7446a9cf7631a12a83b7cd6bfd784f505b3f88607b3",
+      "afterSha256": "1965cb5fab64df7eb5b5461a7ab0e0875e80d143a887850d5a0a3cf14561860b"
+    },
+    {
+      "name": "drawingView-snap-own-True",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800CZBVBTN3XK3KM9CS",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800JJZSGSMB4A1CAP57",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 75,
+              "y": 0
+            },
+            "snap": true
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "b6f1f31f4b2ea8f7aee7f4d12ba523577f72ef0e3d5104960cd6aba7a9876508",
+      "afterSha256": "472877a1326ec950c0ed81a826e6243f778c29d159223a58915f95c774e17c55"
+    },
+    {
+      "name": "drawingView-symmetric",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8002K0H8K9B6Q1Q04H0",
+            "strokeId": "st_01K7JJN800CP3AQ8Q1ZTK7EYSA",
+            "anchor": 1,
+            "handleMode": "symmetric",
+            "outHandle": {
+              "x": 35,
+              "y": 45
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800CP3AQ8Q1ZTK7EYSA"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -18.775877323636376,
+          "width": 168.0,
+          "height": 37.551754647272745
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800CP3AQ8Q1ZTK7EYSA",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "fb9f9263398c2eea32b6706f133622e53ed04ee52590fe68e2f258e9bfff7798",
+      "afterSha256": "047128334444b4b9fe8719a18d17486a77cd3dec74f6729f40457895e4b552b5"
+    },
+    {
+      "name": "drawingView-two",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800NNJ05BPZEB12N36Z",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN8005FJHX95F94R2QJGC",
+                "anchor": 0
+              },
+              {
+                "strokeId": "st_01K7JJN8005FJHX95F94R2QJGC",
+                "anchor": 1
+              }
+            ],
+            "delta": {
+              "x": 15,
+              "y": 16
+            },
+            "snap": false
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8005FJHX95F94R2QJGC"
+        ],
+        "bounds": {
+          "x": -69.0,
+          "y": -10.805845297724186,
+          "width": 153.0,
+          "height": 48.126353373412954
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN8005FJHX95F94R2QJGC",
+            "anchor": 0
+          },
+          {
+            "strokeId": "st_01K7JJN8005FJHX95F94R2QJGC",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "79adef677db7b2ea69d40b3b2488da4f120c3c1c5727130a425de29b478cacaf",
+      "afterSha256": "cb9bc6e0b94fe09adec9862120756ae80eef411376496a12c0a8d564506d7f71"
+    }
+  ],
+  "transcriptSha256": "8da95ca708ca89c3878b8298951b9d9726542bf1a7889e237b1a63e8ac80aa12",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-43injumt"
+}

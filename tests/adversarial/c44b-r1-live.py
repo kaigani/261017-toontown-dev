@@ -115,7 +115,6 @@ async def contour_body(t,step):
         after=await c('draw.drawing.get'); labels=await t.steps_since(pos)
         commands=(rec or {}).get('commands') or []
         if expected is None: commands=[]
-        if expected=='draw.point.delete':commands=[{'commandId':expected,'params':{'drawingId':before['drawingId'],'points':[{'strokeId':sid,'anchor':i} for i in selected]}}]
         check(any(x.get('commandId')==expected for x in commands) if expected else not commands,name+' command',commands)
         want=[] if not expected or expected in ('draw.pointSelection.set','draw.selection.set') else [label]
         check([x[0] for x in labels]==want,name+' undo labels',labels)
@@ -150,7 +149,8 @@ async def contour_body(t,step):
         if step==3 and view=='cameraView':continue
         def act(pts,mods=(),escape=False):return lambda sid:gesture(view,pts,mods,escape)
         async def delete(sid):
-            d.front();t.click(view+'.canvas');await c('draw.pointSelection.set',{'points':[{'strokeId':sid,'anchor':i} for i in deletion]});d.key(0x2e);await asyncio.sleep(.7)
+            d.front();t.click(view+'.canvas');await c('draw.pointSelection.set',{'points':[{'strokeId':sid,'anchor':i} for i in deletion]});t.clear();d.key(0x2e);await asyncio.sleep(.7)
+            return {'commands':[{'commandId':x['command'],'params':x.get('params',{})} for x in t.recorded() if x['command']=='draw.point.delete']}
         if step==3:
             for tool,cmd,label,pts in [('brush','draw.stroke.add','Brush Tool',[(-80,60),(-40,80),(0,60)]),('select','draw.transform.apply','Move Object',[(-40,17),(-20,37)]),('rectangle','draw.rectangle.add','Rectangle Tool',[(-100,-60),(100,60)])]:
                 async def tool_extra(sid):await c('tool.active.set',{'toolId':tool})
@@ -263,10 +263,24 @@ def compact(step,out):
     import hashlib
     digest=lambda obj:hashlib.sha256(json.dumps(obj,sort_keys=True).encode()).hexdigest()
     actions=[]
+    def bezier(x):
+        if isinstance(x,dict):
+            if 'bezier' in x:return x['bezier']
+            for v in x.values():
+                found=bezier(v)
+                if found:return found
+        if isinstance(x,list):
+            for v in x:
+                found=bezier(v)
+                if found:return found
     for path in out.glob('*.json'):
         data=json.loads(path.read_text(encoding='utf-8'))
         if isinstance(data,dict) and 'commands' in data and 'before' in data:
             actions.append({'name':path.stem,'commands':data['commands'],'labels':data.get('labels'),'selection':data.get('selection'),'beforeSha256':digest(data['before']),'afterSha256':digest(data['after'])})
+            if path.stem.endswith(('-symmetric','-broken')):
+                b,a=bezier(data['before']),bezier(data['after'])
+                ok=all(abs(a[2][k]+a[4][k]-2*a[3][k])<1e-6 for k in ('x','y')) if path.stem.endswith('-symmetric') else a[2]==b[2]
+                rows.append({'check':path.stem+' opposite handle geometric invariant (D-75 item 4)','ok':ok,'detail':{'before':b[2:5],'after':a[2:5]}})
     save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'results':[{'check':r['check'],'ok':r['ok']} for r in rows],'actions':actions,'transcriptSha256':hashlib.sha256((out/'transcript.json').read_bytes()).hexdigest(),'raw':str(out)})
 if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b')
