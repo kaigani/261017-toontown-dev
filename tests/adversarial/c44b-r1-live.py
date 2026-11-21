@@ -106,6 +106,7 @@ async def contour_body(t,step):
         eid=(await c('element.create',{'type':'drawing','name':'Curve'}))['elementIds'][0]
         await c('element.drawing.create',{'elementId':eid,'name':'1','exposeFrom':1,'exposeTo':24})
         await c('app.context.set',{'elementId':eid,'frame':1})
+        target_drawing=(await c('draw.drawing.get'))['drawingId']
         await c('workspace.select',{'name':'Drawing' if view=='drawingView' else 'Default'})
         await c('window.panel.set',{'panelId':view,'visible':True,'focus':True})
         await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
@@ -422,6 +423,7 @@ async def envelope_body(t,step):
             if i==0:first=added['strokeIds']
             ids.append((await c('draw.drawing.get'))['drawingId'])
         await c('app.context.set',{'elementId':eid,'frame':1})
+        target_drawing=(await c('draw.drawing.get'))['drawingId']
         await c('workspace.select',{'name':'Drawing' if view=='drawingView' else 'Default'})
         await c('window.panel.set',{'panelId':view,'visible':True,'focus':True})
         await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
@@ -691,7 +693,7 @@ async def text_body(t,step):
         tree=await d.McpTable.tree(t)
         canvas=d.McpTable.node(tree,view+'.canvas') or {}
         v=json.loads(canvas.get('value') or '{}')
-        row={'name':name,'commands':t.recorded(),'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True}),'editor':t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id=\"canvas.textEditor\"]');return e?{anchor:Number(e.dataset.ttAnchor),caret:Number(e.dataset.ttCaret),textId:e.dataset.ttTextId}:null})()"),'canvas':v,'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
+        row={'name':name,'commands':t.recorded(),'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True,**({'drawingId':target_drawing} if target_drawing else {})}),'editor':t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id=\"canvas.textEditor\"]');return e?{anchor:Number(e.dataset.ttAnchor),caret:Number(e.dataset.ttCaret),textId:e.dataset.ttTextId}:null})()"),'canvas':v,'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
         rows.append(row);t.clear();return row
     async def gesture(pts):
         m=(await c('draw.viewMapping.get',{'view':view}))['drawingToView']
@@ -705,13 +707,14 @@ async def text_body(t,step):
             await asyncio.sleep(.1)
         d.e6._send_button(False);await pause()
     async def fixture(text='',width=None,v='drawingView'):
-        nonlocal view,eid
+        nonlocal view,eid,target_drawing
         view=v
         await p.r3.preserve_fixture(t)
         await c('project.create',{'name':'Text live review','onUnsaved':'discard'})
         eid=(await c('element.create',{'type':'drawing','name':'Text'}))['elementIds'][0]
         await c('element.drawing.create',{'elementId':eid,'name':'1','exposeFrom':1,'exposeTo':24})
         await c('app.context.set',{'elementId':eid,'frame':1})
+        target_drawing=(await c('draw.drawing.get'))['drawingId']
         await c('workspace.select',{'name':'Drawing' if view=='drawingView' else 'Default'})
         await c('window.panel.set',{'panelId':view,'visible':True,'focus':True});await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
         await c('tool.active.set',{'toolId':'text'});await pause();t.clear()
@@ -720,7 +723,8 @@ async def text_body(t,step):
         return await state('fixture '+text[:20])
     def texts(row):return [n for n in row['drawing'].get('nodes',[]) if 'text' in n and 'runs' in n]
     def content(row):return ''.join(n['text'] for n in texts(row))
-    async def key(vk,*mods):d.front();d.key(vk,*mods);await pause();return await state('key '+hex(vk)+' '+str(mods))
+    async def key(vk,*mods):
+        d.front();t.cdp.js("document.querySelector('[data-tt-id=\"canvas.textEditor\"]')?.focus()");d.key(vk,*mods);await pause();return await state('key '+hex(vk)+' '+str(mods))
     async def typed(txt):
         d.front();t.cdp.js("document.querySelector('[data-tt-id=\"canvas.textEditor\"]')?.focus()");d.type_text(txt);await pause();return await state('typed '+txt[:24])
     def clip_set(txt):
@@ -737,7 +741,7 @@ async def text_body(t,step):
         r=tkinter.Tk();r.withdraw()
         try:return r.clipboard_get()
         finally:r.destroy()
-    view='drawingView';eid=None
+    view='drawingView';eid=None;target_drawing=None
     try:
         if step==1:
             for width in (None,240):
@@ -804,7 +808,8 @@ async def text_body(t,step):
                 await key(0x08);await key(0x2e)
         elif step==6:
             await fixture('one two');await c('window.panel.set',{'panelId':'text','visible':True});await pause()
-            await key(0x24);await key(0x27,0x11,0x10)
+            await key(0x24)
+            for _ in range(3):await key(0x27,0x10)
             for ident in ('text.bold','text.italic'):
                 t.click(ident);await pause();await state(ident)
             for ident,value in [('text.size','48'),('text.kerning','7')]:
@@ -813,6 +818,7 @@ async def text_body(t,step):
             await key(0x41,0x11);await state('mixed')
             await key(0x23);t.click('text.bold');await pause();await state('pending bold');await typed('B')
             await fixture('A');await c('window.panel.set',{'panelId':'text','visible':True});await pause();pos=await t.position();t.click('text.bold');await pause();await typed('B');check(len(await t.steps_since(pos))==1,'STATIC-01 format ends typing run',await t.steps_since(pos))
+            colour=(await c('colour.swatch.create',{'name':'Review colour','makeCurrent':True}))['colourId'];r=await typed('C');check(texts(r)[0]['runs'][-1]['colourId']==colour,'STATIC-03 current colour',texts(r))
         elif step==7:
             for mode in ('normal','element-locked','drawing-locked','hidden','frame','tool'):
                 r=await fixture('abcd',v='cameraView');node=texts(r)[0]
