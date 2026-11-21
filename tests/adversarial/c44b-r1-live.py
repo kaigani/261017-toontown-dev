@@ -686,7 +686,9 @@ async def text_body(t,step):
     import asyncio, ctypes, time
     from ctypes import wintypes
     p=PRIOR; d=p.d; c=t.cmd; check=t.run.check
-    t.cdp=d.Cdp(d.CDP_PORT);t.cdp.record()
+    source=(ROOT/'scripts/c43-d39-bindings.py').read_text(encoding='utf-8')
+    source=source[source.index('class Cdp:'):source.index('# ----- OS input')].replace('class Cdp:','class TextCdp:').replace('if "/run_command" in (req.get("url") or ""):', 'if any(p in (req.get("url") or "") for p in ("/run_command", "/text_input")):').replace('req.get("command"), "params": req.get("params") or {}', 'req.get("command") or "text_input", "params": req.get("params") or req')
+    namespace=dict(d.__dict__);exec(source,namespace);t.cdp=namespace['TextCdp'](d.CDP_PORT);t.cdp.record()
     rows=[]
     async def pause():await asyncio.sleep(.6)
     async def state(name):

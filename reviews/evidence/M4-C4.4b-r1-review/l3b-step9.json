@@ -1,1 +1,65 @@
-{"checks":3,"failures":[],"raw":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-147ciqdo","results":[{"check":"100k responsive","ok":true,"detail":{"elapsed":1.3181985999981407,"length":100000}},{"check":"undo redo exact content","ok":true,"detail":null},{"check":"second undo exact content","ok":true,"detail":null}]}
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ko_nx3rw",
+  "results": [
+    {
+      "check": "100k responsive",
+      "ok": true,
+      "detail": {
+        "elapsed": 1.3100303999963216,
+        "length": 100000
+      }
+    },
+    {
+      "check": "02 7.6.1 font name retained",
+      "ok": true,
+      "detail": [
+        {
+          "start": 0,
+          "length": 680,
+          "font": "ReviewMissingFont987",
+          "size": 36.0,
+          "bold": false,
+          "italic": false,
+          "baseline": "normal",
+          "kerning": 0.0,
+          "autoKern": true,
+          "colourId": "col_01M7ZJX0JQ05GENP5ARPVKDH83",
+          "outlineColourId": null
+        }
+      ]
+    },
+    {
+      "check": "D-75 item 9 missing font info",
+      "ok": false,
+      "detail": [
+        {
+          "code": "text.fontMissing",
+          "message": "font `ReviewMissingFont987` is not installed; the text keeps the name and is displayed with a fallback font",
+          "objectIds": [
+            "dr_01K7JJN8009ZKJFCDBQ7DQ719Z/nd_01K7JJN80042TNY4B3TEEHX1XZ"
+          ]
+        },
+        {
+          "code": "text.fontMissing",
+          "message": "font `ReviewMissingFont988` is not installed; the text keeps the name and is displayed with a fallback font",
+          "objectIds": [
+            "dr_01K7JJN8009ZKJFCDBQ7DQ719Z/nd_01K7JJN80042TNY4B3TEEHX1XZ"
+          ]
+        }
+      ]
+    },
+    {
+      "check": "undo redo exact content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "second undo exact content",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": [
+    "D-75 item 9 missing font info"
+  ]
+}
