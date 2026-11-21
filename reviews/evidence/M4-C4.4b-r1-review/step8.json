@@ -1,0 +1,864 @@
+{
+  "checks": 58,
+  "failures": [
+    {
+      "check": "drawingView no-single-line controls disabled rather than hidden (M4 plan UI conventions)",
+      "ok": false,
+      "detail": [
+        {
+          "id": "thickness",
+          "present": false
+        },
+        {
+          "id": "invisible",
+          "present": false
+        }
+      ]
+    },
+    {
+      "check": "cameraView no-single-line controls disabled rather than hidden (M4 plan UI conventions)",
+      "ok": false,
+      "detail": [
+        {
+          "id": "thickness",
+          "present": false
+        },
+        {
+          "id": "invisible",
+          "present": false
+        }
+      ]
+    },
+    {
+      "check": "cameraView hidden no edit",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "contourEditor",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 221,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 320.921875,
+            "y": 189,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 320.921875,
+            "y": 189,
+            "modifiers": [],
+            "dt": 108,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.point.move",
+            "params": {
+              "drawingId": "dr_01K7JJN800W24G6GW96GP0WGE7",
+              "points": [
+                {
+                  "strokeId": "st_01K7JJN800KW9M2VDYCDF0GW4G",
+                  "anchor": 0
+                }
+              ],
+              "delta": {
+                "x": 20,
+                "y": 20
+              },
+              "snap": false,
+              "view": "cameraView"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView layer-locked no edit",
+      "ok": false,
+      "detail": {
+        "origin": "user",
+        "tool": "contourEditor",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 221,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 320.921875,
+            "y": 189,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 320.921875,
+            "y": 189,
+            "modifiers": [],
+            "dt": 102,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.point.move",
+            "params": {
+              "drawingId": "dr_01K7JJN8009SYQHJR9E5MSNDE6",
+              "points": [
+                {
+                  "strokeId": "st_01K7JJN800PZ6V7SVAQ85YH409",
+                  "anchor": 0
+                }
+              ],
+              "delta": {
+                "x": 20,
+                "y": 20
+              },
+              "snap": false,
+              "view": "cameraView"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "results": [
+    {
+      "check": "drawingView-thickness-direct command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-thickness-direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-thickness-direct D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-thickness-direct direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-thickness-direct undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-invisible-direct command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-invisible-direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-invisible-direct D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-invisible-direct direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-invisible-direct undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView Invisible effect",
+      "ok": true
+    },
+    {
+      "check": "drawingView thickness 7",
+      "ok": true
+    },
+    {
+      "check": "drawingView numeric retained/restored 7",
+      "ok": true
+    },
+    {
+      "check": "drawingView thickness abc",
+      "ok": true
+    },
+    {
+      "check": "drawingView numeric retained/restored abc",
+      "ok": true
+    },
+    {
+      "check": "drawingView thickness -1",
+      "ok": true
+    },
+    {
+      "check": "drawingView numeric retained/restored -1",
+      "ok": true
+    },
+    {
+      "check": "drawingView thickness 101",
+      "ok": true
+    },
+    {
+      "check": "drawingView numeric retained/restored 101",
+      "ok": true
+    },
+    {
+      "check": "drawingView invisible",
+      "ok": true
+    },
+    {
+      "check": "drawingView no single line control unavailable",
+      "ok": true
+    },
+    {
+      "check": "drawingView no-single-line controls disabled rather than hidden (M4 plan UI conventions)",
+      "ok": false
+    },
+    {
+      "check": "drawingView contour context drawing actions",
+      "ok": true
+    },
+    {
+      "check": "drawingView context Select All selects without undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView locked no edit",
+      "ok": true
+    },
+    {
+      "check": "drawingView locked D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView hidden no edit",
+      "ok": true
+    },
+    {
+      "check": "drawingView hidden D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-thickness-direct command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-thickness-direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-thickness-direct D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-thickness-direct direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-thickness-direct undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-invisible-direct command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-invisible-direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-invisible-direct D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-invisible-direct direct undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-invisible-direct undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView Invisible effect",
+      "ok": true
+    },
+    {
+      "check": "cameraView thickness 7",
+      "ok": true
+    },
+    {
+      "check": "cameraView numeric retained/restored 7",
+      "ok": true
+    },
+    {
+      "check": "cameraView thickness abc",
+      "ok": true
+    },
+    {
+      "check": "cameraView numeric retained/restored abc",
+      "ok": true
+    },
+    {
+      "check": "cameraView thickness -1",
+      "ok": true
+    },
+    {
+      "check": "cameraView numeric retained/restored -1",
+      "ok": true
+    },
+    {
+      "check": "cameraView thickness 101",
+      "ok": true
+    },
+    {
+      "check": "cameraView numeric retained/restored 101",
+      "ok": true
+    },
+    {
+      "check": "cameraView invisible",
+      "ok": true
+    },
+    {
+      "check": "cameraView no single line control unavailable",
+      "ok": true
+    },
+    {
+      "check": "cameraView no-single-line controls disabled rather than hidden (M4 plan UI conventions)",
+      "ok": false
+    },
+    {
+      "check": "cameraView contour context drawing actions",
+      "ok": true
+    },
+    {
+      "check": "cameraView context Select All selects without undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView locked no edit",
+      "ok": true
+    },
+    {
+      "check": "cameraView locked D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView hidden no edit",
+      "ok": false
+    },
+    {
+      "check": "cameraView hidden D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView layer-locked no edit",
+      "ok": false
+    },
+    {
+      "check": "cameraView layer-locked D-32 exact direct content",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-hidden",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800W24G6GW96GP0WGE7",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800KW9M2VDYCDF0GW4G",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 20,
+              "y": 20
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800KW9M2VDYCDF0GW4G",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800KW9M2VDYCDF0GW4G",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "976369125fb1f60a838834c1d85349a5cea801778ee37df2ab6604b71d5500bc",
+      "afterSha256": "5a55c788998c2887aa233d94e5178fbe321eced3a3d72ceb69e91f935502a421"
+    },
+    {
+      "name": "cameraView-invisible-direct",
+      "commands": [
+        {
+          "commandId": "draw.stroke.set",
+          "params": {
+            "strokeId": "dr_01K7JJN8009ZWQ6R7YM0MDNZDN/st_01K7JJN800YF2VT9SFSVYTE4MM",
+            "kind": "invisible"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Edit Stroke",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800YF2VT9SFSVYTE4MM"
+        ],
+        "bounds": {
+          "x": -80.0,
+          "y": -8.160534609054897,
+          "width": 160.0,
+          "height": 25.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800YF2VT9SFSVYTE4MM",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800YF2VT9SFSVYTE4MM",
+          "kind": "invisible",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "5498807e5ed682892cbac751dcdf496e4eaf0528eac0a0e848e1e40565f2d33f",
+      "afterSha256": "c773013a1bfbf0ace8bad2d0d2a125091c0e83778a1863123627f6a4bb20bf7f"
+    },
+    {
+      "name": "cameraView-layer-locked",
+      "commands": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN8009SYQHJR9E5MSNDE6",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800PZ6V7SVAQ85YH409",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 20,
+              "y": 20
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800PZ6V7SVAQ85YH409",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800PZ6V7SVAQ85YH409",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "b47d2429295687e87568836531457c5a3c14a72a1b4005c27eae805a5134cbf1",
+      "afterSha256": "3a3caf4474288c282523eb1effb4686b4c2478a01358b6bc171238169dd0a845"
+    },
+    {
+      "name": "cameraView-locked",
+      "commands": [],
+      "labels": [],
+      "selection": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800N8Q47R76DF73TP9F",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800N8Q47R76DF73TP9F",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "77645e03cdff7839165b2bce123e5097b2660282066085d7d2eb484c8ca1badc",
+      "afterSha256": "77645e03cdff7839165b2bce123e5097b2660282066085d7d2eb484c8ca1badc"
+    },
+    {
+      "name": "cameraView-thickness-direct",
+      "commands": [
+        {
+          "commandId": "draw.stroke.set",
+          "params": {
+            "strokeId": "dr_01K7JJN8009M1F18ZECYX7RFPG/st_01K7JJN800F26CQY4JTW1CF51A",
+            "thickness": 7
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Edit Stroke",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800F26CQY4JTW1CF51A"
+        ],
+        "bounds": {
+          "x": -83.5,
+          "y": -11.660534609054897,
+          "width": 167.0,
+          "height": 32.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800F26CQY4JTW1CF51A",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800F26CQY4JTW1CF51A",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "2fdb44c0ec805ae402e77fac0afe03488f56bd69e0568b98250f0e0c32859716",
+      "afterSha256": "13dce4e67bbc2ff18d664fbac6b7711af91f0695dc3c79dd6224fc64ef69b8fd"
+    },
+    {
+      "name": "drawingView-hidden",
+      "commands": [],
+      "labels": [],
+      "selection": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8006MSDQNT3JH76ZDTC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8006MSDQNT3JH76ZDTC",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "b9e2b01377397fad526ed69e3b8a2ce20fdb041f72ebd1a26bf6ce74c5c382c3",
+      "afterSha256": "b9e2b01377397fad526ed69e3b8a2ce20fdb041f72ebd1a26bf6ce74c5c382c3"
+    },
+    {
+      "name": "drawingView-invisible-direct",
+      "commands": [
+        {
+          "commandId": "draw.stroke.set",
+          "params": {
+            "strokeId": "dr_01K7JJN800VYSDRY59FN1GS3B7/st_01K7JJN8009QMQ0RBYP67Z2THD",
+            "kind": "invisible"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Edit Stroke",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8009QMQ0RBYP67Z2THD"
+        ],
+        "bounds": {
+          "x": -80.0,
+          "y": -8.160534609054897,
+          "width": 160.0,
+          "height": 25.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8009QMQ0RBYP67Z2THD",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8009QMQ0RBYP67Z2THD",
+          "kind": "invisible",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "f156f7cdad073589d636cbcd0c598cb59836d7212b4977566b0f0eca5b4f4879",
+      "afterSha256": "e387b7af0727f6e856d04f4ff2ae9997058c4f64bb5296a44daf8e8278f0707c"
+    },
+    {
+      "name": "drawingView-locked",
+      "commands": [],
+      "labels": [],
+      "selection": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8005WF9CBK1P7ABA652",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8005WF9CBK1P7ABA652",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "4ee0299c7d18ab67b57514fb516355a22ba8e1257b3eaec3f7af3c61d8f2840f",
+      "afterSha256": "4ee0299c7d18ab67b57514fb516355a22ba8e1257b3eaec3f7af3c61d8f2840f"
+    },
+    {
+      "name": "drawingView-thickness-direct",
+      "commands": [
+        {
+          "commandId": "draw.stroke.set",
+          "params": {
+            "strokeId": "dr_01K7JJN800X9MH9R13RVZGWHTF/st_01K7JJN8006J205KTDNA35D7WJ",
+            "thickness": 7
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Edit Stroke",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8006J205KTDNA35D7WJ"
+        ],
+        "bounds": {
+          "x": -83.5,
+          "y": -11.660534609054897,
+          "width": 167.0,
+          "height": 32.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8006J205KTDNA35D7WJ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8006J205KTDNA35D7WJ",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "cc72ab472f4659831e6c28c28035f2002f00a02e6e9109c73e3fc847ff9964d4",
+      "afterSha256": "d5f2ec15d2121bc5a4d00b655f2551c05d349f50c24f2b7cb4e72eaf196d62b5"
+    }
+  ],
+  "measurements": [],
+  "canvases": [
+    {
+      "name": "cameraView-hidden-canvas",
+      "drawings": [],
+      "contours": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 0,
+        "handles": 0,
+        "locked": false
+      },
+      "overlay": false
+    },
+    {
+      "name": "cameraView-layer-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8009SYQHJR9E5MSNDE6",
+          "rev": 4,
+          "bucket": 1
+        }
+      ],
+      "contours": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 0,
+        "handles": 0,
+        "locked": false
+      },
+      "overlay": false
+    },
+    {
+      "name": "cameraView-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800SP9Q2C4ZZM1719RF",
+          "rev": 5,
+          "bucket": 1
+        }
+      ],
+      "contours": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 0,
+        "handles": 0,
+        "locked": true
+      },
+      "overlay": false
+    },
+    {
+      "name": "drawingView-hidden-canvas",
+      "drawings": [],
+      "contours": null,
+      "overlay": false
+    },
+    {
+      "name": "drawingView-locked-canvas",
+      "drawings": [
+        {
+          "id": "dr_01K7JJN8004B1ME7T0FV4RE0QQ",
+          "rev": 5,
+          "bucket": 0
+        }
+      ],
+      "contours": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 0,
+        "handles": 0,
+        "locked": true
+      },
+      "overlay": false
+    }
+  ],
+  "captures": [
+    {
+      "name": "cameraView-hidden.png",
+      "sha256": "b58b7d94587ebe2c22a99e7732e756da1befdec40a1461ff63f3122be7e32005"
+    },
+    {
+      "name": "cameraView-layer-locked.png",
+      "sha256": "b58b7d94587ebe2c22a99e7732e756da1befdec40a1461ff63f3122be7e32005"
+    },
+    {
+      "name": "cameraView-locked.png",
+      "sha256": "e78ee3f497247c797c21850c1c12f45bfbdbb0a6fa7dd0d33b18f6ad7b5fa8ed"
+    },
+    {
+      "name": "drawingView-hidden.png",
+      "sha256": "17136a9263f45a4d04b99097f8eba426784e660634efc1ab5bfa7d4c1d639267"
+    },
+    {
+      "name": "drawingView-locked.png",
+      "sha256": "3c5e985aa333a1b4fe04b309ef3ddfe4ebf347b2ae25b25bd758beb44e9811d5"
+    }
+  ],
+  "transcriptSha256": "e2e4efb2fb642b87c6faef783c584bc82d35f27e4664f89191affc827153c5b9",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-b95tbeul"
+}

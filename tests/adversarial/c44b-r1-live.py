@@ -58,9 +58,9 @@ async def contour_body(t,step):
     t.cdp=d.Cdp(d.CDP_PORT); t.cdp.record()
     eq=load('review_equivalence','scripts/c44b-gesture-equivalence.py')
     async def roots(_): return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='work')])
-    async def gesture(view,pts,mods=(),escape=False):
+    async def gesture(view,pts,mods=(),escape=False,matrix_override=None):
         await asyncio.sleep(.35); d.front()
-        matrix=(await c('draw.viewMapping.get',{'view':view}))['drawingToView']
+        matrix=matrix_override or (await c('draw.viewMapping.get',{'view':view}))['drawingToView']
         rect=t.cdp.js("document.querySelector('[data-tt-id=\""+view+".canvas\"]').getBoundingClientRect().toJSON()")
         origin=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(origin))
         scale=t.cdp.js('devicePixelRatio')
@@ -150,10 +150,12 @@ async def contour_body(t,step):
                 check(unstamped(after)==unstamped(direct),name+' D-32 exact direct content',{'equal':unstamped(after)==unstamped(direct)})
                 directlabels=await ht.steps_since(directpos);check([x[0] for x in directlabels]==want,name+' direct undo labels',directlabels)
         selection=await c('draw.selection.get')
+        canvas=json.loads((d.McpTable.node(await d.McpTable.tree(t),view+'.canvas') or {}).get('value') or '{}')
         if step==4:
             desired=([0,1] if name.endswith('add-click') or name.endswith('marquee') else [] if name.endswith('empty') else [0])
             check(sorted(x['anchor'] for x in selection.get('selectedPoints',[]))==desired,name+' selection reported',selection)
-        t.run.save(name+'.json',{'record':rec,'commands':commands,'before':before,'after':after,'labels':labels,'selection':selection})
+            check((canvas.get('contours') or {}).get('selected',0)==len(desired),name+' rendered contour selection equals reported selection',canvas.get('contours'))
+        t.run.save(name+'.json',{'record':rec,'commands':commands,'before':before,'after':after,'labels':labels,'selection':selection,'display':canvas.get('contours')})
         if want and labels:
             for _ in labels:await c('edit.undo')
             restored=await c('draw.drawing.get')
@@ -250,13 +252,16 @@ async def contour_body(t,step):
                 ident='toolOptions.selectedLine.thickness';t.click(ident)
                 d.key(0x41,0x11);t.clear();d.type_text(val);d.key(0x0d);await asyncio.sleep(.6)
                 t.run.save(view+'-thickness-'+val+'.json',{'sent':t.recorded(),'drawing':await c('draw.drawing.get'),'field':t.cdp.js('document.activeElement.value')})
-                check(any(x['command']=='draw.stroke.set' for x in t.recorded()) if val=='7' else not t.recorded(),view+' thickness '+val,t.recorded())
+                writes=[x for x in t.recorded() if t.kinds.get(x['command'])!='query']
+                check(any(x['command']=='draw.stroke.set' for x in writes) if val=='7' else not writes,view+' thickness '+val,writes)
                 check(t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions.selectedLine.thickness\"]').value")=='7',view+' numeric retained/restored '+val,None)
             t.clear();t.click('toolOptions.selectedLine.invisible');await asyncio.sleep(.6)
             check(any(x['command']=='draw.stroke.set' and x['params'].get('kind')=='invisible' for x in t.recorded()),view+' invisible',t.recorded())
-            await c('draw.selection.set',{'by':'none'});await asyncio.sleep(.5)
+            await gesture(view,[(120,100)]*2);await asyncio.sleep(.5)
             t.run.save(view+'-no-single-line.json',t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions.selectedLine\"]')?.outerHTML"))
             check(not t.cdp.js("!!document.querySelector('[data-tt-id=\"toolOptions.selectedLine.thickness\"]:enabled')"),view+' no single line control unavailable',None)
+            disabled=t.cdp.js("['thickness','invisible'].map(s=>{const e=document.querySelector('[data-tt-id=\"toolOptions.selectedLine.'+s+'\"]');return {id:s,present:!!e,disabled:e?.disabled,reason:e?.title}})")
+            check(all(x['present'] and x.get('disabled') and x.get('reason') for x in disabled),view+' no-single-line controls disabled rather than hidden (M4 plan UI conventions)',disabled)
             d.front();rr=t.rect(view+'.canvas');origin=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(origin))
             d.right_click_screen(origin.x+rr['x']*rr['dpr'],origin.y+rr['y']*rr['dpr']);await asyncio.sleep(.4)
             tree=await d.McpTable.tree(t)
@@ -266,14 +271,33 @@ async def contour_body(t,step):
             t.run.save(view+'-context.json',items);d.key(0x1b)
             t.clear();pos=await t.position();await t.do(('context',view+'.canvas',view+'.drawingMenu.selectAll'));await asyncio.sleep(.4)
             check(bool((await c('draw.selection.get')).get('selectedIds')) and await t.position()==pos,view+' context Select All selects without undo',t.recorded())
-            for mode in ('locked','hidden'):
+            for mode in (('locked','hidden','layer-locked') if view=='cameraView' else ('locked','hidden')):
                 sid=await fixture(view)
+                visible=await c('draw.drawing.get');drawing_id=visible['drawingId'];cur=await c('draw.current.get')
+                visible_matrix=(await c('draw.viewMapping.get',{'view':view}))['drawingToView']
                 if mode=='locked':await c('draw.lock.set',{'locked':True})
+                elif mode=='layer-locked':await c('element.lock.set',{'elementIds':[cur['elementId']],'locked':True})
                 else:
-                    cur=await c('draw.current.get');await c('element.visibility.set',{'elementIds':[cur['elementId']],'scope':'xsheet' if view=='drawingView' else 'scene','visible':False})
-                before=await c('draw.drawing.get');pos=await t.position();rec=await gesture(view,[(-80,0),(-60,20)])
-                after=await c('draw.drawing.get')
+                    await c('drawAid.selectionDisplay.set',{'keepSelectionVisible':False,'outlineOnSelection':False})
+                    await c('drawAid.currentOnTop.set',{'enabled':False})
+                    await c('element.visibility.set',{'elementIds':[cur['elementId']],'scope':'xsheet' if view=='drawingView' else 'scene','visible':False})
+                await asyncio.sleep(.5)
+                canvas=d.McpTable.node(await d.McpTable.tree(t),view+'.canvas')
+                t.run.save(view+'-'+mode+'-canvas.json',canvas)
+                t.run.shot(view+'-'+mode,d.e2e.APP_PID['pid'])
+                saved=t.work/(view+'-'+mode+'.animpkg');await c('project.saveAs',{'path':str(saved),'onExists':'overwrite'})
+                copied=t.work/(view+'-'+mode+'-direct.animpkg');shutil.copyfile(saved,copied)
+                before=await c('draw.drawing.get',{'drawingId':drawing_id});pos=await t.position();rec=await gesture(view,[(-80,0),(-60,20)],matrix_override=visible_matrix)
+                after=await c('draw.drawing.get',{'drawingId':drawing_id})
+                t.run.save(view+'-'+mode+'.json',{'record':rec,'commands':(rec or {}).get('commands',[]),'before':before,'after':after,'labels':await t.steps_since(pos)})
                 check(before==after and await t.position()==pos,view+' '+mode+' no edit',rec)
+                args=['--mcp-stdio','--project',str(copied),'--policy','autonomous','--allow-path',str(t.work),'--user-dir',str(t.work/(view+'-'+mode+'-head'))]
+                async with stdio_client(StdioServerParameters(command=str(HEAD),args=args)) as streams:
+                    async with ClientSession(*streams,list_roots_callback=roots) as hs:
+                        await hs.initialize();ht=d.Table(hs,t.run,p.OUT,t.work)
+                        for cmd in (rec or {}).get('commands',[]):await d.e2e.run_cmd(hs,cmd['commandId'],cmd.get('params',{}))
+                        direct=await ht.cmd('draw.drawing.get',{'drawingId':drawing_id})
+                        check(unstamped(after)==unstamped(direct),view+' '+mode+' D-32 exact direct content',None)
 
 def live(step):
     global PRIOR
@@ -283,7 +307,7 @@ def live(step):
     compact(step,PRIOR.OUT)
     return result or int(bool(json.loads((EVID/('step'+str(step)+'.json')).read_text(encoding='utf-8'))['failures']))
 def compact(step,out):
-    rows=json.loads((out/'transcript.json').read_text(encoding='utf-8'))
+    rows=[r for r in json.loads((out/'transcript.json').read_text(encoding='utf-8')) if 'check' in r]
     import hashlib
     digest=lambda obj:hashlib.sha256(json.dumps(obj,sort_keys=True).encode()).hexdigest()
     actions=[]
@@ -308,7 +332,7 @@ def compact(step,out):
     for path in out.glob('*.json'):
         data=json.loads(path.read_text(encoding='utf-8'))
         if isinstance(data,dict) and 'commands' in data and 'before' in data:
-            actions.append({'name':path.stem,'commands':data['commands'],'labels':data.get('labels'),'selection':data.get('selection'),'geometryBefore':geometry(data['before']),'geometryAfter':geometry(data['after']),'beforeSha256':digest(data['before']),'afterSha256':digest(data['after'])})
+            actions.append({'name':path.stem,'commands':data['commands'],'labels':data.get('labels'),'selection':data.get('selection'),'display':data.get('display'),'geometryBefore':geometry(data['before']),'geometryAfter':geometry(data['after']),'beforeSha256':digest(data['before']),'afterSha256':digest(data['after'])})
             if path.stem.endswith(('-symmetric','-broken')):
                 b,a=bezier(data['before']),bezier(data['after'])
                 ok=all(abs(a[2][k]+a[4][k]-2*a[3][k])<1e-6 for k in ('x','y')) if path.stem.endswith('-symmetric') else a[2]==b[2]
@@ -317,7 +341,12 @@ def compact(step,out):
                 selected=data.get('selection',{}).get('selectedPoints',[])
                 rows.append({'check':path.stem+' requested new-anchor selection (observation; spec and design note silent)','ok':len(selected)==1 and selected[0]['anchor']==1,'detail':selected})
     measurements=[{'check':r['check'],'detail':r.get('detail')} for r in rows if any(s in r['check'] for s in ('101 samples','collinear lengths','geometric invariant','other stroke snapping','own stroke excluded'))]
-    save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'results':[{'check':r['check'],'ok':r['ok']} for r in rows],'actions':actions,'measurements':measurements,'transcriptSha256':hashlib.sha256((out/'transcript.json').read_bytes()).hexdigest(),'raw':str(out)})
+    canvases=[]
+    for path in out.glob('*-canvas.json'):
+        node=json.loads(path.read_text(encoding='utf-8'));v=json.loads((node or {}).get('value') or '{}')
+        canvases.append({'name':path.stem,'drawings':v.get('drawings'),'contours':v.get('contours'),'overlay':v.get('overlay')})
+    captures=[{'name':path.name,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()} for path in out.glob('*.png')]
+    save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'results':[{'check':r['check'],'ok':r['ok']} for r in rows],'actions':actions,'measurements':measurements,'canvases':canvases,'captures':captures,'transcriptSha256':hashlib.sha256((out/'transcript.json').read_bytes()).hexdigest(),'raw':str(out)})
 if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b')
     if case=='l1a' and step==1:sys.exit(build())

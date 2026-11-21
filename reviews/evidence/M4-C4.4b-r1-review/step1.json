@@ -1,0 +1,29 @@
+{
+  "productHead": "e6f71489",
+  "reviewStart": "57bad5ee",
+  "commands": [
+    {
+      "cwd": "desktop",
+      "command": "pnpm install --frozen-lockfile",
+      "exit": 0
+    },
+    {
+      "cwd": "desktop",
+      "command": "pnpm build",
+      "exit": 0,
+      "boundary": "passed"
+    },
+    {
+      "cwd": ".",
+      "command": "cargo build --release --locked -p tt-desktop -p tt-headless",
+      "exit": 0,
+      "elapsedSeconds": 85
+    }
+  ],
+  "sha256": {
+    "target/release/toontown.exe": "91fe75900524f4e19672f8c0b44b3632f05474f3314e0a9fef5f7fb2c4440be3",
+    "target/release/toontown-headless.exe": "e604a8f997c743422e0c4e8b96717b3fbb3ec84bccbd0c5b9530891d59d67e12",
+    "desktop/dist/index.html": "5fbbc7ee1586aaff7fe53a745fca9faa3503134a327ae4a7422af89f952a026d",
+    "pnpm-lock.yaml": "5fb8e8018ab66fb212f40ee56a9510c64564838be53a38feb129ad710939d0fc"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "checks": 40,
+  "checks": 56,
   "failures": [],
   "results": [
     {
@@ -19,7 +19,15 @@
       "ok": true
     },
     {
+      "check": "drawingView-click direct undo labels",
+      "ok": true
+    },
+    {
       "check": "drawingView-click selection reported",
+      "ok": true
+    },
+    {
+      "check": "drawingView-click rendered contour selection equals reported selection",
       "ok": true
     },
     {
@@ -39,7 +47,15 @@
       "ok": true
     },
     {
+      "check": "drawingView-add-click direct undo labels",
+      "ok": true
+    },
+    {
       "check": "drawingView-add-click selection reported",
+      "ok": true
+    },
+    {
+      "check": "drawingView-add-click rendered contour selection equals reported selection",
       "ok": true
     },
     {
@@ -59,7 +75,15 @@
       "ok": true
     },
     {
+      "check": "drawingView-marquee direct undo labels",
+      "ok": true
+    },
+    {
       "check": "drawingView-marquee selection reported",
+      "ok": true
+    },
+    {
+      "check": "drawingView-marquee rendered contour selection equals reported selection",
       "ok": true
     },
     {
@@ -79,7 +103,15 @@
       "ok": true
     },
     {
+      "check": "drawingView-empty direct undo labels",
+      "ok": true
+    },
+    {
       "check": "drawingView-empty selection reported",
+      "ok": true
+    },
+    {
+      "check": "drawingView-empty rendered contour selection equals reported selection",
       "ok": true
     },
     {
@@ -99,7 +131,15 @@
       "ok": true
     },
     {
+      "check": "cameraView-click direct undo labels",
+      "ok": true
+    },
+    {
       "check": "cameraView-click selection reported",
+      "ok": true
+    },
+    {
+      "check": "cameraView-click rendered contour selection equals reported selection",
       "ok": true
     },
     {
@@ -119,7 +159,15 @@
       "ok": true
     },
     {
+      "check": "cameraView-add-click direct undo labels",
+      "ok": true
+    },
+    {
       "check": "cameraView-add-click selection reported",
+      "ok": true
+    },
+    {
+      "check": "cameraView-add-click rendered contour selection equals reported selection",
       "ok": true
     },
     {
@@ -139,7 +187,15 @@
       "ok": true
     },
     {
+      "check": "cameraView-marquee direct undo labels",
+      "ok": true
+    },
+    {
       "check": "cameraView-marquee selection reported",
+      "ok": true
+    },
+    {
+      "check": "cameraView-marquee rendered contour selection equals reported selection",
       "ok": true
     },
     {
@@ -159,7 +215,15 @@
       "ok": true
     },
     {
+      "check": "cameraView-empty direct undo labels",
+      "ok": true
+    },
+    {
       "check": "cameraView-empty selection reported",
+      "ok": true
+    },
+    {
+      "check": "cameraView-empty rendered contour selection equals reported selection",
       "ok": true
     }
   ],
@@ -170,10 +234,10 @@
         {
           "commandId": "draw.pointSelection.set",
           "params": {
-            "drawingId": "dr_01K7JJN800XMTF2DZ4E3NVNSF0",
+            "drawingId": "dr_01K7JJN8005XJBPKPDS7GJ7FK5",
             "points": [
               {
-                "strokeId": "st_01K7JJN8009Z283JC26M7BP8B7",
+                "strokeId": "st_01K7JJN800TB78BXTJZPSJM5A9",
                 "anchor": 1
               }
             ],
@@ -184,7 +248,7 @@
       "labels": [],
       "selection": {
         "selectedIds": [
-          "st_01K7JJN8009Z283JC26M7BP8B7"
+          "st_01K7JJN800TB78BXTJZPSJM5A9"
         ],
         "bounds": {
           "x": -84.0,
@@ -194,18 +258,25 @@
         },
         "selectedPoints": [
           {
-            "strokeId": "st_01K7JJN8009Z283JC26M7BP8B7",
+            "strokeId": "st_01K7JJN800TB78BXTJZPSJM5A9",
             "anchor": 0
           },
           {
-            "strokeId": "st_01K7JJN8009Z283JC26M7BP8B7",
+            "strokeId": "st_01K7JJN800TB78BXTJZPSJM5A9",
             "anchor": 1
           }
         ]
       },
+      "display": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 2,
+        "handles": 3,
+        "locked": false
+      },
       "geometryBefore": [
         {
-          "id": "st_01K7JJN8009Z283JC26M7BP8B7",
+          "id": "st_01K7JJN800TB78BXTJZPSJM5A9",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
@@ -213,14 +284,14 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN8009Z283JC26M7BP8B7",
+          "id": "st_01K7JJN800TB78BXTJZPSJM5A9",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         }
       ],
-      "beforeSha256": "d1a68622d46e7e7b49dd5b05ca4559eda8cb61e127a4907b7aa0bdbc727f1865",
-      "afterSha256": "d1a68622d46e7e7b49dd5b05ca4559eda8cb61e127a4907b7aa0bdbc727f1865"
+      "beforeSha256": "3cb2b34a8c162a35b9faac30ab7696380ec5a3105e7204f0a21313af2e8fcaca",
+      "afterSha256": "3cb2b34a8c162a35b9faac30ab7696380ec5a3105e7204f0a21313af2e8fcaca"
     },
     {
       "name": "cameraView-click",
@@ -228,10 +299,10 @@
         {
           "commandId": "draw.pointSelection.set",
           "params": {
-            "drawingId": "dr_01K7JJN800NEHXJG7XTMP2JGV8",
+            "drawingId": "dr_01K7JJN800X4FX79BVJ2EYWMTA",
             "points": [
               {
-                "strokeId": "st_01K7JJN800P1N93V394XHXCT2P",
+                "strokeId": "st_01K7JJN800ZN6RANWNDCDF7BVY",
                 "anchor": 0
               }
             ],
@@ -242,7 +313,7 @@
       "labels": [],
       "selection": {
         "selectedIds": [
-          "st_01K7JJN800P1N93V394XHXCT2P"
+          "st_01K7JJN800ZN6RANWNDCDF7BVY"
         ],
         "bounds": {
           "x": -84.0,
@@ -252,14 +323,21 @@
         },
         "selectedPoints": [
           {
-            "strokeId": "st_01K7JJN800P1N93V394XHXCT2P",
+            "strokeId": "st_01K7JJN800ZN6RANWNDCDF7BVY",
             "anchor": 0
           }
         ]
       },
+      "display": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 1,
+        "handles": 1,
+        "locked": false
+      },
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800P1N93V394XHXCT2P",
+          "id": "st_01K7JJN800ZN6RANWNDCDF7BVY",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
@@ -267,14 +345,14 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800P1N93V394XHXCT2P",
+          "id": "st_01K7JJN800ZN6RANWNDCDF7BVY",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         }
       ],
-      "beforeSha256": "717c333a57032b20b29743c41a6872382c65acf13e9a378ac618101b7c633e89",
-      "afterSha256": "717c333a57032b20b29743c41a6872382c65acf13e9a378ac618101b7c633e89"
+      "beforeSha256": "b18d624317726d067f05135bec0659ed537a2705a268f6c50c97c11345f8126e",
+      "afterSha256": "b18d624317726d067f05135bec0659ed537a2705a268f6c50c97c11345f8126e"
     },
     {
       "name": "cameraView-empty",
@@ -294,7 +372,7 @@
         {
           "commandId": "draw.pointSelection.set",
           "params": {
-            "drawingId": "dr_01K7JJN800D2Q2R2SBCHQQ9SDD",
+            "drawingId": "dr_01K7JJN8007XNEGVG29F3GVVAP",
             "points": [],
             "mode": "replace"
           }
@@ -306,9 +384,16 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "display": {
+        "strokes": 0,
+        "anchors": 0,
+        "selected": 0,
+        "handles": 0,
+        "locked": false
+      },
       "geometryBefore": [
         {
-          "id": "st_01K7JJN8008S212WPW6WSH3Y67",
+          "id": "st_01K7JJN80023F7AD752MNAJMT8",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
@@ -316,14 +401,14 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN8008S212WPW6WSH3Y67",
+          "id": "st_01K7JJN80023F7AD752MNAJMT8",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         }
       ],
-      "beforeSha256": "3b7870c191d02d57fd201994cb0a5bca215d77d4d30d9062950d61a5fd878590",
-      "afterSha256": "3b7870c191d02d57fd201994cb0a5bca215d77d4d30d9062950d61a5fd878590"
+      "beforeSha256": "863b5b13079d86927f61e548d66e743e7d2c0b15bbb7278ca678b2391e0f060d",
+      "afterSha256": "863b5b13079d86927f61e548d66e743e7d2c0b15bbb7278ca678b2391e0f060d"
     },
     {
       "name": "cameraView-marquee",
@@ -331,7 +416,7 @@
         {
           "commandId": "draw.pointSelection.set",
           "params": {
-            "drawingId": "dr_01K7JJN800PX2E6GTJB9DHA8AK",
+            "drawingId": "dr_01K7JJN800XAXH9XVMWDSJKH5N",
             "rect": {
               "x": -100.048828125,
               "y": -49.6875,
@@ -345,7 +430,7 @@
       "labels": [],
       "selection": {
         "selectedIds": [
-          "st_01K7JJN800HSZJQYZ3RYPSW24C"
+          "st_01K7JJN800R47GKM97R09KEXHE"
         ],
         "bounds": {
           "x": -84.0,
@@ -355,18 +440,25 @@
         },
         "selectedPoints": [
           {
-            "strokeId": "st_01K7JJN800HSZJQYZ3RYPSW24C",
+            "strokeId": "st_01K7JJN800R47GKM97R09KEXHE",
             "anchor": 0
           },
           {
-            "strokeId": "st_01K7JJN800HSZJQYZ3RYPSW24C",
+            "strokeId": "st_01K7JJN800R47GKM97R09KEXHE",
             "anchor": 1
           }
         ]
       },
+      "display": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 2,
+        "handles": 3,
+        "locked": false
+      },
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800HSZJQYZ3RYPSW24C",
+          "id": "st_01K7JJN800R47GKM97R09KEXHE",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
@@ -374,14 +466,14 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800HSZJQYZ3RYPSW24C",
+          "id": "st_01K7JJN800R47GKM97R09KEXHE",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         }
       ],
-      "beforeSha256": "9f35b148d2f4ca33474cf309848d43e61f64a72af3f38255ac09cbfa345835b4",
-      "afterSha256": "9f35b148d2f4ca33474cf309848d43e61f64a72af3f38255ac09cbfa345835b4"
+      "beforeSha256": "1ddf7e622e1470c71c8b5e8b86e8ca8851dbe8ebf8f6fe05baa03fb88ff2c855",
+      "afterSha256": "1ddf7e622e1470c71c8b5e8b86e8ca8851dbe8ebf8f6fe05baa03fb88ff2c855"
     },
     {
       "name": "drawingView-add-click",
@@ -389,10 +481,10 @@
         {
           "commandId": "draw.pointSelection.set",
           "params": {
-            "drawingId": "dr_01K7JJN800YFSZKQXRADR41P74",
+            "drawingId": "dr_01K7JJN800RWC73KCBFB39N64C",
             "points": [
               {
-                "strokeId": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+                "strokeId": "st_01K7JJN800XWEZ893W4B9CKD6A",
                 "anchor": 1
               }
             ],
@@ -403,7 +495,7 @@
       "labels": [],
       "selection": {
         "selectedIds": [
-          "st_01K7JJN800RM54XQ9RG0BTPR6W"
+          "st_01K7JJN800XWEZ893W4B9CKD6A"
         ],
         "bounds": {
           "x": -84.0,
@@ -413,18 +505,25 @@
         },
         "selectedPoints": [
           {
-            "strokeId": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+            "strokeId": "st_01K7JJN800XWEZ893W4B9CKD6A",
             "anchor": 0
           },
           {
-            "strokeId": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+            "strokeId": "st_01K7JJN800XWEZ893W4B9CKD6A",
             "anchor": 1
           }
         ]
       },
+      "display": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 2,
+        "handles": 3,
+        "locked": false
+      },
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+          "id": "st_01K7JJN800XWEZ893W4B9CKD6A",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
@@ -432,14 +531,14 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+          "id": "st_01K7JJN800XWEZ893W4B9CKD6A",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         }
       ],
-      "beforeSha256": "9a3f42b0a77cf0a145ede574c82e7b879726a2d299b21444bc1be6a8ab29a81a",
-      "afterSha256": "9a3f42b0a77cf0a145ede574c82e7b879726a2d299b21444bc1be6a8ab29a81a"
+      "beforeSha256": "5204c1d4e21b400f2b15295af16b9d8ee86fbabb1607858702634f45c52029f6",
+      "afterSha256": "5204c1d4e21b400f2b15295af16b9d8ee86fbabb1607858702634f45c52029f6"
     },
     {
       "name": "drawingView-click",
@@ -447,10 +546,10 @@
         {
           "commandId": "draw.pointSelection.set",
           "params": {
-            "drawingId": "dr_01K7JJN8000VE997QV65QCFH59",
+            "drawingId": "dr_01K7JJN800QT6JEESH1CBGNHPH",
             "points": [
               {
-                "strokeId": "st_01K7JJN800VNC9AXVHYYAW9Z15",
+                "strokeId": "st_01K7JJN800H8NG0K4X3BBYZ9MC",
                 "anchor": 0
               }
             ],
@@ -461,7 +560,7 @@
       "labels": [],
       "selection": {
         "selectedIds": [
-          "st_01K7JJN800VNC9AXVHYYAW9Z15"
+          "st_01K7JJN800H8NG0K4X3BBYZ9MC"
         ],
         "bounds": {
           "x": -84.0,
@@ -471,14 +570,21 @@
         },
         "selectedPoints": [
           {
-            "strokeId": "st_01K7JJN800VNC9AXVHYYAW9Z15",
+            "strokeId": "st_01K7JJN800H8NG0K4X3BBYZ9MC",
             "anchor": 0
           }
         ]
       },
+      "display": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 1,
+        "handles": 1,
+        "locked": false
+      },
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800VNC9AXVHYYAW9Z15",
+          "id": "st_01K7JJN800H8NG0K4X3BBYZ9MC",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
@@ -486,14 +592,14 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800VNC9AXVHYYAW9Z15",
+          "id": "st_01K7JJN800H8NG0K4X3BBYZ9MC",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         }
       ],
-      "beforeSha256": "10bb4cee288b1b9e246efeef059ca7224083ab52963361c354e006cb7cc46599",
-      "afterSha256": "10bb4cee288b1b9e246efeef059ca7224083ab52963361c354e006cb7cc46599"
+      "beforeSha256": "267ebdb9779f60bbe7212d0c0d1c28f555cfeb747f10b765dc8150137e372c9e",
+      "afterSha256": "267ebdb9779f60bbe7212d0c0d1c28f555cfeb747f10b765dc8150137e372c9e"
     },
     {
       "name": "drawingView-empty",
@@ -512,7 +618,7 @@
         {
           "commandId": "draw.pointSelection.set",
           "params": {
-            "drawingId": "dr_01K7JJN8008DMVDWJ3XSYGHC09",
+            "drawingId": "dr_01K7JJN800XKK5C45KN9WFA4ZQ",
             "points": [],
             "mode": "replace"
           }
@@ -524,9 +630,16 @@
         "bounds": null,
         "selectedPoints": []
       },
+      "display": {
+        "strokes": 0,
+        "anchors": 0,
+        "selected": 0,
+        "handles": 0,
+        "locked": false
+      },
       "geometryBefore": [
         {
-          "id": "st_01K7JJN8003DG4DBZS8WG20N21",
+          "id": "st_01K7JJN800J4A0ZXJN3RD8YH6J",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
@@ -534,14 +647,14 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN8003DG4DBZS8WG20N21",
+          "id": "st_01K7JJN800J4A0ZXJN3RD8YH6J",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         }
       ],
-      "beforeSha256": "8ce7492a4307119a905233ad55eb889752e135d6c748c9802ba088d4fd4f60f8",
-      "afterSha256": "8ce7492a4307119a905233ad55eb889752e135d6c748c9802ba088d4fd4f60f8"
+      "beforeSha256": "432859c5ea79e807d97f476f1df3fd883d21e6020a969f9d4ea937e8e2e218df",
+      "afterSha256": "432859c5ea79e807d97f476f1df3fd883d21e6020a969f9d4ea937e8e2e218df"
     },
     {
       "name": "drawingView-marquee",
@@ -549,7 +662,7 @@
         {
           "commandId": "draw.pointSelection.set",
           "params": {
-            "drawingId": "dr_01K7JJN800RMXC5KA06Z3ET59S",
+            "drawingId": "dr_01K7JJN800XNXK9JG460PE3QRS",
             "rect": {
               "x": -100.078125,
               "y": -50.5,
@@ -563,7 +676,7 @@
       "labels": [],
       "selection": {
         "selectedIds": [
-          "st_01K7JJN800J27W3WEBC9MWTNPV"
+          "st_01K7JJN800GDAKHAV9VK25H7DN"
         ],
         "bounds": {
           "x": -84.0,
@@ -573,18 +686,25 @@
         },
         "selectedPoints": [
           {
-            "strokeId": "st_01K7JJN800J27W3WEBC9MWTNPV",
+            "strokeId": "st_01K7JJN800GDAKHAV9VK25H7DN",
             "anchor": 0
           },
           {
-            "strokeId": "st_01K7JJN800J27W3WEBC9MWTNPV",
+            "strokeId": "st_01K7JJN800GDAKHAV9VK25H7DN",
             "anchor": 1
           }
         ]
       },
+      "display": {
+        "strokes": 1,
+        "anchors": 3,
+        "selected": 2,
+        "handles": 3,
+        "locked": false
+      },
       "geometryBefore": [
         {
-          "id": "st_01K7JJN800J27W3WEBC9MWTNPV",
+          "id": "st_01K7JJN800GDAKHAV9VK25H7DN",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
@@ -592,17 +712,19 @@
       ],
       "geometryAfter": [
         {
-          "id": "st_01K7JJN800J27W3WEBC9MWTNPV",
+          "id": "st_01K7JJN800GDAKHAV9VK25H7DN",
           "kind": "pencil",
           "closed": false,
           "anchors": 3
         }
       ],
-      "beforeSha256": "da04c17621e095512d5da44d545df8d16fb49a91b7d009af041f703787acc19e",
-      "afterSha256": "da04c17621e095512d5da44d545df8d16fb49a91b7d009af041f703787acc19e"
+      "beforeSha256": "a033b40df0ca31ed58a6b20d9f5722adb0ca3fe72a8f6c2b1ee2ed415d59228b",
+      "afterSha256": "a033b40df0ca31ed58a6b20d9f5722adb0ca3fe72a8f6c2b1ee2ed415d59228b"
     }
   ],
   "measurements": [],
-  "transcriptSha256": "ebcb698f76355efb5bff2aba5ec4e73d7a66124e0130ac7fb93ec03494a9ce60",
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-npnxeiwp"
+  "canvases": [],
+  "captures": [],
+  "transcriptSha256": "ae9d5ba3d69cc4c885540f956fa696487673045f57db99fbdd1b9649d26a45bc",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-i4hcavfn"
 }
