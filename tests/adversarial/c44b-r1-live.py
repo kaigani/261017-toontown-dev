@@ -418,7 +418,7 @@ async def envelope_body(t,step):
         after=await drawings(ids);labels=await t.steps_since(pos);commands=(rec or {}).get('commands') or []
         expected='draw.envelope.apply' if tool=='perspective' else 'draw.repositionAll.apply'
         label='Perspective Tool' if tool=='perspective' else 'Reposition All Drawings'
-        check(len(commands)==1 and commands[0]['commandId']==expected if expect else not commands,name+' command',commands)
+        check(len(commands)==1 and commands[0]['commandId']==expected if expect else ((rec or {}).get('status')!='ok' or not commands),name+' command',commands)
         check([x[0] for x in labels]==([label] if expect else []),name+' undo labels',labels)
         vs=await c('view.list');vs=vs.get('views',[]) if isinstance(vs,dict) else vs
         copy=t.work/'direct.animpkg';shutil.copyfile(base,copy)
@@ -429,7 +429,9 @@ async def envelope_body(t,step):
             async with ClientSession(*streams,list_roots_callback=roots) as hs:
                 await hs.initialize();ht=d.Table(hs,t.run,p.OUT,t.work)
                 await ht.cmd('draw.selection.set',{'by':'ids','ids':selection.get('selectedIds',[])})
-                for cmd in commands:await ht.cmd(cmd['commandId'],cmd.get('params') or {})
+                for cmd in commands:
+                    result=await d.e2e.run_cmd(hs,cmd['commandId'],cmd.get('params') or {})
+                    t.run.save(name+'-direct-answer.json',result)
                 direct=await drawings(ids,ht.cmd)
                 check(after==direct,name+' D-32 exact all drawing content',None)
         if tool=='repositionAll' and commands and commands[0]['commandId']==expected and expect:
@@ -514,10 +516,11 @@ async def envelope_body(t,step):
                 await compare(view,view+'-'+name,pts,mods,tool='repositionAll')
         elif step==6:
             for tool in ('perspective','repositionAll'):
-                for mode in ('one-locked','all-locked','element-locked','hidden'):
+                for mode in ('one-locked','current-locked','all-locked','element-locked','hidden'):
                     if mode=='hidden' and view!='cameraView':continue
                     async def setup(eid,ids):
                         if mode=='one-locked':await c('draw.lock.set',{'drawingId':ids[1],'locked':True})
+                        elif mode=='current-locked':await c('draw.lock.set',{'drawingId':ids[0],'locked':True})
                         elif mode=='all-locked':
                             for did in ids:await c('draw.lock.set',{'drawingId':did,'locked':True})
                         elif mode=='element-locked':await c('element.lock.set',{'elementIds':[eid],'locked':True})
@@ -528,6 +531,7 @@ async def envelope_body(t,step):
                         await asyncio.sleep(.5)
                         node=d.McpTable.node(await d.McpTable.tree(t),view+'.canvas')
                         t.run.save(view+'-'+tool+'-'+mode+'-canvas.json',node)
+                        if mode=='hidden':check(not json.loads((node or {}).get('value') or '{}').get('toolBox'),view+' '+tool+' hidden has no overlay box',node)
                     b,a,r=await compare(view,view+'-'+tool+'-'+mode,[(-80,-60),(-50,-35)],tool=tool,setup=setup,expect=mode=='one-locked')
                     if mode!='one-locked':check(b==a,view+' '+tool+' '+mode+' forbidden edit unchanged',r)
                     elif tool=='repositionAll':
