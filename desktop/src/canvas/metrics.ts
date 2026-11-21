@@ -50,11 +50,22 @@ export class CanvasMetrics {
   private release: { t: number; version: number; answered: number | null } | null = null;
   /** Keystroke to glyph (design note 5 §8): a key's timeStamp to the frame drawing a newer model. */
   readonly keys: number[] = [];
-  private key: { t: number; version: number } | null = null;
+  private key: { t: number; version: number; seen: Set<string> } | null = null;
+  /** A keystroke's stages (the IPC answer, the engine event, the scene answer, the drawing applied), from the key. */
+  readonly keyStages = new Map<string, number[]>();
 
   /** A key was typed into the Text tool's editor at `t` (its event's timeStamp), with the model at `version`. */
   keyed(t: number, version: number): void {
-    this.key ??= { t, version };
+    this.key ??= { t, version, seen: new Set() };
+  }
+
+  /** A stage of the pending keystroke's way to the glyph reached at `now` (its first time per keystroke). */
+  keyStage(name: string, now: number): void {
+    if (!this.key || this.key.seen.has(name)) return;
+    this.key.seen.add(name);
+    const list = this.keyStages.get(name) ?? [];
+    ring(list, Math.max(0, now - this.key.t), 50);
+    this.keyStages.set(name, list);
   }
 
   /** A frame began at `now` and its work took `workMs`; `inGesture` while a gesture is in progress. */
@@ -123,6 +134,7 @@ export class CanvasMetrics {
     inkMs: Stat;
     commitMs: Stat;
     keyToGlyphMs: Stat;
+    keyStagesMs: Record<string, Stat>;
     sceneMs: Stat;
     commits: number[];
     /** The raw intervals of the last frames, idle and in a gesture (ruling D-33: the share of long intervals). */
@@ -146,6 +158,7 @@ export class CanvasMetrics {
       inkMs: stat(this.ink),
       commitMs: stat(this.commit),
       keyToGlyphMs: stat(this.keys),
+      keyStagesMs: Object.fromEntries([...this.keyStages].map(([k, v]) => [k, stat(v)])),
       sceneMs: stat(this.scenes),
       commits: this.commit.map((v) => Math.round(v * 100) / 100),
       frameIntervals: this.frames.map((v) => Math.round(v * 100) / 100),

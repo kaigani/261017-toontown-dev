@@ -82,6 +82,16 @@ EXPECTED = {
 }
 
 
+def unstamped(v):
+    """Content without revision stamps: the window's typing commits one revision per keystroke where `type_text` commits
+    one for the run, and undo does not take revisions back (so the stamps differ, the content does not)."""
+    if isinstance(v, dict):
+        return {k: unstamped(x) for k, x in v.items() if k not in ("rev", "documentRev")}
+    if isinstance(v, list):
+        return [unstamped(x) for x in v]
+    return v
+
+
 def problems(expect: dict, path: str, cmds: list, labels: list) -> list:
     out = []
     if len(cmds) != 1:
@@ -305,7 +315,7 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
             env2 = await h2.tool("pointer", req2)
             cmds2 = (env2.get("result") or {}).get("commands") or []
             direct = [await h3.run(c["commandId"], c.get("params") or {}) for c in rec.get("commands") or []]
-            contents = [await e.result("draw.drawing.get", {}) for e in engines]
+            contents = [unstamped(await e.result("draw.drawing.get", {})) for e in engines]
             labels = [await e.labels_since(p) for e, p in zip(engines, pos)]
             win_cmds, h2_cmds = c43.normalised(rec.get("commands") or []), c43.normalised(cmds2)
             statuses = [rec.get("status"), env2.get("status"), "ok" if all(d.get("status") == "ok" for d in direct) else "error"]
@@ -319,6 +329,8 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
                         "sameCommands": cmds_ok, "sameContent": same_content, "sameLabels": same_labels,
                         "replayExact": cmds_exact and content_exact,
                         "replayLargestDifference": max(cmds_diff or 0.0, content_diff or 0.0)})
+            if not same_content:
+                row["contents"] = contents
             expect = EXPECTED[name]
             spec_bad = []
             for path, c, lab in zip(("window", "engine2", "engine3"), (win_cmds, h2_cmds, win_cmds), labels):
@@ -330,7 +342,9 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
                       {k: row[k] for k in ("sameCommands", "sameContent", "sameLabels", "statuses", "labels", "replayExact")})
             # The Text tool: a click then typing (design note 5 §3): the window types (real keys, or type_text the
             # window's session receives), engine 2 the replayed click and type_text, engine 3 draw.text.set.
-            if tool == "text" and statuses[0] == "ok":
+            # Typing runs on the last row only: the window's run is one step, engine 3's commands two, so their undos
+            # leave the revisions (the id streams' seeds, 11 P7) one apart for any row after it.
+            if tool == "text" and statuses[0] == "ok" and view == VIEWS[-1]:
                 text_id = next(((c.get("envelope") or {}).get("result") or {}).get("textId")
                                for c in (env2.get("result") or {}).get("commands") or [] if c.get("commandId") == "draw.text.add")
                 pos_t = [await engine.position() for engine in engines]
@@ -341,11 +355,15 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
                     await asyncio.sleep(0.5)
                     os_type("Hi")
                 else:
-                    await app.tool("type_text", {"text": "Hi"})
-                await h2.tool("type_text", {"text": "Hi"})
+                    for ch in "Hi":
+                        await app.tool("type_text", {"text": ch})
+                # Two keystrokes on every engine (one revision each, as the window's), so the engines stay in step.
+                for ch in "Hi":
+                    await h2.tool("type_text", {"text": ch})
                 d3 = direct[0].get("result") or {}
-                await h3.run("draw.text.set", {"drawingId": d3.get("drawingId"), "textId": d3.get("textId"),
-                                               "insert": {"at": 0, "text": "Hi"}})
+                for at, ch in enumerate("Hi"):
+                    await h3.run("draw.text.set", {"drawingId": d3.get("drawingId"), "textId": d3.get("textId"),
+                                                   "insert": {"at": at, "text": ch}})
                 await asyncio.sleep(1.0)
                 texts = []
                 for e in engines:
@@ -355,7 +373,9 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
                 tree = (await app.tool("inspect_ui", {"target": "window"})).get("result") or {}
                 editor = c42.find(tree.get("root") or {}, lambda n: n.get("id") == "canvas.textEditor")
                 row["editor"] = editor
-                ok_t = texts[0] == texts[1] == texts[2] and ["Hi"] in [t[-1:] for t in texts] and tl[0] == tl[1] == tl[2] == ["Typing"]
+                # SI-191: the input path's run is one step; commands sent directly are each their own step.
+                ok_t = (texts[0] == texts[1] == texts[2] and ["Hi"] in [t[-1:] for t in texts]
+                        and tl[0] == tl[1] == ["Typing"] and tl[2] == ["Typing", "Typing"])
                 row["typing"] = {"texts": texts, "labels": tl, "textId": text_id}
                 run.check(ok_t, f"three-way {label}: typing gives one \"Typing\" step and the same text (SI-191)", row["typing"])
                 labels = [lab + t for lab, t in zip(labels, tl)]

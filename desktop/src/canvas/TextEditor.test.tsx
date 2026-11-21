@@ -1,4 +1,4 @@
-// The Text tool's editor (M4 C4.4b; design note 5 §4, §8): the input-type mapping, one send per composition, the value
+// The Text tool's editor (M4 C4.4b; design note 5 \u00a74, \u00a78): the input-type mapping, one send per composition, the value
 // emptied after each input, Primary+A/X/C/V taken by the editor and Primary+Z left to the keymap, and the listeners
 // attached when the session appears (the editor mounts before any session).
 import { act, cleanup, render } from '@testing-library/react';
@@ -71,13 +71,13 @@ describe('TextEditor', () => {
       area.dispatchEvent(new CompositionEvent('compositionstart', { data: '' }));
     });
     expect(area.className).toContain('composing');
-    input(area, 'insertCompositionText', 'に', true);
-    input(area, 'insertCompositionText', 'にほ', true);
+    input(area, 'insertCompositionText', '\u306b', true);
+    input(area, 'insertCompositionText', '\u306b\u307b', true);
     expect(sent).toEqual([]);
     act(() => {
-      area.dispatchEvent(new CompositionEvent('compositionend', { data: '日本' }));
+      area.dispatchEvent(new CompositionEvent('compositionend', { data: '\u65e5\u672c' }));
     });
-    expect(sent).toEqual([{ kind: 'text', text: '日本' }]);
+    expect(sent).toEqual([{ kind: 'text', text: '\u65e5\u672c' }]);
     expect(area.className).not.toContain('composing');
   });
 

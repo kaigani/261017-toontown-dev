@@ -91,4 +91,18 @@ describe('canvas metrics', () => {
     m.drawn(4, 125);
     expect(m.snapshot().keyToGlyphMs).toMatchObject({ n: 1, p50: 25, max: 25 });
   });
+
+  it("a keystroke's stages: each stage's first time per pending key, none without one", () => {
+    const m = new CanvasMetrics();
+    m.keyStage('event', 50);
+    m.keyed(100, 3);
+    m.keyStage('event', 103);
+    m.keyStage('event', 104);
+    m.keyStage('loaded', 120);
+    m.drawn(4, 125);
+    m.keyStage('loaded', 130);
+    const s = m.snapshot().keyStagesMs;
+    expect(s['event']).toMatchObject({ n: 1, p50: 3 });
+    expect(s['loaded']).toMatchObject({ n: 1, p50: 20 });
+  });
 });

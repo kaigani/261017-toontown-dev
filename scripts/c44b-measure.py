@@ -1,6 +1,6 @@
 """M4 C4.4b budgets (plan §5.5; rulings D-33, D-45, D-75 items 2 and 6): the four tools' workstation receipts.
 
-Usage: python scripts/c44b-measure.py <toontown binary> <out dir> [--backend webgl2|webgpu] [--drags N]
+Usage: python scripts/c44b-measure.py <toontown binary> <out dir> [--backend webgl2|webgpu] [--drags N] [--text-only]
 
 Windows (real OS input), release build, `--canvas-metrics`. On a small drawing (a 120 x 120 du rectangle), N OS drags
 (default 30) per row, each undone: the Contour Editor's anchor drag, Perspective's corner drag, Reposition All's offset;
@@ -45,7 +45,19 @@ eq = _load("c44bequiv", "c44b-gesture-equivalence.py")
 e2e, c42 = e6.e2e, e6.c42
 rc = e2e.run_cmd
 
+#: `--text-only`: the keystroke row alone (a diagnosis run; not a receipt).
+ONLY = {"text": False}
 BOUNDS = {"inkMs": 16.7, "commitSmallMs": 50.0, "gestureWorkMs": 8.0, "keyToGlyphMs": 33.0}
+
+
+def added(before: list, after: list) -> list:
+    """The values a ring gained between two reads: `after` less the longest suffix of `before` it starts with (the
+    canvas's rings keep the last 50 or 300 values, so a full ring drops old values as it gains new ones)."""
+    for shift in range(len(before) + 1):
+        tail = before[shift:]
+        if after[:len(tail)] == tail:
+            return after[len(tail):]
+    return list(after)
 
 
 def p95(values: list) -> float | None:
@@ -73,6 +85,12 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                 await rc(s, "element.drawing.create", {"elementId": eid, "name": "small", "exposeFrom": 1, "exposeTo": 1})
                 await rc(s, "element.drawing.create", {"elementId": eid, "name": "large", "exposeFrom": 2, "exposeTo": 2})
                 await rc(s, "app.context.set", {"elementId": eid, "frame": 1})
+                # Black ink (the default palette's Colour 2): the captures' ink mask needs a line colour.
+                found = await res("doc.object.find", {"type": "swatch", "name": "Colour 2"})
+                items = found.get("items") or found.get("matches") or []
+                black = next((it.get("id") or it.get("key") for it in items if isinstance(it, dict)), None)
+                if black:
+                    await rc(s, "colour.current.set", {"colourId": black})
                 sq = await res("draw.rectangle.add", {"from": {"x": 30, "y": -60}, "to": {"x": 150, "y": 60}})
                 sid = (sq.get("strokeIds") or [None])[0]
                 await rc(s, "view.active.set", {"viewId": "drawingView"})
@@ -105,33 +123,47 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                     await asyncio.get_running_loop().run_in_executor(None, eq.os_drag, e2e.APP_PID["pid"], client_pts, list(mods), times)
                     return times
 
-                async def row(name: str, tool: str, dpts: list, n: int, select=True) -> dict:
+                async def resident() -> str:
+                    return json.dumps((await c42.canvas_state(s)).get("drawings"))
+
+                async def row(name: str, tool: str, dpts: list, n: int, select=True, into="rows") -> dict:
                     await rc(s, "tool.active.set", {"toolId": tool})
                     if select:
                         await rc(s, "draw.selection.set", {"by": "ids", "ids": [sid], "mode": "replace"})
                     await asyncio.sleep(0.8)
-                    m0 = await metrics()
-                    c0, i0, w0 = len(m0.get("commits") or []), len(m0.get("ink") or []), len(m0.get("gestureWork") or [])
                     errors = []
+                    commits: list = []
+                    ink: list = []
+                    work: list = []
                     for _ in range(n):
+                        # Each drag's own values: the rings read before and after it (an undo commits no drag).
+                        m0 = await metrics()
                         t = await os_drag(dpts)
                         if "error" in t:
                             errors.append(t["error"])
-                        await asyncio.sleep(0.7)
+                        # The commit drawn: a wait for the state (D-45), bounded for a drag that commits nothing.
+                        t1 = time.monotonic()
+                        m1 = await metrics()
+                        while not added(m0.get("commits") or [], m1.get("commits") or []) and time.monotonic() - t1 < 15.0:
+                            await asyncio.sleep(0.1)
+                            m1 = await metrics()
+                        commits += added(m0.get("commits") or [], m1.get("commits") or [])
+                        ink += added(m0.get("ink") or [], m1.get("ink") or [])
+                        work += added(m0.get("gestureWork") or [], m1.get("gestureWork") or [])
+                        # The undo drawn before the next drag (a wait for the state, bounded).
+                        drawn = await resident()
                         await rc(s, "edit.undo", {})
+                        t2 = time.monotonic()
+                        while await resident() == drawn and time.monotonic() - t2 < 20.0:
+                            await asyncio.sleep(0.1)
                         await asyncio.sleep(0.3)
-                    await asyncio.sleep(1.2)
-                    m1 = await metrics()
-                    # The rings keep the last 50 commits and 300 samples: the counts since the row began.
-                    commits = (m1.get("commits") or [])[c0:] if len(m1.get("commits") or []) > c0 else (m1.get("commits") or [])[-n:]
-                    ink = (m1.get("ink") or [])[i0:] if len(m1.get("ink") or []) > i0 else (m1.get("ink") or [])
-                    work = (m1.get("gestureWork") or [])[w0:] if len(m1.get("gestureWork") or []) > w0 else (m1.get("gestureWork") or [])
                     out_ = {"name": name, "drags": n, "errors": errors, "commitP95": p95(commits), "commits": len(commits),
-                            "inkP95": p95(ink), "inkSamples": len(ink), "gestureWorkP95": p95(work), "workFrames": len(work)}
-                    record.setdefault("rows", []).append(out_)
+                            "commitsMs": commits, "inkP95": p95(ink), "inkSamples": len(ink), "gestureWorkP95": p95(work),
+                            "workFrames": len(work)}
+                    record.setdefault(into, []).append(out_)
                     return out_
 
-                rows = [
+                rows = [] if ONLY["text"] else [
                     await row("Contour Editor anchor drag", "contourEditor", [(30, -60), (45, -50), (60, -40)], drags),
                     await row("Perspective corner drag", "perspective", [(150, 60), (135, 60), (120, 60)], drags),
                     await row("Reposition All offset", "repositionAll", [(70, -20), (85, -10), (100, 0)], drags, select=False),
@@ -149,35 +181,47 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                 # Keystroke to glyph: a Text tool session opened by a real click, 30 real keystrokes.
                 await rc(s, "tool.active.set", {"toolId": "text"})
                 await asyncio.sleep(0.5)
-                await os_drag([(-200, -120), (-200, -120)])
+                await os_drag([(-120, -50), (-120, -50)])
                 await asyncio.sleep(1.5)
                 for ch in "the quick brown fox jumps over":
                     eq.os_type(ch)
                     await asyncio.sleep(0.25)
                 await asyncio.sleep(1.5)
-                k = (await metrics()).get("keyToGlyphMs") or {}
+                mk = await metrics()
+                k = mk.get("keyToGlyphMs") or {}
                 record["keyToGlyph"] = k
+                record["keyParts"] = {"stages": mk.get("keyStagesMs"), "sceneMs": mk.get("sceneMs"), "loads": mk.get("loads")}
                 run.check(k.get("n", 0) >= 25 and k.get("p95") is not None and k["p95"] <= BOUNDS["keyToGlyphMs"],
                           f"keystroke to glyph {k.get('p95')} ms p95 <= {BOUNDS['keyToGlyphMs']} ms ({k.get('n')} keys)", k)
                 await rc(s, "tool.active.set", {"toolId": "select"})
+                if ONLY["text"]:
+                    return
 
                 # The 50,000-point case: one stroke on its own layer (reported, not asserted: D-75 items 2 and 6).
                 await rc(s, "app.context.set", {"elementId": eid, "frame": 2})
+                # The whole 400 x 160 du stroke in the Drawing view, so every drag lands on it.
+                await rc(s, "view.zoom.set", {"viewId": "drawingView", "zoom": 0.5})
+                await rc(s, "view.pan.set", {"viewId": "drawingView", "centre": {"x": 0, "y": 0}})
                 pts = [{"x": -200 + 400 * (i / 50000), "y": 80 * math.sin(i / 300.0)} for i in range(50000)]
-                big = await res("draw.stroke.add", {"kind": "pencil", "points": pts, "layer": "new", "smoothing": 0})
+                big = await res("draw.stroke.add", {"kind": "pencil", "points": pts, "layer": "new", "fit": False})
                 bid = (big.get("strokeIds") or [None])[0]
-                await asyncio.sleep(3.0)
+                run.check(bid is not None, "the 50,000-point stroke is added (straight segments, no fitting)", big)
+                if bid is None:
+                    return
+                t3 = time.monotonic()
+                while time.monotonic() - t3 < 30.0 and not any(d.get("bucket") is not None for d in json.loads(await resident()) or []):
+                    await asyncio.sleep(0.2)
+                await asyncio.sleep(1.0)
                 large = []
                 for name, tool, dpts in (("Contour Editor anchor drag (50,000 points)", "contourEditor", [(-200, 0), (-190, 10), (-180, 20)]),
                                          ("Perspective corner drag (50,000 points)", "perspective", [(200, 80), (190, 80), (180, 80)]),
                                          ("Reposition All offset (50,000 points)", "repositionAll", [(0, 0), (10, 10), (20, 20)])):
-                    await rc(s, "draw.selection.set", {"by": "ids", "ids": [bid] if bid else [], "mode": "replace"})
+                    await rc(s, "draw.selection.set", {"by": "ids", "ids": [bid], "mode": "replace"})
                     sid_saved = sid
                     sid = bid or sid
-                    r = await row(name, tool, dpts, 10)
+                    r = await row(name, tool, dpts, 10, into="large")
                     sid = sid_saved
                     large.append(r)
-                record["large"] = large
                 run.check(True, "the 50,000-point case is reported, not asserted (D-75 items 2 and 6; M11 C11.1)", large)
 
 
@@ -189,6 +233,9 @@ def main() -> int:
         i = args.index("--backend")
         backend = args[i + 1]
         del args[i:i + 2]
+    if "--text-only" in args:
+        ONLY["text"] = True
+        args.remove("--text-only")
     if "--drags" in args:
         i = args.index("--drags")
         drags = int(args[i + 1])
@@ -207,6 +254,8 @@ def main() -> int:
         user = Path(tempfile.mkdtemp(prefix="tt-c44b-measure-"))
         discovery = out / "discovery.json"
         proc = meas.launch(app, user, discovery, backend)
+        # The OS input finds the window by the process.
+        e2e.APP_PID["pid"] = proc.pid
         try:
             d = e2e.wait_discovery(discovery, proc)
             asyncio.run(measure(d["endpoint"], d["token"], run, out, drags, record))

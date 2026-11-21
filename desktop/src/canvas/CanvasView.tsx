@@ -364,11 +364,13 @@ export function CanvasView({
     /** The Contour Editor runs in this view now: its tool is active and, in the Camera view, the drawing family. */
     const contourActive = () =>
       style.tool === 'contourEditor' && !(model?.scene?.viewType === 'camera' && sceneFamily);
-    /** Loads the current drawing's two parts at its scene revision (preview note §3). */
-    const loadParts = () => {
+    /** Loads the current drawing's two parts at its scene revision (preview note §3). The Select preview needs the
+     *  selection's bounds; Perspective's box is the kernel's (`toolBox`), and the Camera view's scene carries no
+     *  Drawing-view selection. */
+    const loadParts = (needBounds = true) => {
       const m = model;
       const e = m?.scene?.entries.find((x) => x.role === 'current' && !x.outline);
-      if (!m || !e || !m.scene?.selection?.bounds) return;
+      if (!m || !e || (needBounds && !m.scene?.selection?.bounds)) return;
       const mine = {
         drawingId: e.drawingId,
         rest: `${e.drawingId}#rest`,
@@ -525,9 +527,11 @@ export function CanvasView({
         if (metrics) {
           model.onLoaded = (key, bytes, ms) => {
             metrics.load(key, bytes, ms);
+            metrics.keyStage('loaded', performance.now());
           };
           model.onScene = (ms) => {
             metrics.scene(ms);
+            metrics.keyStage('scene', performance.now());
           };
         }
         model.setBucket(bucketOf(scaleOf(d2v)));
@@ -635,6 +639,7 @@ export function CanvasView({
           refreshMapping();
           return;
         }
+        metricsRef.current?.keyStage('event', performance.now());
         model?.markDirty();
       })
       .then((u) => {
@@ -806,7 +811,8 @@ export function CanvasView({
         // The frame time is the interval between frames (the rAF timestamps); the work is this callback's.
         metrics.frame(frameAt, now - began, collector.active || playing !== null);
         // Input-to-ink, and for a previewed drag its feedback: the frame that draws the samples so far (plan §6).
-        if (ov || pv) metrics.inkDrawn(now);
+        // A Perspective or Reposition All drag's feedback is its map (design note 4 §10), drawn with the overlay.
+        if (ov || pv || (here && toolMap)) metrics.inkDrawn(now);
         // Committed when the window shows the committed state: every drawing resident at its scene revision.
         metrics.drawn(model.settledVersion, now);
       }
@@ -1032,7 +1038,7 @@ export function CanvasView({
           locked: tb?.locked ?? false,
         };
         previewKind = tool === 'perspective' ? 'envelope' : 'reposition';
-        if (tool === 'perspective' && toolPress.handle && !toolPress.locked) loadParts();
+        if (tool === 'perspective' && toolPress.handle && !toolPress.locked) loadParts(false);
       } else if (contourActive()) {
         // The press classifies its target with the kernel's rule (`contourHitAt`); the release's command is the
         // kernel's. A locked drawing draws no preview (the refusal is the kernel's).
@@ -1321,7 +1327,11 @@ export function CanvasView({
         mac={isMac()}
         send={(input, at) => {
           metricsRef.current?.keyed(at, modelVersion.current);
-          void engine.textInput(input).catch(() => undefined);
+          metricsRef.current?.keyStage('sent', performance.now());
+          void engine
+            .textInput(input)
+            .then(() => metricsRef.current?.keyStage('answer', performance.now()))
+            .catch(() => undefined);
         }}
         readText={async () => {
           const s = editor?.session;
