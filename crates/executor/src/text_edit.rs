@@ -265,6 +265,10 @@ pub(crate) fn commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, Com
             Ok(vec![("draw.text.set".into(), json!({ "drawingId": drawing, "textId": id, "position": pt(at) }))])
         }
         Zone::Inside(id) | Zone::Frame(id) => {
+            // A press that opens a session (finding C44B-R1-42; rulings D-80, D-81): none opens on a locked drawing
+            // (`drawing.locked`), nor on a locked or hidden element in a scene view; the press is refused and the
+            // window shows the refusal.
+            crate::gesture::interactive_target(cx, &g.view_id, TOOL, true)?;
             // A click (or drag) inside another object ends the session there first.
             Ok(ending(cx, session.as_ref(), Some(&id)).into_iter().collect())
         }
@@ -511,6 +515,19 @@ pub fn is_editing_key(keys: &str) -> bool {
             | "Escape"
             | "Tab"
             | "Primary+A"
+            // Word navigation and deletion (01 §8.4; D-81 item 4b): Ctrl on Windows and Linux, Option on macOS.
+            | "Primary+Left"
+            | "Primary+Right"
+            | "Primary+Shift+Left"
+            | "Primary+Shift+Right"
+            | "Primary+Backspace"
+            | "Primary+Delete"
+            | "Alt+Left"
+            | "Alt+Right"
+            | "Alt+Shift+Left"
+            | "Alt+Shift+Right"
+            | "Alt+Backspace"
+            | "Alt+Delete"
     )
 }
 
@@ -694,8 +711,11 @@ fn type_text(
             let doc = cx.document().ok()?;
             let current = crate::commands::draw_stroke::current_colour(cx.app(), doc)?;
             let (bx, _) = content_of(cx, s)?;
-            let inherited =
-                if bx.content.runs.is_empty() { None } else { bx.content.run_at(a.saturating_sub(1)).colour_id.clone() };
+            let inherited = if bx.content.runs.is_empty() {
+                None
+            } else {
+                bx.content.run_at(a.saturating_sub(1)).colour_id.clone()
+            };
             (inherited.as_deref() != Some(current.as_str())).then_some(current)
         })
         .flatten();
@@ -742,8 +762,16 @@ fn type_text(
 fn key(core: &mut Core, origin: &Origin, s: &TextEdit, k: &str, out: &mut Vec<(String, Value, Envelope)>) {
     let n = length(core, s).unwrap_or(0);
     let (a, b) = s.range();
-    let shift = k.starts_with("Shift+");
-    let base = k.trim_start_matches("Shift+");
+    let shift = k.contains("Shift+");
+    let without = k.replace("Shift+", "");
+    // The word keys (D-81 item 4b): Ctrl on Windows and Linux and Option on macOS mean the same.
+    let base = match without.as_str() {
+        "Primary+Left" | "Alt+Left" => "WordLeft",
+        "Primary+Right" | "Alt+Right" => "WordRight",
+        "Primary+Backspace" | "Alt+Backspace" => "WordBackspace",
+        "Primary+Delete" | "Alt+Delete" => "WordDelete",
+        other => other,
+    };
     let moved = |core: &mut Core, caret: usize, goal: Option<f64>| {
         end_run(core);
         set_session(core, |e| {
@@ -764,6 +792,16 @@ fn key(core: &mut Core, origin: &Origin, s: &TextEdit, k: &str, out: &mut Vec<(S
             let c = if !shift && b > a { b } else { (s.caret + 1).min(n) };
             moved(core, c, None);
         }
+        "WordLeft" | "WordRight" => {
+            let geo = core.with_lent_session(|cx| content_of(cx, s)).flatten();
+            let Some((bx, _)) = geo else { return };
+            let c = if base == "WordLeft" {
+                text::word_left(&bx.content, s.caret)
+            } else {
+                text::word_right(&bx.content, s.caret)
+            };
+            moved(core, c, None);
+        }
         "Up" | "Down" | "Home" | "End" => {
             let geo = core.with_lent_session(|cx| content_of(cx, s)).flatten();
             let Some((bx, _)) = geo else { return };
@@ -780,9 +818,25 @@ fn key(core: &mut Core, origin: &Origin, s: &TextEdit, k: &str, out: &mut Vec<(S
             };
             moved(core, c, matches!(base, "Up" | "Down").then_some(goal));
         }
-        "Backspace" | "Delete" => {
+        "Backspace" | "Delete" | "WordBackspace" | "WordDelete" => {
+            let word = match base {
+                "WordBackspace" | "WordDelete" => {
+                    core.with_lent_session(|cx| content_of(cx, s)).flatten().map(|(bx, _)| {
+                        if base == "WordBackspace" {
+                            text::word_left(&bx.content, s.caret)
+                        } else {
+                            text::word_right(&bx.content, s.caret)
+                        }
+                    })
+                }
+                _ => None,
+            };
             let del = if b > a {
                 Some((a, b - a))
+            } else if let Some(w) = word {
+                // From the word boundary to the caret (WordBackspace) or from the caret to it (WordDelete).
+                let (lo, hi) = (w.min(s.caret), w.max(s.caret));
+                (hi > lo).then_some((lo, hi - lo))
             } else if base == "Backspace" && s.caret > 0 {
                 Some((s.caret - 1, 1))
             } else if base == "Delete" && s.caret < n {

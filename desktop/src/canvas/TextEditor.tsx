@@ -6,7 +6,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { copyText } from '../shell/clipboard';
-import { beforeInput, editingKey, sliceCodePoints, type EditorInput } from './text';
+import { beforeInput, editingKey, joinSurrogates, sliceCodePoints, type EditorInput } from './text';
 
 export interface EditorSession {
   drawingId: string;
@@ -61,8 +61,19 @@ export function TextEditor({
       const t = await readRef.current();
       return sliceCodePoints(t, Math.min(s.anchor, s.caret), Math.max(s.anchor, s.caret));
     };
+    // A character outside the basic plane typed as two UTF-16 units (D-81 item 4a): the high one waits here.
+    let held = '';
     const onBeforeInput = (e: InputEvent) => {
       if (e.isComposing) return;
+      if ((e.inputType === 'insertText' || e.inputType === 'insertReplacementText') && e.data) {
+        e.preventDefault();
+        const j = joinSurrogates(held, e.data);
+        held = j.held;
+        if (j.send) sendRef.current({ kind: 'text', text: j.send }, e.timeStamp);
+        clear();
+        return;
+      }
+      held = '';
       // Undo and redo are the document's (SI-193): the keymap sends them; the text area keeps no history of its own.
       if (e.inputType === 'historyUndo' || e.inputType === 'historyRedo') {
         e.preventDefault();

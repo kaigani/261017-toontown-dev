@@ -126,6 +126,29 @@ session, `type_text` answers `arg.missing` (`/target`: no text is being edited);
 `\n`), Escape (ends the session), Primary+A (selects all the object's text, 02 line 675). Up and Down use the kernel
 layout and keep `goal_x` until a horizontal move. Tab is consumed and inserts nothing; Escape is the way out.
 
+**Word keys (01 §8.4; ruling D-81 item 4b).** Ctrl+Left and Ctrl+Right (Option+Left and Option+Right on macOS) move by
+words, with Shift extending the highlight; Ctrl+Backspace and Ctrl+Delete (Option+Backspace and Option+Delete) delete
+from the caret to the word boundary, or the highlight when there is one. On macOS Command with the arrows goes to the
+line's start or end (Home, End). **What a word is:** the characters fall in three classes, word characters (a letter,
+a digit, or `_`, by Unicode's alphabetic and numeric properties), white space, and everything else (punctuation and
+symbols). Word left skips white space backwards, then the run of one class before it; word right skips white space,
+then the run of one class after it. So a run of punctuation is a word of its own ("two, three": the comma is one word),
+and a double click selects the run of one class under the point (`word_at`). Positions are code points, as everywhere
+in the session (the grapheme question is answered in the C4.4b round 2 handoff).
+
+**Double click (02 §7.6; finding C44B-R1-41).** The window sends its double click as a request of its own after the
+second click's gesture (`GestureCollector.lone`), and an agent's `pointer` sends its two clicks then `doubleClick`; the
+kernel's collector turns a `doubleClick` with the Text tool active and no gesture pending into a click marked double at
+that place, and the session's anchor and caret go to the word's ends. No command, no undo step.
+
+**A locked target (finding C44B-R1-42; rulings D-80, D-81).** A press that would open a session is refused like any
+gesture on a target that cannot be edited there (`drawing.locked`; `element.locked` or `element.hidden` in a scene
+view), and the window tells the person on the status line.
+
+**Characters outside the basic plane (D-81 item 4a).** Synthesised key events can deliver such a character as two
+`insertText` inputs of one UTF-16 unit each; the editor keeps a lone high surrogate until its low surrogate arrives and
+sends the pair as one character (`joinSurrogates`). A half is never sent: an unpaired surrogate is dropped.
+
 **Window** (`desktop/src/canvas/TextEditor.tsx`): a hidden `<textarea>` (`data-tt-role="textEditor"`, `data-tt-id`,
 and the session's text id, anchor and caret as attributes, so `inspect_ui` shows the session), placed at the caret's
 view position and focused while the session is in that view. `beforeinput` `insertText` sends `Text`;

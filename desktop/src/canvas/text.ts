@@ -127,13 +127,25 @@ export function editingKey(
   mac: boolean,
 ): string | null {
   const primary = mac ? e.metaKey : e.ctrlKey;
+  const arrow = e.key === 'ArrowLeft' || e.key === 'ArrowRight';
+  const side = e.key === 'ArrowLeft' ? 'Left' : 'Right';
+  const shift = e.shiftKey ? 'Shift+' : '';
   if (primary && !e.altKey) {
     const k = e.key.toLowerCase();
     if (k === 'a') return 'Primary+A';
     if (k === 'c') return 'copy';
     if (k === 'x') return 'cut';
     if (k === 'v') return 'paste';
+    // Word navigation and deletion (01 §8.4; D-81 item 4b): Ctrl on Windows and Linux; on macOS Command with the
+    // arrows goes to the line's start or end.
+    if (arrow) return mac ? `${shift}${e.key === 'ArrowLeft' ? 'Home' : 'End'}` : `Primary+${shift}${side}`;
+    if (!mac && (e.key === 'Backspace' || e.key === 'Delete')) return `Primary+${e.key}`;
     return null;
+  }
+  // macOS: Option with the arrows, Backspace and Delete works by words.
+  if (mac && e.altKey && !e.ctrlKey && !e.metaKey) {
+    if (arrow) return `Alt+${shift}${side}`;
+    if (e.key === 'Backspace' || e.key === 'Delete') return `Alt+${e.key}`;
   }
   if (e.ctrlKey || e.metaKey || e.altKey) return null;
   const nav = KEYS[e.key];
@@ -160,6 +172,35 @@ export function beforeInput(inputType: string, data: string | null): EditorInput
     default:
       return null;
   }
+}
+
+/** Joins UTF-16 halves split across inputs (D-81 item 4a): a character outside the basic plane can arrive as a high
+ *  surrogate then a low one in two events. `held` is the high surrogate kept from the previous input; returns the text
+ *  to send (whole characters only) and the high surrogate to keep. A half is never sent: a held high surrogate not
+ *  followed by its low one, and a low one without its high one, are dropped (neither is a character). */
+export function joinSurrogates(held: string, data: string): { send: string; held: string } {
+  let t = held + data;
+  let keep = '';
+  const last = t.charCodeAt(t.length - 1);
+  if (t.length > 0 && last >= 0xd800 && last <= 0xdbff) {
+    keep = t.slice(-1);
+    t = t.slice(0, -1);
+  }
+  // Any remaining unpaired half (a lone low surrogate, or a high one followed by something else) is not a character.
+  let send = '';
+  for (let i = 0; i < t.length; i++) {
+    const c = t.charCodeAt(i);
+    const high = c >= 0xd800 && c <= 0xdbff;
+    const low = c >= 0xdc00 && c <= 0xdfff;
+    const next = t.charCodeAt(i + 1);
+    if (high && next >= 0xdc00 && next <= 0xdfff) {
+      send += t.slice(i, i + 2);
+      i++;
+    } else if (!high && !low) {
+      send += t.charAt(i);
+    }
+  }
+  return { send, held: keep };
 }
 
 /** The highlighted characters, sliced by code points (the kernel's positions). */

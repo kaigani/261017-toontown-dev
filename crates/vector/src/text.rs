@@ -597,6 +597,53 @@ pub fn caret_x(c: &Content, fixed_width: Option<f64>, caret: usize) -> f64 {
     carets(c, fixed_width).iter().find(|k| k.index == caret).map_or(0.0, |k| k.x)
 }
 
+/// The class of a character for word boundaries (design note 5 §4): a word character (a letter, a digit or `_`),
+/// white space, or anything else (punctuation and symbols, whose runs count as words of their own).
+fn word_class(ch: char) -> u8 {
+    if ch.is_alphanumeric() || ch == '_' {
+        0
+    } else if ch.is_whitespace() {
+        1
+    } else {
+        2
+    }
+}
+
+/// Word left (Ctrl+Left, Option+Left; D-81 item 4b): from `i`, back over white space, then back over the run of one
+/// class before it; the start of the word before the caret.
+#[must_use]
+pub fn word_left(c: &Content, i: usize) -> usize {
+    let mut k = i.min(c.chars.len());
+    while k > 0 && word_class(c.chars[k - 1]) == 1 {
+        k -= 1;
+    }
+    if k > 0 {
+        let want = word_class(c.chars[k - 1]);
+        while k > 0 && word_class(c.chars[k - 1]) == want {
+            k -= 1;
+        }
+    }
+    k
+}
+
+/// Word right (Ctrl+Right, Option+Right; D-81 item 4b): from `i`, over white space, then over the run of one class
+/// after it; the end of the word after the caret.
+#[must_use]
+pub fn word_right(c: &Content, i: usize) -> usize {
+    let n = c.chars.len();
+    let mut k = i.min(n);
+    while k < n && word_class(c.chars[k]) == 1 {
+        k += 1;
+    }
+    if k < n {
+        let want = word_class(c.chars[k]);
+        while k < n && word_class(c.chars[k]) == want {
+            k += 1;
+        }
+    }
+    k
+}
+
 /// The word at position `i` (design note 5 §5): the maximal run of one class around the character at `i` (or the one
 /// before it at the end): letters, digits and underscore; white space; anything else. `(start, end)`.
 #[must_use]

@@ -191,6 +191,14 @@ export class GestureCollector {
     return this.finish();
   }
 
+  /** A double click outside a multi-click gesture (the Text tool's, 02 §7.6; finding C44B-R1-41): a request of its own
+   *  carrying the `doubleClick` event, sent after the second click's gesture; the kernel selects the word there. */
+  lone(s: DomSample): GestureRequest | null {
+    if (this.multi || this.pressed || this.active) return null;
+    const e: WireEvent = { type: 'doubleClick', x: s.x, y: s.y, modifiers: modifiers(s), dt: 0 };
+    return { view: this.view, pointerType: this.kind, events: [e] };
+  }
+
   private finish(): GestureRequest {
     const req: GestureRequest = { view: this.view, pointerType: this.kind, events: this.events };
     this.events = [];

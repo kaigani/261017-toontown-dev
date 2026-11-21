@@ -7,7 +7,7 @@
 // The element's `data-tt-value` carries what the canvas shows (back end, generation, each resident drawing and its
 // revision), so the UI tree (`inspect_ui`) and the running-application tests can check it.
 
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import { GENERATION_EVENT, type AgentInput, type EngineApi } from '../ipc';
 import { stringifyWireJson } from '../ipc/wireJson';
@@ -56,6 +56,7 @@ import { drawingPreview, grabberPreview, scenePreview, type Box } from './previe
 import { CanvasMetrics } from './metrics';
 import { CanvasModel } from './model';
 import { ContextMenu } from '../shell/ContextMenu';
+import { MessagesContext } from '../shell/messagesApi';
 import { menuAt, type MenuAt } from '../shell/contextMenuModel';
 import { isMac } from '../keys/sequence';
 import { sceneFamilyChosen } from './toolFamily';
@@ -95,6 +96,9 @@ export interface CanvasHandle {
 
 /** How long the canvas must be quiet (no gesture, no redraw) before the back ends are measured (SI-136). */
 const QUIET_MS = 30_000;
+/** The refusals of a person's gesture that are told on the status line (rulings D-79 to D-81): the target cannot be
+ *  edited here. */
+const TOLD = new Set(['drawing.locked', 'element.locked', 'element.hidden']);
 
 /** Two overlays as one (`a` under `b`); either may be absent. */
 function combine(a: ViewTris | null, b: ViewTris | null): ViewTris | null {
@@ -152,6 +156,12 @@ export function CanvasView({
   useEffect(() => {
     windowType.current = viewType;
   }, [viewType]);
+  // A gesture refused because its target cannot be edited here is told on the status line (ruling D-81 item 3).
+  const messages = useContext(MessagesContext);
+  const messagesRef = useRef(messages);
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
 
   useEffect(() => {
     const el = host.current;
@@ -928,6 +938,8 @@ export function CanvasView({
           env.status === 'error'
             ? { status: 'error', code: env.error?.code ?? 'error' }
             : { status: env.status };
+        if (env.status === 'error' && TOLD.has(env.error?.code ?? ''))
+          messagesRef.current?.status(env.error?.message ?? 'This cannot be edited here.', 'warning');
         // The overlay stays until the committed drawing is drawn (C43B-R2S-02: no deadline after a step), briefly when
         // nothing changed, and not at all after a refusal; an answer for a gesture that is no longer current (a later
         // press, another generation, a closed window) clears nothing.
@@ -1183,7 +1195,9 @@ export function CanvasView({
       commit(req);
     };
     const onDouble = (e: MouseEvent) => {
-      const req = collector.doubleClick(sample(e as PointerEvent));
+      const s = sample(e as PointerEvent);
+      // The Text tool's double click selects the word (02 §7.6): a request of its own, after the second click's.
+      const req = collector.doubleClick(s) ?? (style.tool === 'text' ? collector.lone(s) : null);
       if (!req) return;
       commit(req);
     };

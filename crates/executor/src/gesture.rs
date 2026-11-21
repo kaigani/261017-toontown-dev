@@ -1307,6 +1307,36 @@ pub(crate) fn run(
                     {
                         return Ok(out);
                     }
+                } else if pending.is_none()
+                    && core.session().is_some_and(|s| s.ui.drawing().active_tool == crate::text_edit::TOOL)
+                {
+                    // The Text tool's double click selects the word under it (02 §7.6; finding C44B-R1-41): a click
+                    // gesture at the double click's place, marked double, which places the session's anchor and
+                    // caret at the word's ends (no command, no undo step). The window sends it after the second
+                    // click's own gesture, as an agent's `pointer` does after its two clicks.
+                    let press = if camera {
+                        core.with_lent_session(|cx| crate::scene_gesture::press_matrix(cx, &w))
+                            .unwrap_or_else(|| Err(CommandError::internal("the session is unavailable")))?
+                    } else {
+                        crate::commands::view::view_to_drawing(&w)
+                    };
+                    let sample = Sample {
+                        v: vp,
+                        d: crate::shell::apply(&press, vp),
+                        pressure: 1.0,
+                        tilt: (0.0, 0.0),
+                        t_ms: clock,
+                    };
+                    let g = Gesture {
+                        tool: crate::text_edit::TOOL.to_owned(),
+                        view_id: view_id.clone(),
+                        strokes: vec![Stroke { samples: vec![sample], mods: Mods::of(&e.modifiers) }],
+                        double_click: true,
+                        press,
+                    };
+                    if !finish(core, origin, &g, &mut out) {
+                        return Ok(out);
+                    }
                 }
             }
         }

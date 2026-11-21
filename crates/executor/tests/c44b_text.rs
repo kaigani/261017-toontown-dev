@@ -440,3 +440,83 @@ fn a_click_inside_a_box_places_the_caret_and_a_double_click_selects_the_word() {
     let s = session(&h);
     assert_eq!(s["textId"].as_str(), Some(id.as_str()));
 }
+
+// ----- Round 1 (D-81): double click, a locked drawing, word keys ---------------------------------------------------------
+
+/// The text object's box (drawing units): `(x, y, width, height)` with y up.
+fn text_box(h: &ExecutorHandle, id: &str) -> (f64, f64, f64, f64) {
+    let d = ok(h, "draw.drawing.get", json!({ "drawingId": D1, "flatten": true }));
+    let n = d["nodes"].as_array().unwrap().iter().find(|n| n["id"] == id).cloned().unwrap();
+    let b = &n["bounds"];
+    (b["x"].as_f64().unwrap(), b["y"].as_f64().unwrap(), b["width"].as_f64().unwrap(), b["height"].as_f64().unwrap())
+}
+
+#[test]
+fn a_double_click_selects_the_word_in_both_views_without_a_step() {
+    // 02 §7.6 (finding C44B-R1-41): a double click inside a word selects it; an agent's pointer double click the same.
+    for view in ["drawingView", "cameraView"] {
+        let h = ready();
+        let id = new_text(&h, (-700.0, -400.0));
+        input(&h, Input::Text("hello world".into()));
+        ok(&h, "tool.active.set", json!({ "toolId": "text" }));
+        let (x, y, w, hh) = text_box(&h, &id);
+        let p = (x + w * 0.85, y + hh / 2.0);
+        let before = labels(&h).len();
+        let events = vec![
+            json!({ "type": "down", "x": p.0, "y": p.1 }),
+            json!({ "type": "up", "x": p.0, "y": p.1 }),
+            json!({ "type": "down", "x": p.0, "y": p.1 }),
+            json!({ "type": "up", "x": p.0, "y": p.1 }),
+            json!({ "type": "doubleClick", "x": p.0, "y": p.1 }),
+        ];
+        let env =
+            h.pointer(Origin::User, json!({ "view": view, "space": "drawing", "tool": "text", "events": events }));
+        assert_eq!(env.status, Status::Ok, "{view}: {env:?}");
+        let s = session(&h);
+        assert_eq!((s["anchor"].as_u64(), s["caret"].as_u64()), (Some(6), Some(11)), "{view}: the word: {s}");
+        assert_eq!(labels(&h).len(), before, "{view}: no undo step");
+    }
+}
+
+#[test]
+fn no_session_opens_on_a_locked_drawing() {
+    // Finding C44B-R1-42: after the drawing is locked a press inside its text is refused and no editor opens.
+    let h = ready();
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("locked".into()));
+    ok(&h, "element.drawingLock.set", json!({ "drawingIds": [D1], "locked": true }));
+    assert!(session(&h).is_null(), "locking ends the session");
+    let (x, y, w, hh) = text_box(&h, &id);
+    let p = (x + w / 2.0, y + hh / 2.0);
+    let env = h.pointer(
+        Origin::User,
+        json!({ "view": "drawingView", "space": "drawing", "tool": "text",
+                "events": [{ "type": "down", "x": p.0, "y": p.1 }, { "type": "up", "x": p.0, "y": p.1 }] }),
+    );
+    assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("drawing.locked"), "{env:?}");
+    assert!(session(&h).is_null(), "no session on a locked drawing");
+}
+
+#[test]
+fn word_keys_move_extend_and_delete_by_words() {
+    // 01 §8.4 (D-81 item 4b): Ctrl (Option on macOS) with the arrows, Backspace and Delete works by words.
+    let h = ready();
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("one two, three".into()));
+    let caret = |h: &ExecutorHandle| session(h)["caret"].as_u64().unwrap();
+    input(&h, Input::Key("Primary+Left".into()));
+    assert_eq!(caret(&h), 9, "to the start of `three`");
+    input(&h, Input::Key("Alt+Left".into()));
+    assert_eq!(caret(&h), 7, "the comma is a word of its own");
+    input(&h, Input::Key("Primary+Left".into()));
+    assert_eq!(caret(&h), 4, "to the start of `two`");
+    input(&h, Input::Key("Primary+Shift+Right".into()));
+    let s = session(&h);
+    assert_eq!((s["anchor"].as_u64(), s["caret"].as_u64()), (Some(4), Some(7)), "extended over `two`");
+    input(&h, Input::Key("Right".into()));
+    input(&h, Input::Key("Primary+Delete".into()));
+    assert_eq!(text_of(&h, &id), "one two three", "the comma deleted to the word's end");
+    input(&h, Input::Key("End".into()));
+    input(&h, Input::Key("Alt+Backspace".into()));
+    assert_eq!(text_of(&h, &id), "one two ", "the last word deleted");
+}

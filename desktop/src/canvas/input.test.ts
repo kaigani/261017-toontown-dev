@@ -283,4 +283,15 @@ describe('the Polyline: its clicks are one gesture (02 §7.3.5; SI-131 item 10)'
     expect(click(single, 10, 10, 0)?.events.map((e) => e.type)).toEqual(['down', 'up']);
     expect(single.doubleClick(s(10, 10, 20))).toBeNull();
   });
+
+  it("outside multi-click mode a double click is a request of its own (the Text tool's word, D-81 item 2)", () => {
+    const c = new GestureCollector('drawingView');
+    click(c, 10, 10, 0);
+    click(c, 10, 10, 120);
+    const req = c.lone(s(10, 10, 130));
+    expect(req?.view).toBe('drawingView');
+    expect(req?.events.map((e) => e.type)).toEqual(['doubleClick']);
+    c.multi = true;
+    expect(c.lone(s(10, 10, 140))).toBeNull();
+  });
 });

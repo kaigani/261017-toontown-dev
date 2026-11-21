@@ -5,7 +5,7 @@ import { act, cleanup, render } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { TextEditor, type EditorSession } from './TextEditor';
-import { beforeInput, editingKey } from './text';
+import { beforeInput, editingKey, joinSurrogates } from './text';
 
 afterEach(cleanup);
 
@@ -112,6 +112,24 @@ describe('TextEditor', () => {
   });
 });
 
+describe('characters outside the basic plane (D-81 item 4a)', () => {
+  it('holds a lone high surrogate until its low one arrives and sends the pair as one character', () => {
+    const { area, sent } = mount();
+    // U+1F600 typed by synthesised key events: two insertText events of one UTF-16 unit each.
+    input(area, 'insertText', '\uD83D');
+    expect(sent).toEqual([]);
+    input(area, 'insertText', '\uDE00');
+    expect(sent).toEqual([{ kind: 'text', text: '\u{1F600}' }]);
+  });
+
+  it('never sends half a character', () => {
+    expect(joinSurrogates('', 'a\uD83D')).toEqual({ send: 'a', held: '\uD83D' });
+    expect(joinSurrogates('\uD83D', 'b')).toEqual({ send: 'b', held: '' });
+    expect(joinSurrogates('', '\uDE00x')).toEqual({ send: 'x', held: '' });
+    expect(joinSurrogates('', '\u{1F600}')).toEqual({ send: '\u{1F600}', held: '' });
+  });
+});
+
 describe('the editor mapping (text.ts)', () => {
   it('maps keys by platform', () => {
     expect(
@@ -127,5 +145,29 @@ describe('the editor mapping (text.ts)', () => {
       editingKey({ key: 'x', metaKey: false, ctrlKey: false, shiftKey: false, altKey: false }, false),
     ).toBeNull();
     expect(beforeInput('insertFromPaste', 'x')).toBeNull();
+  });
+
+  it('maps the word keys by platform (01 §8.4; D-81 item 4b)', () => {
+    const k = (
+      key: string,
+      m: Partial<{ ctrlKey: boolean; metaKey: boolean; altKey: boolean; shiftKey: boolean }>,
+    ) => ({
+      key,
+      ctrlKey: false,
+      metaKey: false,
+      altKey: false,
+      shiftKey: false,
+      ...m,
+    });
+    expect(editingKey(k('ArrowLeft', { ctrlKey: true }), false)).toBe('Primary+Left');
+    expect(editingKey(k('ArrowRight', { ctrlKey: true, shiftKey: true }), false)).toBe('Primary+Shift+Right');
+    expect(editingKey(k('Backspace', { ctrlKey: true }), false)).toBe('Primary+Backspace');
+    expect(editingKey(k('Delete', { ctrlKey: true }), false)).toBe('Primary+Delete');
+    expect(editingKey(k('ArrowLeft', { altKey: true }), true)).toBe('Alt+Left');
+    expect(editingKey(k('ArrowRight', { altKey: true, shiftKey: true }), true)).toBe('Alt+Shift+Right');
+    expect(editingKey(k('Backspace', { altKey: true }), true)).toBe('Alt+Backspace');
+    expect(editingKey(k('ArrowLeft', { metaKey: true }), true)).toBe('Home');
+    expect(editingKey(k('ArrowRight', { metaKey: true, shiftKey: true }), true)).toBe('Shift+End');
+    expect(editingKey(k('ArrowLeft', { altKey: true }), false)).toBeNull();
   });
 });
