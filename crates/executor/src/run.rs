@@ -1143,9 +1143,13 @@ impl Core {
                 return self
                     .with_lent_session(move |cx| {
                         let mut scene = crate::canvas::camera_scene(cx, &view)?;
-                        scene.contours = crate::contour_gesture::scene_contours(cx);
-                        scene.tool_box = crate::envelope_gesture::scene_tool_box(cx);
-                        (scene.text_edit, scene.text_boxes) = crate::text_edit::scene_text(cx);
+                        // Ruling D-79 (finding C44B-R1-03): the drawing tools' overlays and hit targets follow the
+                        // visibility the ink follows; an element the view does not draw shows none.
+                        if crate::canvas::shows_current(&scene) {
+                            scene.contours = crate::contour_gesture::scene_contours(cx);
+                            scene.tool_box = crate::envelope_gesture::scene_tool_box(cx);
+                            (scene.text_edit, scene.text_boxes) = crate::text_edit::scene_text(cx);
+                        }
                         Ok(scene)
                     })
                     .unwrap_or_else(|| Err(crate::cx::no_project()));

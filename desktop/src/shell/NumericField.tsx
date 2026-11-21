@@ -32,6 +32,7 @@ export function NumericField({
   ttLabel,
   guiOnly,
   mixed,
+  disabledReason,
   onSubmit,
   onCommit,
 }: {
@@ -60,6 +61,9 @@ export function NumericField({
   /** The value differs over what the field shows (the Text panel over a highlight, design note 5 §6): empty, with the
    *  placeholder "Mixed"; any typed value is a change. */
   mixed?: boolean;
+  /** Why the field is disabled (the design note for panels §1: disabled rather than hidden): shown as its tooltip,
+   *  and the field shows no value. */
+  disabledReason?: string;
   /** Enter on an unchanged value: a form outside a `<form>` element submits here (Enter in any field is its
    *  default button, 01 §2). */
   onSubmit?: () => void;
@@ -71,7 +75,8 @@ export function NumericField({
   const describedBy = useId();
   // The value a commit handed on and is waiting for: an Enter followed by focus loss sends it once.
   const sent = useRef<{ from: number; value: number } | null>(null);
-  const draft = typed?.from === value ? typed.text : mixed ? '' : String(value);
+  const blank = mixed === true || (disabled === true && disabledReason !== undefined);
+  const draft = typed?.from === value ? typed.text : blank ? '' : String(value);
   const shownProblem = problem?.from === value ? problem.text : null;
 
   const restore = (why: string | null) => {
@@ -139,7 +144,8 @@ export function NumericField({
         aria-label={label}
         aria-invalid={shownProblem !== null ? true : undefined}
         aria-describedby={shownProblem !== null ? describedBy : undefined}
-        title={shownProblem ?? undefined}
+        title={shownProblem ?? (disabled ? disabledReason : undefined)}
+        {...(disabled && disabledReason ? { 'data-tt-disabled-reason': disabledReason } : {})}
         data-tt-role={role ?? 'textField'}
         data-tt-id={id}
         {...(ttLabel ? { 'data-tt-label': ttLabel } : {})}

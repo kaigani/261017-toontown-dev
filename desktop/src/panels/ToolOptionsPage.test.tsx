@@ -167,4 +167,15 @@ describe('the Tool options page (02 §7.7)', () => {
     });
     expect(document.querySelector('[data-tt-id="toolOptions.gapClosing"]')).toBeNull();
   });
+
+  it('keeps the Contour Editor line controls, disabled with the reason, when no single line is selected', async () => {
+    // Finding C44B-R1-01 (disabled rather than hidden, the design note for panels §1).
+    await page({ tool: 'contourEditor', settings, gap: 'off' });
+    await waitFor(() => {
+      expect(el('toolOptions.selectedLine.thickness')).toHaveProperty('disabled', true);
+    });
+    expect(el('toolOptions.selectedLine.invisible')).toHaveProperty('disabled', true);
+    expect(el('toolOptions.selectedLine.thickness').getAttribute('data-tt-disabled-reason')).toMatch(/Select one/);
+    expect(el('toolOptions.selectedLine.reason').textContent).toMatch(/Select one pencil line/);
+  });
 });

@@ -382,12 +382,45 @@ function SelectedLine() {
       off?.();
     };
   }, [engine, refresh]);
-  if (!line)
+  if (!line) {
+    // Disabled rather than hidden (the design note for panels §1; finding C44B-R1-01): both controls stay, disabled,
+    // with the reason.
+    const reason = 'Select one pencil line or invisible stroke to edit its line.';
     return (
-      <p className="hint" data-tt-role="text" data-tt-id="toolOptions.selectedLine">
-        Select one pencil line or invisible stroke to edit its line.
-      </p>
+      <div role="group" aria-label="Selected line" data-tt-role="group" data-tt-id="toolOptions.selectedLine">
+        <p className="hint" data-tt-role="text" data-tt-id="toolOptions.selectedLine.reason">
+          {reason}
+        </p>
+        <label>
+          Line thickness
+          <NumericField
+            id="toolOptions.selectedLine.thickness"
+            label="Line thickness"
+            value={0}
+            range={declaredRange('draw.stroke.set', 'thickness')}
+            step={0.5}
+            disabled
+            disabledReason={reason}
+            command="draw.stroke.set"
+            onCommit={() => undefined}
+          />
+        </label>
+        <label title={reason}>
+          <input
+            type="checkbox"
+            checked={false}
+            disabled
+            data-tt-role="checkbox"
+            data-tt-id="toolOptions.selectedLine.invisible"
+            data-tt-command="draw.stroke.set"
+            data-tt-disabled-reason={reason}
+            onChange={() => undefined}
+          />
+          Invisible
+        </label>
+      </div>
     );
+  }
   const invisible = line.kind === 'invisible';
   return (
     <div role="group" aria-label="Selected line" data-tt-role="group" data-tt-id="toolOptions.selectedLine">

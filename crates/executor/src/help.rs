@@ -89,6 +89,7 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
     ("drawing.contentMissing", "The drawing's content is missing from the project."),
     ("drawing.locked", "The drawing is locked."),
     ("element.locked", "The element is locked."),
+    ("element.hidden", "The element is hidden in the scene, so the Camera view does not edit it."),
     ("exposure.invalid", "The exposure is not valid for the cells given."),
     ("fs.ioError", "The file could not be read or written; details give the reason."),
     ("fs.notFound", "The file or folder does not exist."),

@@ -622,6 +622,20 @@ const HIGHLIGHT: [u8; 4] = [32, 128, 255, 255];
 ///
 /// # Errors
 /// `view.notFound`, `no.project`, `render.noScene`; the evaluator's refusals.
+/// Whether the Camera view `view_id` draws the current element's ink (ruling D-79): an occurrence in the current role
+/// that is not a highlight outline. The overlays and hit targets of the drawing tools follow the same answer.
+///
+/// # Errors
+/// As [`camera_scene`].
+pub(crate) fn camera_shows_current(cx: &crate::cx::Cx, view_id: &str) -> Result<bool, CommandError> {
+    Ok(shows_current(&camera_scene(cx, view_id)?))
+}
+
+/// Whether a Camera view's composition draws the current element's ink (not only its highlight outline).
+pub(crate) fn shows_current(scene: &Scene) -> bool {
+    scene.entries.iter().any(|e| e.role == "current" && e.tint.is_none())
+}
+
 pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, CommandError> {
     use crate::commands::render_list::{self, Overrides, Request, Verdict};
     let w = cx.ui().shell().view(view_id)?.clone();

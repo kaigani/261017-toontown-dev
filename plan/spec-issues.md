@@ -2446,6 +2446,24 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   matched the old code; no reviewer test pinned it (C4.4b handoff §2). The retained example results were regenerated
   with the change.
 
+## SI-198 — locked and hidden elements under the drawing tools' gestures (found in M4 C4.4b round 1; ruled by D-79; interim details)
+
+- **Sections:** 05 §6.6 ("A locked element cannot be picked or edited interactively in the Camera view. Commands
+  addressing it by id still act on it"), the model's element `locked` field ("Locked in scene views"), 02 line 414 (tools
+  refuse a locked drawing), 02 §1.2 and 04 §10.1 (scene visibility governs the Camera view), 02 §10.7 (Show outline on
+  selection, Selection always visible).
+- **Problem:** the drawing tools' gestures in the Camera view edited a locked element and an element hidden in the scene
+  (findings C44B-R1-02, -03); no single place stated the rule; no code names the hidden case.
+- **Ruled (D-79), built:** one rule in the gesture path (`gesture.rs` `interactive_target`), applied to every gesture
+  whose commands include an edit (a registry `action`), for every drawing tool and view: a locked drawing is refused in
+  both views (`drawing.locked`; Reposition All keeps SI-189's precheck); a locked element is refused in the Camera view
+  (`element.locked`); an element the Camera view does not draw is refused there (`element.hidden`, a new code). The
+  drawing tools' overlays follow the same visibility (`docs/canvas-format.md` §11.8). The Text tool's session ends when
+  its target becomes one of these. Agents addressing an element by id are unaffected.
+- **Interim readings (confirm or specify):** the element lock applies to the scene views (the Camera view here), not to
+  the Drawing view, as 05 §6.6 and the model's field state; `element.hidden` is the code of the hidden case; with only "Show outline
+  on selection" a hidden element's outline is displayed but not editable.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row

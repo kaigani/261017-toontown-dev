@@ -142,8 +142,8 @@ export function DrawingInspectorPage() {
           data-tt-id="inspector.thumbnail"
         />
       )}
-      {drawings.length > 1 && (
-        <label>
+      {drawings.length > 0 && (
+        <label title={drawings.length > 1 ? undefined : 'The element has one drawing: nothing to browse.'}>
           Browse
           <input
             type="range"
@@ -151,6 +151,7 @@ export function DrawingInspectorPage() {
             max={drawings.length - 1}
             step={1}
             value={browse ?? Math.max(0, drawings.indexOf(current))}
+            disabled={drawings.length < 2}
             aria-label="Browse the element's drawings"
             data-tt-role="slider"
             data-tt-id="inspector.browse"

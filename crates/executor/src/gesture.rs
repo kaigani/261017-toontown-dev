@@ -423,6 +423,78 @@ fn rect(a: Point, b: Point) -> Value {
 /// # Errors
 /// As [`to_command`].
 pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, CommandError> {
+    let commands = commands_of(cx, g)?;
+    // Ruling D-79 (findings C44B-R1-02, -03): a gesture never produces an editing command for an element or drawing
+    // the person cannot edit interactively in this view. The scene tools pick and transform scene nodes by their own
+    // rules (gestures note §7) and are not drawing tools.
+    let scene_tool =
+        [crate::scene_gesture::SCENE_SELECT, crate::scene_gesture::SCENE_TRANSFORM, crate::scene_gesture::SCENE_SKEW]
+            .contains(&g.tool.as_str());
+    if !scene_tool && commands.iter().any(|(c, _)| edits(c)) {
+        interactive_target(cx, &g.view_id, &g.tool)?;
+    }
+    Ok(commands)
+}
+
+/// Whether `command` changes the document (an `action`: an undoable edit), as opposed to a selection, view or tool
+/// change, which a gesture may still make on a locked or hidden element.
+fn edits(command: &str) -> bool {
+    crate::registry().ok().and_then(|r| r.get(command)).is_some_and(|e| e.spec.kind == tt_registry::Kind::Action)
+}
+
+/// Whether the current element and drawing may be edited interactively in view `view_id` (ruling D-79): the ONE rule
+/// of the gesture path for every drawing tool, read by the Text tool's session too.
+///
+/// - **A locked drawing** (02 line 414): refused in every view (`drawing.locked`). Reposition All is the exception
+///   SI-189 states: it moves every unlocked drawing of the element and reports the locked ones, so its own precheck
+///   decides.
+/// - **A locked element** (05 §6.6: it "cannot be picked or edited interactively in the Camera view"; the model
+///   documents the element's `locked` as "Locked in scene views"): refused in the Camera view (`element.locked`). An
+///   agent addressing it by id still edits it (05 §6.6).
+/// - **An element the Camera view does not show** (02 §1.2, 04 §10.1: scene visibility governs the Camera view):
+///   refused there (`element.hidden`), with 02 §10.7's exceptions as the view applies them: "Selection always visible"
+///   shows a selected hidden element (editable); "Show outline on selection" draws only its outline (not editable).
+///   The test is the view's own composition: the current element is editable when the view draws its ink.
+///
+/// # Errors
+/// `drawing.locked`, `element.locked`, `element.hidden`.
+pub(crate) fn interactive_target(cx: &Cx, view_id: &str, tool: &str) -> Result<(), CommandError> {
+    let doc = cx.document()?;
+    let element = cx.app().element.clone();
+    if tool != crate::envelope_gesture::REPOSITION
+        && let Some(id) = cx.app().current_drawing(doc)
+        && doc.drawing(&id).is_some_and(|d| *d.locked())
+    {
+        return Err(CommandError::with_details(
+            "drawing.locked",
+            "the drawing is locked: a gesture does not edit it (02 line 414); unlock it first",
+            json!({ "drawingId": id.as_str() }),
+        ));
+    }
+    let camera = cx.ui().shell().view(view_id).is_ok_and(|w| w.ty == crate::shell::ViewType::Camera);
+    if !camera {
+        return Ok(());
+    }
+    let Some(el) = element else { return Ok(()) };
+    if doc.element(&el).is_some_and(|e| *e.locked()) {
+        return Err(CommandError::with_details(
+            "element.locked",
+            "the element is locked: the Camera view does not edit it (05 §6.6); unlock it, or address it by id",
+            json!({ "elementId": el.as_str() }),
+        ));
+    }
+    if !crate::canvas::camera_shows_current(cx, view_id)? {
+        return Err(CommandError::with_details(
+            "element.hidden",
+            "the element is hidden in the scene, so the Camera view does not edit it (02 §1.2, §10.7)",
+            json!({ "elementId": el.as_str() }),
+        ));
+    }
+    Ok(())
+}
+
+/// The commands of a gesture before the interactive-target rule ([`to_commands`]).
+fn commands_of(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, CommandError> {
     if g.tool == crate::contour_gesture::TOOL {
         return crate::contour_gesture::commands(cx, g);
     }
