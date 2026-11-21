@@ -1,1 +1,19 @@
-{"checks":1,"failures":["STATIC-01 format ends typing run: []"],"raw":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-habuno8y","results":[{"check":"STATIC-01 format ends typing run","ok":false,"detail":[]}]}
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-4u5s4whl",
+  "results": [
+    {
+      "check": "STATIC-01 format ends typing run",
+      "ok": false,
+      "detail": []
+    },
+    {
+      "check": "probe completed",
+      "ok": false,
+      "detail": "ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [RuntimeError('setup colour.swatch.create {\\'name\\': \\'Review colour\\', \\'makeCurrent\\': True}: {\"status\": \"error\", \"changes\": [], \"warnings\": [], \"documentRev\": 7, \"error\": {\"code\": \"command.notImplemented\", \"message\": \"`colour.swatch.create` is registered but implemented in M7 C7.1\", \"details\": {\"commandId\": \"colour.swatch.create\", \"milestone\": \"M7 C7.1\"}}}')])])"
+    }
+  ],
+  "failures": [
+    "STATIC-01 format ends typing run",
+    "probe completed"
+  ]
+}

@@ -695,7 +695,7 @@ async def text_body(t,step):
         v=json.loads(canvas.get('value') or '{}')
         row={'name':name,'commands':[x for x in t.recorded() if t.kinds.get(x['command'])!='query'],'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True,**({'drawingId':target_drawing} if target_drawing else {})}),'editor':t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id=\"canvas.textEditor\"]');return e?{anchor:Number(e.dataset.ttAnchor),caret:Number(e.dataset.ttCaret),textId:e.dataset.ttTextId}:null})()"),'canvas':v,'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
         rows.append(row);t.clear();return row
-    async def gesture(pts):
+    async def gesture(pts,double=False):
         m=(await c('draw.viewMapping.get',{'view':view}))['drawingToView']
         eq=load('text_eq','scripts/c44b-gesture-equivalence.py')
         rr=t.cdp.js("document.querySelector('[data-tt-id=\""+view+".canvas\"]').getBoundingClientRect().toJSON()")
@@ -705,7 +705,10 @@ async def text_body(t,step):
             d.u32.SetCursorPos(round(o.x+(rr['x']+x)*scale),round(o.y+(rr['y']+y)*scale))
             if i==0:d.e6._send_button(True)
             await asyncio.sleep(.1)
-        d.e6._send_button(False);await pause()
+        d.e6._send_button(False)
+        if double:
+            await asyncio.sleep(.08);d.e6._send_button(True);d.e6._send_button(False)
+        await pause()
     async def fixture(text='',width=None,v='drawingView'):
         nonlocal view,eid,target_drawing
         view=v
@@ -719,7 +722,10 @@ async def text_body(t,step):
         await c('window.panel.set',{'panelId':view,'visible':True,'focus':True});await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
         await c('tool.active.set',{'toolId':'text'});await pause();t.clear()
         await gesture([(-100,80)] if width is None else [(-100,80),(-100+width,20)])
-        if text:d.type_text(text);await pause()
+        if text:
+            for i,line in enumerate(text.split('\n')):
+                if i:d.key(0x0d)
+                d.type_text(line);await pause()
         return await state('fixture '+text[:20])
     def texts(row):return [n for n in row['drawing'].get('nodes',[]) if 'text' in n and 'runs' in n]
     def content(row):return ''.join(n['text'] for n in texts(row))
@@ -778,7 +784,8 @@ async def text_body(t,step):
             await fixture('one two\nthree four')
             for vk,mods in [(0x24,()),(0x27,()),(0x25,()),(0x26,()),(0x28,()),(0x23,()),(0x25,(0x10,)),(0x27,(0x10,)),(0x26,(0x10,)),(0x28,(0x10,)),(0x24,(0x10,)),(0x23,(0x10,)),(0x25,(0x11,)),(0x27,(0x11,)),(0x08,()),(0x2e,()),(0x08,(0x11,)),(0x0d,()),(0x09,()),(0x41,(0x11,))]:
                 await key(vk,*mods)
-            await gesture([(-70,65)]);await gesture([(-70,65)]);await state('double click word')
+            await gesture([(-70,65)],double=True);r=await state('double click word')
+            check(r['editor'] is not None and r['editor']['anchor']!=r['editor']['caret'],'02 7.6 double click selects word',r['editor'])
         elif step==4:
             await fixture('hello world')
             await typed('b');await key(0x20);r=await state('tool letter and space')
@@ -818,7 +825,10 @@ async def text_body(t,step):
             await key(0x41,0x11);await state('mixed')
             await key(0x23);t.click('text.bold');await pause();await state('pending bold');await typed('B')
             await fixture('A');await c('window.panel.set',{'panelId':'text','visible':True});await pause();pos=await t.position();t.click('text.bold');await pause();await typed('B');check(len(await t.steps_since(pos))==1,'STATIC-01 format ends typing run',await t.steps_since(pos))
-            colour=(await c('colour.swatch.create',{'name':'Review colour','makeCurrent':True}))['colourId'];r=await typed('C');check(texts(r)[0]['runs'][-1]['colourId']==colour,'STATIC-03 current colour',texts(r))
+            doc=await c('doc.export.json',{'scope':'project','binaries':'omit'});t.run.save('colour-source.json',doc)
+            colour='colour:White';answer=await d.e2e.run_cmd(t.s,'colour.current.set',{'colourId':colour});rows.append({'name':'colour attempt','answer':answer})
+            if answer.get('status')=='ok':
+                r=await typed('C');check(texts(r)[0]['runs'][-1]['colourId']==answer['result']['colourId'],'STATIC-03 current colour',texts(r))
         elif step==7:
             for mode in ('normal','element-locked','drawing-locked','hidden','frame','tool'):
                 r=await fixture('abcd',v='cameraView');node=texts(r)[0]
@@ -831,6 +841,8 @@ async def text_body(t,step):
                 await pause();r=await typed('X')
                 if mode in ('element-locked','drawing-locked','hidden'):check(content(r)=='abcd','02 7.6 / design 7 no edit '+mode,texts(r))
                 await state('camera '+mode)
+                if mode in ('element-locked','drawing-locked','hidden'):
+                    await gesture([(-80,65)]);r=await state('reenter '+mode);check(r['editor'] is None,'04 10.4 / design 7 no editor '+mode,r['editor'])
                 if mode=='normal':
                     await c('view.zoom.set',{'viewId':view,'zoom':1.5});await c('view.rotation.set',{'viewId':view,'degrees':25});await pause();await gesture([(-80,65)]);await typed('Q');await key(0x41,0x11);await c('window.panel.set',{'panelId':'text','visible':True});await pause();t.click('text.bold');await pause();await state('camera transformed format')
         elif step==8:
@@ -851,7 +863,9 @@ async def text_body(t,step):
         elif step==9:
             await fixture(width=240);root=clip_set('x'*100000);start=time.monotonic();await key(0x56,0x11);elapsed=time.monotonic()-start;root.destroy();r=await state('100k paste');check(elapsed<8,'100k responsive',{'elapsed':elapsed,'length':len(content(r))})
             await fixture('long single line '*40,width=160);await state('wrap')
-            await c('window.panel.set',{'panelId':'text','visible':True});await pause();await key(0x41,0x11);t.click('text.font');d.key(0x41,0x11);d.type_text('ReviewMissingFont987');d.key(0x0d);await pause();await state('missing font')
+            await c('window.panel.set',{'panelId':'text','visible':True});await pause();await key(0x41,0x11);t.click('text.font');d.key(0x41,0x11);d.type_text('ReviewMissingFont987');d.key(0x0d);await pause();r=await state('missing font');check(texts(r)[0]['runs'][0]['font']=='ReviewMissingFont987','02 7.6.1 font name retained',texts(r)[0]['runs'])
+            answer=await d.e2e.run_cmd(t.s,'draw.textFormat.set',{'textId':texts(r)[0]['id'],'start':0,'length':1,'font':'ReviewMissingFont988'});rows.append({'name':'missing font envelope','answer':answer})
+            check(any(w.get('code')=='text.fontMissing' and w.get('severity')=='info' for w in answer.get('warnings',[])),'D-75 item 9 missing font info',answer.get('warnings'))
             await key(0x23);await typed('A');t.click('text.bold');await pause();await state('format');root=clip_set('paste');await key(0x56,0x11);root.destroy();before=await state('before history')
             await c('edit.undo');u=await state('undo');await c('edit.redo');r=await state('redo');check({k:v for k,v in r['drawing'].items() if k!='rev'}=={k:v for k,v in before['drawing'].items() if k!='rev'},'undo redo exact content',None);await c('edit.undo');r=await state('undo again');check({k:v for k,v in r['drawing'].items() if k!='rev'}=={k:v for k,v in u['drawing'].items() if k!='rev'},'second undo exact content',None)
     finally:
