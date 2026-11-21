@@ -54,6 +54,9 @@ pub(crate) struct Txn {
     pub structural: bool,
     pub changes: Vec<ChangeRecord>,
     pub label: String,
+    /// The text object a keystroke of the Text tool's input path types into (design note 5 §3): the commit extends the
+    /// open typing run on it instead of pushing a step when the run allows.
+    pub typing: Option<String>,
 }
 
 /// Changes staged by the handlers of the current transaction.
@@ -954,6 +957,7 @@ impl Cx {
             structural: staged.structural,
             changes,
             label,
+            typing: None,
         }))
     }
 
@@ -1083,6 +1087,7 @@ impl Cx {
             structural,
             changes,
             label: label.to_owned(),
+            typing: None,
         });
         Ok(())
     }
@@ -1108,6 +1113,7 @@ impl Cx {
             structural: true,
             changes,
             label: label.to_owned(),
+            typing: None,
         });
         Ok(())
     }

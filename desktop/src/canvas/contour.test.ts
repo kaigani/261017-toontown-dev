@@ -85,7 +85,7 @@ describe('contourHitAt is the kernel driver (one rule, two ports)', () => {
 });
 
 const I: Affine = [1, 0, 0, 1, 0, 0];
-/** Drawing units → view pixels with y down, as the Drawing view's default mapping. */
+/** Drawing units -> view pixels with y down, as the Drawing view's default mapping. */
 const D2V: Affine = [1, 0, 0, -1, 960, 540];
 
 function square(selected: number[] = [], extra: Partial<SceneContours> = {}): SceneContours {

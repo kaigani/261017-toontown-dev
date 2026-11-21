@@ -2418,6 +2418,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **From:** `reviews/M4-design-text-tool.md`.
 - **Entry:** *Spec:* 02 lines 677-679: panel changes with nothing highlighted apply to the next typed characters, and text takes the current colour; the format model cannot hold a zero-length run. *Decided:* §6's pending format, set by `draw.textFormat.set {length: 0}` at the session's caret, applied by the next keystroke's commands inside its run; paragraph fields apply to the caret's paragraph. *Why:* no spec A change, and the same command serves the panel and agents.
 
+## SI-196 — where `draw.stroke.set` lives in the GUI (found in M4 C4.4b; interim)
+
+- **From:** C4.4b's last deferred entry (`deferred.json`: "02 §7.1.2 (Contour Editor); §8 (line properties)").
+- **Entry:** *Spec:* 02 line 1326 declares `draw.stroke.set` ("Edit Stroke": geometry, pressure, thickness, visibility) and no surface names a control for it; §7.1.2 edits anchors through the point commands. *Decided:* the Properties panel's Tool options page for the Contour Editor shows the line properties of the one selected pencil line or invisible stroke: Line thickness (the one numeric field; disabled for an invisible stroke) and Invisible (a checkbox turning a pencil line invisible and back), each one `draw.stroke.set`; with anything else selected it says to select one line. Geometry and pressure stay agent-only uses of the same command (the Contour Editor's gestures edit geometry with the point commands). *Why:* the Contour Editor is the tool that shows a line's anchors, and the Tool options page is where a tool's per-object settings already live (02 §7.7). *Question:* a Line section in the Properties panel for every selection tool instead.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row

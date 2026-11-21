@@ -49,7 +49,9 @@
     "float:properties:pencil",
     "float:properties:polyline",
     "float:properties:paint",
+    "float:properties:contourEditor",
     "float:text",
+    "float:text:selection",
     "float:properties:drawing"
   ],
   "dom": [
@@ -1028,6 +1030,58 @@
       }
     },
     {
+      "id": "toolOptions.drawTopLayer",
+      "surface": "float:properties:contourEditor",
+      "commands": [
+        "tool.drawTopLayer.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.placeBehind",
+      "surface": "float:properties:contourEditor",
+      "commands": [
+        "tool.placeBehind.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "toolOptions.selectedLine.invisible",
+      "surface": "float:properties:contourEditor",
+      "commands": [
+        "draw.stroke.set"
+      ],
+      "params": {
+        "strokeId": "dr_1/st_1",
+        "kind": "invisible"
+      }
+    },
+    {
+      "id": "toolOptions.selectedLine.thickness",
+      "surface": "float:properties:contourEditor",
+      "commands": [
+        "draw.stroke.set"
+      ],
+      "params": {
+        "strokeId": "dr_1/st_1",
+        "thickness": 3
+      }
+    },
+    {
+      "id": "toolOptions.snapToContour",
+      "surface": "float:properties:contourEditor",
+      "commands": [
+        "tool.snapToContour.set"
+      ],
+      "params": {
+        "enabled": true
+      }
+    },
+    {
       "id": "inspector.name",
       "surface": "float:properties:drawing",
       "commands": [
@@ -1582,6 +1636,258 @@
       }
     },
     {
+      "id": "text.align",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ]
+    },
+    {
+      "id": "text.align.centre",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "align": "centre"
+      }
+    },
+    {
+      "id": "text.align.justify",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "align": "justify"
+      }
+    },
+    {
+      "id": "text.align.left",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "align": "left"
+      }
+    },
+    {
+      "id": "text.align.right",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "align": "right"
+      }
+    },
+    {
+      "id": "text.autoKern",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "autoKern": false
+      }
+    },
+    {
+      "id": "text.baseline",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ]
+    },
+    {
+      "id": "text.baseline.normal",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "baseline": "normal"
+      }
+    },
+    {
+      "id": "text.baseline.subscript",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "baseline": "subscript"
+      }
+    },
+    {
+      "id": "text.baseline.superscript",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "baseline": "superscript"
+      }
+    },
+    {
+      "id": "text.bold",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "bold": true
+      }
+    },
+    {
+      "id": "text.font",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "font": "sans-serif"
+      }
+    },
+    {
+      "id": "text.indent",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "indent": 0
+      }
+    },
+    {
+      "id": "text.italic",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "italic": true
+      }
+    },
+    {
+      "id": "text.kerning",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "kerning": 0
+      }
+    },
+    {
+      "id": "text.leftMargin",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "leftMargin": 0
+      }
+    },
+    {
+      "id": "text.lineSpacing",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "lineSpacing": 0
+      }
+    },
+    {
+      "id": "text.rightMargin",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "rightMargin": 0
+      }
+    },
+    {
+      "id": "text.size",
+      "surface": "float:text:selection",
+      "commands": [
+        "draw.textFormat.set"
+      ],
+      "params": {
+        "drawingId": "dr_1",
+        "textId": "nd_1",
+        "start": 0,
+        "length": 3,
+        "size": 36
+      }
+    },
+    {
       "id": "jobsWindow.cancel.job-7",
       "surface": "jobsWindow",
       "commands": [
@@ -2010,6 +2316,16 @@
       ],
       "params": {
         "toolId": "stroke"
+      }
+    },
+    {
+      "id": "drawingTools.text",
+      "surface": "main",
+      "commands": [
+        "tool.active.set"
+      ],
+      "params": {
+        "toolId": "text"
       }
     },
     {
@@ -3663,6 +3979,21 @@
     {
       "id": "properties.page.toolOptions",
       "surface": "float:properties:brush",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.drawing",
+      "surface": "float:properties:contourEditor",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.pen",
+      "surface": "float:properties:contourEditor",
+      "reason": "navigate"
+    },
+    {
+      "id": "properties.page.toolOptions",
+      "surface": "float:properties:contourEditor",
       "reason": "navigate"
     },
     {
@@ -17490,6 +17821,15 @@
       ]
     },
     {
+      "view": "drawing",
+      "tool": "text",
+      "commands": [
+        "draw.text.add",
+        "draw.text.set",
+        "draw.object.delete"
+      ]
+    },
+    {
       "view": "camera",
       "tool": "select",
       "commands": [
@@ -17645,6 +17985,15 @@
       "tool": "repositionAll",
       "commands": [
         "draw.repositionAll.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "text",
+      "commands": [
+        "draw.text.add",
+        "draw.text.set",
+        "draw.object.delete"
       ]
     },
     {
@@ -17833,6 +18182,14 @@
       "file": "desktop/src/shell/infoDialogs.tsx"
     },
     {
+      "command": "draw.drawing.get",
+      "file": "desktop/src/canvas/CanvasView.tsx"
+    },
+    {
+      "command": "draw.drawing.get",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
+    },
+    {
       "command": "draw.drawing.rename",
       "file": "desktop/src/panels/DrawingInspectorPage.tsx"
     },
@@ -17843,6 +18200,14 @@
     {
       "command": "draw.inspectorPreview.set",
       "file": "desktop/src/panels/DrawingInspectorPage.tsx"
+    },
+    {
+      "command": "draw.selection.get",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
+    },
+    {
+      "command": "draw.stroke.set",
+      "file": "desktop/src/panels/ToolOptionsPage.tsx"
     },
     {
       "command": "draw.viewMapping.get",
@@ -18127,10 +18492,6 @@
     {
       "command": "tool.symmetry.set",
       "file": "desktop/src/panels/ViewChrome.tsx"
-    },
-    {
-      "command": "tool.text.options.set",
-      "file": "desktop/src/panels/TextPanel.tsx"
     },
     {
       "command": "ui.help.get",
@@ -18564,6 +18925,94 @@
     },
     {
       "surface": "float:properties:brush",
+      "query": "workspace.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "agent.server.status"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "app.state.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "colour.gapClosing.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "draw.drawing.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "draw.selection.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "edit.history.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "keymap.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "prefs.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "project.presets.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "project.recent.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "project.recovery.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "tool.active.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "tool.options.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "tool.pen.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "tool.settings.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "ui.statusBar.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "ui.theme.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "ui.tips.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "window.panel.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "window.toolbar.list"
+    },
+    {
+      "surface": "float:properties:contourEditor",
+      "query": "workspace.get"
+    },
+    {
+      "surface": "float:properties:contourEditor",
       "query": "workspace.list"
     },
     {
@@ -19739,6 +20188,12 @@
       ]
     },
     {
+      "command": "app.context.changed",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
       "command": "app.frame.move",
       "files": [
         "desktop/src/shell/toolbarItems.ts"
@@ -19841,6 +20296,12 @@
       "command": "camera.elementId",
       "files": [
         "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "canvas.textEditor",
+      "files": [
+        "desktop/src/canvas/TextEditor.tsx"
       ]
     },
     {
@@ -20078,7 +20539,15 @@
     {
       "command": "draw.drawing.changed",
       "files": [
-        "desktop/src/panels/DrawingInspectorPage.tsx"
+        "desktop/src/panels/DrawingInspectorPage.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "draw.drawing.get",
+      "files": [
+        "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
@@ -20145,7 +20614,14 @@
       "command": "draw.selection.changed",
       "files": [
         "desktop/src-tauri/src/menu.rs",
+        "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/state/store.ts"
+      ]
+    },
+    {
+      "command": "draw.selection.get",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
       ]
     },
     {
@@ -20158,6 +20634,24 @@
       "command": "draw.stroke.add",
       "files": [
         "desktop/src-tauri/src/ipc.rs"
+      ]
+    },
+    {
+      "command": "draw.stroke.set",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "draw.text.set",
+      "files": [
+        "desktop/src/canvas/TextEditor.tsx"
+      ]
+    },
+    {
+      "command": "draw.textFormat.set",
+      "files": [
+        "desktop/src/panels/TextPanel.tsx"
       ]
     },
     {
@@ -21227,6 +21721,12 @@
       ]
     },
     {
+      "command": "shell.textEdit",
+      "files": [
+        "desktop/src/panels/TextPanel.tsx"
+      ]
+    },
+    {
       "command": "shell.view",
       "files": [
         "desktop/src-tauri/src/menu.rs",
@@ -21410,6 +21910,66 @@
       "command": "text.removeOutline",
       "files": [
         "desktop/src/panels/TextPanel.tsx"
+      ]
+    },
+    {
+      "command": "text.role",
+      "files": [
+        "desktop/src/panels/TextPanel.tsx"
+      ]
+    },
+    {
+      "command": "textEdit.anchor",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "textEdit.caret",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "textEdit.caretIndex",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "textEdit.handles",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "textEdit.highlight",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "textEdit.quad",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "textEdit.size",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "textEdit.textId",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "textEdit.viewId",
+      "files": [
+        "desktop/src/canvas/scene.ts"
       ]
     },
     {
@@ -21640,6 +22200,24 @@
     },
     {
       "command": "toolOptions.rectRule",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.selectedLine",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.selectedLine.invisible",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
+      "command": "toolOptions.selectedLine.thickness",
       "files": [
         "desktop/src/panels/ToolOptionsPage.tsx"
       ]

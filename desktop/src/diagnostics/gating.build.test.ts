@@ -79,6 +79,8 @@ describe('M0 diagnostics gating (C0.4)', () => {
       'page_ready',
       'token_field',
       'token_rect',
+      // M4 C4.4b (design note 5 §4): the Text tool's editor feeds the kernel's input path.
+      'text_input',
     ]);
     expect(DIAGNOSTIC).toContain('bench_plan');
     expect(DIAGNOSTIC).toContain('spike_canvas_scene');

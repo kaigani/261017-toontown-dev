@@ -133,6 +133,8 @@ export function measureScene(name: SceneName): { drawings: Map<string, DecodedDr
       overlays: null,
       contours: null,
       toolBox: null,
+      textEdit: null,
+      textBoxes: null,
     },
   };
 }

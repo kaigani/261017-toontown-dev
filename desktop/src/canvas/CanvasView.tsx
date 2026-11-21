@@ -80,6 +80,8 @@ import {
   type PreviewMap,
   type ToolPress,
 } from './envelope';
+import { editorPlace, textCursor, textOverlay } from './text';
+import { TextEditor, type EditorSession } from './TextEditor';
 import type { Renderer } from './renderer';
 
 export interface CanvasHandle {
@@ -139,6 +141,10 @@ export function CanvasView({
   // The view's context menu (design note 1 §9): the family the view runs when it opened.
   const [menu, setMenu] = useState<{ at: MenuAt; family: 'drawing' | 'scene' } | null>(null);
   const openMenu = useRef(setMenu);
+  // The Text tool's editor (design note 5 §4): the session's caret place in this view, set from the frame loop.
+  const [editor, setEditor] = useState<{ session: EditorSession; focused: boolean } | null>(null);
+  const setEditorRef = useRef(setEditor);
+  const editorKey = useRef('');
   const windowType = useRef(viewType);
   useEffect(() => {
     windowType.current = viewType;
@@ -692,6 +698,36 @@ export function CanvasView({
           selection = { ...selection, tris: combine(selection.tris, handles) };
           overlayParts = { frame: overlayParts.frame, selection: selection.tris };
         }
+        // The Text tool (design note 5 §4): the highlight, caret, frame and handles of the session over the selection.
+        if (style.tool === 'text' && !(camera && sceneFamily)) {
+          selection = {
+            ...selection,
+            tris: combine(selection.tris, textOverlay(scene?.textEdit ?? null, d2v)),
+          };
+          if (!camera) overlayParts = { frame: null, selection: selection.tris };
+        }
+        {
+          const te = style.tool === 'text' ? (scene?.textEdit ?? null) : null;
+          const entry = scene?.entries.find((x) => x.role === 'current' && !x.outline);
+          const next =
+            te && entry
+              ? {
+                  session: {
+                    drawingId: entry.drawingId,
+                    textId: te.textId,
+                    anchor: te.anchor,
+                    caret: te.caretIndex,
+                    ...editorPlace(te, d2v),
+                  },
+                  focused: te.viewId === viewId,
+                }
+              : null;
+          const k = JSON.stringify(next);
+          if (k !== editorKey.current) {
+            editorKey.current = k;
+            setEditorRef.current(next);
+          }
+        }
         contourShown = null;
         if (contourActive() && scene?.contours) {
           const c = contourOverlay(scene.contours, d2v);
@@ -1033,6 +1069,16 @@ export function CanvasView({
       if (!collector.active) {
         const p = sample(e);
         hoverAt = [p.x, p.y];
+        if (style.tool === 'text' && !(model?.scene?.viewType === 'camera' && sceneFamily)) {
+          // The Text tool's cursor (design note 5 §4): resize over a width handle, move over a frame, the I-beam inside.
+          canvas.style.cursor = textCursor(
+            model?.scene?.textEdit ?? null,
+            model?.scene?.textBoxes ?? null,
+            d2v,
+            [p.x, p.y],
+          );
+          return;
+        }
         const bt = boxTool();
         if (bt) {
           const tb = model?.scene?.toolBox ?? null;
@@ -1264,6 +1310,23 @@ export function CanvasView({
       data-tt-id={`${viewId}.canvas`}
     >
       <canvas ref={canvasRef} className="view-canvas-surface" />
+      <TextEditor
+        session={editor?.session ?? null}
+        focused={editor?.focused ?? false}
+        mac={isMac()}
+        send={(input) => {
+          void engine.textInput(input).catch(() => undefined);
+        }}
+        readText={async () => {
+          const s = editor?.session;
+          if (!s) return '';
+          const env = await engine.run('draw.drawing.get', { drawingId: s.drawingId, flatten: true }).done;
+          const nodes =
+            (env.result as { nodes?: { id?: unknown; text?: unknown }[] } | undefined)?.nodes ?? [];
+          const n = nodes.find((x) => x.id === s.textId);
+          return typeof n?.text === 'string' ? n.text : '';
+        }}
+      />
       {menu && (
         <ContextMenu
           id={`${viewId}.${menu.family}Menu`}

@@ -18,7 +18,7 @@ use super::draw_stroke::{Addr, colour_of, drawing_in, stroke_target};
 use crate::cx::Cx;
 
 /// Baseline (`script` in the project format).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) enum Baseline {
     /// Normal.
@@ -40,7 +40,7 @@ impl Baseline {
 }
 
 /// Paragraph alignment.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) enum Align {
     /// Left.
@@ -681,6 +681,46 @@ pub(crate) fn draw_text_format_set(cx: &mut Cx, p: TextFormatParams) -> Result<T
     let count = p.length.map_or(len - p.start as usize, |l| l as usize);
     if p.start as usize + count > len {
         return Err(err(codes::ARG_INVALID, format!("the text has {len} characters"), json!({ "pointer": "/length" })));
+    }
+    // The session's own call at its caret with nothing highlighted keeps character fields for the next keystroke
+    // (SI-195): no document change, no step.
+    if p.length == Some(0) {
+        let mut fields = serde_json::Map::new();
+        let mut put = |k: &str, v: Option<Value>| {
+            if let Some(v) = v {
+                fields.insert(k.to_owned(), v);
+            }
+        };
+        put("font", p.font.clone().map(Value::from));
+        put("size", p.size.map(Value::from));
+        put("bold", p.bold.map(Value::from));
+        put("italic", p.italic.map(Value::from));
+        put("baseline", p.baseline.and_then(|b| serde_json::to_value(b).ok()));
+        put("kerning", p.kerning.map(Value::from));
+        put("autoKern", p.auto_kern.map(Value::from));
+        put("colourId", p.colour_id.clone().map(Value::from));
+        put("outlineColourId", p.outline_colour_id.clone().map(Value::from));
+        put("align", p.align.and_then(|a| serde_json::to_value(a).ok()));
+        put("leftMargin", p.left_margin.map(Value::from));
+        put("rightMargin", p.right_margin.map(Value::from));
+        put("indent", p.indent.map(Value::from));
+        put("lineSpacing", p.line_spacing.map(Value::from));
+        fields.insert("textId".into(), json!(l.id));
+        fields.insert("start".into(), json!(p.start));
+        fields.insert("length".into(), json!(0));
+        if crate::text_edit::take_pending(cx, &Value::Object(fields)) {
+            let width = if *n.width_mode() == Some(WidthMode::Fixed) { *n.width() } else { None };
+            let transform = n.transform().unwrap_or(tt_model::value::IDENTITY);
+            let object = format!("{}/{}", d.id().as_str(), l.id);
+            let bounds = bounds_and_fonts(cx, &c, width, transform, &object);
+            return Ok(TextFormatResult {
+                drawing_id: d.id().as_str().to_owned(),
+                text_id: l.id,
+                changed: super::draw::Changed::default(),
+                bounds,
+                rev: committed_rev(cx)?,
+            });
+        }
     }
     c.format(p.start as usize, count, &fmt);
     let base = l.pointer.clone();

@@ -54,6 +54,7 @@ mod scene_gesture;
 mod session;
 pub mod shell;
 mod store;
+pub mod text_edit;
 mod themes;
 mod time;
 mod types;

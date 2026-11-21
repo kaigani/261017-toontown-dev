@@ -312,6 +312,46 @@ pub struct Scene {
     /// drawing that has one (§11.9; design note 4 §2); absent otherwise.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tool_box: Option<SceneToolBox>,
+    /// Form 1.2, both view types: the Text tool's edit session (§11.10; design note 5 §5); absent without one.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub text_edit: Option<SceneTextEdit>,
+    /// Form 1.2: every text box of the current drawing while the Text tool is active (§11.10); absent otherwise.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub text_boxes: Option<Vec<SceneTextBox>>,
+}
+
+/// The Text tool's edit session for the window (§11.10), drawing units.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneTextEdit {
+    /// The edited text object (local id).
+    pub text_id: String,
+    /// The view the session was opened in (its editor is focused there).
+    pub view_id: String,
+    /// The highlight's anchor, code points.
+    pub anchor: usize,
+    /// The caret, code points.
+    pub caret_index: usize,
+    /// The box: top-left, top-right, bottom-right, bottom-left.
+    pub quad: [[f64; 2]; 4],
+    /// The caret: its top and bottom.
+    pub caret: [[f64; 2]; 2],
+    /// The highlight, one quad per line.
+    pub highlight: Vec<[[f64; 2]; 4]>,
+    /// The width handles: the left and right edges' middles.
+    pub handles: [[f64; 2]; 2],
+    /// The size of the run at the caret (du): the editor's pre-edit size.
+    pub size: f64,
+}
+
+/// A text box of the current drawing (§11.10): its corners, as [`SceneTextEdit::quad`].
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneTextBox {
+    /// The text object (local id).
+    pub text_id: String,
+    /// Its corners.
+    pub quad: [[f64; 2]; 4],
 }
 
 /// The Perspective and Reposition All tools' box (§11.9), in drawing units.
@@ -533,6 +573,8 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
         selection: None,
         contours: None,
         tool_box: None,
+        text_edit: None,
+        text_boxes: None,
         frame: None,
         camera: None,
         overlays: None,
@@ -611,6 +653,8 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
         selection: None,
         contours: None,
         tool_box: None,
+        text_edit: None,
+        text_boxes: None,
         frame: Some(cx.app().frame.max(1)),
         camera: Some(None),
         overlays: None,

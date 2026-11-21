@@ -1,6 +1,6 @@
 // A view's composition as `canvas_scene` answers it: the scene answer of docs/canvas-format.md §11, form 1.2 (the
 // Drawing view, M4 C4.2b; the Camera view, M4 C4.3; the Contour Editor's overlay, M4 C4.4b; the Rust type is
-// `tt_executor::canvas::Scene`). Validated here, rules R1-R9 of §11.5 included (R7: every member with a domain is
+// `tt_executor::canvas::Scene`). Validated here, rules R1-R10 of §11.5 included (R7: every member with a domain is
 // checked against it): a malformed answer is refused, never half-applied.
 //
 // 64-bit identities (the engine generation and drawing revisions, u64 in Rust) are carried exactly as `bigint`
@@ -86,6 +86,34 @@ export interface Scene {
   contours: SceneContours | null;
   /** Form 1.2, both view types: the Perspective or Reposition All tool's box (§11.9); `null` when absent. */
   toolBox: SceneToolBox | null;
+  /** Form 1.2: the Text tool's edit session (§11.10); `null` without one. */
+  textEdit: SceneTextEdit | null;
+  /** Form 1.2: the current drawing's text boxes while the Text tool is active (§11.10); `null` otherwise. */
+  textBoxes: SceneTextBox[] | null;
+}
+
+/** The Text tool's edit session (§11.10), drawing units. */
+export interface SceneTextEdit {
+  textId: string;
+  viewId: string;
+  anchor: number;
+  caretIndex: number;
+  /** The box: top-left, top-right, bottom-right, bottom-left. */
+  quad: [Pt, Pt, Pt, Pt];
+  /** The caret's top and bottom. */
+  caret: [Pt, Pt];
+  /** The highlight, one quad per line. */
+  highlight: [Pt, Pt, Pt, Pt][];
+  /** The width handles (left, right). */
+  handles: [Pt, Pt];
+  /** The run size at the caret (du). */
+  size: number;
+}
+
+/** A text box of the current drawing (§11.10). */
+export interface SceneTextBox {
+  textId: string;
+  quad: [Pt, Pt, Pt, Pt];
 }
 
 /** The Perspective and Reposition All tools' box (§11.9), drawing units. */
@@ -299,6 +327,54 @@ function toolBoxOf(v: unknown): SceneToolBox | null {
   };
 }
 
+function quadOf(v: unknown, where: string): [Pt, Pt, Pt, Pt] {
+  const q = list(v, where, point);
+  if (q.length !== 4) throw new TypeError(`${where}: not four points`);
+  return q as [Pt, Pt, Pt, Pt];
+}
+
+function count(v: unknown, where: string): number {
+  if (typeof v === 'number' && Number.isInteger(v) && v >= 0) return v;
+  throw new TypeError(`${where}: not a code point position`);
+}
+
+/** R10: the Text tool's members (§11.10). */
+function textEditOf(v: unknown): SceneTextEdit | null {
+  if (v === undefined || v === null) return null;
+  const o = obj(v);
+  if (!o) throw new TypeError('textEdit: not an object');
+  const textId = str(o['textId'], 'textEdit.textId');
+  if (textId === '') throw new TypeError('textEdit.textId: empty');
+  const caret = list(o['caret'], 'textEdit.caret', point);
+  const handles = list(o['handles'], 'textEdit.handles', point);
+  if (caret.length !== 2) throw new TypeError('textEdit.caret: not two points');
+  if (handles.length !== 2) throw new TypeError('textEdit.handles: not two points');
+  const size = num(o['size'], 'textEdit.size');
+  if (size <= 0) throw new TypeError('textEdit.size: not positive');
+  return {
+    textId,
+    viewId: str(o['viewId'], 'textEdit.viewId'),
+    anchor: count(o['anchor'], 'textEdit.anchor'),
+    caretIndex: count(o['caretIndex'], 'textEdit.caretIndex'),
+    quad: quadOf(o['quad'], 'textEdit.quad'),
+    caret: caret as [Pt, Pt],
+    highlight: list(o['highlight'], 'textEdit.highlight', quadOf),
+    handles: handles as [Pt, Pt],
+    size,
+  };
+}
+
+function textBoxesOf(v: unknown): SceneTextBox[] | null {
+  if (v === undefined || v === null) return null;
+  return list(v, 'textBoxes', (x, w) => {
+    const o = obj(x);
+    if (!o) throw new TypeError(`${w}: not an object`);
+    const textId = str(o['textId'], `${w}/textId`);
+    if (textId === '') throw new TypeError(`${w}/textId: empty`);
+    return { textId, quad: quadOf(o['quad'], `${w}/quad`) };
+  });
+}
+
 /** Validates a `canvas_scene` answer; throws a TypeError naming the first malformed field. */
 export function parseSceneAnswer(v: unknown): SceneAnswer {
   const a = obj(v);
@@ -401,6 +477,8 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
       overlays,
       contours: contoursOf(s['contours']),
       toolBox: toolBoxOf(s['toolBox']),
+      textEdit: textEditOf(s['textEdit']),
+      textBoxes: textBoxesOf(s['textBoxes']),
     },
   };
 }

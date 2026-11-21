@@ -60,6 +60,8 @@ pub(crate) struct AppContext {
     pub pens: CurrentPens,
     /// The current colour and its palette (03 §2.4; `colour.current.set`, ruling D-11; saved in `session.json`).
     pub colour: Option<(Id, Id)>,
+    /// The Text tool's edit session (M4 C4.4b, design note 5 §2): transient, one per application.
+    pub text_edit: Option<crate::text_edit::TextEdit>,
 }
 
 /// The current pen of each tool family (02 §6.1: Brush and Eraser each remember their own).
@@ -97,6 +99,7 @@ impl Default for AppContext {
             tool_memory: std::collections::BTreeMap::new(),
             pens: CurrentPens::default(),
             colour: None,
+            text_edit: None,
         }
     }
 }
@@ -347,6 +350,7 @@ impl AppContext {
             tool_memory: self.tool_memory.clone(),
             pens: self.pens.clone(),
             colour: self.colour.clone(),
+            text_edit: self.text_edit.clone(),
         }
     }
 

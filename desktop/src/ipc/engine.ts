@@ -137,6 +137,13 @@ export interface EngineApi {
   }): Promise<Envelope>;
   /** `gesture_abort` (P2; SI-135): a user press interrupted the agent gesture `agentRequest` the window was playing. */
   gestureAbort(agentRequest: number): Promise<void>;
+  /** `text_input` (M4 C4.4b, design note 5 §4): one input of the Text tool's editor into the kernel's input path (typed
+   *  text, an editing key, a paste or a cut), on the generation the window follows (D-7b). */
+  textInput(input: {
+    kind: 'text' | 'key' | 'paste' | 'cut';
+    text?: string;
+    keys?: string;
+  }): Promise<Envelope>;
   /** `canvas_presence`: this window's canvas for `viewId` is at `rect` (view pixels), or (`null`) went away. */
   canvasPresence(
     viewId: string,
@@ -389,6 +396,17 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     },
     async gestureAbort(agentRequest) {
       await invoke('gesture_abort', { agentRequest });
+    },
+    async textInput(input) {
+      try {
+        const v = await transport.invoke('text_input', { json: JSON.stringify({ ...input, generation }) });
+        return (
+          asEnvelope(v) ??
+          localFailure('ipc.invalidResponse', 'the answer to a text input is not a command envelope')
+        );
+      } catch (error) {
+        return failureOf(error);
+      }
     },
     async canvasPresence(viewId, rect, dpr) {
       await invoke('canvas_presence', { viewId, rect, dpr });

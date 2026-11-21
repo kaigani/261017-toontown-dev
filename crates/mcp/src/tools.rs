@@ -352,7 +352,7 @@ pub fn generic() -> Vec<ToolDef> {
         t(
             "type_text",
             "Type text",
-            "Simulated typing into a widget from inspect_ui.",
+            "Simulated typing: without `target`, into the text this session is editing with the Text tool (click with `pointer` first).",
             obj(json!({ "text": { "type": "string" }, "target": { "type": "string" } }), &["text"]),
             false,
             false,
@@ -658,10 +658,8 @@ pub fn plan(name: &str, args: &Map<String, Value>) -> Result<Plan, String> {
         "pointer" => Plan::Server,
         // The keymap dispatch of the desktop shell (M4 C4.1), answered by the server (`key_tool`).
         "key" => Plan::Server,
-        "type_text" => Plan::Unavailable {
-            milestone: "M4 C4.2",
-            reason: "typing targets widgets of the UI tree (inspect_ui), which arrives with the desktop shell (M4)",
-        },
+        // The Text tool's input path (M4 C4.4b, design note 5 §4), answered by the server (`type_text_tool`).
+        "type_text" => Plan::Server,
         "undo" => command("edit.undo", pick(args, &[("steps", "steps"), ("ifTop", "ifTop")])),
         "redo" => command("edit.redo", pick(args, &[("steps", "steps")])),
         "history" => command("edit.history.get", pick(args, &[("limit", "limit")])),

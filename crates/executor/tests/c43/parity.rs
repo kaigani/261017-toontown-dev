@@ -270,6 +270,11 @@ fn the_gesture_table_is_the_drivers_both_ways() {
     named.extend(named_commands(include_str!("../../src/scene_gesture.rs")));
     named.extend(named_commands(include_str!("../../src/contour_gesture.rs")));
     named.extend(named_commands(include_str!("../../src/envelope_gesture.rs")));
+    // The Text tool's module also holds its input path, whose keystrokes apply a pending format with
+    // `draw.textFormat.set` (SI-195): typing, not a gesture, so not a gesture row (the Text panel binds it).
+    named.extend(
+        named_commands(include_str!("../../src/text_edit.rs")).into_iter().filter(|c| c != "draw.textFormat.set"),
+    );
     let missing: Vec<&String> = named.difference(&listed).collect();
     assert!(missing.is_empty(), "the driver names commands the table lacks: {missing:?}");
     // Each row is what its gestures produce, exactly: a battery over every tool in both views.
@@ -503,6 +508,30 @@ fn battery() -> BTreeMap<(String, String), BTreeSet<String>> {
                 &h,
                 json!({ "view": req, "tool": "repositionAll", "events": drag(&[p, (p.0 + 20.0, p.1 + 9.0)], &[]) }),
             ),
+        );
+        // The Text tool (design note 5 §2): a click adds an object; a frame drag moves it; leaving it empty deletes it.
+        let (h, _, v) = fresh();
+        put(
+            view,
+            "text",
+            answered(&h, json!({ "view": req, "tool": "text", "events": click(v(-900.0, -900.0), &[]) })),
+        );
+        let te = serde_json::to_value(h.canvas_scene(req).unwrap()).unwrap()["textEdit"].clone();
+        if te.is_object() {
+            let (x, y) = (te["quad"][0][0].as_f64().unwrap(), te["quad"][0][1].as_f64().unwrap());
+            put(
+                view,
+                "text",
+                answered(
+                    &h,
+                    json!({ "view": req, "tool": "text", "events": drag(&[v(x, y), { let p = v(x, y); (p.0 + 20.0, p.1 + 10.0) }], &[]) }),
+                ),
+            );
+        }
+        put(
+            view,
+            "text",
+            answered(&h, json!({ "view": req, "tool": "text", "events": click(v(-800.0, -950.0), &[]) })),
         );
         let (h, _, _) = fresh();
         if view == "camera" {

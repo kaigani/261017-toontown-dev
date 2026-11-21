@@ -92,10 +92,7 @@ fn p5_a_refused_gesture_answers_its_command_s_refusal_and_ends_the_call() {
 #[test]
 fn tools_without_built_gestures_say_so_and_drawing_space_events_map_back() {
     let h = ready();
-    // SI-129 (C4.3 plan answer 5): no milestone names the Text tool's gestures (owner null, listed in M4's merge note);
-    // Edit Texture's are M7 C7.1's.
-    let e = pointer(&h, "text", drag(&[(1000.0, 500.0), (1000.0, 500.0)])).error.unwrap();
-    assert_eq!((e.code.as_str(), &e.details["owner"]), ("command.notImplemented", &json!(null)));
+    // SI-129: Edit Texture's gestures are M7 C7.1's (the Text tool's are built since C4.4b, design note 5).
     let e = pointer(&h, "editTexture", drag(&[(1000.0, 500.0), (1000.0, 500.0)])).error.unwrap();
     assert_eq!((e.code.as_str(), &e.details["owner"]), ("command.notImplemented", &json!("M7 C7.1")));
     // `space: "drawing"` events are converted to view pixels at the press: the same command as view events.

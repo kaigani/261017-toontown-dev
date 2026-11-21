@@ -260,6 +260,8 @@ The answer is `{generation, scene}`; `scene` has:
 | `overlays` | object | 1.1 | Camera view (§11.4). Absent in the Drawing view. |
 | `contours` | object | 1.2 | Both view types, while the Contour Editor is the active tool with a current drawing (§11.8); else absent. |
 | `toolBox` | object | 1.2 | Both view types, while Perspective or Reposition All is the active tool and its box exists (§11.9); else absent. |
+| `textEdit` | object | 1.2 | Both view types, while the Text tool's edit session is open on the current drawing (§11.10); else absent. |
+| `textBoxes` | array | 1.2 | Both view types, every text box of the current drawing while the Text tool is active (§11.10); else absent. |
 
 ### 11.3 Entries
 
@@ -312,6 +314,10 @@ Form 1.0's checks (every member's type, the known enumerations) stay. Form 1.1 a
 - **R9** (form 1.2) `toolBox`, when present: `tool` is `"perspective"` or `"repositionAll"`, `box` four finite numbers
   with `min <= max` on both axes, `locked` a boolean, `mapping` (when present) `"auto"`, `"projective"` or `"bilinear"`.
 
+- **R10** (form 1.2) `textEdit`, when present: a non-empty `textId`, a string `viewId`, `anchor` and `caretIndex`
+  non-negative integers, `quad` four points, `caret` and `handles` two points, `highlight` an array of four-point
+  quads, `size` a positive number; `textBoxes`, when present, an array of `{textId (non-empty), quad (four points)}`.
+
 `viewId`, `paletteStamp` and the booleans have a type and no narrower domain (a float window's id is any view id).
 
 A refused answer is not applied: the canvas keeps its previous picture and asks again (§8's rule for payloads).
@@ -354,3 +360,13 @@ invisible strokes); Reposition All's is the current drawing's bounds, invisible 
 gesture driver hits handles on the same box: eight handles at its corners and side midpoints, 6 view px, and for
 Reposition All the rotation zone outside a corner. `locked`: the tool's command is refused now (Perspective: the drawing
 is locked; Reposition All: nothing can move), drawn grey with no preview. A form 1.1 reader ignores it.
+
+### 11.10 The Text tool (form 1.2; M4 C4.4b, design note 5 §5; SI-192)
+
+The kernel is the only layout: the window derives no glyph metric. `textEdit` is the edit session in drawing units:
+`{textId, viewId, anchor, caretIndex, quad, caret, highlight, handles, size}`: the edited box's corners (top-left
+first, clockwise on screen), the caret's top and bottom, one quad per highlighted line, the width handles at the middle
+of the box's left and right edges, and the run size at the caret (the editor's pre-edit size). `textBoxes` lists
+every text box of the current drawing (`{textId, quad}`) for frames and cursors. The window draws the caret (steady),
+the highlight and the edited box's frame and handles through each view's drawing-to-view mapping, and focuses its
+editor in the session's view only. A form 1.1 reader ignores both.

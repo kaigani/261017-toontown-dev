@@ -41448,6 +41448,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       kerning: {
         description: "Manual kerning (1/100 em).",
@@ -41477,6 +41478,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       leftMargin: {
         description: "Left margin (du).",
@@ -42218,6 +42220,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       kerning: {
         description: "Manual kerning (1/100 em).",
@@ -42247,6 +42250,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       leftMargin: {
         description: "Left margin (du).",

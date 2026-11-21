@@ -381,7 +381,7 @@ export function toolBoxCursor(
   return h.i % 2 === 0 ? 'nesw-resize' : 'nwse-resize';
 }
 
-/** The view-pixel affine of an affine preview map (for the overlay furniture): `d2v · m · d2v⁻¹`. */
+/** The view-pixel affine of an affine preview map (for the overlay furniture): `d2v * m * d2v^-1`. */
 export function viewAffine(m: PreviewMap, d2v: Affine): Affine | null {
   if (m.kind !== 'affine') return null;
   const v2d = invert(d2v);

@@ -69,6 +69,7 @@ command_registry![
     ipc::page_ready,
     ipc::token_field,
     ipc::token_rect,
+    ipc::text_input,
 ];
 
 #[cfg(feature = "m0-diagnostics")]
@@ -93,6 +94,7 @@ command_registry![
     ipc::page_ready,
     ipc::token_field,
     ipc::token_rect,
+    ipc::text_input,
     diagnostics::bench_plan,
     diagnostics::bench_report,
     spikes::tablet::spike_mode,
@@ -304,7 +306,9 @@ mod tests {
                 // D-69 item 1: a page's paint after a navigation; the token field's presence and place.
                 "page_ready",
                 "token_field",
-                "token_rect"
+                "token_rect",
+                // M4 C4.4b (design note 5 §4): the Text tool's editor feeds the kernel's input path.
+                "text_input"
             ]
         );
         for path in COMMANDS {
@@ -318,7 +322,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..20],
+            &names[..21],
             [
                 "ping",
                 "app_info",
@@ -341,7 +345,9 @@ mod tests {
                 // D-69 item 1: a page's paint after a navigation; the token field's presence and place.
                 "page_ready",
                 "token_field",
-                "token_rect"
+                "token_rect",
+                // M4 C4.4b (design note 5 §4): the Text tool's editor feeds the kernel's input path.
+                "text_input"
             ]
         );
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));

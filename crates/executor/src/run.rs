@@ -347,6 +347,9 @@ pub(crate) struct Core {
     /// polygon cut is the Scissor's, 02 §7.4.3). Set by the gesture driver around one invocation, taken by
     /// [`Core::run_staged`].
     label_override: Option<&'static str>,
+    /// The text object the next staged invocation types into (design note 5 §3): set by the Text tool's input path
+    /// around one keystroke's commands, copied onto the invocation's step transaction, taken by [`Core::run_staged`].
+    typing: Option<String>,
 }
 
 fn unknown(id: &str, registry: &Registry) -> CommandError {
@@ -658,6 +661,13 @@ fn commit(
             p.log_commit(t.rev, back_of(&t), t.before.clone(), &t.after, earlier_revs(&t));
             let mut replayed_anim = None;
             let step_id = match t.kind {
+                // A keystroke of the Text tool's input path extends the open typing run (design note 5 §3).
+                TxnKind::Step if t.typing.as_deref().is_some_and(|k| p.history.extends_run(k, &origin.label())) => {
+                    p.history.extend_top(t.edit, t.touched, t.structural, crate::time::now_iso());
+                    let top = p.history.top().map(|s| (s.id.clone(), s.label.clone())).unwrap_or_default();
+                    undo_ref = Some(UndoRef { step_id: top.0.clone(), label: top.1 });
+                    top.0
+                }
                 TxnKind::Step => {
                     let id = p.history.next_step_id();
                     p.history.push(Step {
@@ -671,6 +681,9 @@ fn commit(
                         anim: anim.cloned(),
                     });
                     undo_ref = Some(UndoRef { step_id: id.clone(), label: t.label.clone() });
+                    if let Some(k) = &t.typing {
+                        p.history.open_run(k, &origin.label());
+                    }
                     id
                 }
                 TxnKind::Undo(i) => {
@@ -1007,6 +1020,11 @@ impl Core {
         self.label_override = label;
     }
 
+    /// Sets (or clears) the typing key of the next staged invocations ([`Core::typing`]'s field).
+    pub(crate) fn set_typing(&mut self, text_id: Option<String>) {
+        self.typing = text_id;
+    }
+
     pub(crate) fn new(registry: &'static Registry, session: Session, budget: Duration) -> Self {
         Self {
             session: Some(session),
@@ -1017,6 +1035,7 @@ impl Core {
             served_from_cache: false,
             call_start: None,
             label_override: None,
+            typing: None,
         }
     }
 
@@ -1126,6 +1145,7 @@ impl Core {
                         let mut scene = crate::canvas::camera_scene(cx, &view)?;
                         scene.contours = crate::contour_gesture::scene_contours(cx);
                         scene.tool_box = crate::envelope_gesture::scene_tool_box(cx);
+                        (scene.text_edit, scene.text_boxes) = crate::text_edit::scene_text(cx);
                         Ok(scene)
                     })
                     .unwrap_or_else(|| Err(crate::cx::no_project()));
@@ -1140,6 +1160,9 @@ impl Core {
         scene.selection = self.with_lent_session(crate::canvas::selection).transpose()?.flatten();
         scene.contours = self.with_lent_session(crate::contour_gesture::scene_contours).flatten();
         scene.tool_box = self.with_lent_session(crate::envelope_gesture::scene_tool_box).flatten();
+        if let Some((edit, boxes)) = self.with_lent_session(crate::text_edit::scene_text) {
+            (scene.text_edit, scene.text_boxes) = (edit, boxes);
+        }
         Ok(scene)
     }
 
@@ -1293,6 +1316,10 @@ impl Core {
     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
         let mut env = self.invoke_inner(inv);
         crate::label_cancellation(&mut env);
+        // The Text tool's session ends when its condition holds (design note 5 §2), after every accepted call.
+        if env.is_ok() && !self.simulating && !self.is_query(&inv.command) {
+            crate::text_edit::settle(self, &inv.origin);
+        }
         env
     }
 
@@ -1421,6 +1448,7 @@ impl Core {
         step: impl FnOnce(&mut Cx) -> Result<Value, CommandError>,
     ) -> Envelope {
         let forced = self.label_override.take();
+        let typing = self.typing.clone();
         let session = self.take_session();
         let before = observe(&session);
         let rollback = Rollback::take(&session);
@@ -1433,6 +1461,11 @@ impl Core {
             let mut txns = cx.take_txns();
             if let Some(t) = cx.finish_staged(label)? {
                 txns.push(t);
+            }
+            for t in &mut txns {
+                if t.kind == TxnKind::Step {
+                    t.typing.clone_from(&typing);
+                }
             }
             Ok((result, txns))
         });

@@ -38,6 +38,8 @@ function scene(grid: Scene['grid'], entries: SceneEntry[]): Scene {
     overlays: null,
     contours: null,
     toolBox: null,
+    textEdit: null,
+    textBoxes: null,
   };
 }
 

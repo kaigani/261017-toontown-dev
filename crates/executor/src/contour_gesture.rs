@@ -147,7 +147,7 @@ fn selected_anchors(cx: &Cx, d: &Drawing, id: &str) -> Vec<usize> {
 }
 
 /// The point of segment `c` nearest to view point `q`, measured in view pixels through `view` (an affine map keeps the
-/// Bézier parameter, so the parameter is the drawing-space one): `(distance, t)`. Sampled, then refined.
+/// Bezier parameter, so the parameter is the drawing-space one): `(distance, t)`. Sampled, then refined.
 fn nearest_in_view(c: &Cubic, q: Point, view: &dyn Fn(Point) -> Point) -> (f64, f64) {
     let at = |t: f64| {
         let p = c.eval(t);

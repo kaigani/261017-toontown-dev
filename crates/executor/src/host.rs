@@ -761,6 +761,63 @@ impl ExecutorHandle {
         self.pointer_routed(origin, request, true)
     }
 
+    /// The Text tool's input path (M4 C4.4b, design note 5 §4): typed text, an editing key, a paste or a cut into the
+    /// edit session `origin` opened, as one document-thread request. The result is `{commands: [{commandId, params,
+    /// envelope}], session}`; a refused command's error is the answer. `arg.missing` without a session, `ui.busy`
+    /// while another origin's is open.
+    pub fn text_input(&self, origin: crate::types::Origin, input: crate::text_edit::Input) -> crate::types::Envelope {
+        let run = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
+            let rev = |core: &crate::run::Core| core.session().and_then(|s| s.project.as_ref()).map(|p| p.doc.document_rev());
+            match crate::text_edit::input(core, &origin, input) {
+                Ok(answered) => {
+                    if let Some((_, _, e)) = answered.iter().find(|(_, _, e)| !e.is_ok()) {
+                        return e.clone();
+                    }
+                    let commands: Vec<Value> = answered
+                        .into_iter()
+                        .map(|(c, p, e)| json!({ "commandId": c, "params": p, "envelope": e }))
+                        .collect();
+                    let session = core
+                        .with_lent_session(|cx| {
+                            cx.app().text_edit.as_ref().map(|s| {
+                                json!({ "drawingId": s.drawing, "textId": s.text, "anchor": s.anchor, "caret": s.caret })
+                            })
+                        })
+                        .flatten();
+                    crate::types::Envelope::ok(json!({ "commands": commands, "session": session }), rev(core))
+                }
+                Err(e) => crate::types::Envelope::error(e, rev(core)),
+            }
+        });
+        run.unwrap_or_else(|e| crate::types::Envelope::error(e, None))
+    }
+
+    /// The edit session open now, `{drawingId, textId, origin, anchor, caret, viewId}` (design note 5 §4): the `key`
+    /// tool routes editing keys of the session's origin to the input path; the desktop host reads it for its notice.
+    ///
+    /// # Errors
+    /// `command.timeout` when the document thread does not answer within the budget.
+    pub fn text_session(&self) -> Result<Option<Value>, CommandError> {
+        crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
+            Ok(core
+                .with_lent_session(|cx| {
+                    cx.app().text_edit.as_ref().map(|s| {
+                        json!({ "drawingId": s.drawing, "textId": s.text, "origin": s.origin, "anchor": s.anchor,
+                                "caret": s.caret, "viewId": s.view_id })
+                    })
+                })
+                .flatten())
+        })?
+    }
+
+    /// A key sequence in the keymap's canonical form (`Shift+Left`, `Primary+A`), as the dispatch compares it.
+    ///
+    /// # Errors
+    /// `keymap.invalidSequence` and `keymap.reservedKey` for a malformed sequence.
+    pub fn canonical_keys(keys: &str) -> Result<String, CommandError> {
+        Ok(crate::keymap::parse(keys, crate::keymap::Platform::current())?.canonical())
+    }
+
     /// The command and parameters a `pointer` request's `tool` runs first in `view` (SI-148): a scene tool id in a Camera
     /// view selects the scene tool (`anim.tool.set`), any other id the drawing tool (`tool.active.set`). The desktop host
     /// runs it before it routes an agent's gesture to the window showing the view, as the gesture driver does.

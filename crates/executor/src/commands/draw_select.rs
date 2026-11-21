@@ -462,7 +462,7 @@ pub(crate) struct SelectionGetResult {
     scopes = [read],
     needs_project,
     example(title = "The current drawing's selection", params = r#"{"drawingId": "drawingBank:#1/drawing:#1"}"#),
-    agent_only = "the GUI shows the selection in the Drawing view",
+    gui = "Properties, Tool options of the Contour Editor: which line is selected (M4 C4.4b)",
 )]
 pub(crate) fn draw_selection_get(cx: &mut Cx, p: SelectionGetParams) -> Result<SelectionGetResult, CommandError> {
     let mut none = Vec::new();

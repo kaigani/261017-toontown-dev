@@ -294,7 +294,7 @@ export interface ContourChange {
 
 const key = (x: number, y: number, layer: string) => `${layer}\u0000${String(x)}\u0000${String(y)}`;
 
-/** The anchors `draw.point.move` moves for `moved` (stroke id → anchor indices): the anchors at a moved anchor's exact
+/** The anchors `draw.point.move` moves for `moved` (stroke id -> anchor indices): the anchors at a moved anchor's exact
  *  coordinate in the same layer (the kernel's junction rule). */
 function pointMove(c: SceneContours, moved: Map<string, Set<number>>): Map<string, Set<number>> {
   const coords = new Set<string>();

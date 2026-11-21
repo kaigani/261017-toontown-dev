@@ -160,6 +160,15 @@
       ]
     },
     {
+      "view": "drawing",
+      "tool": "text",
+      "commands": [
+        "draw.text.add",
+        "draw.text.set",
+        "draw.object.delete"
+      ]
+    },
+    {
       "view": "camera",
       "tool": "select",
       "commands": [
@@ -315,6 +324,15 @@
       "tool": "repositionAll",
       "commands": [
         "draw.repositionAll.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "text",
+      "commands": [
+        "draw.text.add",
+        "draw.text.set",
+        "draw.object.delete"
       ]
     },
     {

@@ -570,12 +570,53 @@ async function surfaces(): Promise<Surface[]> {
     cleanup();
   }
 
+  // The Contour Editor's Tool options page with one pencil line selected (M4 C4.4b; SI-196): its line properties.
+  const contour = host(true);
+  contour.handlers['tool.active.get'] = () => ok({ toolId: 'contourEditor' });
+  contour.handlers['draw.selection.get'] = () =>
+    ok({ drawingId: 'dr_1', selectedIds: ['st_1'], selectedPoints: [] });
+  contour.handlers['draw.drawing.get'] = () =>
+    ok({ drawingId: 'dr_1', nodes: [{ id: 'st_1', kind: 'pencil', lineStyle: { thickness: 3 } }] });
+  mark(contour);
+  mount(contour, 'properties');
+  await screen.findByText('Invisible');
+  out.push(await settled('float:properties:contourEditor', document.body));
+  cleanup();
+
   // The Text panel as the defaults for new text, in a floating window (M4 C4.4a).
   const text = host(true);
   mark(text);
   mount(text, 'text');
   await screen.findByText('Defaults for new text');
   out.push(await settled('float:text', document.body));
+  // Its second role (M4 C4.4b, design note 5 §6): formatting the text the Text tool highlights, the values the kernel's.
+  mark(text);
+  act(() => {
+    text.event('shell.textEdit', {
+      drawingId: 'dr_1',
+      textId: 'nd_1',
+      viewId: 'drawingView',
+      anchor: 0,
+      caret: 3,
+      format: {
+        font: 'sans-serif',
+        size: 36,
+        bold: null,
+        italic: false,
+        baseline: 'normal',
+        kerning: 0,
+        autoKern: true,
+        colourId: null,
+        align: 'left',
+        leftMargin: 0,
+        rightMargin: 0,
+        indent: 0,
+        lineSpacing: 0,
+      },
+    });
+  });
+  await screen.findByText('Selected text');
+  out.push(await settled('float:text:selection', document.body));
   cleanup();
 
   // The Properties panel's Drawing page, the drawing inspector (M4 C4.4a): the current element's drawing at frame 1.

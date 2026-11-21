@@ -246,26 +246,6 @@
       "section": "10 §10.2 (Command table)",
       "location": "Project › Media › Remove"
     },
-    "draw.stroke.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §7.1.2 (Contour Editor); §8 (line properties)",
-      "location": "the Contour Editor tool"
-    },
-    "draw.text.add": {
-      "owner": "M4 C4.4",
-      "section": "02 §7.6 (Text tool)",
-      "location": "the Text tool"
-    },
-    "draw.text.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §7.6 (Text tool)",
-      "location": "the Text tool"
-    },
-    "draw.textFormat.set": {
-      "owner": "M4 C4.4",
-      "section": "02 §7.6.1 (Text panel)",
-      "location": "the Text panel"
-    },
     "draw.vectorize.preview": {
       "owner": "M10 C10.2",
       "section": "09 §8.1 (import entry points: Import and Vectorize)",

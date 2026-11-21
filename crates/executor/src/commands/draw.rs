@@ -388,7 +388,7 @@ pub(crate) const MAX_READBACK_BYTES: usize = 32 * 1024 * 1024;
     needs_project,
     example(title = "The drawing exposed by Bob at frame 1", params = r#"{"elementId": "scene:#1/element:\"Bob\"", "frame": 1}"#),
     example(title = "Strokes only, flat, without outlines", params = r#"{"drawingId": "drawingBank:#1/drawing:#1", "flatten": true, "include": ["pressure", "bounds"]}"#),
-    agent_only = "the primary read model for agents (02 §13.6); the GUI renders drawings directly",
+    gui = "Properties, Tool options of the Contour Editor: the selected line's properties; the Text tool's editor: Copy and Cut (M4 C4.4b)",
 )]
 pub(crate) fn draw_drawing_get(cx: &mut Cx, p: DrawingGetParams) -> Result<DrawingReadback, CommandError> {
     let mut none = Vec::new();
@@ -715,6 +715,14 @@ pub(crate) fn draw_object_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteR
         return Err(nothing_to_do("delete"));
     }
     let found = locate_all(&d, &ids, "/ids")?;
+    // "Delete Text Object" when every removed object is an empty text object (02 line 681; SI-194).
+    let empty_text = |l: &Located| {
+        l.kind == ObjectKind::Text
+            && vd::node_at(&d, &l.pointer).and_then(|n| n.text().as_ref().map(String::is_empty)).unwrap_or(false)
+    };
+    if !found.is_empty() && found.iter().all(empty_text) {
+        cx.set_label("Delete Text Object");
+    }
     let (ops, removed) = removal_ops(&d, &found);
     let mut parents: Vec<String> = Vec::new();
     for o in vd::objects(&d) {

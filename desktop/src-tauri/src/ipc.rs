@@ -411,6 +411,45 @@ pub async fn gesture_commit(app: AppHandle, json: String) -> Result<Response, St
     respond(&for_window(env, events))
 }
 
+/// `text_input` (M4 C4.4b, design note 5 §4): one input of the Text tool's editor into the kernel's input path, with the
+/// user's origin: `{generation, kind: "text" | "key" | "paste" | "cut", text?, keys?}`. Another generation's input is
+/// refused and nothing runs (D-7b). The answer is the input path's envelope (`ExecutorHandle::text_input`).
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a request that is not JSON, lacks its generation or names no input.
+#[tauri::command]
+pub async fn text_input(app: AppHandle, json: String) -> Result<Response, String> {
+    let mut request: Value = parse(&json)?;
+    let generation = generation_of(&mut request)?;
+    let text = request.get("text").and_then(Value::as_str).map(str::to_owned);
+    let input = match request.get("kind").and_then(Value::as_str) {
+        Some("text") => {
+            tt_executor::text_edit::Input::Text(text.ok_or_else(|| arg_invalid("/text", "the typed text"))?)
+        }
+        Some("paste") => {
+            tt_executor::text_edit::Input::Paste(text.ok_or_else(|| arg_invalid("/text", "the pasted text"))?)
+        }
+        Some("cut") => tt_executor::text_edit::Input::Cut,
+        Some("key") => {
+            let keys = request.get("keys").and_then(Value::as_str).ok_or_else(|| arg_invalid("/keys", "a key"))?;
+            let canonical =
+                tt_executor::ExecutorHandle::canonical_keys(keys).map_err(|e| arg_invalid("/keys", &e.message))?;
+            tt_executor::text_edit::Input::Key(canonical)
+        }
+        _ => return Err(arg_invalid("/kind", "text, key, paste or cut")),
+    };
+    let env = tauri::async_runtime::spawn_blocking(move || {
+        let host = app.state::<Host>();
+        if generation != host.generation() {
+            return stale_gesture(generation, host.generation());
+        }
+        host.exec().text_input(tt_executor::Origin::User, input)
+    })
+    .await
+    .map_err(|e| internal(e.to_string()))?;
+    respond(&env)
+}
+
 /// The window keeps a record of a gesture of more than this many events by count, its commands by id (SI-141 item 9);
 /// the canvas's `RECORD_EVENTS`.
 const RECORD_EVENTS: usize = 4096;

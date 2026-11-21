@@ -1,7 +1,9 @@
 // The Properties panel's Tool options page (02 §7.7 lines 701-720, §8.8-§8.11 lines 786-810, §12.3; M4 C4.4a,
 // reviews/M4-design-panels.md §4): the active tool's options and the three persistent toggles. Select: the rectangle
 // rule. Brush and Eraser: their pen. Pencil, Rectangle, Ellipse, Line and Polyline: the line thickness (the kernel writes
-// the five together); Polyline also snapping. Paint, Unpaint and Paint Unpainted: automatic gap closing (03 §8.8). Every
+// the five together); Polyline also snapping. Paint, Unpaint and Paint Unpainted: automatic gap closing (03 §8.8).
+// Contour Editor (M4 C4.4b; SI-196): the line properties of the one selected pencil line or invisible stroke, its
+// thickness and whether it is invisible (`draw.stroke.set`, "Edit Stroke"; 02 §8 line properties, line 1326). Every
 // control runs one command and shows the kernel's state, re-read on its events; nothing is stored here (02 lines
 // 1111-1113: the kernel persists the options).
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -169,6 +171,7 @@ export function ToolOptionsPage() {
       )}
       {tool !== null && THICKNESS_TOOLS.includes(tool) && <Thickness options={options} />}
       {tool === 'polyline' && <PolylineSnap options={options} />}
+      {tool === 'contourEditor' && <SelectedLine />}
       {tool !== null && PAINT_TOOLS.includes(tool) && (
         <ChoiceList
           id="toolOptions.gapClosing"
@@ -315,6 +318,110 @@ function PolylineSnap({ options }: { options: Json }) {
         params={{ snapRadius: radius }}
         onCommit={(v) => actions.run('tool.polyline.options.set', { snapRadius: v }, ['arg.invalid'])}
       />
+    </div>
+  );
+}
+
+/** The line properties of the one selected pencil line or invisible stroke (SI-196): its thickness and its visibility,
+ *  each one `draw.stroke.set` ("Edit Stroke"), re-read on the drawing's changes and the selection's. */
+function SelectedLine() {
+  const { engine } = useShell();
+  const actions = useActions();
+  const [line, setLine] = useState<{ strokeId: string; kind: string; thickness: number } | null>(null);
+  const refresh = useCallback(() => {
+    void (async () => {
+      const sel = await engine.run('draw.selection.get', {}).done;
+      const r = obj(sel.result);
+      const drawingId = typeof r['drawingId'] === 'string' ? r['drawingId'] : null;
+      const ids = Array.isArray(r['selectedIds']) ? (r['selectedIds'] as unknown[]) : [];
+      if (sel.status !== 'ok' || drawingId === null || ids.length !== 1 || typeof ids[0] !== 'string') {
+        setLine(null);
+        return;
+      }
+      const id = ids[0];
+      const d = await engine.run('draw.drawing.get', { drawingId, flatten: true }).done;
+      const nodes = Array.isArray(obj(d.result)['nodes']) ? (obj(d.result)['nodes'] as unknown[]) : [];
+      const n = nodes.map(obj).find((x) => x['id'] === id);
+      const kind = typeof n?.['kind'] === 'string' ? n['kind'] : '';
+      if (!n || (kind !== 'pencil' && kind !== 'invisible')) {
+        setLine(null);
+        return;
+      }
+      const t = obj(n['lineStyle'])['thickness'];
+      setLine({ strokeId: `${drawingId}/${id}`, kind, thickness: typeof t === 'number' ? t : 0 });
+    })().catch(() => {
+      setLine(null);
+    });
+  }, [engine]);
+  useEffect(() => {
+    refresh();
+    let off: (() => void) | null = null;
+    let stopped = false;
+    void engine
+      .onEvent((e) => {
+        if (
+          e.name === 'draw.selection.changed' ||
+          e.name === 'draw.drawing.changed' ||
+          e.name === 'app.context.changed' ||
+          e.name === 'project.opened' ||
+          e.name === 'project.closed'
+        )
+          refresh();
+      })
+      .then((u) => {
+        if (stopped) u();
+        else off = u;
+      });
+    return () => {
+      stopped = true;
+      off?.();
+    };
+  }, [engine, refresh]);
+  if (!line)
+    return (
+      <p className="hint" data-tt-role="text" data-tt-id="toolOptions.selectedLine">
+        Select one pencil line or invisible stroke to edit its line.
+      </p>
+    );
+  const invisible = line.kind === 'invisible';
+  return (
+    <div role="group" aria-label="Selected line" data-tt-role="group" data-tt-id="toolOptions.selectedLine">
+      <label>
+        Line thickness
+        <NumericField
+          id="toolOptions.selectedLine.thickness"
+          label="Line thickness"
+          value={line.thickness}
+          range={declaredRange('draw.stroke.set', 'thickness')}
+          step={0.5}
+          disabled={invisible}
+          command="draw.stroke.set"
+          params={{ strokeId: line.strokeId, thickness: line.thickness }}
+          onCommit={(v) =>
+            actions.run('draw.stroke.set', { strokeId: line.strokeId, thickness: v }, ['arg.invalid'])
+          }
+        />
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          checked={invisible}
+          data-tt-role="checkbox"
+          data-tt-id="toolOptions.selectedLine.invisible"
+          data-tt-command="draw.stroke.set"
+          data-tt-params={JSON.stringify({
+            strokeId: line.strokeId,
+            kind: invisible ? 'pencil' : 'invisible',
+          })}
+          onChange={() => {
+            void actions.run('draw.stroke.set', {
+              strokeId: line.strokeId,
+              kind: invisible ? 'pencil' : 'invisible',
+            });
+          }}
+        />
+        Invisible
+      </label>
     </div>
   );
 }

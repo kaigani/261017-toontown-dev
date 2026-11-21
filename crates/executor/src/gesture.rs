@@ -284,6 +284,7 @@ pub const COVERED: &[&str] = &[
     crate::contour_gesture::TOOL,
     crate::envelope_gesture::PERSPECTIVE,
     crate::envelope_gesture::REPOSITION,
+    crate::text_edit::TOOL,
 ];
 
 /// The tool a gesture uses after the temporary overrides of 02 §5.2 held at the press.
@@ -424,6 +425,9 @@ fn rect(a: Point, b: Point) -> Value {
 pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, CommandError> {
     if g.tool == crate::contour_gesture::TOOL {
         return crate::contour_gesture::commands(cx, g);
+    }
+    if g.tool == crate::text_edit::TOOL {
+        return crate::text_edit::commands(cx, g);
     }
     if g.tool == "zoom"
         && let Some(st) = g.strokes.first()
@@ -1291,6 +1295,7 @@ fn finish(core: &mut crate::run::Core, origin: &Origin, g: &Gesture, out: &mut P
         core.with_lent_session(|cx| to_commands(cx, g)).unwrap_or_else(|| Err(CommandError::internal("no session")));
     match built {
         Ok(commands) => {
+            let mut done: Vec<(String, Envelope)> = Vec::new();
             for (command, params) in commands {
                 core.set_label_override(acting_label(g, &command));
                 let env = core.invoke(&Invocation {
@@ -1306,8 +1311,10 @@ fn finish(core: &mut crate::run::Core, origin: &Origin, g: &Gesture, out: &mut P
                         env.result.as_ref().and_then(|r| r.get("colourId")).and_then(Value::as_str).map(str::to_owned)
                     })
                     .flatten();
+                done.push((command.clone(), env.clone()));
                 out.commands.push(Answered { command_id: command, params, envelope: env });
                 if !ok {
+                    crate::text_edit::after_gesture(core, origin, g, &done);
                     return false;
                 }
                 // The Dropper's second command (02 §13.3 line 1217): the picked colour becomes current (D-11).
@@ -1326,6 +1333,8 @@ fn finish(core: &mut crate::run::Core, origin: &Origin, g: &Gesture, out: &mut P
                     }
                 }
             }
+            // The Text tool's session after its gesture (design note 5 §2).
+            crate::text_edit::after_gesture(core, origin, g, &done);
             true
         }
         Err(e) => {

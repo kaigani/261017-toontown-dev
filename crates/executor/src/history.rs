@@ -51,6 +51,17 @@ pub(crate) struct History {
     next_id: u64,
     /// Steps below this position cannot be undone (the "Repair on Open" base step, 10 REP-01).
     floor: usize,
+    /// The open typing run (M4 C4.4b, design note 5 §3; SI-191): the step the Text tool's input path extends while its
+    /// keystrokes go to one text object from one origin.
+    run: Option<TypingRun>,
+}
+
+/// An open typing run: the step it extends, the text object and the origin typing into it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct TypingRun {
+    pub step_id: String,
+    pub text_id: String,
+    pub origin: String,
 }
 
 impl History {
@@ -65,8 +76,10 @@ impl History {
         format!("u-{}", self.next_id)
     }
 
-    /// Records a new step: discards redo steps, enforces the depth bound.
+    /// Records a new step: discards redo steps, enforces the depth bound. It ends any typing run (a keystroke that opens
+    /// a run opens it after the push, [`History::open_run`]).
     pub fn push(&mut self, step: Step) {
+        self.run = None;
         self.steps.truncate(self.position);
         if self.clean.is_some_and(|c| c > self.position) {
             self.clean = None;
@@ -90,7 +103,7 @@ impl History {
 
     /// A history starting with one step that cannot be undone and is not clean (10 REP-01: repairs on open).
     pub fn with_base_step(step: Step) -> Self {
-        Self { steps: vec![step], position: 1, clean: None, next_id: 1, floor: 1 }
+        Self { steps: vec![step], position: 1, clean: None, next_id: 1, floor: 1, run: None }
     }
 
     /// The ID of the step just before `position` (the step undo would reverse there).
@@ -101,6 +114,8 @@ impl History {
     /// Marks `position` clean if the history still leads there through the step `top` (SAVE-04: the clean marker is
     /// the saved snapshot's undo position); otherwise no position is clean.
     pub fn mark_clean_at(&mut self, position: usize, top: Option<&str>) {
+        // A save ends the typing run (design note 5 §3).
+        self.run = None;
         let same = position <= self.steps.len() && self.step_id_before(position) == top;
         self.clean = if same { Some(position) } else { None };
     }
@@ -115,11 +130,74 @@ impl History {
     }
 
     pub fn moved_back(&mut self) {
+        self.run = None;
         self.position = self.position.saturating_sub(1);
     }
 
     pub fn moved_forward(&mut self) {
+        self.run = None;
         self.position = (self.position + 1).min(self.steps.len());
+    }
+
+    /// Whether a keystroke of `origin` into `text_id` extends the open run (design note 5 §3): the run is open, its
+    /// step is the top one at the end of the history (nothing undone), same object and origin, and the position is not
+    /// the clean (saved) one.
+    pub fn extends_run(&self, text_id: &str, origin: &str) -> bool {
+        self.run.as_ref().is_some_and(|r| {
+            r.text_id == text_id
+                && r.origin == origin
+                && self.position == self.steps.len()
+                && self.top().is_some_and(|t| t.id == r.step_id)
+                && self.clean != Some(self.position)
+        })
+    }
+
+    /// Opens a run on the top step.
+    pub fn open_run(&mut self, text_id: &str, origin: &str) {
+        self.run = self.top().map(|t| TypingRun {
+            step_id: t.id.clone(),
+            text_id: text_id.to_owned(),
+            origin: origin.to_owned(),
+        });
+    }
+
+    /// Ends the open run (a caret move, a highlight, a format change, leaving the session: design note 5 §3).
+    pub fn end_run(&mut self) {
+        self.run = None;
+    }
+
+    /// Extends the top step with a keystroke's commits (design note 5 §3): appended in commit order; when the step's
+    /// last commit and the new one are each one `replace` at the same pointer of the same entry, they fold into one
+    /// (the first undo, the new redo), so a run of any length undoes with one patch per entry. The step keeps its id
+    /// and label; `touched` is unioned; the time is the keystroke's.
+    pub fn extend_top(&mut self, edit: StepEdit, touched: Vec<String>, structural: bool, time: String) {
+        let Some(top) = self.position.checked_sub(1).and_then(|i| self.steps.get_mut(i)) else { return };
+        let (StepEdit::Patches(have), StepEdit::Patches(new)) = (&mut top.edit, edit) else { return };
+        for c in new {
+            let fold = have.last().is_some_and(|last| {
+                last.key == c.key
+                    && last.redo.len() == 1
+                    && c.redo.len() == 1
+                    && last.undo.len() == 1
+                    && c.undo.len() == 1
+                    && last.redo[0].op == "replace"
+                    && c.redo[0].op == "replace"
+                    && last.redo[0].path == c.redo[0].path
+                    && last.undo[0].path == c.undo[0].path
+            });
+            if fold && let Some(last) = have.last_mut() {
+                last.redo = c.redo;
+            } else {
+                have.push(c);
+            }
+        }
+        for t in touched {
+            if !top.touched.contains(&t) {
+                top.touched.push(t);
+            }
+        }
+        top.structural |= structural;
+        top.time = time;
     }
 
     pub fn position(&self) -> usize {

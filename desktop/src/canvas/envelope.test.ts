@@ -61,7 +61,7 @@ describe("the window's map is the kernel's (envelopes.json)", () => {
 });
 
 const BOX: Box = [300, 300, 400, 360];
-/** Drawing → view with y down, the Drawing view's default mapping. */
+/** Drawing -> view with y down, the Drawing view's default mapping. */
 const D2V: Affine = [1, 0, 0, -1, 960, 540];
 const view = (x: number, y: number): Pt => [x + 960, 540 - y];
 

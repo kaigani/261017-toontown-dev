@@ -1273,6 +1273,10 @@ fn call_tool(
                 let (command, env) = key_tool(shared, rid, &origin, args, started);
                 return ToolOutcome::Result(tool_result(name, &command, &env));
             }
+            "type_text" => {
+                let (command, env) = type_text_tool(shared, &origin, args, started);
+                return ToolOutcome::Result(tool_result(name, &command, &env));
+            }
             "pointer" => {
                 // One document-thread request for the whole call (design note 4 §2): the gestures' commands run with
                 // this session's origin and scopes; the call is audited once, under the last command it produced.
@@ -1307,6 +1311,50 @@ fn call_tool(
     }
     mark(shared, "app://activity");
     ToolOutcome::Result(tool_result(name, &command, &env))
+}
+
+/// The `type_text` tool (11 §7.6; M4 C4.4b, design note 5 §4; SI-193): without `target`, the text goes into the edit
+/// session this session opened with the Text tool (`pointer`), through the input path a person's typing takes: one
+/// `draw.text.set` extending the typing run. With a `target` naming the window's text editor (`inspect_ui`'s
+/// `textEditor` node) the same; other widget targets are not typed into by the server (`command.notImplemented`).
+fn type_text_tool(
+    shared: &Arc<Shared>,
+    origin: &tt_executor::Origin,
+    args: &Map<String, Value>,
+    started: Instant,
+) -> (String, Envelope) {
+    let params = Value::Object(args.clone());
+    let text = args.get("text").and_then(Value::as_str).unwrap_or_default().to_owned();
+    let env = if !origin.has_scope(tt_registry::Scope::Input) {
+        envelope_error(
+            "permission.denied",
+            "simulated typing needs the scope input".into(),
+            json!({ "tool": "type_text", "missingScopes": ["input"] }),
+            None,
+        )
+    } else if let Some(t) = args.get("target").and_then(Value::as_str).filter(|t| !t.contains("textEditor")) {
+        envelope_error(
+            "command.notImplemented",
+            format!("typing into `{t}` is not built: type_text types into the Text tool's editor (no target)"),
+            json!({ "tool": "type_text", "target": t, "pointer": "/target" }),
+            None,
+        )
+    } else {
+        shared.handle.text_input(origin.clone(), tt_executor::text_edit::Input::Text(text))
+    };
+    let command = env
+        .result
+        .as_ref()
+        .and_then(|r| r.get("commands"))
+        .and_then(Value::as_array)
+        .and_then(|a| a.last())
+        .and_then(|c| c.get("commandId"))
+        .and_then(Value::as_str)
+        .unwrap_or("type_text")
+        .to_owned();
+    shared.handle.audit_call(origin, "type_text", &command, &params, &env, started.elapsed());
+    mark(shared, "app://activity");
+    (command, env)
 }
 
 /// How long `inspect_ui` waits for the front end to render the events before it (M4 C4.1).
@@ -1367,6 +1415,30 @@ fn key_tool(
             }
         }
     };
+    // An open Text tool session of this caller takes its editing keys before the keymap (design note 5 §4; SI-193).
+    if let Ok(canonical) = tt_executor::ExecutorHandle::canonical_keys(keys)
+        && tt_executor::text_edit::is_editing_key(&canonical)
+        && shared
+            .handle
+            .text_session()
+            .ok()
+            .flatten()
+            .is_some_and(|s| s["origin"].as_str() == Some(origin.label().as_str()))
+    {
+        let env = shared.handle.text_input(origin.clone(), tt_executor::text_edit::Input::Key(canonical));
+        let command = env
+            .result
+            .as_ref()
+            .and_then(|r| r.get("commands"))
+            .and_then(Value::as_array)
+            .and_then(|a| a.last())
+            .and_then(|c| c.get("commandId"))
+            .and_then(Value::as_str)
+            .unwrap_or("key")
+            .to_owned();
+        shared.handle.audit_call(origin, "key", &command, &params, &env, started.elapsed());
+        return (command, env);
+    }
     let resolved = match shared.handle.resolve_key(keys) {
         Ok(r) => r,
         Err(e) => {

@@ -31,6 +31,7 @@ export function NumericField({
   inputId,
   ttLabel,
   guiOnly,
+  mixed,
   onSubmit,
   onCommit,
 }: {
@@ -56,6 +57,9 @@ export function NumericField({
   ttLabel?: string;
   /** `data-tt-gui-only`: the reason a field that sends no command of its own is GUI-only (a form's `typing`). */
   guiOnly?: string;
+  /** The value differs over what the field shows (the Text panel over a highlight, design note 5 §6): empty, with the
+   *  placeholder "Mixed"; any typed value is a change. */
+  mixed?: boolean;
   /** Enter on an unchanged value: a form outside a `<form>` element submits here (Enter in any field is its
    *  default button, 01 §2). */
   onSubmit?: () => void;
@@ -67,7 +71,7 @@ export function NumericField({
   const describedBy = useId();
   // The value a commit handed on and is waiting for: an Enter followed by focus loss sends it once.
   const sent = useRef<{ from: number; value: number } | null>(null);
-  const draft = typed?.from === value ? typed.text : String(value);
+  const draft = typed?.from === value ? typed.text : mixed ? '' : String(value);
   const shownProblem = problem?.from === value ? problem.text : null;
 
   const restore = (why: string | null) => {
@@ -82,7 +86,7 @@ export function NumericField({
       restore(parsed.problem);
       return true;
     }
-    if (parsed.value === value) {
+    if (parsed.value === value && !mixed) {
       restore(null);
       return false;
     }
@@ -130,6 +134,7 @@ export function NumericField({
         inputMode="decimal"
         className={className}
         value={draft}
+        placeholder={mixed ? 'Mixed' : undefined}
         disabled={disabled}
         aria-label={label}
         aria-invalid={shownProblem !== null ? true : undefined}
