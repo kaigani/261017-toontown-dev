@@ -871,6 +871,15 @@ async def text_body(t,step):
             check(any(w.get('code')=='text.fontMissing' for w in answer.get('warnings',[])),'D-75 item 9 missing font code (severity absent from MCP warning schema)',answer.get('warnings'))
             await key(0x23);await typed('A');t.click('text.bold');await pause();await state('format');root=clip_set('paste');await key(0x56,0x11);root.destroy();before=await state('before history')
             await c('edit.undo');u=await state('undo');await c('edit.redo');r=await state('redo');check({k:v for k,v in r['drawing'].items() if k!='rev'}=={k:v for k,v in before['drawing'].items() if k!='rev'},'undo redo exact content',None);await c('edit.undo');r=await state('undo again');check({k:v for k,v in r['drawing'].items() if k!='rev'}=={k:v for k,v in u['drawing'].items() if k!='rev'},'second undo exact content',None)
+            stable=lambda row:{k:v for k,v in row['drawing'].items() if k!='rev'}
+            await c('edit.redo');start=await state('three-step start');back=[start]
+            for i in range(3):
+                await c('edit.undo');back.append(await state('three-step undo '+str(i)))
+            for i in range(3):
+                await c('edit.redo');r=await state('three-step redo '+str(i));check(stable(r)==stable(back[2-i]),'02 12.1 redo '+str(i)+' exact',None)
+            for i in range(3):
+                await c('edit.undo');r=await state('three-step undo again '+str(i));check(stable(r)==stable(back[i+1]),'02 12.1 undo again '+str(i)+' exact',None)
+
     finally:
         # Cap repository receipts; full text and captures remain in TEMP.
         t.run.save('text-actions.json',rows)

@@ -1,14 +1,9 @@
 {
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-vyppq6dk",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-i7g8yz81",
   "results": [
     {
       "check": "02 7.6 double click selects word",
-      "ok": false,
-      "detail": {
-        "anchor": 1,
-        "caret": 1,
-        "textId": "dr_01K7JJN800Y36XMWCRBHHE11PG/nd_01K7JJN8002GQ05M5NNKY26H2G"
-      }
+      "ok": false
     }
   ],
   "failures": [
