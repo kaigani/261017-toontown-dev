@@ -30,3 +30,13 @@ Build to use: the `desktop-<OS>` artifact of the CI run named in the handoff (`o
 | [C4.3-camera-view.md](C4.3-camera-view.md) | both | C4.3b |
 | [C4.3-scene-tools.md](C4.3-scene-tools.md) | both | C4.3b |
 | [C4.3-coexistence.md](C4.3-coexistence.md) | both | C4.3b |
+| [C4.4a-keyboard.md](C4.4a-keyboard.md) | both | C4.4a |
+| [C4.4a-agent.md](C4.4a-agent.md) | both | C4.4a |
+| [C4.4a-open-recent-full-path.md](C4.4a-open-recent-full-path.md) | both | C4.4a |
+| [C4.4b-text-input-method.md](C4.4b-text-input-method.md) | both | C4.4b |
+| [C4.4b-tools-pen-and-macos.md](C4.4b-tools-pen-and-macos.md) | both (pen or tablet; macOS) | C4.4b |
+
+**Keystroke to glyph on a display without a frame cap** (C4.4b, ruling D-76 item 2): on a display faster than 60 Hz
+or with the cap off, run `python scripts/c44b-measure.py <toontown binary> <out dir> --backend webgl2 --text-only`,
+then with `--backend webgpu`. The bound is two display frames of the run's own control median; `measure.json`'s
+`keyToGlyphBound` gives the control median, the bound and the margin. Record the figures and the display.

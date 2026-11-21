@@ -107,6 +107,11 @@ const PROTECTION: &str = if cfg!(windows) { "shareMode" } else { "flock" };
 pub enum Boundary {
     /// The arbiter was taken (any operation).
     ArbiterTaken,
+    /// An arbiter verified its file is still its own, before removing it with its protection still held (ruling D-77).
+    ArbiterReleasing,
+    /// A contender proved an arbitration file abandoned under the file's own protection, before removing it (ruling
+    /// D-77).
+    ArbiterAbandonedProven,
     /// An opener created its lock file, before writing its content.
     PublishCreated,
     /// An opener wrote its lock file, before reading it back.
@@ -420,14 +425,16 @@ fn takeover_path(lock: &Path) -> PathBuf {
 /// The lock's arbitration file (`<lock>.takeover`, created exclusively and protected while held): every change of the
 /// lock file — publishing, taking over, heartbeat, release — happens while holding it (C13-R1-02, C13-R3-01).
 struct Arbiter {
+    /// The lock file this arbiter serves (the path the boundaries report).
+    lock: PathBuf,
     path: PathBuf,
     token: String,
     file: Option<File>,
 }
 
 impl Arbiter {
-    /// One attempt. An arbitration file nobody protects any more and older than [`TAKEOVER_STALE`] is removed (its
-    /// holder crashed); a protected one is left alone however old it looks.
+    /// One attempt. An arbitration file its holder left behind is removed only by [`remove_if_abandoned`], which proves
+    /// it abandoned while holding the file's own protection; a protected one is left alone however old it looks.
     fn try_take(lock: &Path) -> Option<Self> {
         let path = takeover_path(lock);
         match create_protected(&path) {
@@ -435,21 +442,10 @@ impl Arbiter {
                 let token = fsx::random_token(8);
                 let _ = f.write_all(token.as_bytes()).and_then(|()| f.flush());
                 boundary(Boundary::ArbiterTaken, lock);
-                Some(Self { path, token, file: Some(f) })
+                Some(Self { lock: lock.to_owned(), path, token, file: Some(f) })
             }
             Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists || e.raw_os_error() == Some(32) => {
-                // Nobody protects it: its holder died. That is certain at once on Windows (the protection exists from
-                // the moment the file does) and, elsewhere, once its token is written (written only after the
-                // `flock`); an empty, unprotected file may be a publisher between creating and locking it, and goes
-                // after TAKEOVER_STALE. Two takers removing the same abandoned file stay safe: each holder checks that
-                // its arbiter is still its own before it reports ownership (`still_ours`).
-                let probed = probe(&path);
-                let written = fs::metadata(&path).is_ok_and(|m| m.len() > 0);
-                let abandoned = probed == Some(false) && (cfg!(windows) || written)
-                    || probed != Some(true) && age(&path).is_some_and(|a| a > TAKEOVER_STALE);
-                if abandoned {
-                    let _ = fs::remove_file(&path);
-                }
+                remove_if_abandoned(&path, lock);
                 None
             }
             Err(_) => None,
@@ -475,11 +471,82 @@ impl Arbiter {
 
 impl Drop for Arbiter {
     fn drop(&mut self) {
-        let ours = self.still_ours();
-        drop(self.file.take());
-        if ours {
+        // Ruling D-77: the file is removed while its protection is still held (unlinked before the `flock` is released;
+        // on Windows deleted while the handle, which shares deletion, is still open), and only then closed. No other
+        // contender can therefore see a live arbiter's file unprotected, judge it abandoned and remove it, and no
+        // removal by name of this file can land on a successor's file (handoff C4.4b section 6: the "0 owners"
+        // interleaving).
+        if self.still_ours() {
+            boundary(Boundary::ArbiterReleasing, &self.lock);
             let _ = fs::remove_file(&self.path);
         }
+        drop(self.file.take());
+    }
+}
+
+/// Removes an arbitration file that its holder left behind, and only that file (ruling D-77). The contender first takes
+/// the file's own protection, which a live holder (or another contender proving the same file) would refuse; holding
+/// it, it checks the file is abandoned and removes exactly the file it holds:
+///
+/// - **Windows:** an open with delete access that shares reading and deletion but not writing fails
+///   (`ERROR_SHARING_VIOLATION`) while any handle can write the file, so it succeeds only when no live holder protects
+///   it (a holder protects its file from the moment it exists); `FILE_FLAG_DELETE_ON_CLOSE` then deletes the file this
+///   handle opened when the handle closes, never a file created at the path later (none can be while it exists).
+/// - **Elsewhere:** an exclusive, non-blocking `flock` on the opened file, refused while its holder (or a prober)
+///   holds a lock on it. Held, the file is abandoned when its token is written (a holder writes it only after its
+///   `flock`) or, empty, once it is older than [`TAKEOVER_STALE`] (a publisher between creating and locking it is
+///   younger). The path must still name the opened file (same device and inode): it is then removed by name while the
+///   `flock` is held, and nobody else can remove or replace it meanwhile, since that needs this same proof. On a file
+///   system that cannot lock, the earlier rule stays: an arbitration file older than [`TAKEOVER_STALE`] is removed.
+fn remove_if_abandoned(path: &Path, lock: &Path) {
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        const GENERIC_READ: u32 = 0x8000_0000;
+        const DELETE: u32 = 0x0001_0000;
+        const FILE_SHARE_READ: u32 = 0x0000_0001;
+        const FILE_SHARE_DELETE: u32 = 0x0000_0004;
+        const FILE_FLAG_DELETE_ON_CLOSE: u32 = 0x0400_0000;
+        if let Ok(f) = OpenOptions::new()
+            .access_mode(GENERIC_READ | DELETE)
+            .share_mode(FILE_SHARE_READ | FILE_SHARE_DELETE)
+            .custom_flags(FILE_FLAG_DELETE_ON_CLOSE)
+            .open(path)
+        {
+            boundary(Boundary::ArbiterAbandonedProven, lock);
+            drop(f);
+        }
+    }
+    #[cfg(not(windows))]
+    {
+        use std::os::unix::fs::MetadataExt;
+        let Ok(f) = File::open(path) else { return };
+        match f.try_lock() {
+            Ok(()) => {}
+            // Held by a live holder, a prober or another contender proving it.
+            Err(std::fs::TryLockError::WouldBlock) => return,
+            // A file system that cannot lock: protection cannot be proven, so the age rule decides.
+            Err(std::fs::TryLockError::Error(_)) => {
+                if age(path).is_some_and(|a| a > TAKEOVER_STALE) {
+                    let _ = fs::remove_file(path);
+                }
+                return;
+            }
+        }
+        let written = f.metadata().is_ok_and(|m| m.len() > 0);
+        if !(written || age(path).is_some_and(|a| a > TAKEOVER_STALE)) {
+            return;
+        }
+        let same = match (f.metadata(), fs::metadata(path)) {
+            (Ok(held), Ok(named)) => held.dev() == named.dev() && held.ino() == named.ino(),
+            _ => false,
+        };
+        if same {
+            boundary(Boundary::ArbiterAbandonedProven, lock);
+            let _ = fs::remove_file(path);
+        }
+        // Closing the file releases the `flock`.
+        drop(f);
     }
 }
 
