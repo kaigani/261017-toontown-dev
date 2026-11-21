@@ -328,7 +328,7 @@ fn text_objects_add_edit_and_format_with_runs_paragraphs_and_bounds() {
     // A missing font keeps its name and is reported (02 §3.7).
     let env = run(&h, "draw.textFormat.set", json!({ "drawingId": D1, "textId": tid, "font": "No Such Font 123" }));
     assert_eq!(env.status, Status::Ok);
-    assert!(env.warnings.iter().any(|w| w.code == "drawing.fontMissing"), "{:?}", env.warnings);
+    assert!(env.warnings.iter().any(|w| w.code == "text.fontMissing"), "{:?}", env.warnings);
     assert_eq!(find(&h)["runs"][0]["font"], "No Such Font 123");
     let lint = ok(&h, "doc.validate", json!({ "checks": ["missingFonts"] }));
     assert!(

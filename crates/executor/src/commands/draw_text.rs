@@ -1,6 +1,7 @@
 //! `draw.text.add`, `draw.text.set`, `draw.textFormat.set` (02 §3.7, §7.6, §13.5): text objects with
 //! per-character runs and per-paragraph formatting, laid out by `tt-vector` for their bounds. A missing font keeps its
-//! name and is reported (`drawing.fontMissing`, 02 §3.7); `doc.validate` lists missing fonts (`missingFonts`).
+//! name and is reported (`text.fontMissing`, info: 10 line 958; ruling D-75 item 9); `doc.validate` lists missing
+//! fonts (`missingFonts`).
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -183,7 +184,7 @@ fn bounds_and_fonts(cx: &mut Cx, c: &Content, width: Option<f64>, transform: [f6
     let l = text::layout(c, width);
     for f in &l.missing_fonts {
         cx.warn(
-            "drawing.fontMissing",
+            "text.fontMissing",
             format!("font `{f}` is not installed; the text keeps the name and is displayed with a fallback font"),
             vec![object.to_owned()],
         );

@@ -112,7 +112,6 @@
       "varies": [
         "/pendingConfirmations/0/confirmationId",
         "/pendingConfirmations/0/consequences/0/bytes",
-        "/pendingConfirmations/0/expiresInMs",
         "/pendingConfirmations/0/sessionId",
         "/sessions/0/connectedAt",
         "/sessions/0/sessionId"
@@ -6763,6 +6762,9 @@
       "result": {
         "drawingIds": [
           "dr_01K742SG0KKMCAP9X1E6Z5P4SW"
+        ],
+        "skippedIds": [
+          "dr_01K742SG0M5J3BAJSW8241WA87"
         ]
       },
       "varies": []
@@ -10168,10 +10170,14 @@
           {
             "toolId": "perspective",
             "group": "select",
-            "options": {},
+            "options": {
+              "mapping": "auto"
+            },
             "optionSchema": {
               "type": "object",
-              "properties": {},
+              "properties": {
+                "mapping": {}
+              },
               "additionalProperties": false
             }
           },

@@ -85,7 +85,7 @@ fn anchors(h: &ExecutorHandle, sid: &str) -> Vec<(f64, f64)> {
     let d = ok(h, "draw.drawing.get", json!({ "drawingId": D1, "flatten": true }));
     let n = d["nodes"].as_array().unwrap().iter().find(|n| n["id"] == sid).cloned().unwrap();
     let b = n["bezier"].as_array().unwrap();
-    (0..b.len() / 3).map(|k| (b[k * 3]["x"].as_f64().unwrap(), b[k * 3]["y"].as_f64().unwrap())).collect()
+    (0..b.len().div_ceil(3)).map(|k| (b[k * 3]["x"].as_f64().unwrap(), b[k * 3]["y"].as_f64().unwrap())).collect()
 }
 
 /// The gesture on one executor and the expected commands sent directly on another, from the same state: the same
@@ -722,4 +722,54 @@ fn the_hit_corpus_is_the_kernels_driver() {
             .unwrap_or_else(|e| panic!("contour-hits.json: {e} (TT_UPDATE_CANVAS_CORPUS=1 writes it)"));
         assert!(committed.replace("\r\n", "\n") == text, "contour-hits.json differs from the kernel's driver");
     }
+}
+
+// ----- Snap to Contour closes shapes (SI-070 amended, ruling D-75 item 1) ------------------------------------------------
+
+fn polyline(h: &ExecutorHandle, pts: &[(f64, f64)]) -> String {
+    let p: Vec<Value> = pts.iter().map(|q| json!({ "x": q.0, "y": q.1 })).collect();
+    let r = ok(h, "draw.polyline.add", json!({ "drawingId": D1, "points": p, "layer": "new", "snap": false }));
+    r["strokeIds"][0].as_str().unwrap().to_owned()
+}
+
+#[test]
+fn an_open_strokes_end_snaps_to_its_own_start_and_closes_the_shape() {
+    let h = ready();
+    let sid = polyline(&h, &[(300.0, 300.0), (400.0, 300.0), (400.0, 400.0), (300.0, 400.0), (305.0, 330.0)]);
+    let r = ok(
+        &h,
+        "draw.point.move",
+        json!({ "drawingId": D1, "points": [{"strokeId": sid, "anchor": 4}], "delta": {"x": -2.0, "y": -26.0}, "snap": true }),
+    );
+    let id = r["modifiedIds"].as_array().and_then(|a| a.first()).and_then(Value::as_str).unwrap_or(&sid).to_owned();
+    let d = ok(&h, "draw.drawing.get", json!({ "drawingId": D1, "flatten": true }));
+    let n = d["nodes"].as_array().unwrap().iter().find(|n| n["id"] == id.as_str()).cloned().unwrap();
+    let pts = anchors(&h, &id);
+    // The end landed exactly on the start: the stroke is closed through its four corners, or ends where it starts.
+    assert!(n["closed"] == true || pts.first() == pts.last(), "{n}");
+    assert_eq!(pts.first().copied(), Some((300.0, 300.0)));
+    let zones: Vec<&Value> = r["createdIds"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|z| z.as_str().is_some_and(|z| z.starts_with("zn_")))
+        .collect();
+    assert!(!zones.is_empty(), "the closed shape makes a zone: {r}");
+}
+
+#[test]
+fn a_moved_anchor_never_snaps_to_another_moved_anchor() {
+    let h = ready();
+    let sid = polyline(&h, &[(300.0, 300.0), (350.0, 300.0), (400.0, 300.0)]);
+    // Anchors 0 and 1 move by (45, 3): anchor 0 lands 5.8 du from anchor 1's old place (moved: no candidate), anchor 1
+    // lands 5.8 du from anchor 2 (unmoved: it snaps).
+    ok(
+        &h,
+        "draw.point.move",
+        json!({ "drawingId": D1, "points": [{"strokeId": sid, "anchor": 0}, {"strokeId": sid, "anchor": 1}],
+                "delta": {"x": 45.0, "y": 3.0}, "snap": true }),
+    );
+    let pts = anchors(&h, &sid);
+    assert_eq!(pts[0], (345.0, 303.0), "no snap to a moved anchor: {pts:?}");
+    assert_eq!(pts[1], (400.0, 300.0), "the unmoved anchor of the same stroke is a candidate: {pts:?}");
 }

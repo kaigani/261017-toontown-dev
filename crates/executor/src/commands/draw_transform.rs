@@ -744,7 +744,8 @@ pub(crate) struct RepositionParams {
     /// Matrix (overrides).
     #[serde(default)]
     matrix: Option<[f64; 6]>,
-    /// Envelope corners (of each drawing's bounds).
+    /// Envelope corners: targets of the corners of the bounds of the element's drawing at the current frame, one map
+    /// applied to every drawing (02 §7.1.4 "applied identically to every drawing"; SI-189, ruling D-75 item 7).
     #[serde(default)]
     corners: Option<Vec<Point>>,
     /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
@@ -758,12 +759,32 @@ pub(crate) struct RepositionParams {
     frame: Option<u32>,
 }
 
-/// `{drawingIds}`.
+/// `{drawingIds, skippedIds}`.
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct RepositionResult {
     /// The drawings changed.
     drawing_ids: Vec<String>,
+    /// The locked drawings left unchanged (02 line 414; SI-189).
+    skipped_ids: Vec<String>,
+}
+
+/// The reference box of `corners` (SI-189): the bounds of `element`'s drawing at `frame`; `drawing.noTarget` without
+/// one (no drawing exposed there, or an empty one).
+pub(crate) fn reposition_reference(
+    doc: &tt_model::document::Document,
+    element: &Id,
+    frame: u32,
+) -> Result<Rect, CommandError> {
+    crate::app::AppContext::exposed_drawing(doc, element, frame.max(1))
+        .and_then(|id| doc.drawing(&id).and_then(|d| vd::drawing_bounds(d, true)))
+        .ok_or_else(|| {
+            err(
+                "drawing.noTarget",
+                "envelope corners need a drawing with content at the current frame: its bounds are the reference box",
+                json!({ "pointer": "/corners" }),
+            )
+        })
 }
 
 #[command(
@@ -808,24 +829,27 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
         frame: None,
         element_id: None,
     };
+    // One map for every drawing (SI-189): envelope corners map the reference box, the current frame's drawing's bounds.
+    let m = match &p.corners {
+        Some(c) => {
+            if c.len() != 4 {
+                return Err(err("arg.invalid", "four corners are required", json!({ "pointer": "/corners" })));
+            }
+            let b = reposition_reference(&doc, &element, p.frame.unwrap_or(cx.app().frame))?;
+            envelope_of(&b, c, Mapping::Auto)?
+        }
+        None => Map::Affine(affine_of(&tp, p.pivot.map(|q| P::new(q.x, q.y)).unwrap_or_default())?),
+    };
     let mut changes = Vec::new();
     let mut changed_ids = Vec::new();
+    let mut skipped_ids = Vec::new();
     let mut moves = Vec::new();
     for id in &ids {
         let Some(d) = doc.drawing(id) else { continue };
         if *d.locked() {
+            skipped_ids.push(id.as_str().to_owned());
             continue;
         }
-        let m = match &p.corners {
-            Some(c) => {
-                if c.len() != 4 {
-                    return Err(err("arg.invalid", "four corners are required", json!({ "pointer": "/corners" })));
-                }
-                let Some(b) = vd::drawing_bounds(d, true) else { continue };
-                envelope_of(&b, c, Mapping::Auto)?
-            }
-            None => Map::Affine(affine_of(&tp, p.pivot.map(|q| P::new(q.x, q.y)).unwrap_or_default())?),
-        };
         let dj = drawing_json(&doc, id)?;
         let mut ops = Vec::new();
         for (k, n) in dj.get("nodes").and_then(Value::as_array).into_iter().flatten().enumerate() {
@@ -847,7 +871,7 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
     cx.patch_entries(changes)?;
     // Every drawing moves whole: its zones keep their fills with mapped matrices (C23-R1-01).
     repaint_mapped(cx, &moves)?;
-    Ok(RepositionResult { drawing_ids: changed_ids })
+    Ok(RepositionResult { drawing_ids: changed_ids, skipped_ids })
 }
 
 // ----- contour editing ---------------------------------------------------------------------------------------------------
@@ -1194,6 +1218,8 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
     let dj = drawing_json(&doc, &t.id)?;
     // Snap to Contour (02 §8.9; C23-R1-03): the other strokes of the moved stroke's own layer, by their whole
     // contour (anchors and segment interiors, curves included); cross-layer contours are not candidates (SI-070).
+    // A stroke with moved anchors offers its unmoved anchors (SI-070 amended, ruling D-75 item 1: 02 line 799 "shapes
+    // close", so an open stroke's end snaps to its own start); a moved anchor is never a candidate.
     let contours: Vec<(String, String, tt_vector::path::Path)> = if snap {
         vd::objects(&d)
             .iter()
@@ -1202,6 +1228,23 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
                 let s = vd::stroke_at(&d, &o.pointer)?;
                 let closed = *s.closed() || *s.kind() == tt_model::entities::drawing::StrokeKind::Brush;
                 Some((o.list.clone(), o.id.clone(), tt_vector::path::Path::from_points(s.points(), closed)))
+            })
+            .collect()
+    } else {
+        Vec::new()
+    };
+    let fixed_anchors: Vec<(String, String, usize, P)> = if snap {
+        vd::objects(&d)
+            .iter()
+            .filter(|o| o.kind == ObjectKind::Stroke && moved.iter().any(|(s, _)| *s == o.id))
+            .filter_map(|o| vd::stroke_at(&d, &o.pointer).map(|s| (o, s)))
+            .flat_map(|(o, s)| {
+                s.points()
+                    .iter()
+                    .enumerate()
+                    .filter(|(k, _)| !moved.contains(&(o.id.clone(), *k)))
+                    .map(|(k, pt)| (o.list.clone(), o.id.clone(), k, P::new(pt[0], pt[1])))
+                    .collect::<Vec<_>>()
             })
             .collect()
     } else {
@@ -1225,6 +1268,12 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
                     .iter()
                     .filter(|(list, _, _)| *list == l.list)
                     .filter_map(|(_, id, path)| nearest_on(path, q).map(|(dist, seg, t, at)| (dist, id, seg, t, at)))
+                    .chain(
+                        fixed_anchors
+                            .iter()
+                            .filter(|(list, _, _, _)| *list == l.list)
+                            .map(|(_, id, k, at)| (at.dist(q), id, *k, 0.0, *at)),
+                    )
                     .filter(|c| c.0 <= snap_radius)
                     .min_by(|a, b| {
                         a.0.total_cmp(&b.0).then_with(|| a.1.cmp(b.1)).then(a.2.cmp(&b.2)).then(a.3.total_cmp(&b.3))
@@ -1331,6 +1380,24 @@ pub(crate) fn draw_point_set(cx: &mut Cx, p: PointSetParams) -> Result<PointSetR
     )?;
     let mut path = path_of(&v);
     let k = p.anchor as usize;
+    // The neighbours `reset` reads (SI-186): the previous and next anchors (around a closed path).
+    let n = path.anchors.len();
+    let neighbours = (
+        if k > 0 {
+            path.anchors.get(k - 1).map(|a| a.p)
+        } else if path.closed && n > 1 {
+            path.anchors.last().map(|a| a.p)
+        } else {
+            None
+        },
+        if k + 1 < n {
+            path.anchors.get(k + 1).map(|a| a.p)
+        } else if path.closed && n > 1 {
+            path.anchors.first().map(|a| a.p)
+        } else {
+            None
+        },
+    );
     let Some(a) = path.anchors.get_mut(k) else {
         return Err(err(
             "drawing.objectNotFound",
@@ -1348,9 +1415,34 @@ pub(crate) fn draw_point_set(cx: &mut Cx, p: PointSetParams) -> Result<PointSetR
         a.outh = P::new(h.x, h.y);
     }
     match p.handle_mode {
+        // SI-186 (ruling D-75 item 4; 02 line 453 "a flat/smooth state"): the handles become collinear, each keeping its
+        // length, along `out - in`; with both zero (or opposite-free), along next minus previous anchor, a third of each
+        // adjacent chord long (an open end takes its one neighbour's direction and no handle on its free side).
         Some(HandleMode::Reset) => {
-            a.inh = P::default();
-            a.outh = P::default();
+            let (li, lo) = (a.inh.len(), a.outh.len());
+            let along = a.outh - a.inh;
+            let (prev, next) = neighbours;
+            let chord_dir = match (prev, next) {
+                (Some(pv), Some(nx)) => nx - pv,
+                (None, Some(nx)) => nx - a.p,
+                (Some(pv), None) => a.p - pv,
+                (None, None) => P::default(),
+            };
+            let dir = if along.len() > 1e-12 { along } else { chord_dir };
+            let dl = dir.len();
+            if dl <= 1e-12 {
+                a.inh = P::default();
+                a.outh = P::default();
+            } else {
+                let u = dir * (1.0 / dl);
+                let (li, lo) = if li <= 1e-12 && lo <= 1e-12 {
+                    (prev.map_or(0.0, |pv| (a.p - pv).len() / 3.0), next.map_or(0.0, |nx| (nx - a.p).len() / 3.0))
+                } else {
+                    (li, lo)
+                };
+                a.inh = u * -li;
+                a.outh = u * lo;
+            }
         }
         Some(HandleMode::Symmetric) => match (p.in_handle, p.out_handle) {
             (Some(_), None) => a.outh = a.inh * -1.0,
@@ -1539,6 +1631,12 @@ pub(crate) fn precheck_reposition_all(cx: &Cx, v: &Value) -> Result<(), CommandE
     let Some(bank) = doc.element(&element).and_then(|e| e.drawing_bank_id().clone()) else {
         return Err(err("drawing.notVectorElement", "the element has no drawings", json!({ "pointer": "/elementId" })));
     };
+    // Envelope corners need the reference box (SI-189): the current frame's drawing with content.
+    if v.get("corners").is_some_and(|x| !x.is_null()) {
+        let frame =
+            v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok()).unwrap_or(cx.app().frame);
+        reposition_reference(doc, &element, frame)?;
+    }
     // Something to move: an unlocked drawing with content (with corners, with bounds), as the handler's loop finds;
     // read once per document revision (`memo`).
     let corners = v.get("corners").is_some_and(|x| !x.is_null());

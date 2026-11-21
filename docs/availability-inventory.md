@@ -450,6 +450,10 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `draw.cut.apply` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `draw.cut.apply` | `drawing.nothingToDo` | parameter | the region the caller gives cuts nothing |  |
 | `draw.cut.apply` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
+| `draw.drawing.get` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
+| `draw.drawing.get` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
+| `draw.drawing.get` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
+| `draw.drawing.get` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
 | `draw.drawing.rename` | `drawing.nameExists` | parameter | the name the caller gives is taken |  |
 | `draw.drawing.rename` | `drawing.nameInvalid` | parameter | the name the caller gives is invalid |  |
 | `draw.drawing.rename` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
@@ -629,6 +633,8 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `draw.rotate.apply` | `drawing.nothingToDo` | precheck | nothing selected in the drawing | refuse: drawing · pass: drawing-selected |
 | `draw.rotate.apply` | `drawing.objectNotFound` | parameter | an object ID the caller names is not in the drawing (selections are repaired to existing objects) |  |
 | `draw.rotate.apply` | `drawing.staleRevision` | parameter | the caller's `expectRev` is older than the drawing |  |
+| `draw.selection.get` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing · pass: drawing |
+| `draw.selection.get` | `drawing.notVectorElement` | parameter | the element the caller names is not a drawing or annotation element |  |
 | `draw.segment.move` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `draw.segment.move` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-stroke {"strokeId": "$stroke"} · pass: stroke {"strokeId": "$stroke"} |
 | `draw.segment.move` | `drawing.noTarget` | precheck | no current drawing | refuse: no-drawing {"strokeId": "s_local"} · pass: stroke {"strokeId": "$stroke"} |

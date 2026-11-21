@@ -1057,7 +1057,7 @@ fn point_moves_with_and_without_snapping_match_the_oracle() {
             // Shared junction anchors move together: every anchor of the layer at that exact coordinate.
             let moving: Vec<&Stroke> = strokes.iter().filter(|s| anchors_of(s).0.contains(&at)).collect();
             // With snapping the move lands 3 du short of a whole step; Snap to Contour takes the nearest point of a
-            // stroke that does not move (its segments, interiors included) within 8 du; ties to the lower stroke ID,
+            // stroke that does not move (its segments, interiors included), or an unmoved anchor of a moving one, within 8 du; ties to the lower stroke ID,
             // then segment, then parameter (02 §8.9). Snaps onto anchors are checked exactly (see below).
             let step = |v: i64| if *snap { v * STEP * GRID - v.signum() * 3 * GRID } else { v * STEP * GRID };
             let off = (step(*dx), step(*dy));
@@ -1095,6 +1095,34 @@ fn point_moves_with_and_without_snapping_match_the_oracle() {
                         };
                         if better {
                             best = Some((d2, s.id.clone(), j, t, on));
+                        }
+                    }
+                }
+                // The moving strokes' unmoved anchors are candidates too (SI-070 amended, ruling D-75 item 1: a shape
+                // closes on itself); the anchors that move never are.
+                for m in &moving {
+                    for (j, &a) in anchors_of(m).0.iter().enumerate() {
+                        if a == at {
+                            continue;
+                        }
+                        let on = to_pt(a);
+                        let (ex, ey) = (q.0.minus(&on.0), q.1.minus(&on.1));
+                        let d2 = ex.times(&ex).plus(&ey.times(&ey));
+                        if d2.cmp_to(&Q::int((8 * GRID) * (8 * GRID))).is_gt() {
+                            continue;
+                        }
+                        let t = Q::int(0);
+                        let better = match &best {
+                            None => true,
+                            Some((bd, bid, bj, bt, _)) => d2
+                                .cmp_to(bd)
+                                .then_with(|| m.id.cmp(bid))
+                                .then(j.cmp(bj))
+                                .then_with(|| t.cmp_to(bt))
+                                .is_lt(),
+                        };
+                        if better {
+                            best = Some((d2, m.id.clone(), j, t, on));
                         }
                     }
                 }

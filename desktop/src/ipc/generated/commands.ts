@@ -39816,7 +39816,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       corners: {
-        description: "Envelope corners (of each drawing's bounds).",
+        description: "Envelope corners: targets of the corners of the bounds of the element's drawing at the current frame, one map\napplied to every drawing (02 §7.1.4 \"applied identically to every drawing\"; SI-189, ruling D-75 item 7).",
         type: [
           "array",
           "null",
@@ -39853,7 +39853,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
   },
   "draw.repositionAll.apply.result": {
     title: "RepositionResult",
-    description: "`{drawingIds}`.",
+    description: "`{drawingIds, skippedIds}`.",
     type: "object",
     properties: {
       drawingIds: {
@@ -39863,9 +39863,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "string",
         },
       },
+      skippedIds: {
+        description: "The locked drawings left unchanged (02 line 414; SI-189).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
     },
     required: [
       "drawingIds",
+      "skippedIds",
     ],
   },
   "draw.rotate.apply.Step": {
@@ -94771,7 +94779,7 @@ export interface draw_repositionAll_apply_params {
   pivot?: draw_repositionAll_apply_Point | null;
   /** Matrix (overrides). */
   matrix?: number[] | null;
-  /** Envelope corners (of each drawing's bounds). */
+  /** Envelope corners: targets of the corners of the bounds of the element's drawing at the current frame, one map applied to every drawing (02 §7.1.4 "applied identically to every drawing"; SI-189, ruling D-75 item 7). */
   corners?: draw_repositionAll_apply_Point[] | null;
   /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
   space?: draw_repositionAll_apply_Space;
@@ -94781,10 +94789,12 @@ export interface draw_repositionAll_apply_params {
   frame?: number | null;
 }
 
-/** `{drawingIds}`. */
+/** `{drawingIds, skippedIds}`. */
 export interface draw_repositionAll_apply_result {
   /** The drawings changed. */
   drawingIds: string[];
+  /** The locked drawings left unchanged (02 line 414; SI-189). */
+  skippedIds: string[];
 }
 
 /** A fixed rotation step. */

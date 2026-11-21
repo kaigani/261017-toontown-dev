@@ -806,6 +806,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   other strokes of the moved stroke's own layer (layers are independent planar maps, 02 §3.1), by their whole contour
   — anchors and segment interiors, curved segments included — within 8 du; ties go to the lower stroke ID, then the
   lower segment and parameter.
+- **M4 C4.4b amendment (ruling D-75 item 1; declared behaviour change of `draw.point.move`):** a stroke with moved
+  anchors also offers its unmoved anchors as candidates, so an open stroke's end snaps to its own start and the shape
+  closes (02 line 799); the anchors being moved are never candidates. The radius is 8 view pixels through the call's
+  view (`view`; 100 % without one), and an omitted `snap` follows the Snap to Contour setting (SI-187). Kernel tests:
+  `crates/executor/tests/c44b_contour.rs` (an end closing onto its start makes a zone; a moved anchor never snaps to
+  another moved anchor). The reviewer oracles of `c24_r2_routes.rs` and `c24_r3_routes.rs` state the M2 candidate set;
+  brought to the orchestrator (D-75).
 
 ## SI-071 — the Cutter's segment primitive and brush strokes (found in M2 C2.3; decided)
 
@@ -2368,7 +2375,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **From:** `reviews/M4-design-contour-editor.md`.
 - **Entry:** *Spec:* line 455 "changes the shape of the two segments connected to it", no command or rule. *Decision:* `draw.point.set` with both handles moved by the drag delta, `handleMode: broken`, the anchor unmoved, so the two adjacent control points follow the pointer. *Why:* D-40's interim; the result is exact to preview and stated in one call an agent can repeat.
 
-## SI-186 — handle drags and what `reset` does (found in M4 C4.4b; interim; awaiting confirmation (the note's open question 4: it changes an M2 command agents see); the command is unchanged until it is answered)
+## SI-186 — handle drags and what `reset` does (found in M4 C4.4b; decided by ruling D-75 item 4; declared behaviour change of `draw.point.set`)
 
 - **From:** `reviews/M4-design-contour-editor.md`.
 - **Entry:** *Spec:* line 454 gives only the alternate handle drag; line 453 says reset "minimises the handle angle to a flat/smooth state"; the kernel's `reset` zeroes both handles. *Decision:* a plain handle drag sends `handleMode: symmetric` (the opposite handle mirrors), the alternate one `broken`; `reset` makes the handles collinear: direction `out - in` normalised, each keeping its length; with both zero, the direction of next anchor minus previous anchor and lengths one third of the adjacent chords (one neighbour at an open end). The builder test `crates/executor/tests/c23_transform.rs` (the `reset` assertion near line 272) is updated with the change. Line 456's "entire selection" is the point selection. *Why:* "independently" in line 454 implies the plain drag is dependent; "smooth" excludes a corner. *Question:* the reading of "flat/smooth".
@@ -2383,7 +2390,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **From:** `reviews/M4-design-envelope-tools.md`.
 - **Entry:** *Spec:* 02 lines 468-470 give corner and side handles without positions or radii, a side drag only with alternate, and "changes the size and angle of the opposite sides symmetrically" without a direction; line 707 gives a `mapping` option no A command sets. *Decision:* §2, §3: handles on the command's own box, re-taken after each commit; 6 px; a plain side drag moves the side; the alternate side drag spreads or closes its corners symmetrically about the midpoint (the larger-coordinate corner follows the drag along the side) and moves both by the perpendicular part, so the adjacent sides tilt as mirror images; constrain ignored on handles; an alternate drag off the handles lassos wherever it starts (the inside has no other meaning here); `mapping` a kernel option (default `auto`) sent with every envelope. *Why:* a symmetric keystone is line 467's change of perspective; one box to draw, hit and map. *Question:* the side rules (another reading moves the opposite side by the mirrored drag) and the option's command.
 
-## SI-189 — Reposition All: handles, the envelope's reference box, locked drawings (interim; behaviour change) (found in M4 C4.4b; interim)
+## SI-189 — Reposition All: handles, the envelope's reference box, locked drawings (found in M4 C4.4b; decided by ruling D-75 item 7; declared behaviour change of `draw.repositionAll.apply`: one map from the current frame's drawing, locked drawings listed in `skippedIds`)
 
 - **From:** `reviews/M4-design-envelope-tools.md`.
 - **Entry:** *Spec:* lines 478-480 give Select's box handles and envelope handles at the same positions; A line 261's `corners` names no reference box, and the kernel maps each drawing's own bounds, against "applied identically to every drawing"; line 414 refuses tools on a locked drawing. *Decision:* §4: box handles without modifiers, envelope handles with alternate; `corners` target the corners of the bounds of the element's drawing at the current frame, and that one map applies to every drawing; locked drawings are skipped, the call refused only when nothing can move. *Why:* one transform for all drawings is the purpose (line 477); the current drawing is what the user sees. *Question:* the reference box (the union of all drawings' bounds is the alternative).
@@ -2430,6 +2437,8 @@ below is written as it would appear in spec A, with what the window does without
 
 | Proposed row (A's columns: id, kind, label, parameters, result, undo) | Why | Without it |
 |---|---|---|
+| `draw.text.layout.get` \| query \| Caret stops and line boxes of a text object \| `textId: id; drawingId?: id` \| `{lines: [{start, length, top, baseline, bottom}], carets: [{index, x, top, bottom}], rev}` \| n/a | an agent places a caret or reads line boxes without the window (design note 5 §5; SI-192; ruling D-75 item 8) | a headless agent cannot read caret positions, line boxes or the edit session; it places the caret with `pointer` and `key` and reads the text with `draw.drawing.get` (an attached agent reads the session in `inspect_ui`) |
+| `tool.perspective.options.set` \| action \| Perspective tool options \| `mapping?: enum "auto"\|"projective"\|"bilinear"` \| `{options}` \| no | the Tool options page's envelope mapping (02 §7.7 line 707; SI-188; ruling D-75 item 5) | Perspective's gestures send the default `auto`; `tool.options.set` (agent-only) sets it |
 | `draw.font.list` \| query \| Installed font families \| — \| `{families: [{name, styles: [string]}], default: string}` \| n/a | the Text panel's font list (02 §7.6.1; SI-169) | the font is a typed family name; the panel says every font lays out with this computer's font files |
 | `job.outputs.list` \| query \| A job's outputs, paged \| `jobId: id; offset?: int = 0; limit?: int = 1000 (1-1000)` \| `{total, offset, items: [ManifestFile]}` \| n/a | reading a long range's outputs through MCP (SI-181) | the job's answer summarises them (`outputs`); the companion manifest file at `manifestPath` lists every one |
 | `agent.activity.recorded` \| event \| An activity entry was recorded \| — \| `{entry: ActivityEntry}` \| n/a | the Activity panel's live list (SI-175) | the host-only notice `shell.agentActivity` (window only) |

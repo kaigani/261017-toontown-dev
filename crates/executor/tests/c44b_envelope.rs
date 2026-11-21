@@ -434,3 +434,48 @@ fn anchor_points(h: &ExecutorHandle, sid: &str) -> Vec<[f64; 2]> {
     let at = |i: usize, c: &str| b[i][c].as_f64().unwrap_or_else(|| panic!("{n}"));
     (0..b.len().div_ceil(3)).map(|k| [at(k * 3, "x"), at(k * 3, "y")]).collect()
 }
+
+// ----- SI-189: one map for every drawing (ruling D-75 item 7) ---------------------------------------------------------
+
+#[test]
+fn reposition_corners_apply_one_map_from_the_current_drawing_and_skip_locked_drawings() {
+    let h = ready();
+    // Bob's drawings: the current one (D1) and two others; give the others content of different bounds, lock one.
+    let list: Vec<String> = ok(&h, "element.drawing.list", json!({ "elementId": BOB }))["drawings"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|d| d["id"].as_str().unwrap().to_owned())
+        .collect();
+    let others: Vec<String> = list.iter().filter(|d| d.as_str() != D1).cloned().collect();
+    assert!(others.len() >= 2, "{list:?}");
+    ok(&h, "element.drawingLock.set", json!({ "drawingIds": others.clone(), "locked": false }));
+    ok(
+        &h,
+        "draw.rectangle.add",
+        json!({ "drawingId": others[0], "from": {"x": -20, "y": -10}, "to": {"x": 60, "y": 90}, "layer": "new" }),
+    );
+    ok(&h, "element.drawingLock.set", json!({ "drawingIds": [others[1].clone()], "locked": true }));
+    let reference = ok(&h, "draw.bounds.get", json!({ "drawingId": D1 }))["bounds"].clone();
+    let (x0, y0) = (reference["x"].as_f64().unwrap(), reference["y"].as_f64().unwrap());
+    let (w, hh) = (reference["width"].as_f64().unwrap(), reference["height"].as_f64().unwrap());
+    // A translation by (10, 5) written as corners of the reference box: every drawing moves by (10, 5).
+    let c =
+        [(x0 + 10.0, y0 + 5.0), (x0 + w + 10.0, y0 + 5.0), (x0 + w + 10.0, y0 + hh + 5.0), (x0 + 10.0, y0 + hh + 5.0)];
+    let other_before = ok(&h, "draw.bounds.get", json!({ "drawingId": others[0] }))["bounds"].clone();
+    let locked_before = canonical(&h).into_iter().find(|(k, _)| k.contains(&others[1])).map(|(_, v)| v);
+    let r = ok(&h, "draw.repositionAll.apply", json!({ "elementId": BOB, "corners": cj(&c) }));
+    let other_after = ok(&h, "draw.bounds.get", json!({ "drawingId": others[0] }))["bounds"].clone();
+    for (k, d) in [("x", 10.0), ("y", 5.0), ("width", 0.0), ("height", 0.0)] {
+        let (a, b) = (other_before[k].as_f64().unwrap(), other_after[k].as_f64().unwrap());
+        assert!((b - a - d).abs() < 1e-6, "{k}: the other drawing takes the same map ({a} -> {b})");
+    }
+    assert_eq!(r["skippedIds"], json!([others[1]]), "{r}");
+    assert!(!r["drawingIds"].as_array().unwrap().contains(&json!(others[1])));
+    let locked_after = canonical(&h).into_iter().find(|(k, _)| k.contains(&others[1])).map(|(_, v)| v);
+    assert_eq!(locked_before, locked_after, "the locked drawing is unchanged");
+    // Every drawing locked: refused.
+    ok(&h, "element.drawingLock.set", json!({ "drawingIds": list, "locked": true }));
+    let e = err(&h, "draw.repositionAll.apply", json!({ "elementId": BOB, "translate": {"x": 1, "y": 1} }));
+    assert_eq!(e.code, "drawing.nothingToDo");
+}
