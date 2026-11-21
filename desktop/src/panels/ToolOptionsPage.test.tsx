@@ -175,7 +175,9 @@ describe('the Tool options page (02 §7.7)', () => {
       expect(el('toolOptions.selectedLine.thickness')).toHaveProperty('disabled', true);
     });
     expect(el('toolOptions.selectedLine.invisible')).toHaveProperty('disabled', true);
-    expect(el('toolOptions.selectedLine.thickness').getAttribute('data-tt-disabled-reason')).toMatch(/Select one/);
+    expect(el('toolOptions.selectedLine.thickness').getAttribute('data-tt-disabled-reason')).toMatch(
+      /Select one/,
+    );
     expect(el('toolOptions.selectedLine.reason').textContent).toMatch(/Select one pencil line/);
   });
 });

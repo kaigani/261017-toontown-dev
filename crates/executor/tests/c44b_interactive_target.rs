@@ -134,6 +134,11 @@ fn no_gesture_edits_a_locked_or_hidden_target_in_any_view() {
                 gestures(&h).into_iter().map(|(t, _)| t).collect()
             };
             for tool in tools {
+                // In the Camera view "select" is the scene Select (C4.3's scene tools, their own picking rules): the
+                // drawing tools' rule does not apply to it; its picking of a locked element is checked below.
+                if view == "cameraView" && tool == "select" {
+                    continue;
+                }
                 let (h, _) = ready();
                 let events = gestures(&h).into_iter().find(|(t, _)| *t == tool).unwrap().1;
                 apply(&h, c, tool);
@@ -159,7 +164,7 @@ fn no_gesture_edits_a_locked_or_hidden_target_in_any_view() {
             }
         }
     }
-    assert_eq!(rows.len(), 2 * 4 * 12, "{rows:#?}");
+    assert_eq!(rows.len(), 4 * 12 + 4 * 11, "{rows:#?}");
 }
 
 #[test]
@@ -188,6 +193,7 @@ fn a_locked_or_hidden_element_cannot_be_picked_in_the_camera_view_and_can_in_the
     // the Drawing view picks a locked element's content (04 line 572). A hidden element offers no hit target (D-79).
     for (condition, code) in [("locked", "element.locked"), ("hidden", "element.hidden")] {
         for (tool, events) in [("select", click((300.0, 330.0))), ("contourEditor", click((300.0, 300.0)))] {
+            // The scene Select (the Camera view's "select") answers with an empty pick; the drawing tools are refused.
             let (h, _) = ready();
             ok(&h, "draw.selection.set", json!({ "drawingId": D1, "by": "ids", "ids": [], "mode": "replace" }));
             if condition == "locked" {
@@ -196,7 +202,17 @@ fn a_locked_or_hidden_element_cannot_be_picked_in_the_camera_view_and_can_in_the
                 ok(&h, "element.visibility.set", json!({ "elementIds": [BOB], "scope": "scene", "visible": false }));
             }
             let env = gesture(&h, "cameraView", tool, &events);
-            assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some(code), "{condition} {tool}: {env:?}");
+            if tool == "select" {
+                let picked = env.result.as_ref().and_then(|r| r["commands"].as_array().cloned()).unwrap_or_default();
+                let ids: Vec<Value> = picked
+                    .iter()
+                    .filter(|c| c["commandId"] == "edit.selection.set")
+                    .flat_map(|c| c["params"]["ids"].as_array().cloned().unwrap_or_default())
+                    .collect();
+                assert!(ids.is_empty(), "{condition}: the scene Select picks nothing: {env:?}");
+            } else {
+                assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some(code), "{condition} {tool}: {env:?}");
+            }
             let sel = ok(&h, "draw.selection.get", json!({ "drawingId": D1 }));
             assert_eq!(sel["selectedIds"], json!([]), "{condition} {tool}: nothing picked");
             let env = gesture(&h, "drawingView", tool, &events);

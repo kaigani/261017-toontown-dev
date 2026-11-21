@@ -22217,6 +22217,12 @@
       ]
     },
     {
+      "command": "toolOptions.selectedLine.reason",
+      "files": [
+        "desktop/src/panels/ToolOptionsPage.tsx"
+      ]
+    },
+    {
       "command": "toolOptions.selectedLine.thickness",
       "files": [
         "desktop/src/panels/ToolOptionsPage.tsx"
