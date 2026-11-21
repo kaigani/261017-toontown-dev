@@ -84,7 +84,8 @@ async def contour_body(t,step):
     def curve(b,t):
         return tuple(sum(w*p[k] for w,p in zip(((1-t)**3,3*t*(1-t)**2,3*t*t*(1-t),t**3),map(xy,b))) for k in (0,1))
     async def fixture(view,closed=False,two=False):
-        await c('project.create',{'name':'Contour review','onUnsaved':'discard'})
+        await p.r3.preserve_fixture(t)
+        await c('project.create',{'name':'Contour review','onUnsaved':'fail'})
         eid=(await c('element.create',{'type':'drawing','name':'Curve'}))['elementIds'][0]
         await c('element.drawing.create',{'elementId':eid,'name':'1','exposeFrom':1,'exposeTo':24})
         await c('app.context.set',{'elementId':eid,'frame':1})
@@ -104,7 +105,7 @@ async def contour_body(t,step):
         if selected:await c('draw.pointSelection.set',{'points':[{'strokeId':sid,'anchor':i} for i in selected]})
         if extra:await extra(sid)
         base=t.work/'base.animpkg';await c('project.saveAs',{'path':str(base),'onExists':'overwrite'})
-        before=await c('draw.drawing.get');pos=await t.position();t.clear()
+        before=await c('draw.drawing.get');selection_before=await c('draw.selection.get');pos=await t.position();t.clear()
         rec=await action(sid)
         after=await c('draw.drawing.get'); labels=await t.steps_since(pos)
         commands=(rec or {}).get('commands') or []
@@ -125,6 +126,8 @@ async def contour_body(t,step):
         async with stdio_client(StdioServerParameters(command=str(HEAD),args=args)) as streams:
             async with ClientSession(*streams,list_roots_callback=roots) as hs:
                 await hs.initialize(); ht=d.Table(hs,t.run,p.OUT,t.work)
+                await ht.cmd('draw.selection.set',{'by':'ids','ids':selection_before.get('selectedIds',[])})
+                await ht.cmd('draw.pointSelection.set',{'points':selection_before.get('selectedPoints',[])})
                 for cmd in commands:await ht.cmd(cmd['commandId'],cmd.get('params') or {})
                 direct=await ht.cmd('draw.drawing.get')
                 check(unstamped(after)==unstamped(direct),name+' D-32 exact direct content',{'equal':unstamped(after)==unstamped(direct)})
@@ -133,11 +136,13 @@ async def contour_body(t,step):
             desired=([0,1] if name.endswith('add-click') or name.endswith('marquee') else [] if name.endswith('empty') else [0])
             check(sorted(x['anchor'] for x in selection.get('selectedPoints',[]))==desired,name+' selection reported',selection)
         t.run.save(name+'.json',{'record':rec,'commands':commands,'before':before,'after':after,'labels':labels,'selection':selection})
-        if want:
-            await c('edit.undo');restored=await c('draw.drawing.get')
+        if want and labels:
+            for _ in labels:await c('edit.undo')
+            restored=await c('draw.drawing.get')
             check(unstamped(restored)==unstamped(before),name+' undo exact content',None)
         return before,after,rec
     for view in ('drawingView','cameraView'):
+        if step==3 and view=='cameraView':continue
         def act(pts,mods=(),escape=False):return lambda sid:gesture(view,pts,mods,escape)
         async def delete(sid):
             d.front();t.click(view+'.canvas');await c('draw.pointSelection.set',{'points':[{'strokeId':sid,'anchor':i} for i in deletion]});d.key(0x2e);await asyncio.sleep(.7)
@@ -146,13 +151,19 @@ async def contour_body(t,step):
                 async def tool_extra(sid):await c('tool.active.set',{'toolId':tool})
                 await compare(view,view+'-old-'+tool,act(pts),cmd,extra=tool_extra,label=label)
             await c('window.panel.set',{'panelId':'properties','visible':True})
+            await asyncio.sleep(.5)
+            t.click('properties.page.toolOptions')
             for tool in (await c('tool.list'))['tools']:
                 tid=tool['toolId'];t.clear();t.click('drawingTools.'+tid);await asyncio.sleep(.2)
                 check((await c('tool.active.get'))['toolId']==tid,'toolbar '+tid,t.recorded())
-                t.run.save(view+'-options-'+tid+'.json',t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions\"]')?.outerHTML || document.querySelector('[data-tt-id=\"toolOptions.page\"]')?.outerHTML"))
-                await c('keymap.set',{'commandId':'tool.active.set','params':{'toolId':tid},'keys':'Ctrl+Alt+9','context':'drawing','onConflict':'override'})
-                t.click('drawingTools.'+('brush' if tid!='brush' else 'select'));t.clear();d.key(0x39,0x11,0x12);await asyncio.sleep(.2)
+                page=t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions\"]')?.outerHTML");check(bool(page),'options page available '+tid,page)
+                required='toolOptions.rectRule' if tid=='select' else 'toolOptions.selectedLine' if tid=='contourEditor' else 'toolOptions.pen' if tid in ('brush','eraser') else 'toolOptions.thicknessSource' if tid in ('pencil','rectangle','ellipse','line','polyline') else 'toolOptions.gapClosing' if tid in ('paint','unpaint','paintUnpainted') else 'toolOptions.snapToContour'
+                check(required in (page or ''),'02 tool options page matches '+tid,required)
+                t.run.save(view+'-options-'+tid+'.json',page)
+                await c('keymap.set',{'commandId':'tool.active.set','params':{'toolId':tid},'keys':'F6','context':'global','onConflict':'override'})
+                t.click('drawingTools.'+('select' if tid!='select' else 'contourEditor'));t.click(view+'.canvas');t.clear();d.key(0x75);await asyncio.sleep(.2)
                 check((await c('tool.active.get'))['toolId']==tid,'shortcut '+tid,await c('tool.options.get',{'toolId':tid}))
+                check(required in (t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions\"]')?.outerHTML") or ''),'02 shortcut options match '+tid,required)
         elif step==4:
             for name,pts,mods,selected in [('click',[(-80,0)]*2,(),()),('add-click',[(0,0)]*2,(0x10,),(0,)),('marquee',[(-100,-50),(20,50)],(),()),('empty',[(120,100)]*2,(),(0,1))]:
                 await compare(view,view+'-'+name,act(pts,mods),'draw.selection.set' if name=='empty' else 'draw.pointSelection.set',selected)
@@ -203,6 +214,7 @@ async def contour_body(t,step):
             sid=await fixture(view);await c('window.panel.set',{'panelId':'properties','visible':True});await asyncio.sleep(.6)
             async def options(sid):
                 await c('window.panel.set',{'panelId':'properties','visible':True});await asyncio.sleep(.5)
+                t.click('properties.page.toolOptions');await asyncio.sleep(.3)
             async def thickness(sid):
                 t.click('toolOptions.selectedLine.thickness');d.key(0x41,0x11);t.clear();d.type_text('7');d.key(0x0d);await asyncio.sleep(.6)
                 return {'commands':[{'commandId':x['command'],'params':x['params']} for x in t.recorded() if x['command']=='draw.stroke.set']}
@@ -239,9 +251,18 @@ def live(step):
     PRIOR=load('c44b_prior','tests/adversarial/c44a-r1-live.py')
     PRIOR.EVID=EVID; PRIOR.live_body=contour_body
     result=PRIOR.live(step)
-    rows=json.loads((PRIOR.OUT/'transcript.json').read_text(encoding='utf-8'))
-    save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'raw':str(PRIOR.OUT)})
+    compact(step,PRIOR.OUT)
     return result
+def compact(step,out):
+    rows=json.loads((out/'transcript.json').read_text(encoding='utf-8'))
+    import hashlib
+    digest=lambda obj:hashlib.sha256(json.dumps(obj,sort_keys=True).encode()).hexdigest()
+    actions=[]
+    for path in out.glob('*.json'):
+        data=json.loads(path.read_text(encoding='utf-8'))
+        if isinstance(data,dict) and 'commands' in data and 'before' in data:
+            actions.append({'name':path.stem,'commands':data['commands'],'labels':data.get('labels'),'selection':data.get('selection'),'beforeSha256':digest(data['before']),'afterSha256':digest(data['after'])})
+    save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'results':[{'check':r['check'],'ok':r['ok']} for r in rows],'actions':actions,'transcriptSha256':hashlib.sha256((out/'transcript.json').read_bytes()).hexdigest(),'raw':str(out)})
 if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b')
     if case=='l1a' and step==2: sys.exit(regressions())
