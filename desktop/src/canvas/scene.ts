@@ -1,12 +1,13 @@
-// A view's composition as `canvas_scene` answers it: the scene answer of docs/canvas-format.md §11, form 1.1 (the
-// Drawing view, M4 C4.2b; the Camera view, M4 C4.3; the Rust type is `tt_executor::canvas::Scene`). Validated here,
-// rules R1-R7 of §11.5 included (R7: every member with a domain is checked against it): a malformed answer is refused,
-// never half-applied.
+// A view's composition as `canvas_scene` answers it: the scene answer of docs/canvas-format.md §11, form 1.2 (the
+// Drawing view, M4 C4.2b; the Camera view, M4 C4.3; the Contour Editor's overlay, M4 C4.4b; the Rust type is
+// `tt_executor::canvas::Scene`). Validated here, rules R1-R9 of §11.5 included (R7: every member with a domain is
+// checked against it): a malformed answer is refused, never half-applied.
 //
 // 64-bit identities (the engine generation and drawing revisions, u64 in Rust) are carried exactly as `bigint`
 // (docs/canvas-format.md §6): the host's JSON is parsed losslessly (`parseWireJson`), and an integer the parser kept
 // as a number is converted. Coordinates and opacities stay floating numbers.
 
+import type { Anchor6, SceneContours } from './contour';
 import type { Box, Pt, SceneSelection } from './selection';
 
 export type Rgba = [number, number, number, number];
@@ -81,6 +82,19 @@ export interface Scene {
   camera: SceneCamera | null;
   /** Camera view: the overlays; `null` in the Drawing view. */
   overlays: SceneOverlays | null;
+  /** Form 1.2, both view types: the Contour Editor's overlay (§11.8); `null` when absent. */
+  contours: SceneContours | null;
+  /** Form 1.2, both view types: the Perspective or Reposition All tool's box (§11.9); `null` when absent. */
+  toolBox: SceneToolBox | null;
+}
+
+/** The Perspective and Reposition All tools' box (§11.9), drawing units. */
+export interface SceneToolBox {
+  tool: 'perspective' | 'repositionAll';
+  box: Box;
+  locked: boolean;
+  /** Perspective: the `mapping` option its gestures send. */
+  mapping: 'auto' | 'projective' | 'bilinear';
 }
 
 export interface SceneAnswer {
@@ -228,6 +242,63 @@ function overlaysOf(v: unknown): SceneOverlays {
   };
 }
 
+/** R8: the Contour Editor's overlay (§11.8). */
+function contoursOf(v: unknown): SceneContours | null {
+  if (v === undefined || v === null) return null;
+  const o = obj(v);
+  if (!o) throw new TypeError('contours: not an object');
+  const drawingId = str(o['drawingId'], 'contours.drawingId');
+  if (drawingId === '') throw new TypeError('contours.drawingId: empty');
+  const strokes = list(o['strokes'], 'contours.strokes', (x, w) => {
+    const s = obj(x);
+    if (!s) throw new TypeError(`${w}: not an object`);
+    const strokeId = str(s['strokeId'], `${w}/strokeId`);
+    if (strokeId === '') throw new TypeError(`${w}/strokeId: empty`);
+    const anchors = list(s['anchors'], `${w}/anchors`, (a, aw): Anchor6 => {
+      if (!Array.isArray(a) || a.length !== 6) throw new TypeError(`${aw}: not six numbers`);
+      return a.map((n: unknown, i) => num(n, `${aw}/${String(i)}`)) as Anchor6;
+    });
+    if (anchors.length === 0) throw new TypeError(`${w}/anchors: empty`);
+    const partner = bool(s['partner'], `${w}/partner`);
+    const selected = list(s['selected'], `${w}/selected`, (n, nw) => {
+      if (typeof n !== 'number' || !Number.isInteger(n) || n < 0 || n >= anchors.length)
+        throw new TypeError(`${nw}: not an anchor index`);
+      return n;
+    });
+    if (selected.some((n, i) => i > 0 && n <= (selected[i - 1] ?? -1)))
+      throw new TypeError(`${w}/selected: not ascending and distinct`);
+    if (partner && selected.length > 0) throw new TypeError(`${w}/selected: a partner selects nothing`);
+    return {
+      strokeId,
+      layer: str(s['layer'], `${w}/layer`),
+      closed: bool(s['closed'], `${w}/closed`),
+      partner,
+      anchors,
+      selected,
+    };
+  });
+  return { drawingId, locked: bool(o['locked'], 'contours.locked'), strokes };
+}
+
+/** R9: the Perspective and Reposition All tools' box (§11.9). */
+function toolBoxOf(v: unknown): SceneToolBox | null {
+  if (v === undefined || v === null) return null;
+  const o = obj(v);
+  if (!o) throw new TypeError('toolBox: not an object');
+  const tool = str(o['tool'], 'toolBox.tool');
+  if (tool !== 'perspective' && tool !== 'repositionAll')
+    throw new TypeError(`toolBox.tool: unknown ${tool}`);
+  const mapping = o['mapping'] === undefined ? 'auto' : str(o['mapping'], 'toolBox.mapping');
+  if (mapping !== 'auto' && mapping !== 'projective' && mapping !== 'bilinear')
+    throw new TypeError(`toolBox.mapping: unknown ${mapping}`);
+  return {
+    tool,
+    box: orderedBox(o['box'], 'toolBox.box'),
+    locked: bool(o['locked'], 'toolBox.locked'),
+    mapping,
+  };
+}
+
 /** Validates a `canvas_scene` answer; throws a TypeError naming the first malformed field. */
 export function parseSceneAnswer(v: unknown): SceneAnswer {
   const a = obj(v);
@@ -328,6 +399,8 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
       frame,
       camera: cam,
       overlays,
+      contours: contoursOf(s['contours']),
+      toolBox: toolBoxOf(s['toolBox']),
     },
   };
 }

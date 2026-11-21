@@ -268,6 +268,8 @@ fn the_gesture_table_is_the_drivers_both_ways() {
     // The driver can end only in the commands its source names: each is in the table.
     let mut named = named_commands(include_str!("../../src/gesture.rs"));
     named.extend(named_commands(include_str!("../../src/scene_gesture.rs")));
+    named.extend(named_commands(include_str!("../../src/contour_gesture.rs")));
+    named.extend(named_commands(include_str!("../../src/envelope_gesture.rs")));
     let missing: Vec<&String> = named.difference(&listed).collect();
     assert!(missing.is_empty(), "the driver names commands the table lacks: {missing:?}");
     // Each row is what its gestures produce, exactly: a battery over every tool in both views.
@@ -420,6 +422,99 @@ fn battery() -> BTreeMap<(String, String), BTreeSet<String>> {
         let from = if row == "scene:skew" { (c.0, bx[1]) } else { c };
         let events = drag(&[from, (from.0 + 30.0, from.1 + 10.0)], mods);
         put("camera", row, answered(&h, json!({ "view": "cameraView", "events": events })));
+    }
+    // The Contour Editor (C4.4b; design note 3 §2): every row of its gesture table in both views, and the Delete key the
+    // kernel's key dispatch routes to it while it is active (SI-184).
+    for (view, req) in [("drawing", "drawingView"), ("camera", "cameraView")] {
+        let fresh = || {
+            let h = ready();
+            let r = ok(
+                &h,
+                "draw.rectangle.add",
+                json!({ "from": {"x": 300, "y": 300}, "to": {"x": 400, "y": 400}, "layer": "new" }),
+            );
+            let sid = r["strokeIds"][0].as_str().unwrap().to_owned();
+            ok(&h, "draw.selection.set", json!({ "by": "ids", "ids": [sid], "mode": "replace" }));
+            ok(&h, "draw.pointSelection.set", json!({ "points": [{ "strokeId": sid, "anchor": 1 }] }));
+            ok(&h, "tool.active.set", json!({ "toolId": "contourEditor" }));
+            let d = ok(&h, "draw.drawing.get", json!({ "flatten": true }));
+            let n = d["nodes"].as_array().unwrap().iter().find(|n| n["id"] == sid.as_str()).cloned().unwrap();
+            let b = n["bezier"].as_array().unwrap().clone();
+            let a: Vec<(f64, f64)> =
+                (0..4).map(|k| (b[k * 3]["x"].as_f64().unwrap(), b[k * 3]["y"].as_f64().unwrap())).collect();
+            let m = if view == "camera" { bob_to_view(&h) } else { [1.0, 0.0, 0.0, -1.0, 960.0, 540.0] };
+            let v = move |x: f64, y: f64| crate::camera::apply(&m, x, y);
+            (h, a, v)
+        };
+        type ToView<'a> = &'a dyn Fn(f64, f64) -> (f64, f64);
+        type Row = Box<dyn Fn(&[(f64, f64)], ToView) -> Vec<Value>>;
+        let gestures: Vec<Row> = vec![
+            // A click off every target: the Select click, then the point selection cleared.
+            Box::new(|_, v| click(v(-900.0, -900.0), &[])),
+            // An anchor drag, a segment drag, a temporary-select click on a segment, an alternate click on an anchor.
+            Box::new(|a, v| {
+                let p = v(a[0].0, a[0].1);
+                drag(&[p, (p.0 + 12.0, p.1 + 5.0)], &[])
+            }),
+            Box::new(|a, v| {
+                let p = v((a[2].0 + a[3].0) / 2.0, (a[2].1 + a[3].1) / 2.0);
+                drag(&[p, (p.0, p.1 + 12.0)], &[])
+            }),
+            Box::new(|a, v| click(v((a[2].0 + a[3].0) / 2.0, (a[2].1 + a[3].1) / 2.0), &["ctrl"])),
+            Box::new(|a, v| click(v(a[2].0, a[2].1), &["alt"])),
+        ];
+        for g in &gestures {
+            let (h, a, v) = fresh();
+            put(
+                view,
+                "contourEditor",
+                answered(&h, json!({ "view": req, "tool": "contourEditor", "events": g(&a, &v) })),
+            );
+        }
+        // Perspective (design note 4 §3): a click selects, a corner drag maps the selection; Reposition All (§4): a drag
+        // repositions every drawing.
+        let (h, _, v) = fresh();
+        ok(&h, "tool.active.set", json!({ "toolId": "perspective" }));
+        // The corner of the box the scene answer publishes (the handles' box; a stroke's anchor sits off it by half
+        // its thickness).
+        let tb = serde_json::to_value(h.canvas_scene(req).unwrap()).unwrap()["toolBox"]["box"].clone();
+        let p = v(tb[2].as_f64().unwrap(), tb[3].as_f64().unwrap());
+        put(
+            view,
+            "perspective",
+            answered(
+                &h,
+                json!({ "view": req, "tool": "perspective", "events": drag(&[p, (p.0 - 15.0, p.1 + 4.0)], &[]) }),
+            ),
+        );
+        let (h, _, v) = fresh();
+        ok(&h, "tool.active.set", json!({ "toolId": "perspective" }));
+        put(
+            view,
+            "perspective",
+            answered(&h, json!({ "view": req, "tool": "perspective", "events": click(v(-900.0, -900.0), &[]) })),
+        );
+        let (h, a, v) = fresh();
+        let p = v((a[0].0 + a[2].0) / 2.0, (a[0].1 + a[2].1) / 2.0);
+        put(
+            view,
+            "repositionAll",
+            answered(
+                &h,
+                json!({ "view": req, "tool": "repositionAll", "events": drag(&[p, (p.0 + 20.0, p.1 + 9.0)], &[]) }),
+            ),
+        );
+        let (h, _, _) = fresh();
+        if view == "camera" {
+            ok(&h, "app.mode.set", json!({ "mode": "staging" }));
+        }
+        match h.resolve_key("Delete").unwrap() {
+            tt_executor::host::KeyResolution::Command { command_id, params, .. } => {
+                ok(&h, &command_id, params);
+                put(view, "contourEditor", vec![command_id]);
+            }
+            other => panic!("Delete with the Contour Editor: {other:?}"),
+        }
     }
     out
 }

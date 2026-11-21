@@ -524,7 +524,7 @@ pub(crate) struct PointSelectionResult {
 
 #[command(
     id = "draw.pointSelection.set",
-    precheck = super::draw::precheck_drawing,
+    precheck = super::draw::precheck_point_selection,
     kind = ui,
     label = "Select anchor points",
     scopes = [ui],

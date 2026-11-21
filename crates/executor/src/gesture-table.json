@@ -132,6 +132,34 @@
       ]
     },
     {
+      "view": "drawing",
+      "tool": "contourEditor",
+      "commands": [
+        "draw.selection.set",
+        "draw.pointSelection.set",
+        "draw.point.move",
+        "draw.segment.move",
+        "draw.point.add",
+        "draw.point.set",
+        "draw.point.delete"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "perspective",
+      "commands": [
+        "draw.selection.set",
+        "draw.envelope.apply"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "repositionAll",
+      "commands": [
+        "draw.repositionAll.apply"
+      ]
+    },
+    {
       "view": "camera",
       "tool": "select",
       "commands": [
@@ -259,6 +287,34 @@
       "tool": "grabber",
       "commands": [
         "view.pan.set"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "contourEditor",
+      "commands": [
+        "draw.selection.set",
+        "draw.pointSelection.set",
+        "draw.point.move",
+        "draw.segment.move",
+        "draw.point.add",
+        "draw.point.set",
+        "draw.point.delete"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "perspective",
+      "commands": [
+        "draw.selection.set",
+        "draw.envelope.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "repositionAll",
+      "commands": [
+        "draw.repositionAll.apply"
       ]
     },
     {

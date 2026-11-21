@@ -304,10 +304,66 @@ pub struct Scene {
     /// Camera view: the overlays; absent in the Drawing view.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub overlays: Option<SceneOverlays>,
+    /// Form 1.2, both view types: the Contour Editor's overlay while it is the active tool with a current drawing
+    /// (§11.8; design note 3 §4); absent otherwise.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contours: Option<SceneContours>,
+    /// Form 1.2, both view types: the Perspective or Reposition All tool's box while it is active with a current
+    /// drawing that has one (§11.9; design note 4 §2); absent otherwise.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tool_box: Option<SceneToolBox>,
+}
+
+/// The Perspective and Reposition All tools' box (§11.9), in drawing units.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneToolBox {
+    /// `perspective` or `repositionAll`.
+    pub tool: String,
+    /// `[minX, minY, maxX, maxY]`: what the tool's command maps.
+    #[serde(rename = "box")]
+    pub bbox: [f64; 4],
+    /// The tool's command is refused now (a locked drawing; nothing to reposition): grey handles, no preview.
+    pub locked: bool,
+    /// Perspective: the `mapping` option its gestures send (the preview takes the same branch); absent otherwise.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mapping: Option<String>,
 }
 
 /// The scene answer's form (`docs/canvas-format.md` §11.2).
-pub const SCENE_FORM: &str = "1.1";
+pub const SCENE_FORM: &str = "1.2";
+
+/// The Contour Editor's overlay (§11.8), in drawing units.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneContours {
+    /// The current drawing.
+    pub drawing_id: String,
+    /// The drawing is locked: the overlay is drawn grey and no preview is drawn.
+    pub locked: bool,
+    /// The shown strokes back to front, then their partners.
+    pub strokes: Vec<SceneContourStroke>,
+}
+
+/// One stroke of the Contour Editor's overlay.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SceneContourStroke {
+    /// Local stroke id.
+    pub stroke_id: String,
+    /// The stroke's layer, an opaque key: `draw.point.move` moves the anchors at a moved anchor's exact coordinate in
+    /// the same layer together with it.
+    pub layer: String,
+    /// The path is closed (as the contour commands read it).
+    pub closed: bool,
+    /// Not shown: a same-layer stroke with an anchor at a shown anchor's exact coordinate, which `draw.point.move`
+    /// moves with it (the preview reads it; it is not drawn or hit).
+    pub partner: bool,
+    /// The anchors `[x, y, inX, inY, outX, outY]`, handles as offsets.
+    pub anchors: Vec<[f64; 6]>,
+    /// The selected anchors' indices, ascending.
+    pub selected: Vec<u32>,
+}
 
 /// The selection the Drawing view's overlay draws (layer 9; frame-loop note §7.1), in drawing units.
 #[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
@@ -475,6 +531,8 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
         drawing_pivot: current.as_ref().and_then(|id| doc.drawing(id)).map(|d| [d.pivot().x, d.pivot().y]),
         // Filled by [`selection`] with a read-only context (the selection walk needs one).
         selection: None,
+        contours: None,
+        tool_box: None,
         frame: None,
         camera: None,
         overlays: None,
@@ -551,6 +609,8 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
         palette_stamp,
         drawing_pivot: None,
         selection: None,
+        contours: None,
+        tool_box: None,
         frame: Some(cx.app().frame.max(1)),
         camera: Some(None),
         overlays: None,

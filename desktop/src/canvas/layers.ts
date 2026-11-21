@@ -1,6 +1,7 @@
 // One frame's layers in 02 §4.2's order (M4 C4.2b; design note 2 §1 step 2-3; invariant F3). The back ends implement
 // `LayerOps`; this module alone decides the order, and a recording implementation tests it.
 
+import { packMap, type PreviewMap } from './envelope';
 import { compose, type Affine } from './geometry';
 import { residentKey, type Rgba, type Scene, type SceneEntry, type SceneGrid } from './scene';
 
@@ -80,4 +81,19 @@ export function drawFrame(
     ops.endStatic();
   }
   ops.overlay();
+}
+
+/**
+ * The drawing-to-view matrix and the vertex stage's map for a preview `map` (design note 4 §6): an affine map is
+ * composed into the matrix; a projective or bilinear one is applied to each vertex in drawing units (`packMap`).
+ */
+export function mappedEntry(
+  base: Affine,
+  map: PreviewMap | null | undefined,
+): { toView: Affine; kind: number; data: Float32Array | null } {
+  if (!map) return { toView: base, kind: 0, data: null };
+  const packed = packMap(map);
+  return packed.affine
+    ? { toView: compose(base, packed.affine), kind: 0, data: null }
+    : { toView: base, kind: packed.kind, data: packed.data };
 }

@@ -12,7 +12,17 @@ import { useEffect, useRef, useState } from 'react';
 import { GENERATION_EVENT, type AgentInput, type EngineApi } from '../ipc';
 import { stringifyWireJson } from '../ipc/wireJson';
 import { bucketOf } from './bucket';
-import { apply, compose, gridGeometry, IDENTITY, mapTris, scaleOf, ViewTris, type Affine } from './geometry';
+import {
+  apply,
+  compose,
+  gridGeometry,
+  IDENTITY,
+  invert,
+  mapTris,
+  scaleOf,
+  ViewTris,
+  type Affine,
+} from './geometry';
 import {
   ACCENT,
   GestureCollector,
@@ -51,6 +61,25 @@ import { isMac } from '../keys/sequence';
 import { sceneFamilyChosen } from './toolFamily';
 import { DRAWING_MENU, SCENE_MENU } from './viewMenus';
 import { selectionCursor, selectionOverlay, type SelectionOverlay } from './selection';
+import {
+  CLICK_SLOP_PX,
+  contourCursor,
+  contourHitAt,
+  contourOverlay,
+  contourPreview,
+  drawContourPreview,
+  drawingDelta,
+  type ContourOverlay,
+  type ContourPress,
+} from './contour';
+import {
+  toolBoxCursor,
+  toolBoxOverlay,
+  toolHandleAt,
+  toolPreview,
+  type PreviewMap,
+  type ToolPress,
+} from './envelope';
 import type { Renderer } from './renderer';
 
 export interface CanvasHandle {
@@ -153,7 +182,18 @@ export function CanvasView({
     let selectedIds: ReadonlySet<string> = new Set();
     let press: { p: [number, number]; constrain: boolean; alternate: boolean; tempSelect: boolean } | null =
       null;
-    let previewKind: 'scene' | 'drawing' | 'grab' | null = null;
+    let previewKind: 'scene' | 'drawing' | 'grab' | 'contour' | 'envelope' | 'reposition' | null = null;
+    // Perspective and Reposition All (design note 4 §2, §6): the press on the scene answer's `toolBox`, the press
+    // mapping, and the drag's map in drawing units.
+    let toolPress: (ToolPress & { d2v: Affine; locked: boolean }) | null = null;
+    let toolMap: PreviewMap | null = null;
+    let toolShown: { tool: string; locked: boolean; handles: number } | null = null;
+    let hoverAt: [number, number] | null = null;
+    // The Contour Editor (design note 3 §4, §6): its overlay from the scene answer's `contours`, the press's target and
+    // mapping, and the last preview's changed anchors in view pixels (for the e2e, PV2) and recomputed segments.
+    let contourShown: ContourOverlay['shown'] | null = null;
+    let contourPress: (ContourPress & { d2v: Affine; dragged: boolean }) | null = null;
+    let contourDrawn: { anchors: [number, number][]; segments: number } | null = null;
     let preview: Affine | null = null;
     let overlayParts: { frame: ViewTris | null; selection: ViewTris | null } = {
       frame: null,
@@ -294,12 +334,26 @@ export function CanvasView({
       parts = null;
     };
     const endPreview = () => {
-      if (preview) viewVersion++;
+      if (preview || contourDrawn) viewVersion++;
       preview = null;
       previewKind = null;
       press = null;
+      contourPress = null;
+      contourDrawn = null;
+      if (toolMap) viewVersion++;
+      toolPress = null;
+      toolMap = null;
       dropParts();
     };
+    /** Perspective or Reposition All runs in this view now (in the Camera view, the drawing family). */
+    const boxTool = (): 'perspective' | 'repositionAll' | null =>
+      (style.tool === 'perspective' || style.tool === 'repositionAll') &&
+      !(model?.scene?.viewType === 'camera' && sceneFamily)
+        ? style.tool
+        : null;
+    /** The Contour Editor runs in this view now: its tool is active and, in the Camera view, the drawing family. */
+    const contourActive = () =>
+      style.tool === 'contourEditor' && !(model?.scene?.viewType === 'camera' && sceneFamily);
     /** Loads the current drawing's two parts at its scene revision (preview note §3). */
     const loadParts = () => {
       const m = model;
@@ -629,6 +683,25 @@ export function CanvasView({
           overlayParts = { frame: null, selection: selection.tris };
           cameraShown = null;
         }
+        toolShown = null;
+        const tb = scene?.toolBox ?? null;
+        if (boxTool() && tb?.tool === boxTool()) {
+          const map = here ? toolMap : null;
+          const handles = toolBoxOverlay(tb.box, d2v, tb.locked, map);
+          toolShown = { tool: tb.tool, locked: tb.locked, handles: 8 };
+          selection = { ...selection, tris: combine(selection.tris, handles) };
+          overlayParts = { frame: overlayParts.frame, selection: selection.tris };
+        }
+        contourShown = null;
+        if (contourActive() && scene?.contours) {
+          const c = contourOverlay(scene.contours, d2v);
+          contourShown = c.shown;
+          if (camera) selection = { ...selection, tris: combine(selection.tris, c.tris) };
+          else {
+            selection = { tris: c.tris, shown: { ...selection.shown, objects: 0 }, handles: [] };
+            overlayParts = { frame: null, selection: selection.tris };
+          }
+        }
       }
       const staticDirty = model.version !== drawnVersion || viewVersion !== drawnView;
       if (staticDirty || collector.active || playing) lastActivity = performance.now();
@@ -663,6 +736,21 @@ export function CanvasView({
         split:
           previewKind === 'drawing' && pv && parts?.ready === 2
             ? { drawingId: parts.drawingId, rest: parts.rest, selection: parts.selection, transform: pv }
+            : previewKind === 'envelope' && here && toolMap && parts?.ready === 2
+              ? {
+                  drawingId: parts.drawingId,
+                  rest: parts.rest,
+                  selection: parts.selection,
+                  transform: IDENTITY,
+                  map: toolMap,
+                }
+              : null,
+        moved:
+          previewKind === 'reposition' && here && toolMap && toolPress && !toolPress.locked
+            ? (() => {
+                const e = scene?.entries.find((x) => x.role === 'current' && !x.outline);
+                return e ? { drawingId: e.drawingId, map: toolMap } : null;
+              })()
             : null,
         width: size.width,
         height: size.height,
@@ -697,6 +785,10 @@ export function CanvasView({
         pv,
         ov !== null,
         cameraShown,
+        toolShown,
+        toolMap,
+        contourShown,
+        contourDrawn,
         stats.drawn,
         stats.residentDrawings,
         stats.residentBytes,
@@ -721,6 +813,12 @@ export function CanvasView({
         // D-50, D-53: not under another view type or mapping).
         overlay: ov !== null,
         ...(cameraShown ? { camera: cameraShown } : {}),
+        // The Contour Editor's overlay and, during a drag, its preview's changed anchors in view pixels (PV2).
+        ...(contourShown ? { contours: contourShown } : {}),
+        // Perspective and Reposition All: the box's handles, and during a drag the preview's map (drawing units).
+        ...(toolShown ? { toolBox: toolShown } : {}),
+        ...(toolMap && here ? { toolPreview: toolMap } : {}),
+        ...(contourDrawn && here ? { contourPreview: contourDrawn } : {}),
         ...(({ drawn, residentDrawings, residentBytes, lastError }) => ({
           drawn,
           residentDrawings,
@@ -876,7 +974,31 @@ export function CanvasView({
       if (inCamera && sceneFamily && (sceneTool === 'select' || sceneTool === 'transform'))
         previewKind = 'scene';
       else if (style.tool === 'grabber') previewKind = 'grab';
-      else if (!inCamera && style.tool === 'select') {
+      else if (boxTool()) {
+        // Perspective and Reposition All (design note 4 §5): the press is classified on the kernel's box; the release's
+        // command is the kernel's. A refused command (grey handles) draws no preview.
+        const tool = boxTool() ?? 'perspective';
+        const tb = model?.scene?.toolBox ?? null;
+        const box = tb?.tool === tool ? tb.box : null;
+        toolPress = {
+          tool,
+          box,
+          handle: box ? toolHandleAt(box, d2v, [s.x, s.y], tool === 'repositionAll') : null,
+          alternate: e.altKey,
+          constrain: e.shiftKey,
+          mapping: tb?.mapping ?? 'auto',
+          d2v,
+          locked: tb?.locked ?? false,
+        };
+        previewKind = tool === 'perspective' ? 'envelope' : 'reposition';
+        if (tool === 'perspective' && toolPress.handle && !toolPress.locked) loadParts();
+      } else if (contourActive()) {
+        // The press classifies its target with the kernel's rule (`contourHitAt`); the release's command is the
+        // kernel's. A locked drawing draws no preview (the refusal is the kernel's).
+        previewKind = 'contour';
+        const c = model?.scene?.contours ?? null;
+        contourPress = { target: contourHitAt(c, d2v, [s.x, s.y]), alternate: e.altKey, d2v, dragged: false };
+      } else if (!inCamera && style.tool === 'select') {
         previewKind = 'drawing';
         loadParts();
       }
@@ -909,9 +1031,29 @@ export function CanvasView({
     };
     const onMove = (e: PointerEvent) => {
       if (!collector.active) {
+        const p = sample(e);
+        hoverAt = [p.x, p.y];
+        const bt = boxTool();
+        if (bt) {
+          const tb = model?.scene?.toolBox ?? null;
+          canvas.style.cursor = toolBoxCursor(
+            bt,
+            tb?.tool === bt ? tb.box : null,
+            d2v,
+            [p.x, p.y],
+            e.altKey,
+            tb?.locked ?? false,
+          );
+          return;
+        }
+        if (contourActive()) {
+          // The Contour Editor's cursor (design note 3 §4).
+          const temp = mac ? e.metaKey : e.ctrlKey || e.metaKey;
+          canvas.style.cursor = contourCursor(model?.scene?.contours ?? null, d2v, [p.x, p.y], temp);
+          return;
+        }
         // Hovering: the Select tool's cursor over its handles and inside the box (frame-loop note §7.3).
         const b = style.tool === 'select' ? (model?.scene?.selection?.bounds ?? null) : null;
-        const p = sample(e);
         canvas.style.cursor = selectionCursor(selection.handles, b, d2v, [p.x, p.y]);
         return;
       }
@@ -920,7 +1062,39 @@ export function CanvasView({
       const list = typeof e.getCoalescedEvents === 'function' ? e.getCoalescedEvents() : [];
       collector.move((list.length > 0 ? list : [e]).map(sample));
       overlay = gestureOverlay(collector.points, style);
-      if (previewKind) {
+      if (previewKind === 'envelope' || previewKind === 'reposition') {
+        // The preview's map (design note 4 §6): the kernel's rule in drawing units through the press mapping; the
+        // marquee of a Perspective drag off its handles stays.
+        const s = sample(e);
+        const tp = toolPress;
+        const v2d = tp ? invert(tp.d2v) : null;
+        if (tp && press && v2d && !tp.locked && (tp.handle || tp.tool === 'repositionAll')) {
+          const next = toolPreview(tp, apply(v2d, press.p[0], press.p[1]), apply(v2d, s.x, s.y));
+          if (next || toolMap) viewVersion++;
+          toolMap = next;
+          if (next) overlay = null;
+        }
+      } else if (previewKind === 'contour') {
+        // The preview (design note 3 §6): the strokes the command will change, drawn from the affected segments only;
+        // a drag on nothing keeps its marquee.
+        const s = sample(e);
+        const c = model?.scene?.contours ?? null;
+        // A press that stays within the kernel's click slop is a click: no preview (design note 3 §6).
+        const p0 = press?.p;
+        if (contourPress && p0 && !contourPress.dragged)
+          contourPress.dragged = collector.points.some(
+            (q) => Math.hypot(q[0] - p0[0], q[1] - p0[1]) > CLICK_SLOP_PX,
+          );
+        if (contourPress?.target && contourPress.dragged && c && press && !c.locked) {
+          const d = drawingDelta(contourPress.d2v, press.p, [s.x, s.y]);
+          const drawn = d ? drawContourPreview(contourPreview(c, contourPress, d), d2v) : null;
+          overlay = drawn?.tris ?? null;
+          contourDrawn = drawn ? { anchors: drawn.anchors, segments: drawn.segments } : null;
+          viewVersion++;
+        } else if (contourPress?.target) {
+          overlay = null;
+        }
+      } else if (previewKind) {
         const s = sample(e);
         const next = previewAt([s.x, s.y]);
         if (next || preview) viewVersion++;
@@ -960,7 +1134,33 @@ export function CanvasView({
       // Only a pressed gesture loses anything to a lost capture: a Polyline between clicks holds no capture.
       if (collector.pressed) cancelGesture();
     };
+    // The alternate key's release restores the cursor over a side (design note 4 §2).
+    const onAltUp = (e: KeyboardEvent) => {
+      const bt = boxTool();
+      if (!bt || !hoverAt || collector.active || e.key !== 'Alt') return;
+      const tb = model?.scene?.toolBox ?? null;
+      canvas.style.cursor = toolBoxCursor(
+        bt,
+        tb?.tool === bt ? tb.box : null,
+        d2v,
+        hoverAt,
+        false,
+        tb?.locked ?? false,
+      );
+    };
     const onKey = (e: KeyboardEvent) => {
+      const bt = boxTool();
+      if (bt && hoverAt && !collector.active && e.key === 'Alt') {
+        const tb = model?.scene?.toolBox ?? null;
+        canvas.style.cursor = toolBoxCursor(
+          bt,
+          tb?.tool === bt ? tb.box : null,
+          d2v,
+          hoverAt,
+          e.type === 'keydown',
+          tb?.locked ?? false,
+        );
+      }
       if (e.key === 'Escape' && collector.active) {
         e.preventDefault();
         cancelGesture();
@@ -991,6 +1191,7 @@ export function CanvasView({
     canvas.addEventListener('dblclick', onDouble);
     el.addEventListener('contextmenu', onMenu);
     window.addEventListener('keydown', onKey, true);
+    window.addEventListener('keyup', onAltUp, true);
     window.addEventListener('blur', onBlur);
     const onGeneration = (e: Event) => {
       const g = (e as CustomEvent<unknown>).detail;
@@ -1040,6 +1241,7 @@ export function CanvasView({
       canvas.removeEventListener('dblclick', onDouble);
       el.removeEventListener('contextmenu', onMenu);
       window.removeEventListener('keydown', onKey, true);
+      window.removeEventListener('keyup', onAltUp, true);
       window.removeEventListener('blur', onBlur);
       window.removeEventListener(GENERATION_EVENT, onGeneration);
       cancelAnimationFrame(raf);

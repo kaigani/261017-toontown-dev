@@ -85,6 +85,12 @@ fn bounds_of(d: &Drawing, objs: &[Located]) -> Option<Rect> {
     acc
 }
 
+/// Perspective's box (design note 4 §2): the bounds of what `draw.envelope.apply` maps with no `ids` (the selection),
+/// `None` when nothing is selected.
+pub(crate) fn envelope_box(cx: &Cx, d: &Drawing) -> Option<Rect> {
+    objects_of(cx, d, None, "distort").ok().and_then(|o| bounds_of(d, &o))
+}
+
 fn centre(r: &Rect) -> P {
     P::new((r.min_x + r.max_x) / 2.0, (r.min_y + r.max_y) / 2.0)
 }
@@ -986,7 +992,7 @@ fn nearest_location(path: &Path, q: P) -> Option<(usize, f64)> {
 
 #[command(
     id = "draw.point.add",
-    precheck = super::draw::precheck_contour,
+    precheck = super::draw::precheck_point_add,
     kind = action,
     label = "Add point",
     scopes = [edit],
@@ -1050,9 +1056,10 @@ pub(crate) struct PointMoveParams {
     points: Option<Vec<AnchorRef>>,
     /// Offset (du).
     delta: Point,
-    /// Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off).
+    /// Snap moved anchors to the other strokes of their layer within 8 view pixels (Snap to Contour, 02 §8.9 and line
+    /// 1338; default: the Snap to Contour setting, `tool.snapToContour.set`; SI-187).
     #[serde(default)]
-    snap: bool,
+    snap: Option<bool>,
     /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
     #[serde(default)]
     space: super::colour::Space,
@@ -1144,6 +1151,7 @@ fn nearest_on(path: &tt_vector::path::Path, q: P) -> Option<(f64, usize, f64, P)
 pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<ContourResult, CommandError> {
     // The Snap to Contour radius is in view pixels: through the given view's zoom, or 100 % (02 §13.1 item 5).
     let snap_radius = crate::addressing::tolerance_du(cx, p.view.as_deref(), SNAP_RADIUS)?;
+    let snap = p.snap.unwrap_or(cx.ui().drawing().snap_to_contour);
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, p.frame);
     let mut none = Vec::new();
@@ -1186,7 +1194,7 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
     let dj = drawing_json(&doc, &t.id)?;
     // Snap to Contour (02 §8.9; C23-R1-03): the other strokes of the moved stroke's own layer, by their whole
     // contour (anchors and segment interiors, curves included); cross-layer contours are not candidates (SI-070).
-    let contours: Vec<(String, String, tt_vector::path::Path)> = if p.snap {
+    let contours: Vec<(String, String, tt_vector::path::Path)> = if snap {
         vd::objects(&d)
             .iter()
             .filter(|o| o.kind == ObjectKind::Stroke && !moved.iter().any(|(s, _)| *s == o.id))
@@ -1304,7 +1312,7 @@ pub(crate) struct PointSetResult {
 
 #[command(
     id = "draw.point.set",
-    precheck = super::draw::precheck_contour,
+    precheck = super::draw::precheck_point_set,
     kind = action,
     label = "Set point",
     scopes = [edit],
@@ -1478,7 +1486,7 @@ fn half() -> f64 {
 
 #[command(
     id = "draw.segment.move",
-    precheck = super::draw::precheck_contour,
+    precheck = super::draw::precheck_segment_move,
     kind = action,
     label = "Move segment",
     scopes = [edit],

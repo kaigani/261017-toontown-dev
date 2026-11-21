@@ -39,6 +39,8 @@ pub fn is_tool(tool: &str) -> bool {
 pub fn default_options(tool: &str) -> Map<String, Value> {
     let v = match tool {
         "select" => json!({ "rectRule": "inside" }),
+        // 02 §7.7 line 707 (design note 4 §8; SI-188): the envelope's mapping, sent with every Perspective gesture.
+        "perspective" => json!({ "mapping": "auto" }),
         "pencil" | "rectangle" | "ellipse" | "line" => json!({ "thicknessSource": "penMax", "thickness": null }),
         "polyline" => json!({ "snap": true, "snapRadius": 8, "thicknessSource": "penMax", "thickness": null }),
         "text" => json!({ "font": null, "size": 36, "bold": false, "italic": false, "baseline": "normal", "kerning": 0,
@@ -62,6 +64,7 @@ pub fn check_option(tool: &str, key: &str, v: &Value) -> Result<(), (&'static st
     let num = |lo: f64, hi: f64| v.as_f64().is_some_and(|x| x.is_finite() && (lo..=hi).contains(&x));
     let ok = match (tool, key) {
         ("select", "rectRule") => matches!(v.as_str(), Some("inside" | "intersect")),
+        ("perspective", "mapping") => matches!(v.as_str(), Some("auto" | "projective" | "bilinear")),
         (_, "thicknessSource") => matches!(v.as_str(), Some("penMax" | "fixed")),
         (_, "thickness") => v.is_null() || num(0.0, 100.0),
         ("polyline", "snap") | ("text", "bold" | "italic" | "autoKern") => v.is_boolean(),

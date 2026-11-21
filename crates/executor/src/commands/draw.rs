@@ -1186,6 +1186,12 @@ pub(crate) fn precheck_drawing(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     precheck_steps(cx, v, Steps::default())
 }
 
+/// `draw.pointSelection.set`: the drawing, then the named anchors exist (the handler's check; design note 3 §7).
+pub(crate) fn precheck_point_selection(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps::default())?;
+    named_anchors(cx, v, true)
+}
+
 /// A drawing precheck for a command that edits `drawingId` (else the current drawing).
 pub(crate) fn precheck_edit(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     precheck_steps(cx, v, Steps { edit: Some(false), ..Steps::default() })
@@ -1312,11 +1318,46 @@ pub(crate) fn precheck_smooth(cx: &Cx, v: &Value) -> Result<(), CommandError> {
 }
 
 pub(crate) fn precheck_point_move(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    precheck_steps(cx, v, Steps { objects: Some((&["points"], "move")), anchors_only: true, ..EDIT })
+    precheck_steps(cx, v, Steps { objects: Some((&["points"], "move")), anchors_only: true, ..EDIT })?;
+    named_anchors(cx, v, true)
 }
 
 pub(crate) fn precheck_point_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    precheck_steps(cx, v, Steps { objects: Some((&["points"], "delete")), anchors_only: true, ..EDIT })
+    precheck_steps(cx, v, Steps { objects: Some((&["points"], "delete")), anchors_only: true, ..EDIT })?;
+    named_anchors(cx, v, false)
+}
+
+fn frame_of(v: &Value) -> Option<u32> {
+    v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok())
+}
+
+/// The named anchors of `draw.point.move` and `draw.point.delete` exist, as their handlers check before any work
+/// (`drawing.objectNotFound` at `/points/<i>`; design note 3 §7, prechecks equal handlers). `element`: the command
+/// takes `elementId` + `frame`.
+fn named_anchors(cx: &Cx, v: &Value, element: bool) -> Result<(), CommandError> {
+    let Some(points) = v.get("points").and_then(Value::as_array) else { return Ok(()) };
+    let text = |k: &str| v.get(k).and_then(Value::as_str);
+    let (el, frame) = if element { (text("elementId"), frame_of(v)) } else { (None, None) };
+    let Some(id) = target_existing(cx, text("drawingId"), el, frame, false)? else { return Ok(()) };
+    let doc = cx.document()?;
+    let d = doc.drawing(&id).ok_or_else(|| not_found(id.as_str()))?;
+    for (i, a) in points.iter().enumerate() {
+        let (Some(sid), Some(k)) = (a.get("strokeId").and_then(Value::as_str), a.get("anchor").and_then(Value::as_u64))
+        else {
+            continue;
+        };
+        let ok = vd::locate(d, sid)
+            .and_then(|l| vd::stroke_at(d, &l.pointer))
+            .is_some_and(|s| usize::try_from(k).is_ok_and(|k| k < s.points().len()));
+        if !ok {
+            return Err(err(
+                "drawing.objectNotFound",
+                format!("stroke `{sid}` has no anchor {k}"),
+                json!({ "pointer": format!("/points/{i}") }),
+            ));
+        }
+    }
+    Ok(())
 }
 
 /// `colour.selection.apply`: the drawing, the paint colour, then `objectIds` or the selection.
@@ -1485,23 +1526,87 @@ pub(crate) fn precheck_text_set(cx: &Cx, v: &Value) -> Result<(), CommandError> 
 }
 
 /// The contour commands (`draw.point.add`, `draw.point.set`, `draw.segment.move`): the stroke's drawing
-/// (`dr_.../<strokeId>`, else the current drawing) and its lock.
-pub(crate) fn precheck_contour(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    let Some(stroke) = v.get("strokeId").and_then(Value::as_str) else { return Ok(()) };
+/// (`dr_.../<strokeId>`, else the current drawing), its lock, and the stroke itself; its anchors as the handlers read
+/// them (`None`: nothing to check, the parameters are left to the handler).
+fn contour_stroke(cx: &Cx, v: &Value) -> Result<Option<tt_vector::path::Path>, CommandError> {
+    let Some(stroke) = v.get("strokeId").and_then(Value::as_str) else { return Ok(None) };
     // As the handler resolves it (02 §13.1 item 4): a stroke id qualified with its drawing names it; else `drawingId`,
     // else `elementId` + `frame`, else the current drawing.
     let text = |k: &str| v.get(k).and_then(Value::as_str);
-    let (drawing, element, frame) = match stroke.split_once('/') {
-        Some((d, _)) if d.starts_with("dr_") => (Some(d), None, None),
+    let (drawing, local, element, frame) = match stroke.split_once('/') {
+        Some((d, s)) if d.starts_with("dr_") => (Some(d), s, None, None),
         _ => match text("drawingId") {
-            Some(d) => (Some(d), None, None),
-            None => {
-                (None, text("elementId"), v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok()))
-            }
+            Some(d) => (Some(d), stroke, None, None),
+            None => (None, stroke, text("elementId"), frame_of(v)),
         },
     };
-    let Some(id) = target_existing(cx, drawing, element, frame, false)? else { return Ok(()) };
+    let Some(id) = target_existing(cx, drawing, element, frame, false)? else { return Ok(None) };
     let doc = cx.document()?;
     let d = doc.drawing(&id).ok_or_else(|| not_found(id.as_str()))?;
-    check_editable(d, None)
+    check_editable(d, None)?;
+    // The handlers' `stroke_json` (design note 3 §7).
+    let s = vd::locate(d, local)
+        .filter(|l| l.kind == ObjectKind::Stroke)
+        .and_then(|l| vd::stroke_at(d, &l.pointer))
+        .ok_or_else(|| {
+            err("drawing.objectNotFound", format!("`{local}` is not a stroke"), json!({ "pointer": "/strokeId" }))
+        })?;
+    Ok(Some(tt_vector::path::Path::from_points(s.points(), *s.closed())))
+}
+
+/// `draw.point.set`: [`contour_stroke`], then the anchor exists (`drawing.objectNotFound` at `/anchor`).
+pub(crate) fn precheck_point_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let Some(path) = contour_stroke(cx, v)? else { return Ok(()) };
+    let Some(k) = v.get("anchor").and_then(Value::as_u64) else { return Ok(()) };
+    if usize::try_from(k).is_ok_and(|k| k < path.anchors.len()) {
+        Ok(())
+    } else {
+        Err(err("drawing.objectNotFound", format!("the stroke has no anchor {k}"), json!({ "pointer": "/anchor" })))
+    }
+}
+
+fn segment_in_range(path: &tt_vector::path::Path, seg: u64) -> Result<(), CommandError> {
+    let n = path.segments().len();
+    if usize::try_from(seg).is_ok_and(|s| s < n) {
+        Ok(())
+    } else {
+        Err(err("arg.invalid", format!("the stroke has {n} segments"), json!({ "pointer": "/segment" })))
+    }
+}
+
+/// `draw.point.add`: [`contour_stroke`], then the location as the handler takes it: `at` on a stroke with a segment,
+/// or `segment` in range with `t` (default 0.5) strictly inside (0, 1).
+pub(crate) fn precheck_point_add(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let Some(path) = contour_stroke(cx, v)? else { return Ok(()) };
+    let given = |k: &str| v.get(k).filter(|x| !x.is_null());
+    if given("at").is_some() {
+        if path.segments().is_empty() {
+            return Err(err("drawing.invalidGeometry", "the stroke has no segment", json!({ "pointer": "/strokeId" })));
+        }
+        return Ok(());
+    }
+    let Some(seg) = given("segment").and_then(Value::as_u64) else {
+        if given("segment").is_some() {
+            return Ok(());
+        }
+        return Err(err("arg.invalid", "give `at`, or `segment` and `t`", json!({ "pointer": "/at" })));
+    };
+    segment_in_range(&path, seg)?;
+    let t = given("t").and_then(Value::as_f64).unwrap_or(0.5);
+    if t <= 0.0 || t >= 1.0 {
+        return Err(err("arg.invalid", "the location is an existing anchor", json!({ "pointer": "/t" })));
+    }
+    Ok(())
+}
+
+/// `draw.segment.move`: `t` (default 0.5) strictly inside (0, 1) first, as the handler checks it; then
+/// [`contour_stroke`] and the segment in range.
+pub(crate) fn precheck_segment_move(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let t = v.get("t").and_then(Value::as_f64).unwrap_or(0.5);
+    if t <= 0.0 || t >= 1.0 {
+        return Err(err("arg.invalid", "`t` must be strictly between 0 and 1", json!({ "pointer": "/t" })));
+    }
+    let Some(path) = contour_stroke(cx, v)? else { return Ok(()) };
+    let Some(seg) = v.get("segment").and_then(Value::as_u64) else { return Ok(()) };
+    segment_in_range(&path, seg)
 }

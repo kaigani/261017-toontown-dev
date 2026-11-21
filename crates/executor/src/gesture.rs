@@ -281,6 +281,9 @@ pub const COVERED: &[&str] = &[
     "scissor",
     "zoom",
     "grabber",
+    crate::contour_gesture::TOOL,
+    crate::envelope_gesture::PERSPECTIVE,
+    crate::envelope_gesture::REPOSITION,
 ];
 
 /// The tool a gesture uses after the temporary overrides of 02 §5.2 held at the press.
@@ -419,6 +422,9 @@ fn rect(a: Point, b: Point) -> Value {
 /// # Errors
 /// As [`to_command`].
 pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, CommandError> {
+    if g.tool == crate::contour_gesture::TOOL {
+        return crate::contour_gesture::commands(cx, g);
+    }
     if g.tool == "zoom"
         && let Some(st) = g.strokes.first()
         && !st.is_click()
@@ -582,6 +588,8 @@ pub fn to_command(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, Comma
             ("view.pan.set", obj(json!({ "viewId": g.view_id, "by": pt(by) })))
         }
         "select" => return select(cx, g, st, p0, pn),
+        crate::envelope_gesture::PERSPECTIVE => return crate::envelope_gesture::perspective(cx, g, st, p0, pn),
+        crate::envelope_gesture::REPOSITION => return crate::envelope_gesture::reposition_all(cx, g, st, p0, pn),
         _ => return Err(not_built(tool)),
     };
     Ok(Some((out.0.to_owned(), Value::Object(out.1))))
@@ -607,7 +615,7 @@ fn select(cx: &Cx, g: &Gesture, st: &Stroke, p0: Sample, pn: Sample) -> Result<O
         // A drag that starts on a bounding-box handle scales; just outside a corner, rotates (02 §7.1.1).
         if !st.is_click()
             && let Some(b) = selection_box(cx, &d.0)
-            && let Some(h) = handle_at(&view, &b, p0)
+            && let Some(h) = handle_at(&view, &b, p0, true)
         {
             return handle_drag(h, &b, p0, pn, st.mods.constrain).map(Some);
         }
@@ -620,6 +628,22 @@ fn select(cx: &Cx, g: &Gesture, st: &Stroke, p0: Sample, pn: Sample) -> Result<O
             )));
         }
     }
+    select_by_area(cx, g, st, p0, pn)
+}
+
+/// The Select tool's selection by a click, a marquee or (alternate) a lasso (02 §7.1.1); the Perspective tool selects
+/// the same way off its handles (design note 4 §3).
+///
+/// # Errors
+/// The view's refusal.
+pub(crate) fn select_by_area(
+    cx: &Cx,
+    g: &Gesture,
+    st: &Stroke,
+    p0: Sample,
+    pn: Sample,
+) -> Result<Option<(String, Value)>, CommandError> {
+    let w = cx.ui().shell().view(&g.view_id)?;
     let mode = if st.mods.constrain { "add" } else { "replace" };
     let rule = cx.ui().drawing().options_of("select").get("rectRule").cloned().unwrap_or(json!("inside"));
     let v = if st.is_click() {
@@ -660,7 +684,7 @@ fn selection_box(cx: &Cx, d: &tt_model::entities::drawing::Drawing) -> Option<tt
 /// A Select-tool handle (frame-loop note §7.3). Corners and sides count counter-clockwise from the bottom-left corner
 /// and the bottom side in drawing space (y up).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Handle {
+pub(crate) enum Handle {
     Corner(usize),
     Side(usize),
     Rotate,
@@ -677,8 +701,13 @@ fn box_corners(b: &tt_vector::geom::Rect) -> [Point; 4] {
 }
 
 /// The handle a drag starting at `p0` takes, tested in order: corners, sides (within [`HANDLE_PX`] of the handle's
-/// centre), then the rotation zone (outside the box, within [`ROTATE_PX`] of a corner).
-fn handle_at(view: &dyn Fn(Point) -> Point, b: &tt_vector::geom::Rect, p0: Sample) -> Option<Handle> {
+/// centre), then, with `rotate`, the rotation zone (outside the box, within [`ROTATE_PX`] of a corner).
+pub(crate) fn handle_at(
+    view: &dyn Fn(Point) -> Point,
+    b: &tt_vector::geom::Rect,
+    p0: Sample,
+    rotate: bool,
+) -> Option<Handle> {
     let c = box_corners(b);
     let dist = |p: Point| {
         let q = view(p);
@@ -695,11 +724,12 @@ fn handle_at(view: &dyn Fn(Point) -> Point, b: &tt_vector::geom::Rect, p0: Sampl
         return Some(Handle::Side(i));
     }
     let inside = p0.d.x >= b.min_x && p0.d.x <= b.max_x && p0.d.y >= b.min_y && p0.d.y <= b.max_y;
-    (!inside && c.iter().any(|&q| dist(q) <= ROTATE_PX)).then_some(Handle::Rotate)
+    (rotate && !inside && c.iter().any(|&q| dist(q) <= ROTATE_PX)).then_some(Handle::Rotate)
 }
 
-/// The command of a handle drag from `p0` to `pn` on the box `b` (frame-loop note §7.3).
-fn handle_drag(
+/// The command of a handle drag from `p0` to `pn` on the box `b` (frame-loop note §7.3); Reposition All takes the same
+/// operation for all drawings (design note 4 §4).
+pub(crate) fn handle_drag(
     h: Handle,
     b: &tt_vector::geom::Rect,
     p0: Sample,

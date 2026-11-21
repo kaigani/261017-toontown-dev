@@ -3,7 +3,7 @@
 // per fragment, group opacity through an offscreen target (SI-139), cached static layers (06 §6.9), 4× MSAA.
 
 import { compose } from './geometry';
-import { drawFrame, entryToView, type LayerOps } from './layers';
+import { drawFrame, entryToView, mappedEntry, type LayerOps } from './layers';
 import { VERTEX_LEN, type DecodedDrawing, type Rgba as FormatRgba } from './format';
 import { BackendUnavailable, type BackendStats, type FrameInput, type Renderer } from './renderer';
 import { residentKey, type SceneEntry } from './scene';
@@ -24,16 +24,31 @@ struct Draw {
   d2c0: vec4f, d2c1: vec4f, d2c2: vec4f,
   d2u0: vec4f, d2u1: vec4f, d2u2: vec4f,
   tint: vec4f,
-  mode: u32, stopCount: u32, alpha: f32, pad: u32,
+  mode: u32, stopCount: u32, alpha: f32, mapKind: u32,
   stopPos: array<vec4f, 4>,
   stopCol: array<vec4f, 16>,
+  map: array<vec4f, 3>,
 };
 @group(0) @binding(0) var<uniform> u: Draw;
 @group(1) @binding(0) var slots: texture_2d<f32>;
 struct VOut { @builtin(position) pos: vec4f, @location(0) @interpolate(flat) col: vec4f, @location(1) dpos: vec2f };
+fn mapPos(p: vec2f) -> vec2f {
+  // The preview's envelope in drawing units (design note 4 §6; envelope.ts packMap): 1 projective, 2 bilinear.
+  if (u.mapKind == 1u) {
+    let w = u.map[1].z * p.x + u.map[1].w * p.y + 1.0;
+    return vec2f((u.map[0].x * p.x + u.map[0].y * p.y + u.map[0].z) / w,
+                 (u.map[0].w * p.x + u.map[1].x * p.y + u.map[1].y) / w);
+  }
+  if (u.mapKind == 2u) {
+    let s = (p.x - u.map[0].x) * u.map[0].z;
+    let t = (p.y - u.map[0].y) * u.map[0].w;
+    return u.map[1].xy + s * u.map[1].zw + t * u.map[2].xy + s * t * u.map[2].zw;
+  }
+  return p;
+}
 @vertex fn vs(@location(0) p: vec2f, @location(1) slot: vec2u) -> VOut {
   var o: VOut;
-  let c = mat3x3f(u.d2c0.xyz, u.d2c1.xyz, u.d2c2.xyz) * vec3f(p, 1.0);
+  let c = mat3x3f(u.d2c0.xyz, u.d2c1.xyz, u.d2c2.xyz) * vec3f(mapPos(p), 1.0);
   o.pos = vec4f(c.xy, 0.0, 1.0);
   o.col = textureLoad(slots, vec2i(i32(slot.x), 0), 0);
   o.dpos = p;
@@ -542,7 +557,13 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
         pass.setBindGroup(1, t.group);
         pass.draw(3);
       };
-      const drawMeshes = (d: GpuDrawing, d2c: Float32Array, tint: SceneEntry['tint']) => {
+      const drawMeshes = (
+        d: GpuDrawing,
+        d2c: Float32Array,
+        tint: SceneEntry['tint'],
+        mapKind = 0,
+        map: Float32Array | null = null,
+      ) => {
         if (!pass) return;
         pass.setPipeline(pl.mesh);
         pass.setBindGroup(1, d.slotGroup);
@@ -570,8 +591,10 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
             if (tint) f.set([tint[0] / 255, tint[1] / 255, tint[2] / 255, 1], 24);
             new Uint32Array(f.buffer, f.byteOffset + 28 * 4, 2).set([m.mode, m.stopCount]);
             f[30] = 1;
+            new Uint32Array(f.buffer, f.byteOffset + 31 * 4, 1).set([mapKind]);
             f.set(m.stopPos, 32);
             f.set(m.stopCol, 48);
+            if (map) f.set(map, 112);
           });
           pass.setBindGroup(0, uniformGroup, [u]);
           pass.setVertexBuffer(0, m.vbo);
@@ -602,16 +625,35 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer>
           const split = input.split;
           const rest = split?.drawingId === e.drawingId && !e.outline ? drawings.get(split.rest) : undefined;
           const moving = split && rest ? drawings.get(split.selection) : undefined;
+          // The entry's own mapping: a Camera-view occurrence's, else the Drawing view's.
+          const base = e.matrix
+            ? entryToView(e, input.cameraToView, input.drawingToView, null)
+            : input.drawingToView;
           if (split && rest && moving) {
             counters.drawn++;
             flushGroup();
-            drawMeshes(rest, d2c, e.tint);
+            drawMeshes(rest, drawingToClip(base, input.width, input.height), e.tint);
+            const mm = mappedEntry(base, split.map);
             drawMeshes(
               moving,
-              drawingToClip(compose(split.transform, input.drawingToView), input.width, input.height),
+              drawingToClip(compose(split.transform, mm.toView), input.width, input.height),
               e.tint,
+              mm.kind,
+              mm.data,
             );
             return;
+          }
+          // Reposition All's preview: the current drawing through the map (design note 4 §6).
+          const moved = input.moved?.drawingId === e.drawingId && !e.outline ? input.moved : null;
+          if (moved) {
+            const md = drawings.get(residentKey(e));
+            if (md) {
+              counters.drawn++;
+              flushGroup();
+              const mm = mappedEntry(base, moved.map);
+              drawMeshes(md, drawingToClip(mm.toView, input.width, input.height), e.tint, mm.kind, mm.data);
+              return;
+            }
           }
           const d = drawings.get(residentKey(e));
           if (!d) return;

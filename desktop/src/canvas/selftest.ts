@@ -131,6 +131,8 @@ export function measureScene(name: SceneName): { drawings: Map<string, DecodedDr
       frame: null,
       camera: null,
       overlays: null,
+      contours: null,
+      toolBox: null,
     },
   };
 }
@@ -152,6 +154,7 @@ function frameInput(scene: Scene, t: number): FrameInput {
     cameraToView: null,
     preview: null,
     split: null,
+    moved: null,
     width: WIDTH,
     height: HEIGHT,
     dpr: 1,

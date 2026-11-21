@@ -86,7 +86,7 @@ fn cv1_the_occurrences_are_the_renderers_elements_and_plane_matrices() {
     ok(&h, "element.visibility.set", json!({ "elementIds": [hidden, peg], "scope": "scene", "visible": false }));
     ok(&h, "app.context.set", json!({ "elementId": BOB, "frame": 1 }));
     let s = scene(&h);
-    assert_eq!(s["sceneForm"], "1.1");
+    assert_eq!(s["sceneForm"], "1.2", "form 1.2 since C4.4b (the tools' overlays, docs/canvas-format.md §11.8-§11.9)");
     assert_eq!(s["viewType"], "camera");
     assert_eq!(s["frame"], 1);
     let ids: Vec<&str> = s["entries"].as_array().unwrap().iter().map(|e| e["elementId"].as_str().unwrap()).collect();

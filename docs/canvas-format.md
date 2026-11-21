@@ -222,7 +222,7 @@ field, and one corrupt payload per rule V1-V10 (`corrupt.json` lists each file a
 under). `cargo test -p tt-render --test c42_canvas` encodes the valid ones byte for byte and refuses the corrupt ones;
 `desktop/src/canvas/format.test.ts` decodes the same files.
 
-## 11. The scene answer (`canvas_scene`), form 1.1 (M4 C4.3; ruling D-24)
+## 11. The scene answer (`canvas_scene`), form 1.2 (M4 C4.3, C4.4b; ruling D-24)
 
 TTRD (§1-§10) is the format of one drawing's geometry and stays at 1.0: the Camera view draws the same payloads. What
 the Camera view adds is in the **scene answer**, the JSON the canvas pulls with `canvas_scene` (render-transport note
@@ -244,7 +244,7 @@ The answer is `{generation, scene}`; `scene` has:
 
 | Member | Type | Form | Meaning |
 |---|---|---|---|
-| `sceneForm` | string `"1.1"` | 1.1 | Absent in form 1.0. A reader of form 1.x reads the members it knows and ignores others (R1). |
+| `sceneForm` | string `"1.2"` | 1.1 | Absent in form 1.0 (`"1.1"` from C4.3, `"1.2"` from C4.4b). A reader of form 1.x reads the members it knows and ignores others (R1). |
 | `viewId` | string | 1.0 | The view (`drawingView`, `cameraView`, or a float of either). |
 | `documentRev` | u64 | 1.1 | The document revision the scene was built at (C43B-R3S-02): a gesture's preview gives way only when a scene at its commit's revision is resident. Absent from earlier answers (read as unknown). |
 | `viewType` | `"drawing"` or `"camera"` | 1.1 | Absent: `"drawing"`. |
@@ -258,6 +258,8 @@ The answer is `{generation, scene}`; `scene` has:
 | `frame` | integer ≥ 1 | 1.1 | Camera view: the scene frame shown. |
 | `camera` | object or null | 1.1 | Camera view: `{elementId: string, size: [width, height] (integers ≥ 1, output pixels), cameraToView: matrix}`; null when the scene has no current camera (SI-147). Absent in the Drawing view. |
 | `overlays` | object | 1.1 | Camera view (§11.4). Absent in the Drawing view. |
+| `contours` | object | 1.2 | Both view types, while the Contour Editor is the active tool with a current drawing (§11.8); else absent. |
+| `toolBox` | object | 1.2 | Both view types, while Perspective or Reposition All is the active tool and its box exists (§11.9); else absent. |
 
 ### 11.3 Entries
 
@@ -303,6 +305,13 @@ Form 1.0's checks (every member's type, the known enumerations) stay. Form 1.1 a
   enumerations. With `viewType: "camera"`: a `role` is `"current"` or `"staticUnder"`; `drawingPivot` and `selection`
   are null (or absent); with a camera, `overlays.cameraFrame` is `[0, 0, width, height]` of `camera.size`.
 
+- **R8** (form 1.2) `contours`, when present: a non-empty `drawingId`, a boolean `locked`, and `strokes`, each with a
+  non-empty `strokeId`, a string `layer`, booleans `closed` and `partner`, `anchors` a non-empty array of six finite numbers each, and
+  `selected` an array of distinct integers, each a valid index into `anchors`, ascending; a partner selects nothing.
+
+- **R9** (form 1.2) `toolBox`, when present: `tool` is `"perspective"` or `"repositionAll"`, `box` four finite numbers
+  with `min <= max` on both axes, `locked` a boolean, `mapping` (when present) `"auto"`, `"projective"` or `"bilinear"`.
+
 `viewId`, `paletteStamp` and the booleans have a type and no narrower domain (a float window's id is any view id).
 
 A refused answer is not applied: the canvas keeps its previous picture and asks again (§8's rule for payloads).
@@ -321,3 +330,27 @@ several occurrences of one drawing, a rolled camera, overlays; a Camera view wit
 to, and one corrupt answer per rule R1-R6 and per member R7 names (and per R5 member: corners, boxes, the display
 flags); the test names the field each is refused for. The Rust side writes the valid answers from the kernel's types
 (`crates/executor/tests/c43.rs`) and fails when they change; Vitest decodes every file.
+
+### 11.8 The Contour Editor's overlay (form 1.2; M4 C4.4b, design note 3 §4)
+
+`contours` is `{drawingId, locked, strokes}` in drawing units, in both view types (the Camera view maps it with
+`draw.viewMapping.get`'s matrix, as it maps its gesture input). `strokes` holds the **shown** strokes back to front: a
+stroke is shown when it is in the drawing's object selection or holds a selected anchor; an invisible stroke only
+while Show Strokes is on. Each is `{strokeId, layer, closed, partner: false, anchors: [[x, y, inX, inY, outX, outY]],
+selected}`: `layer` is an opaque key naming the stroke's layer, handles are offsets from their anchor, `closed` is the path as the contour commands number its segments,
+`selected` the selected anchors' indices. After them come the **partners** (`partner: true`): the same-layer strokes
+with an anchor at a shown anchor's exact coordinate, which `draw.point.move` moves together with it; the preview reads
+them, nothing draws or hits them. `locked` draws the overlay grey with no preview. The kernel's gesture driver tests
+hits against the same shown strokes (one function serves both).
+
+A form 1.1 reader ignores `contours` (R1) and draws the same picture without the overlay.
+
+### 11.9 The Perspective and Reposition All box (form 1.2; M4 C4.4b, design note 4 §2)
+
+`toolBox` is `{tool, box: [minX, minY, maxX, maxY], locked, mapping?}` in drawing units (`mapping`, Perspective only:
+the option its gestures send, so the preview takes the command's branch). Perspective's box is the bounds of what
+`draw.envelope.apply` maps with no `ids` (the selection's objects; a zone stands for its strokes, a group counts its
+invisible strokes); Reposition All's is the current drawing's bounds, invisible strokes included (SI-189). The kernel's
+gesture driver hits handles on the same box: eight handles at its corners and side midpoints, 6 view px, and for
+Reposition All the rotation zone outside a corner. `locked`: the tool's command is refused now (Perspective: the drawing
+is locked; Reposition All: nothing can move), drawn grey with no preview. A form 1.1 reader ignores it.

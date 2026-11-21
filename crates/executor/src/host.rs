@@ -412,9 +412,16 @@ fn resolve_in(
         crate::app::Mode::Staging => crate::keymap::Context::Staging,
     };
     let mode = s.project.as_ref().map(|_| mode);
-    let Some(b) = crate::keymap::resolve(&bindings, &canonical, mode).cloned() else {
+    let Some(mut b) = crate::keymap::resolve(&bindings, &canonical, mode).cloned() else {
         return Ok(KeyResolution::Unbound { keys: canonical });
     };
+    // The Contour Editor's Delete (02 §7.1.2 line 457; SI-184; design note 3 §2): while the Contour Editor is active (in
+    // either view type: its overlay is drawn in both), a sequence bound to `edit.delete` deletes the selected anchors
+    // instead. The keymap is unchanged.
+    if b.command_id == "edit.delete" && mode.is_some() && s.ui.drawing().active_tool == crate::contour_gesture::TOOL {
+        b.command_id = "draw.point.delete".into();
+        b.params = None;
+    }
     // The key dispatch reads the same availability as every other surface (ruling O-10). A key bound to a command
     // that cannot run now answers that command's own refusal (11 §7.6: the envelope of the command the key invoked;
     // §10 `command.disabled` with the reason; C41-R2-09): the GUI consumes it with no message box (01 §8.4).

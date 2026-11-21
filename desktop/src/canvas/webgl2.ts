@@ -7,7 +7,7 @@
 // - layers 1 to 8 render to a cached scene target reused while only the overlay changes (06 §6.9 overlay buffering);
 // - MSAA when `interactiveAntialiasing` is on (06 §6.9).
 
-import { drawFrame, entryToView, type LayerOps } from './layers';
+import { drawFrame, entryToView, mappedEntry, type LayerOps } from './layers';
 import { VERTEX_LEN, type DecodedDrawing, type Rgba as FormatRgba } from './format';
 import { compose, type Affine, type ViewTris } from './geometry';
 import { BackendUnavailable, type BackendStats, type FrameInput, type Renderer } from './renderer';
@@ -18,10 +18,26 @@ layout(location = 0) in vec2 a_pos;
 layout(location = 1) in uint a_slot;
 uniform mat3 u_d2c;
 uniform sampler2D u_slots;
+uniform int u_mapKind;
+uniform vec4 u_map[3];
+// The preview's envelope in drawing units (design note 4 §6; envelope.ts packMap): 1 projective, 2 bilinear.
+vec2 mapPos(vec2 p) {
+  if (u_mapKind == 1) {
+    float w = u_map[1].z * p.x + u_map[1].w * p.y + 1.0;
+    return vec2((u_map[0].x * p.x + u_map[0].y * p.y + u_map[0].z) / w,
+                (u_map[0].w * p.x + u_map[1].x * p.y + u_map[1].y) / w);
+  }
+  if (u_mapKind == 2) {
+    float u = (p.x - u_map[0].x) * u_map[0].z;
+    float v = (p.y - u_map[0].y) * u_map[0].w;
+    return u_map[1].xy + u * u_map[1].zw + v * u_map[2].xy + u * v * u_map[2].zw;
+  }
+  return p;
+}
 flat out vec4 v_col;
 out vec2 v_dpos;
 void main() {
-  vec3 c = u_d2c * vec3(a_pos, 1.0);
+  vec3 c = u_d2c * vec3(mapPos(a_pos), 1.0);
   gl_Position = vec4(c.xy, 0.0, 1.0);
   v_col = texelFetch(u_slots, ivec2(int(a_slot), 0), 0);
   v_dpos = a_pos;
@@ -242,6 +258,8 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
     stopPos: u(meshProg, 'u_stopPos'),
     stopCol: u(meshProg, 'u_stopCol'),
     tint: u(meshProg, 'u_tint'),
+    mapKind: u(meshProg, 'u_mapKind'),
+    map: u(meshProg, 'u_map'),
   };
   const vu = { size: u(viewProg, 'u_size') };
   const cu = { tex: u(compProg, 'u_tex'), alpha: u(compProg, 'u_alpha') };
@@ -413,9 +431,18 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
     gl.bindVertexArray(null);
   };
 
-  const drawMeshes = (d: GpuDrawing, d2c: Float32Array, tint: SceneEntry['tint']) => {
+  const noMap = new Float32Array(12);
+  const drawMeshes = (
+    d: GpuDrawing,
+    d2c: Float32Array,
+    tint: SceneEntry['tint'],
+    mapKind = 0,
+    map: Float32Array | null = null,
+  ) => {
     gl.useProgram(meshProg);
     gl.uniformMatrix3fv(mu.d2c, false, d2c);
+    gl.uniform1i(mu.mapKind, mapKind);
+    gl.uniform4fv(mu.map, map ?? noMap);
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, d.slots);
     gl.uniform1i(mu.slots, 0);
@@ -499,16 +526,35 @@ export function createWebGL2(canvas: HTMLCanvasElement, opts: WebGL2Options = {}
           const split = input.split;
           const rest = split?.drawingId === e.drawingId && !e.outline ? drawings.get(split.rest) : undefined;
           const moving = split && rest ? drawings.get(split.selection) : undefined;
+          // The entry's own mapping: a Camera-view occurrence's, else the Drawing view's.
+          const base = e.matrix
+            ? entryToView(e, input.cameraToView, input.drawingToView, null)
+            : input.drawingToView;
           if (split && rest && moving) {
             counters.drawn++;
             flushGroup();
-            drawMeshes(rest, d2c, e.tint);
+            drawMeshes(rest, drawingToClip(base, input.width, input.height), e.tint);
+            const mm = mappedEntry(base, split.map);
             drawMeshes(
               moving,
-              drawingToClip(compose(split.transform, input.drawingToView), input.width, input.height),
+              drawingToClip(compose(split.transform, mm.toView), input.width, input.height),
               e.tint,
+              mm.kind,
+              mm.data,
             );
             return;
+          }
+          // Reposition All's preview: the current drawing through the map (design note 4 §6).
+          const moved = input.moved?.drawingId === e.drawingId && !e.outline ? input.moved : null;
+          if (moved) {
+            const d = drawings.get(residentKey(e));
+            if (d) {
+              counters.drawn++;
+              flushGroup();
+              const mm = mappedEntry(base, moved.map);
+              drawMeshes(d, drawingToClip(mm.toView, input.width, input.height), e.tint, mm.kind, mm.data);
+              return;
+            }
           }
           const d = drawings.get(residentKey(e));
           if (!d) return;

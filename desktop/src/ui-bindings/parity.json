@@ -1843,6 +1843,16 @@
       }
     },
     {
+      "id": "drawingTools.contourEditor",
+      "surface": "main",
+      "commands": [
+        "tool.active.set"
+      ],
+      "params": {
+        "toolId": "contourEditor"
+      }
+    },
+    {
       "id": "drawingTools.cutter",
       "surface": "main",
       "commands": [
@@ -1933,6 +1943,16 @@
       }
     },
     {
+      "id": "drawingTools.perspective",
+      "surface": "main",
+      "commands": [
+        "tool.active.set"
+      ],
+      "params": {
+        "toolId": "perspective"
+      }
+    },
+    {
       "id": "drawingTools.polyline",
       "surface": "main",
       "commands": [
@@ -1950,6 +1970,16 @@
       ],
       "params": {
         "toolId": "rectangle"
+      }
+    },
+    {
+      "id": "drawingTools.repositionAll",
+      "surface": "main",
+      "commands": [
+        "tool.active.set"
+      ],
+      "params": {
+        "toolId": "repositionAll"
       }
     },
     {
@@ -17432,6 +17462,34 @@
       ]
     },
     {
+      "view": "drawing",
+      "tool": "contourEditor",
+      "commands": [
+        "draw.selection.set",
+        "draw.pointSelection.set",
+        "draw.point.move",
+        "draw.segment.move",
+        "draw.point.add",
+        "draw.point.set",
+        "draw.point.delete"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "perspective",
+      "commands": [
+        "draw.selection.set",
+        "draw.envelope.apply"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "repositionAll",
+      "commands": [
+        "draw.repositionAll.apply"
+      ]
+    },
+    {
       "view": "camera",
       "tool": "select",
       "commands": [
@@ -17559,6 +17617,34 @@
       "tool": "grabber",
       "commands": [
         "view.pan.set"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "contourEditor",
+      "commands": [
+        "draw.selection.set",
+        "draw.pointSelection.set",
+        "draw.point.move",
+        "draw.segment.move",
+        "draw.point.add",
+        "draw.point.set",
+        "draw.point.delete"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "perspective",
+      "commands": [
+        "draw.selection.set",
+        "draw.envelope.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "repositionAll",
+      "commands": [
+        "draw.repositionAll.apply"
       ]
     },
     {
@@ -19857,6 +19943,24 @@
       ]
     },
     {
+      "command": "contours.drawingId",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "contours.locked",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "contours.strokes",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
       "command": "dev.toontown.app",
       "files": [
         "desktop/src-tauri/src/lib.rs"
@@ -21496,6 +21600,30 @@
       "command": "toolbarSheet.restore",
       "files": [
         "desktop/src/shell/toolbarSheet.tsx"
+      ]
+    },
+    {
+      "command": "toolBox.box",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "toolBox.locked",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "toolBox.mapping",
+      "files": [
+        "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "toolBox.tool",
+      "files": [
+        "desktop/src/canvas/scene.ts"
       ]
     },
     {

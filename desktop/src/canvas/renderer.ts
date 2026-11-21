@@ -2,6 +2,7 @@
 // note 2 §3). A back end holds resident drawings (it is the model's `ResidentSink`), draws one frame through
 // `drawFrame`'s layer order, and reports what it holds.
 
+import type { PreviewMap } from './envelope';
 import type { Affine, ViewTris } from './geometry';
 import type { ResidentSink } from './model';
 import type { Scene } from './scene';
@@ -18,9 +19,19 @@ export interface FrameInput {
   /** The live transform preview (preview note 8): the Camera-view occurrences of these elements are drawn through
    *  `transform · cameraToView · matrix`. Null when no drag is previewing. */
   preview: { transform: Affine; elements: ReadonlySet<string> } | null;
-  /** The Drawing view's Select preview (preview note §3): the entry of `drawingId` is drawn as its two resident parts,
-   *  `rest` through `drawingToView` and `selection` through `transform · drawingToView`, when both are resident. */
-  split: { drawingId: string; rest: string; selection: string; transform: Affine } | null;
+  /** The Select preview (preview note §3) and Perspective's (design note 4 §6): the entry of `drawingId` is drawn as its
+   *  two resident parts, `rest` through the entry's mapping and `selection` through `transform` after it (view pixels)
+   *  and `map` before it (drawing units, the vertex stage's envelope), when both are resident. */
+  split: {
+    drawingId: string;
+    rest: string;
+    selection: string;
+    transform: Affine;
+    map?: PreviewMap | null;
+  } | null;
+  /** Reposition All's preview (design note 4 §6): the entry of `drawingId` drawn through `map` (drawing units) before
+   *  its own mapping. */
+  moved: { drawingId: string; map: PreviewMap } | null;
   /** The view's size in CSS pixels (= view pixels). */
   width: number;
   height: number;

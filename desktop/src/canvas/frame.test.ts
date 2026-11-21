@@ -36,6 +36,8 @@ function scene(grid: Scene['grid'], entries: SceneEntry[]): Scene {
     frame: null,
     camera: null,
     overlays: null,
+    contours: null,
+    toolBox: null,
   };
 }
 

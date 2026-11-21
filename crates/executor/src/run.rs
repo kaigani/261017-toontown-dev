@@ -1122,7 +1122,12 @@ impl Core {
             Ok((crate::shell::ViewType::Camera, _)) => {
                 let view = view_id.to_owned();
                 return self
-                    .with_lent_session(move |cx| crate::canvas::camera_scene(cx, &view))
+                    .with_lent_session(move |cx| {
+                        let mut scene = crate::canvas::camera_scene(cx, &view)?;
+                        scene.contours = crate::contour_gesture::scene_contours(cx);
+                        scene.tool_box = crate::envelope_gesture::scene_tool_box(cx);
+                        Ok(scene)
+                    })
                     .unwrap_or_else(|| Err(crate::cx::no_project()));
             }
             Ok((crate::shell::ViewType::Top | crate::shell::ViewType::Side, w)) => {
@@ -1133,6 +1138,8 @@ impl Core {
         let mut scene = crate::canvas::scene(self.session().ok_or_else(crate::cx::no_project)?, view_id)?;
         // The selection walk needs a context: the session is lent to a read-only one (nothing staged or emitted).
         scene.selection = self.with_lent_session(crate::canvas::selection).transpose()?.flatten();
+        scene.contours = self.with_lent_session(crate::contour_gesture::scene_contours).flatten();
+        scene.tool_box = self.with_lent_session(crate::envelope_gesture::scene_tool_box).flatten();
         Ok(scene)
     }
 

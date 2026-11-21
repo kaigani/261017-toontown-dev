@@ -38725,9 +38725,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/draw.point.move.Point",
       },
       snap: {
-        description: "Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off).",
-        type: "boolean",
-        default: false,
+        description: "Snap moved anchors to the other strokes of their layer within 8 view pixels (Snap to Contour, 02 §8.9 and line\n1338; default: the Snap to Contour setting, `tool.snapToContour.set`; SI-187).",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       space: {
         description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
@@ -94457,8 +94460,8 @@ export interface draw_point_move_params {
   points?: draw_point_move_AnchorRef[] | null;
   /** Offset (du). */
   delta: draw_point_move_Point;
-  /** Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off). */
-  snap?: boolean;
+  /** Snap moved anchors to the other strokes of their layer within 8 view pixels (Snap to Contour, 02 §8.9 and line 1338; default: the Snap to Contour setting, `tool.snapToContour.set`; SI-187). */
+  snap?: boolean | null;
   /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
   space?: draw_point_move_Space;
   /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */

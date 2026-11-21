@@ -68,7 +68,7 @@ temporary-select is Ctrl (Command on macOS) (02 line 32).
   cleared); with the Zoom marquee it is the second gesture with more than one command. Both make no step; if the first
   is refused the second is not sent (`finish` stops at a refusal).
 - **Delete routing.** The key is resolved in the kernel (`resolve_in`, `crates/executor/src/host.rs`), the one dispatch
-  the window (`dispatch_key`) and the MCP `key` tool share. In the drawing mode with `contourEditor` active, a sequence
+  the window (`dispatch_key`) and the MCP `key` tool share. With `contourEditor` active (either view type, as SI-184 says), a sequence
   bound to `edit.delete` resolves to `draw.point.delete` instead; with any other tool it stays `edit.delete` (02 §7.1.1
   "Delete removes the selection"). The keymap file is unchanged.
 - The temporary-pan key and the pen's eraser end keep their overrides (`effective_tool`).
@@ -118,7 +118,9 @@ temporary-select is Ctrl (Command on macOS) (02 line 32).
 - **One rule, two ports.** The kernel's driver decides the command; the window's `contourHitAt`
   (`desktop/src/canvas/contour.ts`, new) repeats the rule for the cursor and the preview only. The kernel test writes
   `desktop/src/canvas/testdata/contour-hits.json` (presses against a fixture at zoom 0.5, 1 and 2, rotated, both views;
-  `TT_UPDATE_CANVAS_CORPUS=1` rewrites it, as `drawing.ttrd`) and Vitest reads it: same target, same `t` within 1e-9.
+  `TT_UPDATE_CANVAS_CORPUS=1` rewrites it, as `drawing.ttrd`) and Vitest reads it: same target, same `t` within 1e-7
+  (built: 1e-9 is not reachable, since the distance's minimum is flat and float noise moves its minimiser by about
+  √ε; measured up to 5e-9).
 - **Cursor:** `move` over an anchor or a segment, `crosshair` over a handle, `copy` with temporary-select over a
   segment, `not-allowed` on a locked drawing, else the default.
 - `inspect_ui`'s canvas summary reports the overlay: strokes, anchors, selected anchors, handles.

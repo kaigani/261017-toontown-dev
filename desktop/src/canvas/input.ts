@@ -272,10 +272,12 @@ export function gestureOverlay(points: readonly [number, number][], style: Overl
       break;
     case 'select':
     case 'zoom':
+    case 'contourEditor':
+      // The Contour Editor's drag on nothing is a marquee of anchors (design note 3 §2); its other drags draw their
+      // preview instead (`contour.ts`).
       rect(true);
       break;
     case 'cutter':
-    case 'contourEditor':
       t.dashed(points, 1, ACCENT, 6, true);
       break;
     default:
