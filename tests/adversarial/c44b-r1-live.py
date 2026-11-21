@@ -826,7 +826,7 @@ async def text_body(t,step):
                 if mode in ('element-locked','drawing-locked','hidden'):check(content(r)=='abcd','02 7.6 / design 7 no edit '+mode,texts(r))
                 await state('camera '+mode)
                 if mode=='normal':
-                    await c('view.zoom.set',{'viewId':view,'zoom':1.5});await c('view.rotation.set',{'viewId':view,'angle':25});await pause();await gesture([(-80,65)]);await typed('Q');await key(0x41,0x11);await c('window.panel.set',{'panelId':'text','visible':True});await pause();t.click('text.bold');await pause();await state('camera transformed format')
+                    await c('view.zoom.set',{'viewId':view,'zoom':1.5});await c('view.rotation.set',{'viewId':view,'degrees':25});await pause();await gesture([(-80,65)]);await typed('Q');await key(0x41,0x11);await c('window.panel.set',{'panelId':'text','visible':True});await pause();t.click('text.bold');await pause();await state('camera transformed format')
         elif step==8:
             for mode in ('own','change','delete','undo'):
                 r=await fixture('abcdef');node=texts(r)[0]
