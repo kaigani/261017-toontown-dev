@@ -1,5 +1,5 @@
 {
-  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-_kbatxo6",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-d0czw_jf",
   "checks": [
     {
       "check": "D-79 hidden no overlays contourEditor",
@@ -53,7 +53,7 @@
               "x": 335.921875,
               "y": 294,
               "modifiers": [],
-              "dt": 122,
+              "dt": 119,
               "pressure": 1
             }
           ],
@@ -122,7 +122,7 @@
               "x": 335.921875,
               "y": 294,
               "modifiers": [],
-              "dt": 113,
+              "dt": 112,
               "pressure": 1
             }
           ],
@@ -191,7 +191,7 @@
               "x": 463.921875,
               "y": 198,
               "modifiers": [],
-              "dt": 120,
+              "dt": 124,
               "pressure": 1
             }
           ],
@@ -252,7 +252,7 @@
               "x": 431.921875,
               "y": 230,
               "modifiers": [],
-              "dt": 6,
+              "dt": 4,
               "pressure": 1
             },
             {
@@ -293,7 +293,7 @@
         "generation": 0,
         "drawings": [
           {
-            "id": "dr_01K7JJN800N2P70BSV5SC7TRNC",
+            "id": "dr_01K7JJN800Q10P0A4GFB7HPX4G",
             "rev": 4,
             "bucket": 1
           }
@@ -336,7 +336,7 @@
         "generation": 0,
         "drawings": [
           {
-            "id": "dr_01K7JJN8004BFDBMTXT4J19QY1",
+            "id": "dr_01K7JJN800HNBZGR7WY92AHGNB",
             "rev": 4,
             "bucket": 1
           }
@@ -394,14 +394,6 @@
             },
             {
               "type": "move",
-              "x": 288.921875,
-              "y": 317,
-              "modifiers": [],
-              "dt": 4,
-              "pressure": 1
-            },
-            {
-              "type": "move",
               "x": 320.921875,
               "y": 285,
               "modifiers": [],
@@ -413,21 +405,21 @@
               "x": 320.921875,
               "y": 285,
               "modifiers": [],
-              "dt": 110,
+              "dt": 124,
               "pressure": 1
             }
           ],
-          "eventCount": 4,
+          "eventCount": 3,
           "status": "ok",
           "code": null,
           "commands": [
             {
               "commandId": "draw.point.move",
               "params": {
-                "drawingId": "dr_01K7JJN800N2P70BSV5SC7TRNC",
+                "drawingId": "dr_01K7JJN800Q10P0A4GFB7HPX4G",
                 "points": [
                   {
-                    "strokeId": "st_01K7JJN800Y5ZMYSDG26THXJE5",
+                    "strokeId": "st_01K7JJN800ZHTGJM5PEYHAMC9S",
                     "anchor": 0
                   }
                 ],
@@ -451,7 +443,7 @@
         "generation": 0,
         "drawings": [
           {
-            "id": "dr_01K7JJN800NGYGMGG5P7TFPQ1P",
+            "id": "dr_01K7JJN800TDCBAC2509FAGCD3",
             "rev": 4,
             "bucket": 1
           }
@@ -512,7 +504,7 @@
               "x": 288.921875,
               "y": 317,
               "modifiers": [],
-              "dt": 6,
+              "dt": 7,
               "pressure": 1
             },
             {
@@ -520,7 +512,7 @@
               "x": 320.921875,
               "y": 285,
               "modifiers": [],
-              "dt": 117,
+              "dt": 133,
               "pressure": 1
             },
             {
@@ -528,7 +520,7 @@
               "x": 320.921875,
               "y": 285,
               "modifiers": [],
-              "dt": 128,
+              "dt": 119,
               "pressure": 1
             }
           ],
@@ -562,7 +554,7 @@
         "generation": 0,
         "drawings": [
           {
-            "id": "dr_01K7JJN800F33SVKSREN92886N",
+            "id": "dr_01K7JJN800KWDGJHGPKCPXNMA5",
             "rev": 4,
             "bucket": 1
           }
@@ -618,7 +610,7 @@
               "x": 416.921875,
               "y": 221,
               "modifiers": [],
-              "dt": 6,
+              "dt": 7,
               "pressure": 1
             },
             {
@@ -626,7 +618,7 @@
               "x": 448.921875,
               "y": 189,
               "modifiers": [],
-              "dt": 133,
+              "dt": 117,
               "pressure": 1
             },
             {
@@ -634,7 +626,7 @@
               "x": 448.921875,
               "y": 189,
               "modifiers": [],
-              "dt": 117,
+              "dt": 125,
               "pressure": 1
             }
           ],
@@ -663,7 +655,7 @@
         "generation": 0,
         "drawings": [
           {
-            "id": "dr_01K7JJN800Q5PAZSWN86A5QND6#outline",
+            "id": "dr_01K7JJN800DNAXAHQ4X3NMA248#outline",
             "rev": 4,
             "bucket": 1
           }
@@ -756,7 +748,7 @@
                   "x": -0.048828125,
                   "y": 0.3125
                 },
-                "colourId": "col_01M8077HSB292X3YJHKXS0E8T4"
+                "colourId": "col_01M807M5BFDWC3N0SQAHX4ZH1K"
               }
             }
           ]
@@ -771,7 +763,7 @@
         "generation": 0,
         "drawings": [
           {
-            "id": "dr_01K7JJN800VX3CPWM6PYY33BHA#outline",
+            "id": "dr_01K7JJN800M3CSDN23YCC9M9RH#outline",
             "rev": 4,
             "bucket": 1
           }
@@ -836,7 +828,7 @@
               "x": 320.921875,
               "y": 285,
               "modifiers": [],
-              "dt": 120,
+              "dt": 122,
               "pressure": 1
             }
           ],
@@ -855,7 +847,7 @@
         "generation": 0,
         "drawings": [
           {
-            "id": "dr_01K7JJN800BYZ6AH5D8SQW1QT4#outline",
+            "id": "dr_01K7JJN800Q4QH2PPPQFWK1RVP#outline",
             "rev": 4,
             "bucket": 1
           }
@@ -912,7 +904,7 @@
               "x": 288.921875,
               "y": 317,
               "modifiers": [],
-              "dt": 4,
+              "dt": 1,
               "pressure": 1
             },
             {
@@ -920,7 +912,7 @@
               "x": 320.921875,
               "y": 285,
               "modifiers": [],
-              "dt": 133,
+              "dt": 150,
               "pressure": 1
             },
             {
@@ -947,7 +939,7 @@
         "generation": 0,
         "drawings": [
           {
-            "id": "dr_01K7JJN800F1K8HGG8MRS6Q505#outline",
+            "id": "dr_01K7JJN80077V5EJ9PS2CGB7HY#outline",
             "rev": 4,
             "bucket": 1
           }
@@ -1004,7 +996,7 @@
               "x": 416.921875,
               "y": 221,
               "modifiers": [],
-              "dt": 5,
+              "dt": 6,
               "pressure": 1
             },
             {
@@ -1020,7 +1012,7 @@
               "x": 448.921875,
               "y": 189,
               "modifiers": [],
-              "dt": 114,
+              "dt": 115,
               "pressure": 1
             }
           ],
@@ -1051,7 +1043,7 @@
         "generation": 0,
         "drawings": [
           {
-            "id": "dr_01K7JJN8004BFDBMTXT4J19QY1",
+            "id": "dr_01K7JJN800HNBZGR7WY92AHGNB",
             "rev": 4,
             "bucket": 1
           }
@@ -1109,14 +1101,6 @@
             },
             {
               "type": "move",
-              "x": 288.921875,
-              "y": 317,
-              "modifiers": [],
-              "dt": 4,
-              "pressure": 1
-            },
-            {
-              "type": "move",
               "x": 320.921875,
               "y": 285,
               "modifiers": [],
@@ -1128,21 +1112,21 @@
               "x": 320.921875,
               "y": 285,
               "modifiers": [],
-              "dt": 110,
+              "dt": 124,
               "pressure": 1
             }
           ],
-          "eventCount": 4,
+          "eventCount": 3,
           "status": "ok",
           "code": null,
           "commands": [
             {
               "commandId": "draw.point.move",
               "params": {
-                "drawingId": "dr_01K7JJN800N2P70BSV5SC7TRNC",
+                "drawingId": "dr_01K7JJN800Q10P0A4GFB7HPX4G",
                 "points": [
                   {
-                    "strokeId": "st_01K7JJN800Y5ZMYSDG26THXJE5",
+                    "strokeId": "st_01K7JJN800ZHTGJM5PEYHAMC9S",
                     "anchor": 0
                   }
                 ],

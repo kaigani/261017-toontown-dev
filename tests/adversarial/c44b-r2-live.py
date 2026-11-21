@@ -55,7 +55,7 @@ async def matrix(t,step):
   return eid,(await c('draw.drawing.get'))['drawingId']
  tools={'brush':[(-20,0),(20,20)],'rectangle':[(-20,0),(20,20)],'eraser':[(-90,-60),(-60,-60)],'select':[(-80,-60),(-60,-40)],'contourEditor':[(-80,-60),(-60,-40)],'perspective':[(-80,-60),(-60,-40)],'repositionAll':[(0,0),(20,20)],'text':[(0,0),(0,0)]}
  if step==5:
-  await fixture('drawingView','contourEditor');await c('window.panel.set',{'panelId':'properties','visible':True});await pause();t.click('properties.page.toolOptions');await pause()
+  eid,did=await fixture('drawingView','contourEditor');await c('window.panel.set',{'panelId':'properties','visible':True});await pause();t.click('properties.page.toolOptions');await pause()
   for tool in ('contourEditor','perspective','repositionAll','text'):
    await c('tool.active.set',{'toolId':tool});await c('draw.selection.set',{'by':'ids','ids':[]});await pause()
    controls=t.cdp.js("[...document.querySelectorAll('[data-tt-id=toolOptions] input,[data-tt-id=toolOptions] select,[data-tt-id=toolOptions] button')].map(e=>({id:e.dataset.ttId,disabled:e.disabled,reason:e.title||e.closest('label')?.title}))")
@@ -68,6 +68,8 @@ async def matrix(t,step):
   t.click('properties.page.drawing');await pause()
   browse=t.cdp.js("(()=>{let e=document.querySelector('[data-tt-id=\"inspector.browse\"]');return e?{disabled:e.disabled,reason:e.title||e.closest('label')?.title}:null})()")
   check(bool(browse) and browse['disabled'] and bool(browse['reason']),'D-79 Browse present disabled reason',browse)
+  await c('element.drawing.create',{'elementId':eid,'name':'2','exposeFrom':2,'exposeTo':2});await pause();t.click('inspector.browse');d.key(0x23);await pause()
+  check(t.cdp.js("document.querySelector('[data-tt-id=\"inspector.browse\"]').value")=='1','Browse with two drawings navigates',None)
   return
  for view in ('cameraView','drawingView'):
   for tool,pts in tools.items():
@@ -111,7 +113,7 @@ async def matrix(t,step):
  if step==4:
   for option in ('keepSelectionVisible','outlineOnSelection'):
    for tool in ('contourEditor','perspective','repositionAll','text'):
-    eid,did=await fixture('cameraView',tool);await c('edit.selection.set',{'context':os.environ.get('C44B_SELECTION_CONTEXT','timeline'),'ids':[eid]});await c('drawAid.selectionDisplay.set',{'keepSelectionVisible':option=='keepSelectionVisible','outlineOnSelection':option=='outlineOnSelection'});await c('element.visibility.set',{'elementIds':[eid],'scope':'scene','visible':False});await pause()
+    eid,did=await fixture('cameraView',tool);await c('edit.selection.set',{'context':os.environ.get('C44B_SELECTION_CONTEXT','timeline'),'ids':[eid]});await c('draw.selection.set',{'by':'all'});await c('drawAid.selectionDisplay.set',{'keepSelectionVisible':option=='keepSelectionVisible','outlineOnSelection':option=='outlineOnSelection'});await c('element.visibility.set',{'elementIds':[eid],'scope':'scene','visible':False});await pause()
     canvas=json.loads(d.McpTable.node(await d.McpTable.tree(t),'cameraView.canvas').get('value') or '{}');t.run.save(option+'-'+tool+'.json',canvas);before=await c('draw.drawing.get',{'drawingId':did});await gesture('cameraView',tools[tool]);after=await c('draw.drawing.get',{'drawingId':did})
     if tool=='text' and option=='keepSelectionVisible':d.front();d.type_text('X');await pause();after=await c('draw.drawing.get',{'drawingId':did})
     check((before!=after)==(option=='keepSelectionVisible'),'02 10.7 '+option+' '+tool+' edit policy',canvas)
@@ -173,6 +175,7 @@ async def text_checks(t,step):
             r=await key(0x27,0x11);check(r['editor']['caret']==8,'D-81 word right punctuation',r['editor'])
             r=await key(0x08,0x11);check(content(r)=='one two three','D-81 word backspace punctuation',content(r))
             r=await key(0x2e,0x11);check(content(r)=='one two','D-81 word delete',content(r))
+            await fixture('one two');await key(0x24);r=await key(0x27,0x11,0x10);check(sorted([r['editor']['anchor'],r['editor']['caret']])==[0,3],'D-81 shift word right',r['editor'])
             await fixture();r=await typed(chr(0xd83d)+chr(0xde42));check(content(r)==chr(0x1f642),'D-81 paired UTF16 events one scalar',content(r))
 """
  source=source[:start]+branches+source[end:]
