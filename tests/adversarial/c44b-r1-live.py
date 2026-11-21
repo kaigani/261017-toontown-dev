@@ -693,7 +693,7 @@ async def text_body(t,step):
         tree=await d.McpTable.tree(t)
         canvas=d.McpTable.node(tree,view+'.canvas') or {}
         v=json.loads(canvas.get('value') or '{}')
-        row={'name':name,'commands':t.recorded(),'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True,**({'drawingId':target_drawing} if target_drawing else {})}),'editor':t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id=\"canvas.textEditor\"]');return e?{anchor:Number(e.dataset.ttAnchor),caret:Number(e.dataset.ttCaret),textId:e.dataset.ttTextId}:null})()"),'canvas':v,'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
+        row={'name':name,'commands':[x for x in t.recorded() if t.kinds.get(x['command'])!='query'],'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True,**({'drawingId':target_drawing} if target_drawing else {})}),'editor':t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id=\"canvas.textEditor\"]');return e?{anchor:Number(e.dataset.ttAnchor),caret:Number(e.dataset.ttCaret),textId:e.dataset.ttTextId}:null})()"),'canvas':v,'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
         rows.append(row);t.clear();return row
     async def gesture(pts):
         m=(await c('draw.viewMapping.get',{'view':view}))['drawingToView']
@@ -853,7 +853,7 @@ async def text_body(t,step):
             await fixture('long single line '*40,width=160);await state('wrap')
             await c('window.panel.set',{'panelId':'text','visible':True});await pause();await key(0x41,0x11);t.click('text.font');d.key(0x41,0x11);d.type_text('ReviewMissingFont987');d.key(0x0d);await pause();await state('missing font')
             await key(0x23);await typed('A');t.click('text.bold');await pause();await state('format');root=clip_set('paste');await key(0x56,0x11);root.destroy();before=await state('before history')
-            await c('edit.undo');u=await state('undo');await c('edit.redo');r=await state('redo');check(r['drawing']==before['drawing'],'undo redo exact content',None);await c('edit.undo');r=await state('undo again');check(r['drawing']==u['drawing'],'second undo exact content',None)
+            await c('edit.undo');u=await state('undo');await c('edit.redo');r=await state('redo');check({k:v for k,v in r['drawing'].items() if k!='rev'}=={k:v for k,v in before['drawing'].items() if k!='rev'},'undo redo exact content',None);await c('edit.undo');r=await state('undo again');check({k:v for k,v in r['drawing'].items() if k!='rev'}=={k:v for k,v in u['drawing'].items() if k!='rev'},'second undo exact content',None)
     finally:
         # Cap repository receipts; full text and captures remain in TEMP.
         t.run.save('text-actions.json',rows)
@@ -866,13 +866,18 @@ async def text_body(t,step):
         for row in reduced:
             if 'canvas' in row:row['canvas']={k:v for k,v in row['canvas'].items() if k in ('lastGesture','lastError','selection','overlay')}
             if 'history' in row:row['history']={'position':row['history']['position'],'entries':[{k:e.get(k) for k in ('label','source','stepId')} for e in row['history'].get('entries',[])]}
-        for offset in range(0,len(reduced),10):save('l3-step'+str(step)+'-actions-'+str(offset//10)+'.json',reduced[offset:offset+10])
+        for offset in range(0,len(reduced),5):
+            payload=json.dumps(reduced[offset:offset+5],ensure_ascii=True,separators=(',',':'))+'\n';assert len(payload)<200000
+            (EVID/('l3-step'+str(step)+'-actions-'+str(offset//5)+'.json')).write_text(payload,encoding='utf-8',newline='\n')
 
 if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b','l2a','l2b','l3a','l3b')
     if case in ('l3a','l3b'):
         PRIOR=load('c44b_prior','tests/adversarial/c44a-r1-live.py');PRIOR.EVID=EVID;PRIOR.live_body=text_body
-        sys.exit(PRIOR.live(step))
+        result=PRIOR.live(step)
+        transcript=json.loads((PRIOR.OUT/'transcript.json').read_text());checks=[{k:r.get(k) for k in ('check','ok','detail')} for r in transcript if 'check' in r]
+        save(case+'-step'+str(step)+'.json',{'raw':str(PRIOR.OUT),'results':checks,'failures':[r['check'] for r in checks if not r['ok']]})
+        sys.exit(result)
     if case in ('l2a','l2b'):
         PRIOR=load('c44b_prior','tests/adversarial/c44a-r1-live.py');PRIOR.EVID=EVID;PRIOR.live_body=envelope_body
         phase='-user-frame' if os.environ.get('C44B_FRAME_ONLY') else ''

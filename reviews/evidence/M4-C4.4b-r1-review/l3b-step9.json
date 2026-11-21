@@ -1,0 +1,1 @@
+{"checks":3,"failures":[],"raw":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-147ciqdo","results":[{"check":"100k responsive","ok":true,"detail":{"elapsed":1.3181985999981407,"length":100000}},{"check":"undo redo exact content","ok":true,"detail":null},{"check":"second undo exact content","ok":true,"detail":null}]}
