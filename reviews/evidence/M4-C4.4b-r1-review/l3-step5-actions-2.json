@@ -1,0 +1,2641 @@
+[
+  {
+    "name": "key 0x27 ()",
+    "commands": [
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 4,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-4"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN800VC2W4ZCHB9DGGXTY",
+      "elementId": "el_01K7JJN80073A2KJY7CWHA3DKM",
+      "name": "1",
+      "rev": 5,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 158.02734375,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800KKRDVB42P84VH5JQ",
+          "text": "\u00e9 \ud83d\udc69\u200d\ud83d\udcbb \ud801\udc00 \u65e5\u672c\u8a9e",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 11,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJ9S33GGKPPCHYBKMDTMPZ",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 11,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 158.02734375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 7,
+      "caret": 7,
+      "textId": "dr_01K7JJN800VC2W4ZCHB9DGGXTY/nd_01K7JJN800KKRDVB42P84VH5JQ"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 113,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJ9S33GGKPPCHYBKMDTMPZ"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  },
+  {
+    "name": "key 0x8 ()",
+    "commands": [
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 5,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-4"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-5"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN800VC2W4ZCHB9DGGXTY",
+      "elementId": "el_01K7JJN80073A2KJY7CWHA3DKM",
+      "name": "1",
+      "rev": 6,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 140.02734375,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800KKRDVB42P84VH5JQ",
+          "text": "\u00e9 \ud83d\udc69\u200d\ud83d\udcbb  \u65e5\u672c\u8a9e",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 10,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJ9S33GGKPPCHYBKMDTMPZ",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 10,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 140.02734375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 6,
+      "caret": 6,
+      "textId": "dr_01K7JJN800VC2W4ZCHB9DGGXTY/nd_01K7JJN800KKRDVB42P84VH5JQ"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 113,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJ9S33GGKPPCHYBKMDTMPZ"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  },
+  {
+    "name": "key 0x2e ()",
+    "commands": [
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 5,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-4"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-5"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN800VC2W4ZCHB9DGGXTY",
+      "elementId": "el_01K7JJN80073A2KJY7CWHA3DKM",
+      "name": "1",
+      "rev": 7,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 130.025390625,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800KKRDVB42P84VH5JQ",
+          "text": "\u00e9 \ud83d\udc69\u200d\ud83d\udcbb \u65e5\u672c\u8a9e",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 9,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJ9S33GGKPPCHYBKMDTMPZ",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 9,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 130.025390625,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 6,
+      "caret": 6,
+      "textId": "dr_01K7JJN800VC2W4ZCHB9DGGXTY/nd_01K7JJN800KKRDVB42P84VH5JQ"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 113,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJ9S33GGKPPCHYBKMDTMPZ"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  },
+  {
+    "name": "fixture ",
+    "commands": [
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 3,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN8009R16ECM5978ZNFRD",
+      "elementId": "el_01K7JJN800XG691757WEB5KWVZ",
+      "name": "1",
+      "rev": 4,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 0.0,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800TJTHXY0EAY50QZPF",
+          "text": "",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 0,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 0,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 0.0,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 0,
+      "caret": 0,
+      "textId": "dr_01K7JJN8009R16ECM5978ZNFRD/nd_01K7JJN800TJTHXY0EAY50QZPF"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 112,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  },
+  {
+    "name": "synthetic unicode",
+    "commands": [
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "edit.history.get",
+        "params": {
+          "limit": 1000
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 4,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-4"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN8009R16ECM5978ZNFRD",
+      "elementId": "el_01K7JJN800XG691757WEB5KWVZ",
+      "name": "1",
+      "rev": 13,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 104.02734375,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800TJTHXY0EAY50QZPF",
+          "text": "\u00e9 \u200d  \u65e5\u672c\u8a9e",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 8,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 8,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 104.02734375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 8,
+      "caret": 8,
+      "textId": "dr_01K7JJN8009R16ECM5978ZNFRD/nd_01K7JJN800TJTHXY0EAY50QZPF"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 112,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  },
+  {
+    "name": "key 0x25 ()",
+    "commands": [
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 4,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-4"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN8009R16ECM5978ZNFRD",
+      "elementId": "el_01K7JJN800XG691757WEB5KWVZ",
+      "name": "1",
+      "rev": 13,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 104.02734375,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800TJTHXY0EAY50QZPF",
+          "text": "\u00e9 \u200d  \u65e5\u672c\u8a9e",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 8,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 8,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 104.02734375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 7,
+      "caret": 7,
+      "textId": "dr_01K7JJN8009R16ECM5978ZNFRD/nd_01K7JJN800TJTHXY0EAY50QZPF"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 112,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  },
+  {
+    "name": "key 0x25 ()",
+    "commands": [
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 4,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-4"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN8009R16ECM5978ZNFRD",
+      "elementId": "el_01K7JJN800XG691757WEB5KWVZ",
+      "name": "1",
+      "rev": 13,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 104.02734375,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800TJTHXY0EAY50QZPF",
+          "text": "\u00e9 \u200d  \u65e5\u672c\u8a9e",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 8,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 8,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 104.02734375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 6,
+      "caret": 6,
+      "textId": "dr_01K7JJN8009R16ECM5978ZNFRD/nd_01K7JJN800TJTHXY0EAY50QZPF"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 112,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  },
+  {
+    "name": "key 0x25 ()",
+    "commands": [
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 4,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-4"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN8009R16ECM5978ZNFRD",
+      "elementId": "el_01K7JJN800XG691757WEB5KWVZ",
+      "name": "1",
+      "rev": 13,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 104.02734375,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800TJTHXY0EAY50QZPF",
+          "text": "\u00e9 \u200d  \u65e5\u672c\u8a9e",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 8,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 8,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 104.02734375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 5,
+      "caret": 5,
+      "textId": "dr_01K7JJN8009R16ECM5978ZNFRD/nd_01K7JJN800TJTHXY0EAY50QZPF"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 112,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  },
+  {
+    "name": "key 0x25 ()",
+    "commands": [
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 4,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-4"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN8009R16ECM5978ZNFRD",
+      "elementId": "el_01K7JJN800XG691757WEB5KWVZ",
+      "name": "1",
+      "rev": 13,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 104.02734375,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800TJTHXY0EAY50QZPF",
+          "text": "\u00e9 \u200d  \u65e5\u672c\u8a9e",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 8,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 8,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 104.02734375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 4,
+      "caret": 4,
+      "textId": "dr_01K7JJN8009R16ECM5978ZNFRD/nd_01K7JJN800TJTHXY0EAY50QZPF"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 112,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  },
+  {
+    "name": "key 0x25 ()",
+    "commands": [
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ],
+    "history": {
+      "position": 4,
+      "entries": [
+        {
+          "label": "New Elements",
+          "source": "agent",
+          "stepId": "u-1"
+        },
+        {
+          "label": "Create Drawing",
+          "source": "agent",
+          "stepId": "u-2"
+        },
+        {
+          "label": "New Text Object",
+          "source": "user",
+          "stepId": "u-3"
+        },
+        {
+          "label": "Typing",
+          "source": "user",
+          "stepId": "u-4"
+        }
+      ]
+    },
+    "drawing": {
+      "drawingId": "dr_01K7JJN8009R16ECM5978ZNFRD",
+      "elementId": "el_01K7JJN800XG691757WEB5KWVZ",
+      "name": "1",
+      "rev": 13,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -100.078125,
+        "y": 38.103515625,
+        "width": 104.02734375,
+        "height": 41.396484375
+      },
+      "nodes": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800TJTHXY0EAY50QZPF",
+          "text": "\u00e9 \u200d  \u65e5\u672c\u8a9e",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 8,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 8,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 104.02734375,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    "editor": {
+      "anchor": 3,
+      "caret": 3,
+      "textId": "dr_01K7JJN8009R16ECM5978ZNFRD/nd_01K7JJN800TJTHXY0EAY50QZPF"
+    },
+    "canvas": {
+      "selection": {
+        "objects": 0,
+        "handles": 0,
+        "points": 0,
+        "pivot": false
+      },
+      "overlay": false,
+      "lastError": null,
+      "lastGesture": {
+        "origin": "user",
+        "tool": "text",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "up",
+            "x": 316.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 112,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 2,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.text.add",
+            "params": {
+              "text": "",
+              "format": {
+                "size": 36,
+                "bold": false,
+                "italic": false,
+                "baseline": "normal",
+                "kerning": 0,
+                "autoKern": true,
+                "align": "left",
+                "leftMargin": 0,
+                "rightMargin": 0,
+                "indent": 0,
+                "lineSpacing": 0
+              },
+              "position": {
+                "x": -100.078125,
+                "y": 79.5
+              },
+              "colourId": "col_01M7ZJAPC7MGQ8WZ5SFH75Z6HN"
+            }
+          }
+        ]
+      }
+    },
+    "role": null,
+    "tool": {
+      "toolId": "text",
+      "temporaryToolId": null,
+      "group": "text"
+    }
+  }
+]

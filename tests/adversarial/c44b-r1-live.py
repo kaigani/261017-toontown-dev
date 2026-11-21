@@ -721,10 +721,17 @@ async def text_body(t,step):
     def texts(row):return [n for n in row['drawing'].get('nodes',[]) if 'text' in n and 'runs' in n]
     def content(row):return ''.join(n['text'] for n in texts(row))
     async def key(vk,*mods):d.front();d.key(vk,*mods);await pause();return await state('key '+hex(vk)+' '+str(mods))
-    async def typed(txt):d.front();d.type_text(txt);await pause();return await state('typed '+txt[:24])
+    async def typed(txt):
+        d.front();t.cdp.js("document.querySelector('[data-tt-id=\"canvas.textEditor\"]')?.focus()");d.type_text(txt);await pause();return await state('typed '+txt[:24])
     def clip_set(txt):
-        import tkinter
-        r=tkinter.Tk();r.withdraw();r.clipboard_clear();r.clipboard_append(txt);r.update();return r
+        u=ctypes.windll.user32;k=ctypes.windll.kernel32
+        k.GlobalAlloc.restype=ctypes.c_void_p;k.GlobalLock.restype=ctypes.c_void_p;k.GlobalLock.argtypes=[ctypes.c_void_p];k.GlobalUnlock.argtypes=[ctypes.c_void_p]
+        u.SetClipboardData.argtypes=[ctypes.c_uint,ctypes.c_void_p]
+        data=txt.encode('utf-16-le')+b'\0\0';h=k.GlobalAlloc(0x42,len(data));v=k.GlobalLock(h);ctypes.memmove(v,data,len(data));k.GlobalUnlock(h)
+        assert u.OpenClipboard(None);u.EmptyClipboard();assert u.SetClipboardData(13,h);u.CloseClipboard()
+        class Done:
+            def destroy(self):pass
+        return Done()
     def clip_get():
         import tkinter
         r=tkinter.Tk();r.withdraw()
@@ -740,6 +747,13 @@ async def text_body(t,step):
                 # Independent direct command on a clean drawing; compare text content excluding generated ids.
                 gui=ns[0]
                 await c('tool.active.set',{'toolId':'select'});await c('draw.object.delete',{'ids':[gui['id']]})
+                await c('tool.active.set',{'toolId':'text'})
+                rec=r['canvas']['lastGesture']
+                answer=await d.e2e.call(t.s,'pointer',{'view':view,'tool':'text','space':'view','events':rec['events']});rows.append({'name':'MCP pointer','answer':answer})
+                answer=await d.e2e.call(t.s,'type_text',{'text':'Hello'});rows.append({'name':'MCP type_text','answer':answer})
+                agent=await state('agent pointer type_text');normalize=lambda n:{k:v for k,v in n.items() if k not in ('id','bounds')}
+                check(normalize(gui)==normalize(texts(agent)[0]),'D-32 MCP pointer exact text node',{'gui':gui,'agent':texts(agent)})
+                await c('tool.active.set',{'toolId':'select'});await c('draw.object.delete',{'ids':[texts(agent)[0]['id']]})
                 params={'position':{'x':gui['transform'][4],'y':gui['transform'][5]},'text':'Hello'}
                 if width is not None:params['width']=width
                 await c('draw.text.add',params);direct=await state('direct draw.text.add')
@@ -778,8 +792,13 @@ async def text_body(t,step):
                 await fixture()
                 if mode=='paste':root=clip_set(value);r=await key(0x56,0x11);root.destroy()
                 else:
-                    units=value.encode('utf-16-le');d.type_text(''.join(chr(int.from_bytes(units[i:i+2],'little')) for i in range(0,len(units),2)));await pause();r=await state('synthetic unicode')
-                check(content(r)==value,'02 7.6 Unicode exact '+mode,{'expected':value,'observed':content(r)})
+                    units=value.encode('utf-16-le');events=[]
+                    for i in range(0,len(units),2):
+                        for flags in (4,6):
+                            event=d.INPUT(type=1);event.ki=d.KEYBDINPUT(0,int.from_bytes(units[i:i+2],'little'),flags,0,None);events.append(event)
+                    batch=(d.INPUT*len(events))(*events);assert d.u32.SendInput(len(events),batch,ctypes.sizeof(d.INPUT))==len(events)
+                    await pause();r=await state('synthetic unicode')
+                check(content(r)==__import__('unicodedata').normalize('NFC',value),'10 section 1 NFC Unicode '+mode,{'input':value,'observed':content(r),'exactInput':content(r)==value})
                 for _ in range(len(value)):await key(0x25)
                 for _ in range(7):await key(0x27)
                 await key(0x08);await key(0x2e)
@@ -798,7 +817,7 @@ async def text_body(t,step):
             for mode in ('normal','element-locked','drawing-locked','hidden','frame','tool'):
                 r=await fixture('abcd',v='cameraView');node=texts(r)[0]
                 if mode=='element-locked':await c('element.lock.set',{'elementIds':[eid],'locked':True})
-                if mode=='drawing-locked':await c('draw.lock.set',{'locked':True})
+                if mode=='drawing-locked':await c('draw.lock.set',{'drawingId':r['drawing']['drawingId'],'locked':True})
                 if mode=='hidden':
                     await c('drawAid.selectionDisplay.set',{'keepSelectionVisible':False,'outlineOnSelection':False});await c('drawAid.currentOnTop.set',{'enabled':False});await c('element.visibility.set',{'elementIds':[eid],'scope':'scene','visible':False})
                 if mode=='frame':await c('app.context.set',{'elementId':eid,'frame':25})
@@ -806,6 +825,8 @@ async def text_body(t,step):
                 await pause();r=await typed('X')
                 if mode in ('element-locked','drawing-locked','hidden'):check(content(r)=='abcd','02 7.6 / design 7 no edit '+mode,texts(r))
                 await state('camera '+mode)
+                if mode=='normal':
+                    await c('view.zoom.set',{'viewId':view,'zoom':1.5});await c('view.rotation.set',{'viewId':view,'angle':25});await pause();await gesture([(-80,65)]);await typed('Q');await key(0x41,0x11);await c('window.panel.set',{'panelId':'text','visible':True});await pause();t.click('text.bold');await pause();await state('camera transformed format')
         elif step==8:
             for mode in ('own','change','delete','undo'):
                 r=await fixture('abcdef');node=texts(r)[0]
@@ -835,7 +856,11 @@ async def text_body(t,step):
             if isinstance(x,list):return [small(y) for y in x]
             if isinstance(x,dict):return {k:small(v) for k,v in x.items()}
             return x
-        save('l3-step'+str(step)+'-actions.json',small(rows))
+        reduced=small(rows)
+        for row in reduced:
+            if 'canvas' in row:row['canvas']={k:v for k,v in row['canvas'].items() if k in ('lastGesture','lastError','selection','overlay')}
+            if 'history' in row:row['history']={'position':row['history']['position'],'entries':[{k:e.get(k) for k in ('label','source','stepId')} for e in row['history'].get('entries',[])]}
+        for offset in range(0,len(reduced),10):save('l3-step'+str(step)+'-actions-'+str(offset//10)+'.json',reduced[offset:offset+10])
 
 if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b','l2a','l2b','l3a','l3b')
