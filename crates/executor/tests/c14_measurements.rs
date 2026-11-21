@@ -234,16 +234,33 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
     }
     let committed = env.document_rev.unwrap();
     let recovery = dir.join("user").join("Recovery");
-    let mut revs = Vec::new();
-    for e in std::fs::read_dir(&recovery).unwrap().flatten() {
-        for f in std::fs::read_dir(e.path()).into_iter().flatten().flatten() {
-            if f.file_name().to_string_lossy().ends_with(".json")
-                && let Ok(v) = serde_json::from_slice::<Value>(&std::fs::read(f.path()).unwrap())
-                && let Some(r) = v.get("documentRev").and_then(Value::as_u64)
-            {
-                revs.push(r);
+    let recovery_revs = || {
+        let mut revs = Vec::new();
+        for e in std::fs::read_dir(&recovery).unwrap().flatten() {
+            for f in std::fs::read_dir(e.path()).into_iter().flatten().flatten() {
+                if f.file_name().to_string_lossy().ends_with(".json")
+                    && let Ok(v) = serde_json::from_slice::<Value>(&std::fs::read(f.path()).unwrap())
+                    && let Some(r) = v.get("documentRev").and_then(Value::as_u64)
+                {
+                    revs.push(r);
+                }
             }
         }
+        revs
+    };
+    let mut revs = recovery_revs();
+    // D-45 (run 44823278999, Windows: recovery held revision 16, the batch committed 17): the two requests come from two
+    // threads, and the 20 ms pause does not make the batch's the first on the document thread on a loaded runner. When
+    // the maintenance request was served first, its snapshot holds the revision before the batch; that order is
+    // recorded and one more snapshot is taken after the batch, so the check below is on the copy of the committed
+    // revision whatever the order was.
+    let maintenance_first = !revs.contains(&committed);
+    if maintenance_first {
+        let t = h.run_maintenance_timed(true).unwrap();
+        if t.autosave_snapshot.is_some() {
+            wait_autosaved();
+        }
+        revs = recovery_revs();
     }
     // Under queued requests: 8 threads keep the queue full while maintenance asks for its turn.
     let stop = Arc::new(AtomicBool::new(false));
@@ -288,6 +305,7 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
         ),
         json!({
             "longBatchSteps": 1000, "committedRev": committed, "recoveryRevs": revs, "queueThreads": 8,
+            "maintenanceServedBeforeTheBatch": maintenance_first,
             "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; \
                                        an atomic batch is one request, so the autosave waits for the whole batch \
                                        (each request is bounded by the executor's never-block budget)",
