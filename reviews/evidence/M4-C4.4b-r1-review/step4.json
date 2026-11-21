@@ -1,0 +1,479 @@
+{
+  "checks": 40,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView-click command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-click undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-click selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-click D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-click selection reported",
+      "ok": true
+    },
+    {
+      "check": "drawingView-add-click command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-add-click undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-add-click selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-add-click D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-add-click selection reported",
+      "ok": true
+    },
+    {
+      "check": "drawingView-marquee command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-marquee undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-marquee selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-marquee D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-marquee selection reported",
+      "ok": true
+    },
+    {
+      "check": "drawingView-empty command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-empty undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-empty selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView-empty D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-empty selection reported",
+      "ok": true
+    },
+    {
+      "check": "cameraView-click command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-click undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-click selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-click D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-click selection reported",
+      "ok": true
+    },
+    {
+      "check": "cameraView-add-click command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-add-click undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-add-click selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-add-click D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-add-click selection reported",
+      "ok": true
+    },
+    {
+      "check": "cameraView-marquee command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-marquee undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-marquee selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-marquee D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-marquee selection reported",
+      "ok": true
+    },
+    {
+      "check": "cameraView-empty command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-empty undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-empty selection/cancel leaves document unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView-empty D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-empty selection reported",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-add-click",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800XMTF2DZ4E3NVNSF0",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN8009Z283JC26M7BP8B7",
+                "anchor": 1
+              }
+            ],
+            "mode": "add"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8009Z283JC26M7BP8B7"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN8009Z283JC26M7BP8B7",
+            "anchor": 0
+          },
+          {
+            "strokeId": "st_01K7JJN8009Z283JC26M7BP8B7",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "d1a68622d46e7e7b49dd5b05ca4559eda8cb61e127a4907b7aa0bdbc727f1865",
+      "afterSha256": "d1a68622d46e7e7b49dd5b05ca4559eda8cb61e127a4907b7aa0bdbc727f1865"
+    },
+    {
+      "name": "cameraView-click",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800NEHXJG7XTMP2JGV8",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800P1N93V394XHXCT2P",
+                "anchor": 0
+              }
+            ],
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800P1N93V394XHXCT2P"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800P1N93V394XHXCT2P",
+            "anchor": 0
+          }
+        ]
+      },
+      "beforeSha256": "717c333a57032b20b29743c41a6872382c65acf13e9a378ac618101b7c633e89",
+      "afterSha256": "717c333a57032b20b29743c41a6872382c65acf13e9a378ac618101b7c633e89"
+    },
+    {
+      "name": "cameraView-empty",
+      "commands": [
+        {
+          "commandId": "draw.selection.set",
+          "params": {
+            "by": "point",
+            "point": {
+              "x": 119.951171875,
+              "y": 100.3125
+            },
+            "mode": "replace",
+            "view": "cameraView"
+          }
+        },
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800D2Q2R2SBCHQQ9SDD",
+            "points": [],
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "3b7870c191d02d57fd201994cb0a5bca215d77d4d30d9062950d61a5fd878590",
+      "afterSha256": "3b7870c191d02d57fd201994cb0a5bca215d77d4d30d9062950d61a5fd878590"
+    },
+    {
+      "name": "cameraView-marquee",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800PX2E6GTJB9DHA8AK",
+            "rect": {
+              "x": -100.048828125,
+              "y": -49.6875,
+              "width": 120,
+              "height": 100
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800HSZJQYZ3RYPSW24C"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800HSZJQYZ3RYPSW24C",
+            "anchor": 0
+          },
+          {
+            "strokeId": "st_01K7JJN800HSZJQYZ3RYPSW24C",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "9f35b148d2f4ca33474cf309848d43e61f64a72af3f38255ac09cbfa345835b4",
+      "afterSha256": "9f35b148d2f4ca33474cf309848d43e61f64a72af3f38255ac09cbfa345835b4"
+    },
+    {
+      "name": "drawingView-add-click",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800YFSZKQXRADR41P74",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+                "anchor": 1
+              }
+            ],
+            "mode": "add"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800RM54XQ9RG0BTPR6W"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+            "anchor": 0
+          },
+          {
+            "strokeId": "st_01K7JJN800RM54XQ9RG0BTPR6W",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "9a3f42b0a77cf0a145ede574c82e7b879726a2d299b21444bc1be6a8ab29a81a",
+      "afterSha256": "9a3f42b0a77cf0a145ede574c82e7b879726a2d299b21444bc1be6a8ab29a81a"
+    },
+    {
+      "name": "drawingView-click",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8000VE997QV65QCFH59",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN800VNC9AXVHYYAW9Z15",
+                "anchor": 0
+              }
+            ],
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800VNC9AXVHYYAW9Z15"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800VNC9AXVHYYAW9Z15",
+            "anchor": 0
+          }
+        ]
+      },
+      "beforeSha256": "10bb4cee288b1b9e246efeef059ca7224083ab52963361c354e006cb7cc46599",
+      "afterSha256": "10bb4cee288b1b9e246efeef059ca7224083ab52963361c354e006cb7cc46599"
+    },
+    {
+      "name": "drawingView-empty",
+      "commands": [
+        {
+          "commandId": "draw.selection.set",
+          "params": {
+            "by": "point",
+            "point": {
+              "x": 119.921875,
+              "y": 99.5
+            },
+            "mode": "replace"
+          }
+        },
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8008DMVDWJ3XSYGHC09",
+            "points": [],
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [],
+        "bounds": null,
+        "selectedPoints": []
+      },
+      "beforeSha256": "8ce7492a4307119a905233ad55eb889752e135d6c748c9802ba088d4fd4f60f8",
+      "afterSha256": "8ce7492a4307119a905233ad55eb889752e135d6c748c9802ba088d4fd4f60f8"
+    },
+    {
+      "name": "drawingView-marquee",
+      "commands": [
+        {
+          "commandId": "draw.pointSelection.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800RMXC5KA06Z3ET59S",
+            "rect": {
+              "x": -100.078125,
+              "y": -50.5,
+              "width": 120,
+              "height": 100
+            },
+            "mode": "replace"
+          }
+        }
+      ],
+      "labels": [],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800J27W3WEBC9MWTNPV"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": [
+          {
+            "strokeId": "st_01K7JJN800J27W3WEBC9MWTNPV",
+            "anchor": 0
+          },
+          {
+            "strokeId": "st_01K7JJN800J27W3WEBC9MWTNPV",
+            "anchor": 1
+          }
+        ]
+      },
+      "beforeSha256": "da04c17621e095512d5da44d545df8d16fb49a91b7d009af041f703787acc19e",
+      "afterSha256": "da04c17621e095512d5da44d545df8d16fb49a91b7d009af041f703787acc19e"
+    }
+  ],
+  "transcriptSha256": "ebcb698f76355efb5bff2aba5ec4e73d7a66124e0130ac7fb93ec03494a9ce60",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-npnxeiwp"
+}

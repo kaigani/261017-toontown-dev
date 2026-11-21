@@ -53,6 +53,8 @@ async def contour_body(t,step):
         origin=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(origin))
         scale=t.cdp.js('devicePixelRatio')
         xy=[eq.c42.apply(matrix,*q) for q in pts]
+        assert all(0<=x<rect['width'] and 0<=y<rect['height'] for x,y in xy), ('gesture outside visible canvas',view,rect,xy)
+        previous=json.dumps(json.loads((d.McpTable.node(await d.McpTable.tree(t),view+'.canvas') or {}).get('value') or '{}').get('lastGesture'))
         screen=[(origin.x+(rect['x']+x)*scale,origin.y+(rect['y']+y)*scale) for x,y in xy]
         for vk in mods:d.u32.keybd_event(vk,0,0,0)
         try:
@@ -64,9 +66,12 @@ async def contour_body(t,step):
         finally:
             for vk in reversed(mods):d.u32.keybd_event(vk,0,2,0)
         await asyncio.sleep(.65)
-        tree=await d.McpTable.tree(t)
-        node=d.McpTable.node(tree,view+'.canvas'); assert node, view
-        return json.loads(node.get('value') or '{}').get('lastGesture')
+        for _ in range(100):
+            tree=await d.McpTable.tree(t);node=d.McpTable.node(tree,view+'.canvas'); assert node, view
+            state=json.loads(node.get('value') or '{}')
+            if json.dumps(state.get('lastGesture'))!=previous:return state.get('lastGesture')
+            await asyncio.sleep(.05)
+        return None
     def unstamped(doc):return eq.unstamped(doc)
     def stroke(doc):
         def walk(x):
@@ -89,7 +94,7 @@ async def contour_body(t,step):
         eid=(await c('element.create',{'type':'drawing','name':'Curve'}))['elementIds'][0]
         await c('element.drawing.create',{'elementId':eid,'name':'1','exposeFrom':1,'exposeTo':24})
         await c('app.context.set',{'elementId':eid,'frame':1})
-        await c('workspace.select',{'name':'Drawing'})
+        await c('workspace.select',{'name':'Drawing' if view=='drawingView' else 'Default'})
         await c('window.panel.set',{'panelId':view,'visible':True,'focus':True})
         await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
         points=[{'x':-80,'y':0,'outHandle':{'x':20,'y':30}}, {'x':0,'y':0,'inHandle':{'x':-25,'y':15},'outHandle':{'x':25,'y':35}}, {'x':80,'y':0,'inHandle':{'x':-20,'y':-30}}]
