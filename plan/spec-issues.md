@@ -2358,6 +2358,66 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   body (`http.rs` `stream_sse`, `a_large_first_answer_is_a_json_body_and_anything_else_an_event_stream`). The remaining
   case (progress first) is SI-163's open question.
 
+## SI-184 — Contour Editor point selection, hit targets and Delete (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-contour-editor.md`.
+- **Entry:** *Spec:* 02 lines 448-449 say "click a stroke to select it and show its anchors; click or marquee to select points" with no radii, order or command for selecting a stroke; `draw.pointSelection.set` (line 1331) cannot name a stroke without anchors; line 457's Delete has no key binding distinct from `edit.delete`. *Decision:* §3 and §4: shown strokes are the object selection plus strokes holding selected anchors; radii anchor 6, handle 5, segment 4 view px, nearest wins, anchor on a tie, front-most between strokes; handles of selected anchors only; invisible strokes only with Show Strokes; a click off every target is the Select click and clears the point selection (two `ui` commands); the marquee is `rect` in drawing units over every stroke; constrain is `add`; Delete and Backspace resolve to `draw.point.delete` while the Contour Editor is active. *Why:* SI-141's radius convention; the object selection already means "selected stroke" for the other selection tools (02 §1.3); one key dispatch serves the window and agents.
+
+## SI-185 — alternate + drag a point (interim, D-40 answer 7) (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-contour-editor.md`.
+- **Entry:** *Spec:* line 455 "changes the shape of the two segments connected to it", no command or rule. *Decision:* `draw.point.set` with both handles moved by the drag delta, `handleMode: broken`, the anchor unmoved, so the two adjacent control points follow the pointer. *Why:* D-40's interim; the result is exact to preview and stated in one call an agent can repeat.
+
+## SI-186 — handle drags and what `reset` does (found in M4 C4.4b; interim; awaiting confirmation (the note's open question 4: it changes an M2 command agents see); the command is unchanged until it is answered)
+
+- **From:** `reviews/M4-design-contour-editor.md`.
+- **Entry:** *Spec:* line 454 gives only the alternate handle drag; line 453 says reset "minimises the handle angle to a flat/smooth state"; the kernel's `reset` zeroes both handles. *Decision:* a plain handle drag sends `handleMode: symmetric` (the opposite handle mirrors), the alternate one `broken`; `reset` makes the handles collinear: direction `out - in` normalised, each keeping its length; with both zero, the direction of next anchor minus previous anchor and lengths one third of the adjacent chords (one neighbour at an open end). The builder test `crates/executor/tests/c23_transform.rs` (the `reset` assertion near line 272) is updated with the change. Line 456's "entire selection" is the point selection. *Why:* "independently" in line 454 implies the plain drag is dependent; "smooth" excludes a corner. *Question:* the reading of "flat/smooth".
+
+## SI-187 — Snap to Contour in the gesture and the preview (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-contour-editor.md`.
+- **Entry:** *Spec:* line 461 "a dragged point snaps", line 798 "points moved ... snap", line 1338 `snap?: bool = Snap to Contour setting`; nothing on multi-point drags or on feedback. *Decision:* the gesture sends the raw delta with `snap` explicit and the command snaps every moved anchor (SI-070's candidates); the omitted `snap` defaults to the setting; the preview is approximate (within the radius) while a candidate is in range. *Why:* the command owns the snap, so the gesture and the agent's call are one call; a per-sample kernel query would break ADR-0007 decision 1. *Question:* is a kernel-computed snap preview wanted?
+
+## SI-188 — Perspective's handles, side drags and `mapping` option (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-envelope-tools.md`.
+- **Entry:** *Spec:* 02 lines 468-470 give corner and side handles without positions or radii, a side drag only with alternate, and "changes the size and angle of the opposite sides symmetrically" without a direction; line 707 gives a `mapping` option no A command sets. *Decision:* §2, §3: handles on the command's own box, re-taken after each commit; 6 px; a plain side drag moves the side; the alternate side drag spreads or closes its corners symmetrically about the midpoint (the larger-coordinate corner follows the drag along the side) and moves both by the perpendicular part, so the adjacent sides tilt as mirror images; constrain ignored on handles; an alternate drag off the handles lassos wherever it starts (the inside has no other meaning here); `mapping` a kernel option (default `auto`) sent with every envelope. *Why:* a symmetric keystone is line 467's change of perspective; one box to draw, hit and map. *Question:* the side rules (another reading moves the opposite side by the mirrored drag) and the option's command.
+
+## SI-189 — Reposition All: handles, the envelope's reference box, locked drawings (interim; behaviour change) (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-envelope-tools.md`.
+- **Entry:** *Spec:* lines 478-480 give Select's box handles and envelope handles at the same positions; A line 261's `corners` names no reference box, and the kernel maps each drawing's own bounds, against "applied identically to every drawing"; line 414 refuses tools on a locked drawing. *Decision:* §4: box handles without modifiers, envelope handles with alternate; `corners` target the corners of the bounds of the element's drawing at the current frame, and that one map applies to every drawing; locked drawings are skipped, the call refused only when nothing can move. *Why:* one transform for all drawings is the purpose (line 477); the current drawing is what the user sees. *Question:* the reference box (the union of all drawings' bounds is the alternative).
+
+## SI-190 — the envelope preview (interim; D-40 answer 8, SI-154 extended) (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-envelope-tools.md`.
+- **Entry:** *Spec:* 05 line 399 asks for live views, not their accuracy; the commit's map (02 lines 471-472, SI-070) is not affine. *Decision:* §6: the window maps the kernel's tessellated vertices through its port of the kernel's map in the vertex stage; exact for affine maps, anchor vertices and bitmap corners; approximate between anchors, for pencil widths, text and gradient colours; at most 1 view px on the sample drawing (§9). *Why:* ADR-0007 decision 1; constant per-frame cost. *Question:* as SI-154's.
+
+## SI-191 — the typing run (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** *Spec:* 02 §12.1 lines 1066-1067 make "a run of typing" one step without defining a run; §13.3 lines 1199-1201 and 1229 equate "click, then `type_text`" with one `draw.text.add` and one step. *Decided:* §3's rule (the input path's keystrokes on one object by one origin, ended by a caret move, a highlight, a format, leaving, undo, redo or a save; no timers; a command is always its own step); the Text row of §13.3 compares on the document, the labels against the two-command sequence. *Why:* answer 2, and §12.1 is the more specific rule.
+
+## SI-192 — glyph metrics without a spec A query (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** *Spec:* 02 §13 has no caret or line query; answer 3 asked for one by registry addition, which D-57 forbids. *Decided:* the kernel lays out and hit-tests (§5); the window gets the geometry in the scene answer (form 1.2) and the panel the session by `shell.textEdit`; `draw.text.layout.get` is proposed to the user. *Why:* the kernel stays the only layout, the window derives nothing, spec A stays the user's.
+
+## SI-193 — keyboard focus while text is edited in a canvas (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** *Spec:* 01 §8.4 lines 862-864 name text fields, numeric fields and rename editors, not text edited in a view; 11 line 356 gives `type_text` a widget target only. *Decided:* the editing session is a text field for §8.4 in the window and in the kernel's `key` routing; the editing keys of §4; Escape ends editing; Primary+Z is the document's undo; Cut, Copy, Paste and Select All act on the text; `type_text` without a target types into the caller's session. *Why:* 02 lines 669-675 and 680 need these keys and the headless path needs a target.
+
+## SI-194 — the Text tool's ambiguous mappings (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** (answer 7). *Spec:* 02 lines 672-676 say "border" and "frame" without geometry; line 681 names "Delete Text Object", which no command carries. *Decided:* §2's hit zones; a frame drag sends `draw.text.set {position}` ("Move Text Object"); a width handle `{width}` or `{width, position}`; a click elsewhere ends editing and acts there; the deletion is `draw.object.delete`, labelled "Delete Text Object" by its handler when every removed object is an empty text object (a declared behaviour change, so an agent's deletion gets it too). *Why:* answer 7's interim, and a label set by the command keeps the three paths equal.
+
+## SI-195 — "the next typed characters" (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** *Spec:* 02 lines 677-679: panel changes with nothing highlighted apply to the next typed characters, and text takes the current colour; the format model cannot hold a zero-length run. *Decided:* §6's pending format, set by `draw.textFormat.set {length: 0}` at the session's caret, applied by the next keystroke's commands inside its run; paragraph fields apply to the caret's paragraph. *Why:* no spec A change, and the same command serves the panel and agents.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row
