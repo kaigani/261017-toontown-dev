@@ -1,0 +1,69 @@
+[
+  {
+    "script": "c44a-r4-live.py",
+    "args": [
+      "p1a",
+      "2"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-mmve92i6"
+  },
+  {
+    "script": "c44a-r4-live.py",
+    "args": [
+      "p1b",
+      "7"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-4q99f7wi"
+  },
+  {
+    "script": "c44a-r4-live.py",
+    "args": [
+      "p1b",
+      "9"
+    ],
+    "exit": 1,
+    "failures": [
+      {
+        "check": "probe completed",
+        "ok": false,
+        "detail": "ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [RuntimeError('control absent or hidden: pen.maxSize.field')])])"
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-y7q907ll"
+  },
+  {
+    "script": "c44a-r3-live.py",
+    "args": [
+      "n2a",
+      "2"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-ubvhyafs"
+  },
+  {
+    "script": "c44a-r2-live.py",
+    "args": [
+      "m1a",
+      "3"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-b6iesuqc"
+  },
+  {
+    "script": "c43b-r1-live.py",
+    "args": [
+      "C:\\Users\\kaiga\\work\\review\\m4-c44b-r1\\target\\release\\toontown.exe",
+      "case4",
+      "C:\\Users\\kaiga\\work\\review\\m4-c44b-r1\\target\\release\\toontown-headless.exe"
+    ],
+    "exit": 0,
+    "failures": [],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-regression-uvsqfz03"
+  }
+]

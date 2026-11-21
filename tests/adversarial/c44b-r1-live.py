@@ -14,12 +14,13 @@ def save(name, value):
     assert len(txt.encode()) <= 200000
     (EVID / name).write_text(txt, encoding='utf-8', newline='\n')
 def regressions():
-    rows=[]
+    rows=json.loads((EVID/'step2.json').read_text(encoding='utf-8')) if os.environ.get('C44B_REGRESSION_ONLY') and (EVID/'step2.json').exists() else []
     for script,args in [('c44a-r4-live.py',['p1a','2']),('c44a-r4-live.py',['p1b','7']),('c44a-r4-live.py',['p1b','9']),('c44a-r3-live.py',['n2a','2']),('c44a-r2-live.py',['m1a','3']),('c43b-r1-live.py',[str(APP),'case4',str(HEAD)])]:
+        if os.environ.get('C44B_REGRESSION_ONLY') and script!=os.environ['C44B_REGRESSION_ONLY']:continue
         raw=Path(tempfile.mkdtemp(prefix='c44b-regression-'))
         path=ROOT/'tests/adversarial'/script
         if script=='c43b-r1-live.py':
-            code="import runpy,sys;sys.argv="+repr([str(path),*args])+";g=runpy.run_path(sys.argv[0],run_name='probe');g['case4'].__globals__['OUT']=__import__('pathlib').Path("+repr(str(raw))+");g['case4']()"
+            code="import sys;sys.argv="+repr([str(path),*args])+";p=__import__('pathlib').Path(sys.argv[0]);s=p.read_text(encoding='utf-8').replace('OUT = ROOT / \"reviews/evidence/M4-C4.3b-r1\"', 'OUT = __import__(\"pathlib\").Path('+repr("+repr(str(raw))+")+')');exec(compile(s,str(p),'exec'),{'__file__':str(p),'__name__':'__main__'})"
             cmd=[sys.executable,'-c',code]
         else: cmd=[sys.executable,str(path),*args]
         with (raw/'console.txt').open('w',encoding='utf-8') as f:
@@ -28,6 +29,7 @@ def regressions():
         for p in raw.rglob('transcript.json'):
             failures += [r for r in json.loads(p.read_text(encoding='utf-8')) if not r.get('ok',False)]
         row={'script':script,'args':args,'exit':result.returncode,'failures':failures,'raw':str(raw)}
+        rows=[r for r in rows if not (r['script']==script and r['args']==args)]
         rows.append(row); print(json.dumps(row),flush=True)
         changed=subprocess.check_output(['git','diff','--name-only'],cwd=ROOT,text=True).splitlines()
         for p in changed:
@@ -35,7 +37,213 @@ def regressions():
                 subprocess.run(['git','checkout','--',p],cwd=ROOT,check=True)
         save('step2.json',rows)
     return int(any(r['exit'] for r in rows))
+async def contour_body(t,step):
+    import asyncio, ctypes, math, shutil
+    from ctypes import wintypes
+    from mcp import ClientSession, StdioServerParameters, types
+    from mcp.client.stdio import stdio_client
+    p=PRIOR; d=p.d; c=t.cmd; check=t.run.check
+    t.cdp=d.Cdp(d.CDP_PORT); t.cdp.record()
+    eq=load('review_equivalence','scripts/c44b-gesture-equivalence.py')
+    async def roots(_): return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='work')])
+    async def gesture(view,pts,mods=(),escape=False):
+        await asyncio.sleep(.35); d.front()
+        matrix=(await c('draw.viewMapping.get',{'view':view}))['drawingToView']
+        rect=t.cdp.js("document.querySelector('[data-tt-id=\""+view+".canvas\"]').getBoundingClientRect().toJSON()")
+        origin=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(origin))
+        scale=t.cdp.js('devicePixelRatio')
+        xy=[eq.c42.apply(matrix,*q) for q in pts]
+        screen=[(origin.x+(rect['x']+x)*scale,origin.y+(rect['y']+y)*scale) for x,y in xy]
+        for vk in mods:d.u32.keybd_event(vk,0,0,0)
+        try:
+            d.u32.SetCursorPos(round(screen[0][0]),round(screen[0][1]));d.e6._send_button(True)
+            for x,y in screen[1:]:
+                await asyncio.sleep(.1);d.u32.SetCursorPos(round(x),round(y))
+            if escape:d.key(0x1b)
+            await asyncio.sleep(.1);d.e6._send_button(False)
+        finally:
+            for vk in reversed(mods):d.u32.keybd_event(vk,0,2,0)
+        await asyncio.sleep(.65)
+        tree=await d.McpTable.tree(t)
+        node=d.McpTable.node(tree,view+'.canvas'); assert node, view
+        return json.loads(node.get('value') or '{}').get('lastGesture')
+    def unstamped(doc):return eq.unstamped(doc)
+    def stroke(doc):
+        def walk(x):
+            if isinstance(x,dict):
+                if isinstance(x.get('bezier'),list):return x
+                for v in x.values():
+                    found=walk(v)
+                    if found:return found
+            if isinstance(x,list):
+                for v in x:
+                    found=walk(v)
+                    if found:return found
+        return walk(doc)
+    def xy(v):return (v['x'],v['y'])
+    def curve(b,t):
+        return tuple(sum(w*p[k] for w,p in zip(((1-t)**3,3*t*(1-t)**2,3*t*t*(1-t),t**3),map(xy,b))) for k in (0,1))
+    async def fixture(view,closed=False,two=False):
+        await c('project.create',{'name':'Contour review','onUnsaved':'discard'})
+        eid=(await c('element.create',{'type':'drawing','name':'Curve'}))['elementIds'][0]
+        await c('element.drawing.create',{'elementId':eid,'name':'1','exposeFrom':1,'exposeTo':24})
+        await c('app.context.set',{'elementId':eid,'frame':1})
+        await c('workspace.select',{'name':'Drawing'})
+        await c('window.panel.set',{'panelId':view,'visible':True,'focus':True})
+        await c('view.active.set',{'viewId':view});await c('view.transform.reset',{'viewId':view})
+        points=[{'x':-80,'y':0,'outHandle':{'x':20,'y':30}}, {'x':0,'y':0,'inHandle':{'x':-25,'y':15},'outHandle':{'x':25,'y':35}}, {'x':80,'y':0,'inHandle':{'x':-20,'y':-30}}]
+        if two:points=points[:2]
+        added=await c('draw.polyline.add',{'points':points,'closed':closed,'snap':False})
+        sid=added['strokeIds'][0]
+        await c('draw.selection.set',{'by':'ids','ids':[sid]})
+        await c('tool.active.set',{'toolId':'contourEditor'});await c('tool.snapToContour.set',{'enabled':False})
+        await asyncio.sleep(.6)
+        return sid
+    async def compare(view,name,action,expected,selected=(),closed=False,two=False,extra=None,label='Contour Editing'):
+        sid=await fixture(view,closed,two)
+        if selected:await c('draw.pointSelection.set',{'points':[{'strokeId':sid,'anchor':i} for i in selected]})
+        if extra:await extra(sid)
+        base=t.work/'base.animpkg';await c('project.saveAs',{'path':str(base),'onExists':'overwrite'})
+        before=await c('draw.drawing.get');pos=await t.position();t.clear()
+        rec=await action(sid)
+        after=await c('draw.drawing.get'); labels=await t.steps_since(pos)
+        commands=(rec or {}).get('commands') or []
+        if expected is None: commands=[]
+        if expected=='draw.point.delete':commands=[{'commandId':expected,'params':{'drawingId':before['drawingId'],'points':[{'strokeId':sid,'anchor':i} for i in selected]}}]
+        check(any(x.get('commandId')==expected for x in commands) if expected else not commands,name+' command',commands)
+        want=[] if not expected or expected in ('draw.pointSelection.set','draw.selection.set') else [label]
+        check([x[0] for x in labels]==want,name+' undo labels',labels)
+        if not want:check(before==after,name+' selection/cancel leaves document unchanged',None)
+        if name.endswith('-symmetric') or name.endswith('-broken'):
+            mode='symmetric' if name.endswith('-symmetric') else 'broken'
+            check(any(x.get('params',{}).get('handleMode')==mode for x in commands),name+' handle mode',commands)
+        size=await c('view.list');vs=size.get('views',[]) if isinstance(size,dict) else size
+        copy=t.work/'direct.animpkg';shutil.copyfile(base,copy)
+        args=['--mcp-stdio','--project',str(copy),'--policy','autonomous','--allow-path',str(t.work),'--user-dir',str(t.work/('head-'+str(len(list(t.work.glob('head-*'))))))]
+        for v in vs:
+            if v.get('size',{}).get('width'):args+=['--view-size',v['viewId']+'='+str(v['size']['width'])+'x'+str(v['size']['height'])]
+        async with stdio_client(StdioServerParameters(command=str(HEAD),args=args)) as streams:
+            async with ClientSession(*streams,list_roots_callback=roots) as hs:
+                await hs.initialize(); ht=d.Table(hs,t.run,p.OUT,t.work)
+                for cmd in commands:await ht.cmd(cmd['commandId'],cmd.get('params') or {})
+                direct=await ht.cmd('draw.drawing.get')
+                check(unstamped(after)==unstamped(direct),name+' D-32 exact direct content',{'equal':unstamped(after)==unstamped(direct)})
+        selection=await c('draw.selection.get')
+        if step==4:
+            desired=([0,1] if name.endswith('add-click') or name.endswith('marquee') else [] if name.endswith('empty') else [0])
+            check(sorted(x['anchor'] for x in selection.get('selectedPoints',[]))==desired,name+' selection reported',selection)
+        t.run.save(name+'.json',{'record':rec,'commands':commands,'before':before,'after':after,'labels':labels,'selection':selection})
+        if want:
+            await c('edit.undo');restored=await c('draw.drawing.get')
+            check(unstamped(restored)==unstamped(before),name+' undo exact content',None)
+        return before,after,rec
+    for view in ('drawingView','cameraView'):
+        def act(pts,mods=(),escape=False):return lambda sid:gesture(view,pts,mods,escape)
+        async def delete(sid):
+            d.front();t.click(view+'.canvas');await c('draw.pointSelection.set',{'points':[{'strokeId':sid,'anchor':i} for i in deletion]});d.key(0x2e);await asyncio.sleep(.7)
+        if step==3:
+            for tool,cmd,label,pts in [('brush','draw.stroke.add','Brush Tool',[(-80,60),(-40,80),(0,60)]),('select','draw.transform.apply','Move Object',[(-40,17),(-20,37)]),('rectangle','draw.rectangle.add','Rectangle Tool',[(-100,-60),(100,60)])]:
+                async def tool_extra(sid):await c('tool.active.set',{'toolId':tool})
+                await compare(view,view+'-old-'+tool,act(pts),cmd,extra=tool_extra,label=label)
+            await c('window.panel.set',{'panelId':'properties','visible':True})
+            for tool in (await c('tool.list'))['tools']:
+                tid=tool['toolId'];t.clear();t.click('drawingTools.'+tid);await asyncio.sleep(.2)
+                check((await c('tool.active.get'))['toolId']==tid,'toolbar '+tid,t.recorded())
+                t.run.save(view+'-options-'+tid+'.json',t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions\"]')?.outerHTML || document.querySelector('[data-tt-id=\"toolOptions.page\"]')?.outerHTML"))
+                await c('keymap.set',{'commandId':'tool.active.set','params':{'toolId':tid},'keys':'Ctrl+Alt+9','context':'drawing','onConflict':'override'})
+                t.click('drawingTools.'+('brush' if tid!='brush' else 'select'));t.clear();d.key(0x39,0x11,0x12);await asyncio.sleep(.2)
+                check((await c('tool.active.get'))['toolId']==tid,'shortcut '+tid,await c('tool.options.get',{'toolId':tid}))
+        elif step==4:
+            for name,pts,mods,selected in [('click',[(-80,0)]*2,(),()),('add-click',[(0,0)]*2,(0x10,),(0,)),('marquee',[(-100,-50),(20,50)],(),()),('empty',[(120,100)]*2,(),(0,1))]:
+                await compare(view,view+'-'+name,act(pts,mods),'draw.selection.set' if name=='empty' else 'draw.pointSelection.set',selected)
+        elif step==5:
+            for name,pts,mods,selected,cmd in [('anchor',[(-80,0),(-65,15)],(),(),'draw.point.move'),('two',[(-80,0),(-65,15)],(),(0,1),'draw.point.move'),('segment',[(-40,16.875),(-40,36.875)],(),(),'draw.segment.move'),('symmetric',[(25,35),(35,45)],(),(1,),'draw.point.set'),('broken',[(25,35),(35,45)],(0x12,),(1,),'draw.point.set')]:
+                await compare(view,view+'-'+name,act(pts,mods),cmd,selected)
+            await compare(view,view+'-escape',act([(-80,0),(-60,20)],escape=True),None)
+            for enabled in (False,True):
+                async def snap_extra(sid):
+                    doc=await c('draw.drawing.get');layer=next(n['id'] for n in doc['nodes'] if n.get('type')=='layer')
+                    await c('draw.line.add',{'from':{'x':-40,'y':50},'to':{'x':40,'y':50},'layer':layer})
+                    await c('draw.selection.set',{'by':'ids','ids':[sid]})
+                    await c('tool.snapToContour.set',{'enabled':enabled})
+                b,a,r=await compare(view,view+'-snap-other-'+str(enabled),act([(-80,0),(-20,45)]),'draw.point.move',extra=snap_extra)
+                point=xy(stroke(a)['bezier'][0]);check(abs(point[1]-(50 if enabled else 45))<1.1,view+' other stroke snapping '+str(enabled),point)
+                async def own_extra(sid):await c('tool.snapToContour.set',{'enabled':enabled})
+                b,a,r=await compare(view,view+'-snap-own-'+str(enabled),act([(-80,0),(-5,0)]),'draw.point.move',extra=own_extra)
+                point=xy(stroke(a)['bezier'][0]);check(abs(point[0]+5)<1.1,view+' D-76 own stroke excluded '+str(enabled),point)
+        elif step==6:
+            for name,point in [('reset',(0,0)),('end',(-80,0))]:
+                before,after,rec=await compare(view,view+'-'+name,act([point]*2,(0x12,)),'draw.point.set')
+                if name=='reset':
+                    b=stroke(before)['bezier'];a=stroke(after)['bezier'];anchor=xy(b[3])
+                    vectors=lambda arr:[tuple(arr[i][k]-anchor[j] for j,k in enumerate(('x','y'))) for i in (2,4)]
+                    bv,av=vectors(b),vectors(a)
+                    check(abs(av[0][0]*av[1][1]-av[0][1]*av[1][0])<1e-6 and all(abs(math.hypot(*x)-math.hypot(*y))<1e-6 for x,y in zip(bv,av)),view+' D-75 reset collinear lengths',{'before':bv,'after':av})
+            async def zero(sid):await c('draw.point.set',{'strokeId':sid,'anchor':1,'inHandle':{'x':0,'y':0},'outHandle':{'x':0,'y':0},'handleMode':'broken'})
+            await compare(view,view+'-zero-reset',act([(0,0)]*2,(0x12,)),'draw.point.set',extra=zero)
+            before,after,rec=await compare(view,view+'-insert',act([(-41.875,16.875)]*2,(0x11,)),'draw.point.add')
+            cmds=(rec or {}).get('commands') or []
+            if cmds and cmds[0]['commandId']=='draw.point.add':
+                split=cmds[0]['params']['t'];b=stroke(before)['bezier'];a=stroke(after)['bezier'];errors=[]
+                for i in range(101):
+                    u=i/100;old=curve(b[:4],u);new=curve(a[:4],u/split) if u<=split else curve(a[3:7],(u-split)/(1-split));errors.append(math.dist(old,new))
+                check(max(errors)<1e-6,view+' insert shape unchanged 101 samples',max(errors))
+        elif step==7:
+            for name,deletion,closed,two in [('one',(1,),False,False),('several',(0,1),False,False),('all',(0,1,2),False,False),('closed',(1,),True,False),('two',(0,),False,True)]:
+                await compare(view,view+'-delete-'+name,delete,'draw.point.delete',deletion,closed,two)
+            for zoom in (.5,1,2):
+                for kind,radius,center,direction,expected in [('anchor',6,(-80,0),(-1,0),'draw.point.move'),('handle',5,(25,35),(0,1),'draw.point.set'),('segment',4,(-41.875,16.875),(0,1),'draw.segment.move')]:
+                    for inside in (True,False):
+                        offset=(radius+(-.8 if inside else .8))/zoom
+                        start=tuple(center[k]+direction[k]*offset for k in (0,1))
+                        pts=[start,(start[0]+12/zoom,start[1]+12/zoom)]
+                        async def setzoom(sid):await c('view.zoom.set',{'viewId':view,'zoom':zoom})
+                        await compare(view,view+'-radius-'+kind+'-'+str(zoom)+'-'+str(inside),act(pts),expected if inside else 'draw.pointSelection.set',(1,) if kind=='handle' else (),extra=setzoom)
+        elif step==8:
+            sid=await fixture(view);await c('window.panel.set',{'panelId':'properties','visible':True});await asyncio.sleep(.6)
+            async def options(sid):
+                await c('window.panel.set',{'panelId':'properties','visible':True});await asyncio.sleep(.5)
+            async def thickness(sid):
+                t.click('toolOptions.selectedLine.thickness');d.key(0x41,0x11);t.clear();d.type_text('7');d.key(0x0d);await asyncio.sleep(.6)
+                return {'commands':[{'commandId':x['command'],'params':x['params']} for x in t.recorded() if x['command']=='draw.stroke.set']}
+            await compare(view,view+'-thickness-direct',thickness,'draw.stroke.set',extra=options,label='Edit Stroke')
+            sid=await fixture(view);await options(sid)
+            for val in ('7','abc','-1','101'):
+                ident='toolOptions.selectedLine.thickness';t.click(ident)
+                d.key(0x41,0x11);t.clear();d.type_text(val);d.key(0x0d);await asyncio.sleep(.6)
+                t.run.save(view+'-thickness-'+val+'.json',{'sent':t.recorded(),'drawing':await c('draw.drawing.get'),'field':t.cdp.js('document.activeElement.value')})
+                check(any(x['command']=='draw.stroke.set' for x in t.recorded()) if val=='7' else not t.recorded(),view+' thickness '+val,t.recorded())
+            t.clear();t.click('toolOptions.selectedLine.invisible');await asyncio.sleep(.6)
+            check(any(x['command']=='draw.stroke.set' and x['params'].get('kind')=='invisible' for x in t.recorded()),view+' invisible',t.recorded())
+            await c('draw.selection.set',{'by':'none'});await asyncio.sleep(.5)
+            t.run.save(view+'-no-single-line.json',t.cdp.js("document.querySelector('[data-tt-id=\"toolOptions.selectedLine\"]')?.outerHTML"))
+            check(not t.cdp.js("!!document.querySelector('[data-tt-id=\"toolOptions.selectedLine.thickness\"]:enabled')"),view+' no single line control unavailable',None)
+            d.front();rr=t.rect(view+'.canvas');origin=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(origin))
+            d.right_click_screen(origin.x+rr['x']*rr['dpr'],origin.y+rr['y']*rr['dpr']);await asyncio.sleep(.4)
+            tree=await d.McpTable.tree(t)
+            def flatten(n):return [n]+[x for ch in n.get('children',[]) for x in flatten(ch)]
+            items=[x for x in flatten(tree) if '.drawingMenu.' in x.get('id','')]
+            check({'edit.cut','edit.copy','edit.paste','edit.selectAll','edit.deselectAll'}.issubset({x.get('command',{}).get('commandId') for x in items}),view+' contour context drawing actions',items)
+            t.run.save(view+'-context.json',items);d.key(0x1b)
+            for mode in ('locked','hidden'):
+                sid=await fixture(view)
+                if mode=='locked':await c('draw.lock.set',{'locked':True})
+                else:
+                    cur=await c('draw.current.get');await c('element.visibility.set',{'elementIds':[cur['elementId']],'scope':'xsheet','visible':False})
+                before=await c('draw.drawing.get');pos=await t.position();rec=await gesture(view,[(-80,0),(-60,20)])
+                after=await c('draw.drawing.get')
+                check(before==after and await t.position()==pos,view+' '+mode+' no edit',rec)
+
+def live(step):
+    global PRIOR
+    PRIOR=load('c44b_prior','tests/adversarial/c44a-r1-live.py')
+    PRIOR.EVID=EVID; PRIOR.live_body=contour_body
+    result=PRIOR.live(step)
+    rows=json.loads((PRIOR.OUT/'transcript.json').read_text(encoding='utf-8'))
+    save('step'+str(step)+'.json',{'checks':len(rows),'failures':[r for r in rows if not r.get('ok')],'raw':str(PRIOR.OUT)})
+    return result
 if __name__=='__main__':
     case,step=sys.argv[1],int(sys.argv[2]); assert case in ('l1a','l1b')
     if case=='l1a' and step==2: sys.exit(regressions())
+    if step in (3,4,5,6,7,8): sys.exit(live(step))
     raise ValueError('Step not implemented yet')
