@@ -173,7 +173,7 @@ async def text_checks(t,step):
             r=await key(0x27,0x11);check(r['editor']['caret']==8,'D-81 word right punctuation',r['editor'])
             r=await key(0x08,0x11);check(content(r)=='one two three','D-81 word backspace punctuation',content(r))
             r=await key(0x2e,0x11);check(content(r)=='one two','D-81 word delete',content(r))
-            await fixture();r=await typed(chr(0x1f642));check(content(r)==chr(0x1f642),'D-81 paired UTF16 events one scalar',content(r))
+            await fixture();r=await typed(chr(0xd83d)+chr(0xde42));check(content(r)==chr(0x1f642),'D-81 paired UTF16 events one scalar',content(r))
 """
  source=source[:start]+branches+source[end:]
  namespace=dict(old.__dict__);exec(source,namespace);await namespace['text_body'](t,step)
