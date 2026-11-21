@@ -30,6 +30,27 @@ orchestrator's trim (D-40), the open spec issues, and the final head with its ru
 
 ## 4. Known CI margins (the M11 list)
 
+**Every test that failed on a commit later green on rerun during M4, and what was done** (ruling D-74's request; from
+the C4.4a round-5 handoff, kept here):
+
+| Test (owner) | Runs | Done |
+|---|---|---|
+| `c34_r1_contract` `sequential_wait_timeout_retains_job_identity` (reviewer, M3) | 43548393377, 43605840535, 43608320184, 43617667731, 43632661801, 43690187580, 43779448685, 44592525640 | C4.1: a heartbeat lock in my code (fixed); later the 50 ms margin: D-64 edit (5 s budget), retired |
+| `c34_round4` `a_queued_batch_wait_…_enqueue_not_from_its_start` (M3) | 43605840535 to 43632661801 (as above), 43772579796, 44668936063 | budget 5,000 ms (D-45), retired |
+| `c42a_r2_review` `cancelled_capture_jobs_finish_after_request_returns` (reviewer) | 43632661801 attempt 2 | a probed-wait defect in my code, fixed (C4.2a r5); the race skipped by D-17 |
+| `c41/availability` `passes_stay_constant_on_a_large_project` (mine) | 43617667731, 43698460055, 44809024880 | D-34/D-41 ratio form (C4.3b); D-71 item 2: the selection first pass's ratio 40 |
+| `c23_r2_timeout` `smooth_watchdog_reaches_mcp_and_next_read_answers` (reviewer) | 44715875251 | D-68 item 6: setup on a 5 s executor, retired |
+| `c24_aggregate` `aggregate_break_apart_and_size_limit_render_raw_observations` (mine) | 44809024880 | D-71 item 3: setup on a 120 s executor; `ok()` prints the envelope |
+| `c14_measurements` autosave (mine) | 44823278999 | the order observed instead of assumed (above) |
+| `drawing byte gate (macos)`: `fs.outsideRoots` on its fixture (headless session) | 43728082844 | the roots race: D-68 item 4 and D-73 item 1 |
+| `c01-r2-boundary` lint `spawnSync ETIMEDOUT`; `App.test.tsx` sensor report (mine) | 43390751786 | the first a runner timeout, rerun; the second fixed with an event-driven wait (C4.1) |
+| `c41-r2-desktop-floats` initial geometry (reviewer probe) | 44668936063 | a product defect: the float is built hidden (C4.4a r2) |
+
+`c14_r1_autosave` and `c23_r4_closure`/`c23_round3`/`c34_round3` were listed as flakes in C4.1/C4.2a handoffs but did
+not fail in a CI run after them.
+
+The retired margins:
+
 - **Retired (D-64):** `crates/executor/tests/c34_r1_contract.rs::sequential_wait_timeout_retains_job_identity` raced a
   50 ms margin (500 ms budget) on the 3-core macOS runner (run 44592525640, `53a1014e`). The test now runs with a 5 s
   budget (500 ms margin), `timeoutMs <= 4500` and a job that outlasts the wait on any runner; the margin is no longer an
