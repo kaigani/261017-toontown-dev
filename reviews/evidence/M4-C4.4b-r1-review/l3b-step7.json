@@ -1,1 +1,195 @@
-{"checks":3,"failures":["02 7.6 / design 7 no edit element-locked: [{\"type\": \"text\", \"id\": \"nd_01K7JJN80049R5XK9D2K6NTZBY\", \"text\": \"abcdX\", \"transform\": [1.0, 0.0, 0.0, 1.0, -100.048828125, 80.3125], \"widthMode\": \"auto\", \"width\": null, \"runs\": [{\"start\": 0, \"length\": 5, \"font\": \"sans-serif\", \"size\": 36.0, \"bold\": true, \"italic\": false, \"baseline\": \"normal\", \"kerning\": 0.0, \"autoKern\": true, \"colourId\": \"col_01M7ZJFHD30A59KKXKTM4E7PC7\", \"outlineColourId\": null}], \"paragraphs\": [{\"start\": 0, \"length\": 5, \"align\": \"left\", \"leftMargin\": 0.0, \"rightMargin\": 0.0, \"indent\": 0.0, \"lineSpacing\": 0.0}], \"bounds\": {\"x\": -100.048828125, \"y\": 38.916015625, \"width\": 108.0"],"raw":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-k5fl4ggw","results":[{"check":"02 7.6 / design 7 no edit element-locked","ok":false,"detail":[{"type":"text","id":"nd_01K7JJN80049R5XK9D2K6NTZBY","text":"abcdX","transform":[1.0,0.0,0.0,1.0,-100.048828125,80.3125],"widthMode":"auto","width":null,"runs":[{"start":0,"length":5,"font":"sans-serif","size":36.0,"bold":true,"italic":false,"baseline":"normal","kerning":0.0,"autoKern":true,"colourId":"col_01M7ZJFHD30A59KKXKTM4E7PC7","outlineColourId":null}],"paragraphs":[{"start":0,"length":5,"align":"left","leftMargin":0.0,"rightMargin":0.0,"indent":0.0,"lineSpacing":0.0}],"bounds":{"x":-100.048828125,"y":38.916015625,"width":108.03515625,"height":41.396484375},"parentId":null}]},{"check":"02 7.6 / design 7 no edit drawing-locked","ok":true,"detail":[{"type":"text","id":"nd_01K7JJN8009B6EEXGW2AADKHHJ","text":"abcd","transform":[1.0,0.0,0.0,1.0,-100.048828125,80.3125],"widthMode":"auto","width":null,"runs":[{"start":0,"length":4,"font":"sans-serif","size":36.0,"bold":true,"italic":false,"baseline":"normal","kerning":0.0,"autoKern":true,"colourId":"col_01M7ZJFNYVP27XTDC7ZJ2NPDJS","outlineColourId":null}],"paragraphs":[{"start":0,"length":4,"align":"left","leftMargin":0.0,"rightMargin":0.0,"indent":0.0,"lineSpacing":0.0}],"bounds":{"x":-100.048828125,"y":38.916015625,"width":84.0234375,"height":41.396484375},"parentId":null}]},{"check":"02 7.6 / design 7 no edit hidden","ok":true,"detail":[{"type":"text","id":"nd_01K7JJN8008J77YNTBS17DK0G5","text":"abcd","transform":[1.0,0.0,0.0,1.0,-100.048828125,80.3125],"widthMode":"auto","width":null,"runs":[{"start":0,"length":4,"font":"sans-serif","size":36.0,"bold":true,"italic":false,"baseline":"normal","kerning":0.0,"autoKern":true,"colourId":"col_01M7ZJFTHQVX2PXYYT00GPDFVE","outlineColourId":null}],"paragraphs":[{"start":0,"length":4,"align":"left","leftMargin":0.0,"rightMargin":0.0,"indent":0.0,"lineSpacing":0.0}],"bounds":{"x":-100.048828125,"y":38.916015625,"width":84.0234375,"height":41.396484375},"parentId":null}]}]}
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-zn9kdxmb",
+  "results": [
+    {
+      "check": "02 7.6 / design 7 no edit element-locked",
+      "ok": false,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN80014GTCVSZ8FZ7KZHR",
+          "text": "abcdX",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.048828125,
+            80.3125
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 5,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJVFHTM2M6ZB55EQW5ME8R",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 5,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.048828125,
+            "y": 38.916015625,
+            "width": 102.076171875,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    {
+      "check": "04 10.4 / design 7 no editor element-locked",
+      "ok": false,
+      "detail": {
+        "anchor": 1,
+        "caret": 1,
+        "textId": "dr_01K7JJN800A5Q6XNN1TZY5X09G/nd_01K7JJN80014GTCVSZ8FZ7KZHR"
+      }
+    },
+    {
+      "check": "02 7.6 / design 7 no edit drawing-locked",
+      "ok": true,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN8000X0F8VJGM65HCCT1",
+          "text": "abcd",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.048828125,
+            80.3125
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 4,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJVNC80GHG1157DGSKX46X",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 4,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.048828125,
+            "y": 38.916015625,
+            "width": 78.064453125,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    {
+      "check": "04 10.4 / design 7 no editor drawing-locked",
+      "ok": false,
+      "detail": {
+        "anchor": 1,
+        "caret": 1,
+        "textId": "dr_01K7JJN800D7RZCTMAJZV1QPVZ/nd_01K7JJN8000X0F8VJGM65HCCT1"
+      }
+    },
+    {
+      "check": "02 7.6 / design 7 no edit hidden",
+      "ok": true,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800S9XAXBREV016P5TV",
+          "text": "abcd",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.048828125,
+            80.3125
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 4,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M7ZJVV5VXVE3R0Z9EDJPRT80",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 4,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.048828125,
+            "y": 38.916015625,
+            "width": 78.064453125,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    {
+      "check": "04 10.4 / design 7 no editor hidden",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": [
+    "02 7.6 / design 7 no edit element-locked",
+    "04 10.4 / design 7 no editor element-locked",
+    "04 10.4 / design 7 no editor drawing-locked"
+  ]
+}
