@@ -695,9 +695,10 @@ async def text_body(t,step):
         tree=await d.McpTable.tree(t)
         canvas=d.McpTable.node(tree,view+'.canvas') or {}
         v=json.loads(canvas.get('value') or '{}')
-        row={'name':name,'commands':[x for x in t.recorded() if t.kinds.get(x['command'])!='query'],'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True,**({'drawingId':target_drawing} if target_drawing else {})}),'editor':t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id=\"canvas.textEditor\"]');return e?{anchor:Number(e.dataset.ttAnchor),caret:Number(e.dataset.ttCaret),textId:e.dataset.ttTextId}:null})()"),'canvas':v,'panelState':t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"text.\"]')].map(e=>({id:e.dataset.ttId,value:e.value,checked:e.getAttribute('aria-checked'),placeholder:e.getAttribute('placeholder')}))"),'status':t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent"),'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
+        row={'name':name,'commands':[x for x in t.recorded() if t.kinds.get(x['command'])!='query'],'history':await c('edit.history.get',{'limit':1000}),'drawing':await c('draw.drawing.get',{'flatten':True,**({'drawingId':target_drawing} if target_drawing else {})}),'editor':t.cdp.js("(()=>{const e=document.querySelector('[data-tt-id=\"canvas.textEditor\"]');return e?{anchor:Number(e.dataset.ttAnchor),caret:Number(e.dataset.ttCaret),textId:e.dataset.ttTextId}:null})()"),'canvas':v,'doubleEvents':t.cdp.js('window.reviewDoubles || []'),'panelState':t.cdp.js("[...document.querySelectorAll('[data-tt-id^=\"text.\"]')].map(e=>({id:e.dataset.ttId,value:e.value,checked:e.getAttribute('aria-checked'),placeholder:e.getAttribute('placeholder')}))"),'status':t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent"),'role':d.McpTable.node(tree,'text.role'),'tool':await c('tool.active.get')}
         rows.append(row);t.clear();return row
     async def gesture(pts,double=False):
+        if double:t.cdp.js("window.reviewDoubles=[];document.addEventListener('dblclick',e=>window.reviewDoubles.push({x:e.clientX,y:e.clientY,target:e.target.dataset.ttId}),{capture:true})")
         m=(await c('draw.viewMapping.get',{'view':view}))['drawingToView']
         eq=load('text_eq','scripts/c44b-gesture-equivalence.py')
         rr=t.cdp.js("document.querySelector('[data-tt-id=\""+view+".canvas\"]').getBoundingClientRect().toJSON()")
@@ -709,7 +710,7 @@ async def text_body(t,step):
             await asyncio.sleep(.1)
         d.e6._send_button(False)
         if double:
-            await asyncio.sleep(.08);d.e6._send_button(True);d.e6._send_button(False)
+            await asyncio.sleep(.08);d.e6._send_button(True);await asyncio.sleep(.05);d.e6._send_button(False)
         await pause()
     async def fixture(text='',width=None,v='drawingView'):
         nonlocal view,eid,target_drawing
