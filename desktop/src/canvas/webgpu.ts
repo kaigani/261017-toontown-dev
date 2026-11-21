@@ -35,7 +35,9 @@ struct VOut { @builtin(position) pos: vec4f, @location(0) @interpolate(flat) col
 fn mapPos(p: vec2f) -> vec2f {
   // The preview's envelope in drawing units (design note 4 §6; envelope.ts packMap): 1 projective, 2 bilinear.
   if (u.mapKind == 1u) {
-    let w = u.map[1].z * p.x + u.map[1].w * p.y + 1.0;
+    var w = u.map[1].z * p.x + u.map[1].w * p.y + 1.0;
+    // The kernel's signed denominator guard (Envelope::apply; finding C44B-R1S-06): no division by zero at the pole.
+    if (abs(w) < 1e-12) { w = select(1e-12, -1e-12, w < 0.0); }
     return vec2f((u.map[0].x * p.x + u.map[0].y * p.y + u.map[0].z) / w,
                  (u.map[0].w * p.x + u.map[1].x * p.y + u.map[1].y) / w);
   }

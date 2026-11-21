@@ -459,4 +459,20 @@ describe('the shared text-field key rule (D-73 item 2)', () => {
     for (const c of TEXT_FIELD_KEYS.corpus)
       expect([c.seq, c.mac, textFieldOwnsSequence(c.seq, c.mac)]).toEqual([c.seq, c.mac, c.owned]);
   });
+
+  // SI-193 (finding C44B-R1S-04): the canvas's text editor gives undo and redo to the document; the kernel checks the
+  // same cases (`keymap.rs` `the_canvas_text_kind_gives_undo_and_redo_to_the_document`).
+  it('answers the canvas text kind as the kernel does, and an ordinary field keeps its undo', () => {
+    for (const c of TEXT_FIELD_KEYS.canvasTextCorpus) {
+      const owned = textFieldOwnsSequence(c.seq, c.mac, 'canvasText');
+      expect([c.seq, c.mac, owned]).toEqual([c.seq, c.mac, c.owned]);
+    }
+    expect(textFieldOwnsSequence('Primary+Z', false)).toBe(true);
+    const editor = document.createElement('textarea');
+    editor.dataset['ttFieldKind'] = 'canvasText';
+    const plain = document.createElement('textarea');
+    const z = { key: 'z', altKey: false, ctrlKey: true, metaKey: false };
+    expect(fieldOwnsKey(editor, 'Primary+Z', z, false)).toBe(false);
+    expect(fieldOwnsKey(plain, 'Primary+Z', z, false)).toBe(true);
+  });
 });

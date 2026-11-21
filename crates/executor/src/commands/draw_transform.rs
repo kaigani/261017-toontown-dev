@@ -1280,7 +1280,9 @@ pub(crate) enum HandleMode {
     Symmetric,
     /// Handles independent.
     Broken,
-    /// Both handles removed (a corner).
+    /// The handles made collinear (smooth), each keeping its length, along the out handle minus the in handle; with
+    /// both handles zero, along the next anchor minus the previous one, a third of each adjacent chord long (an open end
+    /// takes its one neighbour's direction and no handle on its free side). SI-186, ruling D-75 item 4.
     Reset,
 }
 

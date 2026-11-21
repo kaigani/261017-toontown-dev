@@ -237,6 +237,9 @@ pub struct ShellReport {
     /// A text field has focus.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub text_focus: Option<bool>,
+    /// The focused text field's kind: `canvasText` for the canvas's text editor, `ordinary` otherwise (SI-193).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub text_field_kind: Option<String>,
     /// The status bar's description segment.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -403,7 +406,9 @@ fn resolve_in(
     }
     // D-73 item 2: the one text-field rule the window's dispatcher reads too (function keys reach the keymap, Shift+F10
     // excepted; the platform's text-editing chords are the field's).
-    if s.ui.shell().sensors.text_focus && crate::keymap::text_field_owns(seq, platform) {
+    // SI-193: in the canvas's text editor the undo and redo chords are the document's (the rule's `fieldKinds`).
+    let sensors = &s.ui.shell().sensors;
+    if sensors.text_focus && crate::keymap::text_field_owns_kind(seq, platform, sensors.text_field_kind) {
         return Ok(KeyResolution::Suspended { keys: canonical, reason: "textField".into() });
     }
     let bindings = crate::keymap::effective(&s.env.settings.keymap, platform);
@@ -689,6 +694,9 @@ impl ExecutorHandle {
             }
             if let Some(t) = report.text_focus {
                 sh.sensors.text_focus = t;
+            }
+            if let Some(k) = report.text_field_kind {
+                sh.sensors.text_field_kind = crate::keymap::FieldKind::from_report(&k);
             }
             if let Some(d) = report.description {
                 sh.sensors.description = d;

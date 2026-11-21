@@ -211,6 +211,8 @@ pub struct Sensors {
     pub modal: Option<ModalReport>,
     /// A text field has focus (unmodified keys go to the field; 01 §8.4).
     pub text_focus: bool,
+    /// The focused text field's kind (SI-193): the canvas's text editor gives undo and redo to the document.
+    pub text_field_kind: crate::keymap::FieldKind,
     /// Status-bar description segment: the hovered item's long description (01 §9.1).
     pub description: String,
     /// Status-bar pointer segment text (pointer coordinates in the current unit).

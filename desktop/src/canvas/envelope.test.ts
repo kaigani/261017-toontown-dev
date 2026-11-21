@@ -22,15 +22,19 @@ import {
 } from './envelope';
 import type { Affine } from './geometry';
 
+interface GoldenCase {
+  name: string;
+  box: [number, number, number, number];
+  corners: [Pt, Pt, Pt, Pt];
+  mapping: 'auto' | 'projective' | 'bilinear';
+  points: Pt[];
+  mapped: Pt[];
+}
+
 interface Golden {
-  cases: {
-    name: string;
-    box: [number, number, number, number];
-    corners: [Pt, Pt, Pt, Pt];
-    mapping: 'auto' | 'projective' | 'bilinear';
-    points: Pt[];
-    mapped: Pt[];
-  }[];
+  cases: GoldenCase[];
+  /** Points at and near the projective map's pole (finding C44B-R1S-06). */
+  poles: GoldenCase[];
 }
 
 const golden = JSON.parse(
@@ -55,6 +59,40 @@ describe("the window's map is the kernel's (envelopes.json)", () => {
         const want = must(c.mapped[i]);
         expect(Math.abs(q[0] - want[0])).toBeLessThanOrEqual(1e-9);
         expect(Math.abs(q[1] - want[1])).toBeLessThanOrEqual(1e-9);
+      });
+    });
+  }
+});
+
+// Finding C44B-R1S-06: at the pole of a projective map (outside the box) the kernel clamps the denominator to
+// ±1e-12; the window's map, the packed map's arithmetic (both shaders') and the kernel agree, and nothing is infinite.
+describe('the projective map at its pole (envelopes.json poles)', () => {
+  for (const c of golden.poles) {
+    it(`${c.name}: the window's map is the kernel's, guarded`, () => {
+      const m = must(envelopeOf(c.box, c.corners, c.mapping));
+      expect(m.kind).toBe('projective');
+      c.points.forEach((p, i) => {
+        const q = mapPoint(m, p);
+        const want = must(c.mapped[i]);
+        for (const k of [0, 1]) {
+          expect(Number.isFinite(q[k])).toBe(true);
+          const tol = 1e-9 * Math.max(1, Math.abs(must(want[k])));
+          expect(Math.abs(must(q[k]) - must(want[k]))).toBeLessThanOrEqual(tol);
+        }
+      });
+    });
+    it(`${c.name}: the packed map stays finite and agrees away from the pole`, () => {
+      const m = must(envelopeOf(c.box, c.corners, c.mapping));
+      const packed = packMap(m);
+      c.points.forEach((p, i) => {
+        const q = unpackApply(packed.kind, packed.data, p);
+        expect(Number.isFinite(q[0]) && Number.isFinite(q[1])).toBe(true);
+        const want = must(c.mapped[i]);
+        // Away from the pole the float32 coefficients agree within 1e-5; near it they only bound the magnitude.
+        if (Math.abs(must(want[0])) < 10 && Math.abs(must(want[1])) < 10) {
+          expect(Math.abs(q[0] - must(want[0]))).toBeLessThan(1e-5);
+          expect(Math.abs(q[1] - must(want[1]))).toBeLessThan(1e-5);
+        }
       });
     });
   }

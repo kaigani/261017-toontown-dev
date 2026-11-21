@@ -2347,6 +2347,30 @@ async def build_and_run(t: Table, only: set) -> None:
                  "effect": lambda b, a, k: "Hi" in a, "disabled": None,
                  "mcpReason": "real keys typed into the canvas's editor; an agent types with type_text (the Text panel rows)"})
 
+    async def typed_hi():
+        """A real click on empty canvas with the Text tool, then "Hi" typed by real keys (one Typing step)."""
+        await typing_setup()
+        type_text("Hi")
+        await asyncio.sleep(1.0)
+
+    async def undo_in_editor():
+        """SI-193 (finding C44B-R1S-04, ruling D-78 item 5): Ctrl+Z pressed with the canvas's editor focused."""
+        c44b["focus"] = t.cdp.js("(() => { const e = document.activeElement; return e ? (e.getAttribute('data-tt-id') || e.tagName) : null; })()")
+        key(0x5A, 0x11)
+        await asyncio.sleep(1.0)
+        return f"Ctrl+Z pressed by real keys in the focused editor (focus: {c44b['focus']})"
+
+    rows.append({"name": "Text tool › Primary+Z in the editor undoes the typing (the document's undo)",
+                 "spec": "SI-193 (Primary+Z is the document's undo while text is edited in a view); 01 §8.4; finding C44B-R1S-04",
+                 "action": ("none",), "custom": undo_in_editor,
+                 # The keymap sends the document's undo (the editor's text area keeps no history of its own).
+                 "expect": ("edit.undo", "the document's undo, sent by the keymap"), "label": None,
+                 "match": lambda prm, b: True,
+                 "setup": typed_hi, "state": typed_texts,
+                 "effect": lambda b, a, k: any("Hi" in x for x in b) and not any("Hi" in x for x in a), "disabled": None,
+                 "mcpReason": "real keys in the canvas's editor; the kernel's resolution of the chord in that field is "
+                              "c44b_text.rs in_the_canvas_text_editor_undo_is_the_documents"})
+
     rows.append({"name": "Text panel (selected text) › a range over two runs shows Mixed",
                  "spec": "02 §7.6.1; design note 5 §6 (a field that differs over the range is Mixed)",
                  "action": ("none",), "expect": None, "label": None,

@@ -282,6 +282,105 @@ fn pending_format_applies_to_the_next_keystroke_without_a_step() {
 }
 
 #[test]
+fn a_pending_format_ends_the_typing_run() {
+    // SI-191 (finding C44B-R1S-01): "A, bold, B" is two "Typing" steps; undo removes B only.
+    let h = ready();
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("A".into()));
+    ok(&h, "draw.textFormat.set", json!({ "drawingId": D1, "textId": id, "start": 1, "length": 0, "bold": true }));
+    input(&h, Input::Text("B".into()));
+    assert_eq!(text_of(&h, &id), "AB");
+    let l = labels(&h);
+    assert_eq!(&l[l.len() - 3..], ["New Text Object", "Typing", "Typing"], "{l:?}");
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(text_of(&h, &id), "A", "the undo removes B only");
+}
+
+#[test]
+fn the_caret_follows_the_text_after_an_undo_and_after_another_origins_edit() {
+    // Finding C44B-R1S-02: the session's indices are reconciled with the text after every change.
+    let h = ready();
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("ABC".into()));
+    assert_eq!(session(&h)["caret"].as_u64(), Some(3));
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(text_of(&h, &id), "");
+    assert_eq!(session(&h)["caret"].as_u64(), Some(0), "clamped after the undo");
+    let e = input(&h, Input::Text("X".into()));
+    assert_eq!(e.status, Status::Ok, "{e:?}");
+    assert_eq!(text_of(&h, &id), "X");
+    // Another origin shortens the text under the caret.
+    input(&h, Input::Text("YZ".into()));
+    assert_eq!(session(&h)["caret"].as_u64(), Some(3));
+    let agent = Origin::Agent {
+        session: "s1".into(),
+        name: "Test".into(),
+        scopes: [tt_registry::Scope::Read, tt_registry::Scope::Edit].into_iter().collect(),
+    };
+    let env = h.invoke(tt_executor::Invocation {
+        command: "draw.text.set".into(),
+        params: json!({ "drawingId": D1, "textId": id, "delete": { "start": 1, "length": 2 } }),
+        options: Default::default(),
+        origin: agent,
+    });
+    assert_eq!(env.status, Status::Ok, "{env:?}");
+    assert_eq!(text_of(&h, &id), "X");
+    let s = session(&h);
+    assert_eq!((s["caret"].as_u64(), s["anchor"].as_u64()), (Some(1), Some(1)), "{s}");
+    let e = input(&h, Input::Text("W".into()));
+    assert_eq!(e.status, Status::Ok, "{e:?}");
+    assert_eq!(text_of(&h, &id), "XW");
+}
+
+#[test]
+fn typed_text_takes_the_current_colour_in_an_existing_object() {
+    // 02 §7.6, design note 5 §6 (finding C44B-R1S-03): text typed into an object whose run is another colour takes the
+    // current colour.
+    let h = ready();
+    let d = h.snapshot().unwrap().unwrap();
+    let cs: Vec<String> = d.palettes().flat_map(|p| p.swatches()).map(|s| s.colour_id().as_str().to_owned()).collect();
+    let (red, blue) = (cs[0].clone(), cs[1].clone());
+    ok(&h, "colour.current.set", json!({ "colourId": red }));
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("ab".into()));
+    ok(&h, "colour.current.set", json!({ "colourId": blue }));
+    input(&h, Input::Text("X".into()));
+    assert_eq!(text_of(&h, &id), "abX");
+    let d = ok(&h, "draw.drawing.get", json!({ "drawingId": D1, "flatten": true }));
+    let n = d["nodes"].as_array().unwrap().iter().find(|n| n["id"] == id.as_str()).cloned().unwrap();
+    let runs = n["runs"].as_array().unwrap();
+    assert_eq!(runs.first().unwrap()["colourId"], json!(red), "{runs:?}");
+    assert_eq!(runs.last().unwrap()["colourId"], json!(blue), "the typed X is blue: {runs:?}");
+    assert_eq!(runs.last().unwrap()["length"], 1, "{runs:?}");
+}
+
+#[test]
+fn in_the_canvas_text_editor_undo_is_the_documents() {
+    // SI-193 (finding C44B-R1S-04): with the canvas's text editor focused, Primary+Z resolves to the document's undo;
+    // in an ordinary text field it stays the field's.
+    use tt_executor::host::{KeyResolution, ShellReport};
+    let h = ready();
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("ABC".into()));
+    h.report_shell(ShellReport {
+        text_focus: Some(true),
+        text_field_kind: Some("canvasText".into()),
+        ..Default::default()
+    });
+    match h.resolve_key("Primary+Z").unwrap() {
+        KeyResolution::Command { command_id, .. } => assert_eq!(command_id, "edit.undo"),
+        other => panic!("Primary+Z in the canvas's text editor: {other:?}"),
+    }
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(text_of(&h, &id), "", "the typing run is undone");
+    h.report_shell(ShellReport { text_field_kind: Some("ordinary".into()), ..Default::default() });
+    assert!(
+        matches!(h.resolve_key("Primary+Z").unwrap(), KeyResolution::Suspended { ref reason, .. } if reason == "textField"),
+        "an ordinary field keeps its own undo"
+    );
+}
+
+#[test]
 fn type_text_needs_a_session_and_another_origin_waits() {
     let h = ready();
     let e = input(&h, Input::Text("x".into()));

@@ -51,11 +51,26 @@ const TEXT_EDITING: Readonly<Record<'mac' | 'other', ReadonlySet<string>>> = {
   mac: new Set(TEXT_FIELD_KEYS.textEditing.mac),
 };
 const FUNCTION_KEYS_KEPT: ReadonlySet<string> = new Set(TEXT_FIELD_KEYS.functionKeysKept);
+/** SI-193 (finding C44B-R1S-04): the chords the canvas's text editor gives to the document (undo and redo). */
+const CANVAS_TEXT_DOCUMENT_KEYS: Readonly<Record<'mac' | 'other', ReadonlySet<string>>> = {
+  other: new Set(TEXT_FIELD_KEYS.fieldKinds.canvasText.documentKeys.other),
+  mac: new Set(TEXT_FIELD_KEYS.fieldKinds.canvasText.documentKeys.mac),
+};
+
+/** The kind of a text field (the shared rule's `fieldKinds`): the canvas's text editor is marked
+ *  `data-tt-field-kind="canvasText"`; every other field is ordinary. */
+export type FieldKind = 'canvasText' | 'ordinary';
+
+export function fieldKindOf(el: EventTarget | null): FieldKind {
+  return el instanceof HTMLElement && el.dataset['ttFieldKind'] === 'canvasText' ? 'canvasText' : 'ordinary';
+}
 
 /** The rule over a key sequence alone (D-73 item 2), as the kernel applies it: a function key, plain or with Shift, is
  *  the keymap's unless the field keeps it (Shift+F10); any other key without Primary, Ctrl or Alt is the field's; a
  *  chord with them is the field's when it is one of the platform's text-editing chords. */
-export function textFieldOwnsSequence(seq: string, mac: boolean): boolean {
+export function textFieldOwnsSequence(seq: string, mac: boolean, kind: FieldKind = 'ordinary'): boolean {
+  // SI-193: in the canvas's text editor undo and redo are the document's (the kernel's `text_field_owns_kind`).
+  if (kind === 'canvasText' && CANVAS_TEXT_DOCUMENT_KEYS[mac ? 'mac' : 'other'].has(seq)) return false;
   if (/^(Shift\+)?F\d+$/.test(seq)) return FUNCTION_KEYS_KEPT.has(seq);
   if (isUnmodified(seq)) return true;
   return TEXT_EDITING[mac ? 'mac' : 'other'].has(seq);
@@ -87,7 +102,7 @@ export function fieldOwnsKey(
   const typed = e.key.length === 1 && e.key !== ' ';
   if (typed && e.getModifierState?.('AltGraph') === true) return true;
   if (typed && mac && e.altKey && !e.metaKey && !e.ctrlKey) return true;
-  return textFieldOwnsSequence(seq, mac);
+  return textFieldOwnsSequence(seq, mac, fieldKindOf(target));
 }
 
 /** A dead key, or a key of an input method's composition (D-69 item 2): the browser composes the character. */
@@ -296,7 +311,11 @@ export function usePageReady(services: ShellServices): void {
 export function useTextFocusReport(services: ShellServices): void {
   useEffect(() => {
     const report = () => {
-      void services.engine.report({ textFocus: isTextField(document.activeElement) }).catch(() => undefined);
+      const el = document.activeElement;
+      // The field's kind goes with the fact, so the kernel's key resolution applies the same rule (SI-193).
+      void services.engine
+        .report({ textFocus: isTextField(el), textFieldKind: fieldKindOf(el) })
+        .catch(() => undefined);
     };
     window.addEventListener('focusin', report);
     window.addEventListener('focusout', report);

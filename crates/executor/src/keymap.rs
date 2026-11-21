@@ -624,12 +624,63 @@ pub fn text_field_owns(seq: &Sequence, platform: Platform) -> bool {
     list.contains(&canonical)
 }
 
+/// The kind of the focused text field (SI-193; finding C44B-R1S-04): the canvas's text editor gives its undo and redo
+/// chords to the document; every other field keeps them.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum FieldKind {
+    /// A text input, text area, numeric field, rename editor or editable content.
+    #[default]
+    Ordinary,
+    /// The canvas's text editor (the Text tool's session).
+    CanvasText,
+}
+
+impl FieldKind {
+    /// The kind a window reports (`textFieldKind`): `canvasText`, else ordinary.
+    #[must_use]
+    pub fn from_report(kind: &str) -> Self {
+        if kind == "canvasText" { Self::CanvasText } else { Self::Ordinary }
+    }
+}
+
+/// [`text_field_owns`] for a field of `kind`: in the canvas's text editor the shared rule's `documentKeys` (undo and
+/// redo) are not the field's, so they reach the keymap; the rest is the ordinary rule.
+#[must_use]
+pub fn text_field_owns_kind(seq: &Sequence, platform: Platform, kind: FieldKind) -> bool {
+    if kind == FieldKind::CanvasText
+        && let Some(k) = &text_field_rule().field_kinds.canvas_text
+    {
+        let list = if platform == Platform::Macos { &k.document_keys.mac } else { &k.document_keys.other };
+        if list.contains(&seq.canonical()) {
+            return false;
+        }
+    }
+    text_field_owns(seq, platform)
+}
+
 /// The shared rule's data (D-73 item 2).
 #[derive(Debug, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct TextFieldRule {
     function_keys_kept: Vec<String>,
     text_editing: TextEditing,
+    #[serde(default)]
+    field_kinds: FieldKinds,
+}
+
+/// The field kinds with their own exceptions (SI-193).
+#[derive(Debug, Default, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct FieldKinds {
+    #[serde(default)]
+    canvas_text: Option<KindRule>,
+}
+
+/// A field kind's chords that belong to the document.
+#[derive(Debug, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct KindRule {
+    document_keys: TextEditing,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -644,6 +695,7 @@ fn text_field_rule() -> &'static TextFieldRule {
         serde_json::from_str(include_str!("../../../desktop/src/keys/text-field-keys.json")).unwrap_or(TextFieldRule {
             function_keys_kept: vec!["Shift+F10".into()],
             text_editing: TextEditing { other: Vec::new(), mac: Vec::new() },
+            field_kinds: FieldKinds::default(),
         })
     })
 }
@@ -674,6 +726,48 @@ mod text_field_tests {
             assert!(seq.is_ok(), "{} parses", c.seq);
             let Ok(seq) = seq else { continue };
             assert_eq!(super::text_field_owns(&seq, platform), c.owned, "{} mac {}", c.seq, c.mac);
+        }
+    }
+
+    /// SI-193 (finding C44B-R1S-04): in the canvas's text editor the undo and redo chords are the document's; the
+    /// ordinary rule is unchanged for every other field.
+    #[test]
+    fn the_canvas_text_kind_gives_undo_and_redo_to_the_document() {
+        #[derive(serde::Deserialize)]
+        struct Case {
+            seq: String,
+            mac: bool,
+            owned: bool,
+        }
+        #[derive(serde::Deserialize)]
+        #[serde(rename_all = "camelCase")]
+        struct File {
+            canvas_text_corpus: Vec<Case>,
+        }
+        let parsed: Result<File, _> =
+            serde_json::from_str(include_str!("../../../desktop/src/keys/text-field-keys.json"));
+        assert!(parsed.is_ok(), "the shared rule's file parses");
+        let Ok(file) = parsed else { return };
+        assert!(file.canvas_text_corpus.len() >= 8);
+        for c in file.canvas_text_corpus {
+            let platform = if c.mac { super::Platform::Macos } else { super::Platform::Windows };
+            let seq = super::parse(&c.seq, platform);
+            assert!(seq.is_ok(), "{} parses", c.seq);
+            let Ok(seq) = seq else { continue };
+            assert_eq!(
+                super::text_field_owns_kind(&seq, platform, super::FieldKind::CanvasText),
+                c.owned,
+                "{} mac {}",
+                c.seq,
+                c.mac
+            );
+        }
+        // An ordinary field keeps its own undo.
+        let platform = super::Platform::Windows;
+        let undo = super::parse("Primary+Z", platform);
+        assert!(undo.is_ok());
+        if let Ok(undo) = undo {
+            assert!(super::text_field_owns_kind(&undo, platform, super::FieldKind::Ordinary));
         }
     }
 }

@@ -1,6 +1,15 @@
 {
   "comment": "Ruling D-73 item 2 (D-66 item 2, D-69 item 2): the one rule of which keys a focused text-entry element owns, read by the page's key dispatcher (desktop/src/shell/windowHooks.ts fieldOwnsKey) and by the kernel's key resolution (crates/executor/src/keymap.rs text_field_owns, which the window's dispatch_key and the agents' key tool share). A function key, plain or with Shift, is the keymap's unless listed in functionKeysKept; any other key without Primary, Ctrl or Alt is the field's; a chord with them is the field's when listed in textEditing for the platform. The page alone also owns dead keys, composition keys and characters typed with AltGr or Option, which have no key sequence.",
   "functionKeysKept": ["Shift+F10"],
+  "fieldKinds": {
+    "canvasText": {
+      "comment": "SI-193 (finding C44B-R1S-04, ruling D-78 item 5): the canvas's text editor (the element marked data-tt-field-kind=\"canvasText\"; the kernel's sensor textFieldKind) is a text field whose undo and redo chords belong to the document: they are not the field's and reach the keymap (edit.undo, edit.redo). Ordinary fields keep their own undo.",
+      "documentKeys": {
+        "other": ["Primary+Z", "Primary+Y", "Primary+Shift+Z"],
+        "mac": ["Primary+Z", "Primary+Shift+Z"]
+      }
+    }
+  },
   "textEditing": {
     "other": [
       "Primary+A",
@@ -74,6 +83,17 @@
       "Ctrl+Shift+P"
     ]
   },
+  "canvasTextCorpus": [
+    { "seq": "Primary+Z", "mac": false, "owned": false },
+    { "seq": "Primary+Z", "mac": true, "owned": false },
+    { "seq": "Primary+Shift+Z", "mac": false, "owned": false },
+    { "seq": "Primary+Shift+Z", "mac": true, "owned": false },
+    { "seq": "Primary+Y", "mac": false, "owned": false },
+    { "seq": "Primary+A", "mac": false, "owned": true },
+    { "seq": "Primary+C", "mac": true, "owned": true },
+    { "seq": "B", "mac": false, "owned": true },
+    { "seq": "F11", "mac": false, "owned": false }
+  ],
   "corpus": [
     { "seq": "B", "mac": false, "owned": true },
     { "seq": "Shift+B", "mac": false, "owned": true },

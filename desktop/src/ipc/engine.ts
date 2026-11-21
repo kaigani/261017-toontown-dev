@@ -57,6 +57,8 @@ export interface KeyOutcome {
 export interface ShellReport {
   modal?: { kind: 'dialog' | 'gesture' | 'progress'; title: string } | null;
   textFocus?: boolean;
+  /** The focused text field's kind (SI-193): the canvas's text editor gives undo and redo to the document. */
+  textFieldKind?: 'canvasText' | 'ordinary';
   description?: string;
   pointer?: string;
   viewSizes?: Record<string, { width: number; height: number }>;

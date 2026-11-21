@@ -407,7 +407,27 @@ fn the_envelope_golden_is_the_kernels_map() {
         out.push(json!({ "name": name, "box": b, "corners": c.iter().map(|p| [p.0, p.1]).collect::<Vec<_>>(),
                          "mapping": mapping, "points": before, "mapped": after }));
     }
-    let text = serde_json::to_string_pretty(&json!({ "cases": out })).unwrap() + "\n";
+    // Poles (finding C44B-R1S-06): points outside the box where the projective map's denominator vanishes (a handle,
+    // or another drawing under Reposition All's shared map), through the kernel's signed guard. The map of the box
+    // [0,0]-[1,1] onto (0,0), (1,0), (0.5,1), (0,1) is (x/(y+1), 2y/(y+1)): its pole is the line y = -1.
+    let poles = {
+        use tt_vector::geom::P;
+        use tt_vector::ops::transform::Envelope;
+        let corners = [P::new(0.0, 0.0), P::new(1.0, 0.0), P::new(0.5, 1.0), P::new(0.0, 1.0)];
+        let e = Envelope::new(P::new(0.0, 0.0), P::new(1.0, 1.0), corners, Some(true)).unwrap();
+        let pts = [(1.0, -1.0), (1.0, -1.0 + 1e-13), (1.0, -0.999_999), (0.25, 0.5)];
+        let mapped: Vec<[f64; 2]> = pts
+            .iter()
+            .map(|&(x, y)| {
+                let q = e.apply(P::new(x, y));
+                [q.x, q.y]
+            })
+            .collect();
+        let points: Vec<[f64; 2]> = pts.iter().map(|&(x, y)| [x, y]).collect();
+        json!([{ "name": "pole", "box": [0.0, 0.0, 1.0, 1.0], "corners": [[0.0, 0.0], [1.0, 0.0], [0.5, 1.0], [0.0, 1.0]],
+                 "mapping": "projective", "points": points, "mapped": mapped }])
+    };
+    let text = serde_json::to_string_pretty(&json!({ "cases": out, "poles": poles })).unwrap() + "\n";
     let path =
         std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../desktop/src/canvas/testdata/envelopes.json");
     if std::env::var_os("TT_UPDATE_CANVAS_CORPUS").is_some() {

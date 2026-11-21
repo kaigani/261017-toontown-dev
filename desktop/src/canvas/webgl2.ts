@@ -24,6 +24,8 @@ uniform vec4 u_map[3];
 vec2 mapPos(vec2 p) {
   if (u_mapKind == 1) {
     float w = u_map[1].z * p.x + u_map[1].w * p.y + 1.0;
+    // The kernel's signed denominator guard (Envelope::apply; finding C44B-R1S-06): no division by zero at the pole.
+    if (abs(w) < 1e-12) w = w < 0.0 ? -1e-12 : 1e-12;
     return vec2((u_map[0].x * p.x + u_map[0].y * p.y + u_map[0].z) / w,
                 (u_map[0].w * p.x + u_map[1].x * p.y + u_map[1].y) / w);
   }

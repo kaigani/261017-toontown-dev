@@ -431,11 +431,32 @@ pub(crate) fn settle(core: &mut Core, origin: &Origin) {
     };
     let Some((s, left, locked, gone, empty)) = state else { return };
     if !(left || locked || gone) {
-        // The session stays: the panel's shown values follow the call (an agent's `draw.textFormat.set`, D-40).
+        // The session stays: its caret and highlight follow the text (an undo, a redo or another origin's edit can
+        // shorten it), then the panel's shown values follow the call (an agent's `draw.textFormat.set`, D-40).
+        reconcile(core);
         notify(core);
         return;
     }
     end(core, origin, &s, empty && !locked && !gone);
+}
+
+/// Reconciles the session's caret and highlight with its object's text (finding C44B-R1S-02): after an undo, a redo
+/// or another origin's edit the text can be shorter than the indices; both are clamped to its length (and the goal
+/// column dropped), so the next input inserts at a valid place and the scene answer finds the caret's stop.
+fn reconcile(core: &mut Core) {
+    let Some(Some(n)) = core.with_lent_session(|cx| {
+        let s = cx.app().text_edit.clone()?;
+        content_of(cx, &s).map(|(b, _)| b.content.chars.len())
+    }) else {
+        return;
+    };
+    set_session(core, |e| {
+        if e.caret > n || e.anchor > n {
+            e.caret = e.caret.min(n);
+            e.anchor = e.anchor.min(n);
+            e.goal_x = None;
+        }
+    });
 }
 
 /// Ends the session, deleting its object first when `delete`.
@@ -535,6 +556,9 @@ pub(crate) fn input(
     origin: &Origin,
     i: Input,
 ) -> Result<Vec<(String, Value, Envelope)>, CommandError> {
+    session_of(core, origin)?;
+    // The indices are valid for the text as it is now, whatever changed it since the last call (C44B-R1S-02).
+    reconcile(core);
     let s = session_of(core, origin)?;
     let mut out = Vec::new();
     run_input(core, origin, &s, i, &mut out);
@@ -660,6 +684,25 @@ fn type_text(
     }
     let (a, b) = s.range();
     let Some(before) = length(core, s) else { return };
+    // 02 §7.6: typed text takes the current colour (design note 5 §6; finding C44B-R1S-03). The inserted characters
+    // inherit the preceding run's format; when its colour is not the current one, the current colour is applied to them
+    // with the rest of the pending format (an explicit pending colour wins).
+    let colour = core
+        .with_lent_session(|cx| {
+            let doc = cx.document().ok()?;
+            let current = crate::commands::draw_stroke::current_colour(cx.app(), doc)?;
+            let (bx, _) = content_of(cx, s)?;
+            let inherited =
+                if bx.content.runs.is_empty() { None } else { bx.content.run_at(a.saturating_sub(1)).colour_id.clone() };
+            (inherited.as_deref() != Some(current.as_str())).then_some(current)
+        })
+        .flatten();
+    let mut format = s.pending.clone();
+    if let Some(c) = colour
+        && !format.contains_key("colourId")
+    {
+        format.insert("colourId".to_owned(), json!(c));
+    }
     let mut p = json!({ "drawingId": s.drawing, "textId": s.text, "insert": { "at": a, "text": t } });
     if b > a {
         // Typing over a highlight: one call (the handler deletes first) beginning a new run.
@@ -674,8 +717,8 @@ fn type_text(
     out.push(("draw.text.set".to_owned(), p, env));
     let after = length(core, s).unwrap_or(before);
     let n = (after + (b - a)).saturating_sub(before);
-    if ok && !s.pending.is_empty() {
-        let mut f = Value::Object(s.pending.clone());
+    if ok && !format.is_empty() {
+        let mut f = Value::Object(format);
         f["drawingId"] = json!(s.drawing);
         f["textId"] = json!(s.text);
         f["start"] = json!(a);
@@ -815,6 +858,11 @@ pub(crate) fn take_pending(cx: &mut Cx, params: &Value) -> bool {
     }
     if let Some(t) = cx.app_mut().text_edit.as_mut() {
         t.pending.extend(fields);
+    }
+    // A format change ends the typing run (SI-191; design note 5 §3; finding C44B-R1S-01): the next keystroke opens a
+    // new "Typing" step, so "A, bold, B" is two steps and an undo removes B only.
+    if let Ok(p) = cx.project_mut() {
+        p.history.end_run();
     }
     if let Some(s) = cx.app().text_edit.clone()
         && let Some((b, _)) = content_of(cx, &s)

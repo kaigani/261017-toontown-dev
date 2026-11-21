@@ -63,6 +63,12 @@ export function TextEditor({
     };
     const onBeforeInput = (e: InputEvent) => {
       if (e.isComposing) return;
+      // Undo and redo are the document's (SI-193): the keymap sends them; the text area keeps no history of its own.
+      if (e.inputType === 'historyUndo' || e.inputType === 'historyRedo') {
+        e.preventDefault();
+        clear();
+        return;
+      }
       const i = beforeInput(e.inputType, e.data);
       if (i) {
         e.preventDefault();
@@ -136,6 +142,7 @@ export function TextEditor({
       className={composing ? 'text-editor composing' : 'text-editor'}
       data-tt-role="textEditor"
       data-tt-id="canvas.textEditor"
+      data-tt-field-kind="canvasText"
       data-tt-label="Text editor"
       data-tt-text-id={`${session.drawingId}/${session.textId}`}
       data-tt-anchor={session.anchor}

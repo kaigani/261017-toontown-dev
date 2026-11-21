@@ -2434,6 +2434,18 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **From:** C4.4b's last deferred entry (`deferred.json`: "02 §7.1.2 (Contour Editor); §8 (line properties)").
 - **Entry:** *Spec:* 02 line 1326 declares `draw.stroke.set` ("Edit Stroke": geometry, pressure, thickness, visibility) and no surface names a control for it; §7.1.2 edits anchors through the point commands. *Decided:* the Properties panel's Tool options page for the Contour Editor shows the line properties of the one selected pencil line or invisible stroke: Line thickness (the one numeric field; disabled for an invisible stroke) and Invisible (a checkbox turning a pencil line invisible and back), each one `draw.stroke.set`; with anything else selected it says to select one line. Geometry and pressure stay agent-only uses of the same command (the Contour Editor's gestures edit geometry with the point commands). *Why:* the Contour Editor is the tool that shows a line's anchors, and the Tool options page is where a tool's per-object settings already live (02 §7.7). *Question:* a Line section in the Properties panel for every selection tool instead.
 
+## SI-197 — the missing-font warning's code (found in M4 C4.4b; decided by ruling D-75 item 9; declared behaviour change)
+
+- **Sections:** 10 §11 (the load-time warnings table, line 958: "Missing font | info | Fallback for display; name kept |
+  `text.fontMissing`"), 02 §3.7 (text layout), 02 §13.5 (`draw.text.add`, `draw.text.set`).
+- **Problem:** the kernel warned with `drawing.fontMissing` when a text object's font was not installed; 10's table names
+  the code `text.fontMissing` with severity info.
+- **Decided (D-75 item 9):** the warning is `text.fontMissing`, severity info, emitted by the text handlers'
+  layout (`crates/executor/src/commands/draw_text.rs` `bounds_and_fonts`) and listed by `doc.validate`; the text keeps
+  the font's name and is displayed with the platform's default face. A **declared behaviour change** for agents that
+  matched the old code; no reviewer test pinned it (C4.4b handoff §2). The retained example results were regenerated
+  with the change.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row

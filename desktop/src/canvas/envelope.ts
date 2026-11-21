@@ -239,7 +239,9 @@ export function packMap(m: PreviewMap | null): { kind: number; data: Float32Arra
 export function unpackApply(kind: number, d: ArrayLike<number>, p: Pt): Pt {
   const g = (i: number) => nu(d, i);
   if (kind === 1) {
-    const w = g(6) * p[0] + g(7) * p[1] + 1;
+    let w = g(6) * p[0] + g(7) * p[1] + 1;
+    // The kernel's signed denominator guard (`Envelope::apply`; finding C44B-R1S-06), as both shaders apply it.
+    if (Math.abs(w) < 1e-12) w = w < 0 ? -1e-12 : 1e-12;
     return [(g(0) * p[0] + g(1) * p[1] + g(2)) / w, (g(3) * p[0] + g(4) * p[1] + g(5)) / w];
   }
   if (kind === 2) {
