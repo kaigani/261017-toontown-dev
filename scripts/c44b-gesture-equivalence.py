@@ -240,6 +240,8 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
         for engine in engines:
             await engine.run("view.active.set", {"viewId": view})
         if os_input:
+            # The view's panel raised (on a small screen the two views can share a dock area as tabs).
+            await app.run("window.panel.set", {"panelId": view, "visible": True})
             # The view drawn before it is looked for (a wait for the state, D-45; a slow runner shows it late), then
             # looked for again until found or the bound passes.
             t0 = time.monotonic()
@@ -250,6 +252,9 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
             while place is None and time.monotonic() - t0 < 45.0:
                 await asyncio.sleep(1.0)
                 place = await e6.locate_view(app.s, e2e.run_cmd, view)
+            if place is None:
+                # One more attempt that keeps both captures and the reason in the receipt folder.
+                place = await e6.locate_view(app.s, e2e.run_cmd, view, keep=out)
             if place and sizes[view].get("width"):
                 ratio = place[2] / sizes[view]["width"]
             run.check(place is not None, f"the {view} canvas is located in the window (OS input)", place)

@@ -1,7 +1,7 @@
-# M4 merge note: desktop shell (draft)
+# M4 merge note: desktop shell
 
-**Draft, not a merge candidate.** The merge note and the M4 merge to `main` come after C4.4b passes (ruling D-30).
-Branch `m4-desktop-shell`. Builder: Claude Opus 5.5. The orchestrator merges and tags; the builder does not.
+**Complete on the builder's side; a merge candidate only once C4.4b passes review** (ruling D-30). Branch
+`m4-desktop-shell`. Builder: Claude Opus 5.5. The orchestrator merges and tags; the builder does not.
 
 ## 1. Checkpoints and closures
 
@@ -12,12 +12,26 @@ Branch `m4-desktop-shell`. Builder: Claude Opus 5.5. The orchestrator merges and
 | C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
 | C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | **passed** on product head `f5eb9e84`, run 44286651371 (36 of 36 green), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
 | C4.4a | panels and settings (`reviews/M4-C4.4-plan.md`, D-40) | **passed** on product head `87f63b5f`, run 44861150241 (36 of 36 green on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74. Findings: round 1 twelve, round 2 two new, round 3 two new, closures five; all closed, including the P1 on the agent token in agent captures (closed by the host's overpaint, 486 live captures with none revealed, and the `page_ready` guard); final static check `reviews/M4-C4.4a-r5-closure-static.md` |
-| C4.4b | the four drawing tools; the zero-M4 deferred check | in progress (from `87f63b5f`) |
+| C4.4b | the four drawing tools; the zero-M4 deferred check | **handed off** on product head `d4ffed00` (`reviews/M4-C4.4b-handoff.md`), ruling D-75; open: the reviewer pin of D-75 item 1 (CI's `review properties release`), the keystroke-to-glyph budget (34.8 / 34.7 ms p95 against 33), the window's 50,000-point Perspective and Reposition All rows |
 
-## 2. Still to write at the end of C4.4b
+## 2. Inventory, counts and what M4 leaves
 
-The inventory and counts, the deferred list by owner (none owned by M4, D-31), the receipt folders over 5 MB for the
-orchestrator's trim (D-40), the open spec issues, and the final head with its run.
+- **Final head:** `d4ffed00` (product and receipts); its CI run is named in the C4.4b handoff's §1.1.
+- **Commands in the parity gate:** 347 = 161 action + 41 read + 59 agent-only + 86 deferred (the reviewer's probe
+  `tests/adversarial/c43b-r2s-static.py`).
+- **Availability inventory:** 288 commands in scope, 1,229 (command, code) pairs: 13 asks-user, 1 deferred, 256
+  execution, 716 parameter, 219 precheck, 24 unreachable (`scripts/check-availability-inventory.py`).
+- **Tables:** D-39 302 rows (the whole table green in the MCP form on the final build; the OS form on the rows of
+  each checkpoint, C4.4b's 105); D-44 66 rows and the confirmation sheet's 7 (C4.4a; C4.4b adds no dialog); three-way
+  equivalence: C4.2's drawing tools, C4.3's scene tools, C4.4b's 20 rows.
+- **Deferred list by owner (D-31): none owned by M4.** 86 entries: M5 51, M6 18, M7 6, M8 5, M10 4, M9 2
+  (`desktop/src/ui-bindings/deferred.json`, each with its spec section), plus §3 below.
+- **Receipt folders over 5 MB, for the orchestrator's trim (D-40):** `reviews/evidence/M4-C4.3b-r1` (26 MB),
+  `M4-C4.2b-r1` (23 MB), `M4-C4.2b-r3` (6 MB), `M4-C4.2b-r2` (5 MB). C4.4b's receipts are summaries (284 KB).
+- **Open spec issues raised in M4** (interim defaults in `plan/spec-issues.md`; the user decides): SI-120 to SI-155,
+  SI-158 (interim); SI-162 and SI-164 (open); SI-163's open question; SI-175 (a ruling asked); SI-184, SI-185, SI-187,
+  SI-188, SI-190 to SI-196 (C4.4b, interim). The spec A additions M4 proposes are listed under "Spec A additions
+  proposed by M4, for the user" (with `draw.text.layout.get` and `tool.perspective.options.set` from D-75).
 
 ## 3. Deferrals recorded during C4.4a (for the deferred list)
 
@@ -45,6 +59,8 @@ the C4.4a round-5 handoff, kept here):
 | `drawing byte gate (macos)`: `fs.outsideRoots` on its fixture (headless session) | 43728082844 | the roots race: D-68 item 4 and D-73 item 1 |
 | `c01-r2-boundary` lint `spawnSync ETIMEDOUT`; `App.test.tsx` sensor report (mine) | 43390751786 | the first a runner timeout, rerun; the second fixed with an event-driven wait (C4.1) |
 | `c41-r2-desktop-floats` initial geometry (reviewer probe) | 44668936063 | a product defect: the float is built hidden (C4.4a r2) |
+| `c13_r1_persistence` `concurrent_stale_lock_takeover_has_only_one_owner` (reviewer, M1) | 44894231140 (macOS `check`) | "trial 35, concurrent stale takeover returned 0 owners": not touched in C4.4b (no persistence change); for M11 C11.1 |
+| `c21_example_results` (mine) | 44886086598, 44894231140 | a pending confirmation's `expiresInMs` differed by 1 ms: now a time key (`dfe9cea7`), retired |
 
 `c14_r1_autosave` and `c23_r4_closure`/`c23_round3`/`c34_round3` were listed as flakes in C4.1/C4.2a handoffs but did
 not fail in a CI run after them.
