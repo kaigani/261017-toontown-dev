@@ -111,7 +111,7 @@ async def matrix(t,step):
  if step==4:
   for option in ('keepSelectionVisible','outlineOnSelection'):
    for tool in ('contourEditor','perspective','repositionAll','text'):
-    eid,did=await fixture('cameraView',tool);await c('drawAid.selectionDisplay.set',{'keepSelectionVisible':option=='keepSelectionVisible','outlineOnSelection':option=='outlineOnSelection'});await c('element.visibility.set',{'elementIds':[eid],'scope':'scene','visible':False});await pause()
+    eid,did=await fixture('cameraView',tool);await c('edit.selection.set',{'context':os.environ.get('C44B_SELECTION_CONTEXT','timeline'),'ids':[eid]});await c('drawAid.selectionDisplay.set',{'keepSelectionVisible':option=='keepSelectionVisible','outlineOnSelection':option=='outlineOnSelection'});await c('element.visibility.set',{'elementIds':[eid],'scope':'scene','visible':False});await pause()
     canvas=json.loads(d.McpTable.node(await d.McpTable.tree(t),'cameraView.canvas').get('value') or '{}');t.run.save(option+'-'+tool+'.json',canvas);before=await c('draw.drawing.get',{'drawingId':did});await gesture('cameraView',tools[tool]);after=await c('draw.drawing.get',{'drawingId':did})
     if tool=='text' and option=='keepSelectionVisible':d.front();d.type_text('X');await pause();after=await c('draw.drawing.get',{'drawingId':did})
     check((before!=after)==(option=='keepSelectionVisible'),'02 10.7 '+option+' '+tool+' edit policy',canvas)
