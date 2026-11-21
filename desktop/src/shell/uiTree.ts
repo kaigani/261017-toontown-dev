@@ -42,7 +42,13 @@ function nodeOf(el: Element): UiNode {
     el instanceof HTMLSelectElement ||
     el instanceof HTMLTextAreaElement
   ) {
-    n.value = el instanceof HTMLInputElement && el.type === 'checkbox' ? String(el.checked) : el.value;
+    // An indeterminate checkbox (a value that differs over a range, design note 5 §6) reports `mixed`.
+    n.value =
+      el instanceof HTMLInputElement && el.type === 'checkbox'
+        ? el.indeterminate
+          ? 'mixed'
+          : String(el.checked)
+        : el.value;
   }
   const command = el.getAttribute('data-tt-command');
   if (command) {
@@ -53,7 +59,7 @@ function nodeOf(el: Element): UiNode {
   const checked =
     el.getAttribute('aria-checked') ?? el.getAttribute('aria-pressed') ?? el.getAttribute('aria-selected');
   if (checked === 'true' || checked === 'false') n.checked = checked === 'true';
-  if (el instanceof HTMLInputElement && el.type === 'checkbox') n.checked = el.checked;
+  if (el instanceof HTMLInputElement && el.type === 'checkbox' && !el.indeterminate) n.checked = el.checked;
   if (el.getAttribute('data-tt-visible') === 'false') n.visible = false;
   return n;
 }

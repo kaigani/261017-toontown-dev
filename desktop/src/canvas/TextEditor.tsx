@@ -30,8 +30,8 @@ export function TextEditor({
   /** The session is open in this view (its editor takes the focus here only). */
   focused: boolean;
   mac: boolean;
-  /** One input into the kernel's input path. */
-  send: (input: EditorInput) => void;
+  /** One input into the kernel's input path, with the event's timeStamp (the keystroke-to-glyph measure). */
+  send: (input: EditorInput, at: number) => void;
   /** The session object's text (for Copy and Cut, sliced by code points). */
   readText: () => Promise<string>;
 }) {
@@ -66,7 +66,7 @@ export function TextEditor({
       const i = beforeInput(e.inputType, e.data);
       if (i) {
         e.preventDefault();
-        sendRef.current(i);
+        sendRef.current(i, e.timeStamp);
       }
       clear();
     };
@@ -75,7 +75,7 @@ export function TextEditor({
     };
     const onCompositionEnd = (e: CompositionEvent) => {
       setComposing(false);
-      if (e.data) sendRef.current({ kind: 'text', text: e.data });
+      if (e.data) sendRef.current({ kind: 'text', text: e.data }, e.timeStamp);
       clear();
     };
     const onKeyDown = (e: KeyboardEvent) => {
@@ -97,16 +97,16 @@ export function TextEditor({
         void highlight().then(async (t) => {
           if (!t) return;
           await copyText(t);
-          sendRef.current({ kind: 'cut' });
+          sendRef.current({ kind: 'cut' }, performance.now());
         });
         return;
       }
-      sendRef.current({ kind: 'key', keys: k });
+      sendRef.current({ kind: 'key', keys: k }, e.timeStamp);
     };
     const onPaste = (e: ClipboardEvent) => {
       e.preventDefault();
       const t = e.clipboardData?.getData('text/plain') ?? '';
-      if (t) sendRef.current({ kind: 'paste', text: t });
+      if (t) sendRef.current({ kind: 'paste', text: t }, e.timeStamp);
       clear();
     };
     const onCopy = (e: ClipboardEvent) => {
@@ -127,7 +127,8 @@ export function TextEditor({
       el.removeEventListener('paste', onPaste);
       el.removeEventListener('copy', onCopy);
     };
-  }, [mac]);
+    // The text area exists only while a session is open: the listeners attach when it appears.
+  }, [mac, open]);
   if (!session) return null;
   return (
     <textarea

@@ -145,6 +145,9 @@ export function CanvasView({
   const [editor, setEditor] = useState<{ session: EditorSession; focused: boolean } | null>(null);
   const setEditorRef = useRef(setEditor);
   const editorKey = useRef('');
+  // The frame loop's metrics and model version, for the editor's keystroke-to-glyph measure (design note 5 §8).
+  const metricsRef = useRef<CanvasMetrics | null>(null);
+  const modelVersion = useRef(0);
   const windowType = useRef(viewType);
   useEffect(() => {
     windowType.current = viewType;
@@ -217,6 +220,7 @@ export function CanvasView({
     // Measurements (`--canvas-metrics`; plan §6, D-5): published in the summary at most twice a second.
     const launch = canvasLaunch();
     const metrics = launch.metrics ? new CanvasMetrics() : null;
+    metricsRef.current = metrics;
     let metricsAt = 0;
     let fallback: string | null = null;
     // Input (design note 2 §2 and §6): one gesture at a time; its overlay stays until the committed revision is drawn.
@@ -644,6 +648,7 @@ export function CanvasView({
       if (!model || !renderer) return;
       const began = performance.now();
       model.frame();
+      modelVersion.current = model.version;
       const scene = model.scene;
       playAgent();
       // The committed state is drawn (or the commit was refused): the overlay and preview give way to it (preview
@@ -1314,7 +1319,8 @@ export function CanvasView({
         session={editor?.session ?? null}
         focused={editor?.focused ?? false}
         mac={isMac()}
-        send={(input) => {
+        send={(input, at) => {
+          metricsRef.current?.keyed(at, modelVersion.current);
           void engine.textInput(input).catch(() => undefined);
         }}
         readText={async () => {

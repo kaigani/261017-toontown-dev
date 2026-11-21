@@ -575,9 +575,81 @@ class Table:
                 await asyncio.sleep(0.1)
             how = self.click(action[2])
             return f"a real secondary click on {action[1]}, then {how} on the item"
+        if kind == "gesture":
+            return await self.gesture(action)
+        if kind == "key":
+            return await self.press_key(action)
         if kind == "none":
             return "no input"
         raise ValueError(kind)
+
+    # ----- C4.4b: canvas gestures and keys (design notes 3-5). A gesture row's `action` is ("gesture", view, tool,
+    # points, modifiers): `points` an async function giving view pixels; the commands it sent are the window's record of
+    # what it committed (the canvas summary's `lastGesture`), in both forms. A key row's is ("key", vk, keys).
+    async def last_gesture(self, view: str):
+        answer = await e2e.call(self.s, "inspect_ui", {"target": "window", "depth": 32})
+        root = (answer.get("result") or answer).get("root") or {}
+        n = McpTable.node(root, f"{view}.canvas") or {}
+        try:
+            return json.loads(n.get("value") or "{}").get("lastGesture")
+        except json.JSONDecodeError:
+            return None
+
+    async def gesture(self, action) -> str:
+        _, view, tool, points, mods = action
+        before = json.dumps(await self.last_gesture(view))
+        pts = await points()
+        how = await self.input_gesture(view, tool, pts, mods)
+        # A wait for a state (D-45): the window's record of the committed gesture; the bound only guards a hang.
+        start = time.monotonic()
+        rec = None
+        answer = getattr(self, "gesture_answer", None)
+        # An agent's gesture the kernel refused before the window played it answers here, not in the window's record.
+        bound = 5.0 if (answer or {}).get("status") == "error" else 20.0
+        while time.monotonic() - start < bound:
+            now = await self.last_gesture(view)
+            if now is not None and json.dumps(now) != before:
+                rec = now
+                break
+            await asyncio.sleep(0.25)
+        if rec is None and answer is not None:
+            res = answer.get("result") or {}
+            err = answer.get("error") or {}
+            cmds = res.get("commands") or ([{"commandId": (err.get("details") or {}).get("gestureCommandId"), "params": {}}]
+                                           if (err.get("details") or {}).get("gestureCommandId") else [])
+            rec = {"commands": cmds, "code": err.get("code"), "status": answer.get("status"), "source": "the pointer answer",
+                   "answer": {"error": err, "result": res}}
+        self.gesture_record = rec
+        self.gesture_answer = None
+        return how
+
+    async def input_gesture(self, view: str, tool: str, pts: list, mods: list) -> str:
+        """Real OS input: a left drag through the canvas's view pixels, the modifiers held (Windows)."""
+        box = self.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                          " if (!e) return null; const b = e.getBoundingClientRect();"
+                          " return {x: b.x, y: b.y, dpr: window.devicePixelRatio || 1}; })()" % json.dumps(f"{view}.canvas"))
+        if not box:
+            raise RuntimeError(f"no canvas {view}")
+        client = [((box["x"] + q[0]) * box["dpr"], (box["y"] + q[1]) * box["dpr"]) for q in pts]
+        vks = [{"alt": 0x12, "shift": 0x10, "ctrl": 0x11}[m] for m in mods]
+        for vk in vks:
+            u32.keybd_event(vk, 0, 0, 0)
+        times: dict = {}
+        try:
+            e6.os_drag(e2e.APP_PID["pid"], client, 0.03 * max(1, len(client) - 1), 0.05, times)
+        finally:
+            for vk in reversed(vks):
+                u32.keybd_event(vk, 0, 2, 0)
+        if "error" in times:
+            raise RuntimeError(times["error"])
+        return f"a real drag through {len(pts)} points" + (f" with {'+'.join(mods)} held" if mods else "")
+
+    async def press_key(self, action) -> str:
+        _, vk, keys = action
+        front()
+        self.cdp.js("document.querySelector('[data-tt-id=\"drawingView.canvas\"]')?.focus()")
+        key(vk)
+        return f"the real key {keys}"
 
     async def row(self, r: dict) -> None:
         name = r["name"]
@@ -600,6 +672,7 @@ class Table:
                 pos = await self.position()
                 await self.mark()
                 self.want = want
+                self.gesture_record = None
                 how = await self.do(r["action"])
                 await asyncio.sleep(r.get("wait", 0.8))
                 sent = await self.observed(want)
@@ -612,10 +685,17 @@ class Table:
                 # D-61: an expectation of None is a refused entry: nothing may be sent.
                 expected = [] if want is None else [{"command": want[0], "params": want[1]}]
                 click = {"input": how, "expected": expected[0] if expected else None, "sent": sent,
+                         **({"gesture": self.gesture_record} if self.gesture_record is not None else {}),
                          "effect": effect, "steps": got_steps, "expectedSteps": expect_steps,
                          "before": before, "after": after}
                 exact = sent == expected
-                if self.WHO == "agent":
+                if r.get("match"):
+                    # A gesture's parameters come from the person's samples: the spec's statement is a predicate
+                    # (the command, and its parameters derived from the press and release; design notes 3-5).
+                    exact = (len(sent) == 1 and want is not None and sent[0].get("command") == want[0]
+                             and bool(r["match"](sent[0].get("params") or {}, before)))
+                    click["match"] = exact
+                if self.WHO == "agent" and not r.get("match") and r["action"][0] not in ("key", "gesture"):
                     click["declared"] = self.declared
                     exact = exact and self.declared == (expected[0] if expected else None)
                     self.shown_after = None
@@ -661,8 +741,19 @@ class Table:
         self.clear()
 
     async def observed(self, want) -> list:
+        if self.gesture_record is not None:
+            return self.gesture_commands()
         wanted = want[0] if want else None
         return [c for c in self.recorded() if self.kinds.get(c.get("command")) != "query" or c.get("command") == wanted]
+
+    gesture_record = None
+    #: The commands that choose a tool: not the gesture's (the person chose the tool before; an agent's `pointer` names it).
+    TOOL_CHOICE = ("tool.active.set", "anim.tool.set")
+
+    def gesture_commands(self) -> list:
+        rec = self.gesture_record or {}
+        return [{"command": c.get("commandId"), "params": c.get("params") or {}} for c in rec.get("commands") or []
+                if c.get("commandId") not in self.TOOL_CHOICE]
 
     async def after_failure(self) -> None:
         with contextlib.suppress(Exception):
@@ -807,9 +898,14 @@ class McpTable(Table):
 
     async def observed(self, want) -> list:
         """The calls this row's action made, from the activity record (the declared reference's, or the key's)."""
+        if self.gesture_record is not None:
+            return self.gesture_commands()
         out = []
         for e in sorted(await self.activity(), key=lambda e: e.get("seq", 0)):
             if e.get("seq", 0) <= self.seq or e.get("tool") not in ("run_command", "key"):
+                continue
+            # A key whose command refused (`command.disabled`) sent nothing (C41-R2-09).
+            if e.get("tool") == "key" and e.get("status") == "error":
                 continue
             if self.kinds.get(e.get("commandId")) == "query" and e.get("commandId") != (want[0] if want else None):
                 continue
@@ -863,10 +959,30 @@ class McpTable(Table):
             if not row:
                 raise RuntimeError(f"menu item absent from the parity manifest: {action[2]}")
             self.declared = {"command": row["commands"][0], "params": row.get("params") or {}}
+        elif kind == "gesture":
+            return await self.gesture(action)
+        elif kind == "none":
+            self.declared = None
+            return "no input"
+        elif kind == "key":
+            # The agent's `key` tool: the one key dispatch a real key takes (11 §7.6).
+            env = await e2e.call(self.s, "key", {"keys": action[2]})
+            self.key_answer = env
+            return f"the key tool ({env.get('status')}, {(env.get('error') or {}).get('code')})"
         else:
             raise RuntimeError("an action the MCP form does not perform")
         env = await e2e.run_cmd(self.s, self.declared["command"], self.declared["params"])
         return f"the declared reference through run_command ({env.get('status')})"
+
+    async def input_gesture(self, view: str, tool: str, pts: list, mods: list) -> str:
+        """An agent's `pointer` gesture, played by the window showing the view (design note 2 §6)."""
+        events = []
+        for i, (x, y) in enumerate(pts):
+            ty = "down" if i == 0 else "up" if i == len(pts) - 1 else "move"
+            events.append({"type": ty, "x": x, "y": y, "modifiers": mods})
+        env = await e2e.call(self.s, "pointer", {"view": view, "tool": tool, "events": events})
+        self.gesture_answer = env
+        return f"an agent's pointer gesture played by the window ({env.get('status')})"
 
     async def disabled_checks(self) -> None:
         tree = await self.tree()
@@ -1858,6 +1974,363 @@ async def build_and_run(t: Table, only: set) -> None:
                          "disabled": None,
                          "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
 
+    # ----- C4.4b: the four drawing tools (design notes 3-5) and the Contour Editor's selected line (SI-196) -----
+    # Gesture rows: the window's record of the committed gesture gives the commands (both forms); the parameters come
+    # from the samples, so the spec's statement is a predicate (`match`) on them. Every drag is in the Drawing view.
+    c44b: dict = {}
+    near = lambda a, b: abs(a - b) < 1e-6  # noqa: E731
+
+    async def view_map():
+        return (await cmd("draw.viewMapping.get", {"view": "drawingView"})).get("drawingToView") or [1, 0, 0, 1, 0, 0]
+
+    def to_view(m, x, y):
+        return (m[0] * x + m[2] * y + m[4], m[1] * x + m[3] * y + m[5])
+
+    async def current_drawing_id():
+        return (await cmd("draw.drawing.get", {})).get("drawingId")
+
+    async def anchors_of(sid):
+        d = await cmd("draw.drawing.get", {"flatten": True})
+        n = next((x for x in d.get("nodes") or [] if x.get("id") == sid), {}) or {}
+        b = n.get("bezier") or []
+        return [(b[k * 3]["x"], b[k * 3]["y"]) for k in range((len(b) + 2) // 3)]
+
+    async def tool_fixture(tool, snap=False, locked=False, lock_all=False, points=False):
+        """Bob's drawing at frame 1 in the Drawing view at 100 %, a selected square on its own layer, `tool` active."""
+        await cmd("window.panel.set", {"panelId": "drawingView", "visible": True})
+        await cmd("view.active.set", {"viewId": "drawingView"})
+        await cmd("view.transform.reset", {"viewId": "drawingView"})
+        await cmd("app.context.set", {"elementId": bob, "frame": 1})
+        ids = [x.get("id") for x in (await cmd("element.drawing.list", {"elementId": bob})).get("drawings") or []]
+        await cmd("element.drawingLock.set", {"drawingIds": ids, "locked": False})
+        await cmd("tool.snapToContour.set", {"enabled": snap})
+        r = await cmd("draw.rectangle.add", {"from": {"x": -60, "y": -40}, "to": {"x": 60, "y": 40}, "layer": "new"})
+        c44b["sid"] = (r.get("strokeIds") or [None])[0]
+        c44b["drawing"] = await current_drawing_id()
+        await cmd("draw.selection.set", {"by": "ids", "ids": [c44b["sid"]], "mode": "replace"})
+        await cmd("draw.pointSelection.set", {"points": [{"strokeId": c44b["sid"], "anchor": 1}] if points else []})
+        c44b["box"] = (await cmd("draw.selection.get", {})).get("bounds") or {}
+        # Reposition All's box is the drawing's (SI-189): earlier rows leave other strokes in it.
+        if tool == "repositionAll":
+            c44b["box"] = (await cmd("draw.bounds.get", {})).get("bounds") or c44b["box"]
+        if locked:
+            await cmd("element.drawingLock.set", {"drawingIds": [c44b["drawing"]], "locked": True})
+        if lock_all:
+            await cmd("element.drawingLock.set", {"drawingIds": ids, "locked": True})
+        await cmd("tool.active.set", {"toolId": tool})
+        await asyncio.sleep(0.8)
+
+    async def summary_state():
+        answer = await e2e.call(t.s, "inspect_ui", {"target": "window", "depth": 32})
+        n = McpTable.node((answer.get("result") or answer).get("root") or {}, "drawingView.canvas") or {}
+        try:
+            v = json.loads(n.get("value") or "{}")
+        except json.JSONDecodeError:
+            v = {}
+        return {"drawing": await cmd("draw.drawing.get", {}), "toolBox": v.get("toolBox")}
+
+    async def square_state():
+        return {"anchors": await anchors_of(c44b["sid"]), "drawing": await cmd("draw.drawing.get", {})}
+
+    def corner_pts(dx, dy, out=0.0):
+        async def pts():
+            m = await view_map()
+            b = c44b["box"]
+            x, y = to_view(m, b["x"] + b["width"], b["y"] + b["height"])
+            x, y = x + out, y - out
+            return [(x, y), (x + dx / 2, y + dy / 2), (x + dx, y + dy)]
+        return pts
+
+    def anchor_pts(k, dx, dy):
+        async def pts():
+            m = await view_map()
+            a = (await anchors_of(c44b["sid"]))[k]
+            x, y = to_view(m, *a)
+            return [(x, y), (x + dx / 2, y + dy / 2), (x + dx, y + dy)]
+        return pts
+
+    def gesture_failed(code):
+        return lambda: (t.gesture_record or {}).get("code") == code
+
+    rows.append({"name": "Contour Editor › Snap to Contour on, then a drag",
+                 "spec": f"{spec_line('draw.point.move')}; 02 §7.1.2 lines 450, 461; §8.9 (SI-187: the setting made explicit)",
+                 "action": ("gesture", "drawingView", "contourEditor", anchor_pts(0, 14.0, -5.0), []),
+                 "expect": ("draw.point.move", "points [square, 0], delta (14, 5) du, snap true"), "label": "Contour Editing",
+                 "match": lambda prm, b: (prm.get("points") == [{"strokeId": c44b["sid"], "anchor": 0}] and prm.get("snap") is True
+                                          and near((prm.get("delta") or {}).get("x", 0), 14.0)
+                                          and near((prm.get("delta") or {}).get("y", 0), 5.0)),
+                 "setup": lambda: tool_fixture("contourEditor", snap=True), "state": square_state,
+                 "effect": lambda b, a, k: a["anchors"][0] != b["anchors"][0], "disabled": None})
+    rows.append({"name": "Contour Editor › Delete", "spec": f"{spec_line('draw.point.delete')}; 02 §7.1.2 line 457 (SI-184)",
+                 "action": ("key", 0x2E, "Delete"), "expect": ("draw.point.delete", {}), "label": "Contour Editing",
+                 "setup": lambda: tool_fixture("contourEditor", points=True), "state": square_state,
+                 "effect": lambda b, a, k: len(a["anchors"]) == len(b["anchors"]) - 1, "disabled": None})
+    rows.append({"name": "Contour Editor › Delete with no anchor selected",
+                 "spec": f"{spec_line('draw.point.delete')}; 02 §7.1.2 line 457; C41-R2-09 (a refused key is consumed silently)",
+                 "action": ("key", 0x2E, "Delete"), "expect": None, "label": None,
+                 "setup": lambda: tool_fixture("contourEditor"), "state": square_state,
+                 "effect": lambda b, a, k: a == b, "disabled": None})
+    rows.append({"name": "Perspective › corner drag", "spec": f"{spec_line('draw.envelope.apply')}; 02 §7.1.3 lines 468-473 (SI-188)",
+                 "action": ("gesture", "drawingView", "perspective", corner_pts(-20.0, 0.0), []),
+                 "expect": ("draw.envelope.apply", "the top-right corner 20 du left, the others kept, mapping auto"),
+                 "label": "Perspective Tool",
+                 "match": lambda prm, b: (prm.get("mapping") == "auto" and len(prm.get("corners") or []) == 4
+                                          and near(prm["corners"][2]["x"], prm["corners"][1]["x"] - 20.0)
+                                          and near(prm["corners"][2]["y"], prm["corners"][3]["y"])
+                                          and near(prm["corners"][0]["y"], prm["corners"][1]["y"])),
+                 "setup": lambda: tool_fixture("perspective"), "state": square_state,
+                 "effect": lambda b, a, k: a["drawing"] != b["drawing"], "disabled": None})
+
+    def side_pts(dx, dy):
+        async def pts():
+            m = await view_map()
+            b = c44b["box"]
+            x, y = to_view(m, b["x"] + b["width"] / 2, b["y"] + b["height"])
+            return [(x, y), (x + dx / 2, y + dy / 2), (x + dx, y + dy)]
+        return pts
+
+    rows.append({"name": "Perspective › alternate side drag",
+                 "spec": f"{spec_line('draw.envelope.apply')}; 02 §7.1.3 line 470 (SI-188: symmetric about the side's middle)",
+                 "action": ("gesture", "drawingView", "perspective", side_pts(15.0, -4.0), ["alt"]),
+                 "expect": ("draw.envelope.apply", "the top corners spread 15 du each way and rise 4 du"), "label": "Perspective Tool",
+                 "match": lambda prm, b: (len(prm.get("corners") or []) == 4
+                                          and near(prm["corners"][2]["x"] - prm["corners"][1]["x"], 15.0)
+                                          and near(prm["corners"][3]["x"] - prm["corners"][0]["x"], -15.0)
+                                          and near(prm["corners"][2]["y"], prm["corners"][3]["y"])),
+                 "setup": lambda: tool_fixture("perspective"), "state": square_state,
+                 "effect": lambda b, a, k: a["drawing"] != b["drawing"], "disabled": None})
+    rows.append({"name": "Perspective › locked drawing",
+                 "spec": f"{spec_line('draw.envelope.apply')}; 02 line 414; design note 4 §7 (grey handles, the kernel's refusal)",
+                 "action": ("gesture", "drawingView", "perspective", corner_pts(-20.0, 0.0), []),
+                 # The refused gesture commits nothing: the window's record holds the refusal (`drawing.locked`).
+                 "expect": None, "label": None,
+                 "setup": lambda: tool_fixture("perspective", locked=True), "state": summary_state,
+                 "effect": lambda b, a, k: (a["drawing"] == b["drawing"] and (b.get("toolBox") or {}).get("locked") is True
+                                            and gesture_failed("drawing.locked")()),
+                 "disabled": None})
+
+    def inside_pts(dx, dy):
+        async def pts():
+            m = await view_map()
+            b = c44b["box"]
+            x, y = to_view(m, b["x"] + b["width"] / 3, b["y"] + b["height"] / 3)
+            return [(x, y), (x + dx / 2, y + dy / 2), (x + dx, y + dy)]
+        return pts
+
+    rows.append({"name": "Reposition All Drawings › offset drag",
+                 "spec": f"{spec_line('draw.repositionAll.apply')}; 02 §7.1.4 lines 478-481 (SI-189)",
+                 "action": ("gesture", "drawingView", "repositionAll", inside_pts(30.0, -10.0), []),
+                 "expect": ("draw.repositionAll.apply", "translate (30, 10) du"), "label": "Reposition All Drawings",
+                 "match": lambda prm, b: (set(prm) == {"translate"} and near(prm["translate"]["x"], 30.0)
+                                          and near(prm["translate"]["y"], 10.0)),
+                 "setup": lambda: tool_fixture("repositionAll"), "state": square_state,
+                 "effect": lambda b, a, k: a["drawing"] != b["drawing"], "disabled": None})
+    rows.append({"name": "Reposition All Drawings › rotation drag",
+                 "spec": f"{spec_line('draw.repositionAll.apply')}; 02 §7.1.4 line 479 (SI-141 item 3: the rotation zone)",
+                 "action": ("gesture", "drawingView", "repositionAll", corner_pts(-30.0, -20.0, out=10.0), []),
+                 "expect": ("draw.repositionAll.apply", "rotate about the box's centre"), "label": "Reposition All Drawings",
+                 "match": lambda prm, b: set(prm) == {"rotate", "pivot"} and abs(prm["rotate"]) > 0.0,
+                 "setup": lambda: tool_fixture("repositionAll"), "state": square_state,
+                 "effect": lambda b, a, k: a["drawing"] != b["drawing"], "disabled": None})
+    rows.append({"name": "Reposition All Drawings › every drawing locked",
+                 "spec": f"{spec_line('draw.repositionAll.apply')}; 02 line 414; SI-189 (refused only when nothing can move)",
+                 "action": ("gesture", "drawingView", "repositionAll", inside_pts(30.0, -10.0), []),
+                 "expect": None, "label": None,
+                 "setup": lambda: tool_fixture("repositionAll", lock_all=True), "state": summary_state,
+                 "effect": lambda b, a, k: (a["drawing"] == b["drawing"] and (b.get("toolBox") or {}).get("locked") is True
+                                            and gesture_failed("drawing.nothingToDo")()),
+                 "disabled": None})
+
+    # The Contour Editor's selected line (SI-196): one pencil line selected, the Tool options page shows its properties.
+    async def line_shown():
+        await tool_fixture("contourEditor")
+        r = await cmd("draw.line.add", {"from": {"x": -80, "y": 60}, "to": {"x": 80, "y": 70}, "layer": "new"})
+        c44b["line"] = (r.get("strokeIds") or [None])[0]
+        await cmd("draw.selection.set", {"by": "ids", "ids": [c44b["line"]], "mode": "replace"})
+        await cmd("window.panel.set", {"panelId": "properties", "visible": True})
+        await asyncio.sleep(0.8)
+
+    async def line_state():
+        d = await cmd("draw.drawing.get", {"flatten": True})
+        n = next((x for x in d.get("nodes") or [] if x.get("id") == c44b.get("line")), {}) or {}
+        return {"kind": n.get("kind"), "thickness": (n.get("lineStyle") or {}).get("thickness")}
+
+    rows.append({"name": "Tool options › Contour Editor: line invisible",
+                 "spec": f"{spec_line('draw.stroke.set')} (label \"Edit Stroke\"); 02 §8 line properties (SI-196)",
+                 "action": ("dom", "toolOptions.selectedLine.invisible"),
+                 "expect": lambda b: ("draw.stroke.set", {"strokeId": f"{c44b['drawing']}/{c44b['line']}",
+                                                          "kind": "pencil" if b.get("kind") == "invisible" else "invisible"}),
+                 "label": "Edit Stroke", "setup": line_shown, "state": line_state, "toggle": True,
+                 "effect": lambda b, a, k: a.get("kind") != b.get("kind"), "disabled": None})
+    rows.append({"name": "Tool options › Contour Editor: line thickness",
+                 "spec": f"{spec_line('draw.stroke.set')} (label \"Edit Stroke\"); 02 §8 line properties (SI-196); D-61",
+                 "action": ("none",), "custom": typed_flow("toolOptions.selectedLine.thickness", "4.5"),
+                 "expect": lambda b: ("draw.stroke.set", {"strokeId": f"{c44b['drawing']}/{c44b['line']}", "thickness": 4.5}),
+                 "label": "Edit Stroke", "setup": line_shown, "state": line_state,
+                 "effect": lambda b, a, k: a.get("thickness") == 4.5, "disabled": None,
+                 "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+
+    # The Text panel formatting the text the Text tool highlights (design note 5 §6): a session opened by the table's
+    # agent connection (a Text tool click, `type_text`, then Shift+Home), so in the OS form the person's clicks format
+    # the agent's session's highlight; the caret-only rows need the session's own origin and run in the MCP form.
+    async def text_session(highlight=True, two_runs=False):
+        # A fresh session on a fresh object: the last row's session ends with its tool, its objects go.
+        await cmd("tool.active.set", {"toolId": "select"})
+        nodes = (await cmd("draw.drawing.get", {"flatten": True})).get("nodes") or []
+        old = [n.get("id") for n in nodes if "text" in n and "runs" in n]
+        if old:
+            await cmd("draw.object.delete", {"ids": old})
+        # The Text panel first: showing it after the view could take the view's place in the dock.
+        await cmd("window.panel.set", {"panelId": "text", "visible": True})
+        await tool_fixture("text")
+        m = await view_map()
+        x, y = to_view(m, -50, 75)
+        env = await e2e.call(t.s, "pointer", {"view": "drawingView", "tool": "text",
+                                              "events": [{"type": "down", "x": x, "y": y}, {"type": "up", "x": x, "y": y}]})
+        res = env.get("result") or {}
+        add = next((c for c in res.get("commands") or [] if c.get("commandId") == "draw.text.add"), {}) or {}
+        c44b["text"] = ((add.get("envelope") or {}).get("result") or {}).get("textId")
+        if not c44b["text"]:
+            nodes = (await cmd("draw.drawing.get", {"flatten": True})).get("nodes") or []
+            c44b["text"] = next((n.get("id") for n in reversed(nodes) if "text" in n and "runs" in n), None)
+        if not c44b["text"]:
+            raise RuntimeError(f"the Text tool's click made no text object: {json.dumps(env)[:400]}")
+        await e2e.call(t.s, "type_text", {"text": "Hello"})
+        if two_runs:
+            await cmd("draw.textFormat.set", {"textId": c44b["text"], "start": 0, "length": 2, "bold": True})
+        if highlight:
+            await e2e.call(t.s, "key", {"keys": "Shift+Home"})
+        # A wait for a state (D-45): the panel shows the session's role.
+        want = "Selected text" if highlight else "Next typed text"
+        start = time.monotonic()
+        while time.monotonic() - start < 15.0:
+            answer = await e2e.call(t.s, "inspect_ui", {"target": "window", "depth": 32})
+            n = McpTable.node((answer.get("result") or answer).get("root") or {}, "text.role") or {}
+            if n.get("label") == want:
+                break
+            await asyncio.sleep(0.25)
+        await asyncio.sleep(0.3)
+
+    async def text_runs():
+        d = await cmd("draw.drawing.get", {"flatten": True})
+        n = next((x for x in d.get("nodes") or [] if x.get("id") == c44b.get("text")), {}) or {}
+        runs = n.get("runs") or [{}]
+        paras = n.get("paragraphs") or [{}]
+        r0, p0 = runs[0], paras[0]
+        return {"bold": r0.get("bold"), "italic": r0.get("italic"), "autoKern": r0.get("autoKern"),
+                "align": p0.get("align"), "baseline": r0.get("baseline"), "runs": runs, "paragraphs": paras,
+                "text": n.get("text")}
+
+    def fmt(field, value):
+        return ("draw.textFormat.set", {"drawingId": c44b["drawing"], "textId": c44b["text"], "start": 0, "length": 5,
+                                        field: value})
+
+    for fmt_flag in ("bold", "italic", "autoKern"):
+        rows.append({"name": f"Text panel (selected text) › {fmt_flag}",
+                     "spec": f"{spec_line('draw.textFormat.set')} (\"Text Property Modified\"); 02 §7.6.1 lines 677-678",
+                     "action": ("dom", f"text.{fmt_flag}"),
+                     "expect": (lambda f: lambda b: fmt(f, not b.get(f)))(fmt_flag), "label": "Text Property Modified",
+                     "setup": text_session, "state": text_runs, "toggle": True,
+                     "effect": (lambda f: lambda b, a, k: a.get(f) == (not b.get(f)))(fmt_flag), "disabled": None})
+    # A choice other than the current one (the defaults rows above may have left New text centred or superscript).
+    def choice_session(key_, values):
+        async def run():
+            await text_session()
+            cur = (await text_runs()).get(key_)
+            c44b[f"target.{key_}"] = next(v for v in values if v != cur)
+        return run
+
+    for key_, values in (("align", ("centre", "right")), ("baseline", ("superscript", "subscript"))):
+        rows.append({"name": f"Text panel (selected text) › {key_}",
+                     "spec": f"{spec_line('draw.textFormat.set')} (\"Text Property Modified\"); 02 §7.6.1",
+                     "action": (lambda k_: lambda: ("select", f"text.{k_}", c44b[f"target.{k_}"]))(key_),
+                     "expect": (lambda k_: lambda b: fmt(k_, c44b[f"target.{k_}"]))(key_), "label": "Text Property Modified",
+                     "setup": choice_session(key_, values), "state": text_runs,
+                     "effect": (lambda k_: lambda b, a, k: a.get(k_) == c44b[f"target.{k_}"])(key_), "disabled": None})
+    # Values other than those the defaults rows above type (new text takes the defaults).
+    for ident, typed, field, value in (("text.size", "52", "size", 52), ("text.font", "Verdana", "font", "Verdana"),
+                                       ("text.kerning", "7", "kerning", 7), ("text.leftMargin", "14", "leftMargin", 14),
+                                       ("text.rightMargin", "9", "rightMargin", 9), ("text.indent", "6", "indent", 6),
+                                       ("text.lineSpacing", "5", "lineSpacing", 5)):
+        rows.append({"name": f"Text panel (selected text) › {field} (typed)",
+                     "spec": f"{spec_line('draw.textFormat.set')} (\"Text Property Modified\"); 02 §7.6.1; D-61",
+                     "action": ("none",), "custom": text_field_flow(ident, typed),
+                     "expect": (lambda f_, v_: lambda b: fmt(f_, v_))(field, value), "label": "Text Property Modified",
+                     "setup": text_session, "state": text_runs,
+                     "effect": lambda b, a, k: a != b, "disabled": None,
+                     "mcpReason": "a typed value is the person's input; the field's declared reference is the current value"})
+
+    async def carried():
+        # The next keystroke carries the pending field (SI-195): its run is bold.
+        await e2e.call(t.s, "type_text", {"text": "!"})
+        st = await text_runs()
+        last = (st.get("runs") or [{}])[-1]
+        t.run.check(last.get("bold") is True and last.get("length") == 1,
+                    "D-39 Text panel (caret) › bold: the next typed character carries it (SI-195)", st.get("runs"))
+
+    rows.append({"name": "Text panel (caret) › bold",
+                 "spec": f"{spec_line('draw.textFormat.set')}; 02 §7.6.1 lines 677-679 (SI-195: no step; the next keystroke)",
+                 "action": ("dom", "text.bold"),
+                 "expect": lambda b: ("draw.textFormat.set", {"drawingId": c44b["drawing"], "textId": c44b["text"], "start": 5,
+                                                              "length": 0, "bold": True}),
+                 "label": None, "setup": lambda: text_session(highlight=False), "state": text_runs,
+                 "effect": lambda b, a, k: a == b, "disabled": None, "after": carried,
+                 "mcpOnly": True, "osReason": "the pending field belongs to the session's own origin (the table's agent "
+                                             "connection opened it); the person's own session is the three-way script's"})
+
+    async def mixed_shown():
+        answer = await e2e.call(t.s, "inspect_ui", {"target": "window", "depth": 32})
+        root = (answer.get("result") or answer).get("root") or {}
+        return {"bold": (McpTable.node(root, "text.bold") or {}).get("value"),
+                "italic": (McpTable.node(root, "text.italic") or {}).get("value"),
+                "role": (McpTable.node(root, "text.role") or {}).get("label")}
+
+    async def typing_setup():
+        """A real click on empty canvas with the Text tool: a new text object and its session (design note 5 §2)."""
+        await cmd("tool.active.set", {"toolId": "select"})
+        await tool_fixture("text")
+        m = await view_map()
+        x, y = to_view(m, -50, 75)
+        await t.input_gesture("drawingView", "text", [(x, y), (x, y)], [])
+        await asyncio.sleep(1.0)
+
+    async def typing_flow():
+        """Real typing into the canvas's editor (design note 5 §4)."""
+        c44b["focus"] = t.cdp.js("(() => { const e = document.activeElement; return e ? (e.getAttribute('data-tt-id') || e.tagName) : null; })()")
+        type_text("Hi")
+        await asyncio.sleep(1.0)
+        return f"'Hi' typed by real keys into the focused editor (focus: {c44b['focus']})"
+
+    async def typed_texts():
+        nodes = (await cmd("draw.drawing.get", {"flatten": True})).get("nodes") or []
+        return sorted(n.get("text") for n in nodes if "text" in n and "runs" in n)
+
+    rows.append({"name": "Text tool › click, then typing in the editor",
+                 "spec": f"{spec_line('draw.text.set')} (\"Typing\"); 02 §7.6 lines 669-670; design note 5 §4; SI-191",
+                 "action": ("none",), "custom": typing_flow,
+                 # The keystrokes reach the kernel through `text_input` (not `run_command`): one "Typing" step.
+                 "expect": None, "label": "Typing",
+                 "setup": typing_setup, "state": typed_texts,
+                 "effect": lambda b, a, k: "Hi" in a, "disabled": None,
+                 "mcpReason": "real keys typed into the canvas's editor; an agent types with type_text (the Text panel rows)"})
+
+    rows.append({"name": "Text panel (selected text) › a range over two runs shows Mixed",
+                 "spec": "02 §7.6.1; design note 5 §6 (a field that differs over the range is Mixed)",
+                 "action": ("none",), "expect": None, "label": None,
+                 "setup": lambda: text_session(two_runs=True), "state": mixed_shown,
+                 "effect": lambda b, a, k: a.get("bold") == "mixed" and a.get("italic") == "false" and a.get("role") == "Selected text",
+                 "disabled": None})
+
+    async def agent_bold():
+        await text_session()
+        await cmd("draw.textFormat.set", {"textId": c44b["text"], "start": 0, "length": 5, "italic": True})
+        await asyncio.sleep(0.8)
+
+    rows.append({"name": "Text panel (selected text) › an agent's change is shown",
+                 "spec": "02 §7.6.1; D-40 (an agent's draw.textFormat.set shows in the panel)",
+                 "action": ("none",), "expect": None, "label": None, "setup": agent_bold, "state": mixed_shown,
+                 "effect": lambda b, a, k: a.get("italic") == "true", "disabled": None})
+
     # ----- C4.4a: the drawing inspector, the Properties panel's Drawing page (02 §9; design note 1 §6) -----
     async def inspector_shown():
         await cmd("window.panel.set", {"panelId": "properties", "visible": True})
@@ -2607,6 +3080,10 @@ async def build_and_run(t: Table, only: set) -> None:
             await r["setup"]()
             continue
         if only and not any(o in r["name"] for o in only):
+            continue
+        if not isinstance(t, McpTable) and r.get("mcpOnly"):
+            t.rows.append({"name": r["name"], "spec": r["spec"], "ok": True, "notRun": r["osReason"]})
+            t.run.check(True, f"D-39 {r['name']}: runs in the MCP form only ({r['osReason']})", None)
             continue
         if isinstance(t, McpTable) and (r.get("custom") or r.get("post_click") or r.get("osOnly")):
             reason = r.get("mcpReason") or (

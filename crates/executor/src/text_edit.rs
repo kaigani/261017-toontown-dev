@@ -431,6 +431,8 @@ pub(crate) fn settle(core: &mut Core, origin: &Origin) {
     };
     let Some((s, left, locked, gone, empty)) = state else { return };
     if !(left || locked || gone) {
+        // The session stays: the panel's shown values follow the call (an agent's `draw.textFormat.set`, D-40).
+        notify(core);
         return;
     }
     end(core, origin, &s, empty && !locked && !gone);

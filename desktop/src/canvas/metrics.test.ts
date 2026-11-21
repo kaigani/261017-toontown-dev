@@ -82,4 +82,13 @@ describe('canvas metrics', () => {
     expect(m.loads.length).toBe(20);
     expect(m.loads[0]?.key).toBe('k10');
   });
+
+  it('keystroke to glyph: a key to the frame drawing a newer model (design note 5 §8)', () => {
+    const m = new CanvasMetrics();
+    m.keyed(100, 3);
+    m.keyed(105, 3);
+    m.drawn(3, 110);
+    m.drawn(4, 125);
+    expect(m.snapshot().keyToGlyphMs).toMatchObject({ n: 1, p50: 25, max: 25 });
+  });
 });

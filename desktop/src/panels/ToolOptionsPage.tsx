@@ -332,14 +332,19 @@ function SelectedLine() {
     void (async () => {
       const sel = await engine.run('draw.selection.get', {}).done;
       const r = obj(sel.result);
-      const drawingId = typeof r['drawingId'] === 'string' ? r['drawingId'] : null;
       const ids = Array.isArray(r['selectedIds']) ? (r['selectedIds'] as unknown[]) : [];
-      if (sel.status !== 'ok' || drawingId === null || ids.length !== 1 || typeof ids[0] !== 'string') {
+      if (sel.status !== 'ok' || ids.length !== 1 || typeof ids[0] !== 'string') {
         setLine(null);
         return;
       }
       const id = ids[0];
-      const d = await engine.run('draw.drawing.get', { drawingId, flatten: true }).done;
+      // The current drawing (the selection's): its id qualifies the stroke the command names.
+      const d = await engine.run('draw.drawing.get', { flatten: true }).done;
+      const drawingId = obj(d.result)['drawingId'];
+      if (typeof drawingId !== 'string') {
+        setLine(null);
+        return;
+      }
       const nodes = Array.isArray(obj(d.result)['nodes']) ? (obj(d.result)['nodes'] as unknown[]) : [];
       const n = nodes.map(obj).find((x) => x['id'] === id);
       const kind = typeof n?.['kind'] === 'string' ? n['kind'] : '';

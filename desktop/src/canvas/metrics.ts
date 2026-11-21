@@ -48,6 +48,14 @@ export class CanvasMetrics {
   private last: number | null = null;
   private pendingInk: number | null = null;
   private release: { t: number; version: number; answered: number | null } | null = null;
+  /** Keystroke to glyph (design note 5 §8): a key's timeStamp to the frame drawing a newer model. */
+  readonly keys: number[] = [];
+  private key: { t: number; version: number } | null = null;
+
+  /** A key was typed into the Text tool's editor at `t` (its event's timeStamp), with the model at `version`. */
+  keyed(t: number, version: number): void {
+    this.key ??= { t, version };
+  }
 
   /** A frame began at `now` and its work took `workMs`; `inGesture` while a gesture is in progress. */
   frame(now: number, workMs: number, inGesture = false): void {
@@ -82,6 +90,10 @@ export class CanvasMetrics {
 
   /** A frame drew the model at `version` at `now`: the committed drawing, when newer than at the release. */
   drawn(version: number, now: number): void {
+    if (this.key && version > this.key.version) {
+      ring(this.keys, Math.max(0, now - this.key.t), 50);
+      this.key = null;
+    }
     if (this.release && version > this.release.version) {
       ring(this.commit, Math.max(0, now - this.release.t), 50);
       const a = this.release.answered ?? now;
@@ -110,6 +122,7 @@ export class CanvasMetrics {
     idleWorkMs: Stat;
     inkMs: Stat;
     commitMs: Stat;
+    keyToGlyphMs: Stat;
     sceneMs: Stat;
     commits: number[];
     /** The raw intervals of the last frames, idle and in a gesture (ruling D-33: the share of long intervals). */
@@ -132,6 +145,7 @@ export class CanvasMetrics {
       idleWorkMs: stat(this.idleWork),
       inkMs: stat(this.ink),
       commitMs: stat(this.commit),
+      keyToGlyphMs: stat(this.keys),
       sceneMs: stat(this.scenes),
       commits: this.commit.map((v) => Math.round(v * 100) / 100),
       frameIntervals: this.frames.map((v) => Math.round(v * 100) / 100),

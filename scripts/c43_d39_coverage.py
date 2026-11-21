@@ -177,6 +177,9 @@ COVERAGE: dict[str, dict] = {
     "toolOptions.gapClosing": {"rows": ["Tool options › Paint: automatic gap closing"]},
     "toolOptions.gapClosing.*": {"rows": ["Tool options › Paint: automatic gap closing"]},
     **{f"toolOptions.{c}": {"rows": [f"Tool options › {c}"]} for c in ("drawTopLayer", "placeBehind", "snapToContour")},
+    # The Contour Editor's selected line (C4.4b; SI-196).
+    "toolOptions.selectedLine.invisible": {"rows": ["Tool options › Contour Editor: line invisible"]},
+    "toolOptions.selectedLine.thickness": {"rows": ["Tool options › Contour Editor: line thickness"]},
     # The Pen panel (C4.4a).
     "pen.new": {"rows": ["Pen panel › New"]},
     "pen.delete": {"rows": ["Pen panel › Delete"]},
