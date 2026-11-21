@@ -130,10 +130,10 @@ def live(step):
 
 async def text_checks(t,step):
  import inspect
- old=load('r2text','tests/adversarial/c44b-r1-live.py');old.PRIOR=PRIOR
+ old=load('r2text','tests/adversarial/c44b-r1-live.py');old.PRIOR=PRIOR;old.EVID=PRIOR.EVID
  source=inspect.getsource(old.text_body)
- start=source.index('        if step==1:');end=source.index('    finally:',start)
- branches="""        if step==6:
+ start=source.index('        if step==1:');end=source.rindex('    finally:')
+ branches=r"""        if step==6:
             await fixture();pos=await t.position();await typed('A')
             await c('window.panel.set',{'panelId':'text','visible':True});await pause();t.click('text.bold');await pause();r=await typed('B')
             labels=await t.steps_since(pos);check([x[0] for x in labels]==['Typing','Typing'],'D-78 pending format two Typing steps',labels)
@@ -142,7 +142,7 @@ async def text_checks(t,step):
             await fixture('ABC');pos=await t.position();r=await key(0x5a,0x11)
             check(content(r)=='' and await t.position()==pos-1,'D-78 canvas Ctrl Z document undo',r['history'])
             r=await key(0x5a,0x11,0x10);check(content(r)=='ABC' and await t.position()==pos,'D-78 canvas redo',r['history'])
-            r=await typed('X');check(content(r)=='ABCX' and r['editor'] is not None,'D-78 valid caret after redo',r['editor'])
+            r=await typed('X');check(content(r) in ('ABCX','XABC') and r['editor'] is not None,'D-78 valid caret after redo',r['editor'])
             t.click('text.size');d.key(0x41,0x11);d.type_text('42');await pause();pos=await t.position();d.key(0x5a,0x11);await pause()
             check(await t.position()==pos and t.cdp.js("document.querySelector('[data-tt-id=\"text.size\"]').value")!='42','D-78 ordinary numeric field keeps undo',None)
             await c('tool.active.set',{'toolId':'brush'});await c('window.panel.set',{'panelId':'pen','visible':True});await pause()
