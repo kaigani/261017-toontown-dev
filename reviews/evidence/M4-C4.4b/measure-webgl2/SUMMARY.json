@@ -1,0 +1,123 @@
+{
+ "receipt": "reviews/evidence/M4-C4.4b/measure-webgl2",
+ "verdict": "fail",
+ "regenerate": "python scripts/c44b-measure.py target/release/toontown.exe <out> --backend webgl2",
+ "manifest": {
+  "kind": "toontown.c44b.measure",
+  "platform": "win32",
+  "backend": "webgl2",
+  "seconds": 1305.3,
+  "bounds": {
+   "inkMs": 16.7,
+   "commitSmallMs": 50.0,
+   "gestureWorkMs": 8.0,
+   "keyToGlyphMs": 33.0
+  },
+  "failures": [
+   "keystroke to glyph 34.8 ms p95 <= 33.0 ms (30 keys): {\"n\": 30, \"p50\": 30, \"p95\": 34.8, \"max\": 36.6}"
+  ]
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the Drawing view's canvas is located (OS input)",
+   "detail": [
+    116,
+    138,
+    834,
+    633
+   ]
+  },
+  {
+   "ok": true,
+   "check": "Contour Editor anchor drag: a complete measurement (30 drags)"
+  },
+  {
+   "ok": true,
+   "check": "Contour Editor anchor drag: drag feedback 0.7 ms p95 <= 16.7 ms"
+  },
+  {
+   "ok": true,
+   "check": "Contour Editor anchor drag: release to committed 33.1 ms p95 <= 50.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Contour Editor anchor drag: work per frame during the drags 0.2 ms p95 <= 8.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Perspective corner drag: a complete measurement (30 drags)"
+  },
+  {
+   "ok": true,
+   "check": "Perspective corner drag: drag feedback 0.3 ms p95 <= 16.7 ms"
+  },
+  {
+   "ok": true,
+   "check": "Perspective corner drag: release to committed 32.5 ms p95 <= 50.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Perspective corner drag: work per frame during the drags 0.2 ms p95 <= 8.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Reposition All offset: a complete measurement (30 drags)"
+  },
+  {
+   "ok": true,
+   "check": "Reposition All offset: drag feedback 0.3 ms p95 <= 16.7 ms"
+  },
+  {
+   "ok": true,
+   "check": "Reposition All offset: release to committed 34.4 ms p95 <= 50.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Reposition All offset: work per frame during the drags 0.2 ms p95 <= 8.0 ms"
+  },
+  {
+   "ok": false,
+   "check": "keystroke to glyph 34.8 ms p95 <= 33.0 ms (30 keys)",
+   "detail": {
+    "n": 30,
+    "p50": 30,
+    "p95": 34.8,
+    "max": 36.6
+   }
+  },
+  {
+   "ok": true,
+   "check": "the 50,000-point stroke is added (straight segments, no fitting)"
+  },
+  {
+   "ok": true,
+   "check": "the 50,000-point case is reported, not asserted (D-75 items 2 and 6; M11 C11.1)"
+  }
+ ],
+ "kept": [
+  "measure.json"
+ ],
+ "raw": [
+  {
+   "file": "discovery.json",
+   "bytes": 4096,
+   "sha256": "2a086460ac685c3bc6bf94783c858cfefbe1e63f043586108e189bb8adb19d77"
+  },
+  {
+   "file": "discovery.log",
+   "bytes": 53,
+   "sha256": "8a42d3af7ad61de38c3aa117e51b74fb781b06dbff1cc16541b12440c0a7d73f"
+  },
+  {
+   "file": "manifest.json",
+   "bytes": 369,
+   "sha256": "7a90a8ee20fa2f8208106914e3ce4e2a8069572ebfda56f7e5d171291e1fdae7"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 12209,
+   "sha256": "bed73bf896b92c50513c0a7f24e179ef4210d1d2fd7ffa87f5f643539018d3b9"
+  }
+ ]
+}

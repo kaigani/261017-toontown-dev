@@ -1,0 +1,100 @@
+{
+ "receipt": "reviews/evidence/M4-C4.4b/d39-os-typing",
+ "verdict": "pass",
+ "regenerate": "python scripts/c43-d39-bindings.py target/release/toontown.exe <out> --mode os --only \"Text tool\"",
+ "manifest": {
+  "kind": "toontown.c43b.d39-bindings",
+  "mode": "os",
+  "seconds": 41.1,
+  "rows": 3,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the IPC recorder sees the page's commands"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text tool › click, then typing in the editor: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1324 (\"Typing\"); 02 §7.6 lines 669-670; design note 5 §4; SI-191)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 status bar › jobs: a running job shows and goes when it ends (01 §9.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 File › Open Recent › an entry's full path: the status bar shows the highlighted entry's full path, then its line again; no command (01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\"))"
+  }
+ ],
+ "rows": [
+  {
+   "name": "Text tool › click, then typing in the editor",
+   "spec": "spec/02_drawing.md:1324 (\"Typing\"); 02 §7.6 lines 669-670; design note 5 §4; SI-191",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'Hi' typed by real keys into the focused editor (focus: canvas.textEditor)",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [
+      [
+       "Typing",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "status bar › jobs",
+   "spec": "spec/11_agent_interface_mcp.md:636; 01 §9.1 (status bar: running jobs)",
+   "runningPerKernel": [
+    1,
+    1
+   ],
+   "jobId": "job-2",
+   "shownWhileRunning": [
+    "1 job running"
+   ],
+   "afterEnd": "",
+   "ok": true
+  },
+  {
+   "name": "File › Open Recent › an entry's full path",
+   "spec": "01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\")",
+   "form": "os",
+   "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-cdb5a1oj\\D39-recent.animpkg",
+   "shownWhileHighlighted": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-cdb5a1oj\\D39-recent.animpkg",
+   "before": "",
+   "afterClose": "",
+   "sent": [],
+   "ok": true
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 131,
+   "sha256": "ad7918eb25f11371be8c1afda585f8efc62bbc6010457f9ac03b3ceaa20d7059"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 1602,
+   "sha256": "8a91a0a0a8bc0c3f6e94b9807fea554ec9a056b3d54ee5a663b755225a1d7786"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 2062,
+   "sha256": "cc07f04d6fec950589e1921a37546fd75cf88fb976ac4f9caffba8b86a3b39a9"
+  }
+ ]
+}

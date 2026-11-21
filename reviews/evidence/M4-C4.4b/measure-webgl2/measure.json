@@ -1,0 +1,323 @@
+{
+  "backend": "webgl2",
+  "drags": 30,
+  "rows": [
+    {
+      "name": "Contour Editor anchor drag",
+      "drags": 30,
+      "errors": [],
+      "commitP95": 33.1,
+      "commits": 30,
+      "commitsMs": [
+        20.6,
+        27.5,
+        20.7,
+        26.1,
+        28.6,
+        26.4,
+        24.2,
+        26.1,
+        25.1,
+        20.3,
+        32.6,
+        30.2,
+        25.7,
+        26.2,
+        23.5,
+        23,
+        32.1,
+        27.7,
+        21.6,
+        33.2,
+        19.1,
+        19.5,
+        26.3,
+        33.1,
+        19.3,
+        33.1,
+        25.1,
+        23,
+        24.1,
+        27.2
+      ],
+      "inkP95": 0.7,
+      "inkSamples": 653,
+      "gestureWorkP95": 0.2,
+      "workFrames": 1322
+    },
+    {
+      "name": "Perspective corner drag",
+      "drags": 30,
+      "errors": [],
+      "commitP95": 32.5,
+      "commits": 30,
+      "commitsMs": [
+        24.8,
+        31.1,
+        26.1,
+        22,
+        33.6,
+        24.6,
+        21.4,
+        30.1,
+        31.7,
+        27.8,
+        20.2,
+        23.9,
+        31.2,
+        32.5,
+        25.4,
+        27.1,
+        20,
+        27.4,
+        25.2,
+        31.7,
+        27.3,
+        27.2,
+        27.9,
+        30.7,
+        27.3,
+        23.7,
+        28.7,
+        30.8,
+        19.8,
+        29.5
+      ],
+      "inkP95": 0.3,
+      "inkSamples": 710,
+      "gestureWorkP95": 0.2,
+      "workFrames": 1324
+    },
+    {
+      "name": "Reposition All offset",
+      "drags": 30,
+      "errors": [],
+      "commitP95": 34.4,
+      "commits": 30,
+      "commitsMs": [
+        28.5,
+        22.2,
+        33.7,
+        31.8,
+        21,
+        32.3,
+        28,
+        23.4,
+        23.8,
+        32,
+        33.1,
+        33.2,
+        22.2,
+        34.4,
+        25.5,
+        22.4,
+        27.4,
+        20.4,
+        31.6,
+        33.2,
+        20.5,
+        22.1,
+        22.4,
+        25.3,
+        20.5,
+        30.6,
+        27,
+        19.6,
+        18.7,
+        34.5
+      ],
+      "inkP95": 0.3,
+      "inkSamples": 709,
+      "gestureWorkP95": 0.2,
+      "workFrames": 1325
+    }
+  ],
+  "keyToGlyph": {
+    "n": 30,
+    "p50": 30,
+    "p95": 34.8,
+    "max": 36.6
+  },
+  "keyParts": {
+    "stages": {
+      "sent": {
+        "n": 30,
+        "p50": 0,
+        "p95": 0.1,
+        "max": 0.1
+      },
+      "event": {
+        "n": 30,
+        "p50": 6.3,
+        "p95": 8.9,
+        "max": 9
+      },
+      "answer": {
+        "n": 30,
+        "p50": 12.1,
+        "p95": 17.9,
+        "max": 18.6
+      },
+      "scene": {
+        "n": 30,
+        "p50": 12.5,
+        "p95": 18.2,
+        "max": 18.8
+      },
+      "loaded": {
+        "n": 30,
+        "p50": 29.6,
+        "p95": 34.2,
+        "max": 36.6
+      }
+    },
+    "sceneMs": {
+      "n": 300,
+      "p50": 2.5,
+      "p95": 8.4,
+      "max": 15.2
+    },
+    "loads": [
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 19876,
+        "ms": 15.8
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 20740,
+        "ms": 8.4
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 21628,
+        "ms": 16.8
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 23788,
+        "ms": 15.5
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 25084,
+        "ms": 16.2
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 25084,
+        "ms": 16.1
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 26452,
+        "ms": 16.8
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 27340,
+        "ms": 7
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 28900,
+        "ms": 8.7
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 28900,
+        "ms": 11.1
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 30040,
+        "ms": 11.8
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 31336,
+        "ms": 14.5
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 33376,
+        "ms": 16.7
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 34816,
+        "ms": 16.3
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 36088,
+        "ms": 16.9
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 36088,
+        "ms": 7.8
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 36976,
+        "ms": 8.5
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 37960,
+        "ms": 6.5
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 39232,
+        "ms": 15.3
+      },
+      {
+        "key": "dr_01K7JJN800F51BK0SFGZCNQY1X",
+        "bytes": 40096,
+        "ms": 16.2
+      }
+    ]
+  },
+  "large": [
+    {
+      "name": "Contour Editor anchor drag (50,000 points)",
+      "drags": 10,
+      "errors": [],
+      "commitP95": 296.6,
+      "commits": 1,
+      "commitsMs": [
+        296.6
+      ],
+      "inkP95": 0.6,
+      "inkSamples": 206,
+      "gestureWorkP95": 0.1,
+      "workFrames": 410
+    },
+    {
+      "name": "Perspective corner drag (50,000 points)",
+      "drags": 10,
+      "errors": [],
+      "commitP95": null,
+      "commits": 0,
+      "commitsMs": [],
+      "inkP95": null,
+      "inkSamples": 0,
+      "gestureWorkP95": 0.1,
+      "workFrames": 441
+    },
+    {
+      "name": "Reposition All offset (50,000 points)",
+      "drags": 10,
+      "errors": [],
+      "commitP95": null,
+      "commits": 0,
+      "commitsMs": [],
+      "inkP95": 0.4,
+      "inkSamples": 239,
+      "gestureWorkP95": 0.1,
+      "workFrames": 443
+    }
+  ]
+}

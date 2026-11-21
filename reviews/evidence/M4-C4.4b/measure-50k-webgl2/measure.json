@@ -1,0 +1,193 @@
+{
+  "backend": "webgl2",
+  "drags": 30,
+  "keyToGlyph": {
+    "n": 0,
+    "p50": null,
+    "p95": null,
+    "max": null
+  },
+  "keyParts": {
+    "stages": {},
+    "sceneMs": {
+      "n": 10,
+      "p50": 1.7,
+      "p95": 11.6,
+      "max": 11.6
+    },
+    "loads": [
+      {
+        "key": "dr_01K7JJN8002RRHT53GPXSMTQA3",
+        "bytes": 8320,
+        "ms": 10.1
+      }
+    ]
+  },
+  "large": [
+    {
+      "name": "Contour Editor anchor drag (50,000 points)",
+      "drags": 3,
+      "errors": [],
+      "commitP95": 36008.7,
+      "commits": 2,
+      "commitsMs": [
+        36008.7,
+        582.4
+      ],
+      "inkP95": 35,
+      "inkSamples": 47,
+      "gestureWorkP95": 0.2,
+      "workFrames": 98,
+      "notes": [
+        {
+          "commits": [
+            36008.7
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.point.move"
+          ],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 188236.201567,
+            "release": 188236.9818429
+          }
+        },
+        {
+          "commits": [
+            582.4
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.pointSelection.set"
+          ],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 188295.9186591,
+            "release": 188296.6963088
+          }
+        },
+        {
+          "commits": [],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.pointSelection.set"
+          ],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 188298.6523803,
+            "release": 188299.4293736
+          }
+        }
+      ]
+    },
+    {
+      "name": "Perspective corner drag (50,000 points)",
+      "drags": 3,
+      "errors": [],
+      "commitP95": null,
+      "commits": 0,
+      "commitsMs": [],
+      "inkP95": null,
+      "inkSamples": 0,
+      "gestureWorkP95": 0.1,
+      "workFrames": 132,
+      "notes": [
+        {
+          "commits": [],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.selection.set"
+          ],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 188481.2356711,
+            "release": 188482.0136372
+          }
+        },
+        {
+          "commits": [],
+          "status": "error",
+          "code": "drawing.noTarget",
+          "commands": [],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 188573.2092386,
+            "release": 188573.9886682
+          }
+        },
+        {
+          "commits": [],
+          "status": "error",
+          "code": "drawing.noTarget",
+          "commands": [],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 188755.0324018,
+            "release": 188755.8082498
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reposition All offset (50,000 points)",
+      "drags": 3,
+      "errors": [],
+      "commitP95": null,
+      "commits": 0,
+      "commitsMs": [],
+      "inkP95": 0.4,
+      "inkSamples": 72,
+      "gestureWorkP95": 0.1,
+      "workFrames": 132,
+      "notes": [
+        {
+          "commits": [],
+          "status": "error",
+          "code": "drawing.notVectorElement",
+          "commands": [],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 188937.6706446,
+            "release": 188938.448448
+          }
+        },
+        {
+          "commits": [],
+          "status": "error",
+          "code": "drawing.notVectorElement",
+          "commands": [],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 189119.4376276,
+            "release": 189120.2156922
+          }
+        },
+        {
+          "commits": [],
+          "status": "error",
+          "code": "drawing.notVectorElement",
+          "commands": [],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 189301.3242307,
+            "release": 189302.1022983
+          }
+        }
+      ]
+    }
+  ]
+}

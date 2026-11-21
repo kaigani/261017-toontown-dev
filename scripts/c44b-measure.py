@@ -1,6 +1,6 @@
 """M4 C4.4b budgets (plan §5.5; rulings D-33, D-45, D-75 items 2 and 6): the four tools' workstation receipts.
 
-Usage: python scripts/c44b-measure.py <toontown binary> <out dir> [--backend webgl2|webgpu] [--drags N] [--text-only]
+Usage: python scripts/c44b-measure.py <toontown binary> <out dir> [--backend webgl2|webgpu] [--drags N] [--text-only|--large-only]
 
 Windows (real OS input), release build, `--canvas-metrics`. On a small drawing (a 120 x 120 du rectangle), N OS drags
 (default 30) per row, each undone: the Contour Editor's anchor drag, Perspective's corner drag, Reposition All's offset;
@@ -46,7 +46,9 @@ e2e, c42 = e6.e2e, e6.c42
 rc = e2e.run_cmd
 
 #: `--text-only`: the keystroke row alone (a diagnosis run; not a receipt).
-ONLY = {"text": False}
+ONLY = {"text": False, "large": False}
+#: Drags per row of the 50,000-point case (each commit and undo reloads a 17 MB payload).
+LARGE_DRAGS = 3
 BOUNDS = {"inkMs": 16.7, "commitSmallMs": 50.0, "gestureWorkMs": 8.0, "keyToGlyphMs": 33.0}
 
 
@@ -135,6 +137,7 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                     commits: list = []
                     ink: list = []
                     work: list = []
+                    notes: list = []
                     for _ in range(n):
                         # Each drag's own values: the rings read before and after it (an undo commits no drag).
                         m0 = await metrics()
@@ -144,26 +147,33 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                         # The commit drawn: a wait for the state (D-45), bounded for a drag that commits nothing.
                         t1 = time.monotonic()
                         m1 = await metrics()
-                        while not added(m0.get("commits") or [], m1.get("commits") or []) and time.monotonic() - t1 < 15.0:
+                        bound = 15.0 if into == "rows" else 90.0
+                        while not added(m0.get("commits") or [], m1.get("commits") or []) and time.monotonic() - t1 < bound:
                             await asyncio.sleep(0.1)
                             m1 = await metrics()
-                        commits += added(m0.get("commits") or [], m1.get("commits") or [])
+                        got = added(m0.get("commits") or [], m1.get("commits") or [])
+                        st = await c42.canvas_state(s)
+                        notes.append({"commits": got, "status": (st.get("lastGesture") or {}).get("status"),
+                                      "code": (st.get("lastGesture") or {}).get("code"),
+                                      "commands": [c.get("commandId") for c in (st.get("lastGesture") or {}).get("commands") or []],
+                                      "toolBox": st.get("toolBox"), "failures": st.get("failures"), "times": t})
+                        commits += got
                         ink += added(m0.get("ink") or [], m1.get("ink") or [])
                         work += added(m0.get("gestureWork") or [], m1.get("gestureWork") or [])
                         # The undo drawn before the next drag (a wait for the state, bounded).
                         drawn = await resident()
                         await rc(s, "edit.undo", {})
                         t2 = time.monotonic()
-                        while await resident() == drawn and time.monotonic() - t2 < 20.0:
+                        while await resident() == drawn and time.monotonic() - t2 < bound:
                             await asyncio.sleep(0.1)
                         await asyncio.sleep(0.3)
                     out_ = {"name": name, "drags": n, "errors": errors, "commitP95": p95(commits), "commits": len(commits),
                             "commitsMs": commits, "inkP95": p95(ink), "inkSamples": len(ink), "gestureWorkP95": p95(work),
-                            "workFrames": len(work)}
+                            "workFrames": len(work), **({"notes": notes} if into == "large" else {})}
                     record.setdefault(into, []).append(out_)
                     return out_
 
-                rows = [] if ONLY["text"] else [
+                rows = [] if ONLY["text"] or ONLY["large"] else [
                     await row("Contour Editor anchor drag", "contourEditor", [(30, -60), (45, -50), (60, -40)], drags),
                     await row("Perspective corner drag", "perspective", [(150, 60), (135, 60), (120, 60)], drags),
                     await row("Reposition All offset", "repositionAll", [(70, -20), (85, -10), (100, 0)], drags, select=False),
@@ -179,11 +189,11 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                               f"{r['name']}: work per frame during the drags {r['gestureWorkP95']} ms p95 <= {BOUNDS['gestureWorkMs']} ms", r)
 
                 # Keystroke to glyph: a Text tool session opened by a real click, 30 real keystrokes.
-                await rc(s, "tool.active.set", {"toolId": "text"})
+                await rc(s, "tool.active.set", {"toolId": "text"} if not ONLY["large"] else {"toolId": "select"})
                 await asyncio.sleep(0.5)
                 await os_drag([(-120, -50), (-120, -50)])
                 await asyncio.sleep(1.5)
-                for ch in "the quick brown fox jumps over":
+                for ch in "" if ONLY["large"] else "the quick brown fox jumps over":
                     eq.os_type(ch)
                     await asyncio.sleep(0.25)
                 await asyncio.sleep(1.5)
@@ -191,7 +201,7 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                 k = mk.get("keyToGlyphMs") or {}
                 record["keyToGlyph"] = k
                 record["keyParts"] = {"stages": mk.get("keyStagesMs"), "sceneMs": mk.get("sceneMs"), "loads": mk.get("loads")}
-                run.check(k.get("n", 0) >= 25 and k.get("p95") is not None and k["p95"] <= BOUNDS["keyToGlyphMs"],
+                run.check(ONLY["large"] or k.get("n", 0) >= 25 and k.get("p95") is not None and k["p95"] <= BOUNDS["keyToGlyphMs"],
                           f"keystroke to glyph {k.get('p95')} ms p95 <= {BOUNDS['keyToGlyphMs']} ms ({k.get('n')} keys)", k)
                 await rc(s, "tool.active.set", {"toolId": "select"})
                 if ONLY["text"]:
@@ -219,7 +229,7 @@ async def measure(url: str, token: str, run, out: Path, drags: int, record: dict
                     await rc(s, "draw.selection.set", {"by": "ids", "ids": [bid], "mode": "replace"})
                     sid_saved = sid
                     sid = bid or sid
-                    r = await row(name, tool, dpts, 10, into="large")
+                    r = await row(name, tool, dpts, LARGE_DRAGS, into="large")
                     sid = sid_saved
                     large.append(r)
                 run.check(True, "the 50,000-point case is reported, not asserted (D-75 items 2 and 6; M11 C11.1)", large)
@@ -233,6 +243,9 @@ def main() -> int:
         i = args.index("--backend")
         backend = args[i + 1]
         del args[i:i + 2]
+    if "--large-only" in args:
+        ONLY["large"] = True
+        args.remove("--large-only")
     if "--text-only" in args:
         ONLY["text"] = True
         args.remove("--text-only")

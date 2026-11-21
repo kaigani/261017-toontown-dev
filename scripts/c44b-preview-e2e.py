@@ -57,6 +57,8 @@ rc = e2e.run_cmd
 
 from mcp import ClientSession  # noqa: E402
 
+#: The preview map each envelope row exercises (design note 4 §3).
+EXPECT_KIND = {"Perspective keystone": "projective", "Perspective concave corner": "bilinear", "Reposition rotation": "affine"}
 #: PV2's bound, view pixels.
 BOUND_PX = 1.0
 #: The ink: luminance below this (0-1). A 1 du line antialiases to mid greys; the overlay is told apart by its colour
@@ -360,7 +362,7 @@ async def session_run(endpoint: str, token: str, run, out: Path) -> list:
             # Perspective and Reposition All: captures while held and after the commit.
             for name, tool, pts, mods in (
                     ("Perspective keystone", "perspective", [(90, 60), (78, 60), (66, 60)], ["alt"]),
-                    ("Perspective concave corner", "perspective", [(150, 60), (120, 30), (100, 10)], []),
+                    ("Perspective concave corner", "perspective", [(150, 60), (110, 35), (60, 10)], []),
                     ("Reposition rotation", "repositionAll", [(150, 60), (135, 75), (115, 85)], ["out"]),
                     ("Reposition alternate corner", "repositionAll", [(150, 60), (165, 75), (180, 90)], ["alt"])):
                 await setup(view, tool)
@@ -380,6 +382,10 @@ async def session_run(endpoint: str, token: str, run, out: Path) -> list:
                 if a and b:
                     (out / f"{name.replace(' ', '-')}-{view}-held.png").write_bytes(a)
                     (out / f"{name.replace(' ', '-')}-{view}-committed.png").write_bytes(b)
+                # The map the row is for (design note 4 §3): a keystone is projective, a concave corner bilinear.
+                want_kind = EXPECT_KIND.get(name)
+                row["expectedKind"] = want_kind
+                run.check(want_kind is None or kind == want_kind, f"PV2 {row['name']}: the preview's map is {want_kind}", row)
                 run.check(dist is not None and dist <= BOUND_PX,
                           f"PV2 {row['name']}: the held preview and the committed drawing within {BOUND_PX} view px (Hausdorff)", row)
                 rows.append(row)
