@@ -826,7 +826,7 @@ async def text_body(t,step):
             await key(0x23);t.click('text.bold');await pause();await state('pending bold');await typed('B')
             await fixture('A');await c('window.panel.set',{'panelId':'text','visible':True});await pause();pos=await t.position();t.click('text.bold');await pause();await typed('B');check(len(await t.steps_since(pos))==1,'STATIC-01 format ends typing run',await t.steps_since(pos))
             doc=await c('doc.export.json',{'scope':'project','binaries':'omit'});t.run.save('colour-source.json',doc)
-            colour='colour:White';answer=await d.e2e.run_cmd(t.s,'colour.current.set',{'colourId':colour});rows.append({'name':'colour attempt','answer':answer})
+            colour=doc['bundle']['palettes'][0]['swatches'][2]['colourId'];answer=await d.e2e.run_cmd(t.s,'colour.current.set',{'colourId':colour});rows.append({'name':'colour attempt','answer':answer})
             if answer.get('status')=='ok':
                 r=await typed('C');check(texts(r)[0]['runs'][-1]['colourId']==answer['result']['colourId'],'STATIC-03 current colour',texts(r))
         elif step==7:
