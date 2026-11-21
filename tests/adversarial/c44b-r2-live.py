@@ -64,7 +64,7 @@ async def matrix(t,step):
    t.run.save(tool+'-options.json',controls)
    for ident in ('toolOptions.snapToContour','toolOptions.placeBehind'):
     if any(x['id']==ident and not x['disabled'] for x in controls):
-     before=await c('tool.options.get',{'toolId':tool});t.click(ident);await pause();after=await c('tool.options.get',{'toolId':tool});check(before!=after,tool+' enabled '+ident+' acts',{'before':before,'after':after})
+     before=await c('tool.settings.get');t.click(ident);await pause();after=await c('tool.settings.get');check(before!=after,tool+' enabled '+ident+' acts',{'before':before,'after':after})
   t.click('properties.page.drawing');await pause()
   browse=t.cdp.js("(()=>{let e=document.querySelector('[data-tt-id=\"inspector.browse\"]');return e?{disabled:e.disabled,reason:e.title||e.closest('label')?.title}:null})()")
   check(bool(browse) and browse['disabled'] and bool(browse['reason']),'D-79 Browse present disabled reason',browse)
