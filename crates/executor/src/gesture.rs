@@ -431,8 +431,17 @@ pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, Command
         [crate::scene_gesture::SCENE_SELECT, crate::scene_gesture::SCENE_TRANSFORM, crate::scene_gesture::SCENE_SKEW]
             .contains(&g.tool.as_str());
     let edit = commands.iter().any(|(c, _)| edits(c));
-    if !scene_tool && (edit || commands.iter().any(|(c, _)| picks(c))) {
-        interactive_target(cx, &g.view_id, &g.tool, edit)?;
+    if !scene_tool
+        && (edit || commands.iter().any(|(c, _)| picks(c)))
+        && let Err(mut e) = interactive_target(cx, &g.view_id, &g.tool, edit)
+    {
+        // The refusal names the command the gesture would have sent (as a command's own refusal does).
+        if let Some((c, _)) = commands.iter().find(|(c, _)| edits(c) || picks(c))
+            && let Some(m) = e.details.as_object_mut()
+        {
+            m.insert("refusedCommandId".into(), json!(c));
+        }
+        return Err(e);
     }
     Ok(commands)
 }
@@ -1454,8 +1463,10 @@ fn finish(core: &mut crate::run::Core, origin: &Origin, g: &Gesture, out: &mut P
         }
         Err(e) => {
             let rev = core.session().and_then(|s| s.project.as_ref()).map(|p| p.doc.document_rev());
+            // A gesture refused by the interactive-target rule names the command it would have sent (D-79).
+            let refused = e.details.get("refusedCommandId").and_then(Value::as_str).map(str::to_owned);
             out.commands.push(Answered {
-                command_id: format!("tool:{}", g.tool),
+                command_id: refused.unwrap_or_else(|| format!("tool:{}", g.tool)),
                 params: Value::Null,
                 envelope: Envelope::error(e, rev),
             });
