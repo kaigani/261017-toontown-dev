@@ -106,7 +106,8 @@ The retired margins:
   taken over, the old file is renamed `<project>.lock.removed-<code>` and deleted as soon as every other program that
   had it open (a virus scanner, an indexer, a backup tool) closes it; the project opens at once. If such a program
   keeps the project's arbitration file open while it is being removed, the open waits up to 12 seconds and then says
-  which file is in use, changing nothing; the person can try again once that program lets go, and an agent gets
+  which file is in use, leaving the project and its lock unchanged (an abandoned helper file it already proved may be
+  left scheduled for deletion); the person can try again once that program lets go, and an agent gets
   `fs.ioError` with `reason: "lockFileInUse"` and the file's path (D-84, D-86; SI-200).
 - **A very large stroke is slow to edit.** A pencil stroke of 50,000 points drawn as straight segments, on its own
   layer, makes a 17.3 MB drawing for the canvas, which takes the kernel 4.0 s to build. After an edit of that stroke
@@ -171,7 +172,8 @@ failures. Every run's seed is printed with its verdict.
 Round 3 (ruling D-86 item 1; finding C44B-R3S-01): an open always answers within a bound. When a program outside the
 protocol keeps a lock file open so that a stale lock cannot be replaced, the opener decides for at most 12 s
 (`ACQUIRE_BOUND`, `TAKEOVER_STALE` plus a round), then answers that the file is in use (`Locked::InUse`, its path),
-changing nothing; a cancelled opener answers at once. I3 is stated with its condition (no program outside the protocol
+leaving the project lock and every live participant's files unchanged (a helper file already proved abandoned may be
+left scheduled for deletion; ruling D-89 item 1); a cancelled opener answers at once. I3 is stated with its condition (no program outside the protocol
 keeps a lock file open); the next open after that program lets go proceeds. **Closure receipts**
 (`reviews/evidence/M4-C4.4b-r4/`, on `3e5d5605`): the randomised lock test and the M1 test each 2,000 runs idle and 2,000 with every core busy: 8,000 runs, zero failures.
 

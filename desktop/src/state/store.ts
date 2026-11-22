@@ -223,7 +223,9 @@ export function createStore(engine: EngineApi): Store {
       const gap = state.seq !== 0 && event.seq > state.seq + 1;
       // SI-148: the family chosen last, for a Camera view canvas that mounts later.
       noteToolFamily(event.name);
-      if (event.name === 'shell.agentActing') {
+      // Ruling D-89 item 2 (C44B-R4S-02): a notice the acting snapshot already covers (a number not above the one the
+      // store holds, within this generation) is not applied again; the rest of the event is processed as before.
+      if (event.name === 'shell.agentActing' && event.seq > state.actingSeq) {
         const p = (event.payload ?? {}) as Record<string, unknown>;
         const entry = activityOf(p);
         const others = state.acting.filter((a) => a.sessionId !== entry.sessionId);

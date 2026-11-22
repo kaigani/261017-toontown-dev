@@ -165,7 +165,7 @@ export function makeActions(
     ));
 
   /** Runs an open flow; when it is refused because a program outside the lock protocol keeps a lock file open
-   *  (D-86 item 1), the person is told which file and may try again (nothing was changed). */
+   *  (D-86 item 1), the person is told which file and may try again (the project and its lock are unchanged). */
   const withLockRetry = async (attempt: () => Promise<Envelope | null>): Promise<Envelope | null> => {
     for (;;) {
       const env = await attempt();
@@ -176,7 +176,7 @@ export function makeActions(
         messageId: 'project.lockFileInUse',
         title: 'Lock file in use',
         text:
-          `Another program has the project's lock file open: ${path}. Nothing was changed. ` +
+          `Another program has the project's lock file open: ${path}. The project was not changed. ` +
           'Close that program, or wait for it to finish, then try again.',
         buttons: [
           { id: 'retry', label: 'Try Again', role: 'default' },

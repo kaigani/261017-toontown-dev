@@ -40,7 +40,9 @@ earlier, after the protection that justified it was gone or was never re-checked
   **provided no program outside the protocol keeps the lock file or the arbitration file open** in a way that keeps it
   from being replaced (on Windows: a handle that refuses sharing deletion, or one that keeps a proven file's name delete
   pending). When one does, every opener ends within `ACQUIRE_BOUND` (12 s) and one round with `InUse` naming that file,
-  nothing changed on disk, and the next open after that program lets go proceeds under I3 (ruling D-86 item 1; finding
+  the project lock and every live participant's files unchanged (an arbitration file this opener already proved
+  abandoned may be left scheduled for deletion, the cleanup the protocol owes it anyway; ruling D-89 item 1), and the
+  next open after that program lets go proceeds under I3 (ruling D-86 item 1; finding
   C44B-R3S-01).
 - **I4. Every open answers within a bound** (D-86 item 1): `ACQUIRE_BOUND` plus one round, or at once when cancelled.
 
@@ -111,7 +113,10 @@ Every step names what the contender has proved and under which protection.
   another program's handle; an arbitration file left empty by a creator that gave up, which becomes removable once
   older than `TAKEOVER_STALE`), it decides for another round, **until `ACQUIRE_BOUND` (12 s, ruling D-86 item 1)**:
   then it answers `InUse` with the file whose contention ended its last attempt (the arbitration file, or the lock file
-  when its proof was refused by a foreign handle or its creation found the name pending) and changes nothing. The
+  when its proof was refused by a foreign handle or its creation found the name pending). It leaves the project lock
+  and every live participant's files unchanged; a helper file it already proved abandoned (in the reviewer's ordering,
+  proved with delete-on-close before the bound) may be left scheduled for deletion, and disappears when the other
+  program lets go, which is the cleanup the protocol owes an abandoned helper (ruling D-89 item 1). The
   bound is `TAKEOVER_STALE` plus one round, so an arbitration file a creator left empty (C1) becomes removable within
   it and only a program outside the protocol outlasts it. A cancelled opener (`acquire_until`'s `cancelled`, the open
   job's cancellation) answers `Cancelled` at the start of its next attempt, at most one attempt's work (milliseconds)

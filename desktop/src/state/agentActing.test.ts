@@ -40,4 +40,22 @@ describe("the agents' running requests (D-86 item 2)", () => {
     await store.resync();
     expect(store.getState().acting.map((a) => a.sessionId)).toEqual(['s1']);
   });
+
+  it('a snapshot that overtakes queued notices is not undone by them (D-89 item 2)', async () => {
+    const h = createScriptedHost();
+    const store = createStore(createHostApi(h).engine);
+    // The snapshot (number 12) already shows the request ended; notices 11 (it started) and 12 (it ended) arrive after.
+    h.acting = { seq: 12, acting: [] };
+    await store.resync();
+    await store.apply({ seq: 11, name: 'shell.agentActing', payload: RUNNING });
+    expect(store.getState().acting).toEqual([]);
+    await store.apply({ seq: 12, name: 'shell.agentActing', payload: { ...RUNNING, acting: false } });
+    expect(store.getState().acting).toEqual([]);
+    expect(store.getState().actingSeq).toBe(12);
+    expect(store.getState().seq).toBe(12);
+    // A later notice is applied as before.
+    await store.apply({ seq: 13, name: 'shell.agentActing', payload: { ...RUNNING, sessionId: 's2' } });
+    expect(store.getState().acting.map((a) => a.sessionId)).toEqual(['s2']);
+    expect(store.getState().actingSeq).toBe(13);
+  });
 });

@@ -462,10 +462,14 @@ pub enum Locked {
     NotWritable(String),
     /// A file of the lock (the lock file or its arbitration file, the path given) is held open by a program outside
     /// the protocol (a virus scanner, an indexer, a backup tool) in a way that keeps it from being replaced, and was
-    /// still so after [`ACQUIRE_BOUND`] (ruling D-86 item 1): nobody owns the lock and nothing was changed on disk.
+    /// still so after [`ACQUIRE_BOUND`] (ruling D-86 item 1): nobody owns the lock; the project lock and every live
+    /// participant's files are unchanged, and an arbitration file this opener already proved abandoned may be left
+    /// scheduled for deletion (it goes when that program lets go; ruling D-89 item 1).
     /// The next open, once that program lets go, proceeds.
     InUse(PathBuf),
-    /// The caller cancelled while the opener was deciding (ruling D-86 item 1): nothing was changed on disk.
+    /// The caller cancelled while the opener was deciding (ruling D-86 item 1): as [`Locked::InUse`], the project lock
+    /// and every live participant's files are unchanged; a file already proved abandoned may be left scheduled for
+    /// deletion.
     Cancelled,
 }
 
@@ -966,7 +970,8 @@ pub fn acquire_until(project: &Path, cancelled: &dyn Fn() -> bool) -> Locked {
                 return Locked::NotWritable("the project's folder cannot be written".to_owned());
             }
             // Nothing is held, and the contention has lasted the whole bound: a program outside the protocol keeps
-            // the file open (ruling D-86 item 1). Nothing was changed on disk.
+            // the file open (ruling D-86 item 1). The project lock and live participants' files are unchanged; a helper
+            // already proved abandoned may be left scheduled for deletion (ruling D-89 item 1).
             _ if started.elapsed() >= ACQUIRE_BOUND => return Locked::InUse(in_use),
             // Nothing is held: decide again for another round.
             _ => {}

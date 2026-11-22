@@ -642,8 +642,9 @@ const HANG: Duration = Duration::from_secs(4 * (12 + 2));
 /// Ruling D-86 item 1 (finding C44B-R3S-01), the reviewer's ordering: a stale lock and an abandoned, token-bearing
 /// arbitration file that another program keeps open. An opener proves the file with delete-on-close; its name stays
 /// delete pending while the reader holds it, and every creation is refused. The opener answers within the bound that
-/// the file is in use (`InUse`, its path) and changes nothing; once the reader closes, the next open owns the lock and
-/// reports the stale lock it took over.
+/// the file is in use (`InUse`, its path). It leaves the stale project lock unchanged; the helper it proved abandoned
+/// is left scheduled for deletion (ruling D-89 item 1: pending while the reader holds it, gone once the reader
+/// closes); then the next open owns the lock and reports the stale lock it took over.
 #[cfg(windows)]
 #[test]
 fn a_helper_file_kept_open_by_another_program_ends_the_open_within_the_bound() {
@@ -662,8 +663,11 @@ fn a_helper_file_kept_open_by_another_program_ends_the_open_within_the_bound() {
     assert_eq!(file, &takeover, "the file in use is named");
     assert!(took >= lock::ACQUIRE_BOUND, "it decided for the whole bound: {took:?}");
     assert!(took < HANG, "and then answered: {took:?}");
-    assert_eq!(lock::read(&lock_file).map(|i| i.lock_id).as_deref(), Some("stale"), "nothing changed on disk");
+    let stale = lock::read(&lock_file).map(|i| i.lock_id);
+    assert_eq!(stale.as_deref(), Some("stale"), "the stale project lock unchanged");
+    assert!(std::fs::File::open(&takeover).is_err(), "the abandoned helper is pending deletion while it is held");
     drop(reader);
+    assert!(!takeover.exists(), "the abandoned helper is gone once the reader closes");
     let next = lock::acquire(&project);
     let Locked::Acquired { handle, took_over } = &next else { panic!("the next open owns the lock: {next:?}") };
     assert!(handle.held());
@@ -689,16 +693,27 @@ fn three_openers_against_a_helper_file_kept_open_all_answer_within_the_bound() {
     let outcomes: Vec<Locked> = openers.into_iter().map(|t| t.join().unwrap()).collect();
     assert!(start.elapsed() < HANG, "every opener answered: {:?}", start.elapsed());
     assert!(outcomes.iter().all(|o| matches!(o, Locked::InUse(_))), "{outcomes:?}");
-    assert_eq!(lock::read(&lock_file).map(|i| i.lock_id).as_deref(), Some("stale"), "nothing changed on disk");
+    let stale = lock::read(&lock_file).map(|i| i.lock_id);
+    assert_eq!(stale.as_deref(), Some("stale"), "the stale project lock unchanged");
+    assert!(std::fs::File::open(&takeover).is_err(), "the abandoned helper is pending deletion while it is held");
     drop(reader);
+    assert!(!takeover.exists(), "the abandoned helper is gone once the reader closes");
     let after: Vec<Locked> =
         ["D", "E", "F"].iter().map(|n| participant(n, &project)).map(|t| t.join().unwrap()).collect();
     assert_eq!(owners(&after).len(), 1, "exactly one owner once the reader let go: {after:?}");
+    let took_over: Vec<_> = after
+        .iter()
+        .filter_map(|o| match o {
+            Locked::Acquired { took_over, .. } => took_over.as_ref().map(|i| i.lock_id.clone()),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(took_over, ["stale"], "the owner reports the stale lock it took over");
     drop(after);
     let _ = std::fs::remove_dir_all(&dir);
 }
 
-/// Ruling D-86 item 1: an opener cancelled while it decides returns at once, changing nothing (both systems: the
+/// Ruling D-86 item 1: an opener cancelled while it decides returns at once, publishing nothing (both systems: the
 /// contention here is a releasing arbiter held at its boundary).
 #[test]
 fn an_opener_cancelled_while_it_decides_returns_at_once() {

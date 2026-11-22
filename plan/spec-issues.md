@@ -2499,7 +2499,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Entry:** *Spec:* 10 §8.6 (LOCK-01 to LOCK-03) and 11 §10 name no outcome for a lock file that a program outside the
   protocol (a virus scanner, an indexer, a backup tool) keeps open so that a stale lock cannot be replaced. *Decided:*
   the opener decides for at most 12 s (`ACQUIRE_BOUND`), then refuses the open with the existing code `fs.ioError`,
-  `details: {reason: "lockFileInUse", path}`, changing nothing on disk; the window names the file and offers Try Again.
+  `details: {reason: "lockFileInUse", path}`, leaving the project and its lock unchanged (an arbitration file already
+  proved abandoned may be left scheduled for deletion; ruling D-89 item 1); the window names the file and offers Try
+  Again.
   *Question:* should 11 §10 have a dedicated code (for example `project.lockFileInUse`) instead of `fs.ioError` with a
   reason? D-57 keeps the existing code until the user says.
 

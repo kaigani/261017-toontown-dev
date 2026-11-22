@@ -179,8 +179,9 @@ type LockFor = (Option<Arc<lock::LockHandle>>, bool, Vec<ResultWarning>, Option<
 ///
 /// # Errors
 /// `fs.ioError` (`reason: "lockFileInUse"`, the file's `path`) when a program outside the lock protocol keeps a lock
-/// file open past the lock's bound (ruling D-86 item 1; SI-200): nothing was changed on disk, and opening again once
-/// that program lets go proceeds. `job.cancelled` when cancelled meanwhile.
+/// file open past the lock's bound (ruling D-86 item 1; SI-200): the project and its lock are unchanged (an abandoned
+/// arbitration file may be left scheduled for deletion, D-89 item 1), and opening again once that program lets go
+/// proceeds. `job.cancelled` when cancelled meanwhile.
 fn lock_for(path: &Path, read_only: bool, cancelled: &dyn Fn() -> bool) -> Result<LockFor, CommandError> {
     if read_only {
         return Ok((None, true, Vec::new(), None));
@@ -237,7 +238,7 @@ fn lock_for(path: &Path, read_only: bool, cancelled: &dyn Fn() -> bool) -> Resul
         Locked::Cancelled => {
             return Err(CommandError::with_details(
                 "job.cancelled",
-                "cancelled while the project's lock was being taken; nothing was changed",
+                "cancelled while the project's lock was being taken; the project and its lock are unchanged",
                 json!({}),
             ));
         }
@@ -249,8 +250,8 @@ fn lock_file_in_use(file: &Path) -> CommandError {
     CommandError::with_details(
         tt_persist::codes::FS_IO,
         format!(
-            "the project's lock file `{}` is in use by another program; nothing was changed; close that program (or \
-             wait for it) and try again",
+            "the project's lock file `{}` is in use by another program; the project and its lock are unchanged; close \
+             that program (or wait for it) and try again",
             file.display()
         ),
         json!({ "reason": "lockFileInUse", "path": file.to_string_lossy() }),
