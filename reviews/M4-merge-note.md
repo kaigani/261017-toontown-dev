@@ -1,6 +1,7 @@
 # M4 merge note: desktop shell
 
-**Complete on the builder's side; a merge candidate only once C4.4b passes review** (ruling D-30). Branch
+**Complete on the builder's side; a merge candidate once the orchestrator's check of D-89 passes C4.4b** (ruling
+D-30). Branch
 `m4-desktop-shell`. Builder: Claude Opus 5.5. The orchestrator merges and tags; the builder does not.
 
 M4 delivers the desktop application around the M1-M3 kernel: the shell (menus, dock, panels, dialogs, preferences,
@@ -17,14 +18,16 @@ panels and agent surfaces of C4.4a and the four drawing tools of C4.4b.
 | C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
 | C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | passed on product head `f5eb9e84`, run 44286651371 (36 of 36), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
 | C4.4a | panels and settings, agent surfaces (`reviews/M4-C4.4-plan.md`, D-40) | passed on product head `87f63b5f`, run 44861150241 (36 of 36 on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74; findings 12 + 2 + 2 + 5, all closed (including the P1 on the agent token in agent captures) |
-| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; round 2 on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`: seven items (C44B-R2S-01 to -04, C44B-R2L-01, C44B-R2-01, -02) and D-82's grapheme clusters, rulings D-82 to D-85, all fixed; round 3 (the last full round) on product head `a67edbb1`, run 44977394689, `reviews/M4-C4.4b-handoff-r3.md`: two static findings (C44B-R3S-01, the lock's bound; C44B-R3S-02, the agent-acting snapshot) and one live (C44B-R3-01, refusals reported for keys and native menus), rulings D-86 and D-87, all fixed; **closure handoff** on product head `a7f8554a`, run 45014999591, `reviews/M4-C4.4b-handoff-r4.md`, for one scoped closure check; D-88 accepted the three static witnesses that describe the code by design, the interim `fs.ioError` answer for a lock file in use (SI-200 stays a question) and the `url` 2.5.9 bump |
+| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; round 2 on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`: seven items (C44B-R2S-01 to -04, C44B-R2L-01, C44B-R2-01, -02) and D-82's grapheme clusters, rulings D-82 to D-85, all fixed; round 3 (the last full round) on product head `a67edbb1`, run 44977394689, `reviews/M4-C4.4b-handoff-r3.md`: two static findings (C44B-R3S-01, the lock's bound; C44B-R3S-02, the agent-acting snapshot) and one live (C44B-R3-01, refusals reported for keys and native menus), rulings D-86 and D-87, all fixed; **closure handoff** on product head `a7f8554a`, run 45014999591, `reviews/M4-C4.4b-handoff-r4.md`, for one scoped closure check; D-88 accepted the three static witnesses that describe the code by design, the interim `fs.ioError` answer for a lock file in use (SI-200 stays a question) and the `url` 2.5.9 bump; the scoped closure check (static `3213f786`, live `56be5906`, `reviews/M4-C4.4b-r4-closure-live.md`) found no problem live (ten refusal rows by real input, the file-in-use message by File > Open and by an agent, the four tools equal to the direct commands); **final:** D-89's three points (C44B-R4S-01, the `InUse` claim corrected and its two tests asserting the helper's state; C44B-R4S-02, acting notices the snapshot already covers not applied again; the `cssparser-macros` edge on `syn` restored; two macOS `desktop gui` failures of the D-39 table, a time-bounded wait and the Pen panel's out-of-order reads, §4) on product head `55da9ede`, run 45043134804 (36 of 36), `reviews/M4-C4.4b-handoff-r5.md` |
 
-Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-88), recorded in
+Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-89), recorded in
 `reviews/M4-C4.1-plan.md`, `reviews/M4-C4.2-plan.md` and `reviews/M4-C4.3-plan.md` §15.
 
 ## 2. Inventory and counts (final build)
 
-- **Final product head:** `a7f8554a`, run 45014999591, 36 of 36 green (the C4.4b closure handoff; round 3's head was
+- **Final product head:** `55da9ede`, run 45043134804, 36 of 36 green (D-89, `reviews/M4-C4.4b-handoff-r5.md`;
+  D-89's product commits first ran on `3f631fa8`, run 45028611045, 36 of 36; the final head adds the read gate and
+  the D-39 table's two state waits of §4; the closure handoff's head was `a7f8554a`, run 45014999591; round 3's
   `a67edbb1`, run 44977394689; round 2's `bf2b2195`, run 44951926851; round 1's `e6f71489`, run 44916529274).
 - **Commands in the parity gate:** 347 = 161 action + 41 read + 59 agent-only + 86 deferred
   (`tests/adversarial/c43b-r2s-static.py`; C4.3b ended at 154 bound, 61 agent-only, 132 deferred).
@@ -39,7 +42,7 @@ Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2
   7), green on the final build, 5 named (recovery open's three choices, the engine restart's two: covered by Vitest).
 - **Gesture equivalence three ways** (the window, the headless replay of its samples, the commands sent directly):
   C4.2's drawing tools, C4.3's scene tools in the Camera view, C4.4b's 20 rows (the four tools in both views).
-- **Vitest** 99 files, 820 tests. **Reviewer Python suites** 86 of 86. **Allowed lints** 96 in 40 product files (the
+- **Vitest** 100 files, 824 tests. **Reviewer Python suites** 86 of 86. **Allowed lints** 96 in 40 product files (the
   count `scripts/check-product-allows.py` gates); no new `unsafe` in C4.4b.
 
 ## 3. The deferred list by owner (D-31): none owned by M4
@@ -80,7 +83,9 @@ what was done (ruling D-74's request):
 
 A security advisory published during the closure: RUSTSEC-2026-0592 (`url` 2.5.8, a stack overflow in `Url::origin()`
 on nested `blob:` URLs, through `tauri` and `wry`) failed `cargo deny` in run 45009040573; the lock file moved to `url`
-2.5.9 (`a7f8554a`), nothing else changed.
+2.5.9 and `form_urlencoded` 1.2.3 (`a7f8554a`). That update also moved `cssparser-macros`' edge on `syn` from 3.0.9
+to 2.0.119; ruling D-89 item 3 restored it (`c06b11d3`), so the lock file differs from before the advisory only by
+those two packages.
 
 Failures that were not reruns but deterministic on CI's machines, fixed on the next commit: `c21_example_results`
 (a pending confirmation's `expiresInMs` differed by 1 ms; now a time key, `dfe9cea7`); `c14-r3-measurements.py` on
@@ -138,7 +143,7 @@ The retired margins:
   approximate until the commit.
 - **Some tools have no gestures yet** (SI-129): their commands work, their canvas gestures come with their owners.
 
-## 6. The lock takeover fix (rulings D-77, D-78, D-83, D-84, D-86)
+## 6. The lock takeover fix (rulings D-77, D-78, D-83, D-84, D-86, D-89)
 
 `crates/persist/src/lock.rs`: the lock's arbitration file (`<lock>.takeover`) is now removed while its protection is
 still held (unlinked before the `flock` is released; on Windows deleted while the handle, which shares deletion, is
@@ -175,9 +180,13 @@ Round 3 (ruling D-86 item 1; finding C44B-R3S-01): an open always answers within
 protocol keeps a lock file open so that a stale lock cannot be replaced, the opener decides for at most 12 s
 (`ACQUIRE_BOUND`, `TAKEOVER_STALE` plus a round), then answers that the file is in use (`Locked::InUse`, its path),
 leaving the project lock and every live participant's files unchanged (a helper file already proved abandoned may be
-left scheduled for deletion; ruling D-89 item 1); a cancelled opener answers at once. I3 is stated with its condition (no program outside the protocol
-keeps a lock file open); the next open after that program lets go proceeds. **Closure receipts**
-(`reviews/evidence/M4-C4.4b-r4/`, on `3e5d5605`): the randomised lock test and the M1 test each 2,000 runs idle and 2,000 with every core busy: 8,000 runs, zero failures.
+left scheduled for deletion; ruling D-89 item 1); a cancelled opener answers at once. I3 is stated with its
+condition (no program outside the protocol keeps a lock file open); the next open after that program lets go
+proceeds, and the tests of a helper file kept open assert all of it (the stale lock unchanged, the helper pending
+while held and gone once the reader closes, the next open reporting the stale lock it took over). **Closure receipts**
+(`reviews/evidence/M4-C4.4b-r4/`, on `3e5d5605`): the randomised lock test and the M1 test each 2,000 runs idle and 2,000 with every core busy: 8,000 runs, zero
+failures. The orchestrator's own loop on `a7f8554a`: 337 runs of each lock test idle (12 minutes) and 83 with every
+core busy (12 minutes), no failure. D-89 changed `lock.rs` in comments only.
 
 ## 7. Questions for the user, in one place
 
@@ -259,7 +268,7 @@ M4's receipts total 82 MB. Its folders over 5 MB:
 | `reviews/evidence/M4-C4.2b-r1` | 22.4 MB | 155 | `d1-long-webgpu.json` 7.0 MB, `d1-long-webgl2.json` 7.0 MB, `d2-cases.json` 1.8 MB |
 | `reviews/evidence/M4-C4.2b-r3` | 5.7 MB | 230 | `c2/c2-gestures.json` 1.2 MB |
 
-Receipts from C4.3b round 2 on are D-42 summaries (C4.4b's: 396 KB in round 1, 341 KB in round 2, 556 KB in round 3, 560 KB at the closure, the lock loops' per-run lists included). Folders over 5 MB from earlier milestones, for the
+Receipts from C4.3b round 2 on are D-42 summaries (C4.4b's: 396 KB in round 1, 341 KB in round 2, 556 KB in round 3, 560 KB at the closure, the lock loops' per-run lists included; the reviewers' closure check 106 KB). Folders over 5 MB from earlier milestones, for the
 same decision: `M1-C1.4-r2` 100.2 MB, `M2-C2.4-r3` 87.7 MB, `M1-C1.1-r2` 86.8 MB, `M3-C3.1-r3` 22.4 MB, `M1-C1.2-r5`
 20.2 MB, `M1-C1.2-r4` 19.0 MB, `M1-C1.2-r3` 18.2 MB, `M0-C0.3-r1` 17.2 MB, `M1-C1.2-r2` 17.1 MB, `M3-C3.2-r3` 16.8 MB,
 `M1-C1.3-r1` 14.3 MB, `M2-C2.3-r3` 11.1 MB, `M2-C2.1-r2` 10.7 MB, `M3-C3.1-r2` 10.3 MB, `M0-C0.3` 9.4 MB, `M1-C1.4-r1`
