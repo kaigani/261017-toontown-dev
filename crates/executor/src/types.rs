@@ -82,7 +82,7 @@ pub struct InvokeOptions {
     pub confirm: bool,
     /// The person acting in the window (ruling D-83 item 3): set only by the desktop host for the window's own actions,
     /// never from an agent's options. A contextual edit of the current target then follows the interactive-target rule
-    /// of the gesture path in the active view ([`crate::gesture::person_rule`]); an agent's direct call does not.
+    /// of the gesture path in the active view ([`crate::person::person_rule`]); an agent's direct call does not.
     pub person: bool,
 }
 

@@ -45,6 +45,8 @@ mod load_repair;
 mod maintenance;
 mod memo;
 mod persistence;
+/// The interactive-target rule for a person's contextual edits from keys, panels and menus (ruling D-83 item 3).
+pub(crate) mod person;
 mod planar;
 mod prechecks;
 mod prefs;

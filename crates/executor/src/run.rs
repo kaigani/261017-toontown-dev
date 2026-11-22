@@ -1436,7 +1436,7 @@ impl Core {
             // Ruling D-83 item 3: the person's contextual edit of the current target, whatever the input (a key, a Tool
             // options or Properties control, a menu or context-menu item), follows the gesture path's rule.
             if opts.person {
-                crate::gesture::person_rule(cx, entry.id(), &params)?;
+                crate::person::person_rule(cx, entry.id(), &params)?;
             }
             run_step(cx, &entry, params, &opts)
         })

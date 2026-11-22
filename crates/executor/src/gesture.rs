@@ -448,13 +448,13 @@ pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, Command
 
 /// Whether `command` picks the element's content (a selection of its objects or anchors): a locked element "cannot be
 /// picked" in a scene view (05 §6.6, ruling D-80), and a hidden one offers no hit target there (D-79).
-fn picks(command: &str) -> bool {
+pub(crate) fn picks(command: &str) -> bool {
     matches!(command, "draw.selection.set" | "draw.pointSelection.set")
 }
 
 /// Whether `command` changes the document (an `action`: an undoable edit), as opposed to a selection, view or tool
 /// change, which a gesture may still make on a locked or hidden element.
-fn edits(command: &str) -> bool {
+pub(crate) fn edits(command: &str) -> bool {
     crate::registry().ok().and_then(|r| r.get(command)).is_some_and(|e| e.spec.kind == tt_registry::Kind::Action)
 }
 
@@ -513,60 +513,6 @@ pub(crate) fn interactive_target(cx: &Cx, view_id: &str, tool: &str, edit: bool)
         ));
     }
     Ok(())
-}
-
-/// The interactive-target rule for a PERSON's contextual command (ruling D-83 item 3; findings C44B-R1-02, -03,
-/// C44B-R2S-03), whatever the input: a key (the host's key resolution), a Tool options or Properties control, a menu or
-/// context-menu item (the window's actions, [`crate::InvokeOptions::person`]). A command is contextual when it edits
-/// or picks the current drawing: a drawing command (`draw.*`) that is an undoable edit, other than the drawing lock
-/// itself, or an `edit.*` edit in the drawing context; or a pick (`draw.selection.set`, `draw.pointSelection.set`); and
-/// that names no other drawing. The view is the active one, the tool the active one (Reposition All keeps SI-189's
-/// precheck). Agents' direct calls never pass here (05 §6.6: "Commands addressing it by id still act on it").
-///
-/// # Errors
-/// `drawing.locked`, `element.locked`, `element.hidden`, naming the refused command (`refusedCommandId`).
-pub(crate) fn person_rule(cx: &Cx, command: &str, params: &Value) -> Result<(), CommandError> {
-    let edit = if picks(command) {
-        false
-    } else if edits(command)
-        && ((command.starts_with("draw.") && command != "draw.lock.set")
-            || (command.starts_with("edit.") && params.get("context").and_then(Value::as_str) == Some("drawing")))
-    {
-        true
-    } else {
-        return Ok(());
-    };
-    if !names_current(cx, params) {
-        return Ok(());
-    }
-    let view = cx.ui().shell().active_view.clone().unwrap_or_default();
-    let tool = cx.ui().drawing().active_tool.clone();
-    interactive_target(cx, &view, &tool, edit).map_err(|mut e| {
-        if let Some(m) = e.details.as_object_mut() {
-            m.insert("refusedCommandId".into(), json!(command));
-        }
-        e
-    })
-}
-
-/// Whether a command's parameters address the current drawing: no drawing named (the command acts on the current
-/// one), or the current one named (`drawingId`, or a qualified `strokeId` / `textId` `"<drawingId>/<local id>"`).
-fn names_current(cx: &Cx, params: &Value) -> bool {
-    let Ok(doc) = cx.document() else { return false };
-    let Some(current) = cx.app().current_drawing(doc) else { return false };
-    let current = current.as_str();
-    if let Some(d) = params.get("drawingId").and_then(Value::as_str)
-        && d != current
-    {
-        return false;
-    }
-    ["strokeId", "textId"].iter().all(|k| {
-        params
-            .get(*k)
-            .and_then(Value::as_str)
-            .and_then(|s| s.split_once('/'))
-            .is_none_or(|(drawing, _)| drawing == current)
-    })
 }
 
 /// The commands of a gesture before the interactive-target rule ([`to_commands`]).

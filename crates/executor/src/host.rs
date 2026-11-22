@@ -441,7 +441,7 @@ fn resolve_in(
     }
     // Ruling D-83 item 3: a key is the person's input like a gesture; its contextual edit of the current target is
     // refused where a gesture's would be (Delete on a locked or hidden element in the Camera view), nothing sent.
-    crate::gesture::person_rule(cx, &b.command_id, &a.params)?;
+    crate::person::person_rule(cx, &b.command_id, &a.params)?;
     Ok(KeyResolution::Command {
         keys: canonical,
         command_id: b.command_id,
