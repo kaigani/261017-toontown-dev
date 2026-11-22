@@ -62,9 +62,9 @@
       "location": "Animation menu, Timeline: Remove Keyframe, Remove All Keyframes"
     },
     "anim.loop.set": {
-      "owner": "M5 C5.1",
-      "section": "05 §19.3 (Command table)",
-      "location": "Timeline: loop controls (M5); Properties panel"
+      "owner": "M5 C5.2",
+      "section": "04 §6.3 (Peg panel: loop mode; 05 §8.4)",
+      "location": "Properties › Peg panel: loop mode (ruling E-3; the Timeline's loops send element.timing.set, 04 §17.1 item 4)"
     },
     "anim.path.lockDepth.set": {
       "owner": "M6 C6.2",
@@ -100,11 +100,6 @@
       "owner": "M6 C6.2",
       "section": "05 §19.3 (Command table)",
       "location": "Animation menu: Uniform Left / Uniform Right"
-    },
-    "app.currentElement.set": {
-      "owner": "M5 C5.1",
-      "section": "04 §2 (Timeline: the current element)",
-      "location": "Timeline and Exposure Sheet"
     },
     "cell.blank.add": {
       "owner": "M5 C5.2",
@@ -416,6 +411,31 @@
       "section": "04 §17.4 (Command table)",
       "location": "Timeline layer list visibility control and context; Exposure Sheet column header: Hide / Show All / Hide All Others"
     },
+    "playback.forceRate.set": {
+      "owner": "M5 C5.1",
+      "section": "09 §2.2 (Commands and where they are reachable)",
+      "location": "Play menu: Force Frame Rate"
+    },
+    "playback.range.mode.set": {
+      "owner": "M5 C5.1",
+      "section": "09 §2.2 (Commands and where they are reachable)",
+      "location": "Play menu: Playback Range › Automatic Fit / Free"
+    },
+    "playback.range.set": {
+      "owner": "M5 C5.1",
+      "section": "09 §2.2 (Commands and where they are reachable)",
+      "location": "Play menu: Change Playback Start / End Frame"
+    },
+    "playback.rate.set": {
+      "owner": "M5 C5.1",
+      "section": "09 §2.6 (Playback rate)",
+      "location": "Play menu: Playback Rate"
+    },
+    "playback.state.get": {
+      "owner": "M5 C5.1",
+      "section": "09 §2.3 (Play / Stop)",
+      "location": "Play menu and main toolbar: Play/Stop's state, Loop, Rate (declared read)"
+    },
     "render.frame.run": {
       "owner": "M10 C10.1",
       "section": "09 §11.2 (Command table)",
@@ -425,6 +445,61 @@
       "owner": "M10 C10.1",
       "section": "09 §11.2 (Command table)",
       "location": "File > Export > Image Sequence"
+    },
+    "timeline.currentFrame.move": {
+      "owner": "M5 C5.1",
+      "section": "09 §2.4 (Frame navigation)",
+      "location": "Play menu and main toolbar: First / Previous / Next / Last Frame within the playback range"
+    },
+    "timeline.currentFrame.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §11.2 (Components: frame ruler, playhead)",
+      "location": "Timeline: click or drag in the frame ruler; ruler context: Set Current Frame"
+    },
+    "timeline.effectParameterRows.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §2.9 (Effect elements and effect-parameter rows)",
+      "location": "Timeline row context: Show Effect Parameters (on a clipping effect), Show All / Hide All Effect Parameters (ruling E-9: a clipping effect's mask row exists today)"
+    },
+    "timeline.playbackRange.get": {
+      "owner": "M5 C5.1",
+      "section": "04 §11.6 (Current frame and playback range)",
+      "location": "Timeline ruler: the playback-range markers (declared read)"
+    },
+    "timeline.playbackRange.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §11.6 (Current frame and playback range)",
+      "location": "Timeline ruler: drag a playback-range marker; ruler context: Playback Range, Set Playback Start / End Frame"
+    },
+    "timeline.rows.list": {
+      "owner": "M5 C5.1",
+      "section": "04 §11.2 (Components)",
+      "location": "Timeline: layer list and tracks (declared read)"
+    },
+    "timeline.soundWaveforms.set": {
+      "owner": "M8 C8.1",
+      "section": "04 §11.11 (Sound rows)",
+      "location": "Timeline row and ruler context: Sound Waveforms (ruling E-9: shown with its owner until sound rows exist)"
+    },
+    "timeline.transferOptions.get": {
+      "owner": "M5 C5.1",
+      "section": "04 §11.14 (Transfer options (paste special, cut special, drag and drop))",
+      "location": "the paste special, cut special and drag-and-drop options dialog (declared read)"
+    },
+    "timeline.transferOptions.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §11.14 (Transfer options (paste special, cut special, drag and drop))",
+      "location": "Edit › Paste Special / Cut Special with the Timeline focused: the options dialog; drag-and-drop options"
+    },
+    "timeline.view.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §11.5 (Zoom and scrolling)",
+      "location": "Timeline: zoom control, horizontal scroll, View › Zoom In / Out with the Timeline focused, Show Timeline Selection"
+    },
+    "xsheet.currentCell.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §11.6 (Current frame and playback range)",
+      "location": "Timeline and Exposure Sheet: click a cell"
     },
     "xsheet.exposures.set": {
       "owner": "M5 C5.2",

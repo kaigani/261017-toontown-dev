@@ -415,6 +415,10 @@ impl Env {
                 self.settings.window = Some(w);
                 self.save("state");
             }
+            crate::cx::SettingsChange::LastUsed(k, v) => {
+                self.settings.last_used.insert(k, v);
+                self.save("state");
+            }
         }
     }
 

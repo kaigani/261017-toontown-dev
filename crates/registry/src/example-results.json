@@ -9526,6 +9526,125 @@
       "varies": []
     }
   ],
+  "playback.forceRate.set": [
+    {
+      "title": "Drop frames to keep real time",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
+  "playback.loop.set": [
+    {
+      "title": "Loop playback",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
+  "playback.range.get": [
+    {
+      "title": "The current scene's playback range",
+      "result": {
+        "mode": "auto",
+        "start": 1,
+        "end": 48,
+        "sceneLength": 48.0
+      },
+      "varies": []
+    }
+  ],
+  "playback.range.mode.set": [
+    {
+      "title": "Free range (restores the last free values)",
+      "result": {
+        "mode": "free",
+        "start": 1,
+        "end": 48
+      },
+      "varies": []
+    }
+  ],
+  "playback.range.set": [
+    {
+      "title": "Play frames 20 to 30",
+      "result": {
+        "mode": "free",
+        "start": 20,
+        "end": 30,
+        "adjusted": false
+      },
+      "varies": []
+    }
+  ],
+  "playback.rate.set": [
+    {
+      "title": "Play at 12 frames per second",
+      "result": {
+        "fps": 12.0,
+        "effectiveFps": 12.0
+      },
+      "varies": []
+    },
+    {
+      "title": "Use the project frame rate",
+      "result": {
+        "fps": "project",
+        "effectiveFps": 23.976
+      },
+      "varies": []
+    }
+  ],
+  "playback.start": [
+    {
+      "title": "Play the current scene",
+      "result": {
+        "playing": true,
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "frame": 1
+      },
+      "varies": []
+    }
+  ],
+  "playback.state.get": [
+    {
+      "title": "Playback state and options",
+      "result": {
+        "playing": false,
+        "mode": "scene",
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "frame": 1,
+        "range": {
+          "mode": "auto",
+          "start": 1,
+          "end": 48,
+          "sceneLength": 48
+        },
+        "rate": {
+          "setting": "project",
+          "fps": 23.976
+        },
+        "loop": false,
+        "forceRate": false,
+        "sound": false,
+        "scrubbing": false,
+        "measuredFps": 0.0,
+        "droppedFrames": 0
+      },
+      "varies": []
+    }
+  ],
+  "playback.stop": [
+    {
+      "title": "Stop playback",
+      "result": {
+        "frame": 1
+      },
+      "varies": []
+    }
+  ],
   "prefs.get": [
     {
       "title": "Theme and autosave interval",
@@ -10070,6 +10189,1037 @@
       "title": "Frames 1-24 of the current scene as PNGs, a quarter size",
       "result": {
         "jobId": "job-3"
+      },
+      "varies": []
+    }
+  ],
+  "timeline.backgroundColour.set": [
+    {
+      "title": "A dark grey Timeline",
+      "result": {
+        "colour": "#303030FF"
+      },
+      "varies": []
+    }
+  ],
+  "timeline.currentFrame.move": [
+    {
+      "title": "First frame of the playback range",
+      "result": {
+        "frame": 1,
+        "moved": false
+      },
+      "varies": []
+    },
+    {
+      "title": "Next drawing change of Bob",
+      "result": {
+        "frame": 7,
+        "moved": true
+      },
+      "varies": []
+    }
+  ],
+  "timeline.currentFrame.set": [
+    {
+      "title": "Go to frame 12",
+      "result": {
+        "frame": 12,
+        "clamped": false
+      },
+      "varies": []
+    },
+    {
+      "title": "Beyond the scene end: clamped",
+      "result": {
+        "frame": 48,
+        "clamped": true
+      },
+      "varies": []
+    }
+  ],
+  "timeline.effectParameterRows.set": [
+    {
+      "title": "Hide every effect's parameter rows",
+      "result": {
+        "visible": false
+      },
+      "varies": []
+    }
+  ],
+  "timeline.frameLabel.get": [
+    {
+      "title": "Frames 1, 16, 20",
+      "result": {
+        "labels": [
+          "1",
+          "16",
+          "20"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "timeline.playbackRange.get": [
+    {
+      "title": "The current scene's playback range",
+      "result": {
+        "mode": "auto",
+        "start": 1,
+        "end": 48
+      },
+      "varies": []
+    }
+  ],
+  "timeline.playbackRange.set": [
+    {
+      "title": "Play frames 10 to 30 only",
+      "result": {
+        "mode": "free",
+        "start": 10,
+        "end": 30
+      },
+      "varies": []
+    },
+    {
+      "title": "Back to the whole scene",
+      "result": {
+        "mode": "auto",
+        "start": 1,
+        "end": 48
+      },
+      "varies": []
+    }
+  ],
+  "timeline.rows.list": [
+    {
+      "title": "The current scene's rows",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "sceneLength": 48,
+        "currentFrame": 1,
+        "playbackRange": {
+          "mode": "auto",
+          "start": 1,
+          "end": 48
+        },
+        "rows": [
+          {
+            "elementId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+            "name": "Camera",
+            "type": "camera",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "name": "Bob-P",
+            "type": "peg",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [
+              {
+                "frame": 1,
+                "channels": [
+                  "skew"
+                ],
+                "segmentAfter": "interpolated"
+              },
+              {
+                "frame": 48,
+                "channels": [
+                  "skew"
+                ],
+                "segmentAfter": "interpolated"
+              }
+            ],
+            "childKeyframeFrames": [
+              1,
+              12,
+              24
+            ]
+          },
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "type": "drawing",
+            "depth": 1,
+            "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 44,
+              "loops": 1
+            },
+            "keyframes": [
+              {
+                "frame": 1,
+                "channels": [
+                  "position",
+                  "scale",
+                  "rotation"
+                ],
+                "segmentAfter": "interpolated"
+              },
+              {
+                "frame": 12,
+                "channels": [
+                  "rotation"
+                ],
+                "segmentAfter": "interpolated"
+              },
+              {
+                "frame": 24,
+                "channels": [
+                  "position",
+                  "rotation"
+                ],
+                "segmentAfter": "interpolated"
+              }
+            ],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "type": "image",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "type": "annotation",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG18FWWKH14N0RFB0V71",
+            "name": "Dialogue",
+            "type": "sound",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": [],
+            "clips": []
+          },
+          {
+            "elementId": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+            "name": "Reference",
+            "type": "media",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "name": "Rig",
+            "type": "skeleton",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": [
+              1
+            ]
+          },
+          {
+            "elementId": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+            "name": "Rig-bones",
+            "type": "effectParameter",
+            "depth": 1,
+            "parentId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": [
+              1
+            ]
+          },
+          {
+            "elementId": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+            "name": "Arm",
+            "type": "bone",
+            "depth": 2,
+            "parentId": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [
+              {
+                "frame": 1,
+                "channels": [
+                  "rotation"
+                ],
+                "segmentAfter": "interpolated"
+              }
+            ],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+            "name": "Rig-skin",
+            "type": "effectParameter",
+            "depth": 1,
+            "parentId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1E231F7W54P5SD2AAB",
+            "name": "Clip",
+            "type": "clipping",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+            "name": "Clip-mask",
+            "type": "effectParameter",
+            "depth": 1,
+            "parentId": "el_01K742SG1E231F7W54P5SD2AAB",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "name": "Fade",
+            "type": "colourTransform",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+            "name": "Shadow",
+            "type": "dropShadow",
+            "depth": 1,
+            "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1J3M0SDFTX818N3V2K",
+            "name": "Soft",
+            "type": "blur",
+            "depth": 1,
+            "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+            "name": "Quake",
+            "type": "shake",
+            "depth": 2,
+            "parentId": "el_01K742SG1J3M0SDFTX818N3V2K",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 2
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+            "name": "Snow",
+            "type": "particleNature",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1N7SQGF0AQF87N7SEP",
+            "name": "Snow-sprites",
+            "type": "effectParameter",
+            "depth": 1,
+            "parentId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1PHXPEHSG259WYPMBV",
+            "name": "Boom",
+            "type": "particleImpact",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          }
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Keyframes of frames 1 to 24 only",
+      "result": {
+        "sceneId": "sc_01K742SG0YSRA1305J7887BDVZ",
+        "sceneLength": 48,
+        "currentFrame": 1,
+        "playbackRange": {
+          "mode": "auto",
+          "start": 1,
+          "end": 48
+        },
+        "rows": [
+          {
+            "elementId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+            "name": "Camera",
+            "type": "camera",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "name": "Bob-P",
+            "type": "peg",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [
+              {
+                "frame": 1,
+                "channels": [
+                  "skew"
+                ],
+                "segmentAfter": "interpolated"
+              }
+            ],
+            "childKeyframeFrames": [
+              1,
+              12,
+              24
+            ]
+          },
+          {
+            "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "name": "Bob",
+            "type": "drawing",
+            "depth": 1,
+            "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 44,
+              "loops": 1
+            },
+            "keyframes": [
+              {
+                "frame": 1,
+                "channels": [
+                  "position",
+                  "scale",
+                  "rotation"
+                ],
+                "segmentAfter": "interpolated"
+              },
+              {
+                "frame": 12,
+                "channels": [
+                  "rotation"
+                ],
+                "segmentAfter": "interpolated"
+              },
+              {
+                "frame": 24,
+                "channels": [
+                  "position",
+                  "rotation"
+                ],
+                "segmentAfter": "interpolated"
+              }
+            ],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "name": "Background",
+            "type": "image",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG16N99XRCS0QEBWMRXY",
+            "name": "Notes",
+            "type": "annotation",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG18FWWKH14N0RFB0V71",
+            "name": "Dialogue",
+            "type": "sound",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": [],
+            "clips": []
+          },
+          {
+            "elementId": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+            "name": "Reference",
+            "type": "media",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "name": "Rig",
+            "type": "skeleton",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": [
+              1
+            ]
+          },
+          {
+            "elementId": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+            "name": "Rig-bones",
+            "type": "effectParameter",
+            "depth": 1,
+            "parentId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": [
+              1
+            ]
+          },
+          {
+            "elementId": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+            "name": "Arm",
+            "type": "bone",
+            "depth": 2,
+            "parentId": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [
+              {
+                "frame": 1,
+                "channels": [
+                  "rotation"
+                ],
+                "segmentAfter": "interpolated"
+              }
+            ],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+            "name": "Rig-skin",
+            "type": "effectParameter",
+            "depth": 1,
+            "parentId": "el_01K742SG1AC44Z1PPR4WQ603NH",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1E231F7W54P5SD2AAB",
+            "name": "Clip",
+            "type": "clipping",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+            "name": "Clip-mask",
+            "type": "effectParameter",
+            "depth": 1,
+            "parentId": "el_01K742SG1E231F7W54P5SD2AAB",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "name": "Fade",
+            "type": "colourTransform",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+            "name": "Shadow",
+            "type": "dropShadow",
+            "depth": 1,
+            "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1J3M0SDFTX818N3V2K",
+            "name": "Soft",
+            "type": "blur",
+            "depth": 1,
+            "parentId": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+            "name": "Quake",
+            "type": "shake",
+            "depth": 2,
+            "parentId": "el_01K742SG1J3M0SDFTX818N3V2K",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 2
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+            "name": "Snow",
+            "type": "particleNature",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1N7SQGF0AQF87N7SEP",
+            "name": "Snow-sprites",
+            "type": "effectParameter",
+            "depth": 1,
+            "parentId": "el_01K742SG1M9CJZV12YYC0CWB8B",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K742SG1PHXPEHSG259WYPMBV",
+            "name": "Boom",
+            "type": "particleImpact",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 48,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "timeline.singleCellSelection.set": [
+    {
+      "title": "Clicks select whole tracks",
+      "result": {
+        "enabled": false
+      },
+      "varies": []
+    }
+  ],
+  "timeline.soundWaveforms.set": [
+    {
+      "title": "Solid bars for sound rows",
+      "result": {
+        "enabled": false
+      },
+      "varies": []
+    }
+  ],
+  "timeline.timeDisplay.set": [
+    {
+      "title": "Feet and frames",
+      "result": {
+        "unit": "feetFrames"
+      },
+      "varies": []
+    }
+  ],
+  "timeline.transferOptions.get": [
+    {
+      "title": "The drag-and-drop options",
+      "result": {
+        "options": {
+          "overwriteDrawings": true,
+          "exposure": true,
+          "autoExtend": false,
+          "updateColours": true,
+          "keyframeSubstitution": false,
+          "boundaryKeys": false,
+          "pegKeys": {
+            "motion": true,
+            "rotation": true,
+            "scale": true,
+            "pivot": true,
+            "velocity": true,
+            "skew": true
+          }
+        }
+      },
+      "varies": []
+    }
+  ],
+  "timeline.transferOptions.set": [
+    {
+      "title": "Paste special keeps the destination's timing",
+      "result": {
+        "operation": "paste",
+        "options": {
+          "overwriteDrawings": true,
+          "exposure": false,
+          "autoExtend": false,
+          "updateColours": true,
+          "keyframeSubstitution": false,
+          "boundaryKeys": false,
+          "pegKeys": {
+            "motion": true,
+            "rotation": true,
+            "scale": true,
+            "pivot": true,
+            "velocity": true,
+            "skew": true
+          }
+        }
+      },
+      "varies": []
+    }
+  ],
+  "timeline.view.set": [
+    {
+      "title": "Zoom in and start at frame 48",
+      "result": {
+        "zoomLevel": 8,
+        "firstFrame": 48,
+        "lastFrame": 77.0
+      },
+      "varies": []
+    },
+    {
+      "title": "Read the view without changing it",
+      "result": {
+        "zoomLevel": 6,
+        "firstFrame": 1,
+        "lastFrame": 60.0
       },
       "varies": []
     }
@@ -13224,6 +14374,16 @@
       "title": "Switch to the Drawing workspace",
       "result": {
         "name": "Drawing"
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.currentCell.set": [
+    {
+      "title": "Bob at frame 3",
+      "result": {
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "frame": 3
       },
       "varies": []
     }

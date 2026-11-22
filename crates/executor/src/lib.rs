@@ -57,8 +57,11 @@ mod session;
 pub mod shell;
 mod store;
 pub mod text_edit;
+
 mod themes;
 mod time;
+pub mod timeline_layout;
+mod timing_gesture;
 mod types;
 mod ui;
 
@@ -154,6 +157,8 @@ enum Request {
     Tick,
     /// Maintenance now (forcing autosave or not), answered after its events are delivered.
     Maintenance(bool, Sender<maintenance::Timings>),
+    /// A tick of the playback clock: the run's generation and its time in milliseconds (M5 C5.1a).
+    PlaybackTick(u64, f64),
     /// The last handle was dropped.
     Shutdown,
 }
@@ -324,6 +329,12 @@ impl ExecutorHandle {
         let recovery = Arc::new(host::RecoveryFence { engine: env.engine.clone(), fence: env.fence.clone() });
         env.poster = Some(Poster(tx.clone()));
         let mut session = session::Session { jobs: jobs.clone(), env, ..session::Session::default() };
+        // The playback clock (09 §2.3; M5 C5.1a): its control channel lives in the session, its thread starts below.
+        let (clock_tx, clock_rx) = mpsc::channel::<commands::playback::ClockControl>();
+        session.timeline.playback.clock = Some(clock_tx);
+        // The playback rate chosen at the last run (09 line 161; SI-209).
+        session.timeline.playback.rate =
+            commands::playback::rate_of(session.env.settings.last_used.get(commands::playback::RATE_SETTING));
         // The saved agent policy defaults and limits (`agent.policy.defaults.set`; C14-R1-06).
         if let Some(saved) = session.env.pref("agent.policy.defaults")
             && let Ok(limits) = serde_json::from_value::<agents::Limits>(saved)
@@ -376,6 +387,15 @@ impl ExecutorHandle {
                 })
                 .map_err(|e| CommandError::internal(format!("cannot start the maintenance thread: {e}")))?;
         }
+        let clock_poster = tx.clone();
+        std::thread::Builder::new()
+            .name("tt-playback".to_owned())
+            .spawn(move || {
+                commands::playback::clock_thread(&clock_rx, &|generation, ms| {
+                    clock_poster.send(Request::PlaybackTick(generation, ms)).is_ok()
+                });
+            })
+            .map_err(|e| CommandError::internal(format!("cannot start the playback clock: {e}")))?;
         let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
         Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, recovery, _guard: guard })
     }
@@ -1085,6 +1105,7 @@ fn document_thread(
             Request::Tick => {
                 let _ = maintenance::tick(&mut core, false);
             }
+            Request::PlaybackTick(generation, ms) => core.playback_tick(generation, ms),
             Request::Maintenance(force, reply) => {
                 let timings = maintenance::tick(&mut core, force);
                 flush(&mut core);

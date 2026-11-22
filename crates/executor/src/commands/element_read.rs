@@ -257,7 +257,7 @@ fn colour_str(v: &Option<tt_model::value::Colour>) -> Option<String> {
 }
 
 /// The exposed extent of a cell-based element: `(first, last)` exposed frames.
-fn exposed_extent(e: &Element) -> Option<(usize, usize)> {
+pub(crate) fn exposed_extent(e: &Element) -> Option<(usize, usize)> {
     let f = x::expand(e.exposure().as_deref()?);
     let first = f.iter().position(Option::is_some)?;
     Some((first + 1, x::last_exposed(&f)))
@@ -717,14 +717,21 @@ pub(crate) struct CurrentResult {
 )]
 pub(crate) fn element_current_set(cx: &mut Cx, p: ElementParams) -> Result<CurrentResult, CommandError> {
     let id = element_id(cx, &p.element_id, "/elementId")?;
-    let scene = cx.document()?.scene_of(&id).cloned();
+    put_current_element(cx, &id)?;
+    Ok(CurrentResult { element_id: Some(id.as_str().to_owned()) })
+}
+
+/// Makes an element current (its scene too): the one state of `element.current.set`, `app.currentElement.set` and
+/// `xsheet.currentCell.set` (SI-202, ruling E-4).
+pub(crate) fn put_current_element(cx: &mut Cx, id: &Id) -> Result<(), CommandError> {
+    let scene = cx.document()?.scene_of(id).cloned();
     let app = cx.app_mut();
     app.scene = scene;
-    if app.element.as_ref() != Some(&id) {
+    if app.element.as_ref() != Some(id) {
         app.drawing = None;
     }
     app.element = Some(id.clone());
-    Ok(CurrentResult { element_id: Some(id.as_str().to_owned()) })
+    Ok(())
 }
 
 /// `element.current.move` order.

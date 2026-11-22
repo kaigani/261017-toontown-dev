@@ -192,13 +192,35 @@ impl Default for MotionPointPasteOptions {
 }
 
 /// The options of one special operation: the remembered (or default) ones overlaid with the given fields.
+/// The preference key that stores an operation's remembered options (01 §7.3; SI-201).
+fn stored_key(operation: &str) -> Option<&'static str> {
+    match operation {
+        "cutSpecial" => Some("edit.cutSpecial.timeline"),
+        "pasteSpecial" => Some("edit.pasteSpecial.timeline"),
+        "pasteSpecialMotionPoint" => Some("edit.pasteSpecial.motionPoint"),
+        _ => None,
+    }
+}
+
+/// Remembers an operation's options in its store (and that it ran this session, for paste special again).
+fn remember(cx: &mut Cx, operation: &str, options: Map<String, Value>) -> Result<(), CommandError> {
+    if let Some(k) = stored_key(operation) {
+        let mut values = Map::new();
+        values.insert(k.to_owned(), Value::Object(options.clone()));
+        super::prefs::stage(cx, values)?;
+    }
+    cx.session_mut().edit_options.insert(operation.into(), options);
+    Ok(())
+}
+
 fn merged<T: Default + Serialize + for<'de> Deserialize<'de>>(
     cx: &Cx,
     operation: &str,
     given: Option<&Map<String, Value>>,
 ) -> Result<T, CommandError> {
-    let mut base = match cx.session().edit_options.get(operation) {
-        Some(m) => Value::Object(m.clone()),
+    // One store (SI-201, ruling E-8): the operation's 01 §7.3 preference key.
+    let mut base = match stored_key(operation).and_then(|k| cx.pref(k)).filter(Value::is_object) {
+        Some(v) => v,
         None => to_json(&T::default())?,
     };
     if let (Some(given), Some(b)) = (given, base.as_object_mut()) {
@@ -1756,7 +1778,7 @@ pub(crate) fn edit_cut_special(cx: &mut Cx, p: CutSpecialParams) -> Result<ClipR
         cx.warn("edit.optionNotApplied", format!("option {name} is not applied yet"), Vec::new());
     }
     if p.remember {
-        cx.session_mut().edit_options.insert("cutSpecial".into(), obj(to_json(&opts)?));
+        remember(cx, "cutSpecial", obj(to_json(&opts)?))?;
     }
     let clipboard = store(cx, &clip)?;
     Ok(ClipResult { clipboard })
@@ -1817,7 +1839,7 @@ pub(crate) fn edit_paste_special(cx: &mut Cx, p: PasteSpecialParams) -> Result<P
     };
     let out = paste(cx, context, &clip, &dest, special)?;
     if p.remember || p.use_last {
-        cx.session_mut().edit_options.insert(operation.into(), remembered);
+        remember(cx, operation, remembered)?;
     }
     Ok(out)
 }

@@ -249,6 +249,12 @@ pub struct ShellReport {
     /// View canvas sizes by view id.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub view_sizes: Option<std::collections::BTreeMap<String, Size>>,
+    /// The Timeline's track viewport width in pixels (`timeline.view.set`'s `lastFrame`; M5 C5.1).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub timeline_viewport: Option<u32>,
+    /// The last frame the window presented during playback (frame-based playback waits for it, 09 line 170).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub presented_frame: Option<u32>,
     /// The screens.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub screens: Option<Vec<Screen>>,
@@ -713,6 +719,15 @@ impl ExecutorHandle {
             if let Some(m) = report.menu_bar.filter(Value::is_array) {
                 sh.sensors.menu_bar = Some(m);
             }
+            if let Some(w) = report.timeline_viewport.filter(|w| (1..=100_000).contains(w)) {
+                s.timeline.viewport = Some(w);
+            }
+            if let Some(f) = report.presented_frame
+                && s.timeline.playback.playing
+            {
+                s.timeline.playback.presented = Some(f);
+            }
+            let sh = s.ui.shell_mut();
             if let Some(sizes) = report.view_sizes {
                 for (id, size) in sizes {
                     if let Ok(v) = sh.view_mut(&id)
@@ -848,6 +863,43 @@ impl ExecutorHandle {
     #[must_use]
     pub fn pointer_in_window(&self, origin: crate::types::Origin, request: Value) -> crate::types::Envelope {
         self.pointer_routed(origin, request, false)
+    }
+
+    /// A Timeline gesture of the window (M5 C5.1; the timing-gesture interpreter, rulings E-7 and E-10): `{phase:
+    /// "press", layout, sample}` answers the grab and what is under it; `{phase: "release", grabId, samples}` runs the
+    /// gesture's commands as `origin` and answers them with their envelopes, or its cancellation
+    /// (`timeline.targetChanged`) when what it acts on changed since the press; `{phase: "abort", grabId}` drops the
+    /// grab. Never blocks past the budget.
+    ///
+    /// # Errors
+    /// `arg.invalid` for a malformed request; `project.none`; `command.timeout`.
+    pub fn timing_gesture(&self, origin: crate::types::Origin, request: Value) -> Result<Value, CommandError> {
+        let req: crate::timing_gesture::Request = serde_json::from_value(request).map_err(|e| {
+            CommandError::with_details(tt_registry::codes::ARG_INVALID, e.to_string(), json!({ "pointer": "" }))
+        })?;
+        crate::Poster(self.tx.clone())
+            .run(self.config.budget, move |core| crate::timing_gesture::run(core, &origin, req))?
+    }
+
+    /// The headless replay of a Timeline gesture (ruling E-7): the plan the interpreter makes for `samples` with
+    /// `layout` against the present state, run as `origin` when `execute`.
+    ///
+    /// # Errors
+    /// `arg.invalid` for a malformed layout or sample; `project.none`; `command.timeout`.
+    pub fn timing_replay(
+        &self,
+        origin: crate::types::Origin,
+        layout: Value,
+        samples: Value,
+        execute: bool,
+    ) -> Result<Value, CommandError> {
+        let bad = |e: serde_json::Error| {
+            CommandError::with_details(tt_registry::codes::ARG_INVALID, e.to_string(), json!({ "pointer": "" }))
+        };
+        let g: crate::timing_gesture::GestureLayout = serde_json::from_value(layout).map_err(bad)?;
+        let s: Vec<crate::timing_gesture::Sample> = serde_json::from_value(samples).map_err(bad)?;
+        crate::Poster(self.tx.clone())
+            .run(self.config.budget, move |core| crate::timing_gesture::replay(core, &origin, &g, &s, execute))?
     }
 
     /// Installs (or removes) attached mode's routes (M4 C4.2b): only the desktop host calls this.

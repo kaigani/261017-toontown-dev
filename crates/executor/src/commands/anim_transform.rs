@@ -438,5 +438,9 @@ pub(crate) fn anim_loop_set(cx: &mut Cx, p: LoopParams) -> Result<LoopResult, Co
     changes.push(EntryKey::Element(id.clone()), ops);
     changes.stage(cx)?;
     emit_static(cx, &id, &["loop"]);
+    // One state with `element.timing.set {loops}` and the same events (ruling E-3).
+    if let Some(scene) = cx.document()?.scene_of(&id).cloned() {
+        super::timing::emit_state(cx, &scene, &[id.as_str().to_owned()], "timing");
+    }
     Ok(LoopResult { node_id: id.as_str().to_owned(), cycle_length: l, duration: next_duration })
 }

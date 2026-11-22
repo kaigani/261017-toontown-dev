@@ -70,8 +70,23 @@ pub(crate) fn check_roots(s: &Session, origin: &Origin, p: &Path, pointer: &str)
 }
 
 /// `session.json` (10 §6.12): the last-session UI state of the project.
-pub(crate) fn session_json(doc: &Document, app: &AppContext) -> Value {
+pub(crate) fn session_json(
+    doc: &Document,
+    app: &AppContext,
+    timeline: &crate::commands::timing::TimelineState,
+) -> Value {
+    // The playback range of each scene (SI-204), for the scenes of this document.
+    let ranges: serde_json::Map<String, Value> = timeline
+        .ranges
+        .iter()
+        .filter(|(scene, _)| tt_model::Id::parse(scene).is_ok_and(|s| doc.scene(&s).is_some()))
+        .map(|(scene, r)| {
+            let last = r.last_free.map(|(a, b)| json!([a, b]));
+            (scene.clone(), json!({ "mode": if r.free { "free" } else { "auto" }, "start": r.start, "end": r.end, "lastFree": last }))
+        })
+        .collect();
     json!({
+        "playbackRanges": ranges,
         "format": "toontown-session",
         "currentSceneId": app.scene.as_ref().map(|s| s.as_str()),
         "frame": app.frame,
@@ -84,7 +99,30 @@ pub(crate) fn session_json(doc: &Document, app: &AppContext) -> Value {
 }
 
 /// Restores the UI state of `session.json` when it is valid for the document (ignored otherwise).
-pub(crate) fn restore_session(app: &mut AppContext, doc: &Document, v: &Value) {
+pub(crate) fn restore_session(
+    app: &mut AppContext,
+    timeline: &mut crate::commands::timing::TimelineState,
+    doc: &Document,
+    v: &Value,
+) {
+    timeline.ranges.clear();
+    if let Some(m) = v.get("playbackRanges").and_then(Value::as_object) {
+        let num = |x: Option<&Value>| x.and_then(Value::as_u64).and_then(|n| u32::try_from(n).ok()).filter(|n| *n >= 1);
+        for (scene, r) in m {
+            if !tt_model::Id::parse(scene).is_ok_and(|s| doc.scene(&s).is_some()) {
+                continue;
+            }
+            let pair =
+                r.get("lastFree").and_then(Value::as_array).and_then(|a| Some((num(a.first())?, num(a.get(1))?)));
+            if let (Some(start), Some(end)) = (num(r.get("start")), num(r.get("end"))) {
+                let free = r.get("mode").and_then(Value::as_str) == Some("free");
+                timeline.ranges.insert(
+                    scene.clone(),
+                    crate::commands::timeline::PlaybackRange { free, start, end: end.max(start), last_free: pair },
+                );
+            }
+        }
+    }
     let id = |k: &str| v.get(k).and_then(Value::as_str).and_then(|s| tt_model::Id::parse(s).ok());
     if let Some(scene) = id("currentSceneId").filter(|s| doc.scene(s).is_some()) {
         app.scene = Some(scene.clone());
@@ -172,7 +210,7 @@ pub(crate) fn snapshot(cx: &Cx, saved_at: String) -> Result<Snapshot, CommandErr
     let p = cx.project()?;
     let doc = cx.document()?.clone();
     Ok(Snapshot {
-        session: session_json(&doc, cx.app()),
+        session: session_json(&doc, cx.app(), &cx.session().timeline),
         doc,
         preserved: p.store.preserved.clone(),
         blobs: p.store.blobs.clone(),
@@ -664,7 +702,7 @@ pub(crate) fn write_pending(s: &Session, final_doc: &Document, effects: &mut [Ef
         {
             let project = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
             let snap = Snapshot {
-                session: session_json(final_doc, &s.app),
+                session: session_json(final_doc, &s.app, &s.timeline),
                 doc: final_doc.clone(),
                 preserved: project.store.preserved.clone(),
                 blobs: project.store.blobs.clone(),

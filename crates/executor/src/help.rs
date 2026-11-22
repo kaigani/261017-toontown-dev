@@ -98,6 +98,11 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
     ("id.duplicate", "An id is used twice."),
     ("inspect.behindCamera", "The point is behind the camera and has no view position."),
     ("inspect.singularTransform", "The transform cannot be inverted."),
+    ("render.optionNotApplied", "An option does not apply to the render's composition and was ignored (a warning)."),
+    (
+        "timeline.targetChanged",
+        "What the Timeline gesture acted on changed while it was in progress; nothing was done.",
+    ),
     ("inspect.spaceUnavailable", "That coordinate space is not available here."),
     ("integrity.hashMismatch", "A file's content does not match its recorded hash."),
     ("internal", "An unexpected failure; report its message and correlation id. It changed nothing unless said."),

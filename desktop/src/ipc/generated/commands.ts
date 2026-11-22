@@ -8292,11 +8292,10 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M5 C5.1",
   },
   "playback.loop.set": {
     kind: "toggle",
-    label: "Loop playback on/off",
+    label: "Loop",
     summary: "Loop playback on/off",
     params: "playback.loop.set.params",
     result: "playback.loop.set.result",
@@ -8305,7 +8304,6 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M5 C5.1",
   },
   "playback.player.close": {
     kind: "ui",
@@ -8366,72 +8364,74 @@ export const COMMAND_INDEX = {
   },
   "playback.range.changed": {
     kind: "event",
-    label: "Playback range or mode changed",
+    label: "Playback range changed",
     summary: "Playback range or mode changed",
     params: "playback.range.changed.params",
     result: "playback.range.changed.result",
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
     event: true,
   },
   "playback.range.get": {
     kind: "query",
-    label: "Read a scene's playback range",
+    label: "Get playback range",
     summary: "Read a scene's playback range",
     params: "playback.range.get.params",
     result: "playback.range.get.result",
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
   },
   "playback.range.mode.set": {
     kind: "action",
-    label: "Set range mode Automatic Fit / Free",
+    label: "Playback range mode",
     summary: "Set range mode Automatic Fit / Free (restores last free values)",
     params: "playback.range.mode.set.params",
     result: "playback.range.mode.set.result",
     examples: [
       {
-        mode: "auto",
+        mode: "free",
       },
     ],
-    milestone: "M5 C5.1",
   },
   "playback.range.set": {
     kind: "action",
-    label: "Set free range ends",
+    label: "Set playback range",
     summary: "Set free range ends (switches to Free; validated and adjusted)",
     params: "playback.range.set.params",
     result: "playback.range.set.result",
     examples: [
-      {},
+      {
+        start: 20,
+        end: 30,
+      },
     ],
-    milestone: "M5 C5.1",
   },
   "playback.rate.set": {
     kind: "ui",
-    label: "Interactive playback rate",
+    label: "Playback rate",
     summary: "Interactive playback rate (does not change project fps)",
     params: "playback.rate.set.params",
     result: "playback.rate.set.result",
     examples: [
-      {},
+      {
+        fps: 12,
+      },
+      {
+        fps: "project",
+      },
     ],
-    milestone: "M5 C5.1",
   },
   "playback.start": {
     kind: "ui",
-    label: "Start interactive playback of the current scene in the views",
+    label: "Play",
     summary: "Start interactive playback of the current scene in the views (Play); storyline playback is `storyline.play.start`",
     params: "playback.start.params",
     result: "playback.start.result",
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
   },
   "playback.started": {
     kind: "event",
@@ -8442,30 +8442,27 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
     event: true,
   },
   "playback.state.get": {
     kind: "query",
-    label: "Read playback state and options",
+    label: "Get playback state",
     summary: "Read playback state and options",
     params: "playback.state.get.params",
     result: "playback.state.get.result",
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
   },
   "playback.stop": {
     kind: "ui",
-    label: "Stop interactive playback",
+    label: "Stop",
     summary: "Stop interactive playback (scene or storyline); current frame stays where stopped",
     params: "playback.stop.params",
     result: "playback.stop.result",
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
   },
   "playback.stopped": {
     kind: "event",
@@ -8476,7 +8473,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
     event: true,
   },
   "prefs.changed": {
@@ -9784,16 +9780,15 @@ export const COMMAND_INDEX = {
   },
   "timeline.backgroundColour.set": {
     kind: "ui",
-    label: "Timeline background colour preference",
+    label: "Set Timeline background colour",
     summary: "Timeline background colour preference",
     params: "timeline.backgroundColour.set.params",
     result: "timeline.backgroundColour.set.result",
     examples: [
       {
-        colour: "#FF8000FF",
+        colour: "#303030",
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.currentFrame.changed": {
     kind: "event",
@@ -9804,60 +9799,68 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
     event: true,
   },
   "timeline.currentFrame.move": {
     kind: "ui",
-    label: "First / previous / next / last frame, or previous / next drawing of an element",
+    label: "Go to first, previous, next or last frame",
     summary: "First / previous / next / last frame, or previous / next drawing of an element; `withinRange` limits movement to the playback range",
     params: "timeline.currentFrame.move.params",
     result: "timeline.currentFrame.move.result",
     examples: [
       {
         direction: "first",
+        withinRange: true,
+      },
+      {
+        direction: "next",
+        unit: "drawing",
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.currentFrame.set": {
     kind: "ui",
-    label: "Set the current frame",
+    label: "Set current frame",
     summary: "Set the current frame (clamped to 1..scene length)",
     params: "timeline.currentFrame.set.params",
     result: "timeline.currentFrame.set.result",
     examples: [
       {
-        frame: 1,
+        frame: 12,
+      },
+      {
+        frame: 100000,
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.effectParameterRows.set": {
     kind: "toggle",
-    label: "Show/hide effect-parameter rows of one effect",
+    label: "Show effect parameters",
     summary: "Show/hide effect-parameter rows of one effect (omit = all effects)",
     params: "timeline.effectParameterRows.set.params",
     result: "timeline.effectParameterRows.set.result",
     examples: [
       {
-        visible: true,
+        visible: false,
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.frameLabel.get": {
     kind: "query",
-    label: "Format frame numbers per the current time display",
+    label: "Format frame numbers",
     summary: "Format frame numbers per the current time display",
     params: "timeline.frameLabel.get.params",
     result: "timeline.frameLabel.get.result",
     examples: [
       {
-        frames: [],
+        frames: [
+          1,
+          16,
+          20,
+        ],
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.playbackRange.changed": {
     kind: "event",
@@ -9868,97 +9871,100 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
     event: true,
   },
   "timeline.playbackRange.get": {
     kind: "query",
-    label: "Current playback range",
+    label: "Get playback range",
     summary: "Current playback range",
     params: "timeline.playbackRange.get.params",
     result: "timeline.playbackRange.get.result",
     examples: [
       {},
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.playbackRange.set": {
     kind: "ui",
-    label: "Automatic or free playback range, start and end",
+    label: "Set playback range",
     summary: "Automatic or free playback range, start and end (clamped)",
     params: "timeline.playbackRange.set.params",
     result: "timeline.playbackRange.set.result",
     examples: [
-      {},
+      {
+        mode: "free",
+        start: 10,
+        end: 30,
+      },
+      {
+        mode: "auto",
+      },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.rows.list": {
     kind: "query",
-    label: "Timeline read model: rows, bars, keyframe markers, clips",
+    label: "List Timeline rows",
     summary: "Timeline read model: rows, bars, keyframe markers, clips (17.5)",
     params: "timeline.rows.list.params",
     result: "timeline.rows.list.result",
     examples: [
       {},
+      {
+        from: 1,
+        to: 24,
+      },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.singleCellSelection.set": {
     kind: "toggle",
-    label: "Single cell selection preference",
+    label: "Single cell selection",
     summary: "Single cell selection preference",
     params: "timeline.singleCellSelection.set.params",
     result: "timeline.singleCellSelection.set.result",
     examples: [
       {
-        enabled: true,
+        enabled: false,
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.soundWaveforms.set": {
     kind: "toggle",
-    label: "Show sound rows as waveforms or solid bars",
+    label: "Sound waveforms",
     summary: "Show sound rows as waveforms or solid bars",
     params: "timeline.soundWaveforms.set.params",
     result: "timeline.soundWaveforms.set.result",
     examples: [
       {
-        enabled: true,
+        enabled: false,
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.timeDisplay.set": {
     kind: "ui",
-    label: "Display frames or feet and frames",
+    label: "Set time display",
     summary: "Display frames or feet and frames (preference)",
     params: "timeline.timeDisplay.set.params",
     result: "timeline.timeDisplay.set.result",
     examples: [
       {
-        unit: "frames",
+        unit: "feetFrames",
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.transferOptions.get": {
     kind: "query",
-    label: "Read a stored option set",
+    label: "Get transfer options",
     summary: "Read a stored option set",
     params: "timeline.transferOptions.get.params",
     result: "timeline.transferOptions.get.result",
     examples: [
       {
-        operation: "paste",
+        operation: "dragDrop",
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.transferOptions.set": {
     kind: "ui",
-    label: "Store the paste-special, cut-special or drag-and-drop option set",
+    label: "Set transfer options",
     summary: "Store the paste-special, cut-special or drag-and-drop option set (17.3)",
     params: "timeline.transferOptions.set.params",
     result: "timeline.transferOptions.set.result",
@@ -9966,35 +9972,24 @@ export const COMMAND_INDEX = {
       {
         operation: "paste",
         options: {
-          overwriteDrawings: true,
-          exposure: true,
-          autoExtend: true,
-          updateColours: true,
-          keyframeSubstitution: true,
-          boundaryKeys: true,
-          pegKeys: {
-            motion: true,
-            rotation: true,
-            scale: true,
-            pivot: true,
-            velocity: true,
-            skew: true,
-          },
+          exposure: false,
         },
       },
     ],
-    milestone: "M5 C5.1",
   },
   "timeline.view.set": {
     kind: "ui",
-    label: "Zoom level, scroll position, reveal an element",
+    label: "Set Timeline view",
     summary: "Zoom level, scroll position, reveal an element (show Timeline selection)",
     params: "timeline.view.set.params",
     result: "timeline.view.set.result",
     examples: [
+      {
+        zoomLevel: 8,
+        firstFrame: 48,
+      },
       {},
     ],
-    milestone: "M5 C5.1",
   },
   "tool.active.changed": {
     kind: "event",
@@ -10977,17 +10972,16 @@ export const COMMAND_INDEX = {
   },
   "xsheet.currentCell.set": {
     kind: "ui",
-    label: "Set the current element and frame together",
+    label: "Set current cell",
     summary: "Set the current element and frame together",
     params: "xsheet.currentCell.set.params",
     result: "xsheet.currentCell.set.result",
     examples: [
       {
-        elementId: "scene:#1",
-        frame: 1,
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 3,
       },
     ],
-    milestone: "M5 C5.2",
   },
   "xsheet.display.set": {
     kind: "ui",
@@ -23633,7 +23627,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/cell.clipboard.apply.PasteMode",
       },
       options: {
-        description: "Transfer options (default: 11.14's paste-special defaults).",
+        description: "Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's paste-special defaults).",
         anyOf: [
           {
             $ref: "#/$defs/cell.clipboard.apply.TransferOptions",
@@ -23819,7 +23813,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: false,
       },
       options: {
-        description: "Transfer options (default: 11.14's cut-special defaults).",
+        description: "Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's cut-special defaults).",
         anyOf: [
           {
             $ref: "#/$defs/cell.clipboard.set.TransferOptions",
@@ -25099,7 +25093,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/cell.range.move.MoveMode",
       },
       options: {
-        description: "Transfer options (default: the drag-and-drop defaults of 11.14).",
+        description: "Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was the drag-and-drop defaults of 11.14).",
         anyOf: [
           {
             $ref: "#/$defs/cell.range.move.TransferOptions",
@@ -69980,60 +69974,64 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "playback.forceRate.set.params": {
-    title: "playback.forceRate.set parameters",
+    title: "Enabled",
+    description: "`{enabled}` parameters and result.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "playback.forceRate.set.result": {
-    title: "playback.forceRate.set result",
+    title: "Enabled",
+    description: "`{enabled}` parameters and result.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "playback.loop.set.params": {
-    title: "playback.loop.set parameters",
+    title: "Enabled",
+    description: "`{enabled}` parameters and result.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "playback.loop.set.result": {
-    title: "playback.loop.set result",
+    title: "Enabled",
+    description: "`{enabled}` parameters and result.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "playback.player.close.params": {
     title: "playback.player.close parameters",
@@ -70423,31 +70421,46 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "playback.range.changed.params": {
-    title: "playback.range.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
+  },
+  "playback.range.changed.RangeMode": {
+    description: "Range mode (09 §2.8).",
+    oneOf: [
+      {
+        description: "Automatic fit: frame 1 to the scene's last frame.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Free: user-defined start and end.",
+        type: "string",
+        const: "free",
+      },
+    ],
   },
   "playback.range.changed.result": {
-    title: "playback.range.changed result",
+    title: "RangeChanged",
+    description: "`playback.range.changed` payload.",
     type: "object",
     properties: {
       sceneId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       mode: {
-        type: "string",
+        $ref: "#/$defs/playback.range.changed.RangeMode",
       },
       start: {
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       end: {
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -70456,40 +70469,55 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "start",
       "end",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{sceneId, mode, start, end}`",
-    additionalProperties: false,
   },
   "playback.range.get.params": {
-    title: "playback.range.get parameters",
+    title: "RangeGetParams",
+    description: "`playback.range.get` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene (default the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id`",
+  },
+  "playback.range.get.RangeMode": {
+    description: "Range mode (09 §2.8).",
+    oneOf: [
+      {
+        description: "Automatic fit: frame 1 to the scene's last frame.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Free: user-defined start and end.",
+        type: "string",
+        const: "free",
+      },
+    ],
   },
   "playback.range.get.result": {
-    title: "playback.range.get result",
+    title: "RangeGetResult",
+    description: "`{mode, start, end, sceneLength}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
-        enum: [
-          "auto",
-          "free",
-        ],
+        $ref: "#/$defs/playback.range.get.RangeMode",
       },
       start: {
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       end: {
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       sceneLength: {
         type: "number",
@@ -70501,45 +70529,65 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "end",
       "sceneLength",
     ],
-    "x-spec": "`{mode: \"auto\"|\"free\", start, end, sceneLength}`",
-    additionalProperties: false,
+  },
+  "playback.range.mode.set.RangeMode": {
+    description: "Range mode (09 §2.8).",
+    oneOf: [
+      {
+        description: "Automatic fit: frame 1 to the scene's last frame.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Free: user-defined start and end.",
+        type: "string",
+        const: "free",
+      },
+    ],
   },
   "playback.range.mode.set.params": {
-    title: "playback.range.mode.set parameters",
+    title: "RangeModeParams",
+    description: "`playback.range.mode.set` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene (default the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       mode: {
-        type: "string",
-        enum: [
-          "auto",
-          "free",
-        ],
+        description: "Automatic fit or free.",
+        $ref: "#/$defs/playback.range.mode.set.RangeMode",
       },
     },
+    additionalProperties: false,
     required: [
       "mode",
     ],
-    additionalProperties: false,
-    "x-spec": "`sceneId?: id; mode: \"auto\"|\"free\"`",
   },
   "playback.range.mode.set.result": {
-    title: "playback.range.mode.set result",
+    title: "RangeResult",
+    description: "`{mode, start, end}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
+        description: "`auto` or `free`.",
+        $ref: "#/$defs/playback.range.mode.set.RangeMode",
       },
       start: {
+        description: "First frame of the range.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       end: {
+        description: "Last frame of the range.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -70547,41 +70595,75 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "start",
       "end",
     ],
-    "x-spec": "`{mode, start, end}`",
-    additionalProperties: false,
   },
   "playback.range.set.params": {
-    title: "playback.range.set parameters",
+    title: "RangeSetParams",
+    description: "`playback.range.set` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene (default the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       start: {
-        type: "integer",
+        description: "Free start.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       end: {
-        type: "integer",
+        description: "Free end.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id; start?: int; end?: int`",
+  },
+  "playback.range.set.RangeMode": {
+    description: "Range mode (09 §2.8).",
+    oneOf: [
+      {
+        description: "Automatic fit: frame 1 to the scene's last frame.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Free: user-defined start and end.",
+        type: "string",
+        const: "free",
+      },
+    ],
   },
   "playback.range.set.result": {
-    title: "playback.range.set result",
+    title: "RangeSetResult",
+    description: "`{mode, start, end, adjusted}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
+        $ref: "#/$defs/playback.range.set.RangeMode",
       },
       start: {
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       end: {
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       adjusted: {
         type: "boolean",
@@ -70593,49 +70675,52 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "end",
       "adjusted",
     ],
-    "x-spec": "`{mode, start, end, adjusted: bool}`",
-    additionalProperties: false,
+  },
+  "playback.rate.set.RateParam": {
+    description: "A rate: `\"project\"` or 1 to 120 frames per second.",
+    anyOf: [
+      {
+        description: "Frames per second.",
+        type: "number",
+        maximum: 120,
+        minimum: 1,
+      },
+      {
+        description: "`\"project\"`: the project frame rate.",
+        $ref: "#/$defs/playback.rate.set.ProjectRate",
+      },
+    ],
+  },
+  "playback.rate.set.ProjectRate": {
+    description: "The literal `\"project\"`.",
+    oneOf: [
+      {
+        description: "The project frame rate.",
+        type: "string",
+        const: "project",
+      },
+    ],
   },
   "playback.rate.set.params": {
-    title: "playback.rate.set parameters",
+    title: "RateParams",
+    description: "`playback.rate.set` parameters.",
     type: "object",
     properties: {
       fps: {
-        anyOf: [
-          {
-            type: "string",
-            enum: [
-              "project",
-            ],
-          },
-          {
-            type: "number",
-            minimum: 1,
-            maximum: 120,
-          },
-        ],
+        description: "Frames per second, or `\"project\"`.",
+        $ref: "#/$defs/playback.rate.set.RateParam",
         default: "project",
       },
     },
     additionalProperties: false,
-    "x-spec": "`fps: number (1–120) | \"project\" = \"project\"`",
   },
   "playback.rate.set.result": {
-    title: "playback.rate.set result",
+    title: "RateResult",
+    description: "`{fps, effectiveFps}`.",
     type: "object",
     properties: {
       fps: {
-        anyOf: [
-          {
-            type: "string",
-          },
-          {
-            type: "number",
-            minimum: 1,
-            maximum: 120,
-          },
-        ],
-        default: "project",
+        $ref: "#/$defs/playback.rate.set.RateParam",
       },
       effectiveFps: {
         type: "number",
@@ -70645,41 +70730,48 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "fps",
       "effectiveFps",
     ],
-    "x-spec": "`{fps, effectiveFps}`",
-    additionalProperties: false,
   },
   "playback.start.params": {
-    title: "playback.start parameters",
+    title: "StartParams",
+    description: "`playback.start` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene (the current scene only).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       fromFrame: {
-        type: "integer",
+        description: "Start here instead of the current frame.",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        minimum: 1,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id; fromFrame?: int`",
   },
   "playback.start.result": {
-    title: "playback.start result",
+    title: "StartResult",
+    description: "`{playing, sceneId, frame}`.",
     type: "object",
     properties: {
       playing: {
-        const: true,
+        type: "boolean",
       },
       sceneId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
-        type: "number",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -70687,33 +70779,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "sceneId",
       "frame",
     ],
-    "x-spec": "`{playing: true, sceneId, frame}`",
-    additionalProperties: false,
   },
   "playback.started.params": {
-    title: "playback.started parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "playback.started.result": {
-    title: "playback.started result",
+    title: "Started",
+    description: "`playback.started` payload.",
     type: "object",
     properties: {
       sceneId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
         type: "number",
       },
       mode: {
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
@@ -70721,78 +70806,38 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "frame",
       "mode",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{sceneId, frame, mode}`",
-    additionalProperties: false,
   },
   "playback.state.get.params": {
-    title: "playback.state.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
-  "playback.state.get.spec.PlaybackState": {
+  "playback.state.get.result": {
+    title: "PlaybackState",
+    description: "`PlaybackState` (09 §11.4).",
     type: "object",
     properties: {
       playing: {
         type: "boolean",
       },
       mode: {
+        description: "`scene` (storyline playback is 08's).",
         type: "string",
-        maxLength: 65536,
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        type: [
+          "string",
+          "null",
+        ],
       },
       frame: {
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
-      range: {
-        type: "object",
-        properties: {
-          mode: {
-            type: "string",
-            maxLength: 65536,
-          },
-          start: {
-            type: "integer",
-          },
-          end: {
-            type: "integer",
-          },
-          sceneLength: {
-            type: "integer",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "mode",
-          "start",
-          "end",
-          "sceneLength",
-        ],
-      },
-      rate: {
-        type: "object",
-        properties: {
-          setting: {
-            type: "string",
-            maxLength: 65536,
-          },
-          fps: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "setting",
-          "fps",
-        ],
-      },
+      range: true,
+      rate: true,
       loop: {
         type: "boolean",
       },
@@ -70800,9 +70845,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       sound: {
+        description: "Sound during playback (M8): off until then.",
         type: "boolean",
       },
       scrubbing: {
+        description: "Sound scrubbing (M8): off until then.",
         type: "boolean",
       },
       measuredFps: {
@@ -70810,13 +70857,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       droppedFrames: {
         type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
       },
     },
-    additionalProperties: false,
     required: [
       "playing",
       "mode",
-      "sceneId",
       "frame",
       "range",
       "rate",
@@ -70827,63 +70874,48 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "measuredFps",
       "droppedFrames",
     ],
-    "x-specSection": "09",
-  },
-  "playback.state.get.result": {
-    $ref: "#/$defs/playback.state.get.spec.PlaybackState",
-    title: "playback.state.get result",
-    "x-spec": "`PlaybackState`",
   },
   "playback.stop.params": {
-    title: "playback.stop parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "playback.stop.result": {
-    title: "playback.stop result",
+    title: "StopResult",
+    description: "`{frame}`.",
     type: "object",
     properties: {
       frame: {
-        type: "number",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
       "frame",
     ],
-    "x-spec": "`{frame}`",
-    additionalProperties: false,
   },
   "playback.stopped.params": {
-    title: "playback.stopped parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "playback.stopped.result": {
-    title: "playback.stopped result",
+    title: "Stopped",
+    description: "`playback.stopped` payload.",
     type: "object",
     properties: {
       sceneId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
         type: "number",
       },
       reason: {
+        description: "`user`, `end`, `navigation` or `sceneChanged`.",
         type: "string",
-        enum: [
-          "user",
-          "end",
-          "navigation",
-          "sceneChanged",
-        ],
       },
     },
     required: [
@@ -70891,9 +70923,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "frame",
       "reason",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{sceneId, frame, reason: \"user\"|\"end\"|\"navigation\"|\"sceneChanged\"}`",
-    additionalProperties: false,
   },
   "prefs.changed.params": {
     title: "NoParams",
@@ -79005,66 +79034,58 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "timeline.backgroundColour.set.params": {
-    title: "timeline.backgroundColour.set parameters",
+    title: "BackgroundParams",
+    description: "`timeline.backgroundColour.set` parameters.",
     type: "object",
     properties: {
       colour: {
+        description: "`#RRGGBB` or `#RRGGBBAA`.",
         type: "string",
         pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
       },
     },
+    additionalProperties: false,
     required: [
       "colour",
     ],
-    additionalProperties: false,
-    "x-spec": "`colour: colour`",
   },
   "timeline.backgroundColour.set.result": {
-    title: "timeline.backgroundColour.set result",
+    title: "ColourResult",
+    description: "`{colour}`.",
     type: "object",
     properties: {
       colour: {
         type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
       },
     },
     required: [
       "colour",
     ],
-    "x-spec": "`{colour}`",
-    additionalProperties: false,
   },
   "timeline.currentFrame.changed.params": {
-    title: "timeline.currentFrame.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "timeline.currentFrame.changed.result": {
-    title: "timeline.currentFrame.changed result",
+    title: "CurrentFrameChanged",
+    description: "`timeline.currentFrame.changed` payload.",
     type: "object",
     properties: {
       sceneId: {
+        description: "The scene.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
+        description: "The current frame.",
         type: "integer",
+        maximum: 2147483647,
         minimum: 1,
       },
       source: {
+        description: "`playback`, `navigation` or `command`.",
         type: "string",
-        enum: [
-          "playback",
-          "navigation",
-          "command",
-        ],
       },
     },
     required: [
@@ -79072,61 +79093,99 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "frame",
       "source",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{sceneId, frame, source: \"playback\"|\"navigation\"|\"command\"}`",
-    additionalProperties: false,
+  },
+  "timeline.currentFrame.move.MoveDirection": {
+    description: "Direction of `timeline.currentFrame.move`.",
+    oneOf: [
+      {
+        description: "The first frame (of the playback range with `withinRange`).",
+        type: "string",
+        const: "first",
+      },
+      {
+        description: "Back.",
+        type: "string",
+        const: "previous",
+      },
+      {
+        description: "Forward.",
+        type: "string",
+        const: "next",
+      },
+      {
+        description: "The last frame (of the playback range with `withinRange`).",
+        type: "string",
+        const: "last",
+      },
+    ],
+  },
+  "timeline.currentFrame.move.MoveUnit": {
+    description: "Unit of `timeline.currentFrame.move`.",
+    oneOf: [
+      {
+        description: "Frames.",
+        type: "string",
+        const: "frame",
+      },
+      {
+        description: "Drawing changes of an element.",
+        type: "string",
+        const: "drawing",
+      },
+    ],
   },
   "timeline.currentFrame.move.params": {
-    title: "timeline.currentFrame.move parameters",
+    title: "CurrentFrameMoveParams",
+    description: "`timeline.currentFrame.move` parameters.",
     type: "object",
     properties: {
       direction: {
-        type: "string",
-        enum: [
-          "first",
-          "previous",
-          "next",
-          "last",
-        ],
+        description: "Where to.",
+        $ref: "#/$defs/timeline.currentFrame.move.MoveDirection",
       },
       unit: {
-        type: "string",
-        enum: [
-          "frame",
-          "drawing",
-        ],
-        default: "frame",
+        description: "Frames or drawing changes.",
+        $ref: "#/$defs/timeline.currentFrame.move.MoveUnit",
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The element whose drawing changes count (default the current element; with none, every visible cell-based\nelement, 09 line 132).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       count: {
+        description: "How many steps.",
         type: "integer",
         default: 1,
+        minimum: 1,
+        maximum: 100000,
       },
       withinRange: {
+        description: "Limit movement to the playback range.",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "direction",
     ],
-    additionalProperties: false,
-    "x-spec": "`direction: enum \"first\"|\"previous\"|\"next\"|\"last\"; unit: enum \"frame\"|\"drawing\" = \"frame\"; elementId?: id; count: int = 1; withinRange: bool = false`",
   },
   "timeline.currentFrame.move.result": {
-    title: "timeline.currentFrame.move result",
+    title: "CurrentFrameMoveResult",
+    description: "`{frame, moved}`.",
     type: "object",
     properties: {
       frame: {
+        description: "The current frame.",
         type: "integer",
+        maximum: 2147483647,
         minimum: 1,
       },
       moved: {
+        description: "The frame changed.",
         type: "boolean",
       },
     },
@@ -79134,39 +79193,45 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "frame",
       "moved",
     ],
-    "x-spec": "`{frame, moved: bool}`",
-    additionalProperties: false,
   },
   "timeline.currentFrame.set.params": {
-    title: "timeline.currentFrame.set parameters",
+    title: "CurrentFrameSetParams",
+    description: "`timeline.currentFrame.set` parameters.",
     type: "object",
     properties: {
       frame: {
+        description: "Frame (clamped to 1..scene length).",
         type: "integer",
+        maximum: 9223372036854775807n,
         minimum: 1,
       },
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene (the current scene only).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "frame",
     ],
-    additionalProperties: false,
-    "x-spec": "`frame: int (≥1); sceneId?: id`",
   },
   "timeline.currentFrame.set.result": {
-    title: "timeline.currentFrame.set result",
+    title: "CurrentFrameSetResult",
+    description: "`{frame, clamped}`.",
     type: "object",
     properties: {
       frame: {
+        description: "The current frame.",
         type: "integer",
+        maximum: 2147483647,
         minimum: 1,
       },
       clamped: {
+        description: "The given frame was outside 1..scene length.",
         type: "boolean",
       },
     },
@@ -79174,31 +79239,33 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "frame",
       "clamped",
     ],
-    "x-spec": "`{frame, clamped: bool}`",
-    additionalProperties: false,
   },
   "timeline.effectParameterRows.set.params": {
-    title: "timeline.effectParameterRows.set parameters",
+    title: "ParameterRowsParams",
+    description: "`timeline.effectParameterRows.set` parameters.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown or hidden.",
         type: "boolean",
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "One effect element (omitted: every effect element, and the default for new ones).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    additionalProperties: false,
-    "x-spec": "`visible: bool; elementId?: id`",
   },
   "timeline.effectParameterRows.set.result": {
-    title: "timeline.effectParameterRows.set result",
+    title: "VisibleResult",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
@@ -79208,66 +79275,86 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     required: [
       "visible",
     ],
-    "x-spec": "`{visible}`",
-    additionalProperties: false,
   },
   "timeline.frameLabel.get.params": {
-    title: "timeline.frameLabel.get parameters",
+    title: "FrameLabelParams",
+    description: "`timeline.frameLabel.get` parameters.",
     type: "object",
     properties: {
       frames: {
+        description: "Frame numbers.",
         type: "array",
         items: {
           type: "integer",
+          maximum: 9223372036854775807n,
+          minimum: -9223372036854775808n,
         },
         maxItems: 100000,
       },
     },
+    additionalProperties: false,
     required: [
       "frames",
     ],
-    additionalProperties: false,
-    "x-spec": "`frames: [int]`",
   },
   "timeline.frameLabel.get.result": {
-    title: "timeline.frameLabel.get result",
+    title: "FrameLabelResult",
+    description: "`{labels}`.",
     type: "object",
     properties: {
       labels: {
+        description: "One label per frame, in order.",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
     },
     required: [
       "labels",
     ],
-    "x-spec": "`{labels: [string]}`",
-    additionalProperties: false,
   },
   "timeline.playbackRange.changed.params": {
-    title: "timeline.playbackRange.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
+  },
+  "timeline.playbackRange.changed.RangeMode": {
+    description: "Range mode (09 §2.8).",
+    oneOf: [
+      {
+        description: "Automatic fit: frame 1 to the scene's last frame.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Free: user-defined start and end.",
+        type: "string",
+        const: "free",
+      },
+    ],
   },
   "timeline.playbackRange.changed.result": {
-    title: "timeline.playbackRange.changed result",
+    title: "RangeResult",
+    description: "`{mode, start, end}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
+        description: "`auto` or `free`.",
+        $ref: "#/$defs/timeline.playbackRange.changed.RangeMode",
       },
       start: {
+        description: "First frame of the range.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       end: {
+        description: "Last frame of the range.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -79275,29 +79362,48 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "start",
       "end",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{mode, start, end}`",
-    additionalProperties: false,
   },
   "timeline.playbackRange.get.params": {
-    title: "timeline.playbackRange.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
+  },
+  "timeline.playbackRange.get.RangeMode": {
+    description: "Range mode (09 §2.8).",
+    oneOf: [
+      {
+        description: "Automatic fit: frame 1 to the scene's last frame.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Free: user-defined start and end.",
+        type: "string",
+        const: "free",
+      },
+    ],
   },
   "timeline.playbackRange.get.result": {
-    title: "timeline.playbackRange.get result",
+    title: "RangeResult",
+    description: "`{mode, start, end}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
+        description: "`auto` or `free`.",
+        $ref: "#/$defs/timeline.playbackRange.get.RangeMode",
       },
       start: {
+        description: "First frame of the range.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       end: {
+        description: "Last frame of the range.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -79305,42 +79411,82 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "start",
       "end",
     ],
-    "x-spec": "`{mode, start, end}`",
-    additionalProperties: false,
+  },
+  "timeline.playbackRange.set.RangeMode": {
+    description: "Range mode (09 §2.8).",
+    oneOf: [
+      {
+        description: "Automatic fit: frame 1 to the scene's last frame.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Free: user-defined start and end.",
+        type: "string",
+        const: "free",
+      },
+    ],
   },
   "timeline.playbackRange.set.params": {
-    title: "timeline.playbackRange.set parameters",
+    title: "PlaybackRangeSetParams",
+    description: "`timeline.playbackRange.set` parameters.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
-        enum: [
-          "auto",
-          "free",
+        description: "Automatic or free (a start or end given makes it free).",
+        anyOf: [
+          {
+            $ref: "#/$defs/timeline.playbackRange.set.RangeMode",
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
       start: {
-        type: "integer",
+        description: "Free start (clamped).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
       end: {
-        type: "integer",
+        description: "Free end (clamped).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        default: null,
+        minimum: -9223372036854775808n,
       },
     },
     additionalProperties: false,
-    "x-spec": "`mode?: enum \"auto\"|\"free\"; start?: int; end?: int`",
   },
   "timeline.playbackRange.set.result": {
-    title: "timeline.playbackRange.set result",
+    title: "RangeResult",
+    description: "`{mode, start, end}`.",
     type: "object",
     properties: {
       mode: {
-        type: "string",
+        description: "`auto` or `free`.",
+        $ref: "#/$defs/timeline.playbackRange.set.RangeMode",
       },
       start: {
+        description: "First frame of the range.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       end: {
+        description: "Last frame of the range.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
@@ -79348,107 +79494,108 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "start",
       "end",
     ],
-    "x-spec": "`{mode, start, end}`",
-    additionalProperties: false,
   },
   "timeline.rows.list.params": {
-    title: "timeline.rows.list parameters",
+    title: "RowsListParams",
+    description: "`timeline.rows.list` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene (default the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       from: {
-        type: "integer",
+        description: "First frame of the window keyframes are listed in (default 1).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        minimum: 1,
+        default: null,
       },
       to: {
-        type: "integer",
+        description: "Last frame of the window (default the scene length).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        minimum: 1,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id; from?: int; to?: int`",
   },
-  "timeline.rows.list.spec.TimelineModel": {
+  "timeline.rows.list.RangeResult": {
+    description: "`{mode, start, end}`.",
     type: "object",
     properties: {
-      sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      mode: {
+        description: "`auto` or `free`.",
+        $ref: "#/$defs/timeline.rows.list.RangeMode",
       },
-      sceneLength: {
-        type: "number",
+      start: {
+        description: "First frame of the range.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
-      currentFrame: {
-        type: "number",
-      },
-      playbackRange: {
-        type: "object",
-        properties: {
-          mode: {
-            type: "string",
-            maxLength: 65536,
-          },
-          start: {
-            type: "number",
-          },
-          end: {
-            type: "number",
-          },
-        },
-        required: [
-          "mode",
-          "start",
-          "end",
-        ],
-        additionalProperties: false,
-      },
-      rows: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/timeline.rows.list.spec.TimelineRow",
-        },
-        maxItems: 100000,
+      end: {
+        description: "Last frame of the range.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
     },
     required: [
-      "sceneId",
-      "sceneLength",
-      "currentFrame",
-      "playbackRange",
-      "rows",
+      "mode",
+      "start",
+      "end",
     ],
-    additionalProperties: false,
   },
-  "timeline.rows.list.spec.TimelineRow": {
+  "timeline.rows.list.RangeMode": {
+    description: "Range mode (09 §2.8).",
+    oneOf: [
+      {
+        description: "Automatic fit: frame 1 to the scene's last frame.",
+        type: "string",
+        const: "auto",
+      },
+      {
+        description: "Free: user-defined start and end.",
+        type: "string",
+        const: "free",
+      },
+    ],
+  },
+  "timeline.rows.list.Row": {
+    description: "One Timeline row (04 §17.5).",
     type: "object",
     properties: {
       elementId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
         type: "string",
-        maxLength: 65536,
       },
       type: {
         type: "string",
-        maxLength: 65536,
       },
       depth: {
-        type: "number",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       parentId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        type: [
+          "string",
+          "null",
+        ],
       },
       collapsed: {
         type: "boolean",
@@ -79463,101 +79610,37 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       bar: {
-        type: "object",
-        properties: {
-          start: {
-            type: "number",
+        description: "`null` for a cell-based row with no exposed cell.",
+        anyOf: [
+          {
+            $ref: "#/$defs/timeline.rows.list.RowBar",
           },
-          end: {
-            type: "number",
+          {
+            type: "null",
           },
-          loops: {
-            type: "number",
-          },
-        },
-        required: [
-          "start",
-          "end",
-          "loops",
         ],
-        additionalProperties: false,
       },
       keyframes: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            frame: {
-              type: "number",
-            },
-            channels: {
-              type: "array",
-              items: {
-                type: "string",
-                enum: [
-                  "position",
-                  "scale",
-                  "rotation",
-                  "skew",
-                ],
-              },
-              maxItems: 100000,
-            },
-            segmentAfter: {
-              type: "string",
-              enum: [
-                "constant",
-                "interpolated",
-              ],
-            },
-          },
-          required: [
-            "frame",
-            "channels",
-            "segmentAfter",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/timeline.rows.list.RowKeyframe",
         },
-        maxItems: 100000,
       },
       childKeyframeFrames: {
         type: "array",
         items: {
           type: "integer",
+          maximum: 2147483647,
+          minimum: 0,
         },
-        maxItems: 100000,
       },
       clips: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            clipId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            file: {
-              type: "string",
-              maxLength: 65536,
-            },
-            from: {
-              type: "number",
-            },
-            to: {
-              type: "number",
-            },
-          },
-          required: [
-            "clipId",
-            "file",
-            "from",
-            "to",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
+        description: "Sound clips (M8; empty until then).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: true,
       },
     },
     required: [
@@ -79565,347 +79648,544 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "name",
       "type",
       "depth",
-      "parentId",
       "collapsed",
       "visibleInScene",
       "hiddenByParent",
       "locked",
-      "bar",
       "keyframes",
       "childKeyframeFrames",
     ],
-    additionalProperties: false,
+  },
+  "timeline.rows.list.RowBar": {
+    description: "A row's bar.",
+    type: "object",
+    properties: {
+      start: {
+        description: "First frame (the first exposed frame of a cell-based row).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      end: {
+        description: "Last frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      loops: {
+        description: "Loops (1 = not looped).",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "start",
+      "end",
+      "loops",
+    ],
+  },
+  "timeline.rows.list.RowKeyframe": {
+    description: "A keyframe marker.",
+    type: "object",
+    properties: {
+      frame: {
+        description: "Scene frame.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      channels: {
+        description: "Keyed transform channels: `position`, `scale`, `rotation`, `skew`.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      segmentAfter: {
+        description: "`constant` when every channel keyed here starts a constant segment, else `interpolated`.",
+        type: "string",
+      },
+    },
+    required: [
+      "frame",
+      "channels",
+      "segmentAfter",
+    ],
   },
   "timeline.rows.list.result": {
-    $ref: "#/$defs/timeline.rows.list.spec.TimelineModel",
-    title: "timeline.rows.list result",
-    "x-spec": "timeline object",
+    title: "RowsResult",
+    description: "`timeline.rows.list` result.",
+    type: "object",
+    properties: {
+      sceneId: {
+        type: "string",
+      },
+      sceneLength: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      currentFrame: {
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      playbackRange: {
+        $ref: "#/$defs/timeline.rows.list.RangeResult",
+      },
+      rows: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/timeline.rows.list.Row",
+        },
+      },
+    },
+    required: [
+      "sceneId",
+      "sceneLength",
+      "currentFrame",
+      "playbackRange",
+      "rows",
+    ],
   },
   "timeline.singleCellSelection.set.params": {
-    title: "timeline.singleCellSelection.set parameters",
+    title: "Enabled",
+    description: "`{enabled}` parameters and result.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "timeline.singleCellSelection.set.result": {
-    title: "timeline.singleCellSelection.set result",
+    title: "Enabled",
+    description: "`{enabled}` parameters and result.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "timeline.soundWaveforms.set.params": {
-    title: "timeline.soundWaveforms.set parameters",
+    title: "Enabled",
+    description: "`{enabled}` parameters and result.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "timeline.soundWaveforms.set.result": {
-    title: "timeline.soundWaveforms.set result",
+    title: "Enabled",
+    description: "`{enabled}` parameters and result.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
+  },
+  "timeline.timeDisplay.set.TimeUnit": {
+    description: "Time display unit (04 §11.4).",
+    oneOf: [
+      {
+        description: "Frame numbers.",
+        type: "string",
+        const: "frames",
+      },
+      {
+        description: "Feet and frames.",
+        type: "string",
+        const: "feetFrames",
+      },
+    ],
   },
   "timeline.timeDisplay.set.params": {
-    title: "timeline.timeDisplay.set parameters",
+    title: "TimeDisplayParams",
+    description: "`timeline.timeDisplay.set` parameters.",
     type: "object",
     properties: {
       unit: {
-        type: "string",
-        enum: [
-          "frames",
-          "feetFrames",
-        ],
+        description: "The unit.",
+        $ref: "#/$defs/timeline.timeDisplay.set.TimeUnit",
       },
     },
+    additionalProperties: false,
     required: [
       "unit",
     ],
-    additionalProperties: false,
-    "x-spec": "`unit: enum \"frames\"|\"feetFrames\"`",
   },
   "timeline.timeDisplay.set.result": {
-    title: "timeline.timeDisplay.set result",
+    title: "TimeDisplayResult",
+    description: "`{unit}`.",
     type: "object",
     properties: {
       unit: {
-        type: "string",
+        $ref: "#/$defs/timeline.timeDisplay.set.TimeUnit",
       },
     },
     required: [
       "unit",
     ],
-    "x-spec": "`{unit}`",
-    additionalProperties: false,
+  },
+  "timeline.transferOptions.get.Operation": {
+    description: "The operations with a stored option set.",
+    oneOf: [
+      {
+        description: "Paste special.",
+        type: "string",
+        const: "paste",
+      },
+      {
+        description: "Cut special.",
+        type: "string",
+        const: "cut",
+      },
+      {
+        description: "Drag and drop of cells.",
+        type: "string",
+        const: "dragDrop",
+      },
+    ],
   },
   "timeline.transferOptions.get.params": {
-    title: "timeline.transferOptions.get parameters",
+    title: "GetParams",
+    description: "`timeline.transferOptions.get` parameters.",
     type: "object",
     properties: {
       operation: {
-        type: "string",
-        enum: [
-          "paste",
-          "cut",
-          "dragDrop",
-        ],
+        description: "Paste special, cut special or drag and drop.",
+        $ref: "#/$defs/timeline.transferOptions.get.Operation",
       },
     },
+    additionalProperties: false,
     required: [
       "operation",
     ],
-    additionalProperties: false,
-    "x-spec": "`operation: enum \"paste\"|\"cut\"|\"dragDrop\"`",
   },
-  "timeline.transferOptions.get.spec.TransferOptions": {
+  "timeline.transferOptions.get.TransferOptions": {
+    description: "The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14.",
     type: "object",
     properties: {
       overwriteDrawings: {
+        description: "Same-named drawings in the destination bank are overwritten (otherwise new drawings are created).",
         type: "boolean",
+        default: false,
       },
       exposure: {
+        description: "Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear.",
         type: "boolean",
+        default: true,
       },
       autoExtend: {
+        description: "Extend transferred exposures up to the destination frame.",
         type: "boolean",
+        default: false,
       },
       updateColours: {
+        description: "Update palette colours from templates.",
         type: "boolean",
+        default: false,
       },
       keyframeSubstitution: {
+        description: "Replace keyframe properties at and after the current frame.",
         type: "boolean",
+        default: false,
       },
       boundaryKeys: {
+        description: "Add keyframes at the start and end of the transferred range.",
         type: "boolean",
+        default: false,
       },
       pegKeys: {
-        type: "object",
-        properties: {
-          motion: {
-            type: "boolean",
-          },
-          rotation: {
-            type: "boolean",
-          },
-          scale: {
-            type: "boolean",
-          },
-          pivot: {
-            type: "boolean",
-          },
-          velocity: {
-            type: "boolean",
-          },
-          skew: {
-            type: "boolean",
-          },
+        description: "Peg key groups.",
+        $ref: "#/$defs/timeline.transferOptions.get.PegKeys",
+        default: {
+          motion: true,
+          rotation: true,
+          scale: true,
+          pivot: true,
+          velocity: true,
+          skew: true,
         },
-        additionalProperties: false,
-        required: [
-          "motion",
-          "rotation",
-          "scale",
-          "pivot",
-          "velocity",
-          "skew",
-        ],
       },
     },
     additionalProperties: false,
-    required: [
-      "overwriteDrawings",
-      "exposure",
-      "autoExtend",
-      "updateColours",
-      "keyframeSubstitution",
-      "boundaryKeys",
-      "pegKeys",
-    ],
-    "x-specSection": "04",
+  },
+  "timeline.transferOptions.get.PegKeys": {
+    description: "Peg key groups of the transfer options.",
+    type: "object",
+    properties: {
+      motion: {
+        description: "Motion keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      rotation: {
+        description: "Rotation keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      scale: {
+        description: "Scale keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      pivot: {
+        description: "Pivot keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      velocity: {
+        description: "Velocity keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      skew: {
+        description: "Skew keyframes.",
+        type: "boolean",
+        default: true,
+      },
+    },
+    additionalProperties: false,
   },
   "timeline.transferOptions.get.result": {
-    title: "timeline.transferOptions.get result",
+    title: "GetResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
-        $ref: "#/$defs/timeline.transferOptions.get.spec.TransferOptions",
+        description: "The stored set (04 §17.3).",
+        $ref: "#/$defs/timeline.transferOptions.get.TransferOptions",
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
-  "timeline.transferOptions.set.spec.TransferOptions": {
+  "timeline.transferOptions.set.Operation": {
+    description: "The operations with a stored option set.",
+    oneOf: [
+      {
+        description: "Paste special.",
+        type: "string",
+        const: "paste",
+      },
+      {
+        description: "Cut special.",
+        type: "string",
+        const: "cut",
+      },
+      {
+        description: "Drag and drop of cells.",
+        type: "string",
+        const: "dragDrop",
+      },
+    ],
+  },
+  "timeline.transferOptions.set.TransferOptions": {
+    description: "The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14.",
     type: "object",
     properties: {
       overwriteDrawings: {
+        description: "Same-named drawings in the destination bank are overwritten (otherwise new drawings are created).",
         type: "boolean",
+        default: false,
       },
       exposure: {
+        description: "Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear.",
         type: "boolean",
+        default: true,
       },
       autoExtend: {
+        description: "Extend transferred exposures up to the destination frame.",
         type: "boolean",
+        default: false,
       },
       updateColours: {
+        description: "Update palette colours from templates.",
         type: "boolean",
+        default: false,
       },
       keyframeSubstitution: {
+        description: "Replace keyframe properties at and after the current frame.",
         type: "boolean",
+        default: false,
       },
       boundaryKeys: {
+        description: "Add keyframes at the start and end of the transferred range.",
         type: "boolean",
+        default: false,
       },
       pegKeys: {
-        type: "object",
-        properties: {
-          motion: {
-            type: "boolean",
-          },
-          rotation: {
-            type: "boolean",
-          },
-          scale: {
-            type: "boolean",
-          },
-          pivot: {
-            type: "boolean",
-          },
-          velocity: {
-            type: "boolean",
-          },
-          skew: {
-            type: "boolean",
-          },
+        description: "Peg key groups.",
+        $ref: "#/$defs/timeline.transferOptions.set.PegKeys",
+        default: {
+          motion: true,
+          rotation: true,
+          scale: true,
+          pivot: true,
+          velocity: true,
+          skew: true,
         },
-        additionalProperties: false,
-        required: [
-          "motion",
-          "rotation",
-          "scale",
-          "pivot",
-          "velocity",
-          "skew",
-        ],
       },
     },
     additionalProperties: false,
-    required: [
-      "overwriteDrawings",
-      "exposure",
-      "autoExtend",
-      "updateColours",
-      "keyframeSubstitution",
-      "boundaryKeys",
-      "pegKeys",
-    ],
-    "x-specSection": "04",
+  },
+  "timeline.transferOptions.set.PegKeys": {
+    description: "Peg key groups of the transfer options.",
+    type: "object",
+    properties: {
+      motion: {
+        description: "Motion keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      rotation: {
+        description: "Rotation keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      scale: {
+        description: "Scale keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      pivot: {
+        description: "Pivot keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      velocity: {
+        description: "Velocity keyframes.",
+        type: "boolean",
+        default: true,
+      },
+      skew: {
+        description: "Skew keyframes.",
+        type: "boolean",
+        default: true,
+      },
+    },
+    additionalProperties: false,
   },
   "timeline.transferOptions.set.params": {
-    title: "timeline.transferOptions.set parameters",
+    title: "SetParams",
+    description: "`timeline.transferOptions.set` parameters.",
     type: "object",
     properties: {
       operation: {
-        type: "string",
-        enum: [
-          "paste",
-          "cut",
-          "dragDrop",
-        ],
+        description: "Paste special, cut special or drag and drop.",
+        $ref: "#/$defs/timeline.transferOptions.set.Operation",
       },
       options: {
-        $ref: "#/$defs/timeline.transferOptions.set.spec.TransferOptions",
+        description: "The options to store (04 §17.3; omitted members keep their stored value).",
+        $ref: "#/$defs/timeline.transferOptions.set.TransferOptions",
       },
     },
+    additionalProperties: false,
     required: [
       "operation",
       "options",
     ],
-    additionalProperties: false,
-    "x-spec": "`operation: enum \"paste\"|\"cut\"|\"dragDrop\"; options: object`",
   },
   "timeline.transferOptions.set.result": {
-    title: "timeline.transferOptions.set result",
+    title: "SetResult",
+    description: "`{operation, options}`.",
     type: "object",
     properties: {
       operation: {
-        type: "string",
+        $ref: "#/$defs/timeline.transferOptions.set.Operation",
       },
       options: {
-        $ref: "#/$defs/timeline.transferOptions.set.spec.TransferOptions",
+        description: "The stored set (04 §17.3).",
+        $ref: "#/$defs/timeline.transferOptions.set.TransferOptions",
       },
     },
     required: [
       "operation",
       "options",
     ],
-    "x-spec": "`{operation, options}`",
-    additionalProperties: false,
   },
   "timeline.view.set.params": {
-    title: "timeline.view.set parameters",
+    title: "ViewSetParams",
+    description: "`timeline.view.set` parameters.",
     type: "object",
     properties: {
       zoomLevel: {
-        type: "integer",
+        description: "Zoom level: an index into the zoom ladder (0 = narrowest cells).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        minimum: 0,
+        default: null,
       },
       firstFrame: {
-        type: "integer",
+        description: "First frame shown (clamped).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 9223372036854775807n,
+        minimum: 1,
+        default: null,
       },
       revealElementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Scroll so this element's row is shown (Show Timeline Selection).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`zoomLevel?: int; firstFrame?: int; revealElementId?: id`",
   },
   "timeline.view.set.result": {
-    title: "timeline.view.set result",
+    title: "ViewResult",
+    description: "`{zoomLevel, firstFrame, lastFrame}`.",
     type: "object",
     properties: {
       zoomLevel: {
+        description: "Zoom level.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       firstFrame: {
+        description: "First frame shown.",
         type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
       },
       lastFrame: {
+        description: "Last frame shown.",
         type: "number",
       },
     },
@@ -79914,8 +80194,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "firstFrame",
       "lastFrame",
     ],
-    "x-spec": "`{zoomLevel, firstFrame, lastFrame}`",
-    additionalProperties: false,
   },
   "tool.active.changed.params": {
     title: "NoParams",
@@ -85656,39 +85934,38 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "xsheet.currentCell.set.params": {
-    title: "xsheet.currentCell.set parameters",
+    title: "CurrentCellParams",
+    description: "`xsheet.currentCell.set` parameters.",
     type: "object",
     properties: {
       elementId: {
+        description: "The element.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
+        description: "The frame (frames past the scene end may be current: 04 line 676).",
         type: "integer",
+        maximum: 100000,
         minimum: 1,
       },
     },
+    additionalProperties: false,
     required: [
       "elementId",
       "frame",
     ],
-    additionalProperties: false,
-    "x-spec": "`elementId: id; frame: int (≥1)`",
   },
   "xsheet.currentCell.set.result": {
-    title: "xsheet.currentCell.set result",
+    title: "CurrentCellResult",
+    description: "`{elementId, frame}`.",
     type: "object",
     properties: {
       elementId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       frame: {
         type: "integer",
+        maximum: 2147483647,
         minimum: 1,
       },
     },
@@ -85696,8 +85973,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "elementId",
       "frame",
     ],
-    "x-spec": "`{elementId, frame}`",
-    additionalProperties: false,
   },
   "xsheet.display.set.params": {
     title: "xsheet.display.set parameters",
@@ -90123,7 +90398,7 @@ export interface cell_clipboard_apply_params {
   frame?: number | bigint | null;
   /** Paste or paste as new drawings. */
   mode?: cell_clipboard_apply_PasteMode;
-  /** Transfer options (default: 11.14's paste-special defaults). */
+  /** Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's paste-special defaults). */
   options?: cell_clipboard_apply_TransferOptions | null;
 }
 
@@ -90185,7 +90460,7 @@ export interface cell_clipboard_set_params {
   wholeElements?: boolean;
   /** Cut (an undoable removal, by the cut-special `exposure` option: remove and shift, or clear). */
   cut?: boolean;
-  /** Transfer options (default: 11.14's cut-special defaults). */
+  /** Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's cut-special defaults). */
   options?: cell_clipboard_set_TransferOptions | null;
 }
 
@@ -90586,7 +90861,7 @@ export interface cell_range_move_params {
   targetFrame: number | bigint;
   /** Move, copy, link or copy as new drawings. */
   mode?: cell_range_move_MoveMode;
-  /** Transfer options (default: the drag-and-drop defaults of 11.14). */
+  /** Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was the drag-and-drop defaults of 11.14). */
   options?: cell_range_move_TransferOptions | null;
 }
 
@@ -102351,19 +102626,27 @@ export interface media_source_missing_result {
   location: string;
 }
 
+/** `{enabled}` parameters and result. */
 export interface playback_forceRate_set_params {
+  /** On or off. */
   enabled: boolean;
 }
 
+/** `{enabled}` parameters and result. */
 export interface playback_forceRate_set_result {
+  /** On or off. */
   enabled: boolean;
 }
 
+/** `{enabled}` parameters and result. */
 export interface playback_loop_set_params {
+  /** On or off. */
   enabled: boolean;
 }
 
+/** `{enabled}` parameters and result. */
 export interface playback_loop_set_result {
+  /** On or off. */
   enabled: boolean;
 }
 
@@ -102465,132 +102748,161 @@ export interface playback_preview_run_result {
   jobId: string;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type playback_range_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** Range mode (09 §2.8). */
+export type playback_range_changed_RangeMode = 'auto' | 'free';
+
+/** `playback.range.changed` payload. */
 export interface playback_range_changed_result {
-  /** object ID or path reference (10 §3) */
   sceneId: string;
-  mode: string;
-  start: number | bigint;
-  end: number | bigint;
+  mode: playback_range_changed_RangeMode;
+  start: number;
+  end: number;
 }
 
+/** `playback.range.get` parameters. */
 export interface playback_range_get_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
+  /** The scene (default the current scene). */
+  sceneId?: string | null;
 }
 
+/** Range mode (09 §2.8). */
+export type playback_range_get_RangeMode = 'auto' | 'free';
+
+/** `{mode, start, end, sceneLength}`. */
 export interface playback_range_get_result {
-  mode: 'auto' | 'free';
-  start: number | bigint;
-  end: number | bigint;
+  mode: playback_range_get_RangeMode;
+  start: number;
+  end: number;
   sceneLength: number;
 }
 
+/** Range mode (09 §2.8). */
+export type playback_range_mode_set_RangeMode = 'auto' | 'free';
+
+/** `playback.range.mode.set` parameters. */
 export interface playback_range_mode_set_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  mode: 'auto' | 'free';
+  /** The scene (default the current scene). */
+  sceneId?: string | null;
+  /** Automatic fit or free. */
+  mode: playback_range_mode_set_RangeMode;
 }
 
+/** `{mode, start, end}`. */
 export interface playback_range_mode_set_result {
-  mode: string;
-  start: number | bigint;
-  end: number | bigint;
+  /** `auto` or `free`. */
+  mode: playback_range_mode_set_RangeMode;
+  /** First frame of the range. */
+  start: number;
+  /** Last frame of the range. */
+  end: number;
 }
 
+/** `playback.range.set` parameters. */
 export interface playback_range_set_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  start?: number | bigint;
-  end?: number | bigint;
+  /** The scene (default the current scene). */
+  sceneId?: string | null;
+  /** Free start. */
+  start?: number | bigint | null;
+  /** Free end. */
+  end?: number | bigint | null;
 }
 
+/** Range mode (09 §2.8). */
+export type playback_range_set_RangeMode = 'auto' | 'free';
+
+/** `{mode, start, end, adjusted}`. */
 export interface playback_range_set_result {
-  mode: string;
-  start: number | bigint;
-  end: number | bigint;
+  mode: playback_range_set_RangeMode;
+  start: number;
+  end: number;
   adjusted: boolean;
 }
 
+/** A rate: `"project"` or 1 to 120 frames per second. */
+export type playback_rate_set_RateParam = number | playback_rate_set_ProjectRate;
+
+/** The literal `"project"`. */
+export type playback_rate_set_ProjectRate = 'project';
+
+/** `playback.rate.set` parameters. */
 export interface playback_rate_set_params {
-  fps?: 'project' | number;
+  /** Frames per second, or `"project"`. */
+  fps?: playback_rate_set_RateParam;
 }
 
+/** `{fps, effectiveFps}`. */
 export interface playback_rate_set_result {
-  fps: string | number;
+  fps: playback_rate_set_RateParam;
   effectiveFps: number;
 }
 
+/** `playback.start` parameters. */
 export interface playback_start_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  fromFrame?: number | bigint;
+  /** The scene (the current scene only). */
+  sceneId?: string | null;
+  /** Start here instead of the current frame. */
+  fromFrame?: number | bigint | null;
 }
 
+/** `{playing, sceneId, frame}`. */
 export interface playback_start_result {
-  playing: true;
-  /** object ID or path reference (10 §3) */
+  playing: boolean;
   sceneId: string;
   frame: number;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type playback_started_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `playback.started` payload. */
 export interface playback_started_result {
-  /** object ID or path reference (10 §3) */
   sceneId: string;
   frame: number;
   mode: string;
 }
 
+/** No parameters. */
 export type playback_state_get_params = Record<string, unknown>;
 
-export interface playback_state_get_spec_PlaybackState {
+/** `PlaybackState` (09 §11.4). */
+export interface playback_state_get_result {
   playing: boolean;
+  /** `scene` (storyline playback is 08's). */
   mode: string;
-  /** object ID or path reference (10 §3) */
-  sceneId: string;
-  frame: number | bigint;
-  range: {
-    mode: string;
-    start: number | bigint;
-    end: number | bigint;
-    sceneLength: number | bigint;
-  };
-  rate: {
-    setting: string;
-    fps: number;
-  };
+  sceneId?: string | null;
+  frame: number;
+  range: unknown;
+  rate: unknown;
   loop: boolean;
   forceRate: boolean;
+  /** Sound during playback (M8): off until then. */
   sound: boolean;
+  /** Sound scrubbing (M8): off until then. */
   scrubbing: boolean;
   measuredFps: number;
   droppedFrames: number | bigint;
 }
 
-export type playback_state_get_result = playback_state_get_spec_PlaybackState;
-
+/** No parameters. */
 export type playback_stop_params = Record<string, unknown>;
 
+/** `{frame}`. */
 export interface playback_stop_result {
   frame: number;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type playback_stopped_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `playback.stopped` payload. */
 export interface playback_stopped_result {
-  /** object ID or path reference (10 §3) */
   sceneId: string;
   frame: number;
-  reason: 'user' | 'end' | 'navigation' | 'sceneChanged';
+  /** `user`, `end`, `navigation` or `sceneChanged`. */
+  reason: string;
 }
 
 /** No parameters. */
@@ -104825,240 +105137,381 @@ export interface storyline_warning_changed_result {
   paddingFrames: number;
 }
 
+/** `timeline.backgroundColour.set` parameters. */
 export interface timeline_backgroundColour_set_params {
-  /** #RRGGBB or #RRGGBBAA */
+  /** `#RRGGBB` or `#RRGGBBAA`. */
   colour: string;
 }
 
+/** `{colour}`. */
 export interface timeline_backgroundColour_set_result {
-  /** #RRGGBB or #RRGGBBAA */
   colour: string;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type timeline_currentFrame_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `timeline.currentFrame.changed` payload. */
 export interface timeline_currentFrame_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The scene. */
   sceneId: string;
-  frame: number | bigint;
-  source: 'playback' | 'navigation' | 'command';
+  /** The current frame. */
+  frame: number;
+  /** `playback`, `navigation` or `command`. */
+  source: string;
 }
 
+/** Direction of `timeline.currentFrame.move`. */
+export type timeline_currentFrame_move_MoveDirection = 'first' | 'previous' | 'next' | 'last';
+
+/** Unit of `timeline.currentFrame.move`. */
+export type timeline_currentFrame_move_MoveUnit = 'frame' | 'drawing';
+
+/** `timeline.currentFrame.move` parameters. */
 export interface timeline_currentFrame_move_params {
-  direction: 'first' | 'previous' | 'next' | 'last';
-  unit?: 'frame' | 'drawing';
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  count?: number | bigint;
+  /** Where to. */
+  direction: timeline_currentFrame_move_MoveDirection;
+  /** Frames or drawing changes. */
+  unit?: timeline_currentFrame_move_MoveUnit;
+  /** The element whose drawing changes count (default the current element; with none, every visible cell-based element, 09 line 132). */
+  elementId?: string | null;
+  /** How many steps. */
+  count?: number;
+  /** Limit movement to the playback range. */
   withinRange?: boolean;
 }
 
+/** `{frame, moved}`. */
 export interface timeline_currentFrame_move_result {
-  frame: number | bigint;
+  /** The current frame. */
+  frame: number;
+  /** The frame changed. */
   moved: boolean;
 }
 
+/** `timeline.currentFrame.set` parameters. */
 export interface timeline_currentFrame_set_params {
+  /** Frame (clamped to 1..scene length). */
   frame: number | bigint;
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
+  /** The scene (the current scene only). */
+  sceneId?: string | null;
 }
 
+/** `{frame, clamped}`. */
 export interface timeline_currentFrame_set_result {
-  frame: number | bigint;
+  /** The current frame. */
+  frame: number;
+  /** The given frame was outside 1..scene length. */
   clamped: boolean;
 }
 
+/** `timeline.effectParameterRows.set` parameters. */
 export interface timeline_effectParameterRows_set_params {
+  /** Shown or hidden. */
   visible: boolean;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
+  /** One effect element (omitted: every effect element, and the default for new ones). */
+  elementId?: string | null;
 }
 
+/** `{visible}`. */
 export interface timeline_effectParameterRows_set_result {
   visible: boolean;
 }
 
+/** `timeline.frameLabel.get` parameters. */
 export interface timeline_frameLabel_get_params {
+  /** Frame numbers. */
   frames: (number | bigint)[];
 }
 
+/** `{labels}`. */
 export interface timeline_frameLabel_get_result {
+  /** One label per frame, in order. */
   labels: string[];
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type timeline_playbackRange_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** Range mode (09 §2.8). */
+export type timeline_playbackRange_changed_RangeMode = 'auto' | 'free';
+
+/** `{mode, start, end}`. */
 export interface timeline_playbackRange_changed_result {
-  mode: string;
-  start: number | bigint;
-  end: number | bigint;
+  /** `auto` or `free`. */
+  mode: timeline_playbackRange_changed_RangeMode;
+  /** First frame of the range. */
+  start: number;
+  /** Last frame of the range. */
+  end: number;
 }
 
+/** No parameters. */
 export type timeline_playbackRange_get_params = Record<string, unknown>;
 
+/** Range mode (09 §2.8). */
+export type timeline_playbackRange_get_RangeMode = 'auto' | 'free';
+
+/** `{mode, start, end}`. */
 export interface timeline_playbackRange_get_result {
-  mode: string;
-  start: number | bigint;
-  end: number | bigint;
+  /** `auto` or `free`. */
+  mode: timeline_playbackRange_get_RangeMode;
+  /** First frame of the range. */
+  start: number;
+  /** Last frame of the range. */
+  end: number;
 }
 
+/** Range mode (09 §2.8). */
+export type timeline_playbackRange_set_RangeMode = 'auto' | 'free';
+
+/** `timeline.playbackRange.set` parameters. */
 export interface timeline_playbackRange_set_params {
-  mode?: 'auto' | 'free';
-  start?: number | bigint;
-  end?: number | bigint;
+  /** Automatic or free (a start or end given makes it free). */
+  mode?: timeline_playbackRange_set_RangeMode | null;
+  /** Free start (clamped). */
+  start?: number | bigint | null;
+  /** Free end (clamped). */
+  end?: number | bigint | null;
 }
 
+/** `{mode, start, end}`. */
 export interface timeline_playbackRange_set_result {
-  mode: string;
-  start: number | bigint;
-  end: number | bigint;
+  /** `auto` or `free`. */
+  mode: timeline_playbackRange_set_RangeMode;
+  /** First frame of the range. */
+  start: number;
+  /** Last frame of the range. */
+  end: number;
 }
 
+/** `timeline.rows.list` parameters. */
 export interface timeline_rows_list_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
-  from?: number | bigint;
-  to?: number | bigint;
+  /** The scene (default the current scene). */
+  sceneId?: string | null;
+  /** First frame of the window keyframes are listed in (default 1). */
+  from?: number | bigint | null;
+  /** Last frame of the window (default the scene length). */
+  to?: number | bigint | null;
 }
 
-export interface timeline_rows_list_spec_TimelineModel {
-  /** object ID or path reference (10 §3) */
-  sceneId: string;
-  sceneLength: number;
-  currentFrame: number;
-  playbackRange: {
-    mode: string;
-    start: number;
-    end: number;
-  };
-  rows: timeline_rows_list_spec_TimelineRow[];
+/** `{mode, start, end}`. */
+export interface timeline_rows_list_RangeResult {
+  /** `auto` or `free`. */
+  mode: timeline_rows_list_RangeMode;
+  /** First frame of the range. */
+  start: number;
+  /** Last frame of the range. */
+  end: number;
 }
 
-export interface timeline_rows_list_spec_TimelineRow {
-  /** object ID or path reference (10 §3) */
+/** Range mode (09 §2.8). */
+export type timeline_rows_list_RangeMode = 'auto' | 'free';
+
+/** One Timeline row (04 §17.5). */
+export interface timeline_rows_list_Row {
   elementId: string;
   name: string;
   type: string;
   depth: number;
-  /** object ID or path reference (10 §3) */
-  parentId: string;
+  parentId?: string | null;
   collapsed: boolean;
   visibleInScene: boolean;
   hiddenByParent: boolean;
   locked: boolean;
-  bar: {
-    start: number;
-    end: number;
-    loops: number;
-  };
-  keyframes: ({
-    frame: number;
-    channels: ('position' | 'scale' | 'rotation' | 'skew')[];
-    segmentAfter: 'constant' | 'interpolated';
-  })[];
-  childKeyframeFrames: (number | bigint)[];
-  clips?: ({
-    /** object ID or path reference (10 §3) */
-    clipId: string;
-    file: string;
-    from: number;
-    to: number;
-  })[];
+  /** `null` for a cell-based row with no exposed cell. */
+  bar?: timeline_rows_list_RowBar | null;
+  keyframes: timeline_rows_list_RowKeyframe[];
+  childKeyframeFrames: number[];
+  /** Sound clips (M8; empty until then). */
+  clips?: unknown[] | null;
 }
 
-export type timeline_rows_list_result = timeline_rows_list_spec_TimelineModel;
+/** A row's bar. */
+export interface timeline_rows_list_RowBar {
+  /** First frame (the first exposed frame of a cell-based row). */
+  start: number;
+  /** Last frame. */
+  end: number;
+  /** Loops (1 = not looped). */
+  loops: number;
+}
 
+/** A keyframe marker. */
+export interface timeline_rows_list_RowKeyframe {
+  /** Scene frame. */
+  frame: number;
+  /** Keyed transform channels: `position`, `scale`, `rotation`, `skew`. */
+  channels: string[];
+  /** `constant` when every channel keyed here starts a constant segment, else `interpolated`. */
+  segmentAfter: string;
+}
+
+/** `timeline.rows.list` result. */
+export interface timeline_rows_list_result {
+  sceneId: string;
+  sceneLength: number;
+  currentFrame: number;
+  playbackRange: timeline_rows_list_RangeResult;
+  rows: timeline_rows_list_Row[];
+}
+
+/** `{enabled}` parameters and result. */
 export interface timeline_singleCellSelection_set_params {
+  /** On or off. */
   enabled: boolean;
 }
 
+/** `{enabled}` parameters and result. */
 export interface timeline_singleCellSelection_set_result {
+  /** On or off. */
   enabled: boolean;
 }
 
+/** `{enabled}` parameters and result. */
 export interface timeline_soundWaveforms_set_params {
+  /** On or off. */
   enabled: boolean;
 }
 
+/** `{enabled}` parameters and result. */
 export interface timeline_soundWaveforms_set_result {
+  /** On or off. */
   enabled: boolean;
 }
 
+/** Time display unit (04 §11.4). */
+export type timeline_timeDisplay_set_TimeUnit = 'frames' | 'feetFrames';
+
+/** `timeline.timeDisplay.set` parameters. */
 export interface timeline_timeDisplay_set_params {
-  unit: 'frames' | 'feetFrames';
+  /** The unit. */
+  unit: timeline_timeDisplay_set_TimeUnit;
 }
 
+/** `{unit}`. */
 export interface timeline_timeDisplay_set_result {
-  unit: string;
+  unit: timeline_timeDisplay_set_TimeUnit;
 }
 
+/** The operations with a stored option set. */
+export type timeline_transferOptions_get_Operation = 'paste' | 'cut' | 'dragDrop';
+
+/** `timeline.transferOptions.get` parameters. */
 export interface timeline_transferOptions_get_params {
-  operation: 'paste' | 'cut' | 'dragDrop';
+  /** Paste special, cut special or drag and drop. */
+  operation: timeline_transferOptions_get_Operation;
 }
 
-export interface timeline_transferOptions_get_spec_TransferOptions {
-  overwriteDrawings: boolean;
-  exposure: boolean;
-  autoExtend: boolean;
-  updateColours: boolean;
-  keyframeSubstitution: boolean;
-  boundaryKeys: boolean;
-  pegKeys: {
-    motion: boolean;
-    rotation: boolean;
-    scale: boolean;
-    pivot: boolean;
-    velocity: boolean;
-    skew: boolean;
-  };
+/** The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14. */
+export interface timeline_transferOptions_get_TransferOptions {
+  /** Same-named drawings in the destination bank are overwritten (otherwise new drawings are created). */
+  overwriteDrawings?: boolean;
+  /** Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear. */
+  exposure?: boolean;
+  /** Extend transferred exposures up to the destination frame. */
+  autoExtend?: boolean;
+  /** Update palette colours from templates. */
+  updateColours?: boolean;
+  /** Replace keyframe properties at and after the current frame. */
+  keyframeSubstitution?: boolean;
+  /** Add keyframes at the start and end of the transferred range. */
+  boundaryKeys?: boolean;
+  /** Peg key groups. */
+  pegKeys?: timeline_transferOptions_get_PegKeys;
 }
 
+/** Peg key groups of the transfer options. */
+export interface timeline_transferOptions_get_PegKeys {
+  /** Motion keyframes. */
+  motion?: boolean;
+  /** Rotation keyframes. */
+  rotation?: boolean;
+  /** Scale keyframes. */
+  scale?: boolean;
+  /** Pivot keyframes. */
+  pivot?: boolean;
+  /** Velocity keyframes. */
+  velocity?: boolean;
+  /** Skew keyframes. */
+  skew?: boolean;
+}
+
+/** `{options}`. */
 export interface timeline_transferOptions_get_result {
-  options: timeline_transferOptions_get_spec_TransferOptions;
+  /** The stored set (04 §17.3). */
+  options: timeline_transferOptions_get_TransferOptions;
 }
 
-export interface timeline_transferOptions_set_spec_TransferOptions {
-  overwriteDrawings: boolean;
-  exposure: boolean;
-  autoExtend: boolean;
-  updateColours: boolean;
-  keyframeSubstitution: boolean;
-  boundaryKeys: boolean;
-  pegKeys: {
-    motion: boolean;
-    rotation: boolean;
-    scale: boolean;
-    pivot: boolean;
-    velocity: boolean;
-    skew: boolean;
-  };
+/** The operations with a stored option set. */
+export type timeline_transferOptions_set_Operation = 'paste' | 'cut' | 'dragDrop';
+
+/** The transfer options object (04 §17.3, 11.14); omitted fields take the defaults of 11.14. */
+export interface timeline_transferOptions_set_TransferOptions {
+  /** Same-named drawings in the destination bank are overwritten (otherwise new drawings are created). */
+  overwriteDrawings?: boolean;
+  /** Paste inserts cells and cut/move removes them (following cells shift); off: overwrite / clear. */
+  exposure?: boolean;
+  /** Extend transferred exposures up to the destination frame. */
+  autoExtend?: boolean;
+  /** Update palette colours from templates. */
+  updateColours?: boolean;
+  /** Replace keyframe properties at and after the current frame. */
+  keyframeSubstitution?: boolean;
+  /** Add keyframes at the start and end of the transferred range. */
+  boundaryKeys?: boolean;
+  /** Peg key groups. */
+  pegKeys?: timeline_transferOptions_set_PegKeys;
 }
 
+/** Peg key groups of the transfer options. */
+export interface timeline_transferOptions_set_PegKeys {
+  /** Motion keyframes. */
+  motion?: boolean;
+  /** Rotation keyframes. */
+  rotation?: boolean;
+  /** Scale keyframes. */
+  scale?: boolean;
+  /** Pivot keyframes. */
+  pivot?: boolean;
+  /** Velocity keyframes. */
+  velocity?: boolean;
+  /** Skew keyframes. */
+  skew?: boolean;
+}
+
+/** `timeline.transferOptions.set` parameters. */
 export interface timeline_transferOptions_set_params {
-  operation: 'paste' | 'cut' | 'dragDrop';
-  options: timeline_transferOptions_set_spec_TransferOptions;
+  /** Paste special, cut special or drag and drop. */
+  operation: timeline_transferOptions_set_Operation;
+  /** The options to store (04 §17.3; omitted members keep their stored value). */
+  options: timeline_transferOptions_set_TransferOptions;
 }
 
+/** `{operation, options}`. */
 export interface timeline_transferOptions_set_result {
-  operation: string;
-  options: timeline_transferOptions_set_spec_TransferOptions;
+  operation: timeline_transferOptions_set_Operation;
+  /** The stored set (04 §17.3). */
+  options: timeline_transferOptions_set_TransferOptions;
 }
 
+/** `timeline.view.set` parameters. */
 export interface timeline_view_set_params {
-  zoomLevel?: number | bigint;
-  firstFrame?: number | bigint;
-  /** object ID or path reference (10 §3) */
-  revealElementId?: string;
+  /** Zoom level: an index into the zoom ladder (0 = narrowest cells). */
+  zoomLevel?: number | bigint | null;
+  /** First frame shown (clamped). */
+  firstFrame?: number | bigint | null;
+  /** Scroll so this element's row is shown (Show Timeline Selection). */
+  revealElementId?: string | null;
 }
 
+/** `{zoomLevel, firstFrame, lastFrame}`. */
 export interface timeline_view_set_result {
-  zoomLevel: number | bigint;
-  firstFrame: number | bigint;
+  /** Zoom level. */
+  zoomLevel: number;
+  /** First frame shown. */
+  firstFrame: number;
+  /** Last frame shown. */
   lastFrame: number;
 }
 
@@ -106944,16 +107397,18 @@ export interface xsheet_columnWidth_set_result {
   widths: Record<string, number | bigint>;
 }
 
+/** `xsheet.currentCell.set` parameters. */
 export interface xsheet_currentCell_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The element. */
   elementId: string;
-  frame: number | bigint;
+  /** The frame (frames past the scene end may be current: 04 line 676). */
+  frame: number;
 }
 
+/** `{elementId, frame}`. */
 export interface xsheet_currentCell_set_result {
-  /** object ID or path reference (10 §3) */
   elementId: string;
-  frame: number | bigint;
+  frame: number;
 }
 
 export interface xsheet_display_set_params {

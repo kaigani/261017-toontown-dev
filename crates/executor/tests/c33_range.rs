@@ -151,10 +151,13 @@ fn names_conflicts_and_formats() {
         json!({ "from": 1, "to": 1, "scale": 0.1, "directory": missing.to_string_lossy(), "createDirs": true }),
     );
     assert_eq!(files(&missing).len(), 2);
-    assert_eq!(
-        err(&h, "render.range.run", json!({ "composition": "xsheet", "directory": dir.to_string_lossy() })).code,
-        "render.compositionUnavailable"
+    // The exposure-sheet composition renders ranges since M5 C5.1a (SI-107).
+    let sheet = c13_support::tmp();
+    run_range(
+        &h,
+        json!({ "composition": "xsheet", "from": 1, "to": 1, "scale": 0.1, "directory": sheet.to_string_lossy(), "createDirs": true }),
     );
+    assert_eq!(files(&sheet).len(), 2);
     // Other formats decode to the same size.
     for (format, ext) in [("jpeg", "jpg"), ("tga", "tga"), ("bmp", "bmp")] {
         let out = c13_support::tmp();

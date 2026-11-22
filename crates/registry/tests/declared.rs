@@ -10,8 +10,9 @@ use tt_registry::{Kind, Scope, Status, declared_sample, declared_schema, owner_o
 
 #[test]
 fn declarations_follow_the_current_spec_columns() {
-    // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4).
-    assert!(DECLARED.len() > 400, "{}", DECLARED.len());
+    // A floor against an empty table: the count falls as checkpoints implement declared commands (599 after M2 C2.4,
+    // 412 after M4, 383 after M5 C5.1a).
+    assert!(DECLARED.len() > 300, "{}", DECLARED.len());
     for (i, c) in DECLARED.iter().enumerate() {
         let spec =
             INVENTORY.iter().find(|e| e.id == c.decl.id).unwrap_or_else(|| panic!("{} not in spec A", c.decl.id));
@@ -79,7 +80,9 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
     assert!(get("export.publish.run").scopes.contains(&Scope::Network));
     assert!(get("print.run").scopes.contains(&Scope::Print));
     assert!(DECLARED.iter().all(|c| c.decl.id != "prefs.set"), "implemented in M4 C4.1");
-    assert!(get("timeline.rows.list").needs_project);
+    // `timeline.rows.list` was the sample until M5 C5.1a implemented it.
+    assert!(get("xsheet.display.set").needs_project);
+    assert!(DECLARED.iter().all(|c| c.decl.id != "timeline.rows.list"), "implemented in M5 C5.1a");
     assert_eq!(owner_of("import.movie.run"), "M8 C8.3");
     assert_eq!(owner_of("anim.key.add"), "M3 C3.2");
 }
@@ -87,21 +90,22 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
 #[test]
 fn parameter_constraints_come_from_the_spec() {
     let at = |id: &str| declared_schema(DECLARED.iter().position(|c| c.decl.id == id).unwrap(), false);
-    // `cell.select` was the example until M3 C3.1 implemented it.
-    let p = at("timeline.currentFrame.move");
-    assert_eq!(p["properties"]["unit"]["enum"], json!(["frame", "drawing"]));
-    assert_eq!(p["properties"]["unit"]["default"], "frame");
-    assert_eq!(p["required"], json!(["direction"]));
-    assert_eq!(p["properties"]["direction"]["type"], "string");
-    let e =
-        validate_params("timeline.currentFrame.move", &p, &json!({ "direction": "next", "unit": "x" })).unwrap_err();
+    // `cell.select` was the example until M3 C3.1 implemented it, `timeline.currentFrame.move` until M5 C5.1a.
+    let p = at("xsheet.lightTable.set");
+    assert_eq!(p["properties"]["apply"]["enum"], json!(["given", "all", "others"]));
+    assert_eq!(p["properties"]["apply"]["default"], "given");
+    assert_eq!(p["properties"]["placement"]["type"], "string");
+    let e = validate_params("xsheet.lightTable.set", &p, &json!({ "apply": "x" })).unwrap_err();
     assert_eq!(e.code, "arg.invalid");
     let p = at("lipsync.settings.set");
     assert_eq!(p["properties"]["minHoldFrames"]["minimum"], 0);
     assert_eq!(p["properties"]["minHoldFrames"]["maximum"], 6);
     assert!(validate_params("lipsync.settings.set", &p, &json!({ "minHoldFrames": 7 })).is_err());
-    let p = at("timeline.currentFrame.set");
-    assert_eq!(p["properties"]["frame"]["minimum"], 1);
+    let p = at("xsheet.columnWidth.set");
+    assert_eq!(
+        (p["properties"]["width"]["minimum"].clone(), p["properties"]["width"]["maximum"].clone()),
+        (json!(20), json!(1000))
+    );
     let p = at("anim.bone.rest.set");
     assert_eq!(p["properties"]["length"]["minimum"], 0.01);
 }

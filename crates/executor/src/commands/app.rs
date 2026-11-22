@@ -7,7 +7,7 @@ use tt_model::{Id, ObjectType};
 use tt_registry::{CommandError, codes, command};
 
 use super::common::{Direction, NoParams, OnUnsaved, event_not_invocable, invalid};
-use crate::app::{AppContext, AppState, Mode, ProjectRef};
+use crate::app::{AppState, Mode, ProjectRef};
 use crate::cx::Cx;
 use crate::rules;
 use crate::session::Session;
@@ -175,7 +175,7 @@ pub(crate) struct CurrentElementSetParams {
     scopes = [ui],
     needs_project,
     example(title = "Make the first element of the first scene current", params = r#"{"elementId": "scene:#1/element:#1"}"#),
-    gui = "Timeline and Exposure Sheet: click an element; camera view: select an element (M4)",
+    agent_only = "the generic form of 01 §12.2; the Timeline and Exposure Sheet send element.current.set and xsheet.currentCell.set, which write the same state (SI-202, ruling E-4)",
 )]
 pub(crate) fn app_current_element_set(
     cx: &mut Cx,
@@ -183,13 +183,8 @@ pub(crate) fn app_current_element_set(
 ) -> Result<ElementIdResult, CommandError> {
     let key = cx.resolve_as(&p.element_id, ObjectType::Element)?;
     let id = Id::parse(&key)?;
-    let scene = cx.document()?.scene_of(&id).cloned();
-    let app = cx.app_mut();
-    if app.scene != scene {
-        app.scene = scene;
-    }
-    app.element = Some(id);
-    app.drawing = None;
+    // One state with `element.current.set` (SI-202, ruling E-4).
+    crate::commands::element_read::put_current_element(cx, &id)?;
     Ok(ElementIdResult { element_id: Some(key) })
 }
 
@@ -354,26 +349,14 @@ pub(crate) fn app_frame_move(cx: &mut Cx, p: FrameMoveParams) -> Result<FrameRes
             };
         }
         FrameUnit::Drawing => {
-            let doc = cx.document()?.clone();
-            if let Some(el) = cx.app().element.clone() {
-                for _ in 0..p.count {
-                    let cur = AppContext::exposed_drawing(&doc, &el, frame);
-                    let mut f = frame;
-                    loop {
-                        f = match p.direction {
-                            Direction::Next if f < len => f + 1,
-                            Direction::Previous if f > 1 => f - 1,
-                            _ => break,
-                        };
-                        if AppContext::exposed_drawing(&doc, &el, f) != cur {
-                            break;
-                        }
-                    }
-                    frame = f;
-                }
+            // One rule with `timeline.currentFrame.move` (SI-202, ruling E-4).
+            if let Some(scene) = cx.app().scene.clone() {
+                let next = matches!(p.direction, Direction::Next);
+                frame = crate::commands::timeline::drawing_step(cx, &scene, None, next, p.count, (1, len), frame)?;
             }
         }
     }
+    crate::commands::timeline::frame_source(cx, "navigation");
     let app = cx.app_mut();
     app.frame = frame;
     app.drawing = None;

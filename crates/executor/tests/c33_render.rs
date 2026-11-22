@@ -163,10 +163,9 @@ fn compositions_and_formats() {
     // `activeView` renders the Drawing view since M4 C4.2 and the Camera view since M4 C4.3a (SI-107); with a Top view
     // active it waits for M6 C6.1.
     ok(&h, "view.type.set", json!({ "type": "top" }));
-    for (comp, owner) in [("xsheet", "M5 C5.1"), ("activeView", "M6 C6.1")] {
-        let e = err(&h, "render.frame.run", json!({ "composition": comp }));
-        assert_eq!((e.code.as_str(), e.details["owner"].as_str()), ("render.compositionUnavailable", Some(owner)));
-    }
+    // The `xsheet` composition renders since M5 C5.1a (SI-107; tests/c51_timeline.rs).
+    let e = err(&h, "render.frame.run", json!({ "composition": "activeView" }));
+    assert_eq!((e.code.as_str(), e.details["owner"].as_str()), ("render.compositionUnavailable", Some("M6 C6.1")));
     ok(&h, "view.type.set", json!({ "type": "camera" }));
     // `element`: only the given elements, through the camera.
     let only = render(&h, json!({ "frame": 1, "scale": 0.25, "composition": "element", "elementIds": [other] }));
@@ -215,7 +214,7 @@ fn a_render_inside_an_atomic_batch_sees_the_staged_edit() {
         json!({ "label": "bad", "atomic": true, "steps": [
             { "id": "anim.transform.set", "params": { "nodeIds": [id], "target": "static", "rotation": 1 } },
             { "id": "render.frame.run", "params": { "frame": 1, "scale": 0.25 } },
-            { "id": "render.frame.run", "params": { "composition": "xsheet" } } ] }),
+            { "id": "render.frame.run", "params": { "scale": 100 } } ] }),
     );
     assert_ne!(env.status, Status::Ok);
     assert_eq!(rev(&h), rev0);

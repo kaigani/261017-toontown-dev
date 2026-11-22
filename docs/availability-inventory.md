@@ -203,6 +203,7 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `anim.transform.set` | `anim.valueOutOfRange` | parameter | a value is out of range |  |
 | `anim.transform.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `anim.transform.set` | `element.notFound` | precheck | no element given, selected or current | untestable: a project always has a current element: a new project makes its first element current, another becomes current when it goes, and a scene's last camera cannot be deleted |
+| `app.frame.move` | `element.notFound` | unreachable | the drawing step names no element (`drawing_step(.., None, ..)`): the current element or the visible columns, which exist |  |
 | `app.frame.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `app.mode.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `app.quit` | `project.none` | unreachable | `resolve_unsaved` returns at once without a project; nothing else reads it |  |
@@ -880,6 +881,12 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `keymap.import` | `fs.notFound` | parameter | the file the caller names does not exist |  |
 | `keymap.import` | `keymap.invalidFile` | parameter | the file the caller names is not a keymap |  |
 | `keymap.reset` | `arg.missing` | parameter | a parameter the call needs is missing |  |
+| `playback.forceRate.set` | `project.none` | unreachable | the project frame rate is read with a fallback (`project_fps`: 24 without a project); nothing else reads the document |  |
+| `playback.rate.set` | `arg.invalid` | parameter | a rate outside 1-120 frames per second |  |
+| `playback.rate.set` | `project.none` | unreachable | the project frame rate is read with a fallback (`project_fps`); nothing else reads the document |  |
+| `playback.start` | `arg.invalid` | parameter | a `sceneId` other than the current scene |  |
+| `playback.state.get` | `command.disabled` | unreachable | the range read without a current scene is caught (`match current(cx)`: the range is `null`) |  |
+| `playback.state.get` | `project.none` | unreachable | every document read is guarded (`project_fps` falls back; the range read is caught) |  |
 | `prefs.reset` | `arg.missing` | parameter | a parameter the call needs is missing |  |
 | `prefs.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `project.backup.list` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
@@ -914,6 +921,15 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `render.range.run` | `export.fileExists` | parameter | the output file the caller names exists |  |
 | `render.range.run` | `render.compositionUnavailable` | parameter | the composition the caller names arrives later |  |
 | `render.range.run` | `render.noScene` | precheck | the project has no scene | untestable: no implemented command deletes a scene, and a project is created with one |
+| `timeline.currentFrame.move` | `element.notFound` | parameter | an `elementId` the caller names does not exist |  |
+| `timeline.currentFrame.set` | `arg.invalid` | parameter | a `sceneId` other than the current scene |  |
+| `timeline.effectParameterRows.set` | `arg.invalid` | parameter | an `elementId` that is not an effect element |  |
+| `timeline.effectParameterRows.set` | `element.notFound` | parameter | an `elementId` the caller names does not exist |  |
+| `timeline.rows.list` | `anim.notFound` | unreachable | the rows are read from the scene's tree, whose every node is an element of the document |  |
+| `timeline.rows.list` | `element.notFound` | unreachable | the rows are read from the scene's tree, whose every node is an element of the document |  |
+| `timeline.transferOptions.set` | `arg.invalid` | parameter | an option value that is not a boolean, or `options` that is not an object |  |
+| `timeline.view.set` | `arg.invalid` | parameter | a zoom level outside the ladder, or a `revealElementId` outside the current scene |  |
+| `timeline.view.set` | `element.notFound` | parameter | a `revealElementId` that does not exist |  |
 | `tool.active.set` | `arg.invalid` | parameter | the tool id the caller gives is not a tool |  |
 | `tool.brush.options.set` | `pen.notFound` | parameter | the pen the caller names does not exist |  |
 | `tool.brush.options.set` | `tool.notApplicable` | parameter | the pen the caller names is an eraser pen |  |
@@ -952,6 +968,8 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `workspace.export` | `fs.exists` | parameter | the file the caller names exists |  |
 | `workspace.import` | `fs.notFound` | parameter | the file the caller names does not exist |  |
 | `workspace.import` | `workspace.invalidFile` | parameter | the file the caller names is not a workspace |  |
+| `xsheet.currentCell.set` | `cell.frameOutOfRange` | parameter | a frame outside 1-100000 |  |
+| `xsheet.currentCell.set` | `element.notFound` | parameter | an `elementId` the caller names does not exist |  |
 | `xsheet.exposures.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `xsheet.exposures.set` | `cell.drawingNotFound` | parameter | the drawing name the caller gives is not in the column's bank |  |
 | `xsheet.exposures.set` | `command.disabled` | precheck | nothing selected, or no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |

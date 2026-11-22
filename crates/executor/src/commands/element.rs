@@ -2239,6 +2239,8 @@ pub(crate) fn element_timing_set(cx: &mut Cx, p: TimingParams) -> Result<TimingR
         }
         if i64::from(nl) != loops {
             ops.push(op("replace", "/loops", Some(json!(nl))));
+            // One state with `anim.loop.set` and the same events (ruling E-3).
+            super::anim_common::emit_static(cx, id, &["loop"]);
         }
         if !ops.is_empty() {
             changed.push(id.clone());

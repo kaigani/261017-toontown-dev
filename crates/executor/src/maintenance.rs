@@ -190,7 +190,7 @@ fn autosave(s: &mut Session, force: bool) -> bool {
     let doc = p.doc.clone();
     let preserved = p.store.preserved.clone();
     let blobs = p.store.blobs.clone();
-    let session = crate::persistence::session_json(&doc, &s.app);
+    let session = crate::persistence::session_json(&doc, &s.app, &s.timeline);
     let (engine, fence) = (s.env.engine.clone(), s.env.fence.clone());
     let spawned = std::thread::Builder::new().name("tt-autosave".to_owned()).spawn(move || {
         let input = tt_persist::SaveInput {

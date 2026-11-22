@@ -97,6 +97,8 @@ pub(crate) enum Effect {
     /// A file the call writes outside the project (`agent.activity.export`; C14-R1-03): staged next to its target
     /// only when every step succeeded, moved into place after the commit, discarded when the call rolls back.
     WriteFile(Box<FileWrite>),
+    /// Start or stop the playback clock (09 §2.3; M5 C5.1a): sent to the clock after the call is accepted.
+    Playback(crate::commands::playback::ClockControl),
 }
 
 /// A settings change a call makes (see [`Effect::Settings`]), accepted with the call or not at all.
@@ -112,6 +114,8 @@ pub(crate) enum SettingsChange {
     Suppressed(std::collections::BTreeSet<String>),
     /// `window.geometry.set` and friends (M4 C4.1): the main window geometry to restore at launch (01 §11).
     Window(Value),
+    /// A remembered value kept in `state.json` (`playback.rate.set`'s setting, SI-209).
+    LastUsed(String, Value),
 }
 
 /// A staged file write (see [`Effect::WriteFile`]).

@@ -424,6 +424,7 @@ fn unavailable(c: Composition) -> CommandError {
         Composition::Xsheet => ("xsheet", "M5 C5.1"),
         _ => ("activeView", "M6 C6.1"),
     };
+    // (`xsheet` renders since M5 C5.1a; the arm stays for an exhaustive match.)
     err(
         "render.compositionUnavailable",
         format!("the `{name}` composition arrives with {owner}"),
@@ -510,15 +511,44 @@ pub(crate) fn inline_side(cx: &Cx, width: u32, height: u32) -> Result<(), Comman
 pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResult, CommandError> {
     let started = std::time::Instant::now();
     let active = cx.ui().active_view_type();
-    if p.composition == Composition::Xsheet
-        || (p.composition == Composition::ActiveView
-            && !matches!(active, crate::shell::ViewType::Drawing | crate::shell::ViewType::Camera))
+    if p.composition == Composition::ActiveView
+        && !matches!(active, crate::shell::ViewType::Drawing | crate::shell::ViewType::Camera)
     {
         return Err(unavailable(p.composition));
     }
     let scene = scene_param(cx, p.scene_id.as_deref())?;
     let frame = frame_param(cx, p.frame)?;
     let doc = cx.document()?.clone();
+    // The exposure-sheet composition (09 §1.2, 04 §1.2; M5 C5.1a, SI-107).
+    if p.composition == Composition::Xsheet {
+        if p.output == Output::File && p.path.is_none() {
+            return Err(invalid("/path", "file output needs an absolute path"));
+        }
+        let (width, height) = output_size(&doc, p.width, p.height, p.scale)?;
+        if p.output == Output::Inline {
+            inline_side(cx, width, height)?;
+        }
+        let bg = background(&doc, &scene, &p.background)?;
+        let blobs = cx.project().ok().map(|pr| &pr.store.blobs);
+        let (pixels, d2p, mut warnings) =
+            xsheet_pixels(&doc, blobs, &cx.planar_cache(), (&scene, frame), (width, height, bg))?;
+        if p.include.is_some() || p.exclude.is_some() {
+            warnings.push(json!({ "code": "render.optionNotApplied", "message": "include and exclude override the camera's visibility; the exposure-sheet composition follows the Exposure Sheet's (SI-107)" }));
+        }
+        let (bytes, mime) = encode(p.format, &pixels, width, height, p.jpeg_quality)?;
+        let image = Image {
+            bytes,
+            mime,
+            width,
+            height,
+            rev: doc.document_rev(),
+            frame,
+            image_to_camera: invert(d2p),
+            warnings,
+            started,
+        };
+        return deliver(cx, &p, image);
+    }
     // The Drawing view renders its current drawing (SI-107); the Camera view is the camera composition (C4.3a).
     if p.composition == Composition::ActiveView && active == crate::shell::ViewType::Drawing {
         return active_view(cx, &p, &doc, frame);
@@ -829,6 +859,48 @@ fn drawing_space(cx: &mut Cx, p: &FrameParams, doc: &Document, frame: u32) -> Re
     deliver(cx, p, image)
 }
 
+/// The exposure-sheet composition of a frame (09 §1.2; 04 §1.2 line 56; M5 C5.1a, SI-107): the drawings the scene's
+/// cell-based columns expose at `frame`, in Exposure Sheet order (left is back), columns hidden in the Exposure Sheet
+/// left out (04 §1.3), annotation columns left out (04 §2.6's design decision), sound and media columns left out (no
+/// artwork), each drawing in drawing space without camera or peg transformation, at the camera's table-plane scale
+/// (1200 drawing units across the camera width, as the `element` composition of a drawing), centred.
+pub(crate) fn xsheet_pixels(
+    doc: &Document,
+    blobs: Option<&tt_persist::container::Blobs>,
+    cache: &crate::planar::SharedCache,
+    (scene, frame): (&Id, u32),
+    (w, h, bg): (u32, u32, tt_render::Rgba),
+) -> Result<(Vec<u8>, [f64; 6], Vec<Value>), CommandError> {
+    let sc = doc.scene(scene).ok_or_else(|| invalid("/sceneId", "no such scene"))?;
+    let s = f64::from(w) / 1200.0;
+    let d2p = [s, 0.0, 0.0, -s, f64::from(w) / 2.0, f64::from(h) / 2.0];
+    let styles: Option<std::collections::BTreeMap<Id, Id>> =
+        Some(sc.palette_styles().iter().map(|(a, b)| (a.clone(), b.clone())).collect());
+    let mut builder =
+        super::draw_render::Builder::in_drawing_units(doc, blobs, styles, u64::from(w) * u64::from(h) / 1024);
+    for col in sc.column_order() {
+        let Some(e) = doc.element(col) else { continue };
+        let ty = *e.element_type();
+        if !matches!(
+            ty,
+            tt_model::entities::element::ElementType::Drawing | tt_model::entities::element::ElementType::Image
+        ) || !e.visible_in_xsheet().unwrap_or(true)
+        {
+            continue;
+        }
+        let Some(did) = crate::app::AppContext::exposed_drawing(doc, col, frame) else { continue };
+        let Some(d) = doc.drawing(&did) else { continue };
+        observe_cancel()?;
+        let zones: std::collections::BTreeMap<String, crate::planar::LayerZones> =
+            crate::planar::drawing_zones(cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
+        builder.nodes(d.nodes(), &zones)?;
+    }
+    let items = vec![tt_render::Item::Layer { transform: d2p, items: builder.take_items() }];
+    let warnings = std::mem::take(&mut builder.warnings);
+    let pixels = rasterise(&Scene { width: w, height: h, background: bg, items }, &|| false)?;
+    Ok((pixels, d2p, warnings))
+}
+
 /// The inverse of an affine map (identity when singular).
 pub(crate) fn invert(m: [f64; 6]) -> [f64; 6] {
     let [a, b, c, d, e, f] = m;
@@ -1111,6 +1183,8 @@ struct RangeJob {
     blobs: tt_persist::container::Blobs,
     cache: crate::planar::SharedCache,
     scene: Id,
+    /// The exposure-sheet composition rather than the camera's (M5 C5.1a).
+    xsheet: bool,
     only: Option<BTreeSet<Id>>,
     overrides: Overrides,
     frames: Vec<u32>,
@@ -1177,14 +1251,22 @@ impl RangeJob {
                 overrides: &self.overrides,
             };
             // A frame stopped by this job's cancellation is the job's cancellation, not a watchdog timeout (C33-R3-01).
-            let r = render_frame(&self.doc, Some(&self.blobs), &self.cache, &req, self.background, &cancelled)
-                .map_err(|e| if progress.cancelled() { range_cancelled() } else { e })?;
-            for w in r.warnings {
+            let (pixels, frame_warnings) = if self.xsheet {
+                let size = (self.width, self.height, self.background);
+                let (px, _, w) = xsheet_pixels(&self.doc, Some(&self.blobs), &self.cache, (&self.scene, *f), size)
+                    .map_err(|e| if progress.cancelled() { range_cancelled() } else { e })?;
+                (px, w)
+            } else {
+                let r = render_frame(&self.doc, Some(&self.blobs), &self.cache, &req, self.background, &cancelled)
+                    .map_err(|e| if progress.cancelled() { range_cancelled() } else { e })?;
+                (r.pixels, r.warnings)
+            };
+            for w in frame_warnings {
                 if !warnings.contains(&w) {
                     warnings.push(w);
                 }
             }
-            let bytes = encode_sequence(self.format, &r.pixels, self.width, self.height)?;
+            let bytes = encode_sequence(self.format, &pixels, self.width, self.height)?;
             let tmp = target.with_file_name(staged_name(&file_name(target), token));
             std::fs::write(&tmp, &bytes).map_err(|e| io_error("write", &tmp, &e))?;
             staged.push(Staged { tmp, target: target.clone() });
@@ -1631,9 +1713,6 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
     if p.composition == Composition::ActiveView {
         return Err(not_a_range());
     }
-    if p.composition == Composition::Xsheet {
-        return Err(unavailable(p.composition));
-    }
     let scene = scene_param(cx, p.scene_id.as_deref())?;
     let doc = cx.document()?.clone();
     let length = doc.scene(&scene).map_or(1, |s| doc.scene_length(s)).clamp(1, 100_000);
@@ -1705,6 +1784,7 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
         cache: cx.planar_cache(),
         doc,
         scene,
+        xsheet: p.composition == Composition::Xsheet,
         only,
         overrides,
         token: live.0.clone(),

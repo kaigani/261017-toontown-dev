@@ -46,14 +46,17 @@ pub(crate) mod element_read;
 pub(crate) mod inspect;
 pub(crate) mod job;
 pub(crate) mod keymap;
+pub(crate) mod playback;
 pub(crate) mod prefs;
 pub(crate) mod project;
 pub(crate) mod render;
 pub(crate) mod render_list;
+pub(crate) mod timeline;
 pub(crate) mod timing;
 pub(crate) mod tool;
 pub(crate) mod tool_symmetry;
 pub(crate) mod transfer;
+pub(crate) mod transfer_options;
 pub(crate) mod ui_shell;
 pub(crate) mod view;
 pub(crate) mod window;
@@ -64,6 +67,36 @@ use tt_registry::Command;
 
 /// Every typed declaration.
 pub(crate) static ALL: &[&Command] = &[
+    // the Timeline and interactive playback (M5 C5.1a)
+    &timeline::TIMELINE_CURRENT_FRAME_SET,
+    &timeline::TIMELINE_CURRENT_FRAME_MOVE,
+    &timeline::TIMELINE_CURRENT_FRAME_CHANGED,
+    &timeline::TIMELINE_PLAYBACK_RANGE_SET,
+    &timeline::TIMELINE_PLAYBACK_RANGE_GET,
+    &timeline::TIMELINE_PLAYBACK_RANGE_CHANGED,
+    &timeline::TIMELINE_ROWS_LIST,
+    &timeline::TIMELINE_FRAME_LABEL_GET,
+    &timeline::TIMELINE_TIME_DISPLAY_SET,
+    &timeline::TIMELINE_BACKGROUND_COLOUR_SET,
+    &timeline::TIMELINE_SINGLE_CELL_SELECTION_SET,
+    &timeline::TIMELINE_SOUND_WAVEFORMS_SET,
+    &timeline::TIMELINE_EFFECT_PARAMETER_ROWS_SET,
+    &timeline::TIMELINE_VIEW_SET,
+    &transfer_options::TIMELINE_TRANSFER_OPTIONS_SET,
+    &transfer_options::TIMELINE_TRANSFER_OPTIONS_GET,
+    &xsheet::XSHEET_CURRENT_CELL_SET,
+    &playback::PLAYBACK_START,
+    &playback::PLAYBACK_STOP,
+    &playback::PLAYBACK_STATE_GET,
+    &playback::PLAYBACK_LOOP_SET,
+    &playback::PLAYBACK_FORCE_RATE_SET,
+    &playback::PLAYBACK_RATE_SET,
+    &playback::PLAYBACK_RANGE_GET,
+    &playback::PLAYBACK_RANGE_MODE_SET,
+    &playback::PLAYBACK_RANGE_SET,
+    &playback::PLAYBACK_STARTED,
+    &playback::PLAYBACK_STOPPED,
+    &playback::PLAYBACK_RANGE_CHANGED,
     // views (M4 C4.2)
     &view::VIEW_LIST,
     &view::VIEW_ACTIVE_SET,

@@ -1,0 +1,32 @@
+{
+  "$comment": "The Timeline's geometry (M5 C5.1; reviews/M5-design-timeline-kernel.md section 5.1). One source: the kernel's timing-gesture interpreter (crates/executor/src/timing_gesture.rs) and the window (desktop/src/timeline/geometry.ts) read this file. Lengths in CSS pixels. Modifier roles: SI-211.",
+  "version": 1,
+  "rowHeight": 22,
+  "rulerHeight": 24,
+  "zoomLevels": [
+    { "cellWidth": 1, "framesPerCell": 10 },
+    { "cellWidth": 2, "framesPerCell": 5 },
+    { "cellWidth": 4, "framesPerCell": 2 },
+    { "cellWidth": 6, "framesPerCell": 1 },
+    { "cellWidth": 8, "framesPerCell": 1 },
+    { "cellWidth": 12, "framesPerCell": 1 },
+    { "cellWidth": 16, "framesPerCell": 1 },
+    { "cellWidth": 24, "framesPerCell": 1 },
+    { "cellWidth": 32, "framesPerCell": 1 },
+    { "cellWidth": 48, "framesPerCell": 1 }
+  ],
+  "defaultZoomLevel": 6,
+  "headlessViewportWidth": 960,
+  "barHandleWidth": 5,
+  "loopHandleWidth": 6,
+  "keyframeRadius": 5,
+  "dragThreshold": 4,
+  "dropZoneBetween": 0.25,
+  "emptyFramesPastEnd": 100,
+  "rangeMarkerHalfWidth": 5,
+  "modifiers": {
+    "windows": { "extend": ["shift"], "toggle": ["ctrl"], "singleCell": ["alt"], "copy": ["ctrl"], "link": ["shift", "ctrl"] },
+    "linux": { "extend": ["shift"], "toggle": ["ctrl"], "singleCell": ["alt"], "copy": ["ctrl"], "link": ["shift", "ctrl"] },
+    "macos": { "extend": ["shift"], "toggle": ["meta"], "singleCell": ["alt"], "copy": ["alt"], "link": ["alt", "meta"] }
+  }
+}

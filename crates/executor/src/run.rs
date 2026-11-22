@@ -276,6 +276,12 @@ pub(crate) struct Observed {
     selection: crate::app::Ids,
     /// The Timeline/Exposure Sheet position and cell/row selection (`cell.selection.changed`, 04 §17.4).
     cells: (Option<crate::app::Ids>, Option<crate::app::Ids>, Option<tt_model::Id>, u32),
+    /// The current scene (`timeline.currentFrame.changed`, playback's stop on a scene change; M5 C5.1a).
+    scene: Option<tt_model::Id>,
+    /// The current scene's effective playback range (`timeline.playbackRange.changed`, `playback.range.changed`).
+    range: Option<(crate::commands::timeline::RangeMode, u32, u32)>,
+    /// The Timeline's view state as the host-only notice `shell.timelineView` carries it (SI-210).
+    view: Value,
 }
 
 /// The observed application state. The selection lists are kept as shared lists rather than serialised, so a large
@@ -297,6 +303,15 @@ pub(crate) fn observe(s: &Session) -> Observed {
             s.app.element.clone(),
             s.app.frame,
         ),
+        scene: s.app.scene.clone(),
+        range: match (&s.project, &s.app.scene) {
+            (Some(p), Some(scene)) => {
+                let len = crate::commands::timeline::length_of(&p.doc, scene);
+                Some(crate::commands::timeline::effective_range(&s.timeline.ranges, scene, len))
+            }
+            _ => None,
+        },
+        view: crate::commands::timeline::view_notice(&s.timeline, s.app.scene.as_ref()),
     }
 }
 
@@ -884,6 +899,11 @@ fn apply_effects(
                 }
             }
             Effect::Settings(change) => s.env.apply(change),
+            Effect::Playback(control) => {
+                if let Some(clock) = &s.timeline.playback.clock {
+                    let _ = clock.send(control);
+                }
+            }
             Effect::Prefs(values) => {
                 // Only values that differ from the defaults are stored (01 §11; C13-R1-15).
                 for (k, v) in values {
@@ -974,8 +994,10 @@ fn install_into(s: &mut Session, _grant: LoadGrant, inst: Install, origin: &Orig
     }
     let Install { project, repairs, restore } = inst;
     s.app = AppContext::for_document(&project.doc);
+    s.timeline.ranges.clear();
+    s.timeline.views.clear();
     if let Some(v) = &restore {
-        crate::persistence::restore_session(&mut s.app, &project.doc, v);
+        crate::persistence::restore_session(&mut s.app, &mut s.timeline, &project.doc, v);
     }
     let rev = project.doc.document_rev();
     let id = project.doc.project().id().as_str().to_owned();
@@ -1262,6 +1284,13 @@ impl Core {
             let payload = crate::commands::timing::cell_selection_state(&s.app);
             s.emit("cell.selection.changed", payload);
         }
+        crate::commands::playback::settle_timeline(
+            s,
+            before.scene.as_ref(),
+            before.cells.3,
+            before.range,
+            &before.view,
+        );
         if after.history != before.history
             && let Some(p) = &s.project
         {
@@ -2141,6 +2170,27 @@ impl Core {
     }
 
     /// Drains pending events.
+    /// A tick of the playback clock (M5 C5.1a): applied when it is the running generation's, else that generation's
+    /// clock is told to stop and nothing changes.
+    pub(crate) fn playback_tick(&mut self, generation: u64, ms: f64) {
+        let Some(s) = self.session.as_mut() else { return };
+        let pb = &s.timeline.playback;
+        if !pb.playing || pb.generation != generation {
+            if let Some(clock) = &pb.clock {
+                let _ = clock.send(crate::commands::playback::ClockControl::Stop { generation });
+            }
+            return;
+        }
+        let before = observe(s);
+        crate::commands::playback::on_tick(s, ms);
+        if !s.timeline.playback.playing
+            && let Some(clock) = &s.timeline.playback.clock
+        {
+            let _ = clock.send(crate::commands::playback::ClockControl::Stop { generation });
+        }
+        Self::settle(s, &before);
+    }
+
     pub(crate) fn take_events(&mut self) -> Vec<Event> {
         self.session.as_mut().map(|s| std::mem::take(&mut s.events)).unwrap_or_default()
     }

@@ -1253,6 +1253,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   frames, only when every frame is published: publication is a transaction (ruling C33-R1-03; ADR-0020).
 - **Question:** none.
 
+- **M5 C5.1a:** the `xsheet` composition renders, for `render.frame.run` and `render.range.run`: the drawings the
+  scene's drawing and image columns expose at the frame, in Exposure Sheet order (left is back, 04 line 56), columns
+  hidden in the Exposure Sheet and annotation columns left out (04 §1.3, §2.6), each drawing in drawing space without
+  camera or peg transformation, 1200 drawing units across the output width, centred (the `element` composition's
+  table-plane scale). `include`/`exclude` do not apply to it (a `render.optionNotApplied` warning says so: the camera's visibility rules are not the Exposure
+  Sheet's).
 ## SI-108 — contact-sheet layout and labels (found in M3 C3.3; decided by the builder)
 
 - **Sections:** 11 §7.5 `render_contact_sheet`, §15.2 `inspect.contactSheet.render`.

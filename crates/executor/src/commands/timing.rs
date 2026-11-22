@@ -664,6 +664,27 @@ pub(crate) struct TimelineState {
     pub type_colours: BTreeMap<String, String>,
     /// Static light tables by scene ID, in stacking order (04 §15; stored per scene with the session state, SI-085).
     pub light_tables: BTreeMap<String, Vec<LightItem>>,
+    /// Playback ranges by scene ID (09 §2.8; saved in `session.json`, SI-204).
+    pub ranges: BTreeMap<String, super::timeline::PlaybackRange>,
+    /// Timeline views by scene ID (04 §11.5; `timeline.view.set`).
+    pub views: BTreeMap<String, super::timeline::TimelineView>,
+    /// The Timeline's viewport width in pixels as the window reports it (`None`: no window has reported one).
+    pub viewport: Option<u32>,
+    /// The element the last Show Timeline Selection revealed, and how many reveals there were (SI-206).
+    pub reveal: Option<String>,
+    pub reveal_count: u64,
+    /// Sound rows drawn as solid bars (`timeline.soundWaveforms.set {enabled: false}`).
+    pub waveforms_off: bool,
+    /// Effect-parameter rows shown or hidden per effect element, and the default for the others.
+    pub parameter_rows: BTreeMap<String, bool>,
+    pub parameter_rows_hidden: bool,
+    /// How the current frame is about to change (`timeline.currentFrame.changed`'s `source`), taken by `settle`.
+    pub frame_source: Option<&'static str>,
+    /// Interactive playback (09 §2).
+    pub playback: super::playback::Playback,
+    /// The window's Timeline presses awaiting their release, by grab id (the timing-gesture interpreter, E-10).
+    pub grabs: BTreeMap<u64, crate::timing_gesture::Grab>,
+    pub grab_seq: u64,
 }
 
 // ----- cell notes (04 §7.2; SI-093) ------------------------------------------------------------------------------------

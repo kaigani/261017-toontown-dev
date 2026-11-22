@@ -709,9 +709,10 @@ pub(crate) struct RangeMoveParams {
     /// Move, copy, link or copy as new drawings.
     #[serde(default)]
     mode: MoveMode,
-    /// Transfer options (default: the drag-and-drop defaults of 11.14).
+    /// Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was the drag-and-drop defaults of 11.14).
     #[serde(default)]
-    options: Option<TransferOptions>,
+    #[schemars(with = "Option<TransferOptions>")]
+    options: Option<Value>,
 }
 
 /// `{from, to, createdDrawingIds}`.
@@ -744,7 +745,8 @@ pub(crate) fn cell_range_move(cx: &mut Cx, p: RangeMoveParams) -> Result<RangeMo
         return Err(err(codes::ARG_INVALID, "`to` is before `from`", json!({ "pointer": "/to" })));
     }
     let target_frame = frame(p.target_frame, "/targetFrame")?;
-    let opts = p.options.unwrap_or_default();
+    let opts =
+        super::transfer_options::cell_options(cx, super::transfer_options::Operation::DragDrop, p.options.as_ref())?;
     warn_options(cx, &opts);
     let doc = cx.document()?.clone();
     let mut sources = Vec::new();
@@ -1504,9 +1506,10 @@ pub(crate) struct ClipboardSetParams {
     /// Cut (an undoable removal, by the cut-special `exposure` option: remove and shift, or clear).
     #[serde(default)]
     cut: bool,
-    /// Transfer options (default: 11.14's cut-special defaults).
+    /// Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's cut-special defaults).
     #[serde(default)]
-    options: Option<TransferOptions>,
+    #[schemars(with = "Option<TransferOptions>")]
+    options: Option<Value>,
 }
 
 /// `{contentType, elementCount, frames}`.
@@ -1534,7 +1537,7 @@ pub(crate) struct ClipboardSetResult {
     gui = "Edit > Cut / Copy with cells selected in the Exposure Sheet or Timeline (M5 C5.2)",
 )]
 pub(crate) fn cell_clipboard_set(cx: &mut Cx, p: ClipboardSetParams) -> Result<ClipboardSetResult, CommandError> {
-    let opts = p.options.unwrap_or_default();
+    let opts = super::transfer_options::cell_options(cx, super::transfer_options::Operation::Cut, p.options.as_ref())?;
     warn_options(cx, &opts);
     let t = cell_target(cx, p.element_ids.as_deref(), p.from, p.to)?;
     let doc = cx.document()?.clone();
@@ -1613,9 +1616,10 @@ pub(crate) struct ClipboardApplyParams {
     /// Paste or paste as new drawings.
     #[serde(default)]
     mode: PasteMode,
-    /// Transfer options (default: 11.14's paste-special defaults).
+    /// Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's paste-special defaults).
     #[serde(default)]
-    options: Option<TransferOptions>,
+    #[schemars(with = "Option<TransferOptions>")]
+    options: Option<Value>,
 }
 
 /// `{elementIds, from, to, createdDrawingIds}`.
@@ -1645,7 +1649,8 @@ pub(crate) struct ClipboardApplyResult {
     gui = "Edit > Paste / Paste Special with cells selected (M5 C5.2)",
 )]
 pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Result<ClipboardApplyResult, CommandError> {
-    let opts = p.options.unwrap_or_default();
+    let opts =
+        super::transfer_options::cell_options(cx, super::transfer_options::Operation::Paste, p.options.as_ref())?;
     warn_options(cx, &opts);
     let clip = super::edit_ops::clipboard_cells(cx)?;
     let doc = cx.document()?.clone();

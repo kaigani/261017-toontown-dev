@@ -122,13 +122,6 @@ pub(crate) fn render_range_run(cx: &Cx, v: &Value) -> Result<(), CommandError> {
 /// `frame_param` and the render list).
 pub(crate) fn render_frame_run(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     let composition = v.get("composition").and_then(Value::as_str).unwrap_or("camera");
-    if composition == "xsheet" {
-        return Err(CommandError::with_details(
-            "render.compositionUnavailable",
-            "the `xsheet` composition arrives with M5 C5.1",
-            json!({ "composition": "xsheet", "owner": "M5 C5.1" }),
-        ));
-    }
     if composition == "activeView" {
         // The Drawing view (C4.2) and the Camera view (C4.3a) render; Top and Side views are M6 C6.1's.
         if matches!(cx.ui().active_view_type(), crate::shell::ViewType::Top | crate::shell::ViewType::Side) {
