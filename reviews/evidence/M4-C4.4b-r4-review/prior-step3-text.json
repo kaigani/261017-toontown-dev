@@ -1,0 +1,36 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ooj_ivtl",
+  "checks": [
+    {
+      "check": "D-83 element text unchanged",
+      "ok": true,
+      "detail": "Edit text: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "D-83 element text reason",
+      "ok": true,
+      "detail": "Edit text: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "D-83 drawing text unchanged",
+      "ok": true,
+      "detail": "Edit text: the drawing is locked: the text being edited cannot change (02 line 414); unlock it first"
+    },
+    {
+      "check": "D-83 drawing text reason",
+      "ok": true,
+      "detail": "Edit text: the drawing is locked: the text being edited cannot change (02 line 414); unlock it first"
+    },
+    {
+      "check": "D-83 hidden text unchanged",
+      "ok": true,
+      "detail": "Edit text: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    },
+    {
+      "check": "D-83 hidden text reason",
+      "ok": true,
+      "detail": "Edit text: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    }
+  ],
+  "failures": []
+}

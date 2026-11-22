@@ -1,0 +1,653 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-5t2o1zfg",
+  "checks": [
+    {
+      "check": "element-thickness document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "element-thickness reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": "light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessthe element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by idInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nEdit stroke: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "element-invisible document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "element-invisible reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": "ion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nEdit stroke: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "D-83 element Pen selection works",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M81MCF7WV9K3HH050DJP8P94",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MCF7WV9K3HH050DJP8P95",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MCF7WV9K3HH050DJP8P96",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MCF7WV9K3HH050DJP8P97",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MCF7WV9K3HH050DJP8P98",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MCF7WV9K3HH050DJP8P99",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MCF7WV9K3HH050DJP8P9A",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MCF7WV9K3HH050DJP8P9B",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M81MCF7WV9K3HH050DJP8P95",
+        "currentEraserPenId": "pen_01M81MCF7WV9K3HH050DJP8P9A"
+      }
+    },
+    {
+      "check": "element-native-Cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Cut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "element-native-Cut reason",
+      "ok": true,
+      "detail": {
+        "status": "Cut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": "to light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nCut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "element-native-Paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Paste: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "element-native-Paste reason",
+      "ok": true,
+      "detail": {
+        "status": "Paste: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": " light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nPaste: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "element-native-Delete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Delete: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "element-native-Delete reason",
+      "ok": true,
+      "detail": {
+        "status": "Delete: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": "light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nDelete: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "context Cut offered element",
+      "ok": true,
+      "detail": [
+        {
+          "role": "menuitem",
+          "id": "cameraView.drawingMenu.cut",
+          "label": "Cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {
+              "context": "drawing"
+            }
+          }
+        },
+        {
+          "role": "menuitem",
+          "id": "menu:Edit/Cut",
+          "label": "Cut",
+          "enabled": true,
+          "shortcut": "Primary+X",
+          "commandId": "edit.cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {}
+          }
+        }
+      ]
+    },
+    {
+      "check": "element-context-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Cut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "element-context-cut reason",
+      "ok": true,
+      "detail": {
+        "status": "Cut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": "to light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nCut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "drawing-thickness document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first"
+      }
+    },
+    {
+      "check": "drawing-thickness reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first",
+        "visibleText": " table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessthe drawing is locked: a gesture does not edit it (02 line 414); unlock it firstInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nEdit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "drawing-invisible document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first"
+      }
+    },
+    {
+      "check": "drawing-invisible reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first",
+        "visibleText": "xt drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nEdit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "D-83 drawing Pen selection works",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M81MDABCS0Y06HQ1M58B1R2Z",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MDABCS0Y06HQ1M58B1R30",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MDABCS0Y06HQ1M58B1R31",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MDABCS0Y06HQ1M58B1R32",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MDABCS0Y06HQ1M58B1R33",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MDABCS0Y06HQ1M58B1R34",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MDABCS0Y06HQ1M58B1R35",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81MDABCS0Y06HQ1M58B1R36",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M81MDABCS0Y06HQ1M58B1R30",
+        "currentEraserPenId": "pen_01M81MDABCS0Y06HQ1M58B1R35"
+      }
+    },
+    {
+      "check": "drawing-native-Cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first"
+      }
+    },
+    {
+      "check": "drawing-native-Cut reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first",
+        "visibleText": "ext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nEdit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first\nScene-1 \u00b7 frame 1\n1 selected\nAgent: mcp"
+      }
+    },
+    {
+      "check": "drawing-native-Paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first"
+      }
+    },
+    {
+      "check": "drawing-native-Paste reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first",
+        "visibleText": "nes\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nEdit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "drawing-native-Delete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first"
+      }
+    },
+    {
+      "check": "drawing-native-Delete reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first",
+        "visibleText": "nes\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nEdit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "context Cut offered drawing",
+      "ok": true,
+      "detail": [
+        {
+          "role": "menuitem",
+          "id": "cameraView.drawingMenu.cut",
+          "label": "Cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {
+              "context": "drawing"
+            }
+          },
+          "enabled": false
+        },
+        {
+          "role": "menuitem",
+          "id": "menu:Edit/Cut",
+          "label": "Cut",
+          "enabled": false,
+          "reason": "drawing `dr_01K7JJN8002673XTWY8BZX6WY3` is locked",
+          "shortcut": "Primary+X",
+          "commandId": "edit.cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {}
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawing-context-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first"
+      }
+    },
+    {
+      "check": "drawing-context-cut reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first",
+        "visibleText": "rawing is locked: a gesture does not edit it (02 line 414); unlock it first\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)\nCut\ndrawing `dr_01K7JJN8002673XTWY8BZX6WY3` is locked\nCopy\nPaste\ndrawing `dr_01K7JJN8002673XTWY8BZX6WY3` is locked\nSelect All\nDeselect All\nArrange\nBring to Front\ndrawing `1` is locked\nBring Forward\ndrawing `1` is locked\nSend Backward\ndrawing `1` is locked\nSend to Back\ndrawing `1` is locked\nTransform\nFlip Horizontal\ndrawing `1` is locked\nFlip Vertical\ndrawing `1` is locked\nRotate 90\u00b0 CW\ndrawing `1` is locked\nRotate 90\u00b0 CCW\ndrawing `1` is locked\nRotate 180\u00b0\ndrawing `1` is locked\nGroup\ndrawing `1` is locked\nUngroup\ndrawing `1` is locked\nFlatten\ndrawing `1` is locked\nOptimize\ndrawing `1` is locked\nSmooth\ndrawing `1` is locked\nExtract Centre Line\ndrawing `1` is locked\nConvert Lines to Brush\ndrawing `1` is locked\nBreak Text Apart\ndrawing `1` is locked"
+      }
+    },
+    {
+      "check": "hidden-thickness document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "hidden-thickness reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessthe element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)Invisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nEdit stroke: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent: mcp"
+      }
+    },
+    {
+      "check": "hidden-invisible document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Edit stroke: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "hidden-invisible reason",
+      "ok": true,
+      "detail": {
+        "status": "Edit stroke: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "ngs\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nEdit stroke: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "D-83 hidden Pen selection works",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M81ME5FQZCA18097R124YTDQ",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81ME5FQZCA18097R124YTDR",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81ME5FQZCA18097R124YTDS",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81ME5FQZCA18097R124YTDT",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81ME5FQZCA18097R124YTDV",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81ME5FQZCA18097R124YTDW",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81ME5FQZCA18097R124YTDX",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M81ME5FQZCA18097R124YTDY",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M81ME5FQZCA18097R124YTDR",
+        "currentEraserPenId": "pen_01M81ME5FQZCA18097R124YTDX"
+      }
+    },
+    {
+      "check": "hidden-native-Cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Cut: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "hidden-native-Cut reason",
+      "ok": true,
+      "detail": {
+        "status": "Cut: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "nes\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nCut: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "hidden-native-Paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Paste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "hidden-native-Paste reason",
+      "ok": true,
+      "detail": {
+        "status": "Paste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "s\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nPaste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "hidden-native-Delete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Delete: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "hidden-native-Delete reason",
+      "ok": true,
+      "detail": {
+        "status": "Delete: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nDelete: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "context Cut offered hidden",
+      "ok": true,
+      "detail": [
+        {
+          "role": "menuitem",
+          "id": "cameraView.drawingMenu.cut",
+          "label": "Cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {
+              "context": "drawing"
+            }
+          }
+        },
+        {
+          "role": "menuitem",
+          "id": "menu:Edit/Cut",
+          "label": "Cut",
+          "enabled": true,
+          "shortcut": "Primary+X",
+          "commandId": "edit.cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {}
+          }
+        }
+      ]
+    },
+    {
+      "check": "hidden-context-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Cut: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "hidden-context-cut reason",
+      "ok": true,
+      "detail": {
+        "status": "Cut: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "nes\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nCut: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    }
+  ],
+  "failures": []
+}
