@@ -13,6 +13,7 @@ import { declaredRange } from '../shell/numeric';
 import { NumericField } from '../shell/NumericField';
 import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell } from '../state/context';
+import { useReadGate } from '../state/readGate';
 
 type Json = Record<string, unknown>;
 const obj = (v: unknown): Json => (typeof v === 'object' && v !== null ? (v as Json) : {});
@@ -64,10 +65,13 @@ export function PenPanel() {
   const [family, setFamily] = useState<'brush' | 'eraser'>('brush');
   const [placeBehind, setPlaceBehind] = useState(false);
   const [open, setOpen] = useState(false);
+  const gate = useReadGate();
   const refresh = useCallback(() => {
+    const live = gate();
     void engine
       .run('tool.pen.list', {})
       .done.then((env) => {
+        if (!live()) return;
         if (env.status !== 'ok') {
           setPens([]);
           return;
@@ -83,16 +87,18 @@ export function PenPanel() {
     void engine
       .run('tool.active.get', {})
       .done.then((env) => {
+        if (!live()) return;
         if (env.status === 'ok') setFamily(familyOf(obj(env.result)['toolId']));
       })
       .catch(() => undefined);
     void engine
       .run('tool.settings.get', {})
       .done.then((env) => {
+        if (!live()) return;
         if (env.status === 'ok') setPlaceBehind(obj(env.result)['placeBehind'] === true);
       })
       .catch(() => undefined);
-  }, [engine]);
+  }, [engine, gate]);
   useEffect(() => {
     refresh();
     let off: (() => void) | null = null;

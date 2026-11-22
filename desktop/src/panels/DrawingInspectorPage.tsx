@@ -9,6 +9,7 @@ import { useActions } from '../shell/actionsApi';
 import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell, useSlice } from '../state/context';
 import type { AppState } from '../state/types';
+import { useReadGate } from '../state/readGate';
 
 type Json = Record<string, unknown>;
 const obj = (v: unknown): Json => (typeof v === 'object' && v !== null ? (v as Json) : {});
@@ -33,10 +34,13 @@ export function DrawingInspectorPage() {
   const [thumb, setThumb] = useState<string | null>(null);
   const current =
     drawings.find((d) => frame !== null && d.exposures.some((w) => w.from <= frame && frame <= w.to)) ?? null;
+  const gate = useReadGate();
   const refresh = useCallback(() => {
+    const live = gate();
     void engine
       .run('prefs.get', { keys: [PREVIEW_PREF] })
       .done.then((env) => {
+        if (!live()) return;
         const v = obj(obj(env.result)['values'])[PREVIEW_PREF];
         setPreview(v !== false);
       })
@@ -46,11 +50,12 @@ export function DrawingInspectorPage() {
     void engine
       .run('element.drawing.list', { elementId: element.id })
       .done.then((env) => {
+        if (!live()) return;
         const list = obj(env.result)['drawings'];
         setDrawings(env.status === 'ok' && Array.isArray(list) ? (list as Drawing[]) : []);
       })
       .catch(() => undefined);
-  }, [engine, element]);
+  }, [engine, element, gate]);
   useEffect(() => {
     refresh();
     let off: (() => void) | null = null;

@@ -13,6 +13,7 @@ import { useActions } from '../shell/actionsApi';
 import type { CommandRef } from '../shell/availability';
 import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell } from '../state/context';
+import { useReadGate } from '../state/readGate';
 
 type Json = Record<string, unknown>;
 
@@ -165,10 +166,13 @@ export function ViewChrome({ viewId }: { viewId: string }) {
   const [zoom, setZoom] = useState<{ zoom: number; rotation: number } | null>(null);
   const [symmetry, setSymmetry] = useState<string>('none');
   const [lightTableEntries, setLightTableEntries] = useState(0);
+  const gate = useReadGate();
   const refresh = useCallback(() => {
+    const live = gate();
     void engine
       .run('tool.settings.get', {})
       .done.then((env) => {
+        if (!live()) return;
         const m = env.status === 'ok' ? modeOf(obj(env.result)) : null;
         if (m) setSymmetry(m);
       })
@@ -176,12 +180,14 @@ export function ViewChrome({ viewId }: { viewId: string }) {
     void engine
       .run('drawAid.state.get', {})
       .done.then((env) => {
+        if (!live()) return;
         if (env.status === 'ok') setAids(obj(env.result));
       })
       .catch(() => undefined);
     void engine
       .run('drawAid.staticLightTable.list', {})
       .done.then((env) => {
+        if (!live()) return;
         const entries = obj(env.result)['entries'];
         if (Array.isArray(entries)) setLightTableEntries(entries.length);
       })
@@ -189,12 +195,13 @@ export function ViewChrome({ viewId }: { viewId: string }) {
     void engine
       .run('view.transform.get', { viewId })
       .done.then((env) => {
+        if (!live()) return;
         const r = obj(env.result);
         if (typeof r['zoom'] === 'number')
           setZoom({ zoom: r['zoom'], rotation: typeof r['rotation'] === 'number' ? r['rotation'] : 0 });
       })
       .catch(() => undefined);
-  }, [engine, viewId]);
+  }, [engine, viewId, gate]);
   useEffect(() => {
     refresh();
     let off: (() => void) | null = null;

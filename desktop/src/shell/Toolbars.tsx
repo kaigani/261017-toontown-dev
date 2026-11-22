@@ -15,6 +15,7 @@ import { optionRef, runChosen } from './listControl';
 import { AidGroupItem } from './toolbarGroups';
 import { AID_GROUPS, ITEM_LABELS, ITEM_OWNERS, itemRef } from './toolbarItems';
 import { enabledIn, useAvailability } from './useAvailability';
+import { useReadGate } from '../state/readGate';
 
 const INDEX = COMMAND_INDEX as unknown as Readonly<
   Record<string, { readonly label?: string; readonly milestone?: string } | undefined>
@@ -127,10 +128,13 @@ function CameraList() {
   const actions = useActions();
   const [cameras, setCameras] = useState<{ id: string; name: string }[]>([]);
   const [currentId, setCurrentId] = useState<string | null>(null);
+  const gate = useReadGate();
   const refresh = useCallback(() => {
+    const live = gate();
     void engine
       .run('anim.camera.list', {})
       .done.then((env) => {
+        if (!live()) return;
         const list = (env.result as { cameras?: unknown } | undefined)?.cameras;
         setCameras(env.status === 'ok' && Array.isArray(list) ? (list as typeof cameras) : []);
       })
@@ -138,11 +142,12 @@ function CameraList() {
     void engine
       .run('anim.camera.current.get', {})
       .done.then((env) => {
+        if (!live()) return;
         const id = (env.result as { cameraId?: unknown } | undefined)?.cameraId;
         setCurrentId(env.status === 'ok' && typeof id === 'string' ? id : null);
       })
       .catch(() => undefined);
-  }, [engine]);
+  }, [engine, gate]);
   useEffect(() => {
     refresh();
     let off: (() => void) | null = null;

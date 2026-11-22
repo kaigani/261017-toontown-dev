@@ -219,4 +219,50 @@ describe('the Pen panel (02 §6.1)', () => {
     await screen.findByText('Eraser 1');
     expect(document.querySelector('[data-tt-id="pen.row.pen_1"]')).toBeNull();
   });
+
+  it('an older read answering after a newer one does not bring back the old current pen (run 45035198984)', async () => {
+    // The host serves the window's calls concurrently: a read begun before an agent's selection can answer after the
+    // read begun once the selection was announced. The panel keeps its newest read's answer.
+    let held: ((v: unknown) => void) | null = null;
+    let hold = false;
+    let current = 'pen_2';
+    const h = await panel({
+      'tool.pen.list': () => {
+        const answer = ok(pens(['Pen 1', 'Pen 2'], current));
+        if (!hold) return answer;
+        hold = false;
+        return new Promise((resolve) => {
+          held = resolve;
+        }).then(() => answer);
+      },
+    });
+    expect(el('pen.row.pen_2').getAttribute('aria-selected')).toBe('true');
+    // A read begins (an event before the selection) and its answer, the current pen 2, is held.
+    hold = true;
+    act(() => {
+      h.event('tool.active.changed', { toolId: 'brush' });
+    });
+    await waitFor(() => {
+      expect(held).not.toBeNull();
+    });
+    // The agent selects pen 1; the panel reads again and shows it.
+    current = 'pen_1';
+    act(() => {
+      h.event('tool.pen.changed', { penId: 'pen_1', change: 'selected' });
+    });
+    await waitFor(() => {
+      expect(el('pen.row.pen_1').getAttribute('aria-selected')).toBe('true');
+    });
+    // The older read answers now: the panel still shows pen 1, and New copies it.
+    await act(async () => {
+      held?.(undefined);
+      await Promise.resolve();
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(el('pen.row.pen_1').getAttribute('aria-selected')).toBe('true');
+    expect(JSON.parse(el('pen.new').getAttribute('data-tt-params') ?? '{}')).toEqual({
+      type: 'brush',
+      fromPenId: 'pen_1',
+    });
+  });
 });

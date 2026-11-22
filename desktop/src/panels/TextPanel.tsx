@@ -14,6 +14,7 @@ import { optionRef, runChosen } from '../shell/listControl';
 import { declaredRange } from '../shell/numeric';
 import { NumericField } from '../shell/NumericField';
 import { useShell } from '../state/context';
+import { useReadGate } from '../state/readGate';
 
 type Json = Record<string, unknown>;
 const obj = (v: unknown): Json => (typeof v === 'object' && v !== null ? (v as Json) : {});
@@ -81,14 +82,17 @@ export function TextPanel() {
   const actions = useActions();
   const [options, setOptions] = useState<Json | null>(null);
   const [editing, setEditing] = useState<Editing | null>(null);
+  const gate = useReadGate();
   const refresh = useCallback(() => {
+    const live = gate();
     void engine
       .run('tool.options.get', { toolId: 'text' })
       .done.then((env) => {
+        if (!live()) return;
         setOptions(env.status === 'ok' ? obj(obj(env.result)['options']) : null);
       })
       .catch(() => undefined);
-  }, [engine]);
+  }, [engine, gate]);
   useEffect(() => {
     refresh();
     let off: (() => void) | null = null;

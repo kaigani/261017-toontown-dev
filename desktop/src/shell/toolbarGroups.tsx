@@ -11,6 +11,7 @@ import { useActions } from './actionsApi';
 import type { CommandRef } from './availability';
 import { optionRef, runChosen } from './listControl';
 import { enabledIn, useAvailability } from './useAvailability';
+import { useReadGate } from '../state/readGate';
 
 type Json = Record<string, unknown>;
 const obj = (v: unknown): Json => (v !== null && typeof v === 'object' ? (v as Json) : {});
@@ -19,14 +20,17 @@ const obj = (v: unknown): Json => (v !== null && typeof v === 'object' ? (v as J
 function useAids(): Json {
   const { engine } = useShell();
   const [aids, setAids] = useState<Json>({});
+  const gate = useReadGate();
   const refresh = useCallback(() => {
+    const live = gate();
     void engine
       .run('drawAid.state.get', {})
       .done.then((env) => {
+        if (!live()) return;
         setAids(env.status === 'ok' ? obj(env.result) : {});
       })
       .catch(() => undefined);
-  }, [engine]);
+  }, [engine, gate]);
   useEffect(() => {
     refresh();
     let off: (() => void) | null = null;

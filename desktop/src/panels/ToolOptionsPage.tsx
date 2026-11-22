@@ -15,6 +15,7 @@ import { declaredRange } from '../shell/numeric';
 import { NumericField } from '../shell/NumericField';
 import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useShell } from '../state/context';
+import { useReadGate } from '../state/readGate';
 
 type Json = Record<string, unknown>;
 const obj = (v: unknown): Json => (typeof v === 'object' && v !== null ? (v as Json) : {});
@@ -46,10 +47,13 @@ export function ToolOptionsPage() {
     brush: null,
     eraser: null,
   });
+  const gate = useReadGate();
   const refresh = useCallback(() => {
+    const live = gate();
     void engine
       .run('tool.active.get', {})
       .done.then((env) => {
+        if (!live()) return;
         const t = env.status === 'ok' ? obj(env.result)['toolId'] : null;
         const id = typeof t === 'string' ? t : null;
         setTool(id);
@@ -57,6 +61,7 @@ export function ToolOptionsPage() {
         void engine
           .run('tool.options.get', { toolId: id })
           .done.then((o) => {
+            if (!live()) return;
             setOptions(o.status === 'ok' ? obj(obj(o.result)['options']) : {});
           })
           .catch(() => undefined);
@@ -65,12 +70,14 @@ export function ToolOptionsPage() {
     void engine
       .run('tool.settings.get', {})
       .done.then((env) => {
+        if (!live()) return;
         if (env.status === 'ok') setSettings(obj(env.result));
       })
       .catch(() => undefined);
     void engine
       .run('colour.gapClosing.get', {})
       .done.then((env) => {
+        if (!live()) return;
         const m = env.status === 'ok' ? obj(env.result)['mode'] : null;
         if (typeof m === 'string') setGap(m);
       })
@@ -78,6 +85,7 @@ export function ToolOptionsPage() {
     void engine
       .run('tool.pen.list', {})
       .done.then((env) => {
+        if (!live()) return;
         const r = obj(env.result);
         const list = Array.isArray(r['pens']) ? (r['pens'] as PenRow[]) : [];
         setPens({
@@ -87,7 +95,7 @@ export function ToolOptionsPage() {
         });
       })
       .catch(() => undefined);
-  }, [engine]);
+  }, [engine, gate]);
   useEffect(() => {
     refresh();
     let off: (() => void) | null = null;
@@ -328,9 +336,12 @@ function SelectedLine() {
   const { engine } = useShell();
   const actions = useActions();
   const [line, setLine] = useState<{ strokeId: string; kind: string; thickness: number } | null>(null);
+  const gate = useReadGate();
   const refresh = useCallback(() => {
+    const live = gate();
     void (async () => {
       const sel = await engine.run('draw.selection.get', {}).done;
+      if (!live()) return;
       const r = obj(sel.result);
       const ids = Array.isArray(r['selectedIds']) ? (r['selectedIds'] as unknown[]) : [];
       if (sel.status !== 'ok' || ids.length !== 1 || typeof ids[0] !== 'string') {
@@ -340,6 +351,7 @@ function SelectedLine() {
       const id = ids[0];
       // The current drawing (the selection's): its id qualifies the stroke the command names.
       const d = await engine.run('draw.drawing.get', { flatten: true }).done;
+      if (!live()) return;
       const drawingId = obj(d.result)['drawingId'];
       if (typeof drawingId !== 'string') {
         setLine(null);
@@ -355,9 +367,9 @@ function SelectedLine() {
       const t = obj(n['lineStyle'])['thickness'];
       setLine({ strokeId: `${drawingId}/${id}`, kind, thickness: typeof t === 'number' ? t : 0 });
     })().catch(() => {
-      setLine(null);
+      if (live()) setLine(null);
     });
-  }, [engine]);
+  }, [engine, gate]);
   useEffect(() => {
     refresh();
     let off: (() => void) | null = null;

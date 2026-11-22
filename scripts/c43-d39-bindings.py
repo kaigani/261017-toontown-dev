@@ -1470,7 +1470,18 @@ async def build_and_run(t: Table, only: set) -> None:
         pen_target["other"] = next(x["penId"] for x in brush_pens(st) if x["penId"] != cur)
         shape = next((x.get("tipShape") for x in brush_pens(st) if x["penId"] == cur), "round")
         pen_target["shape"] = "square" if shape != "square" else "round"
-        await asyncio.sleep(0.6)
+        # A wait for a state (D-45): the panel shows the kernel's current pen (run 45035198984: the panel kept an older
+        # read's current pen, a product defect fixed with the read gate; a panel that stays stale fails here).
+        start = time.monotonic()
+        shown = None
+        while time.monotonic() - start < 15.0:
+            answer = await e2e.call(t.s, "inspect_ui", {"target": "window", "depth": 32})
+            shown = McpTable.node((answer.get("result") or answer).get("root") or {}, f"pen.row.{cur}") or {}
+            if shown.get("checked") is True:
+                break
+            await asyncio.sleep(0.25)
+        else:
+            raise RuntimeError(f"the Pen panel does not show the current pen {cur}: {json.dumps(shown)[:300]}")
 
     async def settings_state():
         return await cmd("tool.settings.get", {})
