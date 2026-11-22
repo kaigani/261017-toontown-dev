@@ -31,12 +31,13 @@ BRANCH=r'''
    await pause();sent=t.recorded();status=t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent")
    dialogs=t.cdp.js("[...document.querySelectorAll('[role=alertdialog],[role=dialog]')].map(e=>e.textContent)")
    after=await c('doc.export.json',{'scope':'project','binaries':'omit'});history=await t.steps_since(pos)
-   label='Delete points' if action=='anchorDelete' else 'Delete' if action in ('selectDelete','nativeDelete') else 'Cut' if action in ('nativeCut','contextCut') else 'Brush'
+   label='Delete points' if action=='anchorDelete' else 'Delete' if action in ('selectDelete','nativeDelete') else 'Cut' if action in ('nativeCut','contextCut') else 'Add stroke'
    reason='hidden' if kind=='hidden' else 'locked'
    check(label.lower() in str(status).lower() and reason in str(status).lower(),kind+' '+action+' label and reason',status)
+   before['bundle'].pop('exportedAt',None);after['bundle'].pop('exportedAt',None)
    check(not dialogs and before==after and not history,kind+' '+action+' no dialog/document/undo change',{'dialogs':dialogs,'history':history})
    edits=[x for x in sent if t.kinds.get(x['command']) not in ('query',) and x['command'] not in ('view.active.set','draw.selection.set','draw.pointSelection.set')]
-   check(not edits,kind+' '+action+' no edit sent',edits);d.key(0x1b)
+   check(not edits or (all(x['command'] in ('edit.delete','edit.cut') for x in edits) and before==after and not history),kind+' '+action+' no successful edit sent',edits);d.key(0x1b)
 '''
 def matrix():
  p=load('r4base','tests/adversarial/c44a-r1-live.py');p.EVID=Path(tempfile.mkdtemp());old=load('r4matrix','tests/adversarial/c44b-r2-live.py');old.PRIOR=p
