@@ -2505,6 +2505,91 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   *Question:* should 11 §10 have a dedicated code (for example `project.lockFileInUse`) instead of `fs.ioError` with a
   reason? D-57 keeps the existing code until the user says.
 
+## SI-201 — transfer options: two vocabularies, conflicting defaults, three stores (found in M5 C5.1 planning; interim)
+
+- **Sections:** 01 §6.3 lines 534-552 and §7.3 (`edit.pasteSpecial.timeline`, `edit.cutSpecial.timeline`,
+  `edit.dragDrop.timeline`); 04 §11.14 lines 756-785, §17.3 lines 1363-1372, §17.4 (`timeline.transferOptions.set`,
+  `.get`, `cell.range.move`, `cell.clipboard.*`).
+- **Problem:** one option set per operation (paste special, cut special, drag and drop) is described twice, with
+  different names (`createDeleteExposure` / `exposure`, `extendExposures` / `autoExtend`, flat peg keys / `pegKeys`)
+  and different defaults: 01 has *Overwrite existing drawings* and *Update colours* on, 04 has both off. The kernel
+  holds three stores: the 01 preference keys, the session memory of `edit.cutSpecial` / `edit.pasteSpecial`
+  (`edit_options`), and the defaults of `cell.range.move` / `cell.clipboard.*` (04's).
+- **Interim decision:** one store per operation, the 01 §7.3 preference key (persisted per user, as 04 line 759
+  requires); `timeline.transferOptions.*` and `edit.*Special` read and write it, each in its own names (a fixed
+  mapping); the defaults stay as built (01's) until ruled.
+- **Question:** which defaults hold, 01 §6.3's or 04 §11.14's?
+
+## SI-202 — one state reached by two or three commands (found in M5 C5.1 planning; interim)
+
+- **Sections:** 01 §12.2 lines 1063-1067 (`app.frame.set`, `app.frame.move`, `app.currentElement.set`,
+  `app.currentElement.move`); 04 §17.4 (`timeline.currentFrame.set`, `.move`, `xsheet.currentCell.set`,
+  `element.current.set`, `.move`, `timeline.playbackRange.set`, `element.timing.set {loops}`); 09 §2.8 lines 173-188 and
+  §11 (`playback.range.set`, `playback.range.mode.set`); 05 §19.3 (`anim.loop.set`).
+- **Problem:** the current frame, the current element, frame and element stepping, the playback range and an element's
+  loops each have two or three commands. The playback-range rules differ: 04 line 669 clamps out-of-range values; 09
+  lines 185-188 move the other end when a start passes the end (or an end the start) and remember the last free values.
+- **Interim decision:** one kernel state each; every command reads and writes it and raises the same events. For the
+  range both rules apply where they do not conflict: a start past the end moves the end (and the reverse), then values
+  are clamped to 1..scene length, and the clamped values are returned. Which command each surface sends:
+  `reviews/M5-C5.1-plan.md` §3 and §6.3 (the Timeline sends the 04 commands; the keymap and toolbar keep `app.frame.*`).
+- **Question:** confirm, or name one canonical command per state.
+
+## SI-203 — the 04 Timeline settings and the 01 §7.3 preference keys (found in M5 C5.1 planning; interim)
+
+- **Sections:** 04 §5.1 lines 298-317 (nine colour categories and their defaults), §11.4, §11.8, §17.4
+  (`element.typeColour.set`, `.get`, `timeline.timeDisplay.set`, `timeline.backgroundColour.set`,
+  `timeline.singleCellSelection.set`); 01 §7.3 (`interface.elementColours.*`: ten keys, bone separate from skeleton,
+  other default colours; `interface.timeMeasurement`; `interface.background.timeline`;
+  `timing.timeline.singleCellSelection`).
+- **Problem:** each setting has a preference key and a 04 command; the category colours differ in categories and in
+  default values, and `element.typeColour.set` writes its own session map today (`TimelineState.type_colours`).
+- **Interim decision:** one home, the 01 §7.3 keys; 04's categories map onto them (drawings → drawing, also annotation;
+  skeletons → skeleton and bone; images, sounds, pegs, media, cameras, effects, effect parameters one to one); the
+  built defaults are kept until ruled; the Preferences dialog edits the keys with `prefs.set` (ruling D-40 answer 1),
+  and the 04 commands are the structured equivalents of the same keys.
+- **Question:** which defaults hold (04 §5.1's or 01 §7.3's), and is bone its own category?
+
+## SI-204 — where the playback range is saved (found in M5 C5.1 planning; interim)
+
+- **Sections:** 09 §2.8 line 175 ("saved in the project"); 10 §4.3 (the scene object has no playback-range field),
+  §6.12 (session state).
+- **Problem:** as SI-085 for the light table: a document property would be undoable, but playback commands are not
+  undo steps (04 §17.4, 09 §11).
+- **Interim decision:** per scene in the project's `session.json` (mode, start, end, the last free values), written on
+  save and close, outside revisions and undo.
+- **Question:** add a field to the scene (10 §4.3) and accept undo, or confirm session state.
+
+## SI-205 — Timeline and Exposure Sheet gestures have no `pointer` form (found in M5 C5.1 planning; interim)
+
+- **Sections:** 11 §6.4 line 354 (`pointer` addresses a view), §7.6; 04 §17.1 item 5 (gestures become commands).
+- **Problem:** ruling D-32's headless replay of a window gesture has no MCP form for the Timeline.
+- **Interim decision:** agents send the structured commands; the window's Timeline gestures are interpreted by one
+  kernel function given the window's layout at the press, and the headless replay calls the same function with the
+  window's recorded samples and layout (exact, no tolerance).
+- **Question:** should `pointer` accept `view: "timeline"` and `"xsheet"`?
+
+## SI-206 — `timeline.view.set` has no vertical position (found in M5 C5.1 planning; interim)
+
+- **Sections:** 04 §11.5, §17.4 (`timeline.view.set {zoomLevel, firstFrame, revealElementId}`).
+- **Interim decision:** the vertical scroll position is the window's own; `revealElementId` scrolls that row into view
+  in every open Timeline.
+- **Question:** add a first-row parameter, or confirm.
+
+## SI-207 — playback frames for the window's views (found in M5 C5.1 planning; interim)
+
+- **Sections:** 04 §17.4 line 1466 (`timeline.currentFrame.changed` throttled to at most 10 per second during
+  playback); 09 §2.1 (every working view plays).
+- **Interim decision:** the window's views follow every played frame through a host-only notice (ruling D-57: never sent
+  to an MCP client, carrying only what `playback.state.get` answers); agents get the throttled event.
+- **Question:** confirm.
+
+## SI-208 — undo labels of the Timeline's drags (found in M5 C5.1 planning; interim)
+
+- **Sections:** 04 §11.10 lines 723-724 (each drag one step), §17.4 (no labels).
+- **Interim decision:** a drag's step carries its command's registered label; the D-23 rows assert it.
+- **Question:** state labels in 04 if others are wanted.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row
