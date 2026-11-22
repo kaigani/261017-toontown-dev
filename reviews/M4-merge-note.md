@@ -17,28 +17,28 @@ panels and agent surfaces of C4.4a and the four drawing tools of C4.4b.
 | C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
 | C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | passed on product head `f5eb9e84`, run 44286651371 (36 of 36), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
 | C4.4a | panels and settings, agent surfaces (`reviews/M4-C4.4-plan.md`, D-40) | passed on product head `87f63b5f`, run 44861150241 (36 of 36 on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74; findings 12 + 2 + 2 + 5, all closed (including the P1 on the agent token in agent captures) |
-| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; **round 2 handed off** on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`; D-82: the caret works by grapheme clusters (a P3 written during round 2, reviewed in round 3) |
+| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; round 2 on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`: seven items (C44B-R2S-01 to -04, C44B-R2L-01, C44B-R2-01, -02) and D-82's grapheme clusters, rulings D-82 to D-85, all fixed; **round 3 (the last full round) handed off** on product head `a67edbb1`, run 44977394689, `reviews/M4-C4.4b-handoff-r3.md` |
 
-Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-84), recorded in
+Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-85), recorded in
 `reviews/M4-C4.1-plan.md`, `reviews/M4-C4.2-plan.md` and `reviews/M4-C4.3-plan.md` §15.
 
 ## 2. Inventory and counts (final build)
 
-- **Final product head:** `bf2b2195`, run 44951926851, 36 of 36 green (C4.4b round 2; round 1's head was `e6f71489`,
-  run 44916529274).
+- **Final product head:** `a67edbb1`, run 44977394689, 36 of 36 green (C4.4b round 3; round 2's head was `bf2b2195`, run
+  44951926851; round 1's `e6f71489`, run 44916529274).
 - **Commands in the parity gate:** 347 = 161 action + 41 read + 59 agent-only + 86 deferred
   (`tests/adversarial/c43b-r2s-static.py`; C4.3b ended at 154 bound, 61 agent-only, 132 deferred).
 - **Availability inventory:** 288 commands in scope, 1,229 (command, code) pairs: 13 asks-user, 1 deferred, 256
   execution, 716 parameter, 219 precheck, 24 unreachable (`scripts/check-availability-inventory.py`,
   `docs/availability-inventory.md`).
-- **D-39 table** (one row per control: its command and parameters, its effect, its undo steps): 304 rows, the whole
+- **D-39 table** (one row per control: its command and parameters, its effect, its undo steps): 307 rows, the whole
   table green in the MCP form on the final build (and in every CI run's `desktop gui`); the OS form (real input) run on
   each checkpoint's rows, C4.4b's on the final build.
 - **D-44 table** (one row per choice of every dialog or message box): 73 rows (66 flows and the confirmation sheet's
   7), green on the final build, 5 named (recovery open's three choices, the engine restart's two: covered by Vitest).
 - **Gesture equivalence three ways** (the window, the headless replay of its samples, the commands sent directly):
   C4.2's drawing tools, C4.3's scene tools in the Camera view, C4.4b's 20 rows (the four tools in both views).
-- **Vitest** 96 files, 809 tests. **Reviewer Python suites** 84 of 84. **Allowed lints** 96 in 40 product files (the
+- **Vitest** 96 files, 812 tests. **Reviewer Python suites** 85 of 85. **Allowed lints** 96 in 40 product files (the
   count `scripts/check-product-allows.py` gates); no new `unsafe` in C4.4b.
 
 ## 3. The deferred list by owner (D-31): none owned by M4
@@ -97,6 +97,13 @@ The retired margins:
 
 ## 5. Known limits, in plain words
 
+- **Opening a project can wait while another program holds its old lock file open** (Windows). When a stale lock is
+  taken over, the old file is renamed `<project>.lock.removed-<code>` and deleted as soon as every other program that
+  had it open (a virus scanner, an indexer, a backup tool) closes it; the project opens at once. If such a program
+  keeps the project's arbitration file open while it is being removed, the open waits until it closes, rather than
+  wrongly saying the project is held by someone else or cannot be written (D-84).
+- **The agent indicator can miss one command in a freshly loaded window.** A window loaded while an agent's command is
+  running shows the agent as connected rather than acting until that command ends (C4.4b round 3 handoff §6).
 - **A very large stroke is slow to edit.** A pencil stroke of 50,000 points drawn as straight segments, on its own
   layer, makes a 17.3 MB drawing for the canvas, which takes the kernel 4.0 s to build. After an edit of that stroke
   the window shows the result 19 to 36 s after the mouse is released (Contour Editor 35.9 s and 18.7 s, Perspective
@@ -152,8 +159,10 @@ lost file is contention, and a creator that cannot take the protection removes n
 file is renamed aside under its protection, so its name is free at once even while another program holds it open; a
 pending deletion or sharing error is contention, never "not writable" (reported only when the folder cannot be
 written); "held by another" is answered only when true at that moment. The 200-run receipt above is of round 1's
-code; round 2's receipts (the reviewer's test in a loop, the randomised test in a loop of at least 2,000 runs on
-Windows) are taken when the hold lifts.
+code. **Round 2's receipts** (`reviews/evidence/M4-C4.4b-r3/lock-loops-idle.json`, `lock-loops-busy.json`, on `50e9ed28`): the randomised lock
+test and the M1 test each looped 2,000 times with every core busy (one CPU burner per logical core, 32, and eight
+loops at once): 2,000 of 2,000 each, zero failures; and 2,000 times each on an idle machine: 2,000 of 2,000 each, zero failures. Every run's seed
+is printed with its verdict.
 
 ## 7. Questions for the user, in one place
 

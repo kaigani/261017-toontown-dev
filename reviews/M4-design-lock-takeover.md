@@ -127,11 +127,15 @@ Every step names what the contender has proved and under which protection.
   published lock, A6) is one the path names while its owner protects it, and nobody else can remove it.
 - **A creator's cleanup racing a prover:** C1 never removes a file whose protection someone else holds; the only
   remaining removal by name without a `flock` is on a file system that cannot lock, where no prover can hold one.
-- **Windows: delete pending.** A file removed while a handle that shares deletion is open (an arbiter releasing, a
-  proof's delete-on-close handle) stays under its name until the handle closes; its `create_new` fails meanwhile. So no
-  successor can be created at the path while the old file's handle lives, which is why the zero-owner and two-owner
-  overlaps cannot even be staged on Windows: a contender's attempts end in `ArbiterNotTaken` until the old handle
-  closes (tested on its own, §6).
+- **Windows: two kinds of removal (corrected in round 3, after the hold).** An owner's own removal is
+  `std::fs::remove_file`, which on NTFS uses POSIX delete semantics: the name is freed at once even while the owner's
+  handle (which shares deletion) is open. A proof's removal is its delete-on-close handle: when that handle closes while
+  another handle is open, the file stays under its name, delete pending, and opens and `create_new` there fail with
+  access denied until the last handle closes (probed with a small script before the test was written). The zero-owner
+  and two-owner schedules therefore run on Windows as on Unix (a removal by name frees the name), and the
+  delete-pending case is tested on its own (§6): a contender's attempts end in `ArbiterNotTaken` until the old handle
+  closes; the paused holder, whose arbiter is no longer its own, closes its first publication, decides again (D-84) and
+  owns the lock.
 
 ## 6. Tests (round 2 runs them after the hold; rewritten for ruling D-83 item 2)
 
