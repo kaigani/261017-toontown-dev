@@ -606,3 +606,35 @@ fn the_scene_answer_carries_the_session_for_a_surface_that_mounts_later() {
     let camera = serde_json::to_value(h.canvas_scene("cameraView").unwrap()).unwrap();
     assert_eq!(camera["textEdit"]["drawingId"], json!(D1), "every view's answer carries it");
 }
+
+#[test]
+fn a_session_ended_because_its_target_cannot_be_edited_here_says_why() {
+    // Ruling D-87 (finding C44B-R3-01): an agent locks the element (then, again, the drawing) under a person's session
+    // in the Camera view: the session ends, nothing changes, and the host-only notice carries the refusal, which the
+    // window reports on the status line as every refusal.
+    for (lock, code) in [("element", "element.locked"), ("drawing", "drawing.locked")] {
+        let h = ready();
+        ok(&h, "view.active.set", json!({ "viewId": "cameraView" }));
+        ok(&h, "tool.active.set", json!({ "toolId": "text" }));
+        let env =
+            h.pointer(Origin::User, json!({ "view": "cameraView", "tool": "text", "events": click((-100.0, 80.0)) }));
+        assert_eq!(env.status, Status::Ok, "{env:?}");
+        input(&h, Input::Text("word".into()));
+        assert!(session(&h).is_object(), "a session is open");
+        let events = h.subscribe();
+        if lock == "element" {
+            ok(&h, "element.lock.set", json!({ "elementIds": [BOB], "locked": true }));
+        } else {
+            ok(&h, "draw.lock.set", json!({ "drawingId": D1, "locked": true }));
+        }
+        assert!(session(&h).is_null(), "{lock}: the session ended");
+        let ended: Vec<Value> = events
+            .try_iter()
+            .filter(|e| e.name == "shell.textEdit")
+            .filter_map(|e| e.payload.get("ended").cloned())
+            .collect();
+        assert_eq!(ended.len(), 1, "{lock}: one notice says why: {ended:?}");
+        assert_eq!(ended[0]["code"], json!(code), "{lock}");
+        assert_eq!(ended[0]["details"]["refusedCommandId"], json!("draw.text.set"));
+    }
+}

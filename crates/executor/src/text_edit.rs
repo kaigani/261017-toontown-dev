@@ -426,16 +426,24 @@ pub(crate) fn settle(core: &mut Core, origin: &Origin) {
         let element = cx.app().element.as_ref().map(|e| e.as_str().to_owned());
         let moved = here.as_deref() != Some(s.drawing.as_str()) || element != s.element || cx.app().frame != s.frame;
         let found = content_of(cx, &s);
-        // Ruling D-79: the drawing locked, or (in the Camera view) the element locked or hidden, ends the session.
-        let locked = found.as_ref().is_some_and(|(_, d)| *d.locked())
-            || crate::gesture::interactive_target(cx, &s.view_id, TOOL, true).is_err();
+        // Ruling D-79: the drawing locked, or (in the Camera view) the element locked or hidden, ends the session; the
+        // refusal is kept to tell the person why (ruling D-87).
+        let refusal = if found.as_ref().is_some_and(|(_, d)| *d.locked()) {
+            Some(CommandError::new(
+                "drawing.locked",
+                "the drawing is locked: the text being edited cannot change (02 line 414); unlock it first",
+            ))
+        } else {
+            crate::gesture::interactive_target(cx, &s.view_id, TOOL, true).err()
+        };
         let gone = found.is_none();
         let empty = found.as_ref().is_some_and(|(b, _)| b.content.chars.is_empty());
-        Some((s, tool_left || moved, locked, gone, empty))
+        Some((s, tool_left || moved, refusal, gone, empty))
     }) else {
         return;
     };
-    let Some((s, left, locked, gone, empty)) = state else { return };
+    let Some((s, left, refusal, gone, empty)) = state else { return };
+    let locked = refusal.is_some();
     if !(left || locked || gone) {
         // The session stays: its caret and highlight follow the text (an undo, a redo or another origin's edit can
         // shorten it), then the panel's shown values follow the call (an agent's `draw.textFormat.set`, D-40).
@@ -444,6 +452,16 @@ pub(crate) fn settle(core: &mut Core, origin: &Origin) {
         return;
     }
     end(core, origin, &s, empty && !locked && !gone);
+    // Ruling D-87 (finding C44B-R3-01): a session ended because its target can no longer be edited here tells the person
+    // why: the host-only notice carries the refusal, which the window reports as every refusal (`refusals.ts`).
+    if let Some(e) = refusal
+        && let Some(sess) = core.session_mut()
+    {
+        sess.emit(
+            "shell.textEdit",
+            json!({ "ended": { "code": e.code, "message": e.message, "details": { "refusedCommandId": "draw.text.set" } } }),
+        );
+    }
 }
 
 /// Reconciles the session's caret and highlight with its object's text (finding C44B-R1S-02): after an undo, a redo

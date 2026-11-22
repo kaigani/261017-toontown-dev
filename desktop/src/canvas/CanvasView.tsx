@@ -622,6 +622,13 @@ export function CanvasView({
           if (p?.['context'] === 'staging' && Array.isArray(p['ids']))
             selectedIds = new Set(p['ids'].filter((x): x is string => typeof x === 'string'));
         }
+        // A text session the kernel ended because its target can no longer be edited here (an agent locked or hid it):
+        // the person is told why, as for every refusal (ruling D-87).
+        if (event.name === 'shell.textEdit') {
+          const ended = (event.payload as Record<string, unknown> | null)?.['ended'];
+          if (typeof ended === 'object' && ended !== null)
+            messagesRef.current?.refused(ended, 'draw.text.set');
+        }
         if (event.name === 'colour.current.changed') {
           const c = (event.payload as Record<string, unknown> | null)?.['colourId'];
           if (typeof c === 'string') currentColour = c;
