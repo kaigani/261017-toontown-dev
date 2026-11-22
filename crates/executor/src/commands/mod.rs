@@ -62,6 +62,7 @@ pub(crate) mod view;
 pub(crate) mod window;
 pub(crate) mod workspace;
 pub(crate) mod xsheet;
+pub(crate) mod xsheet_view;
 
 use tt_registry::Command;
 
@@ -84,7 +85,7 @@ pub(crate) static ALL: &[&Command] = &[
     &timeline::TIMELINE_VIEW_SET,
     &transfer_options::TIMELINE_TRANSFER_OPTIONS_SET,
     &transfer_options::TIMELINE_TRANSFER_OPTIONS_GET,
-    &xsheet::XSHEET_CURRENT_CELL_SET,
+    &xsheet_view::XSHEET_CURRENT_CELL_SET,
     &playback::PLAYBACK_START,
     &playback::PLAYBACK_STOP,
     &playback::PLAYBACK_STATE_GET,
