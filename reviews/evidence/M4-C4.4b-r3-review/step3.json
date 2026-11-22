@@ -1,0 +1,728 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-bk7of1mq",
+  "checks": [
+    {
+      "check": "element-thickness document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "element-thickness reason",
+      "ok": true,
+      "detail": {
+        "status": "",
+        "visibleText": " light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)\nError draw.stroke.set\n\nthe element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\n\nDetails\nOK"
+      }
+    },
+    {
+      "check": "element-invisible document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "element-invisible reason",
+      "ok": true,
+      "detail": {
+        "status": "",
+        "visibleText": " light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)\nError draw.stroke.set\n\nthe element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\n\nDetails\nOK"
+      }
+    },
+    {
+      "check": "D-83 element Pen selection works",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M80WGKY5S7WYD8SS6PZZM1BQ",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WGKY5S7WYD8SS6PZZM1BR",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WGKY5S7WYD8SS6PZZM1BS",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WGKY5S7WYD8SS6PZZM1BT",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WGKY5S7WYD8SS6PZZM1BV",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WGKY5S7WYD8SS6PZZM1BW",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WGKY5S7WYD8SS6PZZM1BX",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WGKY5S7WYD8SS6PZZM1BY",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M80WGKY5S7WYD8SS6PZZM1BR",
+        "currentEraserPenId": "pen_01M80WGKY5S7WYD8SS6PZZM1BX"
+      }
+    },
+    {
+      "check": "element-native-Cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "element-native-Cut reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "element-native-Paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "element-native-Paste reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "bber\ntext\nA\nB\nE\nCamera view\n\u00d7\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent: mcp"
+      }
+    },
+    {
+      "check": "element-native-Delete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "element-native-Delete reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "context Cut offered element",
+      "ok": true,
+      "detail": [
+        {
+          "role": "menuitem",
+          "id": "cameraView.drawingMenu.cut",
+          "label": "Cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {
+              "context": "drawing"
+            }
+          }
+        },
+        {
+          "role": "menuitem",
+          "id": "menu:Edit/Cut",
+          "label": "Cut",
+          "enabled": false,
+          "reason": "nothing is selected in the staging context",
+          "shortcut": "Primary+X",
+          "commandId": "edit.cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {}
+          }
+        }
+      ]
+    },
+    {
+      "check": "element-context-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "element-context-cut reason",
+      "ok": true,
+      "detail": {
+        "status": "",
+        "visibleText": "ght tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)\nError edit.cut\n\nthe element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\n\nDetails\nOK"
+      }
+    },
+    {
+      "check": "drawing-thickness document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawing-thickness reason",
+      "ok": true,
+      "detail": {
+        "status": "",
+        "visibleText": " outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)\nError draw.stroke.set\n\nthe drawing is locked: a gesture does not edit it (02 line 414); unlock it first\n\nDetails\nOK"
+      }
+    },
+    {
+      "check": "drawing-invisible document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawing-invisible reason",
+      "ok": true,
+      "detail": {
+        "status": "",
+        "visibleText": " outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)\nError draw.stroke.set\n\nthe drawing is locked: a gesture does not edit it (02 line 414); unlock it first\n\nDetails\nOK"
+      }
+    },
+    {
+      "check": "D-83 drawing Pen selection works",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M80WHK5F6TE22PR469GAKHPC",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WHK5F6TE22PR469GAKHPD",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WHK5F6TE22PR469GAKHPE",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WHK5F6TE22PR469GAKHPF",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WHK5F6TE22PR469GAKHPG",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WHK5F6TE22PR469GAKHPH",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WHK5F6TE22PR469GAKHPJ",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WHK5F6TE22PR469GAKHPK",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M80WHK5F6TE22PR469GAKHPD",
+        "currentEraserPenId": "pen_01M80WHK5F6TE22PR469GAKHPJ"
+      }
+    },
+    {
+      "check": "drawing-native-Cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawing-native-Cut reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "bber\ntext\nA\nB\nE\nCamera view\n\u00d7\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent: mcp"
+      }
+    },
+    {
+      "check": "drawing-native-Paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawing-native-Paste reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "drawing-native-Delete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawing-native-Delete reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "context Cut offered drawing",
+      "ok": true,
+      "detail": [
+        {
+          "role": "menuitem",
+          "id": "cameraView.drawingMenu.cut",
+          "label": "Cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {
+              "context": "drawing"
+            }
+          },
+          "enabled": false
+        },
+        {
+          "role": "menuitem",
+          "id": "menu:Edit/Cut",
+          "label": "Cut",
+          "enabled": false,
+          "reason": "nothing is selected in the staging context",
+          "shortcut": "Primary+X",
+          "commandId": "edit.cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {}
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawing-context-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawing-context-cut reason",
+      "ok": true,
+      "detail": {
+        "status": "",
+        "visibleText": "inimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)\nCut\ndrawing `dr_01K7JJN800J2BGCMHY7GCA3BCF` is locked\nCopy\nPaste\ndrawing `dr_01K7JJN800J2BGCMHY7GCA3BCF` is locked\nSelect All\nDeselect All\nArrange\nBring to Front\ndrawing `1` is locked\nBring Forward\ndrawing `1` is locked\nSend Backward\ndrawing `1` is locked\nSend to Back\ndrawing `1` is locked\nTransform\nFlip Horizontal\ndrawing `1` is locked\nFlip Vertical\ndrawing `1` is locked\nRotate 90\u00b0 CW\ndrawing `1` is locked\nRotate 90\u00b0 CCW\ndrawing `1` is locked\nRotate 180\u00b0\ndrawing `1` is locked\nGroup\ndrawing `1` is locked\nUngroup\ndrawing `1` is locked\nFlatten\ndrawing `1` is locked\nOptimize\ndrawing `1` is locked\nSmooth\ndrawing `1` is locked\nExtract Centre Line\ndrawing `1` is locked\nConvert Lines to Brush\ndrawing `1` is locked\nBreak Text Apart\ndrawing `1` is locked"
+      }
+    },
+    {
+      "check": "hidden-thickness document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "hidden-thickness reason",
+      "ok": true,
+      "detail": {
+        "status": "",
+        "visibleText": "t drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent: mcp\nError draw.stroke.set\n\nthe element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\n\nDetails\nOK"
+      }
+    },
+    {
+      "check": "hidden-invisible document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "hidden-invisible reason",
+      "ok": true,
+      "detail": {
+        "status": "",
+        "visibleText": "s\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nLine thicknessInvisible\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)\nError draw.stroke.set\n\nthe element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\n\nDetails\nOK"
+      }
+    },
+    {
+      "check": "D-83 hidden Pen selection works",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M80WJGZVHK8KGDR1AWH6CW9Q",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WJGZVHK8KGDR1AWH6CW9R",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WJGZVHK8KGDR1AWH6CW9S",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WJGZVHK8KGDR1AWH6CW9T",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WJGZVHK8KGDR1AWH6CW9V",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WJGZVHK8KGDR1AWH6CW9W",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WJGZVHK8KGDR1AWH6CW9X",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M80WJGZVHK8KGDR1AWH6CW9Y",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M80WJGZVHK8KGDR1AWH6CW9R",
+        "currentEraserPenId": "pen_01M80WJGZVHK8KGDR1AWH6CW9X"
+      }
+    },
+    {
+      "check": "hidden-native-Cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "hidden-native-Cut reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "hidden-native-Paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "hidden-native-Paste reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "hidden-native-Delete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "hidden-native-Delete reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "context Cut offered hidden",
+      "ok": true,
+      "detail": [
+        {
+          "role": "menuitem",
+          "id": "cameraView.drawingMenu.cut",
+          "label": "Cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {
+              "context": "drawing"
+            }
+          }
+        },
+        {
+          "role": "menuitem",
+          "id": "menu:Edit/Cut",
+          "label": "Cut",
+          "enabled": false,
+          "reason": "nothing is selected in the staging context",
+          "shortcut": "Primary+X",
+          "commandId": "edit.cut",
+          "command": {
+            "commandId": "edit.cut",
+            "params": {}
+          }
+        }
+      ]
+    },
+    {
+      "check": "hidden-context-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "hidden-context-cut reason",
+      "ok": true,
+      "detail": {
+        "status": "",
+        "visibleText": "ade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)\nError edit.cut\n\nthe element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\n\nDetails\nOK"
+      }
+    }
+  ],
+  "failures": [
+    {
+      "check": "element-native-Cut reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "element-native-Paste reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "bber\ntext\nA\nB\nE\nCamera view\n\u00d7\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent: mcp"
+      }
+    },
+    {
+      "check": "element-native-Delete reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "drawing-native-Cut reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "bber\ntext\nA\nB\nE\nCamera view\n\u00d7\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent: mcp"
+      }
+    },
+    {
+      "check": "drawing-native-Paste reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "drawing-native-Delete reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "hidden-native-Cut reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "hidden-native-Paste reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "hidden-native-Delete reason",
+      "ok": false,
+      "detail": {
+        "status": "",
+        "visibleText": "\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nTool optionsPenDrawing\nRectangle selects\nObjects inside\nObjects it touches\nDraw on Top LayerDraw BehindSnap to Contour\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    }
+  ]
+}

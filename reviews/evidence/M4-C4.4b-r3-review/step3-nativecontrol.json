@@ -1,0 +1,45 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-totdxzsc",
+  "checks": [
+    {
+      "check": "drawing-native-Cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Cut",
+            "user"
+          ]
+        ],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawing-native-Paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Paste",
+            "user"
+          ]
+        ],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawing-native-Delete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Delete",
+            "user"
+          ]
+        ],
+        "status": ""
+      }
+    }
+  ],
+  "failures": []
+}

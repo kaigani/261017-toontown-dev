@@ -1,0 +1,87 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-y5s4etpi",
+  "checks": [
+    {
+      "check": "D-82 emoji click fixture exact",
+      "ok": true,
+      "detail": "word \ud83d\udc69\u200d\ud83d\udcbb next"
+    },
+    {
+      "check": "D-82 double click whole word",
+      "ok": true,
+      "detail": {
+        "anchor": 0,
+        "caret": 4,
+        "textId": "dr_01K7JJN800DCSTP0K0RYGM02TC/nd_01K7JJN800NNFB1QQZEA7KYPKY"
+      }
+    },
+    {
+      "check": "D-82 real middle click never inside",
+      "ok": true,
+      "detail": {
+        "anchor": 8,
+        "caret": 8,
+        "textId": "dr_01K7JJN800DCSTP0K0RYGM02TC/nd_01K7JJN800NNFB1QQZEA7KYPKY"
+      }
+    },
+    {
+      "check": "D-82 emoji bounds usable",
+      "ok": true,
+      "detail": {
+        "left": {
+          "anchor": 5,
+          "caret": 5,
+          "textId": "dr_01K7JJN800DCSTP0K0RYGM02TC/nd_01K7JJN800NNFB1QQZEA7KYPKY"
+        },
+        "right": {
+          "anchor": 8,
+          "caret": 8,
+          "textId": "dr_01K7JJN800DCSTP0K0RYGM02TC/nd_01K7JJN800NNFB1QQZEA7KYPKY"
+        }
+      }
+    },
+    {
+      "check": "D-82 agent content interior reconciles",
+      "ok": true,
+      "detail": {
+        "anchor": 8,
+        "caret": 8,
+        "textId": "dr_01K7JJN800N36QW38JNEKZHADJ/nd_01K7JJN800TT16E2GNEVPY39FD"
+      }
+    },
+    {
+      "check": "D-82 real key after agent interior 39",
+      "ok": true,
+      "detail": {
+        "text": "word \ud83d\udc69\u200d\ud83d\udcbb next",
+        "editor": {
+          "anchor": 9,
+          "caret": 9,
+          "textId": "dr_01K7JJN800N36QW38JNEKZHADJ/nd_01K7JJN800TT16E2GNEVPY39FD"
+        }
+      }
+    },
+    {
+      "check": "D-82 agent content interior reconciles",
+      "ok": true,
+      "detail": {
+        "anchor": 8,
+        "caret": 8,
+        "textId": "dr_01K7JJN800Q5G03B17ZBS26DM5/nd_01K7JJN800AZTEK8WM3JDY0BT9"
+      }
+    },
+    {
+      "check": "D-82 real key after agent interior 8",
+      "ok": true,
+      "detail": {
+        "text": "word  next",
+        "editor": {
+          "anchor": 5,
+          "caret": 5,
+          "textId": "dr_01K7JJN800Q5G03B17ZBS26DM5/nd_01K7JJN800AZTEK8WM3JDY0BT9"
+        }
+      }
+    }
+  ],
+  "failures": []
+}

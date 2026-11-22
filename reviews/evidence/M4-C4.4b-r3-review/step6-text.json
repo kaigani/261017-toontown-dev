@@ -1,0 +1,86 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-pxt2oaq4",
+  "checks": [
+    {
+      "check": "D-82 paste corpus exact",
+      "ok": true,
+      "detail": "Aq\u0301\ud83d\udc69\u200d\ud83d\udcbb\ud83c\uddfa\ud83c\uddf8\u2708\ufe0f\ud55cZ"
+    },
+    {
+      "check": "D-82 Right whole clusters",
+      "ok": true,
+      "detail": [
+        1,
+        3,
+        6,
+        8,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "check": "D-82 Left whole clusters",
+      "ok": true,
+      "detail": [
+        11,
+        10,
+        8,
+        6,
+        3,
+        1,
+        0
+      ]
+    },
+    {
+      "check": "D-82 Shift Right clusters",
+      "ok": true,
+      "detail": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          0,
+          10
+        ],
+        [
+          0,
+          11
+        ],
+        [
+          0,
+          12
+        ]
+      ]
+    },
+    {
+      "check": "D-82 Backspace whole emoji",
+      "ok": true,
+      "detail": "Aq\u0301\ud83c\uddfa\ud83c\uddf8\u2708\ufe0f\ud55cZ"
+    },
+    {
+      "check": "D-82 undo restores emoji",
+      "ok": true,
+      "detail": "Aq\u0301\ud83d\udc69\u200d\ud83d\udcbb\ud83c\uddfa\ud83c\uddf8\u2708\ufe0f\ud55cZ"
+    },
+    {
+      "check": "D-82 Delete whole flag",
+      "ok": true,
+      "detail": "Aq\u0301\ud83d\udc69\u200d\ud83d\udcbb\u2708\ufe0f\ud55cZ"
+    }
+  ],
+  "failures": []
+}

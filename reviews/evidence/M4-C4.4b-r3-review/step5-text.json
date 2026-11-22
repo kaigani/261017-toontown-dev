@@ -1,0 +1,193 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-bwucz72i",
+  "checks": [
+    {
+      "check": "D-85 mounted caret role",
+      "ok": true,
+      "detail": {
+        "role": "text",
+        "id": "text.role",
+        "label": "Next typed text"
+      }
+    },
+    {
+      "check": "D-85 B alone bold",
+      "ok": true,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800YXHVXA1R356ZK8F1",
+          "text": "AB",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.048828125,
+            80.0
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 1,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M80WQ2AVM2V154AH9A6EEG06",
+              "outlineColourId": null
+            },
+            {
+              "start": 1,
+              "length": 1,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": true,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M80WQ2AVM2V154AH9A6EEG06",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 2,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.048828125,
+            "y": 38.603515625,
+            "width": 50.009765625,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    {
+      "check": "D-78 two typing steps",
+      "ok": true,
+      "detail": [
+        [
+          "Typing",
+          "user"
+        ],
+        [
+          "Typing",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "D-85 session format command",
+      "ok": true,
+      "detail": [
+        {
+          "command": "draw.textFormat.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8009HRYMQEZTFS4ED9V",
+            "textId": "nd_01K7JJN800YXHVXA1R356ZK8F1",
+            "start": 1,
+            "length": 0,
+            "bold": true
+          }
+        },
+        {
+          "command": "text_input",
+          "params": {
+            "kind": "text",
+            "text": "B",
+            "generation": 0
+          }
+        }
+      ]
+    },
+    {
+      "check": "D-85 highlighted role",
+      "ok": true,
+      "detail": {
+        "role": "text",
+        "id": "text.role",
+        "label": "Selected text"
+      }
+    },
+    {
+      "check": "D-85 highlight one format step",
+      "ok": true,
+      "detail": {
+        "entries": [
+          {
+            "index": 1,
+            "stepId": "u-1",
+            "label": "New Elements",
+            "source": "agent",
+            "agentSessionId": "s1-5cb2ac",
+            "agentName": "mcp",
+            "time": "2026-11-22T05:47:32.515Z",
+            "objectCount": 4
+          },
+          {
+            "index": 2,
+            "stepId": "u-2",
+            "label": "Create Drawing",
+            "source": "agent",
+            "agentSessionId": "s1-5cb2ac",
+            "agentName": "mcp",
+            "time": "2026-11-22T05:47:32.520Z",
+            "objectCount": 3
+          },
+          {
+            "index": 3,
+            "stepId": "u-3",
+            "label": "New Text Object",
+            "source": "user",
+            "time": "2026-11-22T05:47:33.588Z",
+            "objectCount": 2
+          },
+          {
+            "index": 4,
+            "stepId": "u-4",
+            "label": "Typing",
+            "source": "user",
+            "time": "2026-11-22T05:47:34.209Z",
+            "objectCount": 2
+          },
+          {
+            "index": 5,
+            "stepId": "u-5",
+            "label": "Text Property Modified",
+            "source": "user",
+            "time": "2026-11-22T05:47:38.924Z",
+            "objectCount": 2
+          }
+        ],
+        "position": 5,
+        "cleanPosition": 0,
+        "total": 5
+      }
+    },
+    {
+      "check": "D-85 remount keeps session",
+      "ok": true,
+      "detail": {
+        "role": "text",
+        "id": "text.role",
+        "label": "Selected text"
+      }
+    }
+  ],
+  "failures": []
+}

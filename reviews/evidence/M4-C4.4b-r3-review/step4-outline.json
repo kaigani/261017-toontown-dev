@@ -1,0 +1,674 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-s42gh_e1",
+  "checks": [
+    {
+      "check": "D-83 independent explicit element",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN800ZVJQXN4X1F0WY5QS",
+          "strokeIds": [
+            "st_01K7JJN800FXRR9BJBV8TSXCE5"
+          ],
+          "createdIds": [
+            "st_01K7JJN800FXRR9BJBV8TSXCE5"
+          ],
+          "modifiedIds": [
+            "st_01K7JJN800FXRR9BJBV8TSXCE5"
+          ],
+          "removedIds": [],
+          "rev": 6
+        },
+        "changes": [
+          {
+            "id": "dr_01K7JJN800ZVJQXN4X1F0WY5QS/st_01K7JJN800FXRR9BJBV8TSXCE5",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/lineStyle/thickness",
+                "value": 13.0,
+                "oldValue": 8.0
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN800ZVJQXN4X1F0WY5QS",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 6,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-5",
+          "label": "Edit Stroke"
+        },
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "check": "D-83 independent explicit hidden",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN800888GP974YJVN91N8",
+          "strokeIds": [
+            "st_01K7JJN800V8DXQ2D273MYF2YY"
+          ],
+          "createdIds": [
+            "st_01K7JJN800V8DXQ2D273MYF2YY"
+          ],
+          "modifiedIds": [
+            "st_01K7JJN800V8DXQ2D273MYF2YY"
+          ],
+          "removedIds": [],
+          "rev": 6
+        },
+        "changes": [
+          {
+            "id": "dr_01K7JJN800888GP974YJVN91N8/st_01K7JJN800V8DXQ2D273MYF2YY",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/lineStyle/thickness",
+                "value": 13.0,
+                "oldValue": 8.0
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN800888GP974YJVN91N8",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 6,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-5",
+          "label": "Edit Stroke"
+        },
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "check": "D-83 independent explicit drawing",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "drawing.locked",
+          "message": "drawing `1` is locked",
+          "details": {
+            "drawingId": "dr_01K7JJN800Z6B7TH4DDCZP19K8"
+          },
+          "hint": "unlock it first (element.drawingLock.set)"
+        }
+      }
+    },
+    {
+      "check": "D-85 timeline outlineOnSelection contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline outlineOnSelection perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline outlineOnSelection repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline outlineOnSelection text",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet outlineOnSelection contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet outlineOnSelection perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet outlineOnSelection repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet outlineOnSelection text",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 staging outlineOnSelection contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800ZC58XSE21Q6ZJ22E#outline",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 staging outlineOnSelection perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800J9BYMQSGA89QZA9E#outline",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 staging outlineOnSelection repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800MV76231CR3RA50QH#outline",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 staging outlineOnSelection text",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800MPKYEP3E4YB0AZW1#outline",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": null
+      }
+    }
+  ],
+  "failures": [],
+  "scenes": [
+    {
+      "name": "staging-contourEditor-scene",
+      "entries": [
+        {
+          "drawingId": "dr_01K7JJN800ZC58XSE21Q6ZJ22E",
+          "rev": 4,
+          "role": "current",
+          "opacity": 1,
+          "tint": [
+            32,
+            128,
+            255,
+            255
+          ],
+          "shade": false,
+          "outline": true,
+          "elementId": "el_01K7JJN800Q10GHDBBYWTDKZP0",
+          "matrix": [
+            1.6,
+            0,
+            0,
+            -1.6,
+            960,
+            540
+          ]
+        }
+      ],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [
+          [
+            960,
+            540
+          ]
+        ],
+        "selectionBoxes": [
+          [
+            825.6,
+            437.6,
+            1094.4,
+            642.4
+          ]
+        ],
+        "selectionUnion": [
+          825.6,
+          437.6,
+          1094.4,
+          642.4
+        ],
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "staging-perspective-scene",
+      "entries": [
+        {
+          "drawingId": "dr_01K7JJN800J9BYMQSGA89QZA9E",
+          "rev": 4,
+          "role": "current",
+          "opacity": 1,
+          "tint": [
+            32,
+            128,
+            255,
+            255
+          ],
+          "shade": false,
+          "outline": true,
+          "elementId": "el_01K7JJN800J3Y96QQKMXFBR59B",
+          "matrix": [
+            1.6,
+            0,
+            0,
+            -1.6,
+            960,
+            540
+          ]
+        }
+      ],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [
+          [
+            960,
+            540
+          ]
+        ],
+        "selectionBoxes": [
+          [
+            825.6,
+            437.6,
+            1094.4,
+            642.4
+          ]
+        ],
+        "selectionUnion": [
+          825.6,
+          437.6,
+          1094.4,
+          642.4
+        ],
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "staging-repositionAll-scene",
+      "entries": [
+        {
+          "drawingId": "dr_01K7JJN800MV76231CR3RA50QH",
+          "rev": 4,
+          "role": "current",
+          "opacity": 1,
+          "tint": [
+            32,
+            128,
+            255,
+            255
+          ],
+          "shade": false,
+          "outline": true,
+          "elementId": "el_01K7JJN800RX7X1B2W6MD6EGB1",
+          "matrix": [
+            1.6,
+            0,
+            0,
+            -1.6,
+            960,
+            540
+          ]
+        }
+      ],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [
+          [
+            960,
+            540
+          ]
+        ],
+        "selectionBoxes": [
+          [
+            825.6,
+            437.6,
+            1094.4,
+            642.4
+          ]
+        ],
+        "selectionUnion": [
+          825.6,
+          437.6,
+          1094.4,
+          642.4
+        ],
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "staging-text-scene",
+      "entries": [
+        {
+          "drawingId": "dr_01K7JJN800MPKYEP3E4YB0AZW1",
+          "rev": 4,
+          "role": "current",
+          "opacity": 1,
+          "tint": [
+            32,
+            128,
+            255,
+            255
+          ],
+          "shade": false,
+          "outline": true,
+          "elementId": "el_01K7JJN800YBE1FJC7KMKCJ7WA",
+          "matrix": [
+            1.6,
+            0,
+            0,
+            -1.6,
+            960,
+            540
+          ]
+        }
+      ],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [
+          [
+            960,
+            540
+          ]
+        ],
+        "selectionBoxes": [
+          [
+            825.6,
+            437.6,
+            1094.4,
+            642.4
+          ]
+        ],
+        "selectionUnion": [
+          825.6,
+          437.6,
+          1094.4,
+          642.4
+        ],
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "timeline-contourEditor-scene",
+      "entries": [],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [],
+        "selectionBoxes": [],
+        "selectionUnion": null,
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "timeline-perspective-scene",
+      "entries": [],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [],
+        "selectionBoxes": [],
+        "selectionUnion": null,
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "timeline-repositionAll-scene",
+      "entries": [],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [],
+        "selectionBoxes": [],
+        "selectionUnion": null,
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "timeline-text-scene",
+      "entries": [],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [],
+        "selectionBoxes": [],
+        "selectionUnion": null,
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "xsheet-contourEditor-scene",
+      "entries": [],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [],
+        "selectionBoxes": [],
+        "selectionUnion": null,
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "xsheet-perspective-scene",
+      "entries": [],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [],
+        "selectionBoxes": [],
+        "selectionUnion": null,
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "xsheet-repositionAll-scene",
+      "entries": [],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [],
+        "selectionBoxes": [],
+        "selectionUnion": null,
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    },
+    {
+      "name": "xsheet-text-scene",
+      "entries": [],
+      "overlays": {
+        "cameraFrame": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "pivots": [],
+        "selectionBoxes": [],
+        "selectionUnion": null,
+        "otherCameras": [],
+        "selectionDisplay": {
+          "outlineOnSelection": true,
+          "boxHighlighting": true,
+          "keepSelectionVisible": false
+        },
+        "currentOnTop": false
+      }
+    }
+  ]
+}
