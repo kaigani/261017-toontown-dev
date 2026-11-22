@@ -3,7 +3,7 @@
 // rendered UI tree with the event number it reflects. Each window reports its own facts; the host combines them.
 import { useEffect } from 'react';
 
-import { GENERATION_EVENT } from '../ipc';
+import { GENERATION_EVENT, toHostError } from '../ipc';
 import { isUnmodified, sequenceOf } from '../keys/sequence';
 import TEXT_FIELD_KEYS from '../keys/text-field-keys.json';
 import type { ShellServices } from '../state/context';
@@ -232,9 +232,14 @@ export function useShortcuts(
           if (outcome.outcome !== 'command' || !outcome.commandId) return;
           await actions.perform(outcome.commandId, outcome.params ?? {});
         })
-        // A key bound to a disabled command answers its `command.disabled` (C41-R2-09): the key is consumed silently,
-        // never with a message box (01 §8.4).
-        .catch(() => undefined);
+        // A key bound to a disabled command answers its `command.disabled` (C41-R2-09), a key whose edit the
+        // interactive-target rule refuses answers that refusal (D-83): never a message box (01 §8.4); the status line
+        // says why, as for every input (ruling D-87).
+        .catch((err: unknown) => {
+          // The host rejects with its error's JSON text (a transport may wrap it in an Error).
+          const e = toHostError(err instanceof Error ? err.message : err);
+          actions.refused({ code: e.code, message: e.message, details: e.details }, seq);
+        });
     };
     window.addEventListener('keydown', onKey);
     return () => {

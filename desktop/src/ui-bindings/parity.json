@@ -20335,6 +20335,12 @@
       ]
     },
     {
+      "command": "command.disabled",
+      "files": [
+        "desktop/src/shell/refusals.ts"
+      ]
+    },
+    {
       "command": "command.notImplemented",
       "files": [
         "desktop/src/state/store.ts"
@@ -20777,7 +20783,7 @@
     {
       "command": "drawing.locked",
       "files": [
-        "desktop/src/canvas/CanvasView.tsx"
+        "desktop/src/shell/refusals.ts"
       ]
     },
     {
@@ -20871,13 +20877,13 @@
     {
       "command": "element.hidden",
       "files": [
-        "desktop/src/canvas/CanvasView.tsx"
+        "desktop/src/shell/refusals.ts"
       ]
     },
     {
       "command": "element.locked",
       "files": [
-        "desktop/src/canvas/CanvasView.tsx"
+        "desktop/src/shell/refusals.ts"
       ]
     },
     {
@@ -20926,6 +20932,12 @@
       "command": "flip.vertical",
       "files": [
         "desktop/src/canvas/viewMenus.ts"
+      ]
+    },
+    {
+      "command": "fs.ioError",
+      "files": [
+        "desktop/src/shell/makeActions.tsx"
       ]
     },
     {
@@ -21542,6 +21554,12 @@
       ]
     },
     {
+      "command": "project.lockFileInUse",
+      "files": [
+        "desktop/src/shell/makeActions.tsx"
+      ]
+    },
+    {
       "command": "project.none",
       "files": [
         "desktop/src/state/store.ts"
@@ -21678,6 +21696,12 @@
       ]
     },
     {
+      "command": "render.frames",
+      "files": [
+        "desktop/src-tauri/src/host.rs"
+      ]
+    },
+    {
       "command": "render.inlineTooLarge",
       "files": [
         "desktop/src-tauri/src/attached.rs"
@@ -21686,6 +21710,7 @@
     {
       "command": "shell.agentActing",
       "files": [
+        "desktop/src-tauri/src/shell.rs",
         "desktop/src/state/store.ts"
       ]
     },

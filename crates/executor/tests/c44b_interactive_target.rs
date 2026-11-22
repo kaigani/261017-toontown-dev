@@ -373,3 +373,33 @@ fn selection_always_visible_keeps_a_hidden_element_selected_in_the_timeline_or_e
         }
     }
 }
+
+#[test]
+fn in_the_camera_view_with_the_drawing_tools_edit_commands_act_on_the_drawing_and_follow_the_rule() {
+    // Ruling D-87 (finding C44B-R3-01): the Camera view runs the tool family chosen last (SI-148); with the drawing tools
+    // its Edit commands on the `auto` context (the native Edit menu's Cut, Paste and Delete, the Select tool's Delete
+    // key) act on the drawing's selection, as its context menu's do, and so meet the interactive-target rule: refused
+    // with the lock's code (the window shows it on the status line). Unlocked, Edit › Delete deletes the selected
+    // stroke.
+    let (h, sid) = ready();
+    ok(&h, "tool.active.set", json!({ "toolId": "select" }));
+    ok(&h, "view.active.set", json!({ "viewId": "cameraView" }));
+    ok(&h, "edit.selection.set", json!({ "context": "staging", "ids": [] }));
+    ok(&h, "element.lock.set", json!({ "elementIds": [BOB], "locked": true }));
+    let before = position(&h);
+    for command in ["edit.delete", "edit.cut"] {
+        let env = person(&h, command, json!({}));
+        assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("element.locked"), "{command}: {env:?}");
+    }
+    let key = h.resolve_key("Delete");
+    assert_eq!(key.as_ref().err().map(|e| e.code.as_str()), Some("element.locked"), "the Delete key: {key:?}");
+    assert_eq!(position(&h), before, "nothing changed");
+    ok(&h, "element.lock.set", json!({ "elementIds": [BOB], "locked": false }));
+    let env = person(&h, "edit.delete", json!({}));
+    assert_eq!(env.status, Status::Ok, "{env:?}");
+    let sel = ok(&h, "draw.drawing.get", json!({ "drawingId": D1, "flatten": true }));
+    assert!(
+        !sel["nodes"].as_array().unwrap().iter().any(|n| n["id"] == json!(sid)),
+        "the drawing's selected stroke was deleted"
+    );
+}

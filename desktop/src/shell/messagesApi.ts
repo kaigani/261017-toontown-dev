@@ -2,6 +2,7 @@
 import { createContext, useContext } from 'react';
 
 import type { Envelope } from '../ipc';
+import type { Refusal } from './refusals';
 
 export type Severity = 'info' | 'warning' | 'error' | 'question';
 
@@ -43,8 +44,12 @@ export interface MessagesApi {
   notify(spec: MessageSpec): void;
   /** The status line on the left of the status bar. */
   status(text: string, kind?: StatusLine['kind']): void;
-  /** Surfaces a failed command to the user: a cancellation as a status line, anything else as a message box. */
+  /** Surfaces a failed command to the user: a cancellation or a refusal (`refused`) as a status line, anything else as
+   *  a message box. */
   failure(env: Envelope, what: string): Promise<void>;
+  /** Reports a refused person's action of `commandId` on the status line when the error is a refusal (ruling D-87;
+   *  `refusals.ts` decides); answers whether it was one. Every input's refusal goes through here. */
+  refused(error: Refusal | undefined, commandId: string): boolean;
   /** Opens a modal state the executor must know about (dialogs, progress); returns the function that closes it. */
   enterModal(kind: 'dialog' | 'progress' | 'gesture', title: string): () => void;
 }

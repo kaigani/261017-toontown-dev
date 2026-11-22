@@ -2,6 +2,7 @@
 import { createContext, useContext } from 'react';
 
 import type { Envelope } from '../ipc';
+import type { Refusal } from './refusals';
 
 /** Commands that replace or close the open project and take `onUnsaved` (01 §12.1 rule 3). */
 export const DISCARDING = new Set([
@@ -22,6 +23,9 @@ export interface ActionsApi {
   /** Runs a command with no dialog; failures are surfaced (except the codes in `handled`, which the caller shows itself,
    *  such as a rename field's `pen.nameExists` under the field); long actions offer Cancel. */
   run(command: string, params?: Record<string, unknown>, handled?: readonly string[]): Promise<Envelope>;
+  /** Reports a refused person's action that did not go through `run` (a key's refusal by the key dispatch, a
+   *  gesture's): the status line (ruling D-87; `refusals.ts`); answers whether the error was a refusal. */
+  refused(error: Refusal | undefined, commandId: string): boolean;
 }
 
 /** A running action that offers Cancel. */

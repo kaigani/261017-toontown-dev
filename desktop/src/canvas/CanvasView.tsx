@@ -96,10 +96,6 @@ export interface CanvasHandle {
 
 /** How long the canvas must be quiet (no gesture, no redraw) before the back ends are measured (SI-136). */
 const QUIET_MS = 30_000;
-/** The refusals of a person's gesture that are told on the status line (rulings D-79 to D-81): the target cannot be
- *  edited here. */
-const TOLD = new Set(['drawing.locked', 'element.locked', 'element.hidden']);
-
 /** Two overlays as one (`a` under `b`); either may be absent. */
 function combine(a: ViewTris | null, b: ViewTris | null): ViewTris | null {
   if (!a) return b;
@@ -952,8 +948,8 @@ export function CanvasView({
           env.status === 'error'
             ? { status: 'error', code: env.error?.code ?? 'error' }
             : { status: env.status };
-        if (env.status === 'error' && TOLD.has(env.error?.code ?? ''))
-          messagesRef.current?.status(env.error?.message ?? 'This cannot be edited here.', 'warning');
+        // A refused gesture: the status line, as every input's refusal (rulings D-81, D-87; `refusals.ts`).
+        if (env.status === 'error') messagesRef.current?.refused(env.error, `tool:${tool}`);
         // The overlay stays until the committed drawing is drawn (C43B-R2S-02: no deadline after a step), briefly when
         // nothing changed, and not at all after a refusal; an answer for a gesture that is no longer current (a later
         // press, another generation, a closed window) clears nothing.

@@ -2086,6 +2086,36 @@ async def build_and_run(t: Table, only: set) -> None:
                  "action": ("key", 0x2E, "Delete", "cameraView"), "expect": None, "label": None,
                  "setup": lambda: camera_locked(lambda: tool_fixture("contourEditor", points=True)), "state": square_state,
                  "effect": lambda b, a, k: a == b, "disabled": None, "after": camera_unlocked})
+    # Ruling D-87 (C44B-R3-01): the person is told why, on the status line, for a key and for a native menu item as for
+    # a gesture or a panel. The status line is cleared first, so the row reads what this action put there.
+    def status_cleared(setup):
+        async def run():
+            await setup()
+            t.cdp.js("window.dispatchEvent(new CustomEvent('tt-status-line', { detail: null }))")
+            await asyncio.sleep(0.3)
+        return run
+
+    async def square_and_status():
+        st = await square_state()
+        st["status"] = t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent ?? ''")
+        return st
+
+    def told(b, a, k):
+        return a["anchors"] == b["anchors"] and a["drawing"] == b["drawing"] and "element is locked" in (a["status"] or "")
+
+    rows.append({"name": "Contour Editor › Delete by key in the Camera view, element locked: the status line says why",
+                 "spec": f"{spec_line('draw.point.delete')}; D-83 item 3; D-87 (the refusal's reason on the status line)",
+                 "action": ("key", 0x2E, "Delete", "cameraView"), "expect": None, "label": None,
+                 "setup": status_cleared(lambda: camera_locked(lambda: tool_fixture("contourEditor", points=True))),
+                 "state": square_and_status, "effect": told, "disabled": None, "osOnly": True, "after": camera_unlocked,
+                 "mcpReason": "the status line is the window's: an agent's key answers the refusal to the agent"})
+    rows.append({"name": "Edit › Delete (native menu) in the Camera view, element locked: the status line says why",
+                 "spec": f"{spec_line('edit.delete')}; SI-148 (the drawing tools act on the drawing's selection); D-83 item 3; D-87",
+                 "action": ("menu", ["Edit", "Delete"]), "expect": ("edit.delete", "the drawing's selection; refused"),
+                 "match": lambda prm, b: True, "label": None,
+                 "setup": status_cleared(lambda: camera_locked(lambda: tool_fixture("select"))),
+                 "state": square_and_status, "effect": told, "disabled": None, "osOnly": True, "after": camera_unlocked,
+                 "mcpReason": "the status line is the window's: an agent's call answers the refusal to the agent"})
     rows.append({"name": "Contour Editor › Delete with no anchor selected",
                  "spec": f"{spec_line('draw.point.delete')}; 02 §7.1.2 line 457; C41-R2-09 (a refused key is consumed silently)",
                  "action": ("key", 0x2E, "Delete"), "expect": None, "label": None,

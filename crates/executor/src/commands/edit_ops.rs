@@ -35,7 +35,7 @@ use tt_model::{Id, ObjectType};
 use tt_registry::{CommandError, codes, command};
 
 use super::common::EditContext;
-use super::edit::{Clipboard, ClipboardKind, ClipboardSummary, resolve_context, selection_in, store_clipboard};
+use super::edit::{Clipboard, ClipboardKind, ClipboardSummary, resolve_edit_context, selection_in, store_clipboard};
 use crate::app::{cell_ref, parse_cell_ref};
 use crate::cx::Cx;
 use crate::types::Warning;
@@ -1617,7 +1617,7 @@ pub(crate) struct ClipResult {
     example(title = "Cut the peg Bob-P with what is attached to it", params = r#"{"context": "staging", "objectIds": ["scene:\"Intro\"/element:\"Bob-P\""]}"#),
 )]
 pub(crate) fn edit_cut(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, CommandError> {
-    let context = resolve_context(cx, p.context);
+    let context = resolve_edit_context(cx, p.context);
     let picked = pick(cx, context, p.object_ids)?;
     report_picked(cx, context, &picked);
     let clip = copy_content(cx, context, &picked, None)?;
@@ -1636,7 +1636,7 @@ pub(crate) fn edit_cut(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, Comm
     example(title = "Copy two cells of a column", params = r#"{"context": "xsheet", "objectIds": ["scene:#1/element:\"Bob\"/cell:#1", "scene:#1/element:\"Bob\"/cell:#2"]}"#),
 )]
 pub(crate) fn edit_copy(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, CommandError> {
-    let context = resolve_context(cx, p.context);
+    let context = resolve_edit_context(cx, p.context);
     let picked = pick(cx, context, p.object_ids)?;
     report_picked(cx, context, &picked);
     let clip = copy_content(cx, context, &picked, None)?;
@@ -1663,7 +1663,7 @@ pub(crate) struct DeleteResult {
     example(title = "Clear the first cell of a column", params = r#"{"context": "xsheet", "objectIds": ["scene:#1/element:\"Bob\"/cell:#1"]}"#),
 )]
 pub(crate) fn edit_delete(cx: &mut Cx, p: ObjectsParams) -> Result<DeleteResult, CommandError> {
-    let context = resolve_context(cx, p.context);
+    let context = resolve_edit_context(cx, p.context);
     let picked = pick(cx, context, p.object_ids)?;
     report_picked(cx, context, &picked);
     let deleted_ids = delete(cx, &picked, false, false)?;
@@ -1694,7 +1694,7 @@ pub(crate) struct PasteParams {
     example(title = "Paste copied cells at frame 30 of a column", params = r#"{"context": "xsheet", "destination": {"elementId": "scene:#1/element:\"Bob\"", "frame": 30}}"#),
 )]
 pub(crate) fn edit_paste(cx: &mut Cx, p: PasteParams) -> Result<PasteResult, CommandError> {
-    let context = resolve_context(cx, p.context);
+    let context = resolve_edit_context(cx, p.context);
     let clip = clipboard(cx)?;
     let dest = p.destination.unwrap_or_default();
     paste(cx, context, &clip, &dest, Special::None)
@@ -1734,7 +1734,7 @@ pub(crate) struct CutSpecialParams {
     gui = "Edit menu (M4)",
 )]
 pub(crate) fn edit_cut_special(cx: &mut Cx, p: CutSpecialParams) -> Result<ClipResult, CommandError> {
-    let context = resolve_context(cx, p.context);
+    let context = resolve_edit_context(cx, p.context);
     let opts: TimelineEditOptions = merged(cx, "cutSpecial", p.options.as_ref())?;
     let picked = pick(cx, context, p.object_ids)?;
     report_picked(cx, context, &picked);
@@ -1795,7 +1795,7 @@ pub(crate) struct PasteSpecialParams {
     gui = "Edit menu (M4)",
 )]
 pub(crate) fn edit_paste_special(cx: &mut Cx, p: PasteSpecialParams) -> Result<PasteResult, CommandError> {
-    let context = resolve_context(cx, p.context);
+    let context = resolve_edit_context(cx, p.context);
     let clip = clipboard(cx)?;
     let dest = p.destination.unwrap_or_default();
     let motion = clip.kind == ClipboardKind::MotionPoint;
@@ -2166,7 +2166,7 @@ enum Use {
 /// result is computed once per selection list and document revision (`memo`); an empty selection is one lookup.
 fn precheck_use(cx: &Cx, v: &Value, how: Use) -> Result<(), CommandError> {
     let context = v.get("context").cloned().map_or(Ok(EditContext::Auto), serde_json::from_value).unwrap_or_default();
-    let context = resolve_context(cx, context);
+    let context = resolve_edit_context(cx, context);
     let check = |ids: Option<Vec<String>>| -> Result<(), CommandError> {
         let picked = pick(cx, context, ids)?;
         match how {
@@ -2307,7 +2307,7 @@ fn paste_refusal(cx: &Cx, context: EditContext, v: &Value) -> Result<(), Command
 
 fn paste_context(cx: &Cx, v: &Value) -> EditContext {
     let context = v.get("context").cloned().map_or(Ok(EditContext::Auto), serde_json::from_value).unwrap_or_default();
-    resolve_context(cx, context)
+    resolve_edit_context(cx, context)
 }
 
 /// `edit.paste`: [`paste_refusal`].

@@ -23,7 +23,7 @@ pub(crate) fn person_rule(cx: &Cx, command: &str, params: &Value) -> Result<(), 
         false
     } else if crate::gesture::edits(command)
         && ((command.starts_with("draw.") && command != "draw.lock.set")
-            || (command.starts_with("edit.") && params.get("context").and_then(Value::as_str) == Some("drawing")))
+            || (command.starts_with("edit.") && drawing_context(cx, params)))
     {
         true
     } else {
@@ -40,6 +40,19 @@ pub(crate) fn person_rule(cx: &Cx, command: &str, params: &Value) -> Result<(), 
         }
         e
     })
+}
+
+/// Whether an `edit.*` command acts in the drawing context: named, or `auto` (or absent) resolving to it (the Drawing
+/// view focused, or the Camera view with the drawing tools; ruling D-87).
+fn drawing_context(cx: &Cx, params: &Value) -> bool {
+    match params.get("context").and_then(Value::as_str) {
+        Some("drawing") => true,
+        None | Some("auto") => {
+            crate::commands::edit::resolve_edit_context(cx, crate::commands::common::EditContext::Auto)
+                == crate::commands::common::EditContext::Drawing
+        }
+        Some(_) => false,
+    }
 }
 
 /// Whether a command's parameters address the current drawing: no drawing named (the command acts on the current

@@ -81,6 +81,8 @@ describe('M0 diagnostics gating (C0.4)', () => {
       'token_rect',
       // M4 C4.4b (design note 5 §4): the Text tool's editor feeds the kernel's input path.
       'text_input',
+      // D-86 item 2: the agents' running requests, for a window that mounts while one acts.
+      'agent_acting',
     ]);
     expect(DIAGNOSTIC).toContain('bench_plan');
     expect(DIAGNOSTIC).toContain('spike_canvas_scene');

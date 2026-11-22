@@ -360,5 +360,5 @@ export function makeActions(
     }
   };
 
-  return { perform, run };
+  return { perform, run, refused: (error, commandId) => messages.refused(error, commandId) };
 }

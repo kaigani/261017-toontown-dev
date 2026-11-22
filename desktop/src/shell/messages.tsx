@@ -15,6 +15,7 @@ import {
   type StatusLine,
 } from './messagesApi';
 import { useModalFocus } from './modalFocus';
+import { refusalLine } from './refusals';
 
 interface Pending {
   readonly spec: MessageSpec;
@@ -116,8 +117,20 @@ export function MessageHost({
       status(text, kind = 'info') {
         setLine({ text, kind });
       },
+      refused(error, commandId) {
+        const text = refusalLine(error, commandId);
+        if (text === null) return false;
+        setLine({ text, kind: 'warning' });
+        return true;
+      },
       async failure(env, what) {
         if (env.status === 'ok') return;
+        // A refused person's action: the status line, as every input's (ruling D-87).
+        const text = refusalLine(env.error, what);
+        if (text !== null) {
+          setLine({ text, kind: 'warning' });
+          return;
+        }
         if (isCancelled(env)) {
           // A cancelled request is the user's choice, never shown as a timeout (SI-111).
           setLine({ text: `${what}: cancelled`, kind: 'info' });

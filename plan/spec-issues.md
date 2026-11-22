@@ -1819,7 +1819,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Interim decision:** the Camera view runs the tool family chosen last: `anim.tool.set` makes it the scene tools,
   `tool.active.set` the drawing tools. A `pointer` request's `tool` for a Camera view is passed to `anim.tool.set` when
   it is one of its ids (`select` included), else to `tool.active.set`; the family follows. The Drawing view always runs
-  the drawing tool.
+  the drawing tool. **The Edit commands follow the family too (ruling D-87):** with the Camera view focused and the
+  drawing tools chosen last, the clipboard and delete commands on the `auto` context (`edit.cut`, `edit.copy`,
+  `edit.paste`, `edit.delete`, `edit.cutSpecial`; the native Edit menu, their keys) act on the drawing's selection, as
+  the view's context menu does; with the scene tools, on the staging selection. The selection commands
+  (`edit.selection.*`, `edit.selectAll`, `edit.deselectAll`) keep the focused panel's context.
 - **Question:** how should a request name the drawing Select in the Camera view, or should the families be one tool
   set?
 
@@ -2464,7 +2468,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   its target becomes one of these. Agents addressing an element by id are unaffected. **Ruling D-83 item 3:** the same
   rule holds for every person's contextual edit of the current target whatever the input (a key, a Tool options or
   Properties control, a menu or context-menu item), in the active view (`gesture::person_rule`, applied in the host's
-  key resolution and to the window's actions); an agent's direct call is unaffected.
+  key resolution and to the window's actions); an agent's direct call is unaffected. **Ruling D-87:** a refused person's
+  action is reported the same way whatever the input (a gesture, a key, a native menu item, a context-menu item, a
+  panel control): the status line carries the command's label and the refusal's reason (`desktop/src/shell/refusals.ts`
+  decides; `command.disabled` by its reason), never a message box.
 - **"Selection always visible" (ruling D-85 item 1; finding C44B-R2-01).** 02 line 961: elements selected in the
   Timeline or the Exposure Sheet are displayed in the Camera view even if hidden; the kernel keys the exception on those
   selections (contexts `timeline` and `xsheet`, element entries; a cell selection selects cells, not their element).
