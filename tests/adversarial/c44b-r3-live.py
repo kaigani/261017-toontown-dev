@@ -63,7 +63,7 @@ MATRIX_BRANCHES=r'''
   status=t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent")
   check((before==after and not history) if refused else (before!=after and bool(history)),name+' document and undo',{'history':history,'status':status})
   if refused:check(any(x in str(status).lower() for x in ('locked','hidden')),name+' reason',status)
-  t.run.save(name+'.json',{'before':before,'after':after,'history':history,'status':status,'commands':t.recorded()})
+  t.run.save(name+'.json',{'before':before,'after':after,'history':history,'status':status,'commands':t.recorded(),'visibleText':t.cdp.js('document.body.innerText')})
  if step==2:
   for view,kind in [('cameraView','element'),('cameraView','drawing'),('cameraView','hidden'),('drawingView','element')]:
    for action in ('anchorDelete','selectDelete','cut','paste','duplicate','nudge'):
@@ -76,7 +76,10 @@ MATRIX_BRANCHES=r'''
     if action=='anchorDelete':await c('draw.pointSelection.set',{'points':[{'strokeId':sid,'anchor':1}]})
     await condition(kind,eid);before=await c('draw.drawing.get');pos=await t.position();t.clear();d.front()
     vk,mods={'anchorDelete':(0x2e,()),'selectDelete':(0x2e,()),'cut':(0x58,(0x11,)),'paste':(0x56,(0x11,)),'duplicate':(0x44,(0x11,)),'nudge':(0x27,())}[action]
-    d.key(vk,*mods);await pause();await record(view+'-'+kind+'-'+action,did,before,pos,view=='cameraView')
+    d.key(vk,*mods);await pause()
+    if action in ('duplicate','nudge'):
+     check(before==await c('draw.drawing.get') and await t.position()==pos,view+' '+kind+' unbound '+action+' observation',None)
+    else:await record(view+'-'+kind+'-'+action,did,before,pos,view=='cameraView')
  elif step==3:
   for kind in ('element','drawing','hidden'):
    for action in ('thickness','invisible'):
@@ -132,7 +135,7 @@ TEXT_BRANCHES=r'''
                 elif kind=='drawing':await c('draw.lock.set',{'locked':True})
                 else:
                     await c('drawAid.selectionDisplay.set',{'keepSelectionVisible':False,'outlineOnSelection':False});await c('element.visibility.set',{'elementIds':[eid],'scope':'scene','visible':False})
-                await pause();before=await c('draw.drawing.get');pos=await t.position()
+                await pause();before=await c('draw.drawing.get',{'flatten':True});pos=await t.position()
                 if step==2:r=await typed('X')
                 else:t.click('text.bold');await pause();r=await state('locked Bold')
                 check(before==r['drawing'] and await t.position()==pos,'D-83 '+kind+' text unchanged',r['status'])
@@ -187,9 +190,41 @@ TEXT_BRANCHES=r'''
             await key(0x24)
             for _ in range(5):await key(0x27)
             left=await state('emoji left')
+            def scene():
+                value=t.cdp.js("window.__TAURI_INTERNALS__.invoke('canvas_scene',{json:JSON.stringify({viewId:'cameraView'})})")
+                return json.loads(value) if isinstance(value,str) else value
+            ls=scene()
             await key(0x27);right=await state('emoji right')
+            rs=scene();t.run.save('emoji-scenes.json',{'left':ls,'right':rs})
+            l=ls.get('scene',ls)['textEdit']['caret'];r0=rs.get('scene',rs)['textEdit']['caret']
+            await gesture([((l[0][0]+r0[0][0])/2,(l[0][1]+l[1][1])/2)])
+            r=await state('real emoji middle click');check(r['editor']['caret'] in (5,8),'D-82 real middle click never inside',r['editor'])
             t.run.save('emoji-click-geometry.json',{'left':left['canvas'],'right':right['canvas']})
             check(left['editor']['caret']==5 and right['editor']['caret']==8,'D-82 emoji bounds usable',{'left':left['editor'],'right':right['editor']})
+            for action in (0x27,0x08):
+                await fixture('word abc next',v='cameraView');await key(0x24)
+                for _ in range(6):await key(0x27)
+                r=await state('codepoint 6');node=texts(r)[0]
+                await c('draw.text.set',{'textId':node['id'],'text':'word '+emoji+' next'})
+                r=await state('agent puts cluster around caret');t.run.save('agent-interior-'+str(action)+'.json',r)
+                check(r['editor']['caret'] in (5,8),'D-82 agent content interior reconciles',r['editor'])
+                r=await key(action);check(content(r)==('word '+emoji+' next' if action==0x27 else 'word  next'),'D-82 real key after agent interior '+str(action),{'text':content(r),'editor':r['editor']})
+        elif step==8:
+            import shutil
+            from mcp import ClientSession,StdioServerParameters,types
+            from mcp.client.stdio import stdio_client
+            await fixture(v='cameraView');base=t.work/'text-base.animpkg';await c('project.saveAs',{'path':str(base)})
+            initial=await state('empty text');tid=texts(initial)[0]['id'];pos=await t.position();r=await typed('Hi')
+            check([x[0] for x in await t.steps_since(pos)]==['Typing'],'02 12.1 Text one Typing step',await t.steps_since(pos))
+            copy=t.work/'text-direct.animpkg';shutil.copyfile(base,copy)
+            async def roots(_):return types.ListRootsResult(roots=[types.Root(uri=t.work.resolve().as_uri(),name='work')])
+            args=['--mcp-stdio','--project',str(copy),'--policy','autonomous','--allow-path',str(t.work),'--user-dir',str(t.work/'text-head')]
+            async with stdio_client(StdioServerParameters(command=str(ROOT/'target/release/toontown-headless.exe'),args=args)) as streams:
+                async with ClientSession(*streams,list_roots_callback=roots) as hs:
+                    await hs.initialize();ht=d.Table(hs,t.run,p.OUT,t.work)
+                    await ht.cmd('draw.text.set',{'textId':tid,'text':'Hi'});direct=await ht.cmd('draw.drawing.get',{'flatten':True})
+                    eq=load('text-direct-eq','scripts/c44b-gesture-equivalence.py')
+                    check(eq.unstamped(r['drawing'])==eq.unstamped(direct),'D-32 Text exact headless document',None)
 '''
 if __name__=='__main__':
  case,step=sys.argv[1],int(sys.argv[2]);assert case in ('n1','n2')
@@ -198,5 +233,6 @@ if __name__=='__main__':
   a=run_matrix(step);b=run_text(step);sys.exit(a or b)
  if step==4:sys.exit(run_matrix(step))
  if step in (5,6,7):sys.exit(run_text(step))
- if step==8:sys.exit(run_regression())
+ if step==8:
+  a=run_regression();b=run_text(step);sys.exit(a or b)
  raise ValueError('unimplemented step')

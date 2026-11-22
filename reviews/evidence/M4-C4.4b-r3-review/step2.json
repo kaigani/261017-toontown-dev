@@ -1,0 +1,315 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-qkp887pn",
+  "checks": [
+    {
+      "check": "cameraView-element-anchorDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-element-anchorDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-element-selectDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-element-selectDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-element-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-element-cut reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-element-paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-element-paste reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView element unbound duplicate observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView element unbound nudge observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-drawing-anchorDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-drawing-anchorDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-drawing-selectDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-drawing-selectDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-drawing-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-drawing-cut reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-drawing-paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-drawing-paste reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView drawing unbound duplicate observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView drawing unbound nudge observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-hidden-anchorDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-hidden-anchorDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-hidden-selectDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-hidden-selectDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-hidden-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-hidden-cut reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-hidden-paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": ""
+      }
+    },
+    {
+      "check": "cameraView-hidden-paste reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView hidden unbound duplicate observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView hidden unbound nudge observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-element-anchorDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Contour Editing",
+            "user"
+          ]
+        ],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawingView-element-selectDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Delete",
+            "user"
+          ]
+        ],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawingView-element-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Cut",
+            "user"
+          ]
+        ],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawingView-element-paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Paste",
+            "user"
+          ]
+        ],
+        "status": ""
+      }
+    },
+    {
+      "check": "drawingView element unbound duplicate observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView element unbound nudge observation",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": [
+    {
+      "check": "cameraView-element-anchorDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-element-selectDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-element-cut reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-element-paste reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-drawing-anchorDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-drawing-selectDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-drawing-cut reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-drawing-paste reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-hidden-anchorDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-hidden-selectDelete reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-hidden-cut reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "cameraView-hidden-paste reason",
+      "ok": false,
+      "detail": ""
+    }
+  ]
+}
