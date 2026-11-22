@@ -2259,6 +2259,27 @@ async def build_and_run(t: Table, only: set) -> None:
     # The Text panel formatting the text the Text tool highlights (design note 5 §6): a session opened by the table's
     # agent connection (a Text tool click, `type_text`, then Shift+Home), so in the OS form the person's clicks format
     # the agent's session's highlight; the caret-only rows need the session's own origin and run in the MCP form.
+    async def dock_settled(panel_id, visible):
+        """A wait for a state (D-45): the dock shows `panel_id`'s tab or not, as just set, and the Drawing view's canvas
+        has drawn. The window rebuilds the dock's grid on every arrangement change (`applyPlan`), so hiding or showing a
+        panel remounts the view's canvas, and a gesture sent meanwhile can reach the canvas being unmounted, which
+        refuses it (`ui.viewNotFound`, `windowClosed`; SI-141): run 45020557010, macOS, where the 0.8 s pause of
+        `tool_fixture` was not enough."""
+        start = time.monotonic()
+        last = {}
+        while time.monotonic() - start < 15.0:
+            answer = await e2e.call(t.s, "inspect_ui", {"target": "window", "depth": 32})
+            root = (answer.get("result") or answer).get("root") or {}
+            tab = McpTable.node(root, f"tab.{panel_id}")
+            try:
+                last = json.loads((McpTable.node(root, "drawingView.canvas") or {}).get("value") or "{}")
+            except json.JSONDecodeError:
+                last = {}
+            if (tab is not None) == visible and (last.get("drawn") or 0) > 0:
+                return
+            await asyncio.sleep(0.25)
+        raise RuntimeError(f"the dock did not settle (tab.{panel_id} shown: {visible}); {json.dumps(last)[:300]}")
+
     async def text_session(highlight=True, two_runs=False, panel_after=False):
         # A fresh session on a fresh object: the last row's session ends with its tool, its objects go.
         await cmd("tool.active.set", {"toolId": "select"})
@@ -2270,6 +2291,7 @@ async def build_and_run(t: Table, only: set) -> None:
         # (D-85 item 2) it is hidden while the session opens and shown once it is open, so it mounts after the session.
         await cmd("window.panel.set", {"panelId": "text", "visible": not panel_after})
         await tool_fixture("text")
+        await dock_settled("text", not panel_after)
         m = await view_map()
         x, y = to_view(m, -50, 75)
         env = await e2e.call(t.s, "pointer", {"view": "drawingView", "tool": "text",
