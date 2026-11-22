@@ -1,0 +1,177 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-0dgumjc5",
+  "checks": [
+    {
+      "check": "file in use named with choices",
+      "ok": true,
+      "detail": {
+        "seconds": 14.80395559995668,
+        "message": "warning Lock file in useAnother program has the project's lock file open: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-kjei4jm2\\closure.animpkg.lock.takeover. Nothing was changed. Close that program, or wait for it to finish, then try again.DetailsMessage id: project.lockFileInUseTry AgainCancel"
+      }
+    },
+    {
+      "check": "open answers within about 14 seconds",
+      "ok": true,
+      "detail": 14.80395559995668
+    },
+    {
+      "check": "Cancel leaves no project and unchanged lock",
+      "ok": true,
+      "detail": {
+        "project": null,
+        "scene": null,
+        "frame": null,
+        "element": null,
+        "drawing": null,
+        "mode": null,
+        "activeView": null,
+        "focusedPanel": "cameraView",
+        "activeTool": null,
+        "selection": {
+          "context": "staging",
+          "ids": [],
+          "kinds": []
+        },
+        "workspace": {
+          "name": "Default",
+          "modified": false
+        },
+        "playback": {
+          "playing": false
+        },
+        "startScreenVisible": true,
+        "modal": null,
+        "agentSessions": [
+          {
+            "sessionId": "s1-cc9d93",
+            "name": "mcp",
+            "acting": false
+          }
+        ],
+        "fullScreen": false,
+        "agent": {
+          "sessionId": "s1-cc9d93",
+          "client": "mcp",
+          "policy": "autonomous",
+          "scopes": [
+            "read",
+            "edit",
+            "ui",
+            "input",
+            "files.read",
+            "files.write",
+            "prefs",
+            "library.global"
+          ],
+          "paused": false,
+          "limits": {
+            "policy": "autonomous",
+            "maxJobs": 2,
+            "maxBatchSteps": 1000,
+            "maxInlineImagePx": 2048,
+            "maxInlineBytes": 52428800,
+            "askInApp": true,
+            "letAgentMoveView": true,
+            "highlightAgentChanges": true
+          }
+        }
+      }
+    },
+    {
+      "check": "file in use named with choices",
+      "ok": true,
+      "detail": {
+        "seconds": 15.026845000043977,
+        "message": "warning Lock file in useAnother program has the project's lock file open: C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-kjei4jm2\\closure.animpkg.lock.takeover. Nothing was changed. Close that program, or wait for it to finish, then try again.DetailsMessage id: project.lockFileInUseTry AgainCancel"
+      }
+    },
+    {
+      "check": "open answers within about 14 seconds",
+      "ok": true,
+      "detail": 15.026845000043977
+    },
+    {
+      "check": "Try Again opens after reader closes",
+      "ok": true,
+      "detail": {
+        "project": {
+          "id": "pr_01M81MKPQSGK9380HBMRQMSH53",
+          "name": "Lock closure",
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-kjei4jm2\\closure.animpkg",
+          "dirty": false,
+          "globalLibraryDirty": false,
+          "readOnly": false
+        },
+        "scene": {
+          "id": "sc_01M81MKPQSGK9380HBMRQMSH97",
+          "name": "Scene-1",
+          "frameCount": 1
+        },
+        "frame": 1,
+        "element": {
+          "id": "el_01M81MKPQSGK9380HBMRQMSH98",
+          "name": "Camera Peg",
+          "type": "peg"
+        },
+        "drawing": null,
+        "mode": "staging",
+        "activeView": {
+          "viewId": "cameraView",
+          "panelId": "cameraView",
+          "type": "camera"
+        },
+        "focusedPanel": "cameraView",
+        "activeTool": null,
+        "selection": {
+          "context": "staging",
+          "ids": [],
+          "kinds": []
+        },
+        "workspace": {
+          "name": "Default",
+          "modified": false
+        },
+        "playback": {
+          "playing": false
+        },
+        "startScreenVisible": false,
+        "modal": null,
+        "agentSessions": [
+          {
+            "sessionId": "s1-cc9d93",
+            "name": "mcp",
+            "acting": false
+          }
+        ],
+        "fullScreen": false,
+        "agent": {
+          "sessionId": "s1-cc9d93",
+          "client": "mcp",
+          "policy": "autonomous",
+          "scopes": [
+            "read",
+            "edit",
+            "ui",
+            "input",
+            "files.read",
+            "files.write",
+            "prefs",
+            "library.global"
+          ],
+          "paused": false,
+          "limits": {
+            "policy": "autonomous",
+            "maxJobs": 2,
+            "maxBatchSteps": 1000,
+            "maxInlineImagePx": 2048,
+            "maxInlineBytes": 52428800,
+            "askInApp": true,
+            "letAgentMoveView": true,
+            "highlightAgentChanges": true
+          }
+        }
+      }
+    }
+  ],
+  "failures": []
+}
