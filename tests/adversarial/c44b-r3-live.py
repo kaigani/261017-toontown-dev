@@ -37,8 +37,16 @@ def run_matrix(step):
  source=inspect.getsource(old.matrix);source=source[:source.index(' if step==5:')]+MATRIX_BRANCHES
  ns=dict(old.__dict__);exec(source,ns);p.live_body=ns['matrix']
  result=p.live(step);transcript=json.loads((p.OUT/'transcript.json').read_text());checks=[r for r in transcript if 'check' in r]
- save('step'+str(step)+('-outline' if 'outline' in sys.argv[3:] else '')+'.json',{'raw':str(p.OUT),'checks':checks,'failures':[r for r in checks if not r.get('ok')]})
+ data={'raw':str(p.OUT),'checks':checks,'failures':[r for r in checks if not r.get('ok')]}
+ if 'outline' in sys.argv[3:]:data['scenes']=outline_summaries(p.OUT)
+ save('step'+str(step)+('-outline' if 'outline' in sys.argv[3:] else '-nativecontrol' if 'nativecontrol' in sys.argv[3:] else '')+'.json',data)
  return result
+def outline_summaries(raw):
+ rows=[]
+ for path in sorted(Path(raw).glob('*-scene.json')):
+  value=json.loads(path.read_text());scene=value.get('scene',value)
+  rows.append({'name':path.stem,'entries':scene['entries'],'overlays':scene['overlays']})
+ return rows
 def run_regression():
  p=load('r3prior','tests/adversarial/c44a-r1-live.py');p.EVID=Path(tempfile.mkdtemp(prefix='r3summary-'))
  old=load('r3tools','tests/adversarial/c44b-r1-live.py');old.PRIOR=p
@@ -83,6 +91,13 @@ MATRIX_BRANCHES=r'''
      check(before==await c('draw.drawing.get') and await t.position()==pos,view+' '+kind+' unbound '+action+' observation',None)
     else:await record(view+'-'+kind+'-'+action,did,before,pos,view=='cameraView')
  elif step==3:
+  if 'nativecontrol' in sys.argv[3:]:
+   for menu in ('Cut','Paste','Delete'):
+    eid,did=await fixture('drawingView','select');sid=(await c('draw.selection.get'))['selectedIds'][0]
+    await c('edit.copy',{'context':'drawing','objectIds':[sid]});await condition('element',eid)
+    before=await c('draw.drawing.get');pos=await t.position();t.clear();d.choose_menu(['Edit',menu]);await pause()
+    await record('drawing-native-'+menu,did,before,pos,False);d.key(0x1b)
+   return
   for kind in ('element','drawing','hidden'):
    for action in ('thickness','invisible'):
     eid,did=await fixture('cameraView','contourEditor');await c('window.panel.set',{'panelId':'properties','visible':True});await pause();t.click('properties.page.toolOptions');await pause()
@@ -240,7 +255,7 @@ if __name__=='__main__':
  case,step=sys.argv[1],int(sys.argv[2]);assert case in ('n1','n2')
  if step==1:sys.exit(prior_runs())
  if step in (2,3):
-  a=0 if 'text' in sys.argv[3:] else run_matrix(step);b=run_text(step);sys.exit(a or b)
+  a=0 if 'text' in sys.argv[3:] else run_matrix(step);b=0 if 'nativecontrol' in sys.argv[3:] else run_text(step);sys.exit(a or b)
  if step==4:sys.exit(run_matrix(step))
  if step in (5,6,7):sys.exit(run_text(step))
  if step==8:
