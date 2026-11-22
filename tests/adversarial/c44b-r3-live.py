@@ -124,7 +124,7 @@ MATRIX_BRANCHES=r'''
      await c('element.visibility.set',{'elementIds':[eid],'scope':'scene','visible':False});await pause()
      canvas=json.loads(d.McpTable.node(await d.McpTable.tree(t),'cameraView.canvas').get('value') or '{}')
      if 'outline' in sys.argv[3:]:
-      scene=t.cdp.js("window.__TAURI_INTERNALS__.invoke('canvas_scene',{json:JSON.stringify({viewId:'cameraView'})})")
+      scene=t.cdp.js("window.__TAURI_INTERNALS__.invoke('canvas_scene',{json:JSON.stringify({viewId:'cameraView'})}).then(v=>v instanceof ArrayBuffer?JSON.parse(new TextDecoder().decode(v)):v)")
       t.run.save(context+'-'+tool+'-scene.json',json.loads(scene) if isinstance(scene,str) else scene)
       t.run.shot(context+'-'+tool,d.e2e.APP_PID['pid'])
      before=await c('draw.drawing.get');pts=[(-84,-64),(-64,-44)] if tool=='perspective' else tools[tool]
@@ -192,7 +192,8 @@ TEXT_BRANCHES=r'''
             r=await key(0x2e);check(content(r)==''.join(clusters[:3]+clusters[4:]),'D-82 Delete whole flag',content(r))
         elif step==7:
             emoji='\U0001f469\u200d\U0001f4bb'
-            await fixture('word '+emoji+' next',v='cameraView')
+            await fixture(v='cameraView');clip_set('word '+emoji+' next');r=await key(0x56,0x11)
+            check(content(r)=='word '+emoji+' next','D-82 emoji click fixture exact',content(r))
             await gesture([(-70,65)],double=True);r=await state('word next to emoji')
             check(sorted([r['editor']['anchor'],r['editor']['caret']])==[0,4],'D-82 double click whole word',r['editor'])
             # Use actual scene caret geometry to locate the two sides of the emoji.
@@ -200,7 +201,7 @@ TEXT_BRANCHES=r'''
             for _ in range(5):await key(0x27)
             left=await state('emoji left')
             def scene():
-                value=t.cdp.js("window.__TAURI_INTERNALS__.invoke('canvas_scene',{json:JSON.stringify({viewId:'cameraView'})})")
+                value=t.cdp.js("window.__TAURI_INTERNALS__.invoke('canvas_scene',{json:JSON.stringify({viewId:'cameraView'})}).then(v=>v instanceof ArrayBuffer?JSON.parse(new TextDecoder().decode(v)):v)")
                 return json.loads(value) if isinstance(value,str) else value
             ls=scene()
             await key(0x27);right=await state('emoji right')
