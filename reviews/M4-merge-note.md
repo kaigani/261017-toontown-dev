@@ -17,9 +17,9 @@ panels and agent surfaces of C4.4a and the four drawing tools of C4.4b.
 | C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
 | C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | passed on product head `f5eb9e84`, run 44286651371 (36 of 36), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
 | C4.4a | panels and settings, agent surfaces (`reviews/M4-C4.4-plan.md`, D-40) | passed on product head `87f63b5f`, run 44861150241 (36 of 36 on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74; findings 12 + 2 + 2 + 5, all closed (including the P1 on the agent token in agent captures) |
-| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; round 2 on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`: seven items (C44B-R2S-01 to -04, C44B-R2L-01, C44B-R2-01, -02) and D-82's grapheme clusters, rulings D-82 to D-85, all fixed; round 3 (the last full round) on product head `a67edbb1`, run 44977394689, `reviews/M4-C4.4b-handoff-r3.md`: two static findings (C44B-R3S-01, the lock's bound; C44B-R3S-02, the agent-acting snapshot) and one live (C44B-R3-01, refusals reported for keys and native menus), rulings D-86 and D-87, all fixed; **closure handoff** on product head `a7f8554a`, run 45014999591, `reviews/M4-C4.4b-handoff-r4.md`, for one scoped closure check |
+| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; round 2 on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`: seven items (C44B-R2S-01 to -04, C44B-R2L-01, C44B-R2-01, -02) and D-82's grapheme clusters, rulings D-82 to D-85, all fixed; round 3 (the last full round) on product head `a67edbb1`, run 44977394689, `reviews/M4-C4.4b-handoff-r3.md`: two static findings (C44B-R3S-01, the lock's bound; C44B-R3S-02, the agent-acting snapshot) and one live (C44B-R3-01, refusals reported for keys and native menus), rulings D-86 and D-87, all fixed; **closure handoff** on product head `a7f8554a`, run 45014999591, `reviews/M4-C4.4b-handoff-r4.md`, for one scoped closure check; D-88 accepted the three static witnesses that describe the code by design, the interim `fs.ioError` answer for a lock file in use (SI-200 stays a question) and the `url` 2.5.9 bump |
 
-Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-87), recorded in
+Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-88), recorded in
 `reviews/M4-C4.1-plan.md`, `reviews/M4-C4.2-plan.md` and `reviews/M4-C4.3-plan.md` §15.
 
 ## 2. Inventory and counts (final build)
@@ -135,7 +135,7 @@ The retired margins:
   approximate until the commit.
 - **Some tools have no gestures yet** (SI-129): their commands work, their canvas gestures come with their owners.
 
-## 6. Rulings D-77 and D-78: the lock takeover fix
+## 6. The lock takeover fix (rulings D-77, D-78, D-83, D-84, D-86)
 
 `crates/persist/src/lock.rs`: the lock's arbitration file (`<lock>.takeover`) is now removed while its protection is
 still held (unlinked before the `flock` is released; on Windows deleted while the handle, which shares deletion, is
@@ -247,7 +247,7 @@ Manual scripts in `reviews/manual/M4/` (index: `README.md`), each a few minutes,
 
 ## 9. Receipt folders over 5 MB, for the trimming decision (D-42)
 
-M4's receipts total 78 MB. Its folders over 5 MB:
+M4's receipts total 82 MB. Its folders over 5 MB:
 
 | Folder | Size | Files | The largest files |
 |---|---|---|---|
@@ -255,7 +255,7 @@ M4's receipts total 78 MB. Its folders over 5 MB:
 | `reviews/evidence/M4-C4.2b-r1` | 22.4 MB | 155 | `d1-long-webgpu.json` 7.0 MB, `d1-long-webgl2.json` 7.0 MB, `d2-cases.json` 1.8 MB |
 | `reviews/evidence/M4-C4.2b-r3` | 5.7 MB | 230 | `c2/c2-gestures.json` 1.2 MB |
 
-Receipts from C4.3b round 2 on are D-42 summaries (C4.4b's: 396 KB in round 1, 292 KB in round 2). Folders over 5 MB from earlier milestones, for the
+Receipts from C4.3b round 2 on are D-42 summaries (C4.4b's: 396 KB in round 1, 341 KB in round 2, 556 KB in round 3, 560 KB at the closure, the lock loops' per-run lists included). Folders over 5 MB from earlier milestones, for the
 same decision: `M1-C1.4-r2` 100.2 MB, `M2-C2.4-r3` 87.7 MB, `M1-C1.1-r2` 86.8 MB, `M3-C3.1-r3` 22.4 MB, `M1-C1.2-r5`
 20.2 MB, `M1-C1.2-r4` 19.0 MB, `M1-C1.2-r3` 18.2 MB, `M0-C0.3-r1` 17.2 MB, `M1-C1.2-r2` 17.1 MB, `M3-C3.2-r3` 16.8 MB,
 `M1-C1.3-r1` 14.3 MB, `M2-C2.3-r3` 11.1 MB, `M2-C2.1-r2` 10.7 MB, `M3-C3.1-r2` 10.3 MB, `M0-C0.3` 9.4 MB, `M1-C1.4-r1`
