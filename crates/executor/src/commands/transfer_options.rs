@@ -7,10 +7,9 @@
 //! `edit.cutSpecial` and `edit.pasteSpecial` read it in 01's names and write it back when they remember; the `cell.*`
 //! commands take their omitted members from it (04 line 1366).
 //!
-//! **The open default (E-8).** 01 §6.3 turns *Overwrite existing drawings* and *Update colours* on, 04 §11.14 off, and
-//! reviewer tests pin each for its commands. Until the ruling, the `cell.*` commands keep their built default for those
-//! two members when the stored value is the table's default ([`CELL_OVERLAY`]); a value the person stored is used as
-//! stored. The ruling changes [`CELL_OVERLAY`] (or the table) in one place.
+//! **One default table (ruling E-13).** 01 §6.3 turns *Overwrite existing drawings* and *Update colours* on, 04 §11.14
+//! and §17.3 off; the table is 04's (interim until the user rules on SI-201), in `prefs.json` alone, so a ruling changes
+//! it in one place.
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -61,10 +60,6 @@ const PEG: [(&str, &str); 6] = [
     ("velocity", "velocityKeys"),
     ("skew", "skewKeys"),
 ];
-
-/// E-8 interim: the `cell.*` commands' omitted members whose built default differs from the table's (04 §11.14 against
-/// 01 §6.3), applied while the stored value is the table's default.
-pub(crate) const CELL_OVERLAY: [(&str, bool); 2] = [("overwriteDrawings", false), ("updateColours", false)];
 
 /// A set in 01's names as 04's object.
 pub(crate) fn to_04(v01: &Map<String, Value>) -> Map<String, Value> {
@@ -129,21 +124,14 @@ pub(crate) fn stored(cx: &Cx, op: Operation) -> Map<String, Value> {
 }
 
 /// The table's default set of an operation, in 01's names.
+#[cfg(test)]
 pub(crate) fn table_default(op: Operation) -> Map<String, Value> {
     crate::store::pref_default(op.key()).and_then(|v| v.as_object().cloned()).unwrap_or_default()
 }
 
-/// The base a `cell.*` command overlays its given members on: the stored set in 04's names, with [`CELL_OVERLAY`] where
-/// the stored value is the table's default.
+/// The base a `cell.*` command overlays its given members on: the stored set in 04's names.
 pub(crate) fn cell_base(cx: &Cx, op: Operation) -> Map<String, Value> {
-    let (stored, table) = (stored(cx, op), table_default(op));
-    let mut base = to_04(&stored);
-    for (k, v) in CELL_OVERLAY {
-        if stored.get(k) == table.get(k) {
-            base.insert(k.to_owned(), json!(v));
-        }
-    }
-    base
+    to_04(&stored(cx, op))
 }
 
 /// A `cell.*` command's options: its given members over [`cell_base`].
@@ -204,7 +192,8 @@ pub(crate) struct SetResult {
     id = "timeline.transferOptions.set",
     kind = ui,
     label = "Set transfer options",
-    scopes = [prefs],
+    scopes = [ui],
+    needs_project,
     example(title = "Paste special keeps the destination's timing", params = r#"{"operation": "paste", "options": {"exposure": false}}"#),
     gui = "Edit > Paste Special and Cut Special with the Timeline focused: the options dialog; Timeline: drag-and-drop options (M5 C5.1)",
 )]
@@ -240,6 +229,7 @@ pub(crate) struct GetResult {
     kind = query,
     label = "Get transfer options",
     scopes = [read],
+    needs_project,
     example(title = "The drag-and-drop options", params = r#"{"operation": "dragDrop"}"#),
     gui = "the paste special, cut special and drag-and-drop options dialog: the values it opens with (M5 C5.1)",
 )]
@@ -259,5 +249,19 @@ mod tests {
         let back = to_01(&there, "/options").unwrap_or_default();
         assert_eq!(back, table);
         assert!(to_01(&serde_json::from_value(json!({"nope": true})).unwrap_or_default(), "/options").is_err());
+    }
+
+    #[test]
+    fn the_rust_defaults_are_the_one_table() {
+        // Ruling E-13: one table (04 §11.14's values), `prefs.json`; the structs' fallbacks equal it.
+        for op in [Operation::Paste, Operation::Cut, Operation::DragDrop] {
+            let table = table_default(op);
+            assert_eq!(table["overwriteDrawings"], false, "{op:?}");
+            assert_eq!(table["updateColours"], false, "{op:?}");
+            let edit = serde_json::to_value(super::super::edit_ops::TimelineEditOptions::default()).unwrap_or_default();
+            assert_eq!(edit.as_object(), Some(&table), "{op:?}");
+            let cell = serde_json::to_value(super::super::cell::TransferOptions::default()).unwrap_or_default();
+            assert_eq!(cell.as_object(), Some(&to_04(&table)), "{op:?}");
+        }
     }
 }

@@ -273,3 +273,22 @@ the difference goes to the orchestrator before either changes (E-5).
 - The `xsheet` composition golden (§6).
 - Availability: every new handler's (command, code) pairs in `docs/availability-inventory.md`
   (`scripts/check-availability-inventory.py`).
+
+## 10. After rulings E-13 to E-16
+
+- **One transfer-option table (E-13):** `prefs.json`'s `edit.*.timeline` defaults hold 04 §11.14's values (overwrite
+  existing drawings off, update colours off); the per-family overlay of §4 is gone; a plain `edit.paste` overwrites
+  same-named drawings as the stored paste set says (it used to always overwrite). A unit test keeps the Rust
+  fallbacks (`TimelineEditOptions::default`, `TransferOptions::default`) equal to the table.
+- **Delete (E-14, SI-212):** `edit.delete` on cells clears in the Exposure Sheet and follows the cut-special exposure
+  option in the Timeline; `cell.range.delete` with target and `shift` omitted answers as `edit.delete` in the focused
+  cell context (its schema's `shift` default is therefore no longer `false` but absent: omitted means "the focused
+  context's rule"). Cut stays as built until the orchestrator rules on the reviewer test that pins it
+  (`c31_r2_variants::r05_generic_cut_clears_notes_and_retimes_remaining_notes`).
+- **`sourceContext` (E-15):** `cell.clipboard.set` with its target omitted records the focused cell context
+  (`timeline` or `xsheet`), an explicit target `xsheet`. No paste rule reads the label: `paste` dispatches on the
+  clipboard's `kind` and the destination context only (`crates/executor/src/commands/edit_ops.rs`); the label is
+  informational (`edit.clipboard.get`).
+- **Category colours (E-16):** §1's table is now built: `CATEGORY_KEYS` maps 04's categories to the 01 keys
+  ("skeletons" writes the skeleton and bone keys together; a bone element's colour is the bone key); the session map
+  `TimelineState.type_colours` is removed.

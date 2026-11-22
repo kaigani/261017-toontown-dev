@@ -744,6 +744,7 @@ pub(crate) fn feet_and_frames(cx: &Cx) -> bool {
     kind = query,
     label = "Format frame numbers",
     scopes = [read],
+    needs_project,
     example(title = "Frames 1, 16, 20", params = r#"{"frames": [1, 16, 20]}"#),
     agent_only = "agents format frame numbers as the time display shows them (04 §11.4); the window formats its ruler from the same preference",
 )]
@@ -804,7 +805,8 @@ pub(crate) struct TimeDisplayResult {
     id = "timeline.timeDisplay.set",
     kind = ui,
     label = "Set time display",
-    scopes = [prefs],
+    scopes = [ui],
+    needs_project,
     example(title = "Feet and frames", params = r#"{"unit": "feetFrames"}"#),
     agent_only = "the structured form of the preference interface.timeMeasurement, which the Preferences dialog edits with prefs.set (ruling E-6)",
 )]
@@ -836,7 +838,8 @@ pub(crate) struct ColourResult {
     id = "timeline.backgroundColour.set",
     kind = ui,
     label = "Set Timeline background colour",
-    scopes = [prefs],
+    scopes = [ui],
+    needs_project,
     example(title = "A dark grey Timeline", params = r##"{"colour": "#303030"}"##),
     agent_only = "the structured form of the preference interface.background.timeline, which the Preferences dialog edits with prefs.set (ruling E-6)",
 )]
@@ -857,7 +860,8 @@ pub(crate) struct Enabled {
     id = "timeline.singleCellSelection.set",
     kind = toggle,
     label = "Single cell selection",
-    scopes = [prefs],
+    scopes = [ui],
+    needs_project,
     example(title = "Clicks select whole tracks", params = r#"{"enabled": false}"#),
     agent_only = "the structured form of the preference timing.timeline.singleCellSelection, which the Preferences dialog edits with prefs.set (ruling E-6)",
 )]
@@ -873,6 +877,7 @@ pub(crate) fn timeline_single_cell_selection_set(cx: &mut Cx, p: Enabled) -> Res
     kind = toggle,
     label = "Sound waveforms",
     scopes = [ui],
+    needs_project,
     example(title = "Solid bars for sound rows", params = r#"{"enabled": false}"#),
     gui = "Timeline row and ruler context: Sound Waveforms (shown with its owner M8 until sound rows exist; ruling E-9)",
 )]

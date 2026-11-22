@@ -871,7 +871,6 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `element.timing.set` | `cell.notApplicable` | precheck | the target element is not of a kind the command edits | refuse: element · pass: peg-current |
 | `element.timing.set` | `element.notFound` | precheck | no element given, selected or current | untestable: a project always has a current element: a new project makes its first element current, another becomes current when it goes, and a scene's last camera cannot be deleted |
 | `element.timing.set` | `element.notLoopable` | parameter | a loop given for an element that cannot loop |  |
-| `element.typeColour.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `element.visibility.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `element.visibility.set` | `command.disabled` | precheck | nothing selected, or no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |
 | `element.visibility.set` | `element.notCellBased` | precheck | the target element has no cells | refuse: peg-current {"scope": "xsheet", "visible": false} · pass: element {"scope": "xsheet", "visible": false} |
@@ -881,12 +880,9 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `keymap.import` | `fs.notFound` | parameter | the file the caller names does not exist |  |
 | `keymap.import` | `keymap.invalidFile` | parameter | the file the caller names is not a keymap |  |
 | `keymap.reset` | `arg.missing` | parameter | a parameter the call needs is missing |  |
-| `playback.forceRate.set` | `project.none` | unreachable | the project frame rate is read with a fallback (`project_fps`: 24 without a project); nothing else reads the document |  |
 | `playback.rate.set` | `arg.invalid` | parameter | a rate outside 1-120 frames per second |  |
-| `playback.rate.set` | `project.none` | unreachable | the project frame rate is read with a fallback (`project_fps`); nothing else reads the document |  |
 | `playback.start` | `arg.invalid` | parameter | a `sceneId` other than the current scene |  |
 | `playback.state.get` | `command.disabled` | unreachable | the range read without a current scene is caught (`match current(cx)`: the range is `null`) |  |
-| `playback.state.get` | `project.none` | unreachable | every document read is guarded (`project_fps` falls back; the range read is caught) |  |
 | `prefs.reset` | `arg.missing` | parameter | a parameter the call needs is missing |  |
 | `prefs.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `project.backup.list` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |

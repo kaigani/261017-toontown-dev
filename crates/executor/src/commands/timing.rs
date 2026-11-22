@@ -493,33 +493,36 @@ pub(crate) fn tree_json(t: &[TreeNode]) -> Result<Value, CommandError> {
     to_json(&t)
 }
 
-/// The category of an element type (04 §5.1).
-pub(crate) const fn category(t: ElementType) -> &'static str {
+/// The category colours' home (SI-203, ruling E-16): 04 §5.1's categories and the 01 §7.3 preference keys each writes
+/// (04's "skeletons" writes the skeleton and bone keys together; `element.typeColour.get` reports the first key). The
+/// defaults are 01 §7.3's (`prefs.json`); 04 §5.1's recommended values stay in SI-203 for the user.
+pub(crate) const CATEGORY_KEYS: [(&str, &[&str]); 9] = [
+    ("drawings", &["interface.elementColours.drawing"]),
+    ("images", &["interface.elementColours.image"]),
+    ("sounds", &["interface.elementColours.sound"]),
+    ("pegs", &["interface.elementColours.peg"]),
+    ("skeletons", &["interface.elementColours.skeleton", "interface.elementColours.bone"]),
+    ("media", &["interface.elementColours.media"]),
+    ("cameras", &["interface.elementColours.camera"]),
+    ("effects", &["interface.elementColours.effect"]),
+    ("effectParameters", &["interface.elementColours.effectParameter"]),
+];
+
+/// The 01 §7.3 colour key of an element type (a bone has its own key).
+pub(crate) const fn colour_key(t: ElementType) -> &'static str {
     match t {
-        ElementType::Drawing | ElementType::Annotation => "drawings",
-        ElementType::Image => "images",
-        ElementType::Sound => "sounds",
-        ElementType::Peg => "pegs",
-        ElementType::Skeleton | ElementType::Bone => "skeletons",
-        ElementType::Media => "media",
-        ElementType::Camera => "cameras",
-        ElementType::EffectParameter => "effectParameters",
-        _ => "effects",
+        ElementType::Drawing | ElementType::Annotation => "interface.elementColours.drawing",
+        ElementType::Image => "interface.elementColours.image",
+        ElementType::Sound => "interface.elementColours.sound",
+        ElementType::Peg => "interface.elementColours.peg",
+        ElementType::Skeleton => "interface.elementColours.skeleton",
+        ElementType::Bone => "interface.elementColours.bone",
+        ElementType::Media => "interface.elementColours.media",
+        ElementType::Camera => "interface.elementColours.camera",
+        ElementType::EffectParameter => "interface.elementColours.effectParameter",
+        _ => "interface.elementColours.effect",
     }
 }
-
-/// The recommended category colours (04 §5.1), opaque.
-pub(crate) const CATEGORY_COLOURS: [(&str, &str); 9] = [
-    ("drawings", "#9DC3E6FF"),
-    ("images", "#A9D18EFF"),
-    ("sounds", "#F4B183FF"),
-    ("pegs", "#C9A0DCFF"),
-    ("skeletons", "#E6B9B8FF"),
-    ("media", "#FFE699FF"),
-    ("cameras", "#BFBFBFFF"),
-    ("effects", "#F8CBADFF"),
-    ("effectParameters", "#FBE5D6FF"),
-];
 
 /// Whether an element type may parent others (04 §9.2: pegs, effects, skeletons and bones, cameras).
 pub(crate) const fn parentable(t: ElementType) -> bool {
@@ -660,8 +663,6 @@ pub(crate) struct LightItem {
 pub(crate) struct TimelineState {
     /// Solo mode: the soloed elements while on (04 §10.3).
     pub solo: Option<Vec<Id>>,
-    /// Category colours set by `element.typeColour.set` (preference; 04 §5.1), by category.
-    pub type_colours: BTreeMap<String, String>,
     /// Static light tables by scene ID, in stacking order (04 §15; stored per scene with the session state, SI-085).
     pub light_tables: BTreeMap<String, Vec<LightItem>>,
     /// Playback ranges by scene ID (09 §2.8; saved in `session.json`, SI-204).

@@ -24887,9 +24887,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: -9223372036854775808n,
       },
       shift: {
-        description: "Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`).",
+        description: "Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`, the default).\nWith the target omitted and `shift` omitted, the command answers as `edit.delete` does in the focused cell\ncontext (ruling E-14: the Timeline follows the cut-special create/delete exposure option).",
         type: "boolean",
-        default: false,
+        default: null,
       },
     },
     additionalProperties: false,
@@ -90790,7 +90790,7 @@ export interface cell_range_delete_params {
   from?: number | bigint | null;
   /** Last frame. */
   to?: number | bigint | null;
-  /** Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`). */
+  /** Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`, the default). With the target omitted and `shift` omitted, the command answers as `edit.delete` does in the focused cell context (ruling E-14: the Timeline follows the cut-special create/delete exposure option). */
   shift?: boolean;
 }
 

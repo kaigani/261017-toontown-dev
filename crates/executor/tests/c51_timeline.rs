@@ -294,6 +294,12 @@ fn after_edit(context: &str, op: (&str, Value)) -> Value {
     ok(&h, "xsheet.currentCell.set", json!({"elementId": BOB, "frame": 1}));
     let focus = if context == "xsheet" { "xsheet" } else { "timeline" };
     ok(&h, "window.panel.set", json!({"panelId": focus, "visible": true, "focus": true}));
+    if op.0.contains("paste") || op.0 == "cell.clipboard.apply" {
+        // A paste: frames 1-3 copied, then the cell at frame 30 selected and current.
+        ok(&h, "edit.copy", json!({"context": context}));
+        ok(&h, "cell.select", json!({"elementIds": [BOB], "from": 30, "to": 30}));
+        ok(&h, "xsheet.currentCell.set", json!({"elementId": BOB, "frame": 30}));
+    }
     let mut params = op.1.clone();
     if op.0.starts_with("edit.") {
         params["context"] = json!(context);
@@ -319,6 +325,7 @@ fn e5_edit_commands_equal_the_cell_forms_with_the_target_omitted() {
             (("edit.copy", json!({})), ("cell.clipboard.set", json!({}))),
             (("edit.cut", json!({})), ("cell.clipboard.set", json!({"cut": true}))),
             (("edit.delete", json!({})), ("cell.range.delete", json!({}))),
+            (("edit.paste", json!({})), ("cell.clipboard.apply", json!({}))),
         ] {
             let (x, y) = (after_edit(context, a.clone()), after_edit(context, b.clone()));
             for key in ["status", "error", "sheet", "clipboard", "selection"] {
@@ -338,14 +345,18 @@ fn e5_edit_commands_equal_the_cell_forms_with_the_target_omitted() {
         }
     }
     let expected = vec![
-        // 04 §13.16: Cut follows the cut-special create/delete exposure option (on: remove and shift); `edit.cut`
-        // clears the cells, `cell.clipboard.set {cut: true}` removes them.
+        // Ruling E-14: Cut is to follow 04 §13.16 (`cell.clipboard.set {cut: true}`: removed and shifted with the
+        // cut-special exposure option on); `edit.cut` still clears, because the reviewer test
+        // `c31_r2_variants::r05_generic_cut_clears_notes_and_retimes_remaining_notes` pins its clearing: left as it is
+        // until the orchestrator answers.
         "xsheet edit.cut / cell.clipboard.set: sheet".to_owned(),
-        // The clipboard's `sourceContext`: `edit.*` names the context, `cell.clipboard.set` always `xsheet`.
-        "timeline edit.copy / cell.clipboard.set: clipboard sourceContext".to_owned(),
+        // A plain paste overwrites the destination cells; `cell.clipboard.apply` inserts them (the stored paste set's
+        // create/delete exposure option, on by default, 04 §11.14). Brought to the orchestrator with the E-13 report.
+        "xsheet edit.paste / cell.clipboard.apply: sheet".to_owned(),
         "timeline edit.cut / cell.clipboard.set: sheet".to_owned(),
-        "timeline edit.cut / cell.clipboard.set: clipboard sourceContext".to_owned(),
+        "timeline edit.paste / cell.clipboard.apply: sheet".to_owned(),
     ];
+
     assert_eq!(differences, expected, "E-5 differences (to the orchestrator before either changes)");
 }
 
@@ -737,4 +748,50 @@ fn the_xsheet_composition_follows_column_order_and_exposure_sheet_visibility() {
     assert_ne!(a_hidden, a_in_front, "hiding the front column changes the composition");
     ok(&h, "element.visibility.set", json!({"elementIds": [a], "scope": "xsheet", "visible": true}));
     assert_eq!(render(&h), a_in_front, "shown again: as before");
+}
+
+// ----- E-14: Delete on cells; E-16: category colours --------------------------------------------------------------------
+
+#[test]
+fn e14_delete_clears_in_the_exposure_sheet_and_follows_the_cut_option_in_the_timeline() {
+    let sheet = |context: &str, cut_exposure: Option<bool>| {
+        let h = fixture();
+        if let Some(on) = cut_exposure {
+            ok(&h, "timeline.transferOptions.set", json!({"operation": "cut", "options": {"exposure": on}}));
+        }
+        ok(&h, "cell.select", json!({"elementIds": [BOB], "from": 1, "to": 2}));
+        ok(&h, "window.panel.set", json!({"panelId": context, "visible": true, "focus": true}));
+        ok(&h, "edit.delete", json!({"context": context}));
+        ok(&h, "xsheet.exposures.get", json!({"elementIds": [BOB]}))["columns"][0]["exposures"][0].clone()
+    };
+    // Bob: drawing 1 on frames 1-6. The Exposure Sheet clears frames 1-2 (04 §13.17, §18 #8).
+    assert_eq!(sheet("xsheet", None)["from"], 3);
+    // The Timeline follows the cut-special create/delete exposure option: on (the default) removes and shifts.
+    let shifted = sheet("timeline", None);
+    assert_eq!((shifted["from"].clone(), shifted["to"].clone()), (json!(1), json!(4)));
+    assert_eq!(sheet("timeline", Some(false))["from"], 3, "off: cleared");
+}
+
+#[test]
+fn e16_category_colours_live_in_the_01_keys() {
+    let h = fixture();
+    let def = ok(&h, "prefs.get", json!({"keys": ["interface.elementColours.peg"]}))["values"]["interface.elementColours.peg"].clone();
+    assert_eq!(ok(&h, "element.typeColour.get", json!({}))["colours"]["pegs"], def, "01 §7.3's default is reported");
+    assert_eq!(ok(&h, "element.get", json!({"elementId": PEG}))["effectiveMarkerColour"], def);
+    let none = |_: &ExecutorHandle| {};
+    one_state(
+        &none,
+        ("element.typeColour.set", json!({"category": "pegs", "colour": "#102030FF"})),
+        ("prefs.set", json!({"values": {"interface.elementColours.peg": "#102030FF"}})),
+    );
+    // "skeletons" writes the skeleton and bone keys together (SI-203).
+    ok(&h, "element.typeColour.set", json!({"category": "skeletons", "colour": "#405060"}));
+    let v = ok(
+        &h,
+        "prefs.get",
+        json!({"keys": ["interface.elementColours.skeleton", "interface.elementColours.bone"]}),
+    )["values"]
+        .clone();
+    assert_eq!(v["interface.elementColours.skeleton"], "#405060FF");
+    assert_eq!(v["interface.elementColours.bone"], "#405060FF");
 }

@@ -292,9 +292,9 @@ fn loopable(ty: ElementType) -> bool {
     !ty.is_cell_based() && ty != ElementType::Camera
 }
 
-/// Types that can be parents (04 §9.2).
+/// Types that can be parents (04 §9.2; the kernel's rule, `timing::parentable`).
 fn parentable(ty: ElementType) -> bool {
-    !ty.is_cell_based() && ty != ElementType::EffectParameter
+    crate::commands::timing::parentable(ty)
 }
 
 /// The keyed scene frames of an element (the Timeline's keyframe symbols).
@@ -851,4 +851,45 @@ pub(crate) fn replay(
     let state = State::of(&doc, s);
     let planned = plan(&doc, &state, g, samples);
     if execute { Ok(commit(core, origin, &planned)) } else { Ok(json!({ "plan": planned })) }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn g(zoom: u64, first: u64) -> GestureLayout {
+        GestureLayout {
+            surface: Surface::Tracks,
+            zoom_level: u32::try_from(zoom).unwrap_or(0),
+            first_frame: u32::try_from(first).unwrap_or(1),
+            scroll_top: 0.0,
+            platform: "windows".to_owned(),
+        }
+    }
+
+    /// The shared case table: the window's `geometry.ts` checks the same cases (design note C5.1b §3).
+    #[test]
+    fn geometry_follows_the_shared_case_table() {
+        let cases: serde_json::Value =
+            serde_json::from_str(include_str!("timeline-geometry-cases.json")).unwrap_or_default();
+        let l = layout();
+        let n = |v: &Value| v.as_u64().unwrap_or(0);
+        let f = |v: &Value| v.as_f64().unwrap_or(0.0);
+        let frame_cases = cases["frameAt"].as_array().cloned().unwrap_or_default();
+        assert!(frame_cases.len() > 100);
+        for c in &frame_cases {
+            let got = frame_at(l, &g(n(&c["zoomLevel"]), n(&c["firstFrame"])), f(&c["x"]));
+            assert_eq!(u64::from(got), n(&c["frame"]), "{c}");
+        }
+        for c in cases["xOf"].as_array().cloned().unwrap_or_default() {
+            let got = x_of(l, &g(n(&c["zoomLevel"]), n(&c["firstFrame"])), u32::try_from(n(&c["frame"])).unwrap_or(1));
+            assert!((got - f(&c["xLeft"])).abs() < 1e-9, "{c}");
+        }
+        for c in cases["rowAt"].as_array().cloned().unwrap_or_default() {
+            let mut gl = g(6, 1);
+            gl.scroll_top = f(&c["scrollTop"]);
+            let got = row_at(l, &gl, f(&c["y"]), usize::MAX);
+            assert_eq!(got.map(|r| r as u64), Some(n(&c["row"])), "{c}");
+        }
+    }
 }

@@ -323,7 +323,8 @@ fn colours_notes_properties() {
     assert_eq!(info["markerColour"], "#FF0000FF");
     assert_eq!(info["effectiveMarkerColour"], "#FF0000FF");
     ok(&h, "element.colour.set", json!({ "elementIds": [PEG], "marker": "" }));
-    assert_eq!(ok(&h, "element.get", json!({ "elementId": PEG }))["effectiveMarkerColour"], "#C9A0DCFF");
+    // The category default is 01 §7.3's preference value (ruling E-16).
+    assert_eq!(ok(&h, "element.get", json!({ "elementId": PEG }))["effectiveMarkerColour"], "#8080FFFF");
     ok(&h, "element.typeColour.set", json!({ "category": "pegs", "colour": "#010203" }));
     assert_eq!(ok(&h, "element.get", json!({ "elementId": PEG }))["effectiveMarkerColour"], "#010203FF");
     assert_eq!(ok(&h, "element.typeColour.get", json!({}))["colours"]["pegs"], "#010203FF");

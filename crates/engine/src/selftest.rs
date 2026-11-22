@@ -115,8 +115,9 @@ fn check_kernel() -> CheckResult {
     let patched =
         run("doc.object.patch", serde_json::json!({ "targets": [scene], "props": { "meta": { "selftest": true } } }));
     let undone = run("edit.undo", serde_json::json!({}));
-    // A command owned by a later milestone answers with its owner (M5; `inspect.ui.tree` was the stub until M4 C4.1).
-    let stub = run("timeline.rows.list", serde_json::json!({}));
+    // A command owned by a later checkpoint answers with its owner (M5 C5.2; `inspect.ui.tree` was the stub until M4
+    // C4.1, `timeline.rows.list` until M5 C5.1a).
+    let stub = run("xsheet.display.set", serde_json::json!({}));
     let ok = registry.len() == 796
         && opened.is_ok()
         && patched.document_rev == Some(rev + 1)

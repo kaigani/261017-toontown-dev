@@ -2521,9 +2521,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   and different defaults: 01 has *Overwrite existing drawings* and *Update colours* on, 04 has both off. The kernel
   holds three stores: the 01 preference keys, the session memory of `edit.cutSpecial` / `edit.pasteSpecial`
   (`edit_options`), and the defaults of `cell.range.move` / `cell.clipboard.*` (04's).
-- **Interim decision:** one store per operation, the 01 §7.3 preference key (persisted per user, as 04 line 759
-  requires); `timeline.transferOptions.*` and `edit.*Special` read and write it, each in its own names (a fixed
-  mapping); the defaults stay as built (01's) until ruled.
+- **Interim decision (ruling E-13):** one store per operation, the 01 §7.3 preference key (persisted per user, as 04
+  line 759 requires); `timeline.transferOptions.*` and `edit.*Special` read and write it, each in its own names (a fixed
+  mapping). One default table, **04 §11.14 and §17.3's values** (overwrite existing drawings off, update colours off;
+  the other members agree in both tables), in `prefs.json` alone: a ruling changes that one table. `edit.paste`,
+  `edit.pasteSpecial`, `cell.clipboard.apply`, `cell.range.move`, `timeline.transferOptions.get` and the dialogs read
+  it when nothing is stored (a plain paste overwrites same-named drawings only when the stored paste set says so).
+  01 §6.3's table (overwrite on, update colours on) is recorded here for the user.
 - **Question:** which defaults hold, 01 §6.3's or 04 §11.14's?
 
 ## SI-202 — one state reached by two or three commands (found in M5 C5.1 planning; interim)
@@ -2550,10 +2554,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `timing.timeline.singleCellSelection`).
 - **Problem:** each setting has a preference key and a 04 command; the category colours differ in categories and in
   default values, and `element.typeColour.set` writes its own session map today (`TimelineState.type_colours`).
-- **Interim decision:** one home, the 01 §7.3 keys; 04's categories map onto them (drawings → drawing, also annotation;
-  skeletons → skeleton and bone; images, sounds, pegs, media, cameras, effects, effect parameters one to one); the
-  built defaults are kept until ruled; the Preferences dialog edits the keys with `prefs.set` (ruling D-40 answer 1),
-  and the 04 commands are the structured equivalents of the same keys.
+- **Interim decision (rulings E-6, E-16):** one home, the 01 §7.3 keys with 01's defaults (01 states defaults, 04 §5.1
+  "recommended" values); 04's categories map onto them (drawings → drawing, also annotation; images, sounds, pegs,
+  media, cameras, effects, effect parameters one to one; **skeletons → the skeleton and bone keys together**, and
+  `element.typeColour.get` reports the skeleton key; a bone element's colour is the bone key). `element.get`'s
+  `effectiveMarkerColour` and `element.typeColour.get` report the effective preference value. The Preferences dialog
+  edits the keys with `prefs.set` (ruling D-40 answer 1); the 04 commands are agent-only structured equivalents of
+  the same keys. Both default tables stay here for the user: 04 §5.1 (drawings `#9DC3E6`, images `#A9D18E`, sounds
+  `#F4B183`, pegs `#C9A0DC`, skeletons and bones `#E6B9B8`, media `#FFE699`, cameras `#BFBFBF`, effects `#F8CBAD`,
+  effect parameters `#FBE5D6`) and 01 §7.3 (in `prefs.json`).
 - **Question:** which defaults hold (04 §5.1's or 01 §7.3's), and is bone its own category?
 
 ## SI-204 — where the playback range is saved (found in M5 C5.1 planning; interim)
@@ -2618,6 +2627,18 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   (Option) on macOS; link Shift+Primary on Windows and Linux, Alt+Primary (Option+Command) on macOS; one table in
   `crates/executor/src/timeline-layout.json`, read by the kernel and the window.
 - **Question:** confirm or specify.
+
+## SI-212 — Delete on cells: 01 §6.2 against 04 §13.17 for the Timeline (found in M5 C5.1a; ruling E-14; interim)
+
+- **Sections:** 01 §6.2 line 523 ("in cell context it clears the cells"); 04 §13.17 and §18 #8 (in the Exposure Sheet
+  Delete clears; in the Timeline it follows the cut-special "create/delete exposure" option); 04 §13.16 (Cut follows
+  the same option).
+- **Interim decision (ruling E-14):** 04 is the rule. `edit.delete` with cells selected clears them in the Exposure
+  Sheet and, in the Timeline, removes them and shifts the following cells earlier while the cut-special exposure option
+  is on (the default), clearing them when it is off; `cell.range.delete` keeps its explicit `shift`, and with its
+  target and `shift` omitted answers as `edit.delete` does in the focused cell context. `edit.cut` is to follow 04
+  §13.16 the same way; a reviewer test pins its present clearing, so it is unchanged until the orchestrator rules.
+- **Question:** confirm 04, or correct 01 §6.2.
 
 ## Spec A additions proposed by M4, for the user
 

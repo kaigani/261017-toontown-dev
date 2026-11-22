@@ -8421,15 +8421,15 @@
       "title": "Default colours of all element categories",
       "result": {
         "colours": {
-          "drawings": "#9DC3E6FF",
-          "images": "#A9D18EFF",
-          "sounds": "#F4B183FF",
-          "pegs": "#C9A0DCFF",
-          "skeletons": "#E6B9B8FF",
-          "media": "#FFE699FF",
-          "cameras": "#BFBFBFFF",
-          "effects": "#F8CBADFF",
-          "effectParameters": "#FBE5D6FF"
+          "drawings": "#8FD98FFF",
+          "images": "#A8E0A8FF",
+          "sounds": "#B8A8D8FF",
+          "pegs": "#8080FFFF",
+          "skeletons": "#6A8FB5FF",
+          "media": "#A0A050FF",
+          "cameras": "#FF8080FF",
+          "effects": "#C88040FF",
+          "effectParameters": "#A05030FF"
         }
       },
       "varies": []
@@ -11160,10 +11160,10 @@
       "title": "The drag-and-drop options",
       "result": {
         "options": {
-          "overwriteDrawings": true,
+          "overwriteDrawings": false,
           "exposure": true,
           "autoExtend": false,
-          "updateColours": true,
+          "updateColours": false,
           "keyframeSubstitution": false,
           "boundaryKeys": false,
           "pegKeys": {
@@ -11185,10 +11185,10 @@
       "result": {
         "operation": "paste",
         "options": {
-          "overwriteDrawings": true,
+          "overwriteDrawings": false,
           "exposure": false,
           "autoExtend": false,
-          "updateColours": true,
+          "updateColours": false,
           "keyframeSubstitution": false,
           "boundaryKeys": false,
           "pegKeys": {

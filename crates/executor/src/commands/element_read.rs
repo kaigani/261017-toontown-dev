@@ -15,7 +15,7 @@ use tt_registry::{CommandError, command};
 
 use super::common::{Direction, NoParams};
 use super::timing::{
-    Budget, CATEGORY_COLOURS, as_u32, category, element, element_id, err, internal, scene_id, scene_of, to_json,
+    Budget, CATEGORY_KEYS, as_u32, colour_key, element, element_id, err, internal, scene_id, scene_of, to_json,
 };
 use crate::cx::Cx;
 
@@ -241,15 +241,9 @@ pub(crate) struct ElementInfo {
     media: Option<MediaInfo>,
 }
 
-/// The effective colour of a category (session preference, else 04 §5.1's recommended default).
-pub(crate) fn category_colour(cx: &Cx, cat: &str) -> String {
-    cx.session()
-        .timeline
-        .type_colours
-        .get(cat)
-        .cloned()
-        .or_else(|| CATEGORY_COLOURS.iter().find(|(c, _)| *c == cat).map(|(_, v)| (*v).to_owned()))
-        .unwrap_or_else(|| "#BFBFBFFF".to_owned())
+/// The effective value of a colour preference key (01 §7.3; SI-203, ruling E-16).
+pub(crate) fn key_colour(cx: &Cx, key: &str) -> String {
+    cx.pref(key).and_then(|v| v.as_str().map(str::to_owned)).unwrap_or_else(|| "#BFBFBFFF".to_owned())
 }
 
 fn colour_str(v: &Option<tt_model::value::Colour>) -> Option<String> {
@@ -331,7 +325,7 @@ pub(crate) fn info(cx: &Cx, doc: &Document, id: &Id) -> Result<ElementInfo, Comm
         marker_colour: colour_str(e.marker_colour()),
         background_colour: colour_str(e.background_colour()),
         effective_marker_colour: colour_str(e.marker_colour())
-            .unwrap_or_else(|| category_colour(cx, category(*e.element_type()))),
+            .unwrap_or_else(|| key_colour(cx, colour_key(*e.element_type()))),
         note: e.note().clone(),
         column_width: *e.column_width(),
         clone_group_id: bank.as_ref().filter(|_| users.len() > 1).map(|b| b.as_str().to_owned()),
@@ -424,12 +418,12 @@ pub(crate) struct TypeColoursResult {
     label = "Get category colours",
     scopes = [read],
     example(title = "Default colours of all element categories", params = "{}"),
-    agent_only = "the preferences dialog shows the category colours directly",
+    agent_only = "the structured form of the 01 §7.3 colour keys, which the Preferences dialog reads with prefs.list (ruling E-6)",
 )]
 pub(crate) fn element_type_colour_get(cx: &mut Cx, _p: NoParams) -> Result<TypeColoursResult, CommandError> {
     let mut colours = Map::new();
-    for (c, _) in CATEGORY_COLOURS {
-        colours.insert(c.to_owned(), json!(category_colour(cx, c)));
+    for (c, keys) in CATEGORY_KEYS {
+        colours.insert(c.to_owned(), json!(keys.first().map_or_else(String::new, |k| key_colour(cx, k))));
     }
     Ok(TypeColoursResult { colours })
 }
@@ -485,7 +479,7 @@ pub(crate) struct TypeColourSetResult {
     label = "Set category colour",
     scopes = [ui],
     example(title = "Pegs in purple", params = r##"{"category": "pegs", "colour": "#8064A2"}"##),
-    gui = "Preferences: Timeline category colours (M4 C4.1)",
+    agent_only = "the structured form of the 01 §7.3 colour keys, which the Preferences dialog edits with prefs.set (ruling E-6)",
 )]
 pub(crate) fn element_type_colour_set(
     cx: &mut Cx,
@@ -494,8 +488,21 @@ pub(crate) fn element_type_colour_set(
     let c = tt_model::value::Colour::parse(&p.colour)
         .map_err(|e| err(tt_registry::codes::ARG_INVALID, e.message().to_owned(), json!({ "pointer": "/colour" })))?
         .to_string();
-    let key = to_json(&p.category)?.as_str().unwrap_or_default().to_owned();
-    cx.session_mut().timeline.type_colours.insert(key, c.clone());
+    let name = to_json(&p.category)?.as_str().unwrap_or_default().to_owned();
+    // The 01 §7.3 keys, written as `prefs.set` writes them (SI-203, ruling E-16; "skeletons" writes skeleton and bone).
+    let keys = CATEGORY_KEYS.iter().find(|(n, _)| *n == name).map(|(_, k)| *k).unwrap_or(&[]);
+    let themes = cx.session().env.settings.theme_ids();
+    let mut values = serde_json::Map::new();
+    for k in keys {
+        let v = crate::prefs::validate(k, &json!(c), &themes).map_err(|mut e| {
+            if let Some(m) = e.details.as_object_mut() {
+                m.insert("pointer".into(), json!("/colour"));
+            }
+            e
+        })?;
+        values.insert((*k).to_owned(), v);
+    }
+    super::prefs::stage(cx, values)?;
     Ok(TypeColourSetResult { category: p.category, colour: c })
 }
 

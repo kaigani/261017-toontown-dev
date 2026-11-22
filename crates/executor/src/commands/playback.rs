@@ -470,6 +470,7 @@ pub(crate) struct PlaybackState {
     kind = query,
     label = "Get playback state",
     scopes = [read],
+    needs_project,
     example(title = "Playback state and options", params = "{}"),
     gui = "Play menu and the main toolbar: Play/Stop's state, Loop, Playback Rate, Force Frame Rate (M5 C5.1)",
 )]
@@ -510,6 +511,7 @@ pub(crate) fn playback_state_get(cx: &mut Cx, _p: NoParams) -> Result<PlaybackSt
     kind = toggle,
     label = "Loop",
     scopes = [ui],
+    needs_project,
     example(title = "Loop playback", params = r#"{"enabled": true}"#),
     gui = "Play menu and the main toolbar: Loop (M5 C5.1)",
 )]
@@ -526,6 +528,7 @@ pub(crate) fn playback_loop_set(
     kind = toggle,
     label = "Force frame rate",
     scopes = [ui],
+    needs_project,
     example(title = "Drop frames to keep real time", params = r#"{"enabled": true}"#),
     gui = "Play menu: Force Frame Rate (M5 C5.1)",
 )]
@@ -589,6 +592,7 @@ pub(crate) const RATE_SETTING: &str = "playbackRate";
     kind = ui,
     label = "Playback rate",
     scopes = [ui],
+    needs_project,
     example(title = "Play at 12 frames per second", params = r#"{"fps": 12}"#),
     example(title = "Use the project frame rate", params = r#"{"fps": "project"}"#),
     gui = "Play menu: Playback Rate (M5 C5.1)",

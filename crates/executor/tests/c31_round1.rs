@@ -68,7 +68,7 @@ fn r02_timeline_state_follows_dry_runs_and_failed_groups() {
         );
         assert_ne!(failed.status, Status::Ok);
     }
-    assert_eq!(ok(&h, "element.typeColour.get", json!({}))["colours"]["drawings"], "#9DC3E6FF");
+    assert_eq!(ok(&h, "element.typeColour.get", json!({}))["colours"]["drawings"], "#8FD98FFF", "01 §7.3 (E-16)");
     assert_eq!(ok(&h, "app.state.get", json!({})), solo_before);
     // The real calls apply.
     ok(&h, "element.typeColour.set", json!({ "category": "drawings", "colour": "#010203" }));

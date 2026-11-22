@@ -543,9 +543,12 @@ pub(crate) struct RangeDeleteParams {
     /// Last frame.
     #[serde(default)]
     to: Option<i64>,
-    /// Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`).
+    /// Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`, the default).
+    /// With the target omitted and `shift` omitted, the command answers as `edit.delete` does in the focused cell
+    /// context (ruling E-14: the Timeline follows the cut-special create/delete exposure option).
     #[serde(default)]
-    shift: bool,
+    #[schemars(with = "bool")]
+    shift: Option<bool>,
 }
 
 #[command(
@@ -561,16 +564,22 @@ pub(crate) struct RangeDeleteParams {
     gui = "Edit > Delete with cells selected in the Exposure Sheet or Timeline (M5 C5.2)",
 )]
 pub(crate) fn cell_range_delete(cx: &mut Cx, p: RangeDeleteParams) -> Result<ChangedResult, CommandError> {
+    let omitted = p.element_ids.is_none() && p.from.is_none() && p.to.is_none();
+    let shift = match p.shift {
+        Some(s) => s,
+        None if omitted => super::edit_ops::delete_shifts(cx, super::edit_ops::focused_cell_context(cx)),
+        None => false,
+    };
     let t = cell_target(cx, p.element_ids.as_deref(), p.from, p.to)?;
     let mut budget = Budget::new("deleting cells");
     let changed = per_element(cx, &t, "cell.range.delete", BLANKS, &mut budget, &mut |c, b| {
         b.spend(c.frames.len())?;
-        let notes = if p.shift {
+        let notes = if shift {
             NoteEdit::moved(x::remove_map(t.from, t.to))
         } else {
             NoteEdit { clear_old: vec![(t.from, t.to)], ..NoteEdit::none() }
         };
-        Ok((x::delete_range(&c.frames, t.from, t.to, p.shift), notes))
+        Ok((x::delete_range(&c.frames, t.from, t.to, shift), notes))
     })?;
     Ok(ChangedResult { changed })
 }
@@ -1566,7 +1575,11 @@ pub(crate) fn cell_clipboard_set(cx: &mut Cx, p: ClipboardSetParams) -> Result<C
         }
         notes.extend(notes_in(&doc, e, t.from, t.to).into_iter().map(|(k, text)| (e.clone(), k, text)));
     }
-    super::edit_ops::store_cells(cx, &items, &notes)?;
+    // With its target omitted the copy is the selection's, in the focused cell context; an explicit target is the
+    // Exposure Sheet's (ruling E-15).
+    let omitted = p.element_ids.is_none() && p.from.is_none() && p.to.is_none();
+    let source = if omitted { super::edit_ops::focused_cell_context(cx) } else { super::common::EditContext::Xsheet };
+    super::edit_ops::store_cells(cx, &items, &notes, source)?;
     if p.cut {
         let mut changes = Changes::default();
         let mut out = Vec::new();

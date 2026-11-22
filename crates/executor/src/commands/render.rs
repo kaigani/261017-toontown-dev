@@ -859,6 +859,9 @@ fn drawing_space(cx: &mut Cx, p: &FrameParams, doc: &Document, frame: u32) -> Re
     deliver(cx, p, image)
 }
 
+/// A composited frame: its RGBA pixels, the drawing-to-pixel map and the render's warnings.
+pub(crate) type Composited = (Vec<u8>, [f64; 6], Vec<Value>);
+
 /// The exposure-sheet composition of a frame (09 §1.2; 04 §1.2 line 56; M5 C5.1a, SI-107): the drawings the scene's
 /// cell-based columns expose at `frame`, in Exposure Sheet order (left is back), columns hidden in the Exposure Sheet
 /// left out (04 §1.3), annotation columns left out (04 §2.6's design decision), sound and media columns left out (no
@@ -870,7 +873,7 @@ pub(crate) fn xsheet_pixels(
     cache: &crate::planar::SharedCache,
     (scene, frame): (&Id, u32),
     (w, h, bg): (u32, u32, tt_render::Rgba),
-) -> Result<(Vec<u8>, [f64; 6], Vec<Value>), CommandError> {
+) -> Result<Composited, CommandError> {
     let sc = doc.scene(scene).ok_or_else(|| invalid("/sceneId", "no such scene"))?;
     let s = f64::from(w) / 1200.0;
     let d2p = [s, 0.0, 0.0, -s, f64::from(w) / 2.0, f64::from(h) / 2.0];

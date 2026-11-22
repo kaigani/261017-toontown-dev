@@ -401,11 +401,6 @@
       "section": "04 §17.4 (Command table)",
       "location": "Timeline: drag a bar, its ends or its loop handle; layer context: Change Start Frame / Duration / Loops"
     },
-    "element.typeColour.set": {
-      "owner": "M5 C5.1",
-      "section": "04 §5.1 (default colour per type category, a preference)",
-      "location": "Preferences: Timeline category colours"
-    },
     "element.visibility.set": {
       "owner": "M5 C5.1",
       "section": "04 §17.4 (Command table)",

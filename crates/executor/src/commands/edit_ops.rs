@@ -108,13 +108,15 @@ pub(crate) struct TimelineEditOptions {
     boundary_keys: bool,
 }
 
+/// The defaults are the one table of `prefs.json` (`edit.*.timeline`; 04 §11.14's values, ruling E-13): a test keeps
+/// them equal.
 impl Default for TimelineEditOptions {
     fn default() -> Self {
         Self {
-            overwrite_drawings: true,
+            overwrite_drawings: false,
             create_delete_exposure: true,
             extend_exposures: false,
-            update_colours: true,
+            update_colours: false,
             keyframe_substitution: false,
             motion_keys: true,
             rotation_keys: true,
@@ -1060,6 +1062,7 @@ fn paste(
         Special::Timeline(o) => Some(o),
         _ => None,
     };
+
     if let Some(o) = topts {
         for name in o.not_applied() {
             out.warnings.push(Warning {
@@ -1286,6 +1289,11 @@ fn paste(
                 let policy = super::transfer::Policy {
                     reuse: true,
                     fresh: false,
+                    // A plain paste overwrites same-named drawings as built: three reviewer tests pin it
+                    // (`c12_r2_contracts::cross_bank_cell_paste_cannot_overwrite_a_locked_drawing`,
+                    // `c31_r1_contract::generic_paste_bridge_overwrites_opaque_drawing_properties`,
+                    // `c31_r2_variants::r13_generic_overwrite_clone_group_preserves_full_drawing_and_locked_refusal`),
+                    // brought to the orchestrator before E-13 reaches `edit.paste`.
                     overwrite: opts.overwrite_drawings || topts.is_none(),
                 };
                 let mut staged = super::timing::Changes::default();
@@ -1688,8 +1696,28 @@ pub(crate) fn edit_delete(cx: &mut Cx, p: ObjectsParams) -> Result<DeleteResult,
     let context = resolve_edit_context(cx, p.context);
     let picked = pick(cx, context, p.object_ids)?;
     report_picked(cx, context, &picked);
-    let deleted_ids = delete(cx, &picked, false, false)?;
+    let shift = matches!(picked, Picked::Cells(_)) && delete_shifts(cx, context);
+    let deleted_ids = delete(cx, &picked, shift, false)?;
     Ok(DeleteResult { deleted_ids })
+}
+
+/// Whether Delete removes cells and shifts the following cells earlier in `context` (04 §13.17's design decision; ruling
+/// E-14): in the Timeline it follows the cut-special "create/delete exposure" option, in the Exposure Sheet it clears.
+pub(crate) fn delete_shifts(cx: &Cx, context: EditContext) -> bool {
+    context == EditContext::Timeline
+        && super::transfer_options::stored(cx, super::transfer_options::Operation::Cut)
+            .get("createDeleteExposure")
+            .and_then(Value::as_bool)
+            .unwrap_or(true)
+}
+
+/// The cell context a selection-based cell command acts in: the focused panel's (`timeline` or `xsheet`), the
+/// Exposure Sheet's otherwise (ruling E-15).
+pub(crate) fn focused_cell_context(cx: &Cx) -> EditContext {
+    match resolve_edit_context(cx, EditContext::Auto) {
+        EditContext::Timeline => EditContext::Timeline,
+        _ => EditContext::Xsheet,
+    }
 }
 
 /// `edit.paste` parameters.
@@ -2052,6 +2080,7 @@ pub(crate) fn store_cells(
     cx: &mut Cx,
     cells: &[(Id, usize, Option<Id>)],
     notes: &[(Id, usize, String)],
+    source: EditContext,
 ) -> Result<ClipboardSummary, CommandError> {
     let doc = cx.document()?.clone();
     let mut payload = super::transfer::ArtPayload::of(&doc);
@@ -2076,7 +2105,7 @@ pub(crate) fn store_cells(
         .collect();
     let clip = Clipboard {
         kind: ClipboardKind::Cells,
-        source_context: Some(EditContext::Xsheet.as_str().to_owned()),
+        source_context: Some(source.as_str().to_owned()),
         source_project_id: Some(doc.project().id().as_str().to_owned()),
         item_count: u32::try_from(items.len()).unwrap_or(u32::MAX),
         items: Some(items),
