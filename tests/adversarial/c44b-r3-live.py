@@ -37,7 +37,7 @@ def run_matrix(step):
  source=inspect.getsource(old.matrix);source=source[:source.index(' if step==5:')]+MATRIX_BRANCHES
  ns=dict(old.__dict__);exec(source,ns);p.live_body=ns['matrix']
  result=p.live(step);transcript=json.loads((p.OUT/'transcript.json').read_text());checks=[r for r in transcript if 'check' in r]
- save('step'+str(step)+'.json',{'raw':str(p.OUT),'checks':checks,'failures':[r for r in checks if not r.get('ok')]})
+ save('step'+str(step)+('-outline' if 'outline' in sys.argv[3:] else '')+'.json',{'raw':str(p.OUT),'checks':checks,'failures':[r for r in checks if not r.get('ok')]})
  return result
 def run_regression():
  p=load('r3prior','tests/adversarial/c44a-r1-live.py');p.EVID=Path(tempfile.mkdtemp(prefix='r3summary-'))
