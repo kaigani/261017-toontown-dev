@@ -1,0 +1,163 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-fp6vkf0u",
+  "checks": [
+    {
+      "check": "other MCP call answered while open waits",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "project": null,
+          "scene": null,
+          "frame": null,
+          "element": null,
+          "drawing": null,
+          "mode": null,
+          "activeView": null,
+          "focusedPanel": "cameraView",
+          "activeTool": null,
+          "selection": {
+            "context": "staging",
+            "ids": [],
+            "kinds": []
+          },
+          "workspace": {
+            "name": "Default",
+            "modified": false
+          },
+          "playback": {
+            "playing": false
+          },
+          "startScreenVisible": true,
+          "modal": null,
+          "agentSessions": [
+            {
+              "sessionId": "s1-8b6645",
+              "name": "mcp",
+              "acting": false
+            },
+            {
+              "sessionId": "s2-c84b66",
+              "name": "r4-lock",
+              "acting": false
+            },
+            {
+              "sessionId": "s3-5fd1f1",
+              "name": "r4-query",
+              "acting": false
+            }
+          ],
+          "fullScreen": false,
+          "agent": {
+            "sessionId": "s3-5fd1f1",
+            "client": "r4-query",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "paused": false,
+            "limits": {
+              "policy": "autonomous",
+              "maxJobs": 2,
+              "maxBatchSteps": 1000,
+              "maxInlineImagePx": 2048,
+              "maxInlineBytes": 52428800,
+              "askInApp": true,
+              "letAgentMoveView": true,
+              "highlightAgentChanges": true
+            }
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": null
+      }
+    },
+    {
+      "check": "MCP code reason path",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-2",
+          "commandId": "project.open",
+          "state": "failed",
+          "progress": 0.0,
+          "message": "",
+          "startedAt": "2026-11-22T12:46:40.749Z",
+          "error": {
+            "code": "fs.ioError",
+            "message": "the project's lock file `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-quezqo7w\\closure.animpkg.lock.takeover` is in use by another program; nothing was changed; close that program (or wait for it) and try again",
+            "details": {
+              "reason": "lockFileInUse",
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-quezqo7w\\closure.animpkg.lock.takeover"
+            },
+            "hint": "try again once the other program has closed the file"
+          },
+          "session": "agent:s2-c84b66",
+          "cancellable": false
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": null
+      }
+    },
+    {
+      "check": "MCP bounded and lock unchanged",
+      "ok": true,
+      "detail": 12.026025499973912
+    },
+    {
+      "check": "MCP retry succeeds",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "jobId": "job-3",
+          "commandId": "project.open",
+          "state": "succeeded",
+          "progress": 1.0,
+          "message": "Finalisation",
+          "startedAt": "2026-11-22T12:46:52.777Z",
+          "result": {
+            "projectId": "pr_01M81MPQEM81GG7XRCC59YPCMC",
+            "readOnly": false,
+            "formatVersion": "1.0",
+            "warnings": [
+              {
+                "id": "project.lockedByOther",
+                "message": "a stale lock was taken over",
+                "details": {
+                  "stale": true,
+                  "takenOver": true,
+                  "lock": {
+                    "user": "review",
+                    "host": "k-AI",
+                    "processId": 648,
+                    "appVersion": "0.0.1",
+                    "openedAt": "2000-01-01T00:00:00.000Z",
+                    "heartbeatAt": "2000-01-01T00:00:00.000Z",
+                    "lockId": "stale-r4"
+                  }
+                }
+              }
+            ]
+          },
+          "session": "agent:s2-c84b66",
+          "cancellable": false
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1
+      }
+    }
+  ],
+  "failures": []
+}

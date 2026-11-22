@@ -87,6 +87,8 @@ async def lock_body(t,step):
   else:
    q=p.IndependentHttp(json.loads((t.work/'discovery.json').read_text()),'r4-lock');q.initialize()
    q2=p.IndependentHttp(json.loads((t.work/'discovery.json').read_text()),'r4-query');q2.initialize()
+   for client in (q,q2):
+    state=await asyncio.to_thread(client.command,'app.state.get');sid=state['result']['agent']['sessionId'];t.cdp.js("window.__TAURI_INTERNALS__.invoke('run_command',{json:"+json.dumps(json.dumps({'command':'agent.session.grant','params':{'sessionId':sid,'roots':[str(t.work)]}}))+"})")
    async def call(client,n,params=None):
     result=await asyncio.to_thread(client.command,n,params)
     if result.get('result',{}).get('jobId'):result=await asyncio.to_thread(client.tool,'job_wait',{'jobId':result['result']['jobId'],'timeoutMs':45000})
