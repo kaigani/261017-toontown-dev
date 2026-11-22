@@ -215,8 +215,13 @@ export function ViewChrome({ viewId }: { viewId: string }) {
         if (m) setSymmetry(m);
       })
       .then((u) => {
-        if (stopped) u();
-        else off = u;
+        if (stopped) {
+          u();
+          return;
+        }
+        off = u;
+        // Read again once subscribed (D-86 item 2): nothing between the first read and the subscription is lost.
+        refresh();
       });
     return () => {
       stopped = true;

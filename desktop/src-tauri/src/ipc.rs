@@ -547,6 +547,17 @@ pub fn agent_token(host: State<'_, Host>, window: tauri::Window) -> Result<Respo
     }
 }
 
+/// The agents' requests running now (ruling D-86 item 2; 01 §12.1 rule 9): `{generation, seq, acting}`, for a window
+/// that mounts while an agent acts. The window subscribes to engine events first and keeps any later
+/// `shell.agentActing` (a higher `seq`) over this answer.
+///
+/// # Errors
+/// None in practice (the JSON text of an internal error if the answer cannot be written).
+#[tauri::command]
+pub fn agent_acting(host: State<'_, Host>) -> Result<Response, String> {
+    respond(&host.acting_snapshot())
+}
+
 /// The window acknowledges delivery `{delivery}` hidden (D-65 item 2): the mask painted over it, or the token never
 /// painted (a Copy, or an answer that came after the reveal was ended).
 ///

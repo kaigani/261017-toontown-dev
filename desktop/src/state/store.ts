@@ -92,6 +92,8 @@ export interface StoreState {
   readonly generation: number;
   /** Agents acting now (from `shell.agentActing`). */
   readonly acting: readonly AgentActivity[];
+  /** The number of the last `shell.agentActing` notice or snapshot `acting` reflects (D-86 item 2). */
+  readonly actingSeq: number;
 }
 
 type Listener = () => void;
@@ -115,9 +117,21 @@ export interface Store {
   watch(refs: readonly CommandRef[], owner?: string): void;
 }
 
+/** One running agent request, from a `shell.agentActing` notice's payload or the snapshot's entries (D-86 item 2). */
+function activityOf(p: Record<string, unknown>): AgentActivity {
+  const text = (v: unknown) => (typeof v === 'string' ? v : '');
+  return {
+    sessionId: text(p['sessionId']),
+    client: text(p['client']),
+    commandId: text(p['commandId']),
+    ...(typeof p['label'] === 'string' ? { label: p['label'] } : {}),
+    ...(typeof p['steps'] === 'number' ? { steps: p['steps'] } : {}),
+  };
+}
+
 export function createStore(engine: EngineApi): Store {
   resetToolFamily();
-  let state: StoreState = { slices: {}, errors: {}, seq: 0, generation: 0, acting: [] };
+  let state: StoreState = { slices: {}, errors: {}, seq: 0, generation: 0, acting: [], actingSeq: 0 };
   const listeners = new Set<Listener>();
   const hooks = new Set<EventHook>();
   const set = (next: StoreState) => {
@@ -172,6 +186,20 @@ export function createStore(engine: EngineApi): Store {
     await readAvailability();
   };
 
+  // D-86 item 2 (finding C44B-R3S-02): the agents' requests running now, read after the subscription (the engine
+  // mirror resyncs once it is established); a notice newer than the snapshot (a higher number) wins.
+  const readActing = async () => {
+    try {
+      const snap = await engine.agentActing();
+      if (state.generation !== 0 && snap.generation !== state.generation) return;
+      if (snap.seq < state.actingSeq) return;
+      const acting = snap.acting.map((p) => activityOf((p ?? {}) as Record<string, unknown>));
+      set({ ...state, acting, actingSeq: snap.seq });
+    } catch {
+      // A host without the snapshot (an older host, a test double): the notices alone.
+    }
+  };
+
   const store: Store = {
     getState: () => state,
     subscribe(listener) {
@@ -184,7 +212,7 @@ export function createStore(engine: EngineApi): Store {
       // A new engine generation numbers its events from 1 again: the numbering restarts and everything is read anew.
       if (event.generation !== undefined && event.generation !== state.generation) {
         engine.setGeneration(event.generation);
-        set({ ...state, generation: event.generation, seq: 0, acting: [] });
+        set({ ...state, generation: event.generation, seq: 0, acting: [], actingSeq: 0 });
         await store.resync();
         set({ ...state, seq: event.seq });
         hooks.forEach((h) => {
@@ -197,16 +225,9 @@ export function createStore(engine: EngineApi): Store {
       noteToolFamily(event.name);
       if (event.name === 'shell.agentActing') {
         const p = (event.payload ?? {}) as Record<string, unknown>;
-        const text = (v: unknown) => (typeof v === 'string' ? v : '');
-        const entry: AgentActivity = {
-          sessionId: text(p['sessionId']),
-          client: text(p['client']),
-          commandId: text(p['commandId']),
-          ...(typeof p['label'] === 'string' ? { label: p['label'] } : {}),
-          ...(typeof p['steps'] === 'number' ? { steps: p['steps'] } : {}),
-        };
+        const entry = activityOf(p);
         const others = state.acting.filter((a) => a.sessionId !== entry.sessionId);
-        set({ ...state, acting: p['acting'] === true ? [...others, entry] : others });
+        set({ ...state, acting: p['acting'] === true ? [...others, entry] : others, actingSeq: event.seq });
       }
       if (gap) {
         await store.resync();
@@ -226,6 +247,7 @@ export function createStore(engine: EngineApi): Store {
     },
     async resync() {
       await refresh(Object.keys(SLICES) as (keyof typeof SLICES)[]);
+      await readActing();
     },
     refresh,
     onEvent(hook) {

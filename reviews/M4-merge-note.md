@@ -102,8 +102,6 @@ The retired margins:
   had it open (a virus scanner, an indexer, a backup tool) closes it; the project opens at once. If such a program
   keeps the project's arbitration file open while it is being removed, the open waits until it closes, rather than
   wrongly saying the project is held by someone else or cannot be written (D-84).
-- **The agent indicator can miss one command in a freshly loaded window.** A window loaded while an agent's command is
-  running shows the agent as connected rather than acting until that command ends (C4.4b round 3 handoff §6).
 - **A very large stroke is slow to edit.** A pencil stroke of 50,000 points drawn as straight segments, on its own
   layer, makes a 17.3 MB drawing for the canvas, which takes the kernel 4.0 s to build. After an edit of that stroke
   the window shows the result 19 to 36 s after the mouse is released (Contour Editor 35.9 s and 18.7 s, Perspective

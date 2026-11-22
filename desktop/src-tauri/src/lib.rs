@@ -70,6 +70,7 @@ command_registry![
     ipc::token_field,
     ipc::token_rect,
     ipc::text_input,
+    ipc::agent_acting,
 ];
 
 #[cfg(feature = "m0-diagnostics")]
@@ -95,6 +96,7 @@ command_registry![
     ipc::token_field,
     ipc::token_rect,
     ipc::text_input,
+    ipc::agent_acting,
     diagnostics::bench_plan,
     diagnostics::bench_report,
     spikes::tablet::spike_mode,
@@ -308,7 +310,9 @@ mod tests {
                 "token_field",
                 "token_rect",
                 // M4 C4.4b (design note 5 §4): the Text tool's editor feeds the kernel's input path.
-                "text_input"
+                "text_input",
+                // D-86 item 2: the agents' running requests, for a window that mounts while one acts.
+                "agent_acting"
             ]
         );
         for path in COMMANDS {
@@ -322,7 +326,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..21],
+            &names[..22],
             [
                 "ping",
                 "app_info",
@@ -347,7 +351,9 @@ mod tests {
                 "token_field",
                 "token_rect",
                 // M4 C4.4b (design note 5 §4): the Text tool's editor feeds the kernel's input path.
-                "text_input"
+                "text_input",
+                // D-86 item 2: the agents' running requests, for a window that mounts while one acts.
+                "agent_acting"
             ]
         );
         assert!(names.contains(&"bench_plan") && names.contains(&"bench_report"));

@@ -656,8 +656,19 @@ export function CanvasView({
         model?.markDirty();
       })
       .then((u) => {
-        if (stopped) u();
-        else unlisten = u;
+        if (stopped) {
+          u();
+          return;
+        }
+        unlisten = u;
+        // Read again once subscribed (D-86 item 2): nothing between the first read and the subscription is lost.
+        refreshTool();
+        refreshSceneTool();
+        refreshActiveView();
+        refreshSelectedIds();
+        refreshDisplayPrefs();
+        refreshMapping();
+        model?.markDirty();
       });
 
     const tick = (frameAt: number) => {

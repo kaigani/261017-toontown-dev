@@ -116,6 +116,10 @@ pub fn start_event_pump(app: &AppHandle) {
                 break;
             }
             let seq = host.next_seq();
+            // The agents' running requests are kept as state before the notice goes out (ruling D-86 item 2).
+            if e.name == "shell.agentActing" {
+                host.note_acting(seq, &e.payload);
+            }
             // Each generation numbers its events from 1; the window resyncs on a new generation (ruling O-14).
             let payload = json!({ "seq": seq, "generation": generation, "name": e.name, "payload": e.payload });
             match tt_engine::wire::to_wire_json(&payload) {

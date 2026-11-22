@@ -146,14 +146,20 @@ same gap:
 |---|---|---|---|
 | Text panel | `shell.textEdit` | the scene answer's `textEdit` | **gap, fixed** |
 | Canvas gesture ink | `colour.current.changed` | the scene answer's new `currentColour` (no declared query reports the current colour) | **gap, fixed** (the live ink was the accent colour until the colour changed) |
-| Agent indicator (status bar) | `shell.agentActing` | none possible | **gap, listed:** the host announces acting around each agent request, outside the document thread, and `app.state.get`'s `acting` is always false (a query waits for the running command). The window's store subscribes when the window starts, so in a running application only a window loaded while an agent command runs misses its "acting" notice, and only until that command's "done" notice. |
+| Agent indicator (status bar) | `shell.agentActing` | the desktop host's snapshot of the running requests (`agent_acting`, ruling D-86 item 2), reconciled by notice number | **gap, fixed in round 3:** the host keeps the running requests as state (the event pump notes each notice, with its number, before forwarding it); the store reads the snapshot after subscribing and keeps any newer notice over it |
 | Activity panel | `shell.agentActivity`, `shell.agentSession` | `agent.activity.list`, `agent.server.status` | none |
 | Confirmation sheet | `shell.agentConfirmation` | `agent.server.status` | none |
 | Agent access page | `shell.agentToken` | the token is read on demand (`agent_token`); the notice only hides a shown token | none |
 | View chrome, panel body, canvas mapping | `shell.view` | `view.transform.get`, `view.list`, `draw.viewMapping.get` | none |
 | Canvas staging selection | `edit.selection.changed` | `edit.selection.get` | none |
-| Status line | store slices (`ui.statusBar.get`) | read when the store starts and on every resync | none (its transient messages are the window's own) |
+| Status line | store slices (`ui.statusBar.get`) | read when the store starts and on every resync; the store now resyncs once its subscription is established (D-86 item 2) | read-then-subscribe order fixed |
 | Help, Preferences | `shell.help`, `shell.preferences` | requests to open a window, no state | none |
+
+**Subscribe, then read (ruling D-86 item 2).** A read made before its subscription is established can miss what
+changes in between. The engine mirror (the store) now resyncs once its subscription is established; the Text panel
+reads the scene answer after subscribing; the Activity panel, the confirmation sheet, the view chrome, the panel body
+and the canvas (tool, scene tool, active view, staging selection, display preferences, mapping) keep their first read
+and read again once subscribed.
 
 **Grapheme clusters (ruling D-82 item 2).** What a reader takes for one character can be several code points: a base
 letter and a combining mark that NFC does not compose (q with an acute), an emoji joined sequence (woman, ZWJ,

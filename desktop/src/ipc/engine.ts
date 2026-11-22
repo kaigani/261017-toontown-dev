@@ -158,6 +158,9 @@ export interface EngineApi {
    *  to show to the person or copy; never a registry command, so no agent reaches it. The host counts the delivery as
    *  possibly on screen until `tokenHidden(delivery)`. `null` when nothing was delivered (a window capture runs). */
   agentToken(): Promise<TokenDelivery | null>;
+  /** `agent_acting` (D-86 item 2): the agents' requests running now, `seq` the number of the last `shell.agentActing`
+   *  notice they reflect, for a window that mounts while an agent acts. */
+  agentActing(): Promise<{ generation: number; seq: number; acting: unknown[] }>;
   /** `token_hidden` (D-65 item 2): this window acknowledges `delivery` hidden: the mask painted over it, or the token
    *  never painted (a Copy, or an answer that came after its reveal ended). */
   tokenHidden(delivery: number): Promise<void>;
@@ -350,6 +353,15 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     },
     async canvasScene(viewId) {
       return decode(await invoke('canvas_scene', { viewId }));
+    },
+    async agentActing() {
+      const v = decode(await invoke('agent_acting', {}));
+      const o = typeof v === 'object' && v !== null ? (v as Record<string, unknown>) : {};
+      return {
+        generation: typeof o['generation'] === 'number' ? o['generation'] : 0,
+        seq: typeof o['seq'] === 'number' ? o['seq'] : 0,
+        acting: Array.isArray(o['acting']) ? (o['acting'] as unknown[]) : [],
+      };
     },
     async agentToken() {
       const v = decode(await invoke('agent_token', {}));

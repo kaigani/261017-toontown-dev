@@ -100,6 +100,8 @@ export interface ScriptedHost extends HostTransport {
   picked: string | null;
   /** `canvas_scene` answers by view id (a missing view refuses, as a host without that canvas would). */
   scenes: Record<string, unknown>;
+  /** `agent_acting`'s answer (D-86 item 2): the agents' running requests and the notice number they reflect. */
+  acting: { seq: number; acting: unknown[] };
   /** D-62 item 2, D-65 item 2: the agent token `agent_token` delivers, each delivery numbered when the host handles the
    *  call, as the desktop host does. While `capturing` nothing is delivered. With `holdToken` each answer is held in
    *  transit until `releaseToken()` (the oldest first), so a test can order a late answer after other events. */
@@ -150,6 +152,7 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
         : { enabled: true },
     picked: null,
     scenes: {},
+    acting: { seq: 0, acting: [] },
     token: '0123456789abcdef0123456789abcdef0123456789abcdef',
     capturing: false,
     holdToken: false,
@@ -277,6 +280,8 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
           return Promise.resolve({ path: host.picked });
         // D-62 item 2, D-65 item 2: the agent token (a fixed test value), delivered numbered, and the window's
         // acknowledgements of each delivery hidden.
+        case 'agent_acting':
+          return Promise.resolve({ generation: host.generation, ...host.acting });
         case 'agent_token': {
           if (host.capturing) return Promise.resolve({ token: null, delivery: null });
           deliveries += 1;

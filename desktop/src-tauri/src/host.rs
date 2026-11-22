@@ -42,6 +42,9 @@ pub struct Host {
     cancels: Mutex<HashMap<String, Arc<AtomicBool>>>,
     /// The next engine-event number (delivery order, starting at 1).
     seq: AtomicU64,
+    /// The agents' requests running now, as the `shell.agentActing` notices left them (by session), with the number of
+    /// the last such notice (ruling D-86 item 2: a window that mounts while an agent acts reads it; `agent_acting`).
+    acting: Mutex<(u64, std::collections::BTreeMap<String, Value>)>,
     /// The attached-mode server.
     pub http: Mutex<Option<tt_mcp::http::HttpServer>>,
     /// The token the running HTTP server accepts (SI-178: a regenerated token restarts it, the start-up token does not).
@@ -196,6 +199,7 @@ impl Host {
             watchdog: Mutex::new(crate::watchdog::Watchdog::default()),
             cancels: Mutex::new(HashMap::new()),
             seq: AtomicU64::new(0),
+            acting: Mutex::new((0, std::collections::BTreeMap::new())),
             http: Mutex::new(None),
             http_token: Mutex::new(None),
             pending_open: Mutex::new(options.open.clone()),
@@ -266,6 +270,8 @@ impl Host {
         *self.watchdog.lock().unwrap_or_else(PoisonError::into_inner) = crate::watchdog::Watchdog::default();
         // The new generation numbers its events from 1; the old one's cancellation flags are dropped (ruling O-14).
         self.seq.store(0, Ordering::Release);
+        // The old engine's requests ended with it.
+        *self.acting.lock().unwrap_or_else(PoisonError::into_inner) = (0, std::collections::BTreeMap::new());
         self.cancels.lock().unwrap_or_else(PoisonError::into_inner).clear();
         // The new engine starts without any window's facts; the windows report them again (ruling O-9). The open float
         // windows stay expected: the new engine is not fresh until they have reported (C41-R2-06).
@@ -462,6 +468,26 @@ impl Host {
     /// The next engine-event number.
     pub fn next_seq(&self) -> u64 {
         self.seq.fetch_add(1, Ordering::AcqRel) + 1
+    }
+
+    /// Notes a `shell.agentActing` notice numbered `seq` before it is forwarded (ruling D-86 item 2): the session's
+    /// request is running (`acting: true`) or ended.
+    pub fn note_acting(&self, seq: u64, payload: &Value) {
+        let Some(session) = payload.get("sessionId").and_then(Value::as_str) else { return };
+        let mut a = self.acting.lock().unwrap_or_else(PoisonError::into_inner);
+        if payload.get("acting").and_then(Value::as_bool) == Some(true) {
+            a.1.insert(session.to_owned(), payload.clone());
+        } else {
+            a.1.remove(session);
+        }
+        a.0 = seq;
+    }
+
+    /// The agents' requests running now (ruling D-86 item 2): `{generation, seq, acting}`, `seq` the number of the last
+    /// `shell.agentActing` notice they reflect; a window that subscribed first keeps any later notice over this.
+    pub fn acting_snapshot(&self) -> Value {
+        let a = self.acting.lock().unwrap_or_else(PoisonError::into_inner);
+        json!({ "generation": self.generation(), "seq": a.0, "acting": a.1.values().cloned().collect::<Vec<_>>() })
     }
 
     /// The token of the HTTP endpoint: the discovery file's when it has the generated form (48 lower-case hex
@@ -852,6 +878,24 @@ mod tests {
         let scene = h.run("anim.tool.get", json!({}), false, None).result.map(|r| r["tool"].clone());
         assert_eq!(scene, Some(json!("transform")), "the scene tool is the one named");
         assert_eq!(tool(&h), Some(json!("pencil")), "the drawing tool is untouched");
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    #[test]
+    fn the_agents_running_requests_are_kept_as_state_with_their_notice_number() {
+        // Ruling D-86 item 2 (finding C44B-R3S-02): a window that mounts while an agent acts reads this snapshot.
+        let (h, dir) = host();
+        assert_eq!(h.acting_snapshot()["acting"], json!([]));
+        let on = json!({ "sessionId": "s1", "client": "Assistant", "commandId": "render.frames", "acting": true });
+        h.note_acting(4, &on);
+        let snap = h.acting_snapshot();
+        assert_eq!((snap["seq"].clone(), snap["acting"].clone()), (json!(4), json!([on])));
+        h.note_acting(6, &json!({ "sessionId": "s1", "acting": false }));
+        let snap = h.acting_snapshot();
+        assert_eq!((snap["seq"].clone(), snap["acting"].clone()), (json!(6), json!([])), "the request ended");
+        h.note_acting(7, &on);
+        assert!(h.restart_from(0).is_ok(), "the restart runs");
+        assert_eq!(h.acting_snapshot()["acting"], json!([]), "a restart ends the old engine's requests");
         let _ = std::fs::remove_dir_all(dir);
     }
 

@@ -138,8 +138,12 @@ export function useEngineMirror(services: ShellServices, reportScreens: boolean)
       .then((u) => {
         if (disposed) u();
         else unlisten = u;
+        // Read after subscribing (D-86 item 2): nothing between the read and the subscription is lost.
+        if (!disposed) void services.store.resync();
+      })
+      .catch(() => {
+        void services.store.resync();
       });
-    void services.store.resync();
     if (reportScreens) {
       void services.engine
         .report({
