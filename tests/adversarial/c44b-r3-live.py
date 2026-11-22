@@ -116,13 +116,17 @@ MATRIX_BRANCHES=r'''
     q.initialize();answer=await asyncio.to_thread(q.tool,'run_command',{'id':'draw.stroke.set','params':{'drawingId':did,'strokeId':sid,'thickness':13}})
    finally:q.close()
    after=await c('draw.drawing.get');check(before!=after if kind!='drawing' else before==after and 'drawing.locked' in str(answer),'D-83 independent explicit '+kind,answer)
-  for context in ('timeline','xsheet'):
-   for option in ('keepSelectionVisible','off','outlineOnSelection'):
+  for context in (('timeline','xsheet','staging') if 'outline' in sys.argv[3:] else ('timeline','xsheet')):
+   for option in (('outlineOnSelection',) if 'outline' in sys.argv[3:] else ('keepSelectionVisible','off','outlineOnSelection')):
     for tool in ('contourEditor','perspective','repositionAll','text'):
      eid,did=await fixture('cameraView',tool);await c('edit.selection.set',{'context':context,'ids':[eid]})
      await c('drawAid.selectionDisplay.set',{'keepSelectionVisible':option=='keepSelectionVisible','outlineOnSelection':option=='outlineOnSelection'})
      await c('element.visibility.set',{'elementIds':[eid],'scope':'scene','visible':False});await pause()
      canvas=json.loads(d.McpTable.node(await d.McpTable.tree(t),'cameraView.canvas').get('value') or '{}')
+     if 'outline' in sys.argv[3:]:
+      scene=t.cdp.js("window.__TAURI_INTERNALS__.invoke('canvas_scene',{json:JSON.stringify({viewId:'cameraView'})})")
+      t.run.save(context+'-'+tool+'-scene.json',json.loads(scene) if isinstance(scene,str) else scene)
+      t.run.shot(context+'-'+tool,d.e2e.APP_PID['pid'])
      before=await c('draw.drawing.get');pts=[(-84,-64),(-64,-44)] if tool=='perspective' else tools[tool]
      await gesture('cameraView',pts)
      if tool=='text':d.front();d.type_text('X');await pause()
