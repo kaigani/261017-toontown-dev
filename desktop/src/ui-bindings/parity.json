@@ -20651,6 +20651,7 @@
     {
       "command": "draw.text.set",
       "files": [
+        "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/canvas/TextEditor.tsx"
       ]
     },
@@ -21766,6 +21767,7 @@
     {
       "command": "shell.textEdit",
       "files": [
+        "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/panels/TextPanel.tsx"
       ]
     },
