@@ -30,6 +30,7 @@ pub(crate) const MESSAGES: &[(&str, &str)] = &[
     ("project.pathRequired", "The project has no location yet; choose one with Save As."),
     ("project.pathInsideProject", "A project cannot be saved inside its own package."),
     ("project.unsavedChanges", "The project has unsaved changes."),
+    ("project.lockFileInUse", "Another program has the project's lock file open; close it or wait, then try again."),
     ("project.formatUpgrade", "Saving upgrades the package; older versions will not open it."),
     ("project.saveFailed", "The project could not be saved."),
     ("library.saveFailed", "The global library could not be saved."),
