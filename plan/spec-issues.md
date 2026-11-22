@@ -2590,6 +2590,29 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Interim decision:** a drag's step carries its command's registered label; the D-23 rows assert it.
 - **Question:** state labels in 04 if others are wanted.
 
+## SI-209 — the playback rate is a user preference without a key (found in M5 C5.1a design; interim)
+
+- **Sections:** 09 §2.6 line 161 ("persisted as a user preference"); 01 §7.3 (no playback key).
+- **Interim decision:** `playback.rate.set`'s setting is kept per user in the settings store, as the tools' settings
+  are (ADR-0021 decision 13), not as a 01 §7.3 key.
+- **Question:** add a key to 01 §7.3, or confirm.
+
+## SI-210 — no query reads the Timeline view (found in M5 C5.1a design; interim)
+
+- **Sections:** 04 §17.4 (`timeline.view.set` only), §17.1 item 1 (everything a user can see is readable).
+- **Interim decision:** `timeline.view.set` with no parameters changes nothing and answers `{zoomLevel, firstFrame,
+  lastFrame}`; the window follows an agent's change through a host-only notice carrying the same values.
+- **Question:** add `timeline.view.get`, or confirm.
+
+## SI-211 — the Timeline's modifier roles (found in M5 C5.1a design; interim)
+
+- **Sections:** 04 §11.8, §11.13 line 751, §16, §18 #7 ("copy modifier", "link modifier", "single-cell modifier",
+  "extend / toggle modifier", left to design).
+- **Interim decision:** extend Shift; toggle Primary; single cell Alt (Option); copy Primary on Windows and Linux, Alt
+  (Option) on macOS; link Shift+Primary on Windows and Linux, Alt+Primary (Option+Command) on macOS; one table in
+  `crates/executor/src/timeline-layout.json`, read by the kernel and the window.
+- **Question:** confirm or specify.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row
