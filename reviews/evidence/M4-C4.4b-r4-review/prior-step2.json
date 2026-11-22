@@ -1,0 +1,290 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-j67a8kve",
+  "checks": [
+    {
+      "check": "cameraView-element-anchorDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Delete points: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "cameraView-element-anchorDelete reason",
+      "ok": true,
+      "detail": {
+        "status": "Delete points: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": "in\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nDelete points: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView-element-selectDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Delete: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "cameraView-element-selectDelete reason",
+      "ok": true,
+      "detail": {
+        "status": "Delete: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": "nion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nDelete: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView-element-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Cut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "cameraView-element-cut reason",
+      "ok": true,
+      "detail": {
+        "status": "Cut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": "d\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nCut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView-element-paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Paste: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+      }
+    },
+    {
+      "check": "cameraView-element-paste reason",
+      "ok": true,
+      "detail": {
+        "status": "Paste: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id",
+        "visibleText": "Onion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nPaste: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView element unbound duplicate observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView element unbound nudge observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-drawing-anchorDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Delete points: drawing `1` is locked"
+      }
+    },
+    {
+      "check": "cameraView-drawing-anchorDelete reason",
+      "ok": true,
+      "detail": {
+        "status": "Delete points: drawing `1` is locked",
+        "visibleText": "abber\ntext\nA\nB\nE\nCamera view\n\u00d7\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nDelete points: drawing `1` is locked\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView-drawing-selectDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Delete: drawing `dr_01K7JJN8007T5GBMHP5TDM05BR` is locked"
+      }
+    },
+    {
+      "check": "cameraView-drawing-selectDelete reason",
+      "ok": true,
+      "detail": {
+        "status": "Delete: drawing `dr_01K7JJN8007T5GBMHP5TDM05BR` is locked",
+        "visibleText": "ra view\n\u00d7\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nDelete: drawing `dr_01K7JJN8007T5GBMHP5TDM05BR` is locked\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView-drawing-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Cut: drawing `dr_01K7JJN800NZ39CAX5G1T58Y8K` is locked"
+      }
+    },
+    {
+      "check": "cameraView-drawing-cut reason",
+      "ok": true,
+      "detail": {
+        "status": "Cut: drawing `dr_01K7JJN800NZ39CAX5G1T58Y8K` is locked",
+        "visibleText": "sor\nzoom\ngrabber\ntext\nA\nB\nE\nCamera view\n\u00d7\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nCut: drawing `dr_01K7JJN800NZ39CAX5G1T58Y8K` is locked\nScene-1 \u00b7 frame 1\n1 selected\nAgent: mcp"
+      }
+    },
+    {
+      "check": "cameraView-drawing-paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Paste: drawing `dr_01K7JJN800BHCMQN0QBMRX40DF` is locked"
+      }
+    },
+    {
+      "check": "cameraView-drawing-paste reason",
+      "ok": true,
+      "detail": {
+        "status": "Paste: drawing `dr_01K7JJN800BHCMQN0QBMRX40DF` is locked",
+        "visibleText": "era view\n\u00d7\nDrawing\nCamera\nSide\nTop\n100%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nPaste: drawing `dr_01K7JJN800BHCMQN0QBMRX40DF` is locked\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView drawing unbound duplicate observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView drawing unbound nudge observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-hidden-anchorDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Delete points: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "cameraView-hidden-anchorDelete reason",
+      "ok": true,
+      "detail": {
+        "status": "Delete points: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "ion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nDelete points: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView-hidden-selectDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Delete: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "cameraView-hidden-selectDelete reason",
+      "ok": true,
+      "detail": {
+        "status": "Delete: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "Grid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nDelete: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView-hidden-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Cut: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "cameraView-hidden-cut reason",
+      "ok": true,
+      "detail": {
+        "status": "Cut: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "0%\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nCut: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView-hidden-paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "status": "Paste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "cameraView-hidden-paste reason",
+      "ok": true,
+      "detail": {
+        "status": "Paste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)",
+        "visibleText": "\nGrid\nOnion skin\nPrevious drawings\nNext drawings\nOnion skin outlines\nAuto light table\nShade light tables\nStatic light table panel\nSend to static light table\nShow all static light table entries\nClear the static light table\nShow strokes\nCurrent drawing on top\nBox highlighting\nOutline on selection\nSelection always visible\nUse the scene background colour\nSymmetry\nFocus\nTimeline\n\u00d7\nExposure sheet\n\u00d7\nFunction editor\n\u00d7\nStoryline\n\u00d7\nTimeline\n\nThis panel's content arrives with M5 C5.1.\n\nColour\n\u00d7\nProperties\n\u00d7\nLibrary\n\u00d7\nColour\n\nThis panel's content arrives with M7 C7.1.\n\nPen\n\u00d7\nText\n\u00d7\nCells\n\u00d7\nPen 1\nPen 2\nPen 3\nPen 4\nPen 5\nNew\nDelete\nTip shape\nRound\nOval\nSquare\nFlat\nMinimum size\nMaximum size\nSmoothness\nTip angle\nAdvanced options\nCells opened\nPaste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)\nScene-1 \u00b7 frame 1\n1 selected\nAgent acting: mcp (Get drawing content)"
+      }
+    },
+    {
+      "check": "cameraView hidden unbound duplicate observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView hidden unbound nudge observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-element-anchorDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Contour Editing",
+            "user"
+          ]
+        ],
+        "status": "Paste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "drawingView-element-selectDelete document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Delete",
+            "user"
+          ]
+        ],
+        "status": "Paste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "drawingView-element-cut document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Cut",
+            "user"
+          ]
+        ],
+        "status": "Paste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "drawingView-element-paste document and undo",
+      "ok": true,
+      "detail": {
+        "history": [
+          [
+            "Paste",
+            "user"
+          ]
+        ],
+        "status": "Paste: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "drawingView element unbound duplicate observation",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView element unbound nudge observation",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": []
+}
