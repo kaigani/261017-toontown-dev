@@ -592,8 +592,6 @@ pub(crate) fn input(
     let s = session_of(core, origin)?;
     let mut out = Vec::new();
     run_input(core, origin, &s, i, &mut out);
-    // The input's own edit can leave the caret inside a cluster (a base letter typed before a combining mark).
-    reconcile(core);
     notify(core);
     Ok(out)
 }
@@ -750,7 +748,9 @@ fn type_text(
     let env = invoke(core, origin, "draw.text.set", p.clone());
     let ok = env.is_ok();
     out.push(("draw.text.set".to_owned(), p, env));
-    let after = length(core, s).unwrap_or(before);
+    // The text after the insert, read once: its length and its cluster boundaries.
+    let after_content = core_content(core, s);
+    let after = after_content.as_ref().map_or(before, |c| c.chars.len());
     let n = (after + (b - a)).saturating_sub(before);
     if ok && !format.is_empty() {
         let mut f = Value::Object(format);
@@ -763,9 +763,11 @@ fn type_text(
     }
     core.set_typing(None);
     if ok {
+        // A base letter typed before a combining mark joins its cluster: the caret goes after the cluster (D-82 item 2).
+        let caret = after_content.as_ref().map_or(a + n, |c| text::snap_boundary(c, a + n));
         set_session(core, |e| {
-            e.caret = a + n;
-            e.anchor = a + n;
+            e.caret = caret;
+            e.anchor = caret;
             e.goal_x = None;
             e.pending.clear();
         });

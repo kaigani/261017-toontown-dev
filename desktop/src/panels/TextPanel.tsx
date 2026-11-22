@@ -119,9 +119,10 @@ export function TextPanel() {
         else off = u;
         // Ruling D-85 item 2 (finding C44B-R2-02): a panel opened while a session is open reads the session when it
         // mounts (the scene answer's `textEdit`, which every view's answer carries), then follows the notices.
-        return engine.canvasScene('drawingView').then((scene) => {
+        return engine.canvasScene('drawingView').then((answer) => {
           if (stopped || heard) return;
-          const t = obj(obj(scene)['textEdit']);
+          // The host answers `{generation, scene}` (design note 1 §9).
+          const t = obj(obj(obj(answer)['scene'])['textEdit']);
           if (typeof t['textId'] !== 'string') return;
           setEditing(
             editingOf({

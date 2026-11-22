@@ -135,7 +135,8 @@ describe('the Text panel (02 §7.6.1)', () => {
       'app.state.get': () => ok({ ...PROJECT }),
       'tool.options.get': () => ok({ toolId: 'text', options: DEFAULTS }),
     });
-    h.scenes['drawingView'] = { textEdit };
+    // The host's answer, as `canvas_scene` sends it: `{generation, scene}`.
+    h.scenes['drawingView'] = { generation: 0, scene: { textEdit } };
     render(
       <HostProvider api={createHostApi(h)}>
         <App floatPanel="text" />
